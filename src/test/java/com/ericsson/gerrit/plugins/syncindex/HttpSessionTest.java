@@ -16,6 +16,7 @@ package com.ericsson.gerrit.plugins.syncindex;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.google.common.truth.Truth.assertThat;
 import static org.easymock.EasyMock.expect;
@@ -31,10 +32,12 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
+import java.net.SocketTimeoutException;
+
 public class HttpSessionTest extends EasyMockSupport {
-  private static final int MAX_TRIES = 5;
-  private static final int RETRY_INTERVAL = 1000;
-  private static final int TIMEOUT = 1000;
+  private static final int MAX_TRIES = 3;
+  private static final int RETRY_INTERVAL = 250;
+  private static final int TIMEOUT = 500;
   private static final int ERROR = 500;
   private static final int OK = 204;
   private static final int NOT_FOUND = 404;
@@ -43,6 +46,8 @@ public class HttpSessionTest extends EasyMockSupport {
   private static final String ENDPOINT = "/plugins/sync-index/index/1";
   private static final String ERROR_MESSAGE = "Error message";
   private static final String REQUEST_MADE = "Request made";
+  private static final String SECOND_TRY = "Second try";
+  private static final String THIRD_TRY = "Third try";
   private static final String RETRY_AT_ERROR = "Retry at error";
   private static final String RETRY_AT_DELAY = "Retry at delay";
 
@@ -72,11 +77,19 @@ public class HttpSessionTest extends EasyMockSupport {
   }
 
   @Test
-  public void testResponseOK() throws Exception {
+  public void testPostResponseOK() throws Exception {
     wireMockRule.givenThat(post(urlEqualTo(ENDPOINT))
         .willReturn(aResponse().withStatus(OK)));
 
     assertThat(httpSession.post(ENDPOINT).isSuccessful()).isTrue();
+  }
+
+  @Test
+  public void testDeleteResponseOK() throws Exception {
+    wireMockRule.givenThat(delete(urlEqualTo(ENDPOINT))
+        .willReturn(aResponse().withStatus(OK)));
+
+    assertThat(httpSession.delete(ENDPOINT).isSuccessful()).isTrue();
   }
 
   @Test
@@ -133,6 +146,42 @@ public class HttpSessionTest extends EasyMockSupport {
         .willReturn(aResponse().withStatus(OK)));
 
     assertThat(httpSession.post(ENDPOINT).isSuccessful()).isTrue();
+  }
+
+  @Test
+  public void testRetryAfterTimeoutThenOK() throws Exception {
+    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
+        .whenScenarioStateIs(Scenario.STARTED).willSetStateTo(REQUEST_MADE)
+        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
+    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
+        .whenScenarioStateIs(REQUEST_MADE).willSetStateTo(SECOND_TRY)
+        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
+    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
+        .whenScenarioStateIs(SECOND_TRY).willSetStateTo(THIRD_TRY)
+        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
+    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
+        .whenScenarioStateIs(THIRD_TRY)
+        .willReturn(aResponse().withStatus(OK)));
+
+    assertThat(httpSession.post(ENDPOINT).isSuccessful()).isTrue();
+  }
+
+  @Test(expected = SocketTimeoutException.class)
+  public void testMaxRetriesAfterTimeoutThenGiveUp() throws Exception {
+    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
+        .whenScenarioStateIs(Scenario.STARTED).willSetStateTo(REQUEST_MADE)
+        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
+    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
+        .whenScenarioStateIs(REQUEST_MADE).willSetStateTo(SECOND_TRY)
+        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
+    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
+        .whenScenarioStateIs(SECOND_TRY).willSetStateTo(THIRD_TRY)
+        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
+    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
+        .whenScenarioStateIs(THIRD_TRY)
+        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
+
+    httpSession.post(ENDPOINT);
   }
 
   @Test
