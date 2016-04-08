@@ -21,7 +21,7 @@ import com.google.gerrit.common.TimeUtil;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.server.ChangeAccess;
 import com.google.gerrit.reviewdb.server.ReviewDb;
-import com.google.gerrit.server.index.ChangeIndexer;
+import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.OrmException;
 import com.google.gwtorm.server.SchemaFactory;
