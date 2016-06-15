@@ -64,5 +64,11 @@ class EvictCacheHandler<K, V> implements CacheRemovalListener<K, V> {
     public void run() {
       restSession.evict(pluginName, cacheName, key);
     }
+
+    @Override
+    public String toString() {
+      return String.format("Evict key '%s' from cache '%s' in target instance",
+          key, cacheName);
+    }
   }
 }
