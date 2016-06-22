@@ -5,9 +5,12 @@ include_defs('//bucklets/maven_jar.bucklet')
 SOURCES = glob(['src/main/java/**/*.java'])
 RESOURCES = glob(['src/main/resources/**/*'])
 
-TEST_DEPS = GERRIT_PLUGIN_API + GERRIT_TESTS + [
-  ':sync-index__plugin',
+DEPS = [
   ':wiremock',
+]
+
+TEST_DEPS = GERRIT_PLUGIN_API + GERRIT_TESTS + DEPS + [
+  ':sync-index__plugin',
 ]
 
 gerrit_plugin(
@@ -23,7 +26,8 @@ gerrit_plugin(
     'Implementation-URL: https://gerrit.ericsson.se/#/admin/projects/gerrit/plugins/sync-index',
     'Implementation-Vendor: Ericsson',
   ],
-  provided_deps = GERRIT_TESTS + [':wiremock',],
+  provided_deps = GERRIT_TESTS,
+  deps = DEPS,
 )
 
 java_sources(
