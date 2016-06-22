@@ -14,9 +14,9 @@
 
 package com.ericsson.gerrit.plugins.syncindex;
 
+import com.google.gerrit.extensions.events.ChangeIndexedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
-import com.google.gerrit.server.extensions.events.ChangeIndexedListener;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
 

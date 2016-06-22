@@ -16,9 +16,7 @@ package com.ericsson.gerrit.plugins.syncindex;
 
 import com.google.common.base.Objects;
 import com.google.gerrit.extensions.annotations.PluginName;
-import com.google.gerrit.reviewdb.client.Change;
-import com.google.gerrit.server.extensions.events.ChangeIndexedListener;
-import com.google.gerrit.server.query.change.ChangeData;
+import com.google.gerrit.extensions.events.ChangeIndexedListener;
 import com.google.inject.Inject;
 
 import java.util.Collections;
@@ -43,18 +41,18 @@ class IndexEventHandler implements ChangeIndexedListener {
   }
 
   @Override
-  public void onChangeIndexed(ChangeData cd) {
-    executeIndexTask(cd.getId(), false);
+  public void onChangeIndexed(int id) {
+    executeIndexTask(id, false);
   }
 
   @Override
-  public void onChangeDeleted(Change.Id id) {
+  public void onChangeDeleted(int id) {
     executeIndexTask(id, true);
   }
 
-  private void executeIndexTask(Change.Id id, boolean deleted) {
+  private void executeIndexTask(int id, boolean deleted) {
     if (!Context.isForwardedEvent()) {
-      SyncIndexTask syncIndexTask = new SyncIndexTask(id.get(), deleted);
+      SyncIndexTask syncIndexTask = new SyncIndexTask(id, deleted);
       if (queuedTasks.add(syncIndexTask)) {
         executor.execute(syncIndexTask);
       }

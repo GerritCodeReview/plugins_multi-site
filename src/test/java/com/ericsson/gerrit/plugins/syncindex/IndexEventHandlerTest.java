@@ -67,7 +67,7 @@ public class IndexEventHandlerTest extends EasyMockSupport {
   public void shouldIndexInRemoteOnChangeIndexedEvent() throws Exception {
     expect(restClientMock.index(CHANGE_ID)).andReturn(true);
     replayAll();
-    indexEventHandler.onChangeIndexed(cd);
+    indexEventHandler.onChangeIndexed(id.get());
     verifyAll();
   }
 
@@ -77,7 +77,7 @@ public class IndexEventHandlerTest extends EasyMockSupport {
     reset(cd);
     expect(restClientMock.deleteFromIndex(CHANGE_ID)).andReturn(true);
     replayAll();
-    indexEventHandler.onChangeDeleted(id);
+    indexEventHandler.onChangeDeleted(id.get());
     verifyAll();
   }
 
@@ -86,8 +86,8 @@ public class IndexEventHandlerTest extends EasyMockSupport {
     reset(poolMock);
     replayAll();
     Context.setForwardedEvent(true);
-    indexEventHandler.onChangeIndexed(cd);
-    indexEventHandler.onChangeDeleted(id);
+    indexEventHandler.onChangeIndexed(id.get());
+    indexEventHandler.onChangeDeleted(id.get());
     Context.unsetForwardedEvent();
     verifyAll();
   }
@@ -98,8 +98,8 @@ public class IndexEventHandlerTest extends EasyMockSupport {
     poolMock.execute(indexEventHandler.new SyncIndexTask(CHANGE_ID, false));
     expectLastCall().once();
     replayAll();
-    indexEventHandler.onChangeIndexed(cd);
-    indexEventHandler.onChangeIndexed(cd);
+    indexEventHandler.onChangeIndexed(id.get());
+    indexEventHandler.onChangeIndexed(id.get());
     verifyAll();
   }
 
