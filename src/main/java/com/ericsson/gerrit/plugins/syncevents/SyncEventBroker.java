@@ -18,10 +18,12 @@ import com.google.gerrit.common.EventBroker;
 import com.google.gerrit.common.EventListener;
 import com.google.gerrit.common.UserScopedEventListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.notedb.ChangeNotes.Factory;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 public class SyncEventBroker extends EventBroker {
 
@@ -29,8 +31,10 @@ public class SyncEventBroker extends EventBroker {
   public SyncEventBroker(DynamicSet<UserScopedEventListener> listeners,
       DynamicSet<EventListener> unrestrictedListeners,
       ProjectCache projectCache,
-      Factory notesFactory) {
-    super(listeners, unrestrictedListeners, projectCache, notesFactory);
+      Factory notesFactory,
+      Provider<ReviewDb> dbProvider) {
+    super(listeners, unrestrictedListeners, projectCache, notesFactory,
+        dbProvider);
   }
 
   @Override

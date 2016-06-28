@@ -33,7 +33,7 @@ public class SyncEventBrokerTest extends EasyMockSupport {
     listenerMock = createMock(EventListener.class);
     DynamicSet<EventListener> listeners = DynamicSet.emptySet();
     listeners.add(listenerMock);
-    broker = new SyncEventBroker(null, listeners, null, null);
+    broker = new SyncEventBroker(null, listeners, null, null, null);
   }
 
   @Test

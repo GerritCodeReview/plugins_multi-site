@@ -23,14 +23,12 @@ import com.google.common.base.Supplier;
 import com.google.common.io.CharStreams;
 import com.google.common.net.MediaType;
 import com.google.gerrit.common.EventDispatcher;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventDeserializer;
 import com.google.gerrit.server.events.SupplierDeserializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gwtorm.server.OrmException;
-import com.google.gwtorm.server.SchemaFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -51,13 +49,10 @@ class SyncEventsRestApiServlet extends HttpServlet {
       .getLogger(SyncEventsRestApiServlet.class);
 
   private final EventDispatcher dispatcher;
-  private final SchemaFactory<ReviewDb> schema;
 
   @Inject
-  SyncEventsRestApiServlet(EventDispatcher dispatcher,
-      SchemaFactory<ReviewDb> schema) {
+  SyncEventsRestApiServlet(EventDispatcher dispatcher) {
     this.dispatcher = dispatcher;
-    this.schema = schema;
   }
 
   @Override
@@ -68,9 +63,7 @@ class SyncEventsRestApiServlet extends HttpServlet {
     try {
       Context.setForwardedEvent();
       Event event = getEventFromRequest(req);
-      try (ReviewDb db = schema.open()) {
-        dispatcher.postEvent(event, db);
-      }
+      dispatcher.postEvent(event);
       rsp.setStatus(SC_NO_CONTENT);
     } catch (OrmException e) {
       rsp.sendError(SC_NOT_FOUND, "Change not found\n");

@@ -14,8 +14,8 @@
 
 package com.ericsson.gerrit.plugins.syncevents;
 
-import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.isA;
@@ -23,12 +23,10 @@ import static org.easymock.EasyMock.isA;
 import com.google.common.net.MediaType;
 import com.google.gerrit.common.EventDispatcher;
 import com.google.gerrit.reviewdb.client.Project;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.events.EventTypes;
 import com.google.gerrit.server.events.RefEvent;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.OrmException;
-import com.google.gwtorm.server.SchemaFactory;
 import com.google.gwtorm.server.StandardKeyEncoder;
 
 import org.easymock.EasyMockSupport;
@@ -58,11 +56,7 @@ public class SyncEventsRestApiServletTest extends EasyMockSupport {
 
   @Before
   public void createSyncEventsRestApiServlet() throws Exception {
-    @SuppressWarnings("unchecked")
-    SchemaFactory<ReviewDb> schema = createNiceMock(SchemaFactory.class);
-    ReviewDb db = createNiceMock(ReviewDb.class);
-    expect(schema.open()).andReturn(db).anyTimes();
-    syncEventsRestApiServlet = new SyncEventsRestApiServlet(dispatcher, schema);
+    syncEventsRestApiServlet = new SyncEventsRestApiServlet(dispatcher);
     req = createNiceMock(HttpServletRequest.class);
     rsp = createNiceMock(HttpServletResponse.class);
     expect(req.getContentType()).andReturn(MediaType.JSON_UTF_8.toString());
@@ -75,7 +69,7 @@ public class SyncEventsRestApiServletTest extends EasyMockSupport {
         + "\"ref-replication-done\",\"eventCreatedOn\":1451415011}";
     expect(req.getReader())
         .andReturn(new BufferedReader(new StringReader(event)));
-    dispatcher.postEvent(isA(RefReplicationDoneEvent.class), isA(ReviewDb.class));
+    dispatcher.postEvent(isA(RefReplicationDoneEvent.class));
     rsp.setStatus(SC_NO_CONTENT);
     expectLastCall().once();
     replayAll();
@@ -91,7 +85,7 @@ public class SyncEventsRestApiServletTest extends EasyMockSupport {
         + "\"ref-replication-done\",\"eventCreatedOn\":1451415011}";
     expect(req.getReader())
         .andReturn(new BufferedReader(new StringReader(event)));
-    dispatcher.postEvent(isA(RefReplicationDoneEvent.class), isA(ReviewDb.class));
+    dispatcher.postEvent(isA(RefReplicationDoneEvent.class));
     expectLastCall().andThrow(new OrmException("some Error"));
     rsp.sendError(SC_NOT_FOUND, "Change not found\n");
     expectLastCall().once();
