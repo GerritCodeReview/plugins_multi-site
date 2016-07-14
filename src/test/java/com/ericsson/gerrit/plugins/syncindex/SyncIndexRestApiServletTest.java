@@ -14,6 +14,7 @@
 
 package com.ericsson.gerrit.plugins.syncindex;
 
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 
@@ -108,6 +109,14 @@ public class SyncIndexRestApiServletTest extends EasyMockSupport {
   public void indexerThrowsExceptionTryingToDeleteChange() throws Exception {
     setupDeleteMocks(THROW_IO_EXCEPTION);
     verifyDelete();
+  }
+
+  @Test
+  public void sendErrorThrowsIOException() throws Exception {
+    rsp.sendError(SC_NOT_FOUND, "Error trying to find a change \n");
+    expectLastCall().andThrow(new IOException("someError"));
+    setupPostMocks(CHANGE_EXISTS, THROW_ORM_EXCEPTION);
+    verifyPost();
   }
 
   private void setupPostMocks(boolean changeExist) throws Exception {

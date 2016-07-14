@@ -70,7 +70,7 @@ class SyncIndexRestApiServlet extends HttpServlet {
   }
 
   private void process(HttpServletRequest req, HttpServletResponse rsp,
-      String operation) throws IOException {
+      String operation) {
     rsp.setContentType("text/plain");
     rsp.setCharacterEncoding("UTF-8");
     String path = req.getPathInfo();
@@ -81,14 +81,23 @@ class SyncIndexRestApiServlet extends HttpServlet {
       index(id, operation);
       rsp.setStatus(SC_NO_CONTENT);
     } catch (IOException e) {
-      rsp.sendError(SC_CONFLICT, e.getMessage());
+      sendError(rsp,SC_CONFLICT, e.getMessage());
       logger.error("Unable to update index", e);
     } catch (OrmException e) {
       String msg = "Error trying to find a change \n";
-      rsp.sendError(SC_NOT_FOUND, msg);
+      sendError(rsp,SC_NOT_FOUND, msg);
       logger.debug(msg, e);
     } finally {
       Context.unsetForwardedEvent();
+    }
+  }
+
+  private static void sendError(HttpServletResponse rsp, int statusCode,
+      String message) {
+    try {
+      rsp.sendError(statusCode, message);
+    } catch (IOException e) {
+      logger.error("Failed to send error messsage: " + e.getMessage(), e);
     }
   }
 
