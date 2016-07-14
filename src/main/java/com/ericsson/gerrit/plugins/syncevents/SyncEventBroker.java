@@ -25,10 +25,10 @@ import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-public class SyncEventBroker extends EventBroker {
+class SyncEventBroker extends EventBroker {
 
   @Inject
-  public SyncEventBroker(DynamicSet<UserScopedEventListener> listeners,
+  SyncEventBroker(DynamicSet<UserScopedEventListener> listeners,
       DynamicSet<EventListener> unrestrictedListeners,
       ProjectCache projectCache,
       Factory notesFactory,
