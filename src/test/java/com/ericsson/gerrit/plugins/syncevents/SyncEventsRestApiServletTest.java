@@ -14,9 +14,11 @@
 
 package com.ericsson.gerrit.plugins.syncevents;
 
+import static com.google.common.net.MediaType.JSON_UTF_8;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
+import static javax.servlet.http.HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.isA;
@@ -99,6 +101,19 @@ public class SyncEventsRestApiServletTest extends EasyMockSupport {
   @Test
   public void testDoPostBadRequest() throws Exception {
     expect(req.getReader()).andThrow(new IOException());
+    replayAll();
+    syncEventsRestApiServlet.doPost(req, rsp);
+    verifyAll();
+  }
+
+  @Test
+  public void testDoPostWrongMediaType() throws Exception {
+    resetAll();
+    expect(req.getContentType())
+        .andReturn(MediaType.APPLICATION_XML_UTF_8.toString()).anyTimes();
+    rsp.sendError(SC_UNSUPPORTED_MEDIA_TYPE,
+        "Expecting " + JSON_UTF_8.toString() + " content type");
+    expectLastCall().once();
     replayAll();
     syncEventsRestApiServlet.doPost(req, rsp);
     verifyAll();

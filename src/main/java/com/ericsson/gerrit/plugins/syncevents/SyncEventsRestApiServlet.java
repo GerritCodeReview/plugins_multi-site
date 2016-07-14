@@ -18,6 +18,7 @@ import static com.google.common.net.MediaType.JSON_UTF_8;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
+import static javax.servlet.http.HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE;
 
 import com.google.common.base.Supplier;
 import com.google.common.io.CharStreams;
@@ -62,6 +63,11 @@ class SyncEventsRestApiServlet extends HttpServlet {
     rsp.setCharacterEncoding("UTF-8");
     try {
       Context.setForwardedEvent();
+      if (!MediaType.parse(req.getContentType()).is(JSON_UTF_8)) {
+        sendError(rsp, SC_UNSUPPORTED_MEDIA_TYPE,
+            "Expecting " + JSON_UTF_8.toString() + " content type");
+        return;
+      }
       Event event = getEventFromRequest(req);
       dispatcher.postEvent(event);
       rsp.setStatus(SC_NO_CONTENT);
@@ -77,15 +83,12 @@ class SyncEventsRestApiServlet extends HttpServlet {
   }
 
   private Event getEventFromRequest(HttpServletRequest req) throws IOException {
-    if (MediaType.parse(req.getContentType()).is(JSON_UTF_8)) {
-      String jsonEvent = CharStreams.toString(req.getReader());
-      Gson gson = new GsonBuilder()
-          .registerTypeAdapter(Event.class, new EventDeserializer())
-          .registerTypeAdapter(Supplier.class, new SupplierDeserializer())
-          .create();
-      return gson.fromJson(jsonEvent, Event.class);
-    }
-    return null;
+    String jsonEvent = CharStreams.toString(req.getReader());
+    Gson gson = new GsonBuilder()
+        .registerTypeAdapter(Event.class, new EventDeserializer())
+        .registerTypeAdapter(Supplier.class, new SupplierDeserializer())
+        .create();
+    return gson.fromJson(jsonEvent, Event.class);
   }
 
   private static void sendError(HttpServletResponse rsp, int statusCode,
