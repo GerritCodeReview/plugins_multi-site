@@ -14,6 +14,7 @@
 
 package com.ericsson.gerrit.plugins.evictcache;
 
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
 import com.google.common.base.Splitter;
@@ -63,8 +64,20 @@ class EvictCacheRestApiServlet extends HttpServlet {
       Context.setForwardedEvent();
       evictCache(cache, cacheName, key);
       rsp.setStatus(SC_NO_CONTENT);
+    } catch (IOException e) {
+      logger.error("Failed to process eviction request: " + e.getMessage(), e);
+      sendError(rsp, SC_BAD_REQUEST, e.getMessage());
     } finally {
       Context.unsetForwardedEvent();
+    }
+  }
+
+  private static void sendError(HttpServletResponse rsp, int statusCode,
+      String message) {
+    try {
+      rsp.sendError(statusCode, message);
+    } catch (IOException e) {
+      logger.error("Failed to send error messsage: " + e.getMessage(), e);
     }
   }
 
