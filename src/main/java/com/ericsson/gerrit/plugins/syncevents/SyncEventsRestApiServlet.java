@@ -66,11 +66,11 @@ class SyncEventsRestApiServlet extends HttpServlet {
       dispatcher.postEvent(event);
       rsp.setStatus(SC_NO_CONTENT);
     } catch (OrmException e) {
-      rsp.sendError(SC_NOT_FOUND, "Change not found\n");
       logger.debug("Error trying to find a change ", e);
+      sendError(rsp, SC_NOT_FOUND, "Change not found\n");
     } catch (IOException e) {
-      rsp.sendError(SC_BAD_REQUEST, e.getMessage());
       logger.error("Unable to re-trigger event", e);
+      sendError(rsp, SC_BAD_REQUEST, e.getMessage());
     } finally {
       Context.unsetForwardedEvent();
     }
@@ -86,5 +86,14 @@ class SyncEventsRestApiServlet extends HttpServlet {
       return gson.fromJson(jsonEvent, Event.class);
     }
     return null;
+  }
+
+  private static void sendError(HttpServletResponse rsp, int statusCode,
+      String message) {
+    try {
+      rsp.sendError(statusCode, message);
+    } catch (IOException e) {
+      logger.error("Failed to send error messsage: " + e.getMessage(), e);
+    }
   }
 }

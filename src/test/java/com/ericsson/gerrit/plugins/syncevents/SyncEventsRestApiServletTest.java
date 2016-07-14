@@ -14,6 +14,7 @@
 
 package com.ericsson.gerrit.plugins.syncevents;
 
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static org.easymock.EasyMock.expect;
@@ -98,6 +99,16 @@ public class SyncEventsRestApiServletTest extends EasyMockSupport {
   @Test
   public void testDoPostBadRequest() throws Exception {
     expect(req.getReader()).andThrow(new IOException());
+    replayAll();
+    syncEventsRestApiServlet.doPost(req, rsp);
+    verifyAll();
+  }
+
+  @Test
+  public void testDoPostErrorWhileSendingErrorMessage() throws Exception {
+    expect(req.getReader()).andThrow(new IOException("someError"));
+    rsp.sendError(SC_BAD_REQUEST, "someError");
+    expectLastCall().andThrow(new IOException("someOtherError"));
     replayAll();
     syncEventsRestApiServlet.doPost(req, rsp);
     verifyAll();
