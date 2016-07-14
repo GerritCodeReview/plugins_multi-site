@@ -103,7 +103,8 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
         try {
           Thread.sleep(cfg.getRetryInterval());
         } catch (InterruptedException e) {
-          log.debug("Ignoring InterruptedException", e);
+          Thread.currentThread().interrupt();
+          return false;
         }
         return true;
       }
