@@ -7,4 +7,4 @@ This way, both caches are kept synchronized.
 
 For this synchronization to work, http must be enabled in both instances and the
 plugin must be configured with valid credentials. For further information, refer
-to [config](config.html) documentation.
+to [config](config.md) documentation.
