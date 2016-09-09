@@ -23,7 +23,7 @@ gerrit_plugin(
     'Gerrit-Module: com.ericsson.gerrit.plugins.syncindex.Module',
     'Gerrit-HttpModule: com.ericsson.gerrit.plugins.syncindex.HttpModule',
     'Implementation-Title: sync-index plugin',
-    'Implementation-URL: https://gerrit.ericsson.se/#/admin/projects/gerrit/plugins/sync-index',
+    'Implementation-URL: https://gerrit-review.googlesource.com/#/admin/projects/plugins/sync-index',
     'Implementation-Vendor: Ericsson',
   ],
   provided_deps = GERRIT_TESTS,
