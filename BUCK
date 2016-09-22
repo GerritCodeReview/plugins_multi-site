@@ -48,7 +48,6 @@ java_test(
   name = 'sync-events_tests',
   srcs = glob(['src/test/java/**/*.java']),
   labels = ['sync-events'],
-  source_under_test = [':sync-events__plugin'],
   deps = TEST_DEPS,
 )
 
