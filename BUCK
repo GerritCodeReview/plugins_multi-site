@@ -44,7 +44,6 @@ java_test(
   name = 'sync-index_tests',
   srcs = glob(['src/test/java/**/*.java']),
   labels = ['sync-index'],
-  source_under_test = [':sync-index__plugin'],
   deps = TEST_DEPS,
 )
 
