@@ -48,7 +48,6 @@ java_test(
   name = 'evict-cache_tests',
   srcs = glob(['src/test/java/**/*.java']),
   labels = ['evict-cache'],
-  source_under_test = [':evict-cache__plugin'],
   deps = TEST_DEPS,
 )
 
