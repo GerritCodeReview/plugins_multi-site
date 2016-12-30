@@ -21,9 +21,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 
+import com.google.gerrit.acceptance.GerritConfig;
+import com.google.gerrit.acceptance.GerritConfigs;
 import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.PluginDaemonTest;
-import com.google.gerrit.server.config.SitePaths;
 
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.RequestListener;
@@ -31,36 +32,25 @@ import com.github.tomakehurst.wiremock.http.Response;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 import org.apache.http.HttpStatus;
-import org.eclipse.jgit.storage.file.FileBasedConfig;
-import org.eclipse.jgit.util.FS;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.Description;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 @NoHttpd
 public class EvictCacheIT extends PluginDaemonTest {
 
-  private static final String PLUGIN_NAME = "evict-cache";
-
   @Rule
   public WireMockRule wireMockRule = new WireMockRule(Constants.PORT);
 
-  @Override
-  protected void beforeTest(Description description)
-      throws Exception {
-    setConfig("url", Constants.URL);
-    setConfig("user", "admin");
-    super.beforeTest(description);
-  }
-
   @Test
+  @GerritConfigs({
+      @GerritConfig(name = "plugin.evict-cache.url", value = Constants.URL),
+      @GerritConfig(name = "plugin.evict-cache.user", value = "admin")
+  })
   public void flushAndSendPost() throws Exception {
-    final String flushRequest = Constants.ENDPOINT_BASE + Constants.PROJECT_LIST;
+    final String flushRequest =
+        Constants.ENDPOINT_BASE + Constants.PROJECT_LIST;
     wireMockRule.addMockServiceRequestListener(new RequestListener() {
       @Override
       public void requestReceived(Request request, Response response) {
@@ -74,29 +64,11 @@ public class EvictCacheIT extends PluginDaemonTest {
     givenThat(post(urlEqualTo(flushRequest))
         .willReturn(aResponse().withStatus(HttpStatus.SC_OK)));
 
-    adminSshSession.exec("gerrit flush-caches --cache " + Constants.PROJECT_LIST);
+    adminSshSession
+        .exec("gerrit flush-caches --cache " + Constants.PROJECT_LIST);
     synchronized (flushRequest) {
       flushRequest.wait(TimeUnit.SECONDS.toMillis(2));
     }
     verify(postRequestedFor(urlEqualTo(flushRequest)));
-  }
-
-  private void setConfig(String name, String value) throws Exception {
-    SitePaths sitePath = new SitePaths(tempSiteDir.getRoot().toPath());
-    FileBasedConfig cfg = getGerritConfigFile(sitePath);
-    cfg.load();
-    cfg.setString("plugin", PLUGIN_NAME, name, value);
-    cfg.save();
-  }
-
-  private FileBasedConfig getGerritConfigFile(SitePaths sitePath)
-      throws IOException {
-    FileBasedConfig cfg =
-        new FileBasedConfig(sitePath.gerrit_config.toFile(), FS.DETECTED);
-    if (!cfg.getFile().exists()) {
-      Path etc_path = Files.createDirectories(sitePath.etc_dir);
-      Files.createFile(etc_path.resolve("gerrit.config"));
-    }
-    return cfg;
   }
 }

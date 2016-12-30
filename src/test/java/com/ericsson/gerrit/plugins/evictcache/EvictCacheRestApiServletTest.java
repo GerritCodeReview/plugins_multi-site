@@ -16,126 +16,116 @@ package com.ericsson.gerrit.plugins.evictcache;
 
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.google.common.cache.Cache;
 import com.google.gerrit.extensions.registration.DynamicMap;
 
-import org.easymock.EasyMockSupport;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class EvictCacheRestApiServletTest extends EasyMockSupport {
-  private static final String PLUGIN_NAME = "gerrit";
+@RunWith(MockitoJUnitRunner.class)
+public class EvictCacheRestApiServletTest {
+  @Mock
   private HttpServletRequest request;
+  @Mock
   private HttpServletResponse response;
+  @Mock
   private BufferedReader reader;
-  private EvictCacheRestApiServlet servlet;
+  @Mock
   private DynamicMap<Cache<?, ?>> cacheMap;
-  @SuppressWarnings("rawtypes")
-  private Cache cache;
+  private EvictCacheRestApiServlet servlet;
+
+  @Before
+  public void setUp() {
+    servlet = new EvictCacheRestApiServlet(cacheMap);
+  }
 
   @Test
-  public void evictAccounts() throws IOException, ServletException {
+  public void evictAccounts() throws Exception {
     configureMocksFor(Constants.ACCOUNTS);
-    servlet.doPost(request, response);
-    verifyAll();
+    verifyResponseIsOK();
   }
 
   @Test
-  public void evictProjectList() throws IOException, ServletException {
+  public void evictProjectList() throws Exception {
     configureMocksFor(Constants.PROJECT_LIST);
-    servlet.doPost(request, response);
-    verifyAll();
+    verifyResponseIsOK();
   }
 
   @Test
-  public void evictGroups() throws IOException, ServletException {
+  public void evictGroups() throws Exception {
     configureMocksFor(Constants.GROUPS);
-    servlet.doPost(request, response);
-    verifyAll();
+    verifyResponseIsOK();
   }
 
   @Test
-  public void evictGroupsByInclude() throws IOException, ServletException {
+  public void evictGroupsByInclude() throws Exception {
     configureMocksFor(Constants.GROUPS_BYINCLUDE);
-    servlet.doPost(request, response);
-    verifyAll();
+    verifyResponseIsOK();
   }
 
   @Test
-  public void evictGroupsMembers() throws IOException, ServletException {
+  public void evictGroupsMembers() throws Exception {
     configureMocksFor(Constants.GROUPS_MEMBERS);
     servlet.doPost(request, response);
-    verifyAll();
+
   }
 
   @Test
-  public void evictDefault() throws IOException, ServletException {
+  public void evictDefault() throws Exception {
     configureMocksFor(Constants.DEFAULT);
+    verifyResponseIsOK();
+  }
+
+  private void verifyResponseIsOK() throws Exception {
     servlet.doPost(request, response);
-    verifyAll();
+    verify(response).setStatus(SC_NO_CONTENT);
   }
 
   @Test
-  public void badRequest() throws IOException, ServletException {
-    expect(request.getPathInfo()).andReturn("/someCache");
+  public void badRequest() throws Exception {
+    when(request.getPathInfo()).thenReturn("/someCache");
     String errorMessage = "someError";
-    expect(request.getReader()).andThrow(new IOException(errorMessage));
-    response.sendError(SC_BAD_REQUEST, errorMessage);
-    expectLastCall().once();
-    replayAll();
+    doThrow(new IOException(errorMessage)).when(request).getReader();
     servlet.doPost(request, response);
-    verifyAll();
+    verify(response).sendError(SC_BAD_REQUEST, errorMessage);
   }
 
   @Test
   public void errorWhileSendingErrorMessage() throws Exception {
-    expect(request.getPathInfo()).andReturn("/someCache");
+    when(request.getPathInfo()).thenReturn("/someCache");
     String errorMessage = "someError";
-    expect(request.getReader()).andThrow(new IOException(errorMessage));
-    response.sendError(SC_BAD_REQUEST, errorMessage);
-    expectLastCall().andThrow(new IOException("someOtherError"));
-    replayAll();
+    doThrow(new IOException(errorMessage)).when(request).getReader();
     servlet.doPost(request, response);
-    verifyAll();
-  }
-
-  @Before
-  @SuppressWarnings("unchecked")
-  public void setUp() {
-    cacheMap = createMock(DynamicMap.class);
-    request = createMock(HttpServletRequest.class);
-    reader = createMock(BufferedReader.class);
-    response = createNiceMock(HttpServletResponse.class);
-    cache = createNiceMock(Cache.class);
-    servlet = new EvictCacheRestApiServlet(cacheMap);
+    verify(response).sendError(SC_BAD_REQUEST, errorMessage);
   }
 
   @SuppressWarnings("unchecked")
   private void configureMocksFor(String cacheName) throws IOException {
-    expect(cacheMap.get(PLUGIN_NAME, cacheName)).andReturn(cache);
-    expect(request.getPathInfo()).andReturn("/" + cacheName);
-    expect(request.getReader()).andReturn(reader);
+    when(cacheMap.get("gerrit", cacheName)).thenReturn(mock(Cache.class));
+    when(request.getPathInfo()).thenReturn("/" + cacheName);
+    when(request.getReader()).thenReturn(reader);
 
     if (Constants.DEFAULT.equals(cacheName)) {
-      expect(reader.readLine()).andReturn("abc");
+      when(reader.readLine()).thenReturn("abc");
     } else if (Constants.GROUPS_BYINCLUDE.equals(cacheName)
         || Constants.GROUPS_MEMBERS.equals(cacheName)) {
-      expect(reader.readLine()).andReturn("{\"uuid\":\"abcd1234\"}");
+      when(reader.readLine()).thenReturn("{\"uuid\":\"abcd1234\"}");
     } else {
-      expect(reader.readLine()).andReturn("{}");
+      when(reader.readLine()).thenReturn("{}");
     }
-    response.setStatus(SC_NO_CONTENT);
-    expectLastCall().once();
-    replayAll();
   }
 }

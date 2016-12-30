@@ -16,10 +16,9 @@ package com.ericsson.gerrit.plugins.evictcache;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.easymock.EasyMockSupport;
 import org.junit.Test;
 
-public class ContextTest extends EasyMockSupport {
+public class ContextTest {
 
   @Test
   public void testInitialValueNotNull() throws Exception {

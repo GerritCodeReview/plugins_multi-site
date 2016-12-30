@@ -15,7 +15,9 @@
 package com.ericsson.gerrit.plugins.evictcache;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.easymock.EasyMock.expect;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.google.common.base.Joiner;
 import com.google.gerrit.reviewdb.client.Account;
@@ -23,59 +25,68 @@ import com.google.gerrit.reviewdb.client.AccountGroup;
 
 import com.ericsson.gerrit.plugins.evictcache.CacheResponseHandler.CacheResult;
 
-import org.easymock.EasyMockSupport;
 import org.junit.Test;
 
 import java.io.IOException;
 
-public class RestSessionTest extends EasyMockSupport {
+public class RestSessionTest {
   private static final String EVICT = "evict";
   private static final String SOURCE_NAME = "gerrit";
   private static final String PLUGIN_NAME = "evict-cache";
   private static final String EMPTY_JSON = "{}";
   private static final String EMPTY_JSON2 = "\"{}\"";
   private static final String ID_RESPONSE = "{\"id\":0}";
+  private static final boolean OK_RESPONSE = true;
+  private static final boolean FAIL_RESPONSE = false;
+  private static final boolean THROW_EXCEPTION = true;
+  private static final boolean DO_NOT_THROW_EXCEPTION = false;
 
   private RestSession restClient;
 
   @Test
   public void testEvictCacheOK() throws Exception {
-    setupMocks(Constants.DEFAULT, EMPTY_JSON2, true, false);
+    setupMocks(Constants.DEFAULT, EMPTY_JSON2, OK_RESPONSE,
+        DO_NOT_THROW_EXCEPTION);
     assertThat(restClient.evict(SOURCE_NAME, Constants.DEFAULT, EMPTY_JSON))
         .isTrue();
   }
 
   @Test
   public void testEvictAccountsOK() throws Exception {
-    setupMocks(Constants.ACCOUNTS, ID_RESPONSE, true, false);
+    setupMocks(Constants.ACCOUNTS, ID_RESPONSE, OK_RESPONSE,
+        DO_NOT_THROW_EXCEPTION);
     assertThat(restClient.evict(SOURCE_NAME, Constants.ACCOUNTS,
-        createMock(Account.Id.class))).isTrue();
+        mock(Account.Id.class))).isTrue();
   }
 
   @Test
   public void testEvictGroupsOK() throws Exception {
-    setupMocks(Constants.GROUPS, ID_RESPONSE, true, false);
+    setupMocks(Constants.GROUPS, ID_RESPONSE, OK_RESPONSE,
+        DO_NOT_THROW_EXCEPTION);
     assertThat(restClient.evict(SOURCE_NAME, Constants.GROUPS,
-        createMock(AccountGroup.Id.class))).isTrue();
+        mock(AccountGroup.Id.class))).isTrue();
   }
 
   @Test
   public void testEvictGroupsByIncludeOK() throws Exception {
-    setupMocks(Constants.GROUPS_BYINCLUDE, EMPTY_JSON, true, false);
+    setupMocks(Constants.GROUPS_BYINCLUDE, EMPTY_JSON, OK_RESPONSE,
+        DO_NOT_THROW_EXCEPTION);
     assertThat(restClient.evict(SOURCE_NAME, Constants.GROUPS_BYINCLUDE,
-        createMock(AccountGroup.UUID.class))).isTrue();
+        mock(AccountGroup.UUID.class))).isTrue();
   }
 
   @Test
   public void testEvictGroupsMembersOK() throws Exception {
-    setupMocks(Constants.GROUPS_MEMBERS, EMPTY_JSON, true, false);
+    setupMocks(Constants.GROUPS_MEMBERS, EMPTY_JSON, OK_RESPONSE,
+        DO_NOT_THROW_EXCEPTION);
     assertThat(restClient.evict(SOURCE_NAME, Constants.GROUPS_MEMBERS,
-        createMock(AccountGroup.UUID.class))).isTrue();
+        mock(AccountGroup.UUID.class))).isTrue();
   }
 
   @Test
   public void testEvictProjectListOK() throws Exception {
-    setupMocks(Constants.PROJECT_LIST, EMPTY_JSON, true, false);
+    setupMocks(Constants.PROJECT_LIST, EMPTY_JSON, OK_RESPONSE,
+        DO_NOT_THROW_EXCEPTION);
     assertThat(
         restClient.evict(SOURCE_NAME, Constants.PROJECT_LIST, new Object()))
             .isTrue();
@@ -83,14 +94,15 @@ public class RestSessionTest extends EasyMockSupport {
 
   @Test
   public void testEvictCacheFailed() throws Exception {
-    setupMocks(Constants.DEFAULT, EMPTY_JSON2, false, false);
+    setupMocks(Constants.DEFAULT, EMPTY_JSON2, FAIL_RESPONSE,
+        DO_NOT_THROW_EXCEPTION);
     assertThat(restClient.evict(SOURCE_NAME, Constants.DEFAULT, EMPTY_JSON))
         .isFalse();
   }
 
   @Test
   public void testEvictCacheThrowsException() throws Exception {
-    setupMocks(Constants.DEFAULT, EMPTY_JSON2, false, true);
+    setupMocks(Constants.DEFAULT, EMPTY_JSON2, FAIL_RESPONSE, THROW_EXCEPTION);
     assertThat(restClient.evict(SOURCE_NAME, Constants.DEFAULT, EMPTY_JSON))
         .isFalse();
   }
@@ -99,14 +111,14 @@ public class RestSessionTest extends EasyMockSupport {
       boolean exception) throws IOException {
     String request = Joiner.on("/").join("/plugins", PLUGIN_NAME, SOURCE_NAME,
         EVICT, cacheName);
-    HttpSession httpSession = createNiceMock(HttpSession.class);
+    HttpSession httpSession = mock(HttpSession.class);
     if (exception) {
-      expect(httpSession.post(request, json)).andThrow(new IOException());
+      doThrow(new IOException()).when(httpSession).post(request, json);
     } else {
       CacheResult result = new CacheResult(ok, "Error");
-      expect(httpSession.post(request, json)).andReturn(result);
+      when(httpSession.post(request, json)).thenReturn(result);
     }
-    replayAll();
+
     restClient = new RestSession(httpSession, PLUGIN_NAME);
   }
 }

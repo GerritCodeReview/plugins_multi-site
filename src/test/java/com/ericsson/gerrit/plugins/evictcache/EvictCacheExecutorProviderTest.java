@@ -15,34 +15,36 @@
 package com.ericsson.gerrit.plugins.evictcache;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.git.WorkQueue;
 
-import org.easymock.EasyMockSupport;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-public class EvictCacheExecutorProviderTest extends EasyMockSupport {
+@RunWith(MockitoJUnitRunner.class)
+public class EvictCacheExecutorProviderTest {
+  private static final String PLUGIN_NAME = "evict-cache";
+
+  @Mock
   private WorkQueue.Executor executorMock;
   private EvictCacheExecutorProvider evictCacheExecutorProvider;
 
-  @PluginName String pluginName;
-
   @Before
   public void setUp() throws Exception {
-    executorMock = createStrictMock(WorkQueue.Executor.class);
-    WorkQueue workQueueMock = createNiceMock(WorkQueue.class);
-    expect(workQueueMock.createQueue(4,
-        "Evict cache [" + pluginName + " plugin]"))
-            .andReturn(executorMock);
-    Configuration configMock = createStrictMock(Configuration.class);
-    expect(configMock.getThreadPoolSize()).andReturn(4);
-    replayAll();
+    WorkQueue workQueueMock = mock(WorkQueue.class);
+    when(workQueueMock.createQueue(4,
+        "Evict cache [" + PLUGIN_NAME + " plugin]")).thenReturn(executorMock);
+    Configuration configMock = mock(Configuration.class);
+    when(configMock.getThreadPoolSize()).thenReturn(4);
+
     evictCacheExecutorProvider =
-        new EvictCacheExecutorProvider(workQueueMock, pluginName, configMock);
+        new EvictCacheExecutorProvider(workQueueMock, PLUGIN_NAME, configMock);
   }
 
   @Test
@@ -52,17 +54,11 @@ public class EvictCacheExecutorProviderTest extends EasyMockSupport {
 
   @Test
   public void testStop() throws Exception {
-    resetAll();
-    executorMock.shutdown();
-    expectLastCall().once();
-    executorMock.unregisterWorkQueue();
-    expectLastCall().once();
-    replayAll();
-
     evictCacheExecutorProvider.start();
     assertThat(evictCacheExecutorProvider.get()).isEqualTo(executorMock);
     evictCacheExecutorProvider.stop();
-    verifyAll();
+    verify(executorMock).shutdown();
+    verify(executorMock).unregisterWorkQueue();
     assertThat(evictCacheExecutorProvider.get()).isNull();
   }
 }
