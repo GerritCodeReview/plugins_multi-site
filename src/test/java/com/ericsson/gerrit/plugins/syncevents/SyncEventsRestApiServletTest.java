@@ -19,9 +19,10 @@ import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static javax.servlet.http.HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.isA;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.google.common.net.MediaType;
 import com.google.gerrit.common.EventDispatcher;
@@ -32,10 +33,12 @@ import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.OrmException;
 import com.google.gwtorm.server.StandardKeyEncoder;
 
-import org.easymock.EasyMockSupport;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,25 +47,29 @@ import java.io.StringReader;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class SyncEventsRestApiServletTest extends EasyMockSupport {
+@RunWith(MockitoJUnitRunner.class)
+public class SyncEventsRestApiServletTest {
+  private static final String ERR_MSG = "some Error";
 
-  private EventDispatcher dispatcher = createStrictMock(EventDispatcher.class);
-  private SyncEventsRestApiServlet syncEventsRestApiServlet;
+  @Mock
+  private EventDispatcher dispatcher;
+  @Mock
   private HttpServletRequest req;
+  @Mock
   private HttpServletResponse rsp;
+  private SyncEventsRestApiServlet syncEventsRestApiServlet;
 
   @BeforeClass
   public static void setup() {
-    EventTypes.register(RefReplicationDoneEvent.TYPE, RefReplicationDoneEvent.class);
+    EventTypes.register(RefReplicationDoneEvent.TYPE,
+        RefReplicationDoneEvent.class);
     KeyUtil.setEncoderImpl(new StandardKeyEncoder());
   }
 
   @Before
   public void createSyncEventsRestApiServlet() throws Exception {
     syncEventsRestApiServlet = new SyncEventsRestApiServlet(dispatcher);
-    req = createNiceMock(HttpServletRequest.class);
-    rsp = createNiceMock(HttpServletResponse.class);
-    expect(req.getContentType()).andReturn(MediaType.JSON_UTF_8.toString());
+    when(req.getContentType()).thenReturn(MediaType.JSON_UTF_8.toString());
   }
 
   @Test
@@ -70,15 +77,11 @@ public class SyncEventsRestApiServletTest extends EasyMockSupport {
     String event = "{\"project\":\"gerrit/test-sync-index\",\"ref\":"
         + "\"refs/changes/76/669676/2\",\"nodesCount\":1,\"type\":"
         + "\"ref-replication-done\",\"eventCreatedOn\":1451415011}";
-    expect(req.getReader())
-        .andReturn(new BufferedReader(new StringReader(event)));
-    dispatcher.postEvent(isA(RefReplicationDoneEvent.class));
-    rsp.setStatus(SC_NO_CONTENT);
-    expectLastCall().once();
-    replayAll();
-
+    when(req.getReader())
+        .thenReturn(new BufferedReader(new StringReader(event)));
+    dispatcher.postEvent(any(RefReplicationDoneEvent.class));
     syncEventsRestApiServlet.doPost(req, rsp);
-    verifyAll();
+    verify(rsp).setStatus(SC_NO_CONTENT);
   }
 
   @Test
@@ -86,47 +89,36 @@ public class SyncEventsRestApiServletTest extends EasyMockSupport {
     String event = "{\"project\":\"gerrit/test-sync-index\",\"ref\":"
         + "\"refs/changes/76/669676/2\",\"nodesCount\":1,\"type\":"
         + "\"ref-replication-done\",\"eventCreatedOn\":1451415011}";
-    expect(req.getReader())
-        .andReturn(new BufferedReader(new StringReader(event)));
-    dispatcher.postEvent(isA(RefReplicationDoneEvent.class));
-    expectLastCall().andThrow(new OrmException("some Error"));
-    rsp.sendError(SC_NOT_FOUND, "Change not found\n");
-    expectLastCall().once();
-    replayAll();
-
+    when(req.getReader())
+        .thenReturn(new BufferedReader(new StringReader(event)));
+    doThrow(new OrmException(ERR_MSG)).when(dispatcher)
+        .postEvent(any(RefReplicationDoneEvent.class));
     syncEventsRestApiServlet.doPost(req, rsp);
-    verifyAll();
+    verify(rsp).sendError(SC_NOT_FOUND, "Change not found\n");
   }
 
   @Test
   public void testDoPostBadRequest() throws Exception {
-    expect(req.getReader()).andThrow(new IOException());
-    replayAll();
+    doThrow(new IOException(ERR_MSG)).when(req).getReader();
     syncEventsRestApiServlet.doPost(req, rsp);
-    verifyAll();
+    verify(rsp).sendError(SC_BAD_REQUEST, ERR_MSG);
   }
 
   @Test
   public void testDoPostWrongMediaType() throws Exception {
-    resetAll();
-    expect(req.getContentType())
-        .andReturn(MediaType.APPLICATION_XML_UTF_8.toString()).anyTimes();
-    rsp.sendError(SC_UNSUPPORTED_MEDIA_TYPE,
-        "Expecting " + JSON_UTF_8.toString() + " content type");
-    expectLastCall().once();
-    replayAll();
+    when(req.getContentType())
+        .thenReturn(MediaType.APPLICATION_XML_UTF_8.toString());
     syncEventsRestApiServlet.doPost(req, rsp);
-    verifyAll();
+    verify(rsp).sendError(SC_UNSUPPORTED_MEDIA_TYPE,
+        "Expecting " + JSON_UTF_8.toString() + " content type");
   }
 
   @Test
   public void testDoPostErrorWhileSendingErrorMessage() throws Exception {
-    expect(req.getReader()).andThrow(new IOException("someError"));
-    rsp.sendError(SC_BAD_REQUEST, "someError");
-    expectLastCall().andThrow(new IOException("someOtherError"));
-    replayAll();
+    doThrow(new IOException(ERR_MSG)).when(req).getReader();
+    doThrow(new IOException("someOtherError")).when(rsp)
+        .sendError(SC_BAD_REQUEST, ERR_MSG);
     syncEventsRestApiServlet.doPost(req, rsp);
-    verifyAll();
   }
 
   static class RefReplicationDoneEvent extends RefEvent {

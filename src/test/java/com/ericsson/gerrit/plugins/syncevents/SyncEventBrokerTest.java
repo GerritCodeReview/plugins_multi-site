@@ -14,15 +14,18 @@
 
 package com.ericsson.gerrit.plugins.syncevents;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+
 import com.google.gerrit.common.EventListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.events.Event;
 
-import org.easymock.EasyMockSupport;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SyncEventBrokerTest extends EasyMockSupport {
+public class SyncEventBrokerTest {
 
   private EventListener listenerMock;
   private SyncEventBroker broker;
@@ -30,7 +33,7 @@ public class SyncEventBrokerTest extends EasyMockSupport {
 
   @Before
   public void setUp() {
-    listenerMock = createMock(EventListener.class);
+    listenerMock = mock(EventListener.class);
     DynamicSet<EventListener> listeners = DynamicSet.emptySet();
     listeners.add(listenerMock);
     broker = new SyncEventBroker(null, listeners, null, null, null);
@@ -38,21 +41,18 @@ public class SyncEventBrokerTest extends EasyMockSupport {
 
   @Test
   public void shouldDispatchEvent() {
-    listenerMock.onEvent(event);
-    replayAll();
     broker.fireEventForUnrestrictedListeners(event);
-    verifyAll();
+    verify(listenerMock).onEvent(event);
   }
 
   @Test
   public void shouldNotDispatchForwardedEvents() {
-    replayAll();
     Context.setForwardedEvent();
     try {
       broker.fireEventForUnrestrictedListeners(event);
     } finally {
       Context.unsetForwardedEvent();
     }
-    verifyAll();
+    verifyZeroInteractions(listenerMock);
   }
 }

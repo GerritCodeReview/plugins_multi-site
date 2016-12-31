@@ -15,60 +15,63 @@
 package com.ericsson.gerrit.plugins.syncevents;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.easymock.EasyMock.expect;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.google.common.base.Joiner;
 import com.google.gerrit.server.events.Event;
 import com.google.gson.GsonBuilder;
 
-import com.ericsson.gerrit.plugins.syncevents.HttpSession;
-import com.ericsson.gerrit.plugins.syncevents.RestSession;
 import com.ericsson.gerrit.plugins.syncevents.SyncEventsResponseHandler.SyncResult;
 
-import org.easymock.EasyMockSupport;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
-public class RestSessionTest extends EasyMockSupport {
+public class RestSessionTest {
   private static final String PLUGIN_NAME = "sync-events";
+  private static final String REQUEST =
+      Joiner.on("/").join("/plugins", PLUGIN_NAME, "event");
 
-  private RestSession restClient;
+  private RestSession restSession;
   private Event event;
+
+  @Before
+  public void setup() {
+    event = new SyncEventTest();
+  }
 
   @Test
   public void testEventSentOK() throws Exception {
-    event = setUpMocks(true, "", false);
-    assertThat(restClient.send(event)).isTrue();
+    setUpMocks(true, "", false);
+    assertThat(restSession.send(event)).isTrue();
   }
 
   @Test
   public void testEventSentFailed() throws Exception {
-    event = setUpMocks(false, "Error", false);
-    assertThat(restClient.send(event)).isFalse();
+    setUpMocks(false, "Error", false);
+    assertThat(restSession.send(event)).isFalse();
   }
 
   @Test
   public void testEventSentThrowsException() throws Exception {
-    event = setUpMocks(false, "Exception", true);
-    assertThat(restClient.send(event)).isFalse();
+    setUpMocks(false, "Exception", true);
+    assertThat(restSession.send(event)).isFalse();
   }
 
-  private Event setUpMocks(boolean ok, String msg, boolean exception)
+  private void setUpMocks(boolean isOk, String msg, boolean throwException)
       throws Exception {
-    String request = Joiner.on("/").join("/plugins", PLUGIN_NAME, "event");
-    SyncEventTest testEvent = new SyncEventTest();
-    String content = new GsonBuilder().create().toJson(testEvent);
-    HttpSession httpSession = createNiceMock(HttpSession.class);
-    if (exception) {
-      expect(httpSession.post(request, content)).andThrow(new IOException());
+    String content = new GsonBuilder().create().toJson(event);
+    HttpSession httpSession = mock(HttpSession.class);
+    if (throwException) {
+      doThrow(new IOException()).when(httpSession).post(REQUEST, content);
     } else {
-      SyncResult result = new SyncResult(ok, msg);
-      expect(httpSession.post(request, content)).andReturn(result);
+      SyncResult result = new SyncResult(isOk, msg);
+      when(httpSession.post(REQUEST, content)).thenReturn(result);
     }
-    restClient = new RestSession(httpSession, PLUGIN_NAME);
-    replayAll();
-    return testEvent;
+    restSession = new RestSession(httpSession, PLUGIN_NAME);
   }
 
   class SyncEventTest extends Event {

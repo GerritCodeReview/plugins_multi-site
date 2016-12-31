@@ -16,12 +16,11 @@ package com.ericsson.gerrit.plugins.syncevents;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.easymock.EasyMockSupport;
 import org.junit.Test;
 
 import com.ericsson.gerrit.plugins.syncevents.Context;
 
-public class ContextTest extends EasyMockSupport {
+public class ContextTest {
 
   @Test
   public void testInitialValueNotNull() throws Exception {

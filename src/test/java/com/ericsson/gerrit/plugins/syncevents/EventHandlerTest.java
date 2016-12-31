@@ -15,73 +15,69 @@
 package com.ericsson.gerrit.plugins.syncevents;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.easymock.EasyMock.expect;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.RefEvent;
 
-import org.easymock.EasyMockSupport;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-public class EventHandlerTest extends EasyMockSupport {
+@RunWith(MockitoJUnitRunner.class)
+public class EventHandlerTest {
   private static final String PLUGIN_NAME = "sync-event";
 
   private Event event;
   private EventHandler eventHandler;
-  private RestSession restClient;
-  private ScheduledThreadPoolExecutor pool;
+  @Mock
+  private RestSession restSession;
 
   @Test
   public void testRightEventAndNotForwarded() throws Exception {
-    setUpMocks(true, true);
-    resetAll();
-    expect(restClient.send(event)).andReturn(true);
-    replayAll();
+    setUpMocks(true);
     eventHandler.onEvent(event);
-    verifyAll();
+    verify(restSession).send(event);
   }
 
   @Test
-  public void testRightEventBitItIsForwarded() throws Exception {
-    setUpMocks(false, true);
+  public void testRightEventIsForwarded() throws Exception {
+    setUpMocks(true);
     Context.setForwardedEvent();
     eventHandler.onEvent(event);
     Context.unsetForwardedEvent();
-    verifyAll();
+    verifyZeroInteractions(restSession);
   }
 
   @Test
   public void testBadEventAndNotForwarded() throws Exception {
-    setUpMocks(false, false);
+    setUpMocks(false);
     eventHandler.onEvent(event);
-    verifyAll();
+    verifyZeroInteractions(restSession);
   }
 
   @Test
   public void testBadEventAndItIsForwarded() throws Exception {
-    setUpMocks(false, false);
+    setUpMocks(false);
     Context.setForwardedEvent();
     eventHandler.onEvent(event);
     Context.unsetForwardedEvent();
-    verifyAll();
+    verifyZeroInteractions(restSession);
   }
 
-  private void setUpMocks(boolean mockRestClient, boolean rightEvent) {
-    pool = new PoolMock(1);
-    if (mockRestClient) {
-      restClient = createMock(RestSession.class);
-    } else {
-      restClient = null;
-    }
+  private void setUpMocks(boolean rightEvent) {
+    ScheduledThreadPoolExecutor pool = new PoolMock(1);
     if (rightEvent) {
-      event = createNiceMock(RefEvent.class);
+      event = mock(RefEvent.class);
     } else {
-      event = createNiceMock(Event.class);
+      event = mock(Event.class);
     }
-    replayAll();
-    eventHandler = new EventHandler(restClient, pool, PLUGIN_NAME);
+    eventHandler = new EventHandler(restSession, pool, PLUGIN_NAME);
   }
 
   private class PoolMock extends ScheduledThreadPoolExecutor {
@@ -91,8 +87,8 @@ public class EventHandlerTest extends EasyMockSupport {
 
     @Override
     public void execute(Runnable command) {
-      assertThat(command.toString()).isEqualTo(String
-          .format("[%s] Send event '%s' to target instance", PLUGIN_NAME, null));
+      assertThat(command.toString()).isEqualTo(String.format(
+          "[%s] Send event '%s' to target instance", PLUGIN_NAME, null));
       command.run();
     }
   }
