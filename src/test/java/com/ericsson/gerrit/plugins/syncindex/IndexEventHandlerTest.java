@@ -15,34 +15,34 @@
 package com.ericsson.gerrit.plugins.syncindex;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.easymock.EasyMock.anyObject;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.reset;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.reviewdb.client.Change;
-import com.google.gerrit.server.query.change.ChangeData;
+import com.google.gerrit.server.git.WorkQueue.Executor;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.StandardKeyEncoder;
 
 import com.ericsson.gerrit.plugins.syncindex.IndexEventHandler.SyncIndexTask;
 
-import org.easymock.EasyMockSupport;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.concurrent.Executor;
-
-public class IndexEventHandlerTest extends EasyMockSupport {
+@RunWith(MockitoJUnitRunner.class)
+public class IndexEventHandlerTest {
   private static final String PLUGIN_NAME = "sync-index";
   private static final int CHANGE_ID = 1;
 
   private IndexEventHandler indexEventHandler;
-  private Executor poolMock;
-  private RestSession restClientMock;
-  private ChangeData cd;
+  @Mock
+  private RestSession restSessionMock;
   private Change.Id id;
 
   @BeforeClass
@@ -52,64 +52,50 @@ public class IndexEventHandlerTest extends EasyMockSupport {
 
   @Before
   public void setUpMocks() {
-    cd = createNiceMock(ChangeData.class);
     id = Change.Id.parse(Integer.toString(CHANGE_ID));
-    expect(cd.getId()).andReturn(id).anyTimes();
-    poolMock = createMock(Executor.class);
-    poolMock.execute(anyObject(SyncIndexTask.class));
-    expectLastCall().andDelegateTo(MoreExecutors.directExecutor());
-    restClientMock = createMock(RestSession.class);
-    indexEventHandler =
-        new IndexEventHandler(poolMock, PLUGIN_NAME, restClientMock);
+    indexEventHandler = new IndexEventHandler(MoreExecutors.directExecutor(),
+        PLUGIN_NAME, restSessionMock);
   }
 
   @Test
   public void shouldIndexInRemoteOnChangeIndexedEvent() throws Exception {
-    expect(restClientMock.index(CHANGE_ID)).andReturn(true);
-    replayAll();
     indexEventHandler.onChangeIndexed(id.get());
-    verifyAll();
+    verify(restSessionMock).index(CHANGE_ID);
   }
 
   @Test
   public void shouldDeleteFromIndexInRemoteOnChangeDeletedEvent()
       throws Exception {
-    reset(cd);
-    expect(restClientMock.deleteFromIndex(CHANGE_ID)).andReturn(true);
-    replayAll();
     indexEventHandler.onChangeDeleted(id.get());
-    verifyAll();
+    verify(restSessionMock).deleteFromIndex(CHANGE_ID);
   }
 
   @Test
   public void shouldNotCallRemoteWhenEventIsForwarded() throws Exception {
-    reset(poolMock);
-    replayAll();
     Context.setForwardedEvent(true);
     indexEventHandler.onChangeIndexed(id.get());
     indexEventHandler.onChangeDeleted(id.get());
     Context.unsetForwardedEvent();
-    verifyAll();
+    verifyZeroInteractions(restSessionMock);
   }
 
   @Test
   public void duplicateEventOfAQueuedEventShouldGetDiscarded() {
-    reset(poolMock);
-    poolMock.execute(indexEventHandler.new SyncIndexTask(CHANGE_ID, false));
-    expectLastCall().once();
-    replayAll();
+    Executor poolMock = mock(Executor.class);
+    indexEventHandler =
+        new IndexEventHandler(poolMock, PLUGIN_NAME, restSessionMock);
     indexEventHandler.onChangeIndexed(id.get());
     indexEventHandler.onChangeIndexed(id.get());
-    verifyAll();
+    verify(poolMock, times(1))
+        .execute(indexEventHandler.new SyncIndexTask(CHANGE_ID, false));
   }
 
   @Test
   public void testSyncIndexTaskToString() throws Exception {
     SyncIndexTask syncIndexTask =
         indexEventHandler.new SyncIndexTask(CHANGE_ID, false);
-    assertThat(syncIndexTask.toString()).isEqualTo(
-        String.format("[%s] Index change %s in target instance", PLUGIN_NAME,
-            CHANGE_ID));
+    assertThat(syncIndexTask.toString()).isEqualTo(String.format(
+        "[%s] Index change %s in target instance", PLUGIN_NAME, CHANGE_ID));
   }
 
   @Test

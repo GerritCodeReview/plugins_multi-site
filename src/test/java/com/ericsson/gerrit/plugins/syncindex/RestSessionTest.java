@@ -15,18 +15,19 @@
 package com.ericsson.gerrit.plugins.syncindex;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.easymock.EasyMock.expect;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.google.common.base.Joiner;
 
 import com.ericsson.gerrit.plugins.syncindex.IndexResponseHandler.IndexResult;
 
-import org.easymock.EasyMockSupport;
 import org.junit.Test;
 
 import java.io.IOException;
 
-public class RestSessionTest extends EasyMockSupport {
+public class RestSessionTest {
   private static final int CHANGE_NUMBER = 1;
   private static final String DELETE_OP = "delete";
   private static final String INDEX_OP = "index";
@@ -81,22 +82,21 @@ public class RestSessionTest extends EasyMockSupport {
       String msg, boolean exception) throws Exception {
     String request =
         Joiner.on("/").join("/plugins", PLUGIN_NAME, INDEX_OP, CHANGE_NUMBER);
-    HttpSession httpSession = createNiceMock(HttpSession.class);
+    HttpSession httpSession = mock(HttpSession.class);
     if (exception) {
       if (operation.equals(INDEX_OP)) {
-        expect(httpSession.post(request)).andThrow(new IOException());
+        doThrow(new IOException()).when(httpSession).post(request);
       } else {
-        expect(httpSession.delete(request)).andThrow(new IOException());
+        doThrow(new IOException()).when(httpSession).delete(request);
       }
     } else {
       IndexResult result = new IndexResult(isOperationSuccessful, msg);
       if (operation.equals(INDEX_OP)) {
-        expect(httpSession.post(request)).andReturn(result);
+        when(httpSession.post(request)).thenReturn(result);
       } else {
-        expect(httpSession.delete(request)).andReturn(result);
+        when(httpSession.delete(request)).thenReturn(result);
       }
     }
     restClient = new RestSession(httpSession, PLUGIN_NAME);
-    replayAll();
   }
 }

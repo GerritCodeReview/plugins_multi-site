@@ -15,26 +15,26 @@
 package com.ericsson.gerrit.plugins.syncindex;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.google.common.truth.Truth.assertThat;
-import static org.easymock.EasyMock.expect;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.ericsson.gerrit.plugins.syncindex.IndexResponseHandler.IndexResult;
 import com.github.tomakehurst.wiremock.http.Fault;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.easymock.EasyMockSupport;
+
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 
 import java.net.SocketTimeoutException;
 
-public class HttpSessionTest extends EasyMockSupport {
+public class HttpSessionTest {
   private static final int MAX_TRIES = 3;
   private static final int RETRY_INTERVAL = 250;
   private static final int TIMEOUT = 500;
@@ -51,8 +51,6 @@ public class HttpSessionTest extends EasyMockSupport {
   private static final String RETRY_AT_ERROR = "Retry at error";
   private static final String RETRY_AT_DELAY = "Retry at delay";
 
-  private Configuration cfg;
-  private CloseableHttpClient httpClient;
   private HttpSession httpSession;
 
   @ClassRule
@@ -61,18 +59,17 @@ public class HttpSessionTest extends EasyMockSupport {
   @Before
   public void setUp() throws Exception {
     String url = "http://localhost:" + wireMockRule.port();
-    cfg = createMock(Configuration.class);
-    expect(cfg.getUrl()).andReturn(url).anyTimes();
-    expect(cfg.getUser()).andReturn("user");
-    expect(cfg.getPassword()).andReturn("pass");
-    expect(cfg.getMaxTries()).andReturn(MAX_TRIES).anyTimes();
-    expect(cfg.getConnectionTimeout()).andReturn(TIMEOUT).anyTimes();
-    expect(cfg.getSocketTimeout()).andReturn(TIMEOUT).anyTimes();
-    expect(cfg.getRetryInterval()).andReturn(RETRY_INTERVAL).anyTimes();
-    replayAll();
-    httpClient = new HttpClientProvider(cfg).get();
-    httpSession = new HttpSession(httpClient, url);
+    Configuration cfg = mock(Configuration.class);
+    when(cfg.getUrl()).thenReturn(url);
+    when(cfg.getUser()).thenReturn("user");
+    when(cfg.getPassword()).thenReturn("pass");
+    when(cfg.getMaxTries()).thenReturn(MAX_TRIES);
+    when(cfg.getConnectionTimeout()).thenReturn(TIMEOUT);
+    when(cfg.getSocketTimeout()).thenReturn(TIMEOUT);
+    when(cfg.getRetryInterval()).thenReturn(RETRY_INTERVAL);
 
+    httpSession =
+        new HttpSession(new HttpClientProvider(cfg).get(), url);
     wireMockRule.resetRequests();
   }
 

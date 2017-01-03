@@ -15,19 +15,18 @@
 package com.ericsson.gerrit.plugins.syncindex;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.easymock.EasyMock.expect;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import org.easymock.EasyMockSupport;
 import org.junit.Test;
 
-public class ModuleTest extends EasyMockSupport {
+public class ModuleTest {
 
   @Test
   public void testSyncUrlProvider() {
-    Configuration configMock = createNiceMock(Configuration.class);
+    Configuration configMock = mock(Configuration.class);
     String expected = "someUrl";
-    expect(configMock.getUrl()).andReturn(expected);
-    replayAll();
+    when(configMock.getUrl()).thenReturn(expected);
     Module module = new Module();
     assertThat(module.syncUrl(configMock)).isEqualTo(expected);
   }

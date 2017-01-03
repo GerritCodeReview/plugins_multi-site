@@ -15,41 +15,46 @@
 package com.ericsson.gerrit.plugins.syncindex;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.easymock.EasyMock.expect;
-
-import org.easymock.EasyMockSupport;
-import org.junit.Before;
-import org.junit.Test;
+import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
 
-public class ConfigurationTest extends EasyMockSupport {
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
+public class ConfigurationTest {
   private static final String PASS = "fakePass";
   private static final String USER = "fakeUser";
   private static final String URL = "fakeUrl";
   private static final String EMPTY = "";
+  private static final boolean CUSTOM_VALUES = true;
+  private static final boolean DEFAULT_VALUES = false;
   private static final int TIMEOUT = 5000;
   private static final int MAX_TRIES = 5;
   private static final int RETRY_INTERVAL = 1000;
   private static final int THREAD_POOL_SIZE = 1;
 
+  @Mock
   private PluginConfigFactory cfgFactoryMock;
+  @Mock
   private PluginConfig configMock;
   private Configuration configuration;
-  private String pluginName = "sync-index";
+  private String pluginName = "sync-events";
 
   @Before
   public void setUp() throws Exception {
-    configMock = createNiceMock(PluginConfig.class);
-    cfgFactoryMock = createMock(PluginConfigFactory.class);
-    expect(cfgFactoryMock.getFromGerritConfig(pluginName, true))
-        .andStubReturn(configMock);
+    when(cfgFactoryMock.getFromGerritConfig(pluginName, true))
+        .thenReturn(configMock);
   }
 
   @Test
   public void testValuesPresentInGerritConfig() throws Exception {
-    buildMocks(true);
+    buildMocks(CUSTOM_VALUES);
     assertThat(configuration.getUrl()).isEqualTo(URL);
     assertThat(configuration.getUser()).isEqualTo(USER);
     assertThat(configuration.getPassword()).isEqualTo(PASS);
@@ -62,7 +67,7 @@ public class ConfigurationTest extends EasyMockSupport {
 
   @Test
   public void testValuesNotPresentInGerritConfig() throws Exception {
-    buildMocks(false);
+    buildMocks(DEFAULT_VALUES);
     assertThat(configuration.getUrl()).isEqualTo(EMPTY);
     assertThat(configuration.getUser()).isEqualTo(EMPTY);
     assertThat(configuration.getPassword()).isEqualTo(EMPTY);
@@ -75,28 +80,28 @@ public class ConfigurationTest extends EasyMockSupport {
 
   @Test
   public void testUrlTrailingSlashIsDropped() throws Exception {
-    expect(configMock.getString("url")).andReturn(URL + "/");
-    replayAll();
+    when(configMock.getString("url")).thenReturn(URL + "/");
+
     configuration = new Configuration(cfgFactoryMock, pluginName);
     assertThat(configuration).isNotNull();
     assertThat(configuration.getUrl()).isEqualTo(URL);
   }
 
   private void buildMocks(boolean values) {
-    expect(configMock.getString("url")).andReturn(values ? URL : null);
-    expect(configMock.getString("user")).andReturn(values ? USER : null);
-    expect(configMock.getString("password")).andReturn(values ? PASS : null);
-    expect(configMock.getInt("connectionTimeout", TIMEOUT))
-        .andReturn(values ? TIMEOUT : 0);
-    expect(configMock.getInt("socketTimeout", TIMEOUT))
-        .andReturn(values ? TIMEOUT : 0);
-    expect(configMock.getInt("maxTries", MAX_TRIES))
-        .andReturn(values ? MAX_TRIES : 0);
-    expect(configMock.getInt("retryInterval", RETRY_INTERVAL))
-        .andReturn(values ? RETRY_INTERVAL : 0);
-    expect(configMock.getInt("threadPoolSize", THREAD_POOL_SIZE))
-        .andReturn(values ? THREAD_POOL_SIZE : 0);
-    replayAll();
+    when(configMock.getString("url")).thenReturn(values ? URL : null);
+    when(configMock.getString("user")).thenReturn(values ? USER : null);
+    when(configMock.getString("password")).thenReturn(values ? PASS : null);
+    when(configMock.getInt("connectionTimeout", TIMEOUT))
+        .thenReturn(values ? TIMEOUT : 0);
+    when(configMock.getInt("socketTimeout", TIMEOUT))
+        .thenReturn(values ? TIMEOUT : 0);
+    when(configMock.getInt("maxTries", MAX_TRIES))
+        .thenReturn(values ? MAX_TRIES : 0);
+    when(configMock.getInt("retryInterval", RETRY_INTERVAL))
+        .thenReturn(values ? RETRY_INTERVAL : 0);
+    when(configMock.getInt("threadPoolSize", THREAD_POOL_SIZE))
+        .thenReturn(values ? THREAD_POOL_SIZE : 0);
+
     configuration = new Configuration(cfgFactoryMock, pluginName);
   }
 }

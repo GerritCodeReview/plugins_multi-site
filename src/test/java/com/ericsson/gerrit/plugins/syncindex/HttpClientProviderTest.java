@@ -15,7 +15,7 @@
 package com.ericsson.gerrit.plugins.syncindex;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.easymock.EasyMock.expect;
+import static org.mockito.Mockito.when;
 
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Guice;
@@ -23,27 +23,27 @@ import com.google.inject.Injector;
 import com.google.inject.Scopes;
 
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.easymock.EasyMockSupport;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-public class HttpClientProviderTest extends EasyMockSupport {
+@RunWith(MockitoJUnitRunner.class)
+public class HttpClientProviderTest {
   private static final int TIME_INTERVAL = 1000;
   private static final String EMPTY = "";
 
+  @Mock
   private Configuration config;
 
   @Before
   public void setUp() throws Exception {
-    config = createNiceMock(Configuration.class);
-    expect(config.getUrl()).andReturn(EMPTY).anyTimes();
-    expect(config.getUser()).andReturn(EMPTY).anyTimes();
-    expect(config.getPassword()).andReturn(EMPTY).anyTimes();
-    expect(config.getMaxTries()).andReturn(1).anyTimes();
-    expect(config.getConnectionTimeout()).andReturn(TIME_INTERVAL).anyTimes();
-    expect(config.getSocketTimeout()).andReturn(TIME_INTERVAL).anyTimes();
-    expect(config.getRetryInterval()).andReturn(TIME_INTERVAL).anyTimes();
-    replayAll();
+    when(config.getUrl()).thenReturn(EMPTY);
+    when(config.getUser()).thenReturn(EMPTY);
+    when(config.getPassword()).thenReturn(EMPTY);
+    when(config.getConnectionTimeout()).thenReturn(TIME_INTERVAL);
+    when(config.getSocketTimeout()).thenReturn(TIME_INTERVAL);
   }
 
   @Test

@@ -15,20 +15,20 @@
 package com.ericsson.gerrit.plugins.syncindex;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.easymock.EasyMock.expect;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.ericsson.gerrit.plugins.syncindex.IndexResponseHandler.IndexResult;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.entity.StringEntity;
-import org.easymock.EasyMockSupport;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 
-public class IndexResponseHandlerTest extends EasyMockSupport {
+public class IndexResponseHandlerTest {
   private static final int ERROR = 400;
   private static final int OK = 204;
   private static final String EMPTY_ENTITY = "";
@@ -59,12 +59,11 @@ public class IndexResponseHandlerTest extends EasyMockSupport {
 
   private HttpResponse setupMocks(int httpCode, String entity)
       throws UnsupportedEncodingException {
-    StatusLine status = createNiceMock(StatusLine.class);
-    expect(status.getStatusCode()).andReturn(httpCode).anyTimes();
-    HttpResponse response = createNiceMock(HttpResponse.class);
-    expect(response.getStatusLine()).andReturn(status).anyTimes();
-    expect(response.getEntity()).andReturn(new StringEntity(entity)).anyTimes();
-    replayAll();
+    StatusLine status = mock(StatusLine.class);
+    when(status.getStatusCode()).thenReturn(httpCode);
+    HttpResponse response = mock(HttpResponse.class);
+    when(response.getStatusLine()).thenReturn(status);
+    when(response.getEntity()).thenReturn(new StringEntity(entity));
     return response;
   }
 }
