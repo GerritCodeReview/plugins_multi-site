@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class RestSessionTest {
+public class RestEventForwarderTest {
   private static final int CHANGE_NUMBER = 1;
   private static final String DELETE_OP = "delete";
   private static final String INDEX_OP = "index";
@@ -40,42 +40,42 @@ public class RestSessionTest {
   private static final boolean DO_NOT_THROW_EXCEPTION = false;
   private static final boolean THROW_EXCEPTION = true;
 
-  private RestSession restClient;
+  private RestEventForwarder eventForwarder;
 
   @Test
   public void testIndexChangeOK() throws Exception {
     setUpMocks(INDEX_OP, SUCCESSFUL, EMPTY_MSG, DO_NOT_THROW_EXCEPTION);
-    assertThat(restClient.index(CHANGE_NUMBER)).isTrue();
+    assertThat(eventForwarder.indexChange(CHANGE_NUMBER)).isTrue();
   }
 
   @Test
   public void testIndexChangeFailed() throws Exception {
     setUpMocks(INDEX_OP, FAILED, ERROR_MSG, DO_NOT_THROW_EXCEPTION);
-    assertThat(restClient.index(CHANGE_NUMBER)).isFalse();
+    assertThat(eventForwarder.indexChange(CHANGE_NUMBER)).isFalse();
   }
 
   @Test
   public void testIndexChangeThrowsException() throws Exception {
     setUpMocks(INDEX_OP, FAILED, EXCEPTION_MSG, THROW_EXCEPTION);
-    assertThat(restClient.index(CHANGE_NUMBER)).isFalse();
+    assertThat(eventForwarder.indexChange(CHANGE_NUMBER)).isFalse();
   }
 
   @Test
   public void testChangeDeletedFromIndexOK() throws Exception {
     setUpMocks(DELETE_OP, SUCCESSFUL, EMPTY_MSG, DO_NOT_THROW_EXCEPTION);
-    assertThat(restClient.deleteFromIndex(CHANGE_NUMBER)).isTrue();
+    assertThat(eventForwarder.deleteChangeFromIndex(CHANGE_NUMBER)).isTrue();
   }
 
   @Test
   public void testChangeDeletedFromIndexFailed() throws Exception {
     setUpMocks(DELETE_OP, FAILED, ERROR_MSG, DO_NOT_THROW_EXCEPTION);
-    assertThat(restClient.deleteFromIndex(CHANGE_NUMBER)).isFalse();
+    assertThat(eventForwarder.deleteChangeFromIndex(CHANGE_NUMBER)).isFalse();
   }
 
   @Test
   public void testChangeDeletedFromThrowsException() throws Exception {
     setUpMocks(DELETE_OP, FAILED, EXCEPTION_MSG, THROW_EXCEPTION);
-    assertThat(restClient.deleteFromIndex(CHANGE_NUMBER)).isFalse();
+    assertThat(eventForwarder.deleteChangeFromIndex(CHANGE_NUMBER)).isFalse();
   }
 
   private void setUpMocks(String operation, boolean isOperationSuccessful,
@@ -97,6 +97,6 @@ public class RestSessionTest {
         when(httpSession.delete(request)).thenReturn(result);
       }
     }
-    restClient = new RestSession(httpSession, PLUGIN_NAME);
+    eventForwarder = new RestEventForwarder(httpSession, PLUGIN_NAME);
   }
 }

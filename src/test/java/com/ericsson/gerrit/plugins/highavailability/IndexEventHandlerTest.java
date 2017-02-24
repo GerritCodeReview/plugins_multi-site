@@ -26,9 +26,6 @@ import com.google.gerrit.server.git.WorkQueue.Executor;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.StandardKeyEncoder;
 
-import com.ericsson.gerrit.plugins.highavailability.Context;
-import com.ericsson.gerrit.plugins.highavailability.IndexEventHandler;
-import com.ericsson.gerrit.plugins.highavailability.RestSession;
 import com.ericsson.gerrit.plugins.highavailability.IndexEventHandler.SyncIndexTask;
 
 import org.junit.Before;
@@ -45,7 +42,7 @@ public class IndexEventHandlerTest {
 
   private IndexEventHandler indexEventHandler;
   @Mock
-  private RestSession restSessionMock;
+  private EventForwarder eventForwarder;
   private Change.Id id;
 
   @BeforeClass
@@ -57,20 +54,20 @@ public class IndexEventHandlerTest {
   public void setUpMocks() {
     id = Change.Id.parse(Integer.toString(CHANGE_ID));
     indexEventHandler = new IndexEventHandler(MoreExecutors.directExecutor(),
-        PLUGIN_NAME, restSessionMock);
+        PLUGIN_NAME, eventForwarder);
   }
 
   @Test
   public void shouldIndexInRemoteOnChangeIndexedEvent() throws Exception {
     indexEventHandler.onChangeIndexed(id.get());
-    verify(restSessionMock).index(CHANGE_ID);
+    verify(eventForwarder).indexChange(CHANGE_ID);
   }
 
   @Test
   public void shouldDeleteFromIndexInRemoteOnChangeDeletedEvent()
       throws Exception {
     indexEventHandler.onChangeDeleted(id.get());
-    verify(restSessionMock).deleteFromIndex(CHANGE_ID);
+    verify(eventForwarder).deleteChangeFromIndex(CHANGE_ID);
   }
 
   @Test
@@ -79,14 +76,14 @@ public class IndexEventHandlerTest {
     indexEventHandler.onChangeIndexed(id.get());
     indexEventHandler.onChangeDeleted(id.get());
     Context.unsetForwardedEvent();
-    verifyZeroInteractions(restSessionMock);
+    verifyZeroInteractions(eventForwarder);
   }
 
   @Test
   public void duplicateEventOfAQueuedEventShouldGetDiscarded() {
     Executor poolMock = mock(Executor.class);
     indexEventHandler =
-        new IndexEventHandler(poolMock, PLUGIN_NAME, restSessionMock);
+        new IndexEventHandler(poolMock, PLUGIN_NAME, eventForwarder);
     indexEventHandler.onChangeIndexed(id.get());
     indexEventHandler.onChangeIndexed(id.get());
     verify(poolMock, times(1))

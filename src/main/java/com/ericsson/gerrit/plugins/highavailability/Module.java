@@ -32,7 +32,7 @@ class Module extends LifecycleModule {
         .in(Scopes.SINGLETON);
     bind(Configuration.class).in(Scopes.SINGLETON);
     bind(HttpSession.class);
-    bind(RestSession.class);
+    bind(EventForwarder.class).to(RestEventForwarder.class);
     bind(Executor.class)
         .annotatedWith(SyncIndexExecutor.class)
         .toProvider(SyncIndexExecutorProvider.class);

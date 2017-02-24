@@ -26,7 +26,7 @@ import java.util.concurrent.Executor;
 
 class IndexEventHandler implements ChangeIndexedListener {
   private final Executor executor;
-  private final RestSession restClient;
+  private final EventForwarder eventForwarder;
   private final String pluginName;
   private final Set<SyncIndexTask> queuedTasks = Collections
       .newSetFromMap(new ConcurrentHashMap<SyncIndexTask, Boolean>());
@@ -34,8 +34,8 @@ class IndexEventHandler implements ChangeIndexedListener {
   @Inject
   IndexEventHandler(@SyncIndexExecutor Executor executor,
       @PluginName String pluginName,
-      RestSession restClient) {
-    this.restClient = restClient;
+      EventForwarder eventForwarder) {
+    this.eventForwarder = eventForwarder;
     this.executor = executor;
     this.pluginName = pluginName;
   }
@@ -72,9 +72,9 @@ class IndexEventHandler implements ChangeIndexedListener {
     public void run() {
       queuedTasks.remove(this);
       if (deleted) {
-        restClient.deleteFromIndex(changeId);
+        eventForwarder.deleteChangeFromIndex(changeId);
       } else {
-        restClient.index(changeId);
+        eventForwarder.indexChange(changeId);
       }
     }
 

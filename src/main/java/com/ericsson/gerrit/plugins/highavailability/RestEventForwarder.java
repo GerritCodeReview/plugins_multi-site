@@ -25,19 +25,22 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-class RestSession {
-  private static final Logger log = LoggerFactory.getLogger(RestSession.class);
+class RestEventForwarder implements EventForwarder {
+  private static final Logger log =
+      LoggerFactory.getLogger(RestEventForwarder.class);
 
   private final HttpSession httpSession;
   private final String pluginName;
 
   @Inject
-  RestSession(HttpSession httpClient, @PluginName String pluginName) {
+  RestEventForwarder(HttpSession httpClient,
+      @PluginName String pluginName) {
     this.httpSession = httpClient;
     this.pluginName = pluginName;
   }
 
-  boolean index(int changeId) {
+  @Override
+  public boolean indexChange(int changeId) {
     try {
       HttpResult result = httpSession.post(buildEndpoint(changeId));
       if (result.isSuccessful()) {
@@ -51,7 +54,8 @@ class RestSession {
     return false;
   }
 
-  boolean deleteFromIndex(int changeId) {
+  @Override
+  public boolean deleteChangeFromIndex(int changeId) {
     try {
       HttpResult result = httpSession.delete(buildEndpoint(changeId));
       if (result.isSuccessful()) {
