@@ -16,7 +16,7 @@ package com.ericsson.gerrit.plugins.highavailability;
 
 import com.google.inject.Inject;
 
-import com.ericsson.gerrit.plugins.highavailability.IndexResponseHandler.IndexResult;
+import com.ericsson.gerrit.plugins.highavailability.HttpResponseHandler.HttpResult;
 
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
@@ -35,13 +35,13 @@ class HttpSession {
     this.url = url;
   }
 
-  IndexResult post(String endpoint) throws IOException {
+  HttpResult post(String endpoint) throws IOException {
     return httpClient.execute(new HttpPost(url + endpoint),
-        new IndexResponseHandler());
+        new HttpResponseHandler());
   }
 
-  IndexResult delete(String endpoint) throws IOException {
+  HttpResult delete(String endpoint) throws IOException {
     return httpClient.execute(new HttpDelete(url + endpoint),
-        new IndexResponseHandler());
+        new HttpResponseHandler());
   }
 }

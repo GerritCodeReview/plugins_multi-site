@@ -18,7 +18,7 @@ import com.google.common.base.Joiner;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.inject.Inject;
 
-import com.ericsson.gerrit.plugins.highavailability.IndexResponseHandler.IndexResult;
+import com.ericsson.gerrit.plugins.highavailability.HttpResponseHandler.HttpResult;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ class RestSession {
 
   boolean index(int changeId) {
     try {
-      IndexResult result = httpSession.post(buildEndpoint(changeId));
+      HttpResult result = httpSession.post(buildEndpoint(changeId));
       if (result.isSuccessful()) {
         return true;
       }
@@ -53,7 +53,7 @@ class RestSession {
 
   boolean deleteFromIndex(int changeId) {
     try {
-      IndexResult result = httpSession.delete(buildEndpoint(changeId));
+      HttpResult result = httpSession.delete(buildEndpoint(changeId));
       if (result.isSuccessful()) {
         return true;
       }

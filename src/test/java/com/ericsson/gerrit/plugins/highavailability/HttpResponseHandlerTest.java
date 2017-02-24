@@ -18,8 +18,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.ericsson.gerrit.plugins.highavailability.IndexResponseHandler;
-import com.ericsson.gerrit.plugins.highavailability.IndexResponseHandler.IndexResult;
+import com.ericsson.gerrit.plugins.highavailability.HttpResponseHandler.HttpResult;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -29,23 +28,23 @@ import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 
-public class IndexResponseHandlerTest {
+public class HttpResponseHandlerTest {
   private static final int ERROR = 400;
   private static final int OK = 204;
   private static final String EMPTY_ENTITY = "";
   private static final String ERROR_ENTITY = "Error";
 
-  private IndexResponseHandler handler;
+  private HttpResponseHandler handler;
 
   @Before
   public void setUp() throws Exception {
-    handler = new IndexResponseHandler();
+    handler = new HttpResponseHandler();
   }
 
   @Test
   public void testIsSuccessful() throws Exception {
     HttpResponse response = setupMocks(OK, EMPTY_ENTITY);
-    IndexResult result = handler.handleResponse(response);
+    HttpResult result = handler.handleResponse(response);
     assertThat(result.isSuccessful()).isTrue();
     assertThat(result.getMessage()).isEmpty();
   }
@@ -53,7 +52,7 @@ public class IndexResponseHandlerTest {
   @Test
   public void testIsNotSuccessful() throws Exception {
     HttpResponse response = setupMocks(ERROR, ERROR_ENTITY);
-    IndexResult result = handler.handleResponse(response);
+    HttpResult result = handler.handleResponse(response);
     assertThat(result.isSuccessful()).isFalse();
     assertThat(result.getMessage()).contains(ERROR_ENTITY);
   }

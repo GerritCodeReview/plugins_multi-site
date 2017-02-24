@@ -16,7 +16,7 @@ package com.ericsson.gerrit.plugins.highavailability;
 
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
-import com.ericsson.gerrit.plugins.highavailability.IndexResponseHandler.IndexResult;
+import com.ericsson.gerrit.plugins.highavailability.HttpResponseHandler.HttpResult;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -27,13 +27,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-class IndexResponseHandler implements ResponseHandler<IndexResult> {
+class HttpResponseHandler implements ResponseHandler<HttpResult> {
 
-  static class IndexResult {
+  static class HttpResult {
     private boolean successful;
     private String message;
 
-    IndexResult(boolean successful, String message) {
+    HttpResult(boolean successful, String message) {
       this.successful = successful;
       this.message = message;
     }
@@ -47,12 +47,12 @@ class IndexResponseHandler implements ResponseHandler<IndexResult> {
     }
   }
 
-  private static final Logger log = LoggerFactory
-      .getLogger(IndexResponseHandler.class);
+  private static final Logger log =
+      LoggerFactory.getLogger(HttpResponseHandler.class);
 
   @Override
-  public IndexResult handleResponse(HttpResponse response) {
-    return new IndexResult(isSuccessful(response), parseResponse(response));
+  public HttpResult handleResponse(HttpResponse response) {
+    return new HttpResult(isSuccessful(response), parseResponse(response));
   }
 
   private boolean isSuccessful(HttpResponse response) {

@@ -21,9 +21,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.base.Joiner;
 
-import com.ericsson.gerrit.plugins.highavailability.HttpSession;
-import com.ericsson.gerrit.plugins.highavailability.RestSession;
-import com.ericsson.gerrit.plugins.highavailability.IndexResponseHandler.IndexResult;
+import com.ericsson.gerrit.plugins.highavailability.HttpResponseHandler.HttpResult;
 
 import org.junit.Test;
 
@@ -92,7 +90,7 @@ public class RestSessionTest {
         doThrow(new IOException()).when(httpSession).delete(request);
       }
     } else {
-      IndexResult result = new IndexResult(isOperationSuccessful, msg);
+      HttpResult result = new HttpResult(isOperationSuccessful, msg);
       if (operation.equals(INDEX_OP)) {
         when(httpSession.post(request)).thenReturn(result);
       } else {
