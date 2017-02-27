@@ -12,20 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.index;
 
-import com.google.gerrit.lifecycle.LifecycleModule;
-import com.google.inject.Scopes;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.RestEventForwarderModule;
-import com.ericsson.gerrit.plugins.highavailability.index.IndexModule;
+import com.google.inject.BindingAnnotation;
 
-class Module extends LifecycleModule {
+import java.lang.annotation.Retention;
 
-  @Override
-  protected void configure() {
-    bind(Configuration.class).in(Scopes.SINGLETON);
-    install(new RestEventForwarderModule());
-    install(new IndexModule());
-  }
+@Retention(RUNTIME)
+@BindingAnnotation
+@interface IndexExecutor {
 }

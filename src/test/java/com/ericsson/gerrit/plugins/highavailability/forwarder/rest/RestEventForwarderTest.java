@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.doThrow;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.base.Joiner;
 
-import com.ericsson.gerrit.plugins.highavailability.HttpResponseHandler.HttpResult;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 
 import org.junit.Test;
 

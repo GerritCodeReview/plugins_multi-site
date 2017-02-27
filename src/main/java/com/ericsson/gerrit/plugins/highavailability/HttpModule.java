@@ -16,9 +16,11 @@ package com.ericsson.gerrit.plugins.highavailability;
 
 import com.google.gerrit.httpd.plugins.HttpPluginModule;
 
+import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.EventForwarderServletModule;
+
 class HttpModule extends HttpPluginModule {
   @Override
   protected void configureServlets() {
-    serveRegex("/index/\\d+$").with(SyncIndexRestApiServlet.class);
+    install(new EventForwarderServletModule());
   }
 }

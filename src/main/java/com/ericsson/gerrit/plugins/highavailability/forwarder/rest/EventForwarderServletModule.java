@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Ericsson
+// Copyright (C) 2017 Ericsson
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,15 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import com.google.gerrit.httpd.plugins.HttpPluginModule;
 
-import com.google.inject.BindingAnnotation;
-
-import java.lang.annotation.Retention;
-
-@Retention(RUNTIME)
-@BindingAnnotation
-@interface SyncUrl {
+public class EventForwarderServletModule extends HttpPluginModule {
+  @Override
+  protected void configureServlets() {
+    serveRegex("/index/\\d+$").with(IndexRestApiServlet.class);
+  }
 }

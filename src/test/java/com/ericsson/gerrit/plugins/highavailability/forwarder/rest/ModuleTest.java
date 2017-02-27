@@ -12,25 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
-import com.ericsson.gerrit.plugins.highavailability.Module;
 
 import org.junit.Test;
 
 public class ModuleTest {
 
   @Test
-  public void testSyncUrlProvider() {
+  public void testForwardUrlProvider() {
     Configuration configMock = mock(Configuration.class);
     String expected = "someUrl";
     when(configMock.getUrl()).thenReturn(expected);
-    Module module = new Module();
-    assertThat(module.syncUrl(configMock)).isEqualTo(expected);
+    RestEventForwarderModule module = new RestEventForwarderModule();
+    assertThat(module.forwardUrl(configMock)).isEqualTo(expected);
   }
 }

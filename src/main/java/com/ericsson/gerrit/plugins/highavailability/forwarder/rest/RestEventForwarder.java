@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import com.google.common.base.Joiner;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.inject.Inject;
 
-import com.ericsson.gerrit.plugins.highavailability.HttpResponseHandler.HttpResult;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.EventForwarder;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

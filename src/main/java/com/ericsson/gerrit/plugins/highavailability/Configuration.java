@@ -23,7 +23,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-class Configuration {
+public class Configuration {
   private static final int DEFAULT_TIMEOUT_MS = 5000;
   private static final int DEFAULT_MAX_TRIES = 5;
   private static final int DEFAULT_RETRY_INTERVAL = 1000;
@@ -52,31 +52,31 @@ class Configuration {
     threadPoolSize = cfg.getInt("threadPoolSize", DEFAULT_THREAD_POOL_SIZE);
   }
 
-  int getConnectionTimeout() {
+  public int getConnectionTimeout() {
     return connectionTimeout;
   }
 
-  int getMaxTries() {
+  public int getMaxTries() {
     return maxTries;
   }
 
-  int getRetryInterval() {
+  public int getRetryInterval() {
     return retryInterval;
   }
 
-  int getSocketTimeout() {
+  public int getSocketTimeout() {
     return socketTimeout;
   }
 
-  String getUrl() {
+  public String getUrl() {
     return CharMatcher.is('/').trimTrailingFrom(url);
   }
 
-  String getUser() {
+  public String getUser() {
     return user;
   }
 
-  String getPassword() {
+  public String getPassword() {
     return password;
   }
 

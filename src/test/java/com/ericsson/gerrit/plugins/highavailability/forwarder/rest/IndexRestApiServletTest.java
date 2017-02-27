@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
@@ -34,8 +34,6 @@ import com.google.gwtorm.server.OrmException;
 import com.google.gwtorm.server.SchemaFactory;
 import com.google.gwtorm.server.StandardKeyEncoder;
 
-import com.ericsson.gerrit.plugins.highavailability.SyncIndexRestApiServlet;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -49,7 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SyncIndexRestApiServletTest {
+public class IndexRestApiServletTest {
   private static final boolean CHANGE_EXISTS = true;
   private static final boolean CHANGE_DOES_NOT_EXIST = false;
   private static final boolean DO_NOT_THROW_IO_EXCEPTION = false;
@@ -70,7 +68,7 @@ public class SyncIndexRestApiServletTest {
   private HttpServletResponse rsp;
   private Change.Id id;
   private Change change;
-  private SyncIndexRestApiServlet syncIndexRestApiServlet;
+  private IndexRestApiServlet indexRestApiServlet;
 
   @BeforeClass
   public static void setup() {
@@ -79,8 +77,7 @@ public class SyncIndexRestApiServletTest {
 
   @Before
   public void setUpMocks() {
-    syncIndexRestApiServlet =
-        new SyncIndexRestApiServlet(indexer, schemaFactory);
+    indexRestApiServlet = new IndexRestApiServlet(indexer, schemaFactory);
     id = Change.Id.parse(CHANGE_NUMBER);
     when(req.getPathInfo()).thenReturn("/index/" + CHANGE_NUMBER);
     change = new Change(null, id, null, null, TimeUtil.nowTs());
@@ -89,7 +86,7 @@ public class SyncIndexRestApiServletTest {
   @Test
   public void changeIsIndexed() throws Exception {
     setupPostMocks(CHANGE_EXISTS);
-    syncIndexRestApiServlet.doPost(req, rsp);
+    indexRestApiServlet.doPost(req, rsp);
     verify(indexer, times(1)).index(db, change);
     verify(rsp).setStatus(SC_NO_CONTENT);
   }
@@ -97,7 +94,7 @@ public class SyncIndexRestApiServletTest {
   @Test
   public void changeToIndexDoNotExist() throws Exception {
     setupPostMocks(CHANGE_DOES_NOT_EXIST);
-    syncIndexRestApiServlet.doPost(req, rsp);
+    indexRestApiServlet.doPost(req, rsp);
     verify(indexer, times(1)).delete(id);
     verify(rsp).setStatus(SC_NO_CONTENT);
   }
@@ -105,7 +102,7 @@ public class SyncIndexRestApiServletTest {
   @Test
   public void schemaThrowsExceptionWhenLookingUpForChange() throws Exception {
     setupPostMocks(CHANGE_EXISTS, THROW_ORM_EXCEPTION);
-    syncIndexRestApiServlet.doPost(req, rsp);
+    indexRestApiServlet.doPost(req, rsp);
     verify(rsp).sendError(SC_NOT_FOUND, "Error trying to find a change \n");
   }
 
@@ -113,13 +110,13 @@ public class SyncIndexRestApiServletTest {
   public void indexerThrowsIOExceptionTryingToIndexChange() throws Exception {
     setupPostMocks(CHANGE_EXISTS, DO_NOT_THROW_ORM_EXCEPTION,
         THROW_IO_EXCEPTION);
-    syncIndexRestApiServlet.doPost(req, rsp);
+    indexRestApiServlet.doPost(req, rsp);
     verify(rsp).sendError(SC_CONFLICT, "io-error");
   }
 
   @Test
   public void changeIsDeletedFromIndex() throws Exception {
-    syncIndexRestApiServlet.doDelete(req, rsp);
+    indexRestApiServlet.doDelete(req, rsp);
     verify(indexer, times(1)).delete(id);
     verify(rsp).setStatus(SC_NO_CONTENT);
   }
@@ -127,7 +124,7 @@ public class SyncIndexRestApiServletTest {
   @Test
   public void indexerThrowsExceptionTryingToDeleteChange() throws Exception {
     doThrow(new IOException("io-error")).when(indexer).delete(id);
-    syncIndexRestApiServlet.doDelete(req, rsp);
+    indexRestApiServlet.doDelete(req, rsp);
     verify(rsp).sendError(SC_CONFLICT, "io-error");
   }
 
@@ -136,7 +133,7 @@ public class SyncIndexRestApiServletTest {
     doThrow(new IOException("someError")).when(rsp).sendError(SC_NOT_FOUND,
         "Error trying to find a change \n");
     setupPostMocks(CHANGE_EXISTS, THROW_ORM_EXCEPTION);
-    syncIndexRestApiServlet.doPost(req, rsp);
+    indexRestApiServlet.doPost(req, rsp);
     verify(rsp).sendError(SC_NOT_FOUND, "Error trying to find a change \n");
     verifyZeroInteractions(indexer);
   }

@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Ericsson
+// Copyright (C) 2017 Ericsson
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,20 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.index;
 
+import com.google.gerrit.extensions.events.ChangeIndexedListener;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
-import com.google.inject.Scopes;
 
-import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.RestEventForwarderModule;
-import com.ericsson.gerrit.plugins.highavailability.index.IndexModule;
+import java.util.concurrent.Executor;
 
-class Module extends LifecycleModule {
+public class IndexModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-    bind(Configuration.class).in(Scopes.SINGLETON);
-    install(new RestEventForwarderModule());
-    install(new IndexModule());
+    bind(Executor.class)
+        .annotatedWith(IndexExecutor.class)
+        .toProvider(IndexExecutorProvider.class);
+    listener().to(IndexExecutorProvider.class);
+    DynamicSet.bind(binder(), ChangeIndexedListener.class).to(
+        IndexEventHandler.class);
   }
 }

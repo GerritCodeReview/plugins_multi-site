@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
-import com.ericsson.gerrit.plugins.highavailability.HttpResponseHandler.HttpResult;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

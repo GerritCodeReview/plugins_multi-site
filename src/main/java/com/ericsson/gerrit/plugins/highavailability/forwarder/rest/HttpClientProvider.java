@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;

@@ -12,12 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.index;
 
 import com.google.common.base.Objects;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.events.ChangeIndexedListener;
 import com.google.inject.Inject;
+
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.EventForwarder;
 
 import java.util.Collections;
 import java.util.Set;
@@ -28,11 +31,11 @@ class IndexEventHandler implements ChangeIndexedListener {
   private final Executor executor;
   private final EventForwarder eventForwarder;
   private final String pluginName;
-  private final Set<SyncIndexTask> queuedTasks = Collections
-      .newSetFromMap(new ConcurrentHashMap<SyncIndexTask, Boolean>());
+  private final Set<IndexTask> queuedTasks = Collections
+      .newSetFromMap(new ConcurrentHashMap<IndexTask, Boolean>());
 
   @Inject
-  IndexEventHandler(@SyncIndexExecutor Executor executor,
+  IndexEventHandler(@IndexExecutor Executor executor,
       @PluginName String pluginName,
       EventForwarder eventForwarder) {
     this.eventForwarder = eventForwarder;
@@ -52,18 +55,18 @@ class IndexEventHandler implements ChangeIndexedListener {
 
   private void executeIndexTask(int id, boolean deleted) {
     if (!Context.isForwardedEvent()) {
-      SyncIndexTask syncIndexTask = new SyncIndexTask(id, deleted);
-      if (queuedTasks.add(syncIndexTask)) {
-        executor.execute(syncIndexTask);
+      IndexTask indexTask = new IndexTask(id, deleted);
+      if (queuedTasks.add(indexTask)) {
+        executor.execute(indexTask);
       }
     }
   }
 
-  class SyncIndexTask implements Runnable {
+  class IndexTask implements Runnable {
     private int changeId;
     private boolean deleted;
 
-    SyncIndexTask(int changeId, boolean deleted) {
+    IndexTask(int changeId, boolean deleted) {
       this.changeId = changeId;
       this.deleted = deleted;
     }
@@ -85,10 +88,10 @@ class IndexEventHandler implements ChangeIndexedListener {
 
     @Override
     public boolean equals(Object obj) {
-      if (!(obj instanceof SyncIndexTask)) {
+      if (!(obj instanceof IndexTask)) {
         return false;
       }
-      SyncIndexTask other = (SyncIndexTask) obj;
+      IndexTask other = (IndexTask) obj;
       return changeId == other.changeId && deleted == other.deleted;
     }
 

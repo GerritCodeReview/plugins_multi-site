@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.index;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.mock;
@@ -26,7 +26,9 @@ import com.google.gerrit.server.git.WorkQueue.Executor;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.StandardKeyEncoder;
 
-import com.ericsson.gerrit.plugins.highavailability.IndexEventHandler.SyncIndexTask;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.EventForwarder;
+import com.ericsson.gerrit.plugins.highavailability.index.IndexEventHandler.IndexTask;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -87,26 +89,26 @@ public class IndexEventHandlerTest {
     indexEventHandler.onChangeIndexed(id.get());
     indexEventHandler.onChangeIndexed(id.get());
     verify(poolMock, times(1))
-        .execute(indexEventHandler.new SyncIndexTask(CHANGE_ID, false));
+        .execute(indexEventHandler.new IndexTask(CHANGE_ID, false));
   }
 
   @Test
-  public void testSyncIndexTaskToString() throws Exception {
-    SyncIndexTask syncIndexTask =
-        indexEventHandler.new SyncIndexTask(CHANGE_ID, false);
-    assertThat(syncIndexTask.toString()).isEqualTo(String.format(
+  public void testIndexTaskToString() throws Exception {
+    IndexTask indexTask =
+        indexEventHandler.new IndexTask(CHANGE_ID, false);
+    assertThat(indexTask.toString()).isEqualTo(String.format(
         "[%s] Index change %s in target instance", PLUGIN_NAME, CHANGE_ID));
   }
 
   @Test
-  public void testSyncIndexTaskHashCodeAndEquals() {
-    SyncIndexTask task = indexEventHandler.new SyncIndexTask(CHANGE_ID, false);
+  public void testIndexTaskHashCodeAndEquals() {
+    IndexTask task = indexEventHandler.new IndexTask(CHANGE_ID, false);
 
     assertThat(task.equals(task)).isTrue();
     assertThat(task.hashCode()).isEqualTo(task.hashCode());
 
-    SyncIndexTask identicalTask =
-        indexEventHandler.new SyncIndexTask(CHANGE_ID, false);
+    IndexTask identicalTask =
+        indexEventHandler.new IndexTask(CHANGE_ID, false);
     assertThat(task.equals(identicalTask)).isTrue();
     assertThat(task.hashCode()).isEqualTo(identicalTask.hashCode());
 
@@ -114,13 +116,13 @@ public class IndexEventHandlerTest {
     assertThat(task.equals("test")).isFalse();
     assertThat(task.hashCode()).isNotEqualTo("test".hashCode());
 
-    SyncIndexTask differentChangeIdTask =
-        indexEventHandler.new SyncIndexTask(123, false);
+    IndexTask differentChangeIdTask =
+        indexEventHandler.new IndexTask(123, false);
     assertThat(task.equals(differentChangeIdTask)).isFalse();
     assertThat(task.hashCode()).isNotEqualTo(differentChangeIdTask.hashCode());
 
-    SyncIndexTask removeTask =
-        indexEventHandler.new SyncIndexTask(CHANGE_ID, true);
+    IndexTask removeTask =
+        indexEventHandler.new IndexTask(CHANGE_ID, true);
     assertThat(task.equals(removeTask)).isFalse();
     assertThat(task.hashCode()).isNotEqualTo(removeTask.hashCode());
   }

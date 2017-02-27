@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
 /**
  * Forward event to the other master
  */
-interface EventForwarder {
+public interface EventForwarder {
 
   /**
    * Forward a change indexing event to the other master.

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
@@ -25,6 +25,8 @@ import com.google.gwtorm.server.OrmException;
 import com.google.gwtorm.server.SchemaFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,10 +42,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Singleton
-class SyncIndexRestApiServlet extends HttpServlet {
+class IndexRestApiServlet extends HttpServlet {
   private static final long serialVersionUID = -1L;
   private static final Logger logger =
-      LoggerFactory.getLogger(SyncIndexRestApiServlet.class);
+      LoggerFactory.getLogger(IndexRestApiServlet.class);
   private static final Map<Change.Id, AtomicInteger> changeIdLocks =
       new HashMap<>();
 
@@ -51,7 +53,7 @@ class SyncIndexRestApiServlet extends HttpServlet {
   private final SchemaFactory<ReviewDb> schemaFactory;
 
   @Inject
-  SyncIndexRestApiServlet(ChangeIndexer indexer,
+  IndexRestApiServlet(ChangeIndexer indexer,
       SchemaFactory<ReviewDb> schemaFactory) {
     this.indexer = indexer;
     this.schemaFactory = schemaFactory;

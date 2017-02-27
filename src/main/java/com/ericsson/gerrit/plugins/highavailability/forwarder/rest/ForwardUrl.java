@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -22,5 +22,5 @@ import java.lang.annotation.Retention;
 
 @Retention(RUNTIME)
 @BindingAnnotation
-@interface SyncIndexExecutor {
+@interface ForwardUrl {
 }

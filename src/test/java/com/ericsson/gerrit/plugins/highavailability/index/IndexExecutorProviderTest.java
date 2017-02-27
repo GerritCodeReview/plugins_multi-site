@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.index;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.mock;
@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 import com.google.gerrit.server.git.WorkQueue;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
-import com.ericsson.gerrit.plugins.highavailability.SyncIndexExecutorProvider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,10 +30,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SyncIndexExecutorProviderTest {
+public class IndexExecutorProviderTest {
   @Mock
   private WorkQueue.Executor executorMock;
-  private SyncIndexExecutorProvider syncIndexExecutorProvider;
+  private IndexExecutorProvider indexExecutorProvider;
 
   @Before
   public void setUp() throws Exception {
@@ -44,22 +43,22 @@ public class SyncIndexExecutorProviderTest {
         .thenReturn(executorMock);
     Configuration configMock = mock(Configuration.class);
     when(configMock.getThreadPoolSize()).thenReturn(4);
-    syncIndexExecutorProvider =
-        new SyncIndexExecutorProvider(workQueueMock, configMock);
+    indexExecutorProvider =
+        new IndexExecutorProvider(workQueueMock, configMock);
   }
 
   @Test
   public void shouldReturnExecutor() throws Exception {
-    assertThat(syncIndexExecutorProvider.get()).isEqualTo(executorMock);
+    assertThat(indexExecutorProvider.get()).isEqualTo(executorMock);
   }
 
   @Test
   public void testStop() throws Exception {
-    syncIndexExecutorProvider.start();
-    assertThat(syncIndexExecutorProvider.get()).isEqualTo(executorMock);
-    syncIndexExecutorProvider.stop();
+    indexExecutorProvider.start();
+    assertThat(indexExecutorProvider.get()).isEqualTo(executorMock);
+    indexExecutorProvider.stop();
     verify(executorMock).shutdown();
     verify(executorMock).unregisterWorkQueue();
-    assertThat(syncIndexExecutorProvider.get()).isNull();
+    assertThat(indexExecutorProvider.get()).isNull();
   }
 }

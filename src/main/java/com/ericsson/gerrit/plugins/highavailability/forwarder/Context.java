@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
 /**
  * Allows to tag a forwarded event to avoid infinitely looping events.
  */
-class Context {
+public class Context {
   private static final ThreadLocal<Boolean> FORWARDED_EVENT =
       new ThreadLocal<Boolean>() {
         @Override
@@ -29,15 +29,15 @@ class Context {
   private Context() {
   }
 
-  static Boolean isForwardedEvent() {
+  public static Boolean isForwardedEvent() {
     return FORWARDED_EVENT.get();
   }
 
-  static void setForwardedEvent(Boolean b) {
+  public static void setForwardedEvent(Boolean b) {
     FORWARDED_EVENT.set(b);
   }
 
-  static void unsetForwardedEvent() {
+  public static void unsetForwardedEvent() {
     FORWARDED_EVENT.remove();
   }
 }

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.index;
 
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.git.WorkQueue;
@@ -20,17 +20,19 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
+
 import java.util.concurrent.Executor;
 
 @Singleton
-class SyncIndexExecutorProvider implements Provider<Executor>,
+class IndexExecutorProvider implements Provider<Executor>,
     LifecycleListener {
   private WorkQueue.Executor executor;
 
   @Inject
-  SyncIndexExecutorProvider(WorkQueue workQueue, Configuration config) {
-    executor =
-        workQueue.createQueue(config.getThreadPoolSize(), "Sync remote index");
+  IndexExecutorProvider(WorkQueue workQueue, Configuration config) {
+    executor = workQueue.createQueue(config.getThreadPoolSize(),
+        "Sync remote index");
   }
 
   @Override
