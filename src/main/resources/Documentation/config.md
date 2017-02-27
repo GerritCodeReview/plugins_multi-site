@@ -46,6 +46,6 @@ calls by specifying the following fields:
 :   The interval of time in milliseconds between the subsequent auto-retries.
     When not specified, the default value is set to 1000ms.
 
-@PLUGIN@.threadPoolSize
+@PLUGIN@.indexThreadPoolSize
 :   Maximum number of threads used to send index events to the target instance.
     Defaults to 1.

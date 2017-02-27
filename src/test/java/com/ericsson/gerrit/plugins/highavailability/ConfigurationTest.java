@@ -64,7 +64,8 @@ public class ConfigurationTest {
     assertThat(configuration.getSocketTimeout()).isEqualTo(TIMEOUT);
     assertThat(configuration.getMaxTries()).isEqualTo(MAX_TRIES);
     assertThat(configuration.getRetryInterval()).isEqualTo(RETRY_INTERVAL);
-    assertThat(configuration.getThreadPoolSize()).isEqualTo(THREAD_POOL_SIZE);
+    assertThat(configuration.getIndexThreadPoolSize())
+        .isEqualTo(THREAD_POOL_SIZE);
   }
 
   @Test
@@ -77,7 +78,7 @@ public class ConfigurationTest {
     assertThat(configuration.getSocketTimeout()).isEqualTo(0);
     assertThat(configuration.getMaxTries()).isEqualTo(0);
     assertThat(configuration.getRetryInterval()).isEqualTo(0);
-    assertThat(configuration.getThreadPoolSize()).isEqualTo(0);
+    assertThat(configuration.getIndexThreadPoolSize()).isEqualTo(0);
   }
 
   @Test
@@ -101,7 +102,7 @@ public class ConfigurationTest {
         .thenReturn(values ? MAX_TRIES : 0);
     when(configMock.getInt("retryInterval", RETRY_INTERVAL))
         .thenReturn(values ? RETRY_INTERVAL : 0);
-    when(configMock.getInt("threadPoolSize", THREAD_POOL_SIZE))
+    when(configMock.getInt("indexThreadPoolSize", THREAD_POOL_SIZE))
         .thenReturn(values ? THREAD_POOL_SIZE : 0);
 
     configuration = new Configuration(cfgFactoryMock, pluginName);

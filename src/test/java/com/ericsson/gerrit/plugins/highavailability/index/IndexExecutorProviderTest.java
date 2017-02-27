@@ -42,7 +42,7 @@ public class IndexExecutorProviderTest {
     when(workQueueMock.createQueue(4, "Forward-index-event"))
         .thenReturn(executorMock);
     Configuration configMock = mock(Configuration.class);
-    when(configMock.getThreadPoolSize()).thenReturn(4);
+    when(configMock.getIndexThreadPoolSize()).thenReturn(4);
     indexExecutorProvider =
         new IndexExecutorProvider(workQueueMock, configMock);
   }

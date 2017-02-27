@@ -36,7 +36,7 @@ public class Configuration {
   private final int socketTimeout;
   private final int maxTries;
   private final int retryInterval;
-  private final int threadPoolSize;
+  private final int indexThreadPoolSize;
 
   @Inject
   Configuration(PluginConfigFactory config,
@@ -49,7 +49,8 @@ public class Configuration {
     socketTimeout = cfg.getInt("socketTimeout", DEFAULT_TIMEOUT_MS);
     maxTries = cfg.getInt("maxTries", DEFAULT_MAX_TRIES);
     retryInterval = cfg.getInt("retryInterval", DEFAULT_RETRY_INTERVAL);
-    threadPoolSize = cfg.getInt("threadPoolSize", DEFAULT_THREAD_POOL_SIZE);
+    indexThreadPoolSize =
+        cfg.getInt("indexThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
   }
 
   public int getConnectionTimeout() {
@@ -80,7 +81,7 @@ public class Configuration {
     return password;
   }
 
-  public int getThreadPoolSize() {
-    return threadPoolSize;
+  public int getIndexThreadPoolSize() {
+    return indexThreadPoolSize;
   }
 }
