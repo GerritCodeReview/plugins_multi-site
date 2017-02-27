@@ -17,9 +17,9 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder;
 import com.google.gerrit.server.events.Event;
 
 /**
- * Forward event to the other master
+ * Forward indexing and stream events to the other master
  */
-public interface EventForwarder {
+public interface Forwarder {
 
   /**
    * Forward a change indexing event to the other master.
@@ -38,7 +38,7 @@ public interface EventForwarder {
   boolean deleteChangeFromIndex(int changeId);
 
   /**
-   * Forward an event to the other master.
+   * Forward a stream event to the other master.
    *
    * @param event the event to forward.
    * @return true if successful, otherwise false.

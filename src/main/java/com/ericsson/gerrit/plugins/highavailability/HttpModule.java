@@ -16,11 +16,11 @@ package com.ericsson.gerrit.plugins.highavailability;
 
 import com.google.gerrit.httpd.plugins.HttpPluginModule;
 
-import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.EventForwarderServletModule;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.RestForwarderServletModule;
 
 class HttpModule extends HttpPluginModule {
   @Override
   protected void configureServlets() {
-    install(new EventForwarderServletModule());
+    install(new RestForwarderServletModule());
   }
 }

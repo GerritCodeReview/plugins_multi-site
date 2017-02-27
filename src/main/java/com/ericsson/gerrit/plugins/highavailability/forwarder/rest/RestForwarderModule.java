@@ -19,18 +19,18 @@ import com.google.inject.Provides;
 import com.google.inject.Scopes;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.EventForwarder;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 
-public class RestEventForwarderModule extends LifecycleModule {
+public class RestForwarderModule extends LifecycleModule {
 
   @Override
   protected void configure() {
     bind(CloseableHttpClient.class).toProvider(HttpClientProvider.class)
         .in(Scopes.SINGLETON);
     bind(HttpSession.class);
-    bind(EventForwarder.class).to(RestEventForwarder.class);
+    bind(Forwarder.class).to(RestForwarder.class);
   }
 
   @Provides

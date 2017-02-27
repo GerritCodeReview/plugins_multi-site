@@ -20,7 +20,7 @@ import com.google.gerrit.extensions.events.ChangeIndexedListener;
 import com.google.inject.Inject;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.EventForwarder;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 
 import java.util.Collections;
 import java.util.Set;
@@ -29,7 +29,7 @@ import java.util.concurrent.Executor;
 
 class IndexEventHandler implements ChangeIndexedListener {
   private final Executor executor;
-  private final EventForwarder eventForwarder;
+  private final Forwarder forwarder;
   private final String pluginName;
   private final Set<IndexTask> queuedTasks = Collections
       .newSetFromMap(new ConcurrentHashMap<IndexTask, Boolean>());
@@ -37,8 +37,8 @@ class IndexEventHandler implements ChangeIndexedListener {
   @Inject
   IndexEventHandler(@IndexExecutor Executor executor,
       @PluginName String pluginName,
-      EventForwarder eventForwarder) {
-    this.eventForwarder = eventForwarder;
+      Forwarder forwarder) {
+    this.forwarder = forwarder;
     this.executor = executor;
     this.pluginName = pluginName;
   }
@@ -75,9 +75,9 @@ class IndexEventHandler implements ChangeIndexedListener {
     public void run() {
       queuedTasks.remove(this);
       if (deleted) {
-        eventForwarder.deleteChangeFromIndex(changeId);
+        forwarder.deleteChangeFromIndex(changeId);
       } else {
-        eventForwarder.indexChange(changeId);
+        forwarder.indexChange(changeId);
       }
     }
 

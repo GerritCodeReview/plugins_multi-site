@@ -21,20 +21,20 @@ import com.google.gerrit.server.events.ProjectEvent;
 import com.google.inject.Inject;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.EventForwarder;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 class EventHandler implements EventListener {
   private final ScheduledThreadPoolExecutor executor;
-  private final EventForwarder eventForwarder;
+  private final Forwarder forwarder;
   private final String pluginName;
 
   @Inject
-  EventHandler(EventForwarder eventForwarder,
+  EventHandler(Forwarder forwarder,
       @EventExecutor ScheduledThreadPoolExecutor executor,
       @PluginName String pluginName) {
-    this.eventForwarder = eventForwarder;
+    this.forwarder = forwarder;
     this.executor = executor;
     this.pluginName = pluginName;
   }
@@ -55,7 +55,7 @@ class EventHandler implements EventListener {
 
     @Override
     public void run() {
-      eventForwarder.send(event);
+      forwarder.send(event);
     }
 
     @Override

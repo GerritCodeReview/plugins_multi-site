@@ -22,14 +22,14 @@ import com.ericsson.gerrit.plugins.highavailability.Configuration;
 
 import org.junit.Test;
 
-public class ModuleTest {
+public class RestForwarderModuleTest {
 
   @Test
   public void testForwardUrlProvider() {
     Configuration configMock = mock(Configuration.class);
     String expected = "someUrl";
     when(configMock.getUrl()).thenReturn(expected);
-    RestEventForwarderModule module = new RestEventForwarderModule();
+    RestForwarderModule module = new RestForwarderModule();
     assertThat(module.forwardUrl(configMock)).isEqualTo(expected);
   }
 }

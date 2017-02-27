@@ -22,7 +22,7 @@ import com.google.gerrit.server.events.SupplierSerializer;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 
-import com.ericsson.gerrit.plugins.highavailability.forwarder.EventForwarder;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 
 import org.slf4j.Logger;
@@ -30,15 +30,15 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-class RestEventForwarder implements EventForwarder {
+class RestForwarder implements Forwarder {
   private static final Logger log =
-      LoggerFactory.getLogger(RestEventForwarder.class);
+      LoggerFactory.getLogger(RestForwarder.class);
 
   private final HttpSession httpSession;
   private final String pluginName;
 
   @Inject
-  RestEventForwarder(HttpSession httpClient,
+  RestForwarder(HttpSession httpClient,
       @PluginName String pluginName) {
     this.httpSession = httpClient;
     this.pluginName = pluginName;

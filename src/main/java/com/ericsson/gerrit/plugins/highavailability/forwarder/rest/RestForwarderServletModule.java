@@ -16,7 +16,7 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import com.google.gerrit.httpd.plugins.HttpPluginModule;
 
-public class EventForwarderServletModule extends HttpPluginModule {
+public class RestForwarderServletModule extends HttpPluginModule {
   @Override
   protected void configureServlets() {
     serveRegex("/index/\\d+$").with(IndexRestApiServlet.class);

@@ -29,7 +29,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-public class RestEventForwarderTest {
+public class RestForwarderTest {
   private static final int CHANGE_NUMBER = 1;
   private static final String DELETE_OP = "delete";
   private static final String INDEX_OP = "index";
@@ -42,47 +42,48 @@ public class RestEventForwarderTest {
   private static final boolean DO_NOT_THROW_EXCEPTION = false;
   private static final boolean THROW_EXCEPTION = true;
 
-  private RestEventForwarder eventForwarder;
+  private RestForwarder restForwarder;
 
   @Test
   public void testIndexChangeOK() throws Exception {
     setUpMocksForIndex(INDEX_OP, SUCCESSFUL, EMPTY_MSG, DO_NOT_THROW_EXCEPTION);
-    assertThat(eventForwarder.indexChange(CHANGE_NUMBER)).isTrue();
+    assertThat(restForwarder.indexChange(CHANGE_NUMBER)).isTrue();
   }
 
   @Test
   public void testIndexChangeFailed() throws Exception {
     setUpMocksForIndex(INDEX_OP, FAILED, ERROR_MSG, DO_NOT_THROW_EXCEPTION);
-    assertThat(eventForwarder.indexChange(CHANGE_NUMBER)).isFalse();
+    assertThat(restForwarder.indexChange(CHANGE_NUMBER)).isFalse();
   }
 
   @Test
   public void testIndexChangeThrowsException() throws Exception {
     setUpMocksForIndex(INDEX_OP, FAILED, EXCEPTION_MSG, THROW_EXCEPTION);
-    assertThat(eventForwarder.indexChange(CHANGE_NUMBER)).isFalse();
+    assertThat(restForwarder.indexChange(CHANGE_NUMBER)).isFalse();
   }
 
   @Test
   public void testChangeDeletedFromIndexOK() throws Exception {
     setUpMocksForIndex(DELETE_OP, SUCCESSFUL, EMPTY_MSG,
         DO_NOT_THROW_EXCEPTION);
-    assertThat(eventForwarder.deleteChangeFromIndex(CHANGE_NUMBER)).isTrue();
+    assertThat(restForwarder.deleteChangeFromIndex(CHANGE_NUMBER)).isTrue();
   }
 
   @Test
   public void testChangeDeletedFromIndexFailed() throws Exception {
     setUpMocksForIndex(DELETE_OP, FAILED, ERROR_MSG, DO_NOT_THROW_EXCEPTION);
-    assertThat(eventForwarder.deleteChangeFromIndex(CHANGE_NUMBER)).isFalse();
+    assertThat(restForwarder.deleteChangeFromIndex(CHANGE_NUMBER)).isFalse();
   }
 
   @Test
   public void testChangeDeletedFromThrowsException() throws Exception {
     setUpMocksForIndex(DELETE_OP, FAILED, EXCEPTION_MSG, THROW_EXCEPTION);
-    assertThat(eventForwarder.deleteChangeFromIndex(CHANGE_NUMBER)).isFalse();
+    assertThat(restForwarder.deleteChangeFromIndex(CHANGE_NUMBER)).isFalse();
   }
 
-  private void setUpMocksForIndex(String operation, boolean isOperationSuccessful,
-      String msg, boolean exception) throws Exception {
+  private void setUpMocksForIndex(String operation,
+      boolean isOperationSuccessful, String msg, boolean exception)
+      throws Exception {
     String request =
         Joiner.on("/").join("/plugins", PLUGIN_NAME, INDEX_OP, CHANGE_NUMBER);
     HttpSession httpSession = mock(HttpSession.class);
@@ -100,25 +101,25 @@ public class RestEventForwarderTest {
         when(httpSession.delete(request)).thenReturn(result);
       }
     }
-    eventForwarder = new RestEventForwarder(httpSession, PLUGIN_NAME);
+    restForwarder = new RestForwarder(httpSession, PLUGIN_NAME);
   }
 
   @Test
   public void testEventSentOK() throws Exception {
     Event event = setUpMocksForEvent(true, "", false);
-    assertThat(eventForwarder.send(event)).isTrue();
+    assertThat(restForwarder.send(event)).isTrue();
   }
 
   @Test
   public void testEventSentFailed() throws Exception {
     Event event = setUpMocksForEvent(false, "Error", false);
-    assertThat(eventForwarder.send(event)).isFalse();
+    assertThat(restForwarder.send(event)).isFalse();
   }
 
   @Test
   public void testEventSentThrowsException() throws Exception {
     Event event = setUpMocksForEvent(false, "Exception", true);
-    assertThat(eventForwarder.send(event)).isFalse();
+    assertThat(restForwarder.send(event)).isFalse();
   }
 
   private Event setUpMocksForEvent(boolean isOperationSuccessful, String msg,
@@ -133,7 +134,7 @@ public class RestEventForwarderTest {
       HttpResult result = new HttpResult(isOperationSuccessful, msg);
       when(httpSession.post(request, content)).thenReturn(result);
     }
-    eventForwarder = new RestEventForwarder(httpSession, PLUGIN_NAME);
+    restForwarder = new RestForwarder(httpSession, PLUGIN_NAME);
     return event;
   }
 
