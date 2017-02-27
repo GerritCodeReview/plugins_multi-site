@@ -39,7 +39,7 @@ public class IndexExecutorProviderTest {
   public void setUp() throws Exception {
     executorMock = mock(WorkQueue.Executor.class);
     WorkQueue workQueueMock = mock(WorkQueue.class);
-    when(workQueueMock.createQueue(4, "Sync remote index"))
+    when(workQueueMock.createQueue(4, "Forward-index-event"))
         .thenReturn(executorMock);
     Configuration configMock = mock(Configuration.class);
     when(configMock.getThreadPoolSize()).thenReturn(4);

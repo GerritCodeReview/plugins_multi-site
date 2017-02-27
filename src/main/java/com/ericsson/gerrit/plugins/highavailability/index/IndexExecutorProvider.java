@@ -32,7 +32,7 @@ class IndexExecutorProvider implements Provider<Executor>,
   @Inject
   IndexExecutorProvider(WorkQueue workQueue, Configuration config) {
     executor = workQueue.createQueue(config.getThreadPoolSize(),
-        "Sync remote index");
+        "Forward-index-event");
   }
 
   @Override

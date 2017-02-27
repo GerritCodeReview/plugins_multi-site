@@ -39,7 +39,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IndexEventHandlerTest {
-  private static final String PLUGIN_NAME = "sync-index";
+  private static final String PLUGIN_NAME = "high-availability";
   private static final int CHANGE_ID = 1;
 
   private IndexEventHandler indexEventHandler;

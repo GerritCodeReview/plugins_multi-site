@@ -43,7 +43,7 @@ public class HttpSessionTest {
   private static final int NOT_FOUND = 404;
   private static final int UNAUTHORIZED = 401;
 
-  private static final String ENDPOINT = "/plugins/sync-index/index/1";
+  private static final String ENDPOINT = "/plugins/high-availability/index/1";
   private static final String ERROR_MESSAGE = "Error message";
   private static final String REQUEST_MADE = "Request made";
   private static final String SECOND_TRY = "Second try";
