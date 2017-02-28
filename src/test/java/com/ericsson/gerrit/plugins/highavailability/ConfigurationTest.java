@@ -15,12 +15,12 @@
 package com.ericsson.gerrit.plugins.highavailability;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
-
-import com.ericsson.gerrit.plugins.highavailability.Configuration;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -91,6 +91,20 @@ public class ConfigurationTest {
     configuration = new Configuration(cfgFactoryMock, pluginName);
     assertThat(configuration).isNotNull();
     assertThat(configuration.getUrl()).isEqualTo(URL);
+  }
+
+  @Test
+  public void testIllegalArgumentExceptionReturnDefaultValue() throws Exception {
+    when(configMock.getInt(anyString(), anyInt()))
+        .thenThrow(new IllegalArgumentException("some message"));
+
+    configuration = new Configuration(cfgFactoryMock, pluginName);
+    assertThat(configuration.getConnectionTimeout()).isEqualTo(5000);
+    assertThat(configuration.getSocketTimeout()).isEqualTo(5000);
+    assertThat(configuration.getMaxTries()).isEqualTo(5);
+    assertThat(configuration.getRetryInterval()).isEqualTo(1000);
+    assertThat(configuration.getIndexThreadPoolSize()).isEqualTo(1);
+    assertThat(configuration.getEventThreadPoolSize()).isEqualTo(1);
   }
 
   private void buildMocks(boolean values) {

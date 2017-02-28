@@ -14,6 +14,9 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.gerrit.extensions.annotations.PluginName;
@@ -24,6 +27,8 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class Configuration {
+  private static final Logger log = LoggerFactory.getLogger(Configuration.class);
+
   private static final int DEFAULT_TIMEOUT_MS = 5000;
   private static final int DEFAULT_MAX_TRIES = 5;
   private static final int DEFAULT_RETRY_INTERVAL = 1000;
@@ -46,14 +51,24 @@ public class Configuration {
     url = Strings.nullToEmpty(cfg.getString("url"));
     user = Strings.nullToEmpty(cfg.getString("user"));
     password = Strings.nullToEmpty(cfg.getString("password"));
-    connectionTimeout = cfg.getInt("connectionTimeout", DEFAULT_TIMEOUT_MS);
-    socketTimeout = cfg.getInt("socketTimeout", DEFAULT_TIMEOUT_MS);
-    maxTries = cfg.getInt("maxTries", DEFAULT_MAX_TRIES);
-    retryInterval = cfg.getInt("retryInterval", DEFAULT_RETRY_INTERVAL);
+    connectionTimeout = getInt(cfg, "connectionTimeout", DEFAULT_TIMEOUT_MS);
+    socketTimeout = getInt(cfg, "socketTimeout", DEFAULT_TIMEOUT_MS);
+    maxTries = getInt(cfg, "maxTries", DEFAULT_MAX_TRIES);
+    retryInterval = getInt(cfg, "retryInterval", DEFAULT_RETRY_INTERVAL);
     indexThreadPoolSize =
-        cfg.getInt("indexThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
+        getInt(cfg, "indexThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
     eventThreadPoolSize =
-        cfg.getInt("eventThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
+        getInt(cfg, "eventThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
+  }
+
+  private int getInt(PluginConfig cfg, String name, int defaultValue) {
+    try {
+      return cfg.getInt(name, defaultValue);
+    } catch (IllegalArgumentException e) {
+      log.error(String.format(
+          "invalid value for %s; using default value %d", name, defaultValue));
+      return defaultValue;
+    }
   }
 
   public int getConnectionTimeout() {
