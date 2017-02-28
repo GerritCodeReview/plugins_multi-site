@@ -5,13 +5,10 @@ include_defs('//bucklets/maven_jar.bucklet')
 SOURCES = glob(['src/main/java/**/*.java'])
 RESOURCES = glob(['src/main/resources/**/*'])
 
-DEPS = [
-  ':wiremock',
-]
-
-TEST_DEPS = GERRIT_PLUGIN_API + GERRIT_TESTS + DEPS + [
+TEST_DEPS = GERRIT_PLUGIN_API + GERRIT_TESTS + [
   ':high-availability__plugin',
   ':mockito',
+  ':wiremock',
 ]
 
 gerrit_plugin(
@@ -28,7 +25,6 @@ gerrit_plugin(
     'Implementation-Vendor: Ericsson',
   ],
   provided_deps = GERRIT_TESTS,
-  deps = DEPS,
 )
 
 java_sources(
