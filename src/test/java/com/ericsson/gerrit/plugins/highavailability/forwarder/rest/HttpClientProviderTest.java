@@ -51,12 +51,14 @@ public class HttpClientProviderTest {
   @Test
   public void testGet() throws Exception {
     Injector injector = Guice.createInjector(new TestModule());
-    CloseableHttpClient httpClient1 =
-        injector.getInstance(CloseableHttpClient.class);
-    assertThat(httpClient1).isNotNull();
-    CloseableHttpClient httpClient2 =
-        injector.getInstance(CloseableHttpClient.class);
-    assertThat(httpClient1).isEqualTo(httpClient2);
+    try (CloseableHttpClient httpClient1 =
+        injector.getInstance(CloseableHttpClient.class)) {
+      assertThat(httpClient1).isNotNull();
+      try (CloseableHttpClient httpClient2 =
+          injector.getInstance(CloseableHttpClient.class)) {
+        assertThat(httpClient1).isEqualTo(httpClient2);
+      }
+    }
   }
 
   class TestModule extends LifecycleModule {
