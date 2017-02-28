@@ -56,7 +56,7 @@ maven_jar(
   name = 'mockito',
   id = 'org.mockito:mockito-core:2.5.0',
   sha1 = 'be28d46a52c7f2563580adeca350145e9ce916f8',
-  license = 'MIT',
+  license = 'DO_NOT_DISTRIBUTE',
   deps = [
     ':byte-buddy',
     ':objenesis',
