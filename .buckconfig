@@ -1,0 +1,16 @@
+[alias]
+  high-availability = //:high-availability
+  plugin = //:high-availability
+  src = //:high-availability-sources
+
+[java]
+  jar_spool_mode = direct_to_jar
+  src_roots = java, resources
+
+[project]
+  ignore = .git, eclipse-out/
+  parallel_parsing = true
+
+[cache]
+  mode = dir
+  dir = buck-out/cache
