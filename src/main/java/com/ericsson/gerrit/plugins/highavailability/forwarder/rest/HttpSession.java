@@ -14,15 +14,19 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
+import com.google.common.base.Strings;
+import com.google.common.net.MediaType;
 import com.google.inject.Inject;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 class HttpSession {
   private final CloseableHttpClient httpClient;
@@ -36,8 +40,16 @@ class HttpSession {
   }
 
   HttpResult post(String endpoint) throws IOException {
-    return httpClient.execute(new HttpPost(url + endpoint),
-        new HttpResponseHandler());
+    return post(endpoint, null);
+  }
+
+  HttpResult post(String endpoint, String content) throws IOException {
+    HttpPost post = new HttpPost(url + endpoint);
+    if (!Strings.isNullOrEmpty(content)) {
+      post.addHeader("Content-Type", MediaType.JSON_UTF_8.toString());
+      post.setEntity(new StringEntity(content, StandardCharsets.UTF_8));
+    }
+    return httpClient.execute(post, new HttpResponseHandler());
   }
 
   HttpResult delete(String endpoint) throws IOException {

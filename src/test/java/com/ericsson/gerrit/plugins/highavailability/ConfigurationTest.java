@@ -46,7 +46,7 @@ public class ConfigurationTest {
   @Mock
   private PluginConfig configMock;
   private Configuration configuration;
-  private String pluginName = "high-availability";
+  private String pluginName = "multi-master";
 
   @Before
   public void setUp() throws Exception {
@@ -66,6 +66,8 @@ public class ConfigurationTest {
     assertThat(configuration.getRetryInterval()).isEqualTo(RETRY_INTERVAL);
     assertThat(configuration.getIndexThreadPoolSize())
         .isEqualTo(THREAD_POOL_SIZE);
+    assertThat(configuration.getEventThreadPoolSize())
+        .isEqualTo(THREAD_POOL_SIZE);
   }
 
   @Test
@@ -79,6 +81,7 @@ public class ConfigurationTest {
     assertThat(configuration.getMaxTries()).isEqualTo(0);
     assertThat(configuration.getRetryInterval()).isEqualTo(0);
     assertThat(configuration.getIndexThreadPoolSize()).isEqualTo(0);
+    assertThat(configuration.getEventThreadPoolSize()).isEqualTo(0);
   }
 
   @Test
@@ -103,6 +106,8 @@ public class ConfigurationTest {
     when(configMock.getInt("retryInterval", RETRY_INTERVAL))
         .thenReturn(values ? RETRY_INTERVAL : 0);
     when(configMock.getInt("indexThreadPoolSize", THREAD_POOL_SIZE))
+        .thenReturn(values ? THREAD_POOL_SIZE : 0);
+    when(configMock.getInt("eventThreadPoolSize", THREAD_POOL_SIZE))
         .thenReturn(values ? THREAD_POOL_SIZE : 0);
 
     configuration = new Configuration(cfgFactoryMock, pluginName);

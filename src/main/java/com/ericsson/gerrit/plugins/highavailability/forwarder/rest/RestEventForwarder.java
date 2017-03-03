@@ -15,7 +15,11 @@
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Supplier;
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.SupplierSerializer;
+import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.EventForwarder;
@@ -72,5 +76,25 @@ class RestEventForwarder implements EventForwarder {
 
   private String buildEndpoint(int changeId) {
     return Joiner.on("/").join("/plugins", pluginName, "index", changeId);
+  }
+
+  @Override
+  public boolean send(Event event) {
+    String serializedEvent = new GsonBuilder()
+        .registerTypeAdapter(Supplier.class, new SupplierSerializer()).create()
+        .toJson(event);
+    try {
+      HttpResult result =
+          httpSession.post(Joiner.on("/").join("/plugins", pluginName, "event"),
+              serializedEvent);
+      if (result.isSuccessful()) {
+        return true;
+      }
+      log.error(
+          "Unable to send event '" + event.type + "' " + result.getMessage());
+    } catch (IOException e) {
+      log.error("Error trying to send event " + event.type, e);
+    }
+    return false;
   }
 }

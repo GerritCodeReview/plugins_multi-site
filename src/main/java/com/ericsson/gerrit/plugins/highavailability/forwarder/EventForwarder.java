@@ -14,6 +14,8 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
+import com.google.gerrit.server.events.Event;
+
 /**
  * Forward event to the other master
  */
@@ -34,4 +36,12 @@ public interface EventForwarder {
    * @return rue if successful, otherwise false.
    */
   boolean deleteChangeFromIndex(int changeId);
+
+  /**
+   * Forward an event to the other master.
+   *
+   * @param event the event to forward.
+   * @return true if successful, otherwise false.
+   */
+  boolean send(Event event);
 }

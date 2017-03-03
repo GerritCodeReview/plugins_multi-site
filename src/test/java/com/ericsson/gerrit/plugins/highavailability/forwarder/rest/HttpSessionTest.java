@@ -16,6 +16,7 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.google.common.truth.Truth.assertThat;
@@ -43,7 +44,8 @@ public class HttpSessionTest {
   private static final int NOT_FOUND = 404;
   private static final int UNAUTHORIZED = 401;
 
-  private static final String ENDPOINT = "/plugins/high-availability/index/1";
+  private static final String ENDPOINT = "/plugins/multi-master/index/1";
+  private static final String BODY = "SerializedEvent";
   private static final String ERROR_MESSAGE = "Error message";
   private static final String REQUEST_MADE = "Request made";
   private static final String SECOND_TRY = "Second try";
@@ -79,6 +81,13 @@ public class HttpSessionTest {
         .willReturn(aResponse().withStatus(OK)));
 
     assertThat(httpSession.post(ENDPOINT).isSuccessful()).isTrue();
+  }
+
+  @Test
+  public void testPostResponseWithContentOK() throws Exception {
+    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT))
+        .withRequestBody(equalTo(BODY)).willReturn(aResponse().withStatus(OK)));
+    assertThat(httpSession.post(ENDPOINT, BODY).isSuccessful()).isTrue();
   }
 
   @Test
