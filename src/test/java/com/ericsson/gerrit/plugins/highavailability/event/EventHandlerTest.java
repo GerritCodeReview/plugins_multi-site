@@ -34,7 +34,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventHandlerTest {
-  private static final String PLUGIN_NAME = "multi-master";
+  private static final String PLUGIN_NAME = "high-availability";
 
   private Event event;
   private EventHandler eventHandler;

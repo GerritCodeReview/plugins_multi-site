@@ -33,7 +33,7 @@ public class RestForwarderTest {
   private static final int CHANGE_NUMBER = 1;
   private static final String DELETE_OP = "delete";
   private static final String INDEX_OP = "index";
-  private static final String PLUGIN_NAME = "multi-master";
+  private static final String PLUGIN_NAME = "high-availability";
   private static final String EMPTY_MSG = "";
   private static final String ERROR_MSG = "Error";
   private static final String EXCEPTION_MSG = "Exception";

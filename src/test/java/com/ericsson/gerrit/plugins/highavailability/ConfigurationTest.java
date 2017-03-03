@@ -46,7 +46,7 @@ public class ConfigurationTest {
   @Mock
   private PluginConfig configMock;
   private Configuration configuration;
-  private String pluginName = "multi-master";
+  private String pluginName = "high-availability";
 
   @Before
   public void setUp() throws Exception {
