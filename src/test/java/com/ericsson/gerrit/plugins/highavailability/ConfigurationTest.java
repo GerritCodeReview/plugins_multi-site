@@ -68,6 +68,8 @@ public class ConfigurationTest {
         .isEqualTo(THREAD_POOL_SIZE);
     assertThat(configuration.getEventThreadPoolSize())
         .isEqualTo(THREAD_POOL_SIZE);
+    assertThat(configuration.getCacheThreadPoolSize())
+        .isEqualTo(THREAD_POOL_SIZE);
   }
 
   @Test
@@ -82,6 +84,7 @@ public class ConfigurationTest {
     assertThat(configuration.getRetryInterval()).isEqualTo(0);
     assertThat(configuration.getIndexThreadPoolSize()).isEqualTo(0);
     assertThat(configuration.getEventThreadPoolSize()).isEqualTo(0);
+    assertThat(configuration.getCacheThreadPoolSize()).isEqualTo(0);
   }
 
   @Test
@@ -105,6 +108,7 @@ public class ConfigurationTest {
     assertThat(configuration.getRetryInterval()).isEqualTo(1000);
     assertThat(configuration.getIndexThreadPoolSize()).isEqualTo(1);
     assertThat(configuration.getEventThreadPoolSize()).isEqualTo(1);
+    assertThat(configuration.getCacheThreadPoolSize()).isEqualTo(1);
   }
 
   private void buildMocks(boolean values) {
@@ -122,6 +126,8 @@ public class ConfigurationTest {
     when(configMock.getInt("indexThreadPoolSize", THREAD_POOL_SIZE))
         .thenReturn(values ? THREAD_POOL_SIZE : 0);
     when(configMock.getInt("eventThreadPoolSize", THREAD_POOL_SIZE))
+        .thenReturn(values ? THREAD_POOL_SIZE : 0);
+    when(configMock.getInt("cacheThreadPoolSize", THREAD_POOL_SIZE))
         .thenReturn(values ? THREAD_POOL_SIZE : 0);
 
     configuration = new Configuration(cfgFactoryMock, pluginName);

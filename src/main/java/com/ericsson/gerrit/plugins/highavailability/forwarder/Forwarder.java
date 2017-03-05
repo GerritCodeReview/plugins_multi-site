@@ -17,7 +17,7 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder;
 import com.google.gerrit.server.events.Event;
 
 /**
- * Forward indexing and stream events to the other master
+ * Forward indexing, stream events and cache evictions to the other master
  */
 public interface Forwarder {
 
@@ -44,4 +44,13 @@ public interface Forwarder {
    * @return true if successful, otherwise false.
    */
   boolean send(Event event);
+
+  /**
+   * Forward a cache eviction event to the other master.
+   *
+   * @param cacheName the name of the cache to evict an entry from.
+   * @param key the key identifying the entry to evict from the cache.
+   * @return true if successful, otherwise false.
+   */
+  boolean evict(String cacheName, Object key);
 }

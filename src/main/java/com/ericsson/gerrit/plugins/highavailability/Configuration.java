@@ -43,6 +43,7 @@ public class Configuration {
   private final int retryInterval;
   private final int indexThreadPoolSize;
   private final int eventThreadPoolSize;
+  private final int cacheThreadPoolSize;
 
   @Inject
   Configuration(PluginConfigFactory config,
@@ -59,6 +60,8 @@ public class Configuration {
         getInt(cfg, "indexThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
     eventThreadPoolSize =
         getInt(cfg, "eventThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
+    cacheThreadPoolSize =
+        getInt(cfg, "cacheThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
   }
 
   private int getInt(PluginConfig cfg, String name, int defaultValue) {
@@ -105,5 +108,9 @@ public class Configuration {
 
   public int getEventThreadPoolSize() {
     return eventThreadPoolSize;
+  }
+
+  public int getCacheThreadPoolSize() {
+    return cacheThreadPoolSize;
   }
 }

@@ -97,4 +97,18 @@ class RestForwarder implements Forwarder {
     }
     return false;
   }
+
+  @Override
+  public boolean evict(String cacheName, Object key) {
+    try {
+      String json = GsonParser.toJson(cacheName, key);
+      return httpSession
+          .post(Joiner.on("/").join("/plugins", pluginName, "cache", cacheName),
+              json)
+          .isSuccessful();
+    } catch (IOException e) {
+      log.error("Error trying to evict for cache " + cacheName, e);
+      return false;
+    }
+  }
 }

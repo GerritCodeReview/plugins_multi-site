@@ -1,4 +1,4 @@
-// Copyright (C) 2017 Ericsson
+// Copyright (C) 2015 Ericsson
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,15 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
+package com.ericsson.gerrit.plugins.highavailability.cache;
 
-import com.google.gerrit.httpd.plugins.HttpPluginModule;
+public final class Constants {
 
-public class RestForwarderServletModule extends HttpPluginModule {
-  @Override
-  protected void configureServlets() {
-    serveRegex("/index/\\d+$").with(IndexRestApiServlet.class);
-    serve("/event").with(EventRestApiServlet.class);
-    serve("/cache/*").with(CacheRestApiServlet.class);
+  public static final String PROJECT_LIST = "project_list";
+  public static final String ACCOUNTS = "accounts";
+  public static final String GROUPS = "groups";
+  public static final String GROUPS_BYINCLUDE = "groups_byinclude";
+  public static final String GROUPS_MEMBERS = "groups_members";
+  public static final String PROJECTS = "projects";
+
+  private Constants() {
   }
 }

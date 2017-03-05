@@ -1,12 +1,17 @@
-The @PLUGIN@ plugin allows to synchronize secondary indexes and stream events
-between two Gerrit instances sharing the same git repositories and database.
-The plugin needs to be installed in both instances.
+The @PLUGIN@ plugin allows to synchronize eviction of caches, secondary indexes
+and stream events between two Gerrit instances sharing the same git repositories
+and database. The plugin needs to be installed in both instances.
+
+Every time a cache eviction occurs in one of the instances, the other instance's
+cache is updated.
+
+This way, both caches are kept synchronized.
 
 Every time the secondary index is modified in one of the instances, i.e., a
 change is added, updated or removed from the index, the other instance index is
 updated accordingly. This way, both indexes are kept synchronized.
 
-Eevery time a stream event occurs in one of the instances (see [more events info]
+Every time a stream event occurs in one of the instances (see [more events info]
 (https://gerrit-review.googlesource.com/Documentation/cmd-stream-events.html#events)),
 the event is forwarded to the other instance which re-plays it. This way, the
 output of the stream-events command is the same, no matter what instance a

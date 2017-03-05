@@ -12,24 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.cache;
 
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
-import com.google.inject.Scopes;
+import com.google.gerrit.server.cache.CacheRemovalListener;
 
-import com.ericsson.gerrit.plugins.highavailability.cache.CacheModule;
-import com.ericsson.gerrit.plugins.highavailability.event.EventModule;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.RestForwarderModule;
-import com.ericsson.gerrit.plugins.highavailability.index.IndexModule;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
-class Module extends LifecycleModule {
+public class CacheModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-    bind(Configuration.class).in(Scopes.SINGLETON);
-    install(new RestForwarderModule());
-    install(new EventModule());
-    install(new IndexModule());
-    install(new CacheModule());
+    bind(ScheduledThreadPoolExecutor.class)
+        .annotatedWith(CacheExecutor.class)
+        .toProvider(CacheExecutorProvider.class);
+    listener().to(CacheExecutorProvider.class);
+    DynamicSet.bind(binder(), CacheRemovalListener.class).to(
+        CacheEvictionHandler.class);
   }
 }
