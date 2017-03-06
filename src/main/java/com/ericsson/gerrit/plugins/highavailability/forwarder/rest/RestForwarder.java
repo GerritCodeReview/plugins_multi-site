@@ -35,19 +35,19 @@ class RestForwarder implements Forwarder {
       LoggerFactory.getLogger(RestForwarder.class);
 
   private final HttpSession httpSession;
-  private final String pluginName;
+  private final String pluginRelativePath;
 
   @Inject
   RestForwarder(HttpSession httpClient,
       @PluginName String pluginName) {
     this.httpSession = httpClient;
-    this.pluginName = pluginName;
+    this.pluginRelativePath = Joiner.on("/").join("/plugins", pluginName);
   }
 
   @Override
   public boolean indexChange(int changeId) {
     try {
-      HttpResult result = httpSession.post(buildEndpoint(changeId));
+      HttpResult result = httpSession.post(buildIndexEndpoint(changeId));
       if (result.isSuccessful()) {
         return true;
       }
@@ -62,7 +62,7 @@ class RestForwarder implements Forwarder {
   @Override
   public boolean deleteChangeFromIndex(int changeId) {
     try {
-      HttpResult result = httpSession.delete(buildEndpoint(changeId));
+      HttpResult result = httpSession.delete(buildIndexEndpoint(changeId));
       if (result.isSuccessful()) {
         return true;
       }
@@ -74,8 +74,8 @@ class RestForwarder implements Forwarder {
     return false;
   }
 
-  private String buildEndpoint(int changeId) {
-    return Joiner.on("/").join("/plugins", pluginName, "index", changeId);
+  private String buildIndexEndpoint(int changeId) {
+    return Joiner.on("/").join(pluginRelativePath, "index", changeId);
   }
 
   @Override
@@ -84,9 +84,8 @@ class RestForwarder implements Forwarder {
         .registerTypeAdapter(Supplier.class, new SupplierSerializer()).create()
         .toJson(event);
     try {
-      HttpResult result =
-          httpSession.post(Joiner.on("/").join("/plugins", pluginName, "event"),
-              serializedEvent);
+      HttpResult result = httpSession.post(
+          Joiner.on("/").join(pluginRelativePath, "event"), serializedEvent);
       if (result.isSuccessful()) {
         return true;
       }
@@ -103,7 +102,7 @@ class RestForwarder implements Forwarder {
     try {
       String json = GsonParser.toJson(cacheName, key);
       return httpSession
-          .post(Joiner.on("/").join("/plugins", pluginName, "cache", cacheName),
+          .post(Joiner.on("/").join(pluginRelativePath, "cache", cacheName),
               json)
           .isSuccessful();
     } catch (IOException e) {
