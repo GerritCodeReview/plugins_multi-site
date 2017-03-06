@@ -19,80 +19,63 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
+import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.server.events.Event;
-import com.google.gerrit.server.events.RefEvent;
+import com.google.gerrit.server.events.ProjectEvent;
+import com.google.gerrit.server.events.RefUpdatedEvent;
 
+import com.ericsson.gerrit.plugins.highavailability.event.EventHandler.EventTask;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-
 @RunWith(MockitoJUnitRunner.class)
 public class EventHandlerTest {
   private static final String PLUGIN_NAME = "high-availability";
 
-  private Event event;
   private EventHandler eventHandler;
+
   @Mock
   private Forwarder forwarder;
 
+  @Before
+  public void setUp() {
+    eventHandler = new EventHandler(forwarder, MoreExecutors.directExecutor(),
+        PLUGIN_NAME);
+  }
+
   @Test
-  public void testRightEventAndNotForwarded() throws Exception {
-    setUpMocks(true);
+  public void shouldForwardAnyProjectEvent() throws Exception {
+    Event event = mock(ProjectEvent.class);
     eventHandler.onEvent(event);
     verify(forwarder).send(event);
   }
 
   @Test
-  public void testRightEventIsForwarded() throws Exception {
-    setUpMocks(true);
+  public void shouldNotForwardNonProjectEvent() throws Exception {
+    eventHandler.onEvent(mock(Event.class));
+    verifyZeroInteractions(forwarder);
+  }
+
+
+  @Test
+  public void shouldNotForwardIfAlreadyForwardedEvent() throws Exception {
     Context.setForwardedEvent(true);
-    eventHandler.onEvent(event);
+    eventHandler.onEvent(mock(ProjectEvent.class));
     Context.unsetForwardedEvent();
     verifyZeroInteractions(forwarder);
   }
 
   @Test
-  public void testBadEventAndNotForwarded() throws Exception {
-    setUpMocks(false);
-    eventHandler.onEvent(event);
-    verifyZeroInteractions(forwarder);
-  }
-
-  @Test
-  public void testBadEventAndItIsForwarded() throws Exception {
-    setUpMocks(false);
-    Context.setForwardedEvent(true);
-    eventHandler.onEvent(event);
-    Context.unsetForwardedEvent();
-    verifyZeroInteractions(forwarder);
-  }
-
-  private void setUpMocks(boolean rightEvent) {
-    ScheduledThreadPoolExecutor pool = new PoolMock(1);
-    if (rightEvent) {
-      event = mock(RefEvent.class);
-    } else {
-      event = mock(Event.class);
-    }
-    eventHandler = new EventHandler(forwarder, pool, PLUGIN_NAME);
-  }
-
-  private class PoolMock extends ScheduledThreadPoolExecutor {
-    PoolMock(int corePoolSize) {
-      super(corePoolSize);
-    }
-
-    @Override
-    public void execute(Runnable command) {
-      assertThat(command.toString()).isEqualTo(String.format(
-          "[%s] Send event '%s' to target instance", PLUGIN_NAME, null));
-      command.run();
-    }
+  public void tesEventTaskToString() throws Exception {
+    Event event = new RefUpdatedEvent();
+    EventTask task = eventHandler.new EventTask(event);
+    assertThat(task.toString()).isEqualTo(String.format(
+        "[%s] Send event '%s' to target instance", PLUGIN_NAME, event.type));
   }
 }
