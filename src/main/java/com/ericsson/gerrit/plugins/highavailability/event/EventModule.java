@@ -20,13 +20,13 @@ import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.Executor;
 
 public class EventModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-    bind(ScheduledThreadPoolExecutor.class)
+    bind(Executor.class)
         .annotatedWith(EventExecutor.class)
         .toProvider(EventExecutorProvider.class);
     listener().to(EventExecutorProvider.class);

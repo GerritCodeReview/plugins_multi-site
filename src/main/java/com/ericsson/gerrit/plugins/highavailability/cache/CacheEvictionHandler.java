@@ -21,17 +21,17 @@ import com.google.inject.Inject;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.Executor;
 import java.util.regex.Pattern;
 
 class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
-  private final ScheduledThreadPoolExecutor executor;
+  private final Executor executor;
   private final Forwarder forwarder;
   private final Pattern pattern;
 
   @Inject
   CacheEvictionHandler(Forwarder forwarder,
-      @CacheExecutor ScheduledThreadPoolExecutor executor) {
+      @CacheExecutor Executor executor) {
     this.forwarder = forwarder;
     this.executor = executor;
     pattern = Pattern.compile(

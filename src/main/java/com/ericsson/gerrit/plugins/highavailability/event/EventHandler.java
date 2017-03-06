@@ -23,16 +23,16 @@ import com.google.inject.Inject;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.Executor;
 
 class EventHandler implements EventListener {
-  private final ScheduledThreadPoolExecutor executor;
+  private final Executor executor;
   private final Forwarder forwarder;
   private final String pluginName;
 
   @Inject
   EventHandler(Forwarder forwarder,
-      @EventExecutor ScheduledThreadPoolExecutor executor,
+      @EventExecutor Executor executor,
       @PluginName String pluginName) {
     this.forwarder = forwarder;
     this.executor = executor;
