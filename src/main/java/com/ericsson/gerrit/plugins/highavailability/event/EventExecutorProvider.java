@@ -14,42 +14,19 @@
 
 package com.ericsson.gerrit.plugins.highavailability.event;
 
-import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
-
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import com.ericsson.gerrit.plugins.highavailability.ExecutorProvider;
 
 @Singleton
-class EventExecutorProvider
-    implements Provider<ScheduledThreadPoolExecutor>, LifecycleListener {
-  private WorkQueue.Executor executor;
+class EventExecutorProvider extends ExecutorProvider {
 
   @Inject
   EventExecutorProvider(WorkQueue workQueue,
       Configuration config) {
-    executor = workQueue.createQueue(config.getEventThreadPoolSize(),
-        "Forward-stream-event");
-  }
-
-  @Override
-  public void start() {
-    // do nothing
-  }
-
-  @Override
-  public void stop() {
-    executor.shutdown();
-    executor.unregisterWorkQueue();
-    executor = null;
-  }
-
-  @Override
-  public ScheduledThreadPoolExecutor get() {
-    return executor;
+    super(workQueue, config.getEventThreadPoolSize(), "Forward-stream-event");
   }
 }
