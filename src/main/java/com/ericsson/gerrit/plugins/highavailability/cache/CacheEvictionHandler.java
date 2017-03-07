@@ -15,6 +15,7 @@
 package com.ericsson.gerrit.plugins.highavailability.cache;
 
 import com.google.common.cache.RemovalNotification;
+import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.cache.CacheRemovalListener;
 import com.google.inject.Inject;
 
@@ -27,13 +28,16 @@ import java.util.regex.Pattern;
 class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
   private final Executor executor;
   private final Forwarder forwarder;
+  private final String pluginName;
   private final Pattern pattern;
 
   @Inject
   CacheEvictionHandler(Forwarder forwarder,
-      @CacheExecutor Executor executor) {
+      @CacheExecutor Executor executor,
+      @PluginName String pluginName) {
     this.forwarder = forwarder;
     this.executor = executor;
+    this.pluginName = pluginName;
     pattern = Pattern.compile(
         "^accounts.*|^groups.*|ldap_groups|ldap_usernames|^project.*|sshkeys|web_sessions");
   }
@@ -67,7 +71,8 @@ class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
 
     @Override
     public String toString() {
-      return String.format("Evict key '%s' from cache '%s' in target instance",
+      return String.format(
+          "[%s] Evict key '%s' from cache '%s' in target instance", pluginName,
           key, cacheName);
     }
   }
