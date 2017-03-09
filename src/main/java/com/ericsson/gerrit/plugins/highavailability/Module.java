@@ -14,7 +14,7 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
-import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 
 import com.ericsson.gerrit.plugins.highavailability.cache.CacheModule;
@@ -22,7 +22,7 @@ import com.ericsson.gerrit.plugins.highavailability.event.EventModule;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.RestForwarderModule;
 import com.ericsson.gerrit.plugins.highavailability.index.IndexModule;
 
-class Module extends LifecycleModule {
+class Module extends AbstractModule {
 
   @Override
   protected void configure() {

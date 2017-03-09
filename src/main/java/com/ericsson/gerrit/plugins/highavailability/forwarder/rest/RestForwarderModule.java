@@ -14,7 +14,7 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
-import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
 
@@ -23,7 +23,7 @@ import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 
-public class RestForwarderModule extends LifecycleModule {
+public class RestForwarderModule extends AbstractModule {
 
   @Override
   protected void configure() {
