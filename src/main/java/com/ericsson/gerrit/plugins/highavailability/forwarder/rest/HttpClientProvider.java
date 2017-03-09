@@ -101,7 +101,7 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
             || exception instanceof SSLException) {
           return false;
         }
-        logRetry(exception.getMessage());
+        logRetry(exception.getMessage(), context);
         try {
           Thread.sleep(cfg.getRetryInterval());
         } catch (InterruptedException e) {
@@ -122,7 +122,7 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
           return false;
         }
         if (response.getStatusLine().getStatusCode() >= ERROR_CODES) {
-          logRetry(response.getStatusLine().getReasonPhrase());
+          logRetry(response.getStatusLine().getReasonPhrase(), context);
           return true;
         }
         return false;
@@ -135,8 +135,11 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
     };
   }
 
-  private void logRetry(String cause) {
-    log.debug("Retrying request to '" + cfg.getUrl() + "' Cause: " + cause);
+  private void logRetry(String cause, HttpContext context) {
+    if(log.isDebugEnabled()){
+      log.debug("Retrying request caused by '" + cause + "', request: '"
+          + context.getAttribute("http.request") + "'");
+    }
   }
 
   private HttpClientConnectionManager customConnectionManager() {
