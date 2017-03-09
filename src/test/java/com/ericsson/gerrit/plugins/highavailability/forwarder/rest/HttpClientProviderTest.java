@@ -42,7 +42,6 @@ public class HttpClientProviderTest {
 
   @Before
   public void setUp() throws Exception {
-    when(config.getUrl()).thenReturn(EMPTY);
     when(config.getUser()).thenReturn(EMPTY);
     when(config.getPassword()).thenReturn(EMPTY);
     when(config.getConnectionTimeout()).thenReturn(TIME_INTERVAL);

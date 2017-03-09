@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
+import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
 import com.github.tomakehurst.wiremock.http.Fault;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
@@ -62,7 +63,6 @@ public class HttpSessionTest {
   public void setUp() throws Exception {
     String url = "http://localhost:" + wireMockRule.port();
     Configuration cfg = mock(Configuration.class);
-    when(cfg.getUrl()).thenReturn(url);
     when(cfg.getUser()).thenReturn("user");
     when(cfg.getPassword()).thenReturn("pass");
     when(cfg.getMaxTries()).thenReturn(MAX_TRIES);
@@ -70,8 +70,10 @@ public class HttpSessionTest {
     when(cfg.getSocketTimeout()).thenReturn(TIMEOUT);
     when(cfg.getRetryInterval()).thenReturn(RETRY_INTERVAL);
 
+    PeerInfo peerInfo = mock(PeerInfo.class);
+    when(peerInfo.getDirectUrl()).thenReturn(url);
     httpSession =
-        new HttpSession(new HttpClientProvider(cfg).get(), url);
+        new HttpSession(new HttpClientProvider(cfg).get(), peerInfo);
     wireMockRule.resetRequests();
   }
 

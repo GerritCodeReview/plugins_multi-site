@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Ericsson
+// Copyright (C) 2017 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
+package com.ericsson.gerrit.plugins.highavailability.peers;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
 
-import org.junit.Test;
+public class PluginConfigPeerInfoProvider implements Provider<PeerInfo> {
 
-public class RestForwarderModuleTest {
+  private final PeerInfo peerInfo;
 
-  @Test
-  public void testForwardUrlProvider() {
-    Configuration configMock = mock(Configuration.class);
-    String expected = "someUrl";
-    when(configMock.getUrl()).thenReturn(expected);
-    RestForwarderModule module = new RestForwarderModule();
-    assertThat(module.forwardUrl(configMock)).isEqualTo(expected);
+  @Inject
+  PluginConfigPeerInfoProvider(Configuration cfg) {
+    peerInfo = new PeerInfo(cfg.getUrl());
+  }
+
+  @Override
+  public PeerInfo get() {
+    return peerInfo;
   }
 }
