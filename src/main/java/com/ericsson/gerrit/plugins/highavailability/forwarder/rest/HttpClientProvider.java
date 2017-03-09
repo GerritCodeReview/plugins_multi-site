@@ -41,7 +41,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
@@ -173,9 +172,8 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
   }
 
   private BasicCredentialsProvider buildCredentials() {
-    URI uri = URI.create(cfg.getUrl());
     BasicCredentialsProvider creds = new BasicCredentialsProvider();
-    creds.setCredentials(new AuthScope(uri.getHost(), uri.getPort()),
+    creds.setCredentials(AuthScope.ANY,
         new UsernamePasswordCredentials(cfg.getUser(), cfg.getPassword()));
     return creds;
   }
