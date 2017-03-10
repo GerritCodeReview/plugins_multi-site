@@ -40,6 +40,7 @@ java_library(
 java_test(
   name = 'high-availability_tests',
   srcs = glob(['src/test/java/**/*.java']),
+  resources = glob(['src/test/resources/**/']),
   labels = ['high-availability'],
   deps = TEST_DEPS,
 )

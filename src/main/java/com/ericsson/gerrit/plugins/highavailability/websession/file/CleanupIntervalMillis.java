@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Ericsson
+// Copyright (C) 2015 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,17 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability;
+package com.ericsson.gerrit.plugins.highavailability.websession.file;
 
-import com.google.gerrit.httpd.plugins.HttpPluginModule;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.RestForwarderServletModule;
-import com.ericsson.gerrit.plugins.highavailability.websession.file.FileBasedWebsessionModule;
+import com.google.inject.BindingAnnotation;
 
-class HttpModule extends HttpPluginModule {
-  @Override
-  protected void configureServlets() {
-    install(new RestForwarderServletModule());
-    install(new FileBasedWebsessionModule());
-  }
+import java.lang.annotation.Retention;
+
+@Retention(RUNTIME)
+@BindingAnnotation
+public @interface CleanupIntervalMillis {
 }
