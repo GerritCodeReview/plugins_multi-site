@@ -11,6 +11,7 @@ File 'gerrit.config'
 :  url = target_instance_url
 :  user = username
 :  password = password
+:  sharedDirectory = /directory/accessible/from/both/instances
 
 plugin.@PLUGIN@.url
 :   Specify the URL for the secondary (target) instance.
@@ -21,6 +22,9 @@ plugin.@PLUGIN@.user
 plugin.@PLUGIN@.password
 :   Password to connect to the secondary (target) instance. This value can
      also be defined in secure.config.
+
+plugin.@PLUGIN@.sharedDirectory
+:   Path to a directory accessible from both master instances.
 
 @PLUGIN@ plugin uses REST API calls to keep the target instance in-sync. It
 is possible to customize the parameters of the underlying http client doing these
