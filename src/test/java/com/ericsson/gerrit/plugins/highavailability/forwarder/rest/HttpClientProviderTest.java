@@ -17,7 +17,6 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
-import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
