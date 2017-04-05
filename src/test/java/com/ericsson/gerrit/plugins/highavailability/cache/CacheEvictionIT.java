@@ -23,9 +23,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
 import com.google.gerrit.acceptance.GerritConfig;
-import com.google.gerrit.acceptance.GerritConfigs;
+import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.NoHttpd;
-import com.google.gerrit.acceptance.PluginDaemonTest;
+import com.google.gerrit.acceptance.TestPlugin;
+import com.google.gerrit.acceptance.UseSsh;
 
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.RequestListener;
@@ -39,15 +40,22 @@ import org.junit.Test;
 import java.util.concurrent.TimeUnit;
 
 @NoHttpd
-public class CacheEvictionIT extends PluginDaemonTest {
+@UseSsh
+@TestPlugin(
+    name = "high-availability",
+    sysModule = "com.ericsson.gerrit.plugins.highavailability.Module",
+    httpModule = "com.ericsson.gerrit.plugins.highavailability.HttpModule"
+)
+public class CacheEvictionIT extends LightweightPluginDaemonTest {
+  private static final int PORT = 18888;
+  private static final String URL = "http://localhost:" + PORT;
 
   @Rule
-  public WireMockRule wireMockRule = new WireMockRule(options().port(18888), false);
+  public WireMockRule wireMockRule = new WireMockRule(options().port(PORT), false);
 
   @Test
-  @GerritConfigs({
-      @GerritConfig(name = "plugin.high-availability.url", value = "http://localhost:18888"),
-      @GerritConfig(name = "plugin.high-availability.user", value = "admin")})
+  @GerritConfig(name = "plugin.high-availability.url", value = URL)
+  @GerritConfig(name = "plugin.high-availability`.user", value = "admin")
   public void flushAndSendPost() throws Exception {
     final String flushRequest =
         "/plugins/high-availability/cache/" + Constants.PROJECT_LIST;

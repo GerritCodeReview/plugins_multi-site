@@ -9,6 +9,12 @@ TEST_DEPS = GERRIT_PLUGIN_API + GERRIT_TESTS + [
   ':high-availability__plugin',
   ':mockito',
   ':wiremock',
+# bazlets include those 3 bouncycastle jars in plugin API so this is temporary
+# until this plugin is built with bazel.
+# see https://gerrit-review.googlesource.com/#/c/102670/ for more info.
+  ':bouncycastle_bcprov',
+  ':bouncycastle_bcpg',
+  ':bouncycastle_bcpkix',
 ]
 
 gerrit_plugin(
@@ -78,4 +84,24 @@ maven_jar(
   sha1 = '612ecb799912ccf77cba9b3ed8c813da086076e9',
   license = 'DO_NOT_DISTRIBUTE',
   attach_source = False,
+)
+
+BC_VERS = '1.56'
+
+maven_jar(
+  name = 'bouncycastle_bcprov',
+  id = 'org.bouncycastle:bcprov-jdk15on:' + BC_VERS,
+  sha1 = 'a153c6f9744a3e9dd6feab5e210e1c9861362ec7',
+)
+
+maven_jar(
+  name = 'bouncycastle_bcpg',
+  id = 'org.bouncycastle:bcpg-jdk15on:' + BC_VERS,
+  sha1 = '9c3f2e7072c8cc1152079b5c25291a9f462631f1',
+)
+
+maven_jar(
+  name = 'bouncycastle_bcpkix',
+  id = 'org.bouncycastle:bcpkix-jdk15on:' + BC_VERS,
+  sha1 = '4648af70268b6fdb24674fb1fd7c1fcc73db1231',
 )
