@@ -55,8 +55,8 @@ maven_jar(
 
 maven_jar(
   name = 'mockito',
-  id = 'org.mockito:mockito-core:2.5.0',
-  sha1 = 'be28d46a52c7f2563580adeca350145e9ce916f8',
+  id = 'org.mockito:mockito-core:2.7.21',
+  sha1 = '23e9f7bfb9717e849a05b84c29ee3ac723f1a653',
   license = 'DO_NOT_DISTRIBUTE',
   deps = [
     ':byte-buddy',
@@ -66,16 +66,16 @@ maven_jar(
 
 maven_jar(
   name = 'byte-buddy',
-  id = 'net.bytebuddy:byte-buddy:1.5.12',
-  sha1 = 'b1ba1d15f102b36ed43b826488114678d6d413da',
+  id = 'net.bytebuddy:byte-buddy:1.6.11',
+  sha1 = '8a8f9409e27f1d62c909c7eef2aa7b3a580b4901',
   license = 'DO_NOT_DISTRIBUTE',
   attach_source = False,
 )
 
 maven_jar(
   name = 'objenesis',
-  id = 'org.objenesis:objenesis:2.4',
-  sha1 = '2916b6c96b50c5b3ec4452ed99401db745aabb27',
+  id = 'org.objenesis:objenesis:2.5',
+  sha1 = '612ecb799912ccf77cba9b3ed8c813da086076e9',
   license = 'DO_NOT_DISTRIBUTE',
   attach_source = False,
 )
