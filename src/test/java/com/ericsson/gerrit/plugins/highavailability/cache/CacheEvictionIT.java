@@ -20,13 +20,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
 import com.google.gerrit.acceptance.GerritConfig;
 import com.google.gerrit.acceptance.GerritConfigs;
 import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.PluginDaemonTest;
 
-import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.RequestListener;
 import com.github.tomakehurst.wiremock.http.Response;
@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
 public class CacheEvictionIT extends PluginDaemonTest {
 
   @Rule
-  public WireMockRule wireMockRule = new WireMockRule(18888);
+  public WireMockRule wireMockRule = new WireMockRule(options().port(18888), false);
 
   @Test
   @GerritConfigs({
