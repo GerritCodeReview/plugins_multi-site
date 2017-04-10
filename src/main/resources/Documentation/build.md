@@ -1,14 +1,55 @@
-Build
-=====
+# Build
 
-This plugin is built with Buck.
+This plugin can be built with Bazel or Buck and two build modes are supported:
 
-Two build modes are supported: Standalone and in Gerrit tree. Standalone
-build mode is recommended, as this mode doesn't require local Gerrit
-tree to exist.
+* Standalone
+* In Gerrit tree (Buck only)
 
-Build standalone
-----------------
+Standalone build mode is recommended, as this mode doesn't require local Gerrit
+tree to exist. Moreover, there are some limitations and additional manual steps
+required when building in Gerrit tree mode (see corresponding sections).
+
+## Build standalone
+
+### Bazel
+
+To build the plugin, issue the following command:
+
+```
+  bazel build @PLUGIN@
+```
+
+The output is created in
+
+```
+  bazel-genfiles/@PLUGIN@.jar
+```
+
+To package the plugin sources run:
+
+```
+  bazel build lib@PLUGIN@__plugin-src.jar
+```
+
+The output is created in:
+
+```
+  bazel-bin/lib@PLUGIN@__plugin-src.jar
+```
+
+To execute the tests run:
+
+```
+  bazel test high_availability_tests
+```
+
+This project can be imported into the Eclipse IDE:
+
+```
+  ./tools/eclipse.py
+```
+
+### Buck
 
 Clone bucklets library:
 
@@ -16,6 +57,7 @@ Clone bucklets library:
   git clone https://gerrit.googlesource.com/bucklets
 
 ```
+
 and link it to @PLUGIN@ directory:
 
 ```
@@ -70,8 +112,9 @@ The output is created in:
   buck-out/gen/@PLUGIN@-sources.jar
 ```
 
-Build in Gerrit tree
---------------------
+## Build in Gerrit tree
+
+### Buck
 
 Clone or link this plugin to the plugins directory of Gerrit's source
 tree, and issue the command:
@@ -91,6 +134,11 @@ This project can be imported into the Eclipse IDE:
 ```
   ./tools/eclipse/project.py
 ```
+
+* Note: wiremock and mockito jars should be added manually to classpath. In
+Eclipse:
+`Project -> Java Build Path -> Add External JARS`
+
 
 To execute the tests run:
 
