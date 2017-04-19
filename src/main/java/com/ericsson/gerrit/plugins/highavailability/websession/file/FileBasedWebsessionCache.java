@@ -79,9 +79,11 @@ public class FileBasedWebsessionCache
   public void cleanUp() {
     for (Path path : listFiles()) {
       Val val = readFile(path);
-      DateTime expires = new DateTime(val.getExpiresAt());
-      if (expires.isBefore(new DateTime())) {
-        deleteFile(path);
+      if (val != null) {
+        DateTime expires = new DateTime(val.getExpiresAt());
+        if (expires.isBefore(new DateTime())) {
+          deleteFile(path);
+        }
       }
     }
   }
