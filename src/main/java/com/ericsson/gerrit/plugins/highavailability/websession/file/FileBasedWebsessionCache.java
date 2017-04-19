@@ -79,9 +79,11 @@ public class FileBasedWebsessionCache
   public void cleanUp() {
     for (Path path : listFiles()) {
       Val val = readFile(path);
-      DateTime expires = new DateTime(val.getExpiresAt());
-      if (expires.isBefore(new DateTime())) {
-        deleteFile(path);
+      if (val != null) {
+        DateTime expires = new DateTime(val.getExpiresAt());
+        if (expires.isBefore(new DateTime())) {
+          deleteFile(path);
+        }
       }
     }
   }
@@ -179,7 +181,7 @@ public class FileBasedWebsessionCache
   }
 
   private Val readFile(Path path) {
-    if (Files.exists(path)) {
+    if (path.toFile().exists()) {
       try (InputStream fileStream = Files.newInputStream(path);
           ObjectInputStream objStream = new ObjectInputStream(fileStream)) {
         return (Val) objStream.readObject();
