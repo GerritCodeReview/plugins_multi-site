@@ -181,7 +181,7 @@ public class FileBasedWebsessionCache
   }
 
   private Val readFile(Path path) {
-    if (Files.exists(path)) {
+    if (path.toFile().exists()) {
       try (InputStream fileStream = Files.newInputStream(path);
           ObjectInputStream objStream = new ObjectInputStream(fileStream)) {
         return (Val) objStream.readObject();
