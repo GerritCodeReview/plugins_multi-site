@@ -50,7 +50,8 @@ public class CacheEvictionIT extends PluginDaemonTest {
   @Test
   @GerritConfigs({
       @GerritConfig(name = "plugin.high-availability.url", value = "http://localhost:18888"),
-      @GerritConfig(name = "plugin.high-availability.user", value = "admin")})
+      @GerritConfig(name = "plugin.high-availability.user", value = "admin"),
+      @GerritConfig(name = "plugin.high-availability.cacheThreadPoolSize", value = "10")})
   public void flushAndSendPost() throws Exception {
     final String flushRequest =
         "/plugins/high-availability/cache/" + Constants.PROJECT_LIST;
@@ -72,7 +73,7 @@ public class CacheEvictionIT extends PluginDaemonTest {
 
     adminSshSession
         .exec("gerrit flush-caches --cache " + Constants.PROJECT_LIST);
-    checkPoint.await(5, TimeUnit.SECONDS);
+    checkPoint.await(50, TimeUnit.SECONDS);
     verify(postRequestedFor(urlEqualTo(flushRequest)));
   }
 }

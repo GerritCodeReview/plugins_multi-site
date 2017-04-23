@@ -22,6 +22,7 @@ import com.google.gerrit.server.events.SupplierSerializer;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 
@@ -30,18 +31,23 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+import javax.net.ssl.SSLException;
+
 class RestForwarder implements Forwarder {
   private static final Logger log =
       LoggerFactory.getLogger(RestForwarder.class);
 
   private final HttpSession httpSession;
   private final String pluginRelativePath;
+  private final Configuration cfg;
 
   @Inject
   RestForwarder(HttpSession httpClient,
-      @PluginName String pluginName) {
+      @PluginName String pluginName,
+      Configuration cfg) {
     this.httpSession = httpClient;
     this.pluginRelativePath = Joiner.on("/").join("/plugins", pluginName);
+    this.cfg = cfg;
   }
 
   @Override
@@ -97,24 +103,61 @@ class RestForwarder implements Forwarder {
 
   private abstract class Request {
     private String name;
+    private int execCnt;
 
     Request(String name) {
       this.name = name;
     }
 
     boolean execute() {
+      for (;;) {
+        try {
+          execCnt++;
+          tryOnce();
+          return true;
+        } catch (ForwardingException e) {
+          if (!e.isRecoverable()) {
+            log.error("Failed to {}", name, e);
+            return false;
+          }
+          if (execCnt >= cfg.getMaxTries()) {
+            log.error("Failed to {}, after {} tries", name, cfg.getMaxTries());
+            return false;
+          }
+
+          logRetry(e);
+          try {
+            Thread.sleep(cfg.getRetryInterval());
+          } catch (InterruptedException ie) {
+            log.error("{} was interrupted, giving up", name, ie);
+            Thread.currentThread().interrupt();
+            return false;
+          }
+        }
+      }
+    }
+
+    void tryOnce() throws ForwardingException {
       try {
         HttpResult result = send();
-        if (result.isSuccessful()) {
-          return true;
+        if (!result.isSuccessful()) {
+          throw new ForwardingException(true, "Unable to " + name + ": " + result.getMessage());
         }
-        log.error("Unable to {}: {}", name, result.getMessage());
       } catch (IOException e) {
-        log.error("Error trying to {}", name, e);
+        throw new ForwardingException(isRecoverable(e), e.getMessage(), e);
       }
-      return false;
     }
 
     abstract HttpResult send() throws IOException;
+
+    boolean isRecoverable(IOException e) {
+      return !(e instanceof SSLException);
+    }
+
+    void logRetry(Throwable cause) {
+      if (log.isDebugEnabled()) {
+        log.debug("Retrying to {} caused by '{}'", name, cause);
+      }
+    }
   }
 }
