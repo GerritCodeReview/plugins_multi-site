@@ -22,6 +22,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
+import com.google.common.base.Throwables;
 import com.google.gerrit.acceptance.GerritConfig;
 import com.google.gerrit.acceptance.GerritConfigs;
 import com.google.gerrit.acceptance.NoHttpd;
@@ -36,6 +37,8 @@ import org.apache.http.HttpStatus;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 
 @NoHttpd
@@ -51,12 +54,15 @@ public class CacheEvictionIT extends PluginDaemonTest {
   public void flushAndSendPost() throws Exception {
     final String flushRequest =
         "/plugins/high-availability/cache/" + Constants.PROJECT_LIST;
+    final CyclicBarrier checkPoint = new CyclicBarrier(2);
     wireMockRule.addMockServiceRequestListener(new RequestListener() {
       @Override
       public void requestReceived(Request request, Response response) {
         if (request.getAbsoluteUrl().contains(flushRequest)) {
-          synchronized (flushRequest) {
-            flushRequest.notify();
+          try {
+            checkPoint.await();
+          } catch (InterruptedException | BrokenBarrierException e) {
+            Throwables.propagateIfPossible(e);
           }
         }
       }
@@ -66,9 +72,7 @@ public class CacheEvictionIT extends PluginDaemonTest {
 
     adminSshSession
         .exec("gerrit flush-caches --cache " + Constants.PROJECT_LIST);
-    synchronized (flushRequest) {
-      flushRequest.wait(TimeUnit.SECONDS.toMillis(5));
-    }
+    checkPoint.await(5, TimeUnit.SECONDS);
     verify(postRequestedFor(urlEqualTo(flushRequest)));
   }
 }
