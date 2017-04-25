@@ -45,33 +45,23 @@ class RestForwarder implements Forwarder {
   }
 
   @Override
-  public boolean indexChange(int changeId) {
-    try {
-      HttpResult result = httpSession.post(buildIndexEndpoint(changeId));
-      if (result.isSuccessful()) {
-        return true;
+  public boolean indexChange(final int changeId) {
+    return new Request("index change " + changeId) {
+      @Override
+      HttpResult send() throws IOException {
+        return httpSession.post(buildIndexEndpoint(changeId));
       }
-      log.error("Unable to index change {}. Cause: {}", changeId,
-          result.getMessage());
-    } catch (IOException e) {
-      log.error("Error trying to index change " + changeId, e);
-    }
-    return false;
+    }.execute();
   }
 
   @Override
-  public boolean deleteChangeFromIndex(int changeId) {
-    try {
-      HttpResult result = httpSession.delete(buildIndexEndpoint(changeId));
-      if (result.isSuccessful()) {
-        return true;
+  public boolean deleteChangeFromIndex(final int changeId) {
+    return new Request("delete change " + changeId + " from index") {
+      @Override
+      HttpResult send() throws IOException {
+        return httpSession.delete(buildIndexEndpoint(changeId));
       }
-      log.error("Unable to delete from index change {}. Cause: {}", changeId,
-          result.getMessage());
-    } catch (IOException e) {
-      log.error("Error trying to delete from index change " + changeId, e);
-    }
-    return false;
+    }.execute();
   }
 
   private String buildIndexEndpoint(int changeId) {
@@ -79,35 +69,52 @@ class RestForwarder implements Forwarder {
   }
 
   @Override
-  public boolean send(Event event) {
-    String serializedEvent = new GsonBuilder()
-        .registerTypeAdapter(Supplier.class, new SupplierSerializer()).create()
-        .toJson(event);
-    try {
-      HttpResult result = httpSession.post(
+  public boolean send(final Event event) {
+    return new Request("send event " + event.type) {
+      @Override
+      HttpResult send() throws IOException {
+        String serializedEvent = new GsonBuilder()
+            .registerTypeAdapter(Supplier.class, new SupplierSerializer()).create()
+            .toJson(event);
+      return httpSession.post(
           Joiner.on("/").join(pluginRelativePath, "event"), serializedEvent);
-      if (result.isSuccessful()) {
-        return true;
       }
-      log.error(
-          "Unable to send event '" + event.type + "' " + result.getMessage());
-    } catch (IOException e) {
-      log.error("Error trying to send event " + event.type, e);
-    }
-    return false;
+    }.execute();
   }
 
   @Override
-  public boolean evict(String cacheName, Object key) {
-    try {
-      String json = GsonParser.toJson(cacheName, key);
-      return httpSession
-          .post(Joiner.on("/").join(pluginRelativePath, "cache", cacheName),
-              json)
-          .isSuccessful();
-    } catch (IOException e) {
-      log.error("Error trying to evict for cache " + cacheName, e);
+  public boolean evict(final String cacheName, final Object key) {
+    return new Request("evict for cache " + cacheName) {
+      @Override
+      HttpResult send() throws IOException {
+        String json = GsonParser.toJson(cacheName, key);
+        return httpSession
+            .post(Joiner.on("/").join(pluginRelativePath, "cache", cacheName),
+                json);
+      }
+    }.execute();
+  }
+
+  private abstract class Request {
+    private String name;
+
+    Request(String name) {
+      this.name = name;
+    }
+
+    boolean execute() {
+      try {
+        HttpResult result = send();
+        if (result.isSuccessful()) {
+          return true;
+        }
+        log.error("Unable to {}: {}", name, result.getMessage());
+      } catch (IOException e) {
+        log.error("Error trying to {}", name, e);
+      }
       return false;
     }
+
+    abstract HttpResult send() throws IOException;
   }
 }
