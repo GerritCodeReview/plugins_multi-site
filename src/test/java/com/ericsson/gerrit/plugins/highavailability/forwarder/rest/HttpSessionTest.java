@@ -41,7 +41,7 @@ public class HttpSessionTest {
   private static final int RETRY_INTERVAL = 250;
   private static final int TIMEOUT = 500;
   private static final int ERROR = 500;
-  private static final int OK = 204;
+  private static final int NO_CONTENT = 204;
   private static final int NOT_FOUND = 404;
   private static final int UNAUTHORIZED = 401;
 
@@ -80,7 +80,7 @@ public class HttpSessionTest {
   @Test
   public void testPostResponseOK() throws Exception {
     wireMockRule.givenThat(post(urlEqualTo(ENDPOINT))
-        .willReturn(aResponse().withStatus(OK)));
+        .willReturn(aResponse().withStatus(NO_CONTENT)));
 
     assertThat(httpSession.post(ENDPOINT).isSuccessful()).isTrue();
   }
@@ -88,14 +88,14 @@ public class HttpSessionTest {
   @Test
   public void testPostResponseWithContentOK() throws Exception {
     wireMockRule.givenThat(post(urlEqualTo(ENDPOINT))
-        .withRequestBody(equalTo(BODY)).willReturn(aResponse().withStatus(OK)));
+        .withRequestBody(equalTo(BODY)).willReturn(aResponse().withStatus(NO_CONTENT)));
     assertThat(httpSession.post(ENDPOINT, BODY).isSuccessful()).isTrue();
   }
 
   @Test
   public void testDeleteResponseOK() throws Exception {
     wireMockRule.givenThat(delete(urlEqualTo(ENDPOINT))
-        .willReturn(aResponse().withStatus(OK)));
+        .willReturn(aResponse().withStatus(NO_CONTENT)));
 
     assertThat(httpSession.delete(ENDPOINT).isSuccessful()).isTrue();
   }
@@ -129,7 +129,7 @@ public class HttpSessionTest {
         .willReturn(aResponse().withStatus(ERROR)));
     wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_ERROR)
         .whenScenarioStateIs(REQUEST_MADE)
-        .willReturn(aResponse().withStatus(OK)));
+        .willReturn(aResponse().withStatus(NO_CONTENT)));
 
     assertThat(httpSession.post(ENDPOINT).isSuccessful()).isTrue();
   }
@@ -151,7 +151,7 @@ public class HttpSessionTest {
         .willReturn(aResponse().withStatus(ERROR).withFixedDelay(TIMEOUT / 2)));
     wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
         .whenScenarioStateIs(REQUEST_MADE)
-        .willReturn(aResponse().withStatus(OK)));
+        .willReturn(aResponse().withStatus(NO_CONTENT)));
 
     assertThat(httpSession.post(ENDPOINT).isSuccessful()).isTrue();
   }
@@ -169,7 +169,7 @@ public class HttpSessionTest {
         .willReturn(aResponse().withFixedDelay(TIMEOUT)));
     wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
         .whenScenarioStateIs(THIRD_TRY)
-        .willReturn(aResponse().withStatus(OK)));
+        .willReturn(aResponse().withStatus(NO_CONTENT)));
 
     assertThat(httpSession.post(ENDPOINT).isSuccessful()).isTrue();
   }

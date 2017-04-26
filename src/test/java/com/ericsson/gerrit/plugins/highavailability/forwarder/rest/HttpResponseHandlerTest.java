@@ -30,7 +30,7 @@ import java.io.UnsupportedEncodingException;
 
 public class HttpResponseHandlerTest {
   private static final int ERROR = 400;
-  private static final int OK = 204;
+  private static final int NO_CONTENT = 204;
   private static final String EMPTY_ENTITY = "";
   private static final String ERROR_ENTITY = "Error";
 
@@ -43,7 +43,7 @@ public class HttpResponseHandlerTest {
 
   @Test
   public void testIsSuccessful() throws Exception {
-    HttpResponse response = setupMocks(OK, EMPTY_ENTITY);
+    HttpResponse response = setupMocks(NO_CONTENT, EMPTY_ENTITY);
     HttpResult result = handler.handleResponse(response);
     assertThat(result.isSuccessful()).isTrue();
     assertThat(result.getMessage()).isEmpty();
