@@ -18,15 +18,13 @@ import com.google.gerrit.server.git.WorkQueue;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.ExecutorProvider;
 
 @Singleton
 class EventExecutorProvider extends ExecutorProvider {
 
   @Inject
-  EventExecutorProvider(WorkQueue workQueue,
-      Configuration config) {
-    super(workQueue, config.getEventThreadPoolSize(), "Forward-stream-event");
+  EventExecutorProvider(WorkQueue workQueue) {
+    super(workQueue, 1, "Forward-stream-event");
   }
 }

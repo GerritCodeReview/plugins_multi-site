@@ -21,9 +21,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.git.WorkQueue;
 
-import com.ericsson.gerrit.plugins.highavailability.Configuration;
-import com.ericsson.gerrit.plugins.highavailability.event.EventExecutorProvider;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,13 +36,9 @@ public class EventExecutorProviderTest {
   @Before
   public void setUp() throws Exception {
     WorkQueue workQueueMock = mock(WorkQueue.class);
-    when(workQueueMock.createQueue(4, "Forward-stream-event"))
+    when(workQueueMock.createQueue(1, "Forward-stream-event"))
         .thenReturn(executorMock);
-    Configuration configMock = mock(Configuration.class);
-    when(configMock.getEventThreadPoolSize()).thenReturn(4);
-
-    eventsExecutorProvider =
-        new EventExecutorProvider(workQueueMock, configMock);
+    eventsExecutorProvider = new EventExecutorProvider(workQueueMock);
   }
 
   @Test

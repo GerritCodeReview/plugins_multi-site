@@ -53,10 +53,6 @@ calls by specifying the following fields:
 :   Maximum number of threads used to send index events to the target instance.
     Defaults to 1.
 
-@PLUGIN@.eventThreadPoolSize
-:   Maximum number of threads used to send stream events to the target instance.
-    Defaults to 1.
-
 @PLUGIN@.cacheThreadPoolSize
 :   Maximum number of threads used to send cache evictions to the target instance.
     Defaults to 1.

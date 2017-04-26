@@ -66,8 +66,6 @@ public class ConfigurationTest {
     assertThat(configuration.getRetryInterval()).isEqualTo(RETRY_INTERVAL);
     assertThat(configuration.getIndexThreadPoolSize())
         .isEqualTo(THREAD_POOL_SIZE);
-    assertThat(configuration.getEventThreadPoolSize())
-        .isEqualTo(THREAD_POOL_SIZE);
     assertThat(configuration.getCacheThreadPoolSize())
         .isEqualTo(THREAD_POOL_SIZE);
   }
@@ -83,7 +81,6 @@ public class ConfigurationTest {
     assertThat(configuration.getMaxTries()).isEqualTo(0);
     assertThat(configuration.getRetryInterval()).isEqualTo(0);
     assertThat(configuration.getIndexThreadPoolSize()).isEqualTo(0);
-    assertThat(configuration.getEventThreadPoolSize()).isEqualTo(0);
     assertThat(configuration.getCacheThreadPoolSize()).isEqualTo(0);
   }
 
@@ -107,7 +104,6 @@ public class ConfigurationTest {
     assertThat(configuration.getMaxTries()).isEqualTo(5);
     assertThat(configuration.getRetryInterval()).isEqualTo(1000);
     assertThat(configuration.getIndexThreadPoolSize()).isEqualTo(1);
-    assertThat(configuration.getEventThreadPoolSize()).isEqualTo(1);
     assertThat(configuration.getCacheThreadPoolSize()).isEqualTo(1);
   }
 

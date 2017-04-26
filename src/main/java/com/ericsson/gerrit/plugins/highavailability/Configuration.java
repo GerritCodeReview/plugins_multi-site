@@ -42,7 +42,6 @@ public class Configuration {
   private final int maxTries;
   private final int retryInterval;
   private final int indexThreadPoolSize;
-  private final int eventThreadPoolSize;
   private final int cacheThreadPoolSize;
 
   @Inject
@@ -58,8 +57,6 @@ public class Configuration {
     retryInterval = getInt(cfg, "retryInterval", DEFAULT_RETRY_INTERVAL);
     indexThreadPoolSize =
         getInt(cfg, "indexThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
-    eventThreadPoolSize =
-        getInt(cfg, "eventThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
     cacheThreadPoolSize =
         getInt(cfg, "cacheThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
   }
@@ -105,10 +102,6 @@ public class Configuration {
 
   public int getIndexThreadPoolSize() {
     return indexThreadPoolSize;
-  }
-
-  public int getEventThreadPoolSize() {
-    return eventThreadPoolSize;
   }
 
   public int getCacheThreadPoolSize() {
