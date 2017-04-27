@@ -73,7 +73,7 @@ public class CacheEvictionIT extends PluginDaemonTest {
 
     adminSshSession
         .exec("gerrit flush-caches --cache " + Constants.PROJECT_LIST);
-    checkPoint.await(50, TimeUnit.SECONDS);
+    checkPoint.await(5, TimeUnit.SECONDS);
     verify(postRequestedFor(urlEqualTo(flushRequest)));
   }
 }
