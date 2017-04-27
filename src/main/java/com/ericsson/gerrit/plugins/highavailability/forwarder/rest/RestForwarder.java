@@ -65,7 +65,7 @@ class RestForwarder implements Forwarder {
   }
 
   private String buildIndexEndpoint(int changeId) {
-    return Joiner.on("/").join(pluginRelativePath, "index", changeId);
+    return Joiner.on("/").join(pluginRelativePath, "index/change", changeId);
   }
 
   @Override
@@ -84,7 +84,7 @@ class RestForwarder implements Forwarder {
 
   @Override
   public boolean evict(final String cacheName, final Object key) {
-    return new Request("evict for cache " + cacheName) {
+    return new Request("evict for cache " + cacheName + "[" + key + "]") {
       @Override
       HttpResult send() throws IOException {
         String json = GsonParser.toJson(cacheName, key);

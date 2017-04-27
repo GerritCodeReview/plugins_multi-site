@@ -47,7 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RunWith(MockitoJUnitRunner.class)
-public class IndexRestApiServletTest {
+public class IndexChangeRestApiServletTest {
   private static final boolean CHANGE_EXISTS = true;
   private static final boolean CHANGE_DOES_NOT_EXIST = false;
   private static final boolean DO_NOT_THROW_IO_EXCEPTION = false;
@@ -68,7 +68,7 @@ public class IndexRestApiServletTest {
   private HttpServletResponse rsp;
   private Change.Id id;
   private Change change;
-  private IndexRestApiServlet indexRestApiServlet;
+  private IndexChangeRestApiServlet indexRestApiServlet;
 
   @BeforeClass
   public static void setup() {
@@ -77,9 +77,9 @@ public class IndexRestApiServletTest {
 
   @Before
   public void setUpMocks() {
-    indexRestApiServlet = new IndexRestApiServlet(indexer, schemaFactory);
+    indexRestApiServlet = new IndexChangeRestApiServlet(indexer, schemaFactory);
     id = Change.Id.parse(CHANGE_NUMBER);
-    when(req.getPathInfo()).thenReturn("/index/" + CHANGE_NUMBER);
+    when(req.getPathInfo()).thenReturn("/index/change/" + CHANGE_NUMBER);
     change = new Change(null, id, null, null, TimeUtil.nowTs());
   }
 

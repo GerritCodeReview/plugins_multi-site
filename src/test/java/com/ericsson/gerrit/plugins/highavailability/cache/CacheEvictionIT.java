@@ -76,7 +76,7 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
       }
     });
     givenThat(post(urlEqualTo(flushRequest))
-        .willReturn(aResponse().withStatus(HttpStatus.SC_OK)));
+        .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
 
     adminSshSession
         .exec("gerrit flush-caches --cache " + Constants.PROJECT_LIST);
