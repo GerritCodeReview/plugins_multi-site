@@ -51,6 +51,17 @@ class RestForwarder implements Forwarder {
   }
 
   @Override
+  public boolean indexAccount(final int accountId) {
+    return new Request("index account " + accountId) {
+      @Override
+      HttpResult send() throws IOException {
+        return httpSession.post(Joiner.on("/").join(pluginRelativePath,
+            "index/account", accountId));
+      }
+    }.execute();
+  }
+
+  @Override
   public boolean indexChange(final int changeId) {
     return new Request("index change " + changeId) {
       @Override

@@ -50,6 +50,9 @@ public class RestForwarderTest {
   private static final int CHANGE_NUMBER = 1;
   private static final String INDEX_CHANGE_ENDPOINT = Joiner.on("/")
       .join("/plugins", PLUGIN_NAME, "index/change", CHANGE_NUMBER);
+  private static final int ACCOUNT_NUMBER = 2;
+  private static final String INDEX_ACCOUNT_ENDPOINT = Joiner.on("/")
+      .join("/plugins", PLUGIN_NAME, "index/account", ACCOUNT_NUMBER);
 
   //Event
   private static final String EVENT_ENDPOINT =
@@ -74,6 +77,27 @@ public class RestForwarderTest {
     when(configurationMock.getRetryInterval()).thenReturn(10);
     forwarder =
         new RestForwarder(httpSessionMock, PLUGIN_NAME, configurationMock);
+  }
+
+  @Test
+  public void testIndexAccountOK() throws Exception {
+    when(httpSessionMock.post(INDEX_ACCOUNT_ENDPOINT))
+        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
+    assertThat(forwarder.indexAccount(ACCOUNT_NUMBER)).isTrue();
+  }
+
+  @Test
+  public void testIndexAccountFailed() throws Exception {
+    when(httpSessionMock.post(INDEX_ACCOUNT_ENDPOINT))
+        .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
+    assertThat(forwarder.indexAccount(ACCOUNT_NUMBER)).isFalse();
+  }
+
+  @Test
+  public void testIndexAccountThrowsException() throws Exception {
+    doThrow(new IOException()).when(httpSessionMock)
+        .post(INDEX_ACCOUNT_ENDPOINT);
+    assertThat(forwarder.indexAccount(ACCOUNT_NUMBER)).isFalse();
   }
 
   @Test

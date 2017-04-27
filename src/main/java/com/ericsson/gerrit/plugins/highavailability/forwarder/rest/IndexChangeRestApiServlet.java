@@ -84,7 +84,7 @@ class IndexChangeRestApiServlet extends HttpServlet {
       rsp.setStatus(SC_NO_CONTENT);
     } catch (IOException e) {
       sendError(rsp,SC_CONFLICT, e.getMessage());
-      logger.error("Unable to update index", e);
+      logger.error("Unable to update change index", e);
     } catch (OrmException e) {
       String msg = "Error trying to find a change \n";
       sendError(rsp,SC_NOT_FOUND, msg);

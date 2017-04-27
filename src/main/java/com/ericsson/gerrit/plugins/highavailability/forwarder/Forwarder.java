@@ -22,6 +22,14 @@ import com.google.gerrit.server.events.Event;
 public interface Forwarder {
 
   /**
+   * Forward a account indexing event to the other master.
+   *
+   * @param accountId the account to index.
+   * @return true if successful, otherwise false.
+   */
+  boolean indexAccount(int accountId);
+
+  /**
    * Forward a change indexing event to the other master.
    *
    * @param changeId the change to index.
