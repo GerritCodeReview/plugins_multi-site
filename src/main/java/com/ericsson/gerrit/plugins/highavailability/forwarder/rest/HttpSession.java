@@ -17,6 +17,7 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 import com.google.common.base.Strings;
 import com.google.common.net.MediaType;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
@@ -31,11 +32,11 @@ import java.nio.charset.StandardCharsets;
 
 class HttpSession {
   private final CloseableHttpClient httpClient;
-  private PeerInfo peerInfo;
+  private final Provider<PeerInfo> peerInfo;
 
   @Inject
   HttpSession(CloseableHttpClient httpClient,
-      PeerInfo peerInfo) {
+      Provider<PeerInfo> peerInfo) {
     this.httpClient = httpClient;
     this.peerInfo = peerInfo;
   }
@@ -45,7 +46,7 @@ class HttpSession {
   }
 
   HttpResult post(String endpoint, String content) throws IOException {
-    HttpPost post = new HttpPost(peerInfo.getDirectUrl() + endpoint);
+    HttpPost post = new HttpPost(peerInfo.get().getDirectUrl() + endpoint);
     if (!Strings.isNullOrEmpty(content)) {
       post.addHeader("Content-Type", MediaType.JSON_UTF_8.toString());
       post.setEntity(new StringEntity(content, StandardCharsets.UTF_8));
@@ -54,7 +55,8 @@ class HttpSession {
   }
 
   HttpResult delete(String endpoint) throws IOException {
-    return httpClient.execute(new HttpDelete(peerInfo.getDirectUrl() + endpoint),
+    return httpClient.execute(
+        new HttpDelete(peerInfo.get().getDirectUrl() + endpoint),
         new HttpResponseHandler());
   }
 }

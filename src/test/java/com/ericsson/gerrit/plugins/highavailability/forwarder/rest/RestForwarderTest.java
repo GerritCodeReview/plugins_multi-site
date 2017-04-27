@@ -15,6 +15,7 @@
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -25,12 +26,15 @@ import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.server.events.Event;
 import com.google.gson.GsonBuilder;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 
 import org.junit.Test;
 
 import java.io.IOException;
+
+import javax.net.ssl.SSLException;
 
 public class RestForwarderTest {
   private static final String PLUGIN_NAME = "high-availability";
@@ -41,6 +45,9 @@ public class RestForwarderTest {
   private static final boolean FAILED = false;
   private static final boolean DO_NOT_THROW_EXCEPTION = false;
   private static final boolean THROW_EXCEPTION = true;
+
+  private static final int MAX_TRIES = 3;
+  private static final int RETRY_INTERVAL = 250;
 
   //Index
   private static final int CHANGE_NUMBER = 1;
@@ -111,7 +118,10 @@ public class RestForwarderTest {
         when(httpSession.delete(request)).thenReturn(result);
       }
     }
-    restForwarder = new RestForwarder(httpSession, PLUGIN_NAME);
+    Configuration cfg = mock(Configuration.class);
+    when(cfg.getMaxTries()).thenReturn(MAX_TRIES);
+    when(cfg.getRetryInterval()).thenReturn(RETRY_INTERVAL);
+    restForwarder = new RestForwarder(httpSession, PLUGIN_NAME, cfg);
   }
 
   @Test
@@ -144,7 +154,10 @@ public class RestForwarderTest {
       HttpResult result = new HttpResult(isOperationSuccessful, msg);
       when(httpSession.post(request, content)).thenReturn(result);
     }
-    restForwarder = new RestForwarder(httpSession, PLUGIN_NAME);
+    Configuration cfg = mock(Configuration.class);
+    when(cfg.getMaxTries()).thenReturn(MAX_TRIES);
+    when(cfg.getRetryInterval()).thenReturn(RETRY_INTERVAL);
+    restForwarder = new RestForwarder(httpSession, PLUGIN_NAME, cfg);
     return event;
   }
 
@@ -227,6 +240,76 @@ public class RestForwarderTest {
       HttpResult result = new HttpResult(isOperationSuccessful, "Error");
       when(httpSession.post(request, json)).thenReturn(result);
     }
-    restForwarder = new RestForwarder(httpSession, PLUGIN_NAME);
+    Configuration cfg = mock(Configuration.class);
+    when(cfg.getMaxTries()).thenReturn(MAX_TRIES);
+    when(cfg.getRetryInterval()).thenReturn(RETRY_INTERVAL);
+    restForwarder = new RestForwarder(httpSession, PLUGIN_NAME, cfg);
+  }
+
+  @Test
+  public void testRetryOnErrorThenSuccess() throws IOException {
+    Configuration cfg = mock(Configuration.class);
+    when(cfg.getMaxTries()).thenReturn(3);
+    when(cfg.getRetryInterval()).thenReturn(10);
+
+    HttpSession httpSession = mock(HttpSession.class);
+    when(httpSession.post(anyString(), anyString()))
+        .thenReturn(new HttpResult(false, "Error"))
+        .thenReturn(new HttpResult(false, "Error"))
+        .thenReturn(new HttpResult(true, "Success"));
+
+    RestForwarder forwarder = new RestForwarder(httpSession, PLUGIN_NAME, cfg);
+    assertThat(forwarder.evict(Constants.PROJECT_LIST, new Object()))
+        .isTrue();
+  }
+
+  @Test
+  public void testRetryOnIoExceptionThenSuccess() throws IOException {
+    Configuration cfg = mock(Configuration.class);
+    when(cfg.getMaxTries()).thenReturn(3);
+    when(cfg.getRetryInterval()).thenReturn(10);
+
+    HttpSession httpSession = mock(HttpSession.class);
+    when(httpSession.post(anyString(), anyString()))
+        .thenThrow(new IOException())
+        .thenThrow(new IOException())
+        .thenReturn(new HttpResult(true, "Success"));
+
+    RestForwarder forwarder = new RestForwarder(httpSession, PLUGIN_NAME, cfg);
+    assertThat(forwarder.evict(Constants.PROJECT_LIST, new Object()))
+        .isTrue();
+  }
+
+  @Test
+  public void testNoRetryAfterNonRecoverableException() throws IOException {
+    Configuration cfg = mock(Configuration.class);
+    when(cfg.getMaxTries()).thenReturn(3);
+    when(cfg.getRetryInterval()).thenReturn(10);
+
+    HttpSession httpSession = mock(HttpSession.class);
+    when(httpSession.post(anyString(), anyString()))
+        .thenThrow(new SSLException("Non Recoverable"))
+        .thenReturn(new HttpResult(true, "Success"));
+
+    RestForwarder forwarder = new RestForwarder(httpSession, PLUGIN_NAME, cfg);
+    assertThat(forwarder.evict(Constants.PROJECT_LIST, new Object()))
+        .isFalse();
+  }
+
+  @Test
+  public void testFailureAfterMaxTries() throws IOException {
+    Configuration cfg = mock(Configuration.class);
+    when(cfg.getMaxTries()).thenReturn(3);
+    when(cfg.getRetryInterval()).thenReturn(10);
+
+    HttpSession httpSession = mock(HttpSession.class);
+    when(httpSession.post(anyString(), anyString()))
+        .thenReturn(new HttpResult(false, "Error"))
+        .thenReturn(new HttpResult(false, "Error"))
+        .thenReturn(new HttpResult(false, "Error"));
+
+    RestForwarder forwarder = new RestForwarder(httpSession, PLUGIN_NAME, cfg);
+    assertThat(forwarder.evict(Constants.PROJECT_LIST, new Object()))
+        .isFalse();
   }
 }

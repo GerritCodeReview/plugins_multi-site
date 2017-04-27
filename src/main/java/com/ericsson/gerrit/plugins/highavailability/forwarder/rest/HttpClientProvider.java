@@ -19,11 +19,8 @@ import com.google.inject.Provider;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.HttpRequestRetryHandler;
-import org.apache.http.client.ServiceUnavailableRetryStrategy;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
@@ -36,17 +33,14 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.protocol.HttpContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
@@ -60,7 +54,6 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
   // Up to 2 target instances with the max number of connections per host:
   private static final int MAX_CONNECTIONS = 2 * CONNECTIONS_PER_ROUTE;
 
-  private static final int ERROR_CODES = 500;
   private static final int MAX_CONNECTION_INACTIVITY = 10000;
 
   private final Configuration cfg;
@@ -78,8 +71,6 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
         .setConnectionManager(customConnectionManager())
         .setDefaultCredentialsProvider(buildCredentials())
         .setDefaultRequestConfig(customRequestConfig())
-        .setRetryHandler(customRetryHandler())
-        .setServiceUnavailableRetryStrategy(customServiceUnavailRetryStrategy())
         .build();
   }
 
@@ -88,57 +79,6 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
         .setSocketTimeout(cfg.getSocketTimeout())
         .setConnectionRequestTimeout(cfg.getConnectionTimeout())
         .build();
-  }
-
-  private HttpRequestRetryHandler customRetryHandler() {
-    return new HttpRequestRetryHandler() {
-
-      @Override
-      public boolean retryRequest(IOException exception, int executionCount,
-          HttpContext context) {
-        if (executionCount > cfg.getMaxTries()
-            || exception instanceof SSLException) {
-          return false;
-        }
-        logRetry(exception.getMessage(), context);
-        try {
-          Thread.sleep(cfg.getRetryInterval());
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
-          return false;
-        }
-        return true;
-      }
-    };
-  }
-
-  private ServiceUnavailableRetryStrategy customServiceUnavailRetryStrategy() {
-    return new ServiceUnavailableRetryStrategy() {
-      @Override
-      public boolean retryRequest(HttpResponse response, int executionCount,
-          HttpContext context) {
-        if (executionCount > cfg.getMaxTries()) {
-          return false;
-        }
-        if (response.getStatusLine().getStatusCode() >= ERROR_CODES) {
-          logRetry(response.getStatusLine().getReasonPhrase(), context);
-          return true;
-        }
-        return false;
-      }
-
-      @Override
-      public long getRetryInterval() {
-        return cfg.getRetryInterval();
-      }
-    };
-  }
-
-  private void logRetry(String cause, HttpContext context) {
-    if(log.isDebugEnabled()){
-      log.debug("Retrying request caused by '" + cause + "', request: '"
-          + context.getAttribute("http.request") + "'");
-    }
   }
 
   private HttpClientConnectionManager customConnectionManager() {

@@ -29,6 +29,7 @@ import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
 import com.github.tomakehurst.wiremock.http.Fault;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
+import com.google.inject.util.Providers;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -51,7 +52,6 @@ public class HttpSessionTest {
   private static final String REQUEST_MADE = "Request made";
   private static final String SECOND_TRY = "Second try";
   private static final String THIRD_TRY = "Third try";
-  private static final String RETRY_AT_ERROR = "Retry at error";
   private static final String RETRY_AT_DELAY = "Retry at delay";
 
   private HttpSession httpSession;
@@ -72,8 +72,9 @@ public class HttpSessionTest {
 
     PeerInfo peerInfo = mock(PeerInfo.class);
     when(peerInfo.getDirectUrl()).thenReturn(url);
-    httpSession =
-        new HttpSession(new HttpClientProvider(cfg).get(), peerInfo);
+    httpSession = new HttpSession(
+        new HttpClientProvider(cfg).get(),
+        Providers.of(peerInfo));
     wireMockRule.resetRequests();
   }
 
@@ -123,18 +124,6 @@ public class HttpSessionTest {
   }
 
   @Test
-  public void testBadResponseRetryThenOK() throws Exception {
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_ERROR)
-        .whenScenarioStateIs(Scenario.STARTED).willSetStateTo(REQUEST_MADE)
-        .willReturn(aResponse().withStatus(ERROR)));
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_ERROR)
-        .whenScenarioStateIs(REQUEST_MADE)
-        .willReturn(aResponse().withStatus(NO_CONTENT)));
-
-    assertThat(httpSession.post(ENDPOINT).isSuccessful()).isTrue();
-  }
-
-  @Test
   public void testBadResponseRetryThenGiveUp() throws Exception {
     wireMockRule.givenThat(post(urlEqualTo(ENDPOINT))
         .willReturn(aResponse().withStatus(ERROR).withBody(ERROR_MESSAGE)));
@@ -142,36 +131,6 @@ public class HttpSessionTest {
     HttpResult result = httpSession.post(ENDPOINT);
     assertThat(result.isSuccessful()).isFalse();
     assertThat(result.getMessage()).isEqualTo(ERROR_MESSAGE);
-  }
-
-  @Test
-  public void testRetryAfterDelay() throws Exception {
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
-        .whenScenarioStateIs(Scenario.STARTED).willSetStateTo(REQUEST_MADE)
-        .willReturn(aResponse().withStatus(ERROR).withFixedDelay(TIMEOUT / 2)));
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
-        .whenScenarioStateIs(REQUEST_MADE)
-        .willReturn(aResponse().withStatus(NO_CONTENT)));
-
-    assertThat(httpSession.post(ENDPOINT).isSuccessful()).isTrue();
-  }
-
-  @Test
-  public void testRetryAfterTimeoutThenOK() throws Exception {
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
-        .whenScenarioStateIs(Scenario.STARTED).willSetStateTo(REQUEST_MADE)
-        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
-        .whenScenarioStateIs(REQUEST_MADE).willSetStateTo(SECOND_TRY)
-        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
-        .whenScenarioStateIs(SECOND_TRY).willSetStateTo(THIRD_TRY)
-        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
-        .whenScenarioStateIs(THIRD_TRY)
-        .willReturn(aResponse().withStatus(NO_CONTENT)));
-
-    assertThat(httpSession.post(ENDPOINT).isSuccessful()).isTrue();
   }
 
   @Test(expected = SocketTimeoutException.class)
@@ -190,15 +149,6 @@ public class HttpSessionTest {
         .willReturn(aResponse().withFixedDelay(TIMEOUT)));
 
     httpSession.post(ENDPOINT);
-  }
-
-  @Test
-  public void testGiveUpAtTimeout() throws Exception {
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
-        .whenScenarioStateIs(Scenario.STARTED).willSetStateTo(REQUEST_MADE)
-        .willReturn(aResponse().withStatus(ERROR).withFixedDelay(TIMEOUT)));
-
-    assertThat(httpSession.post(ENDPOINT).isSuccessful()).isFalse();
   }
 
   @Test
