@@ -12,25 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability.peers;
+package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
-import com.google.common.base.Optional;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import java.io.IOException;
 
-import com.ericsson.gerrit.plugins.highavailability.Configuration;
-
-public class PluginConfigPeerInfoProvider implements Provider<Optional<PeerInfo>> {
-
-  private final Optional<PeerInfo> peerInfo;
-
-  @Inject
-  PluginConfigPeerInfoProvider(Configuration cfg) {
-    peerInfo = Optional.of(new PeerInfo(cfg.getUrl()));
-  }
-
-  @Override
-  public Optional<PeerInfo> get() {
-    return peerInfo;
-  }
+public class PeerInfoNotAvailableException extends IOException {
+  private static final long serialVersionUID = 1L;
 }
