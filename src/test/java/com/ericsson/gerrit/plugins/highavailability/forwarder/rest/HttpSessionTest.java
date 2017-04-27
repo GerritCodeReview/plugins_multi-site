@@ -29,6 +29,7 @@ import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
 import com.github.tomakehurst.wiremock.http.Fault;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
+import com.google.inject.util.Providers;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -71,8 +72,9 @@ public class HttpSessionTest {
 
     PeerInfo peerInfo = mock(PeerInfo.class);
     when(peerInfo.getDirectUrl()).thenReturn(url);
-    httpSession =
-        new HttpSession(new HttpClientProvider(cfg).get(), peerInfo);
+    httpSession = new HttpSession(
+        new HttpClientProvider(cfg).get(),
+        Providers.of(peerInfo));
     wireMockRule.resetRequests();
   }
 
