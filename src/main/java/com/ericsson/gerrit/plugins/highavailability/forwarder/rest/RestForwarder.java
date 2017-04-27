@@ -65,7 +65,7 @@ class RestForwarder implements Forwarder {
   }
 
   private String buildIndexEndpoint(int changeId) {
-    return Joiner.on("/").join(pluginRelativePath, "index", changeId);
+    return Joiner.on("/").join(pluginRelativePath, "index/change", changeId);
   }
 
   @Override

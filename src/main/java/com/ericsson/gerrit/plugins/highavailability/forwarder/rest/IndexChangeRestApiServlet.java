@@ -42,10 +42,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Singleton
-class IndexRestApiServlet extends HttpServlet {
+class IndexChangeRestApiServlet extends HttpServlet {
   private static final long serialVersionUID = -1L;
   private static final Logger logger =
-      LoggerFactory.getLogger(IndexRestApiServlet.class);
+      LoggerFactory.getLogger(IndexChangeRestApiServlet.class);
   private static final Map<Change.Id, AtomicInteger> changeIdLocks =
       new HashMap<>();
 
@@ -53,7 +53,7 @@ class IndexRestApiServlet extends HttpServlet {
   private final SchemaFactory<ReviewDb> schemaFactory;
 
   @Inject
-  IndexRestApiServlet(ChangeIndexer indexer,
+  IndexChangeRestApiServlet(ChangeIndexer indexer,
       SchemaFactory<ReviewDb> schemaFactory) {
     this.indexer = indexer;
     this.schemaFactory = schemaFactory;

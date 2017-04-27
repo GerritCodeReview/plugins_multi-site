@@ -45,7 +45,7 @@ public class RestForwarderTest {
   //Index
   private static final int CHANGE_NUMBER = 1;
   private static final String DELETE_OP = "delete";
-  private static final String INDEX_OP = "index";
+  private static final String INDEX_OP = "index/change";
 
   //Evict cache
   private static final String EMPTY_JSON = "{}";
