@@ -14,11 +14,14 @@
 
 package com.ericsson.gerrit.plugins.highavailability.peers;
 
+import com.google.common.base.Optional;
 import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
 
 public class PeerInfoModule extends AbstractModule {
   @Override
   protected void configure() {
-    bind(PeerInfo.class).toProvider(PluginConfigPeerInfoProvider.class);
+    bind(new TypeLiteral<Optional<PeerInfo>>() {})
+        .toProvider(PluginConfigPeerInfoProvider.class);
   }
 }

@@ -15,13 +15,21 @@
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.exactly;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import com.google.common.base.Optional;
+import com.google.inject.util.Providers;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
@@ -29,12 +37,12 @@ import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
 import com.github.tomakehurst.wiremock.http.Fault;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
-import com.google.inject.util.Providers;
 
 import org.junit.Before;
-import org.junit.ClassRule;
+import org.junit.Rule;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.net.SocketTimeoutException;
 
 public class HttpSessionTest {
@@ -56,13 +64,15 @@ public class HttpSessionTest {
 
   private HttpSession httpSession;
 
-  @ClassRule
-  public static WireMockRule wireMockRule = new WireMockRule(0);
+  @Rule
+  public WireMockRule wireMockRule = new WireMockRule(0);
+
+  private Configuration cfg;
 
   @Before
   public void setUp() throws Exception {
     String url = "http://localhost:" + wireMockRule.port();
-    Configuration cfg = mock(Configuration.class);
+    cfg = mock(Configuration.class);
     when(cfg.getUser()).thenReturn("user");
     when(cfg.getPassword()).thenReturn("pass");
     when(cfg.getMaxTries()).thenReturn(MAX_TRIES);
@@ -74,8 +84,7 @@ public class HttpSessionTest {
     when(peerInfo.getDirectUrl()).thenReturn(url);
     httpSession = new HttpSession(
         new HttpClientProvider(cfg).get(),
-        Providers.of(peerInfo));
-    wireMockRule.resetRequests();
+        Providers.of(Optional.of(peerInfo)));
   }
 
   @Test
@@ -157,5 +166,19 @@ public class HttpSessionTest {
         .willReturn(aResponse().withFault(Fault.MALFORMED_RESPONSE_CHUNK)));
 
     assertThat(httpSession.post(ENDPOINT).isSuccessful()).isFalse();
+  }
+
+  @Test
+  public void testNoRequestWhenPeerInfoUnknown() throws IOException {
+    httpSession = new HttpSession(
+        new HttpClientProvider(cfg).get(),
+        Providers.of(Optional.<PeerInfo> absent()));
+    try {
+      httpSession.post(ENDPOINT);
+      fail("Expected PeerInfoNotAvailableException");
+    } catch (PeerInfoNotAvailableException e) {
+      // good
+    }
+    verify(exactly(0), anyRequestedFor(anyUrl()));
   }
 }
