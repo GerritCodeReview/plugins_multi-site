@@ -19,6 +19,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.PluginConfigFactory;
@@ -42,7 +43,10 @@ public class Configuration {
 
   // peerInfo section
   static final String PEER_INFO_SECTION = "peerInfo";
+  static final String STATIC_SUBSECTION = PeerInfoStrategy.STATIC.name().toLowerCase();
+  static final String JGROUPS_SUBSECTION = PeerInfoStrategy.JGROUPS.name().toLowerCase();
   static final String URL_KEY = "url";
+  static final String STRATEGY_KEY = "strategy";
 
   // http section
   static final String HTTP_SECTION = "http";
@@ -72,6 +76,10 @@ public class Configuration {
   static final String WEBSESSION_SECTION = "websession";
   static final String CLEANUP_INTERVAL_KEY = "cleanupInterval";
 
+  // jgroups section used if peerInfo.strategy == jgroups
+  static final String SKIP_INTERFACE_KEY = "skipInterface";
+  static final String CLUSTER_NAME_KEY = "clusterName";
+
   static final int DEFAULT_TIMEOUT_MS = 5000;
   static final int DEFAULT_MAX_TRIES = 5;
   static final int DEFAULT_RETRY_INTERVAL = 1000;
@@ -79,6 +87,10 @@ public class Configuration {
   static final String DEFAULT_CLEANUP_INTERVAL = "24 hours";
   static final long DEFAULT_CLEANUP_INTERVAL_MS = HOURS.toMillis(24);
   static final boolean DEFAULT_SYNCHRONIZE = true;
+  static final PeerInfoStrategy DEFAULT_PEER_INFO_STRATEGY = PeerInfoStrategy.STATIC;
+  static final ImmutableList<String> DEFAULT_SKIP_INTERFACE_LIST =
+      ImmutableList.of("lo*", "utun*", "awdl*");
+  static final String DEFAULT_CLUSTER_NAME = "GerritHA";
 
   private final Main main;
   private final PeerInfo peerInfo;
@@ -87,6 +99,13 @@ public class Configuration {
   private final Event event;
   private final Index index;
   private final Websession websession;
+  private PeerInfoStatic peerInfoStatic;
+  private PeerInfoJGroups peerInfoJGroups;
+
+  public enum PeerInfoStrategy {
+    JGROUPS,
+    STATIC
+  }
 
   @Inject
   Configuration(
@@ -94,6 +113,16 @@ public class Configuration {
     Config cfg = pluginConfigFactory.getGlobalPluginConfig(pluginName);
     main = new Main(site, cfg);
     peerInfo = new PeerInfo(cfg);
+    switch (peerInfo.strategy()) {
+      case STATIC:
+        peerInfoStatic = new PeerInfoStatic(cfg);
+        break;
+      case JGROUPS:
+        peerInfoJGroups = new PeerInfoJGroups(cfg);
+        break;
+      default:
+        throw new IllegalArgumentException("Not supported strategy: " + peerInfo.strategy);
+    }
     http = new Http(cfg);
     cache = new Cache(cfg);
     event = new Event(cfg);
@@ -107,6 +136,14 @@ public class Configuration {
 
   public PeerInfo peerInfo() {
     return peerInfo;
+  }
+
+  public PeerInfoStatic peerInfoStatic() {
+    return peerInfoStatic;
+  }
+
+  public PeerInfoJGroups peerInfoJGroups() {
+    return peerInfoJGroups;
   }
 
   public Http http() {
@@ -149,6 +186,12 @@ public class Configuration {
     }
   }
 
+  private static String getString(
+      Config cfg, String section, String subSection, String name, String defaultValue) {
+    String value = cfg.getString(section, subSection, name);
+    return ((value == null) ? defaultValue : value);
+  }
+
   public static class Main {
     private final Path sharedDirectory;
 
@@ -171,17 +214,51 @@ public class Configuration {
   }
 
   public static class PeerInfo {
-    private final String url;
+    private final PeerInfoStrategy strategy;
 
     private PeerInfo(Config cfg) {
+      strategy = cfg.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY);
+    }
+
+    public PeerInfoStrategy strategy() {
+      return strategy;
+    }
+  }
+
+  public class PeerInfoStatic {
+    private final String url;
+
+    private PeerInfoStatic(Config cfg) {
       url =
           CharMatcher.is('/')
               .trimTrailingFrom(
-                  Strings.nullToEmpty(cfg.getString(PEER_INFO_SECTION, null, URL_KEY)));
+                  Strings.nullToEmpty(
+                      cfg.getString(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY)));
     }
 
     public String url() {
       return url;
+    }
+  }
+
+  public static class PeerInfoJGroups {
+    private final ImmutableList<String> skipInterface;
+    private final String clusterName;
+
+    private PeerInfoJGroups(Config cfg) {
+      String[] skip = cfg.getStringList(PEER_INFO_SECTION, JGROUPS_SUBSECTION, SKIP_INTERFACE_KEY);
+      skipInterface = skip == null ? DEFAULT_SKIP_INTERFACE_LIST : ImmutableList.copyOf(skip);
+      clusterName =
+          getString(
+              cfg, PEER_INFO_SECTION, JGROUPS_SUBSECTION, CLUSTER_NAME_KEY, DEFAULT_CLUSTER_NAME);
+    }
+
+    public ImmutableList<String> skipInterface() {
+      return skipInterface;
+    }
+
+    public String clusterName() {
+      return clusterName;
     }
   }
 

@@ -16,6 +16,7 @@ package com.ericsson.gerrit.plugins.highavailability;
 
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.*;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStrategy;
 import com.google.common.base.Strings;
 import com.google.gerrit.common.FileUtil;
 import com.google.gerrit.extensions.annotations.PluginName;
@@ -74,7 +75,18 @@ public class Setup implements InitStep {
 
   private void configurePeerInfoSection() {
     ui.header("PeerInfo section");
-    promptAndSetString("Peer URL", PEER_INFO_SECTION, URL_KEY, null);
+    PeerInfoStrategy strategy = ui.readEnum(PeerInfoStrategy.JGROUPS, "Peer info strategy");
+    config.setEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, strategy);
+    if (strategy == PeerInfoStrategy.STATIC) {
+      promptAndSetString("Peer URL", PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY, null);
+    } else {
+      promptAndSetString(
+          "JGroups cluster name",
+          PEER_INFO_SECTION,
+          JGROUPS_SUBSECTION,
+          CLUSTER_NAME_KEY,
+          DEFAULT_CLUSTER_NAME);
+    }
   }
 
   private void configureHttp() {
@@ -120,13 +132,18 @@ public class Setup implements InitStep {
 
   private String promptAndSetString(
       String title, String section, String name, String defaultValue) {
-    String oldValue = Strings.emptyToNull(config.getString(section, null, name));
+    return promptAndSetString(title, section, null, name, defaultValue);
+  }
+
+  private String promptAndSetString(
+      String title, String section, String subsection, String name, String defaultValue) {
+    String oldValue = Strings.emptyToNull(config.getString(section, subsection, name));
     String newValue = ui.readString(oldValue != null ? oldValue : defaultValue, title);
     if (!Objects.equals(oldValue, newValue)) {
       if (!Strings.isNullOrEmpty(newValue)) {
-        config.setString(section, null, name, newValue);
+        config.setString(section, subsection, name, newValue);
       } else {
-        config.unset(section, name, name);
+        config.unset(section, subsection, name);
       }
     }
     return newValue;

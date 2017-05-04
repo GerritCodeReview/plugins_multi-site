@@ -5,6 +5,10 @@ include_defs('//bucklets/maven_jar.bucklet')
 SOURCES = glob(['src/main/java/**/*.java'])
 RESOURCES = glob(['src/main/resources/**/*'])
 
+DEPS = [
+  ':jgroups',
+]
+
 TEST_DEPS = GERRIT_PLUGIN_API + GERRIT_TESTS + [
   ':high-availability__plugin',
   ':mockito',
@@ -26,6 +30,7 @@ gerrit_plugin(
     'Implementation-Vendor: Ericsson',
   ],
   provided_deps = GERRIT_TESTS,
+  deps = DEPS,
 )
 
 java_sources(
@@ -52,6 +57,13 @@ maven_jar(
   sha1 = '9cda1bf1674c8de3a1116bae4d7ce0046a857d30',
   license = 'Apache2.0',
   attach_source = False,
+)
+
+maven_jar(
+  name = 'jgroups',
+  id = 'org.jgroups:jgroups:3.6.5.Final',
+  sha1 = 'fe575fe2d473566ad3f4ace4702ff4bfcf2587a6',
+  license = 'Apache2.0',
 )
 
 maven_jar(
