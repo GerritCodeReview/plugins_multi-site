@@ -19,6 +19,7 @@ import com.google.gerrit.httpd.plugins.HttpPluginModule;
 public class RestForwarderServletModule extends HttpPluginModule {
   @Override
   protected void configureServlets() {
+    serveRegex("/index/account/\\d+$").with(IndexAccountRestApiServlet.class);
     serveRegex("/index/change/\\d+$").with(IndexChangeRestApiServlet.class);
     serve("/event").with(EventRestApiServlet.class);
     serve("/cache/*").with(CacheRestApiServlet.class);
