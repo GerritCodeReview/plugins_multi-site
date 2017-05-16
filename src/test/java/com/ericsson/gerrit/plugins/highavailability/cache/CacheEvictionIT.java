@@ -22,57 +22,54 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
+import com.github.tomakehurst.wiremock.http.Request;
+import com.github.tomakehurst.wiremock.http.RequestListener;
+import com.github.tomakehurst.wiremock.http.Response;
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.google.common.base.Throwables;
 import com.google.gerrit.acceptance.GerritConfig;
 import com.google.gerrit.acceptance.GerritConfigs;
 import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.PluginDaemonTest;
-
-import com.github.tomakehurst.wiremock.http.Request;
-import com.github.tomakehurst.wiremock.http.RequestListener;
-import com.github.tomakehurst.wiremock.http.Response;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.TimeUnit;
 import org.apache.http.HttpStatus;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.TimeUnit;
-
 @NoHttpd
 public class CacheEvictionIT extends PluginDaemonTest {
 
-  @Rule
-  public WireMockRule wireMockRule = new WireMockRule(options().port(18888), false);
+  @Rule public WireMockRule wireMockRule = new WireMockRule(options().port(18888), false);
 
   @Test
   @GerritConfigs({
-      @GerritConfig(name = "plugin.high-availability.url", value = "http://localhost:18888"),
-      @GerritConfig(name = "plugin.high-availability.user", value = "admin"),
-      @GerritConfig(name = "plugin.high-availability.cacheThreadPoolSize", value = "10")})
+    @GerritConfig(name = "plugin.high-availability.url", value = "http://localhost:18888"),
+    @GerritConfig(name = "plugin.high-availability.user", value = "admin"),
+    @GerritConfig(name = "plugin.high-availability.cacheThreadPoolSize", value = "10")
+  })
   public void flushAndSendPost() throws Exception {
-    final String flushRequest =
-        "/plugins/high-availability/cache/" + Constants.PROJECT_LIST;
+    final String flushRequest = "/plugins/high-availability/cache/" + Constants.PROJECT_LIST;
     final CyclicBarrier checkPoint = new CyclicBarrier(2);
-    wireMockRule.addMockServiceRequestListener(new RequestListener() {
-      @Override
-      public void requestReceived(Request request, Response response) {
-        if (request.getAbsoluteUrl().contains(flushRequest)) {
-          try {
-            checkPoint.await();
-          } catch (InterruptedException | BrokenBarrierException e) {
-            Throwables.propagateIfPossible(e);
+    wireMockRule.addMockServiceRequestListener(
+        new RequestListener() {
+          @Override
+          public void requestReceived(Request request, Response response) {
+            if (request.getAbsoluteUrl().contains(flushRequest)) {
+              try {
+                checkPoint.await();
+              } catch (InterruptedException | BrokenBarrierException e) {
+                Throwables.propagateIfPossible(e);
+              }
+            }
           }
-        }
-      }
-    });
-    givenThat(post(urlEqualTo(flushRequest))
-        .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
+        });
+    givenThat(
+        post(urlEqualTo(flushRequest))
+            .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
 
-    adminSshSession
-        .exec("gerrit flush-caches --cache " + Constants.PROJECT_LIST);
+    adminSshSession.exec("gerrit flush-caches --cache " + Constants.PROJECT_LIST);
     checkPoint.await(5, TimeUnit.SECONDS);
     verify(postRequestedFor(urlEqualTo(flushRequest)));
   }

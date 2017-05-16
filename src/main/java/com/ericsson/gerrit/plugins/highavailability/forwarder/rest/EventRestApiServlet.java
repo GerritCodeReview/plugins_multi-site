@@ -20,6 +20,7 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static javax.servlet.http.HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE;
 
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
 import com.google.common.base.Supplier;
 import com.google.common.io.CharStreams;
 import com.google.common.net.MediaType;
@@ -32,24 +33,18 @@ import com.google.gson.GsonBuilder;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 class EventRestApiServlet extends HttpServlet {
   private static final long serialVersionUID = -1L;
-  private static final Logger logger = LoggerFactory
-      .getLogger(EventRestApiServlet.class);
+  private static final Logger logger = LoggerFactory.getLogger(EventRestApiServlet.class);
 
   private final EventDispatcher dispatcher;
 
@@ -66,8 +61,8 @@ class EventRestApiServlet extends HttpServlet {
     try {
       Context.setForwardedEvent(true);
       if (!MediaType.parse(req.getContentType()).is(JSON_UTF_8)) {
-        sendError(rsp, SC_UNSUPPORTED_MEDIA_TYPE,
-            "Expecting " + JSON_UTF_8.toString() + " content type");
+        sendError(
+            rsp, SC_UNSUPPORTED_MEDIA_TYPE, "Expecting " + JSON_UTF_8.toString() + " content type");
         return;
       }
       Event event = getEventFromRequest(req);
@@ -86,15 +81,15 @@ class EventRestApiServlet extends HttpServlet {
 
   private Event getEventFromRequest(HttpServletRequest req) throws IOException {
     String jsonEvent = CharStreams.toString(req.getReader());
-    Gson gson = new GsonBuilder()
-        .registerTypeAdapter(Event.class, new EventDeserializer())
-        .registerTypeAdapter(Supplier.class, new SupplierDeserializer())
-        .create();
+    Gson gson =
+        new GsonBuilder()
+            .registerTypeAdapter(Event.class, new EventDeserializer())
+            .registerTypeAdapter(Supplier.class, new SupplierDeserializer())
+            .create();
     return gson.fromJson(jsonEvent, Event.class);
   }
 
-  private static void sendError(HttpServletResponse rsp, int statusCode,
-      String message) {
+  private static void sendError(HttpServletResponse rsp, int statusCode, String message) {
     try {
       rsp.sendError(statusCode, message);
     } catch (IOException e) {

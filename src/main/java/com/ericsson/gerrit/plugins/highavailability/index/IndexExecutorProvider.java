@@ -14,19 +14,17 @@
 
 package com.ericsson.gerrit.plugins.highavailability.index;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
+import com.ericsson.gerrit.plugins.highavailability.ExecutorProvider;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import com.ericsson.gerrit.plugins.highavailability.Configuration;
-import com.ericsson.gerrit.plugins.highavailability.ExecutorProvider;
 
 @Singleton
 class IndexExecutorProvider extends ExecutorProvider {
 
   @Inject
-  IndexExecutorProvider(WorkQueue workQueue,
-      Configuration config) {
+  IndexExecutorProvider(WorkQueue workQueue, Configuration config) {
     super(workQueue, config.getIndexThreadPoolSize(), "Forward-index-event");
   }
 }

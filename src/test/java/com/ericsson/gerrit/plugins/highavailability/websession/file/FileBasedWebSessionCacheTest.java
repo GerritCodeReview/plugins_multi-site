@@ -18,14 +18,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.httpd.WebSessionManager.Val;
-
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeUtils;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.DirectoryStream;
@@ -38,6 +30,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeUtils;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 public class FileBasedWebSessionCacheTest {
 
@@ -45,8 +43,7 @@ public class FileBasedWebSessionCacheTest {
   private static final String EMPTY_KEY = "aOc2prqlZRpSO3LpauGO5efCLs1L9r9KkG";
   private static final String INVALID_KEY = "aOFdpHriBM6dN055M13PjDdTZagl5r5aSG";
 
-  @Rule
-  public TemporaryFolder tempFolder = new TemporaryFolder();
+  @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
   private FileBasedWebsessionCache cache;
   private Path websessionDir;
@@ -80,8 +77,7 @@ public class FileBasedWebSessionCacheTest {
   public void cleanUpTest() throws Exception {
     loadKeyToCacheDir(EXISTING_KEY);
     try {
-      long existingKeyExpireAt =
-          cache.getIfPresent(EXISTING_KEY).getExpiresAt();
+      long existingKeyExpireAt = cache.getIfPresent(EXISTING_KEY).getExpiresAt();
       DateTimeUtils.setCurrentMillisFixed(
           new DateTime(existingKeyExpireAt).minusHours(1).getMillis());
       cache.cleanUp();
@@ -143,8 +139,7 @@ public class FileBasedWebSessionCacheTest {
     loadKeyToCacheDir(EMPTY_KEY);
     loadKeyToCacheDir(INVALID_KEY);
     loadKeyToCacheDir(EXISTING_KEY);
-    List<String> keys =
-        Arrays.asList(new String[] {EMPTY_KEY, EXISTING_KEY});
+    List<String> keys = Arrays.asList(new String[] {EMPTY_KEY, EXISTING_KEY});
     assertThat(cache.getAllPresent(keys).size()).isEqualTo(1);
     assertThat(cache.getAllPresent(keys)).containsKey(EXISTING_KEY);
   }
@@ -271,7 +266,7 @@ public class FileBasedWebSessionCacheTest {
   }
 
   private Path loadKeyToCacheDir(String key) throws IOException {
-    if(key.equals(EMPTY_KEY)){
+    if (key.equals(EMPTY_KEY)) {
       return Files.createFile(websessionDir.resolve(EMPTY_KEY));
     }
     InputStream in = loadFile(key);

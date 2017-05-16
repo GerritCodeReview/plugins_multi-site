@@ -16,9 +16,7 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
 import com.google.gerrit.server.events.Event;
 
-/**
- * Forward indexing, stream events and cache evictions to the other master
- */
+/** Forward indexing, stream events and cache evictions to the other master */
 public interface Forwarder {
 
   /**

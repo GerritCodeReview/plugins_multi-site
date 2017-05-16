@@ -21,7 +21,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,17 +40,14 @@ public class ConfigurationTest {
   private static final int RETRY_INTERVAL = 1000;
   private static final int THREAD_POOL_SIZE = 1;
 
-  @Mock
-  private PluginConfigFactory cfgFactoryMock;
-  @Mock
-  private PluginConfig configMock;
+  @Mock private PluginConfigFactory cfgFactoryMock;
+  @Mock private PluginConfig configMock;
   private Configuration configuration;
   private String pluginName = "high-availability";
 
   @Before
   public void setUp() throws Exception {
-    when(cfgFactoryMock.getFromGerritConfig(pluginName, true))
-        .thenReturn(configMock);
+    when(cfgFactoryMock.getFromGerritConfig(pluginName, true)).thenReturn(configMock);
   }
 
   @Test
@@ -64,10 +60,8 @@ public class ConfigurationTest {
     assertThat(configuration.getSocketTimeout()).isEqualTo(TIMEOUT);
     assertThat(configuration.getMaxTries()).isEqualTo(MAX_TRIES);
     assertThat(configuration.getRetryInterval()).isEqualTo(RETRY_INTERVAL);
-    assertThat(configuration.getIndexThreadPoolSize())
-        .isEqualTo(THREAD_POOL_SIZE);
-    assertThat(configuration.getCacheThreadPoolSize())
-        .isEqualTo(THREAD_POOL_SIZE);
+    assertThat(configuration.getIndexThreadPoolSize()).isEqualTo(THREAD_POOL_SIZE);
+    assertThat(configuration.getCacheThreadPoolSize()).isEqualTo(THREAD_POOL_SIZE);
   }
 
   @Test
@@ -111,12 +105,9 @@ public class ConfigurationTest {
     when(configMock.getString("url")).thenReturn(values ? URL : null);
     when(configMock.getString("user")).thenReturn(values ? USER : null);
     when(configMock.getString("password")).thenReturn(values ? PASS : null);
-    when(configMock.getInt("connectionTimeout", TIMEOUT))
-        .thenReturn(values ? TIMEOUT : 0);
-    when(configMock.getInt("socketTimeout", TIMEOUT))
-        .thenReturn(values ? TIMEOUT : 0);
-    when(configMock.getInt("maxTries", MAX_TRIES))
-        .thenReturn(values ? MAX_TRIES : 0);
+    when(configMock.getInt("connectionTimeout", TIMEOUT)).thenReturn(values ? TIMEOUT : 0);
+    when(configMock.getInt("socketTimeout", TIMEOUT)).thenReturn(values ? TIMEOUT : 0);
+    when(configMock.getInt("maxTries", MAX_TRIES)).thenReturn(values ? MAX_TRIES : 0);
     when(configMock.getInt("retryInterval", RETRY_INTERVAL))
         .thenReturn(values ? RETRY_INTERVAL : 0);
     when(configMock.getInt("indexThreadPoolSize", THREAD_POOL_SIZE))

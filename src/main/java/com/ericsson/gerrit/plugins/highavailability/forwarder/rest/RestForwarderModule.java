@@ -14,19 +14,16 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
-
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
-
 import org.apache.http.impl.client.CloseableHttpClient;
 
 public class RestForwarderModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(CloseableHttpClient.class).toProvider(HttpClientProvider.class)
-        .in(Scopes.SINGLETON);
+    bind(CloseableHttpClient.class).toProvider(HttpClientProvider.class).in(Scopes.SINGLETON);
     bind(HttpSession.class);
     bind(Forwarder.class).to(RestForwarder.class);
   }

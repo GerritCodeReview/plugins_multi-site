@@ -14,20 +14,17 @@
 
 package com.ericsson.gerrit.plugins.highavailability.cache;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
+import com.ericsson.gerrit.plugins.highavailability.ExecutorProvider;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import com.ericsson.gerrit.plugins.highavailability.Configuration;
-import com.ericsson.gerrit.plugins.highavailability.ExecutorProvider;
 
 @Singleton
 class CacheExecutorProvider extends ExecutorProvider {
 
   @Inject
-  CacheExecutorProvider(WorkQueue workQueue,
-      Configuration config) {
-    super(workQueue, config.getCacheThreadPoolSize(),
-        "Forward-cache-eviction-event");
+  CacheExecutorProvider(WorkQueue workQueue, Configuration config) {
+    super(workQueue, config.getCacheThreadPoolSize(), "Forward-cache-eviction-event");
   }
 }

@@ -17,33 +17,27 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.server.index.account.AccountIndexer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 class IndexAccountRestApiServlet extends HttpServlet {
   private static final long serialVersionUID = -1L;
-  private static final Logger logger =
-      LoggerFactory.getLogger(IndexAccountRestApiServlet.class);
-  private static final Map<Account.Id, AtomicInteger> accountIdLocks =
-      new HashMap<>();
+  private static final Logger logger = LoggerFactory.getLogger(IndexAccountRestApiServlet.class);
+  private static final Map<Account.Id, AtomicInteger> accountIdLocks = new HashMap<>();
 
   private final AccountIndexer indexer;
 
@@ -72,8 +66,7 @@ class IndexAccountRestApiServlet extends HttpServlet {
     }
   }
 
-  private static void sendError(HttpServletResponse rsp, int statusCode,
-      String message) {
+  private static void sendError(HttpServletResponse rsp, int statusCode, String message) {
     try {
       rsp.sendError(statusCode, message);
     } catch (IOException e) {
@@ -84,7 +77,8 @@ class IndexAccountRestApiServlet extends HttpServlet {
   private void index(Account.Id id) throws IOException {
     AtomicInteger accountIdLock = getAndIncrementAccountIdLock(id);
     synchronized (accountIdLock) {
-      indexer.index(id);;
+      indexer.index(id);
+      ;
       logger.debug("Account {} successfully indexed", id);
     }
     if (accountIdLock.decrementAndGet() == 0) {

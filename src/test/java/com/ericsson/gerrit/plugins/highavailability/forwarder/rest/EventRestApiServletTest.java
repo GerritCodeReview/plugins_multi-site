@@ -32,9 +32,11 @@ import com.google.gerrit.server.events.RefEvent;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.OrmException;
 import com.google.gwtorm.server.StandardKeyEncoder;
-
-import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.EventRestApiServlet;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -42,29 +44,18 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @RunWith(MockitoJUnitRunner.class)
 public class EventRestApiServletTest {
   private static final String ERR_MSG = "some Error";
 
-  @Mock
-  private EventDispatcher dispatcher;
-  @Mock
-  private HttpServletRequest req;
-  @Mock
-  private HttpServletResponse rsp;
+  @Mock private EventDispatcher dispatcher;
+  @Mock private HttpServletRequest req;
+  @Mock private HttpServletResponse rsp;
   private EventRestApiServlet eventRestApiServlet;
 
   @BeforeClass
   public static void setup() {
-    EventTypes.register(RefReplicationDoneEvent.TYPE,
-        RefReplicationDoneEvent.class);
+    EventTypes.register(RefReplicationDoneEvent.TYPE, RefReplicationDoneEvent.class);
     KeyUtil.setEncoderImpl(new StandardKeyEncoder());
   }
 
@@ -76,11 +67,11 @@ public class EventRestApiServletTest {
 
   @Test
   public void testDoPostRefReplicationDoneEvent() throws Exception {
-    String event = "{\"project\":\"gerrit/some-project\",\"ref\":"
-        + "\"refs/changes/76/669676/2\",\"nodesCount\":1,\"type\":"
-        + "\"ref-replication-done\",\"eventCreatedOn\":1451415011}";
-    when(req.getReader())
-        .thenReturn(new BufferedReader(new StringReader(event)));
+    String event =
+        "{\"project\":\"gerrit/some-project\",\"ref\":"
+            + "\"refs/changes/76/669676/2\",\"nodesCount\":1,\"type\":"
+            + "\"ref-replication-done\",\"eventCreatedOn\":1451415011}";
+    when(req.getReader()).thenReturn(new BufferedReader(new StringReader(event)));
     dispatcher.postEvent(any(RefReplicationDoneEvent.class));
     eventRestApiServlet.doPost(req, rsp);
     verify(rsp).setStatus(SC_NO_CONTENT);
@@ -88,12 +79,13 @@ public class EventRestApiServletTest {
 
   @Test
   public void testDoPostDispatcherFailure() throws Exception {
-    String event = "{\"project\":\"gerrit/some-project\",\"ref\":"
-        + "\"refs/changes/76/669676/2\",\"nodesCount\":1,\"type\":"
-        + "\"ref-replication-done\",\"eventCreatedOn\":1451415011}";
-    when(req.getReader())
-        .thenReturn(new BufferedReader(new StringReader(event)));
-    doThrow(new OrmException(ERR_MSG)).when(dispatcher)
+    String event =
+        "{\"project\":\"gerrit/some-project\",\"ref\":"
+            + "\"refs/changes/76/669676/2\",\"nodesCount\":1,\"type\":"
+            + "\"ref-replication-done\",\"eventCreatedOn\":1451415011}";
+    when(req.getReader()).thenReturn(new BufferedReader(new StringReader(event)));
+    doThrow(new OrmException(ERR_MSG))
+        .when(dispatcher)
         .postEvent(any(RefReplicationDoneEvent.class));
     eventRestApiServlet.doPost(req, rsp);
     verify(rsp).sendError(SC_NOT_FOUND, "Change not found\n");
@@ -108,18 +100,17 @@ public class EventRestApiServletTest {
 
   @Test
   public void testDoPostWrongMediaType() throws Exception {
-    when(req.getContentType())
-        .thenReturn(MediaType.APPLICATION_XML_UTF_8.toString());
+    when(req.getContentType()).thenReturn(MediaType.APPLICATION_XML_UTF_8.toString());
     eventRestApiServlet.doPost(req, rsp);
-    verify(rsp).sendError(SC_UNSUPPORTED_MEDIA_TYPE,
-        "Expecting " + JSON_UTF_8.toString() + " content type");
+    verify(rsp)
+        .sendError(
+            SC_UNSUPPORTED_MEDIA_TYPE, "Expecting " + JSON_UTF_8.toString() + " content type");
   }
 
   @Test
   public void testDoPostErrorWhileSendingErrorMessage() throws Exception {
     doThrow(new IOException(ERR_MSG)).when(req).getReader();
-    doThrow(new IOException("someOtherError")).when(rsp)
-        .sendError(SC_BAD_REQUEST, ERR_MSG);
+    doThrow(new IOException("someOtherError")).when(rsp).sendError(SC_BAD_REQUEST, ERR_MSG);
     eventRestApiServlet.doPost(req, rsp);
   }
 

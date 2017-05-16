@@ -20,6 +20,9 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
+import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.google.common.base.Joiner;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
@@ -27,18 +30,11 @@ import com.google.gerrit.server.events.Event;
 import com.google.gson.GsonBuilder;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.StandardKeyEncoder;
-
-import com.ericsson.gerrit.plugins.highavailability.Configuration;
-import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
-
+import java.io.IOException;
+import javax.net.ssl.SSLException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.io.IOException;
-
-import javax.net.ssl.SSLException;
 
 public class RestForwarderTest {
   private static final String PLUGIN_NAME = "high-availability";
@@ -48,11 +44,11 @@ public class RestForwarderTest {
 
   //Index
   private static final int CHANGE_NUMBER = 1;
-  private static final String INDEX_CHANGE_ENDPOINT = Joiner.on("/")
-      .join("/plugins", PLUGIN_NAME, "index/change", CHANGE_NUMBER);
+  private static final String INDEX_CHANGE_ENDPOINT =
+      Joiner.on("/").join("/plugins", PLUGIN_NAME, "index/change", CHANGE_NUMBER);
   private static final int ACCOUNT_NUMBER = 2;
-  private static final String INDEX_ACCOUNT_ENDPOINT = Joiner.on("/")
-      .join("/plugins", PLUGIN_NAME, "index/account", ACCOUNT_NUMBER);
+  private static final String INDEX_ACCOUNT_ENDPOINT =
+      Joiner.on("/").join("/plugins", PLUGIN_NAME, "index/account", ACCOUNT_NUMBER);
 
   //Event
   private static final String EVENT_ENDPOINT =
@@ -75,8 +71,7 @@ public class RestForwarderTest {
     configurationMock = mock(Configuration.class);
     when(configurationMock.getMaxTries()).thenReturn(3);
     when(configurationMock.getRetryInterval()).thenReturn(10);
-    forwarder =
-        new RestForwarder(httpSessionMock, PLUGIN_NAME, configurationMock);
+    forwarder = new RestForwarder(httpSessionMock, PLUGIN_NAME, configurationMock);
   }
 
   @Test
@@ -95,8 +90,7 @@ public class RestForwarderTest {
 
   @Test
   public void testIndexAccountThrowsException() throws Exception {
-    doThrow(new IOException()).when(httpSessionMock)
-        .post(INDEX_ACCOUNT_ENDPOINT);
+    doThrow(new IOException()).when(httpSessionMock).post(INDEX_ACCOUNT_ENDPOINT);
     assertThat(forwarder.indexAccount(ACCOUNT_NUMBER)).isFalse();
   }
 
@@ -109,15 +103,13 @@ public class RestForwarderTest {
 
   @Test
   public void testIndexChangeFailed() throws Exception {
-    when(httpSessionMock.post(INDEX_CHANGE_ENDPOINT))
-        .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
+    when(httpSessionMock.post(INDEX_CHANGE_ENDPOINT)).thenReturn(new HttpResult(FAILED, EMPTY_MSG));
     assertThat(forwarder.indexChange(CHANGE_NUMBER)).isFalse();
   }
 
   @Test
   public void testIndexChangeThrowsException() throws Exception {
-    doThrow(new IOException()).when(httpSessionMock)
-        .post(INDEX_CHANGE_ENDPOINT);
+    doThrow(new IOException()).when(httpSessionMock).post(INDEX_CHANGE_ENDPOINT);
     assertThat(forwarder.indexChange(CHANGE_NUMBER)).isFalse();
   }
 
@@ -137,8 +129,7 @@ public class RestForwarderTest {
 
   @Test
   public void testChangeDeletedFromThrowsException() throws Exception {
-    doThrow(new IOException()).when(httpSessionMock)
-        .delete(INDEX_CHANGE_ENDPOINT);
+    doThrow(new IOException()).when(httpSessionMock).delete(INDEX_CHANGE_ENDPOINT);
     assertThat(forwarder.deleteChangeFromIndex(CHANGE_NUMBER)).isFalse();
   }
 
@@ -158,8 +149,7 @@ public class RestForwarderTest {
 
   @Test
   public void testEventSentThrowsException() throws Exception {
-    doThrow(new IOException()).when(httpSessionMock).post(EVENT_ENDPOINT,
-        eventJson);
+    doThrow(new IOException()).when(httpSessionMock).post(EVENT_ENDPOINT, eventJson);
     assertThat(forwarder.send(event)).isFalse();
   }
 
@@ -192,21 +182,19 @@ public class RestForwarderTest {
 
   @Test
   public void testEvictGroupsByIncludeOK() throws Exception {
-    AccountGroup.UUID key =
-        AccountGroup.UUID.parse("90b3042d9094a37985f3f9281391dbbe9a5addad");
+    AccountGroup.UUID key = AccountGroup.UUID.parse("90b3042d9094a37985f3f9281391dbbe9a5addad");
     String keyJson = new GsonBuilder().create().toJson(key);
-    when(httpSessionMock.post(buildCacheEndpoint(Constants.GROUPS_BYINCLUDE),
-        keyJson)).thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
+    when(httpSessionMock.post(buildCacheEndpoint(Constants.GROUPS_BYINCLUDE), keyJson))
+        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
     assertThat(forwarder.evict(Constants.GROUPS_BYINCLUDE, key)).isTrue();
   }
 
   @Test
   public void testEvictGroupsMembersOK() throws Exception {
-    AccountGroup.UUID key =
-        AccountGroup.UUID.parse("90b3042d9094a37985f3f9281391dbbe9a5addad");
+    AccountGroup.UUID key = AccountGroup.UUID.parse("90b3042d9094a37985f3f9281391dbbe9a5addad");
     String keyJson = new GsonBuilder().create().toJson(key);
-    when(httpSessionMock.post(buildCacheEndpoint(Constants.GROUPS_MEMBERS),
-        keyJson)).thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
+    when(httpSessionMock.post(buildCacheEndpoint(Constants.GROUPS_MEMBERS), keyJson))
+        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
     assertThat(forwarder.evict(Constants.GROUPS_MEMBERS, key)).isTrue();
   }
 
@@ -214,8 +202,8 @@ public class RestForwarderTest {
   public void testEvictProjectListOK() throws Exception {
     String key = "all";
     String keyJson = new GsonBuilder().create().toJson(key);
-    when(httpSessionMock.post(buildCacheEndpoint(Constants.PROJECT_LIST),
-        keyJson)).thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
+    when(httpSessionMock.post(buildCacheEndpoint(Constants.PROJECT_LIST), keyJson))
+        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
     assertThat(forwarder.evict(Constants.PROJECT_LIST, key)).isTrue();
   }
 
@@ -232,7 +220,8 @@ public class RestForwarderTest {
   public void testEvictCacheThrowsException() throws Exception {
     String key = "projectName";
     String keyJson = new GsonBuilder().create().toJson(key);
-    doThrow(new IOException()).when(httpSessionMock)
+    doThrow(new IOException())
+        .when(httpSessionMock)
         .post(buildCacheEndpoint(Constants.PROJECTS), keyJson);
     assertThat(forwarder.evict(Constants.PROJECTS, key)).isFalse();
   }

@@ -23,6 +23,5 @@ public final class Constants {
   public static final String GROUPS_MEMBERS = "groups_members";
   public static final String PROJECTS = "projects";
 
-  private Constants() {
-  }
+  private Constants() {}
 }

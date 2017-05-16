@@ -17,13 +17,11 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Scopes;
-
-import com.ericsson.gerrit.plugins.highavailability.Configuration;
-
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,8 +34,7 @@ public class HttpClientProviderTest {
   private static final int TIME_INTERVAL = 1000;
   private static final String EMPTY = "";
 
-  @Mock
-  private Configuration config;
+  @Mock private Configuration config;
 
   @Before
   public void setUp() throws Exception {
@@ -50,11 +47,9 @@ public class HttpClientProviderTest {
   @Test
   public void testGet() throws Exception {
     Injector injector = Guice.createInjector(new TestModule());
-    try (CloseableHttpClient httpClient1 =
-        injector.getInstance(CloseableHttpClient.class)) {
+    try (CloseableHttpClient httpClient1 = injector.getInstance(CloseableHttpClient.class)) {
       assertThat(httpClient1).isNotNull();
-      try (CloseableHttpClient httpClient2 =
-          injector.getInstance(CloseableHttpClient.class)) {
+      try (CloseableHttpClient httpClient2 = injector.getInstance(CloseableHttpClient.class)) {
         assertThat(httpClient1).isEqualTo(httpClient2);
       }
     }
@@ -64,8 +59,7 @@ public class HttpClientProviderTest {
     @Override
     protected void configure() {
       bind(Configuration.class).toInstance(config);
-      bind(CloseableHttpClient.class).toProvider(HttpClientProvider.class)
-          .in(Scopes.SINGLETON);
+      bind(CloseableHttpClient.class).toProvider(HttpClientProvider.class).in(Scopes.SINGLETON);
     }
   }
 }

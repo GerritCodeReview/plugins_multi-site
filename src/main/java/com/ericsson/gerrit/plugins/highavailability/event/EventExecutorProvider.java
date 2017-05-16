@@ -14,11 +14,10 @@
 
 package com.ericsson.gerrit.plugins.highavailability.event;
 
+import com.ericsson.gerrit.plugins.highavailability.ExecutorProvider;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import com.ericsson.gerrit.plugins.highavailability.ExecutorProvider;
 
 @Singleton
 class EventExecutorProvider extends ExecutorProvider {

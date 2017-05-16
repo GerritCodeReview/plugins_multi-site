@@ -14,15 +14,13 @@
 
 package com.ericsson.gerrit.plugins.highavailability.event;
 
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 import com.google.gerrit.common.EventListener;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.inject.Inject;
-
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
-
 import java.util.concurrent.Executor;
 
 class EventHandler implements EventListener {
@@ -31,9 +29,8 @@ class EventHandler implements EventListener {
   private final String pluginName;
 
   @Inject
-  EventHandler(Forwarder forwarder,
-      @EventExecutor Executor executor,
-      @PluginName String pluginName) {
+  EventHandler(
+      Forwarder forwarder, @EventExecutor Executor executor, @PluginName String pluginName) {
     this.forwarder = forwarder;
     this.executor = executor;
     this.pluginName = pluginName;
@@ -60,8 +57,7 @@ class EventHandler implements EventListener {
 
     @Override
     public String toString() {
-      return String.format("[%s] Send event '%s' to target instance",
-          pluginName, event.type);
+      return String.format("[%s] Send event '%s' to target instance", pluginName, event.type);
     }
   }
 }

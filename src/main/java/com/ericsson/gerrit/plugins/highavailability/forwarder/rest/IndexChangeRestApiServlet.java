@@ -18,6 +18,7 @@ import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.index.change.ChangeIndexer;
@@ -25,36 +26,28 @@ import com.google.gwtorm.server.OrmException;
 import com.google.gwtorm.server.SchemaFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 class IndexChangeRestApiServlet extends HttpServlet {
   private static final long serialVersionUID = -1L;
-  private static final Logger logger =
-      LoggerFactory.getLogger(IndexChangeRestApiServlet.class);
-  private static final Map<Change.Id, AtomicInteger> changeIdLocks =
-      new HashMap<>();
+  private static final Logger logger = LoggerFactory.getLogger(IndexChangeRestApiServlet.class);
+  private static final Map<Change.Id, AtomicInteger> changeIdLocks = new HashMap<>();
 
   private final ChangeIndexer indexer;
   private final SchemaFactory<ReviewDb> schemaFactory;
 
   @Inject
-  IndexChangeRestApiServlet(ChangeIndexer indexer,
-      SchemaFactory<ReviewDb> schemaFactory) {
+  IndexChangeRestApiServlet(ChangeIndexer indexer, SchemaFactory<ReviewDb> schemaFactory) {
     this.indexer = indexer;
     this.schemaFactory = schemaFactory;
   }
@@ -71,8 +64,7 @@ class IndexChangeRestApiServlet extends HttpServlet {
     process(req, rsp, "delete");
   }
 
-  private void process(HttpServletRequest req, HttpServletResponse rsp,
-      String operation) {
+  private void process(HttpServletRequest req, HttpServletResponse rsp, String operation) {
     rsp.setContentType("text/plain");
     rsp.setCharacterEncoding("UTF-8");
     String path = req.getPathInfo();
@@ -83,19 +75,18 @@ class IndexChangeRestApiServlet extends HttpServlet {
       index(id, operation);
       rsp.setStatus(SC_NO_CONTENT);
     } catch (IOException e) {
-      sendError(rsp,SC_CONFLICT, e.getMessage());
+      sendError(rsp, SC_CONFLICT, e.getMessage());
       logger.error("Unable to update change index", e);
     } catch (OrmException e) {
       String msg = "Error trying to find a change \n";
-      sendError(rsp,SC_NOT_FOUND, msg);
+      sendError(rsp, SC_NOT_FOUND, msg);
       logger.debug(msg, e);
     } finally {
       Context.unsetForwardedEvent();
     }
   }
 
-  private static void sendError(HttpServletResponse rsp, int statusCode,
-      String message) {
+  private static void sendError(HttpServletResponse rsp, int statusCode, String message) {
     try {
       rsp.sendError(statusCode, message);
     } catch (IOException e) {
@@ -103,8 +94,7 @@ class IndexChangeRestApiServlet extends HttpServlet {
     }
   }
 
-  private void index(Change.Id id, String operation)
-      throws IOException, OrmException {
+  private void index(Change.Id id, String operation) throws IOException, OrmException {
     AtomicInteger changeIdLock = getAndIncrementChangeIdLock(id);
     synchronized (changeIdLock) {
       if ("index".equals(operation)) {

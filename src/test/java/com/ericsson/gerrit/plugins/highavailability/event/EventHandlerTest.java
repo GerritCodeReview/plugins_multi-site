@@ -19,15 +19,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
+import com.ericsson.gerrit.plugins.highavailability.event.EventHandler.EventTask;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
-
-import com.ericsson.gerrit.plugins.highavailability.event.EventHandler.EventTask;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,13 +38,11 @@ public class EventHandlerTest {
 
   private EventHandler eventHandler;
 
-  @Mock
-  private Forwarder forwarder;
+  @Mock private Forwarder forwarder;
 
   @Before
   public void setUp() {
-    eventHandler = new EventHandler(forwarder, MoreExecutors.directExecutor(),
-        PLUGIN_NAME);
+    eventHandler = new EventHandler(forwarder, MoreExecutors.directExecutor(), PLUGIN_NAME);
   }
 
   @Test
@@ -62,7 +58,6 @@ public class EventHandlerTest {
     verifyZeroInteractions(forwarder);
   }
 
-
   @Test
   public void shouldNotForwardIfAlreadyForwardedEvent() throws Exception {
     Context.setForwardedEvent(true);
@@ -75,7 +70,8 @@ public class EventHandlerTest {
   public void tesEventTaskToString() throws Exception {
     Event event = new RefUpdatedEvent();
     EventTask task = eventHandler.new EventTask(event);
-    assertThat(task.toString()).isEqualTo(String.format(
-        "[%s] Send event '%s' to target instance", PLUGIN_NAME, event.type));
+    assertThat(task.toString())
+        .isEqualTo(
+            String.format("[%s] Send event '%s' to target instance", PLUGIN_NAME, event.type));
   }
 }

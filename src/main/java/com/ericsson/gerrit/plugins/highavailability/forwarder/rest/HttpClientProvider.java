@@ -14,11 +14,15 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
-import com.ericsson.gerrit.plugins.highavailability.Configuration;
-
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.config.RequestConfig;
@@ -36,20 +40,9 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-/**
- * Provides an HTTP client with SSL capabilities.
- */
+/** Provides an HTTP client with SSL capabilities. */
 class HttpClientProvider implements Provider<CloseableHttpClient> {
-  private static final Logger log = LoggerFactory
-      .getLogger(HttpClientProvider.class);
+  private static final Logger log = LoggerFactory.getLogger(HttpClientProvider.class);
   private static final int CONNECTIONS_PER_ROUTE = 100;
   // Up to 2 target instances with the max number of connections per host:
   private static final int MAX_CONNECTIONS = 2 * CONNECTIONS_PER_ROUTE;
@@ -67,7 +60,8 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
 
   @Override
   public CloseableHttpClient get() {
-    return HttpClients.custom().setSSLSocketFactory(sslSocketFactory)
+    return HttpClients.custom()
+        .setSSLSocketFactory(sslSocketFactory)
         .setConnectionManager(customConnectionManager())
         .setDefaultCredentialsProvider(buildCredentials())
         .setDefaultRequestConfig(customRequestConfig())
@@ -75,16 +69,19 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
   }
 
   private RequestConfig customRequestConfig() {
-    return RequestConfig.custom().setConnectTimeout(cfg.getConnectionTimeout())
+    return RequestConfig.custom()
+        .setConnectTimeout(cfg.getConnectionTimeout())
         .setSocketTimeout(cfg.getSocketTimeout())
         .setConnectionRequestTimeout(cfg.getConnectionTimeout())
         .build();
   }
 
   private HttpClientConnectionManager customConnectionManager() {
-    Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder
-        .<ConnectionSocketFactory> create().register("https", sslSocketFactory)
-        .register("http", PlainConnectionSocketFactory.INSTANCE).build();
+    Registry<ConnectionSocketFactory> socketFactoryRegistry =
+        RegistryBuilder.<ConnectionSocketFactory>create()
+            .register("https", sslSocketFactory)
+            .register("http", PlainConnectionSocketFactory.INSTANCE)
+            .build();
     PoolingHttpClientConnectionManager connManager =
         new PoolingHttpClientConnectionManager(socketFactoryRegistry);
     connManager.setDefaultMaxPerRoute(CONNECTIONS_PER_ROUTE);
@@ -94,14 +91,12 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
   }
 
   private SSLConnectionSocketFactory buildSslSocketFactory() {
-    return new SSLConnectionSocketFactory(buildSslContext(),
-        NoopHostnameVerifier.INSTANCE);
+    return new SSLConnectionSocketFactory(buildSslContext(), NoopHostnameVerifier.INSTANCE);
   }
 
   private SSLContext buildSslContext() {
     try {
-      TrustManager[] trustAllCerts =
-          new TrustManager[] {new DummyX509TrustManager()};
+      TrustManager[] trustAllCerts = new TrustManager[] {new DummyX509TrustManager()};
       SSLContext context = SSLContext.getInstance("TLS");
       context.init(null, trustAllCerts, null);
       return context;
@@ -113,8 +108,8 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
 
   private BasicCredentialsProvider buildCredentials() {
     BasicCredentialsProvider creds = new BasicCredentialsProvider();
-    creds.setCredentials(AuthScope.ANY,
-        new UsernamePasswordCredentials(cfg.getUser(), cfg.getPassword()));
+    creds.setCredentials(
+        AuthScope.ANY, new UsernamePasswordCredentials(cfg.getUser(), cfg.getPassword()));
     return creds;
   }
 

@@ -33,7 +33,8 @@ public class FileBasedWebsessionModule extends LifecycleModule {
   @Override
   protected void configure() {
     bindScope(RequestScoped.class, ServletScopes.REQUEST);
-    DynamicItem.bind(binder(), WebSession.class).to(FileBasedWebSession.class)
+    DynamicItem.bind(binder(), WebSession.class)
+        .to(FileBasedWebSession.class)
         .in(RequestScoped.class);
     listener().to(FileBasedWebSessionCacheCleaner.class);
   }
@@ -41,10 +42,9 @@ public class FileBasedWebsessionModule extends LifecycleModule {
   @Provides
   @Singleton
   @CleanupIntervalMillis
-  Long getCleanupInterval(PluginConfigFactory cfg,
-      @PluginName String pluginName) {
-    String fromConfig = Strings.nullToEmpty(
-        cfg.getFromGerritConfig(pluginName, true).getString("cleanupInterval"));
+  Long getCleanupInterval(PluginConfigFactory cfg, @PluginName String pluginName) {
+    String fromConfig =
+        Strings.nullToEmpty(cfg.getFromGerritConfig(pluginName, true).getString("cleanupInterval"));
     return ConfigUtil.getTimeUnit(fromConfig, HOURS.toMillis(24), MILLISECONDS);
   }
 }

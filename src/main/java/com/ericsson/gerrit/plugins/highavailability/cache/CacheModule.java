@@ -17,18 +17,14 @@ package com.ericsson.gerrit.plugins.highavailability.cache;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.cache.CacheRemovalListener;
-
 import java.util.concurrent.Executor;
 
 public class CacheModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-    bind(Executor.class)
-        .annotatedWith(CacheExecutor.class)
-        .toProvider(CacheExecutorProvider.class);
+    bind(Executor.class).annotatedWith(CacheExecutor.class).toProvider(CacheExecutorProvider.class);
     listener().to(CacheExecutorProvider.class);
-    DynamicSet.bind(binder(), CacheRemovalListener.class).to(
-        CacheEvictionHandler.class);
+    DynamicSet.bind(binder(), CacheRemovalListener.class).to(CacheEvictionHandler.class);
   }
 }

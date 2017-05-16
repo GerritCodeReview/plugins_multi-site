@@ -23,7 +23,6 @@ import com.google.gerrit.server.config.AuthConfig;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.servlet.RequestScoped;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,14 +30,20 @@ import javax.servlet.http.HttpServletResponse;
 public class FileBasedWebSession extends CacheBasedWebSession {
 
   @Inject
-  FileBasedWebSession(@RootRelative Provider<HttpServletRequest> request,
+  FileBasedWebSession(
+      @RootRelative Provider<HttpServletRequest> request,
       @RootRelative Provider<HttpServletResponse> response,
       WebSessionManagerFactory managerFactory,
       FileBasedWebsessionCache cache,
       AuthConfig authConfig,
       Provider<AnonymousUser> anonymousProvider,
       RequestFactory identified) {
-    super(request.get(), response.get(), managerFactory.create(cache),
-        authConfig, anonymousProvider, identified);
+    super(
+        request.get(),
+        response.get(),
+        managerFactory.create(cache),
+        authConfig,
+        anonymousProvider,
+        identified);
   }
 }

@@ -19,16 +19,13 @@ import com.google.gerrit.common.EventListener;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
-
 import java.util.concurrent.Executor;
 
 public class EventModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-    bind(Executor.class)
-        .annotatedWith(EventExecutor.class)
-        .toProvider(EventExecutorProvider.class);
+    bind(Executor.class).annotatedWith(EventExecutor.class).toProvider(EventExecutorProvider.class);
     listener().to(EventExecutorProvider.class);
     DynamicSet.bind(binder(), EventListener.class).to(EventHandler.class);
     DynamicItem.bind(binder(), EventDispatcher.class).to(ForwardedAwareEventBroker.class);

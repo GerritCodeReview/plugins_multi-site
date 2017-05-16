@@ -14,6 +14,9 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.google.common.base.Joiner;
 import com.google.common.base.Supplier;
 import com.google.gerrit.extensions.annotations.PluginName;
@@ -21,30 +24,20 @@ import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.SupplierSerializer;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
-
-import com.ericsson.gerrit.plugins.highavailability.Configuration;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
-
+import java.io.IOException;
+import javax.net.ssl.SSLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
-import javax.net.ssl.SSLException;
-
 class RestForwarder implements Forwarder {
-  private static final Logger log =
-      LoggerFactory.getLogger(RestForwarder.class);
+  private static final Logger log = LoggerFactory.getLogger(RestForwarder.class);
 
   private final HttpSession httpSession;
   private final String pluginRelativePath;
   private final Configuration cfg;
 
   @Inject
-  RestForwarder(HttpSession httpClient,
-      @PluginName String pluginName,
-      Configuration cfg) {
+  RestForwarder(HttpSession httpClient, @PluginName String pluginName, Configuration cfg) {
     this.httpSession = httpClient;
     this.pluginRelativePath = Joiner.on("/").join("/plugins", pluginName);
     this.cfg = cfg;
@@ -55,8 +48,8 @@ class RestForwarder implements Forwarder {
     return new Request("index account " + accountId) {
       @Override
       HttpResult send() throws IOException {
-        return httpSession.post(Joiner.on("/").join(pluginRelativePath,
-            "index/account", accountId));
+        return httpSession.post(
+            Joiner.on("/").join(pluginRelativePath, "index/account", accountId));
       }
     }.execute();
   }
@@ -90,11 +83,12 @@ class RestForwarder implements Forwarder {
     return new Request("send event " + event.type) {
       @Override
       HttpResult send() throws IOException {
-        String serializedEvent = new GsonBuilder()
-            .registerTypeAdapter(Supplier.class, new SupplierSerializer()).create()
-            .toJson(event);
-      return httpSession.post(
-          Joiner.on("/").join(pluginRelativePath, "event"), serializedEvent);
+        String serializedEvent =
+            new GsonBuilder()
+                .registerTypeAdapter(Supplier.class, new SupplierSerializer())
+                .create()
+                .toJson(event);
+        return httpSession.post(Joiner.on("/").join(pluginRelativePath, "event"), serializedEvent);
       }
     }.execute();
   }
@@ -105,9 +99,7 @@ class RestForwarder implements Forwarder {
       @Override
       HttpResult send() throws IOException {
         String json = GsonParser.toJson(cacheName, key);
-        return httpSession
-            .post(Joiner.on("/").join(pluginRelativePath, "cache", cacheName),
-                json);
+        return httpSession.post(Joiner.on("/").join(pluginRelativePath, "cache", cacheName), json);
       }
     }.execute();
   }
@@ -121,7 +113,7 @@ class RestForwarder implements Forwarder {
     }
 
     boolean execute() {
-      for (;;) {
+      for (; ; ) {
         try {
           execCnt++;
           tryOnce();

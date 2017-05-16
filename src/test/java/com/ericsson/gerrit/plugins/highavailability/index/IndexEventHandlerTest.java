@@ -20,18 +20,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
+import com.ericsson.gerrit.plugins.highavailability.index.IndexEventHandler.IndexAccountTask;
+import com.ericsson.gerrit.plugins.highavailability.index.IndexEventHandler.IndexChangeTask;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.server.git.WorkQueue.Executor;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.StandardKeyEncoder;
-
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
-import com.ericsson.gerrit.plugins.highavailability.index.IndexEventHandler.IndexAccountTask;
-import com.ericsson.gerrit.plugins.highavailability.index.IndexEventHandler.IndexChangeTask;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,8 +44,7 @@ public class IndexEventHandlerTest {
   private static final int ACCOUNT_ID = 2;
 
   private IndexEventHandler indexEventHandler;
-  @Mock
-  private Forwarder forwarder;
+  @Mock private Forwarder forwarder;
   private Change.Id changeId;
   private Account.Id accountId;
 
@@ -60,8 +57,8 @@ public class IndexEventHandlerTest {
   public void setUpMocks() {
     changeId = Change.Id.parse(Integer.toString(CHANGE_ID));
     accountId = Account.Id.parse(Integer.toString(ACCOUNT_ID));
-    indexEventHandler = new IndexEventHandler(MoreExecutors.directExecutor(),
-        PLUGIN_NAME, forwarder);
+    indexEventHandler =
+        new IndexEventHandler(MoreExecutors.directExecutor(), PLUGIN_NAME, forwarder);
   }
 
   @Test
@@ -77,8 +74,7 @@ public class IndexEventHandlerTest {
   }
 
   @Test
-  public void shouldDeleteFromIndexInRemoteOnChangeDeletedEvent()
-      throws Exception {
+  public void shouldDeleteFromIndexInRemoteOnChangeDeletedEvent() throws Exception {
     indexEventHandler.onChangeDeleted(changeId.get());
     verify(forwarder).deleteChangeFromIndex(CHANGE_ID);
   }
@@ -107,8 +103,7 @@ public class IndexEventHandlerTest {
     indexEventHandler = new IndexEventHandler(poolMock, PLUGIN_NAME, forwarder);
     indexEventHandler.onChangeIndexed(changeId.get());
     indexEventHandler.onChangeIndexed(changeId.get());
-    verify(poolMock, times(1))
-        .execute(indexEventHandler.new IndexChangeTask(CHANGE_ID, false));
+    verify(poolMock, times(1)).execute(indexEventHandler.new IndexChangeTask(CHANGE_ID, false));
   }
 
   @Test
@@ -117,35 +112,33 @@ public class IndexEventHandlerTest {
     indexEventHandler = new IndexEventHandler(poolMock, PLUGIN_NAME, forwarder);
     indexEventHandler.onAccountIndexed(accountId.get());
     indexEventHandler.onAccountIndexed(accountId.get());
-    verify(poolMock, times(1))
-        .execute(indexEventHandler.new IndexAccountTask(ACCOUNT_ID));
+    verify(poolMock, times(1)).execute(indexEventHandler.new IndexAccountTask(ACCOUNT_ID));
   }
 
   @Test
   public void testIndexChangeTaskToString() throws Exception {
-    IndexChangeTask task =
-        indexEventHandler.new IndexChangeTask(CHANGE_ID, false);
-    assertThat(task.toString()).isEqualTo(String.format(
-        "[%s] Index change %s in target instance", PLUGIN_NAME, CHANGE_ID));
+    IndexChangeTask task = indexEventHandler.new IndexChangeTask(CHANGE_ID, false);
+    assertThat(task.toString())
+        .isEqualTo(
+            String.format("[%s] Index change %s in target instance", PLUGIN_NAME, CHANGE_ID));
   }
 
   @Test
   public void testIndexAccountTaskToString() throws Exception {
     IndexAccountTask task = indexEventHandler.new IndexAccountTask(ACCOUNT_ID);
-    assertThat(task.toString()).isEqualTo(String.format(
-        "[%s] Index account %s in target instance", PLUGIN_NAME, ACCOUNT_ID));
+    assertThat(task.toString())
+        .isEqualTo(
+            String.format("[%s] Index account %s in target instance", PLUGIN_NAME, ACCOUNT_ID));
   }
 
   @Test
   public void testIndexChangeTaskHashCodeAndEquals() {
-    IndexChangeTask task =
-        indexEventHandler.new IndexChangeTask(CHANGE_ID, false);
+    IndexChangeTask task = indexEventHandler.new IndexChangeTask(CHANGE_ID, false);
 
     assertThat(task.equals(task)).isTrue();
     assertThat(task.hashCode()).isEqualTo(task.hashCode());
 
-    IndexChangeTask identicalTask =
-        indexEventHandler.new IndexChangeTask(CHANGE_ID, false);
+    IndexChangeTask identicalTask = indexEventHandler.new IndexChangeTask(CHANGE_ID, false);
     assertThat(task.equals(identicalTask)).isTrue();
     assertThat(task.hashCode()).isEqualTo(identicalTask.hashCode());
 
@@ -153,13 +146,11 @@ public class IndexEventHandlerTest {
     assertThat(task.equals("test")).isFalse();
     assertThat(task.hashCode()).isNotEqualTo("test".hashCode());
 
-    IndexChangeTask differentChangeIdTask =
-        indexEventHandler.new IndexChangeTask(123, false);
+    IndexChangeTask differentChangeIdTask = indexEventHandler.new IndexChangeTask(123, false);
     assertThat(task.equals(differentChangeIdTask)).isFalse();
     assertThat(task.hashCode()).isNotEqualTo(differentChangeIdTask.hashCode());
 
-    IndexChangeTask removeTask =
-        indexEventHandler.new IndexChangeTask(CHANGE_ID, true);
+    IndexChangeTask removeTask = indexEventHandler.new IndexChangeTask(CHANGE_ID, true);
     assertThat(task.equals(removeTask)).isFalse();
     assertThat(task.hashCode()).isNotEqualTo(removeTask.hashCode());
   }
@@ -171,8 +162,7 @@ public class IndexEventHandlerTest {
     assertThat(task.equals(task)).isTrue();
     assertThat(task.hashCode()).isEqualTo(task.hashCode());
 
-    IndexAccountTask identicalTask =
-        indexEventHandler.new IndexAccountTask(ACCOUNT_ID);
+    IndexAccountTask identicalTask = indexEventHandler.new IndexAccountTask(ACCOUNT_ID);
     assertThat(task.equals(identicalTask)).isTrue();
     assertThat(task.hashCode()).isEqualTo(identicalTask.hashCode());
 
@@ -180,10 +170,8 @@ public class IndexEventHandlerTest {
     assertThat(task.equals("test")).isFalse();
     assertThat(task.hashCode()).isNotEqualTo("test".hashCode());
 
-    IndexAccountTask differentAccountIdTask =
-        indexEventHandler.new IndexAccountTask(123);
+    IndexAccountTask differentAccountIdTask = indexEventHandler.new IndexAccountTask(123);
     assertThat(task.equals(differentAccountIdTask)).isFalse();
     assertThat(task.hashCode()).isNotEqualTo(differentAccountIdTask.hashCode());
-
   }
 }

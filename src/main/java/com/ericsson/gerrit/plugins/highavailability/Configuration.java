@@ -14,9 +14,6 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.gerrit.extensions.annotations.PluginName;
@@ -24,6 +21,8 @@ import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public class Configuration {
@@ -45,8 +44,7 @@ public class Configuration {
   private final int cacheThreadPoolSize;
 
   @Inject
-  Configuration(PluginConfigFactory config,
-      @PluginName String pluginName) {
+  Configuration(PluginConfigFactory config, @PluginName String pluginName) {
     PluginConfig cfg = config.getFromGerritConfig(pluginName, true);
     url = Strings.nullToEmpty(cfg.getString("url"));
     user = Strings.nullToEmpty(cfg.getString("user"));
@@ -55,18 +53,15 @@ public class Configuration {
     socketTimeout = getInt(cfg, "socketTimeout", DEFAULT_TIMEOUT_MS);
     maxTries = getInt(cfg, "maxTries", DEFAULT_MAX_TRIES);
     retryInterval = getInt(cfg, "retryInterval", DEFAULT_RETRY_INTERVAL);
-    indexThreadPoolSize =
-        getInt(cfg, "indexThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
-    cacheThreadPoolSize =
-        getInt(cfg, "cacheThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
+    indexThreadPoolSize = getInt(cfg, "indexThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
+    cacheThreadPoolSize = getInt(cfg, "cacheThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
   }
 
   private int getInt(PluginConfig cfg, String name, int defaultValue) {
     try {
       return cfg.getInt(name, defaultValue);
     } catch (IllegalArgumentException e) {
-      log.error(String.format(
-          "invalid value for %s; using default value %d", name, defaultValue));
+      log.error(String.format("invalid value for %s; using default value %d", name, defaultValue));
       log.debug("Failed retrieve integer value: " + e.getMessage(), e);
       return defaultValue;
     }
