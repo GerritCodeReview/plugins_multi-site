@@ -33,18 +33,15 @@ import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.OrmException;
 import com.google.gwtorm.server.SchemaFactory;
 import com.google.gwtorm.server.StandardKeyEncoder;
-
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IndexChangeRestApiServletTest {
@@ -56,16 +53,11 @@ public class IndexChangeRestApiServletTest {
   private static final boolean THROW_ORM_EXCEPTION = true;
   private static final String CHANGE_NUMBER = "1";
 
-  @Mock
-  private ChangeIndexer indexer;
-  @Mock
-  private SchemaFactory<ReviewDb> schemaFactory;
-  @Mock
-  private ReviewDb db;
-  @Mock
-  private HttpServletRequest req;
-  @Mock
-  private HttpServletResponse rsp;
+  @Mock private ChangeIndexer indexer;
+  @Mock private SchemaFactory<ReviewDb> schemaFactory;
+  @Mock private ReviewDb db;
+  @Mock private HttpServletRequest req;
+  @Mock private HttpServletResponse rsp;
   private Change.Id id;
   private Change change;
   private IndexChangeRestApiServlet indexRestApiServlet;
@@ -108,8 +100,7 @@ public class IndexChangeRestApiServletTest {
 
   @Test
   public void indexerThrowsIOExceptionTryingToIndexChange() throws Exception {
-    setupPostMocks(CHANGE_EXISTS, DO_NOT_THROW_ORM_EXCEPTION,
-        THROW_IO_EXCEPTION);
+    setupPostMocks(CHANGE_EXISTS, DO_NOT_THROW_ORM_EXCEPTION, THROW_IO_EXCEPTION);
     indexRestApiServlet.doPost(req, rsp);
     verify(rsp).sendError(SC_CONFLICT, "io-error");
   }
@@ -130,8 +121,9 @@ public class IndexChangeRestApiServletTest {
 
   @Test
   public void sendErrorThrowsIOException() throws Exception {
-    doThrow(new IOException("someError")).when(rsp).sendError(SC_NOT_FOUND,
-        "Error trying to find a change \n");
+    doThrow(new IOException("someError"))
+        .when(rsp)
+        .sendError(SC_NOT_FOUND, "Error trying to find a change \n");
     setupPostMocks(CHANGE_EXISTS, THROW_ORM_EXCEPTION);
     indexRestApiServlet.doPost(req, rsp);
     verify(rsp).sendError(SC_NOT_FOUND, "Error trying to find a change \n");
@@ -139,8 +131,7 @@ public class IndexChangeRestApiServletTest {
   }
 
   private void setupPostMocks(boolean changeExist) throws Exception {
-    setupPostMocks(changeExist, DO_NOT_THROW_ORM_EXCEPTION,
-        DO_NOT_THROW_IO_EXCEPTION);
+    setupPostMocks(changeExist, DO_NOT_THROW_ORM_EXCEPTION, DO_NOT_THROW_IO_EXCEPTION);
   }
 
   private void setupPostMocks(boolean changeExist, boolean ormException)
@@ -148,8 +139,8 @@ public class IndexChangeRestApiServletTest {
     setupPostMocks(changeExist, ormException, DO_NOT_THROW_IO_EXCEPTION);
   }
 
-  private void setupPostMocks(boolean changeExist, boolean ormException,
-      boolean ioException) throws OrmException, IOException {
+  private void setupPostMocks(boolean changeExist, boolean ormException, boolean ioException)
+      throws OrmException, IOException {
     if (ormException) {
       doThrow(new OrmException("")).when(schemaFactory).open();
     } else {

@@ -21,7 +21,6 @@ import com.google.inject.TypeLiteral;
 public class PeerInfoModule extends AbstractModule {
   @Override
   protected void configure() {
-    bind(new TypeLiteral<Optional<PeerInfo>>() {})
-        .toProvider(PluginConfigPeerInfoProvider.class);
+    bind(new TypeLiteral<Optional<PeerInfo>>() {}).toProvider(PluginConfigPeerInfoProvider.class);
   }
 }

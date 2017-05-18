@@ -21,33 +21,25 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
 import com.google.common.cache.Cache;
 import com.google.gerrit.extensions.registration.DynamicMap;
-
-import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @RunWith(MockitoJUnitRunner.class)
 public class CacheRestApiServletTest {
-  @Mock
-  private HttpServletRequest request;
-  @Mock
-  private HttpServletResponse response;
-  @Mock
-  private BufferedReader reader;
-  @Mock
-  private DynamicMap<Cache<?, ?>> cacheMap;
+  @Mock private HttpServletRequest request;
+  @Mock private HttpServletResponse response;
+  @Mock private BufferedReader reader;
+  @Mock private DynamicMap<Cache<?, ?>> cacheMap;
   private CacheRestApiServlet servlet;
 
   @Before
@@ -83,7 +75,6 @@ public class CacheRestApiServletTest {
   public void evictGroupsMembers() throws Exception {
     configureMocksFor(Constants.GROUPS_MEMBERS);
     servlet.doPost(request, response);
-
   }
 
   @Test

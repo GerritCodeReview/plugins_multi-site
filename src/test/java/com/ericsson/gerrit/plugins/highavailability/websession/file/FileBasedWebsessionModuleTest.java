@@ -21,7 +21,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,32 +32,27 @@ public class FileBasedWebsessionModuleTest {
 
   private static String SOME_PLUGIN_NAME = "somePluginName";
 
-  @Mock
-  private PluginConfig configMock;
-  @Mock
-  private PluginConfigFactory pluginCfgFactoryMock;
+  @Mock private PluginConfig configMock;
+  @Mock private PluginConfigFactory pluginCfgFactoryMock;
 
   private FileBasedWebsessionModule module;
 
   @Before
   public void setUp() throws Exception {
-    when(pluginCfgFactoryMock.getFromGerritConfig(SOME_PLUGIN_NAME, true))
-        .thenReturn(configMock);
+    when(pluginCfgFactoryMock.getFromGerritConfig(SOME_PLUGIN_NAME, true)).thenReturn(configMock);
     module = new FileBasedWebsessionModule();
   }
 
   @Test
   public void testDetCleanupIntervalDefaultValue() {
-    assertThat(
-        module.getCleanupInterval(pluginCfgFactoryMock, SOME_PLUGIN_NAME))
-            .isEqualTo(HOURS.toMillis(24));
+    assertThat(module.getCleanupInterval(pluginCfgFactoryMock, SOME_PLUGIN_NAME))
+        .isEqualTo(HOURS.toMillis(24));
   }
 
   @Test
   public void testDetCleanupIntervalConfiguredValue() {
     when(configMock.getString("cleanupInterval")).thenReturn("30 seconds");
-    assertThat(
-        module.getCleanupInterval(pluginCfgFactoryMock, SOME_PLUGIN_NAME))
-            .isEqualTo(SECONDS.toMillis(30));
+    assertThat(module.getCleanupInterval(pluginCfgFactoryMock, SOME_PLUGIN_NAME))
+        .isEqualTo(SECONDS.toMillis(30));
   }
 }

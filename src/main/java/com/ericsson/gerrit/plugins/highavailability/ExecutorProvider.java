@@ -17,15 +17,13 @@ package com.ericsson.gerrit.plugins.highavailability;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.inject.Provider;
-
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public abstract class ExecutorProvider
     implements Provider<ScheduledThreadPoolExecutor>, LifecycleListener {
   private WorkQueue.Executor executor;
 
-  protected ExecutorProvider(WorkQueue workQueue, int threadPoolSize,
-      String threadNamePrefix) {
+  protected ExecutorProvider(WorkQueue workQueue, int threadPoolSize, String threadNamePrefix) {
     executor = workQueue.createQueue(threadPoolSize, threadNamePrefix);
   }
 

@@ -17,15 +17,13 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
-
+import java.io.IOException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 class HttpResponseHandler implements ResponseHandler<HttpResult> {
 
@@ -47,8 +45,7 @@ class HttpResponseHandler implements ResponseHandler<HttpResult> {
     }
   }
 
-  private static final Logger log =
-      LoggerFactory.getLogger(HttpResponseHandler.class);
+  private static final Logger log = LoggerFactory.getLogger(HttpResponseHandler.class);
 
   @Override
   public HttpResult handleResponse(HttpResponse response) {

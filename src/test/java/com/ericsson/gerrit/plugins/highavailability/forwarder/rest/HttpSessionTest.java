@@ -28,22 +28,19 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.google.common.base.Optional;
-import com.google.inject.util.Providers;
-
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
 import com.github.tomakehurst.wiremock.http.Fault;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
-
+import com.google.common.base.Optional;
+import com.google.inject.util.Providers;
+import java.io.IOException;
+import java.net.SocketTimeoutException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import java.io.IOException;
-import java.net.SocketTimeoutException;
 
 public class HttpSessionTest {
   private static final int MAX_TRIES = 3;
@@ -64,8 +61,7 @@ public class HttpSessionTest {
 
   private HttpSession httpSession;
 
-  @Rule
-  public WireMockRule wireMockRule = new WireMockRule(0);
+  @Rule public WireMockRule wireMockRule = new WireMockRule(0);
 
   private Configuration cfg;
 
@@ -82,30 +78,31 @@ public class HttpSessionTest {
 
     PeerInfo peerInfo = mock(PeerInfo.class);
     when(peerInfo.getDirectUrl()).thenReturn(url);
-    httpSession = new HttpSession(
-        new HttpClientProvider(cfg).get(),
-        Providers.of(Optional.of(peerInfo)));
+    httpSession =
+        new HttpSession(new HttpClientProvider(cfg).get(), Providers.of(Optional.of(peerInfo)));
   }
 
   @Test
   public void testPostResponseOK() throws Exception {
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT))
-        .willReturn(aResponse().withStatus(NO_CONTENT)));
+    wireMockRule.givenThat(
+        post(urlEqualTo(ENDPOINT)).willReturn(aResponse().withStatus(NO_CONTENT)));
 
     assertThat(httpSession.post(ENDPOINT).isSuccessful()).isTrue();
   }
 
   @Test
   public void testPostResponseWithContentOK() throws Exception {
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT))
-        .withRequestBody(equalTo(BODY)).willReturn(aResponse().withStatus(NO_CONTENT)));
+    wireMockRule.givenThat(
+        post(urlEqualTo(ENDPOINT))
+            .withRequestBody(equalTo(BODY))
+            .willReturn(aResponse().withStatus(NO_CONTENT)));
     assertThat(httpSession.post(ENDPOINT, BODY).isSuccessful()).isTrue();
   }
 
   @Test
   public void testDeleteResponseOK() throws Exception {
-    wireMockRule.givenThat(delete(urlEqualTo(ENDPOINT))
-        .willReturn(aResponse().withStatus(NO_CONTENT)));
+    wireMockRule.givenThat(
+        delete(urlEqualTo(ENDPOINT)).willReturn(aResponse().withStatus(NO_CONTENT)));
 
     assertThat(httpSession.delete(ENDPOINT).isSuccessful()).isTrue();
   }
@@ -113,8 +110,9 @@ public class HttpSessionTest {
   @Test
   public void testNotAuthorized() throws Exception {
     String expected = "unauthorized";
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT))
-        .willReturn(aResponse().withStatus(UNAUTHORIZED).withBody(expected)));
+    wireMockRule.givenThat(
+        post(urlEqualTo(ENDPOINT))
+            .willReturn(aResponse().withStatus(UNAUTHORIZED).withBody(expected)));
 
     HttpResult result = httpSession.post(ENDPOINT);
     assertThat(result.isSuccessful()).isFalse();
@@ -124,8 +122,9 @@ public class HttpSessionTest {
   @Test
   public void testNotFound() throws Exception {
     String expected = "not found";
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT))
-        .willReturn(aResponse().withStatus(NOT_FOUND).withBody(expected)));
+    wireMockRule.givenThat(
+        post(urlEqualTo(ENDPOINT))
+            .willReturn(aResponse().withStatus(NOT_FOUND).withBody(expected)));
 
     HttpResult result = httpSession.post(ENDPOINT);
     assertThat(result.isSuccessful()).isFalse();
@@ -134,8 +133,9 @@ public class HttpSessionTest {
 
   @Test
   public void testBadResponseRetryThenGiveUp() throws Exception {
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT))
-        .willReturn(aResponse().withStatus(ERROR).withBody(ERROR_MESSAGE)));
+    wireMockRule.givenThat(
+        post(urlEqualTo(ENDPOINT))
+            .willReturn(aResponse().withStatus(ERROR).withBody(ERROR_MESSAGE)));
 
     HttpResult result = httpSession.post(ENDPOINT);
     assertThat(result.isSuccessful()).isFalse();
@@ -144,35 +144,47 @@ public class HttpSessionTest {
 
   @Test(expected = SocketTimeoutException.class)
   public void testMaxRetriesAfterTimeoutThenGiveUp() throws Exception {
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
-        .whenScenarioStateIs(Scenario.STARTED).willSetStateTo(REQUEST_MADE)
-        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
-        .whenScenarioStateIs(REQUEST_MADE).willSetStateTo(SECOND_TRY)
-        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
-        .whenScenarioStateIs(SECOND_TRY).willSetStateTo(THIRD_TRY)
-        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT)).inScenario(RETRY_AT_DELAY)
-        .whenScenarioStateIs(THIRD_TRY)
-        .willReturn(aResponse().withFixedDelay(TIMEOUT)));
+    wireMockRule.givenThat(
+        post(urlEqualTo(ENDPOINT))
+            .inScenario(RETRY_AT_DELAY)
+            .whenScenarioStateIs(Scenario.STARTED)
+            .willSetStateTo(REQUEST_MADE)
+            .willReturn(aResponse().withFixedDelay(TIMEOUT)));
+    wireMockRule.givenThat(
+        post(urlEqualTo(ENDPOINT))
+            .inScenario(RETRY_AT_DELAY)
+            .whenScenarioStateIs(REQUEST_MADE)
+            .willSetStateTo(SECOND_TRY)
+            .willReturn(aResponse().withFixedDelay(TIMEOUT)));
+    wireMockRule.givenThat(
+        post(urlEqualTo(ENDPOINT))
+            .inScenario(RETRY_AT_DELAY)
+            .whenScenarioStateIs(SECOND_TRY)
+            .willSetStateTo(THIRD_TRY)
+            .willReturn(aResponse().withFixedDelay(TIMEOUT)));
+    wireMockRule.givenThat(
+        post(urlEqualTo(ENDPOINT))
+            .inScenario(RETRY_AT_DELAY)
+            .whenScenarioStateIs(THIRD_TRY)
+            .willReturn(aResponse().withFixedDelay(TIMEOUT)));
 
     httpSession.post(ENDPOINT);
   }
 
   @Test
   public void testResponseWithMalformedResponse() throws Exception {
-    wireMockRule.givenThat(post(urlEqualTo(ENDPOINT))
-        .willReturn(aResponse().withFault(Fault.MALFORMED_RESPONSE_CHUNK)));
+    wireMockRule.givenThat(
+        post(urlEqualTo(ENDPOINT))
+            .willReturn(aResponse().withFault(Fault.MALFORMED_RESPONSE_CHUNK)));
 
     assertThat(httpSession.post(ENDPOINT).isSuccessful()).isFalse();
   }
 
   @Test
   public void testNoRequestWhenPeerInfoUnknown() throws IOException {
-    httpSession = new HttpSession(
-        new HttpClientProvider(cfg).get(),
-        Providers.of(Optional.<PeerInfo> absent()));
+    httpSession =
+        new HttpSession(
+            new HttpClientProvider(cfg).get(), Providers.of(Optional.<PeerInfo>absent()));
     try {
       httpSession.post(ENDPOINT);
       fail("Expected PeerInfoNotAvailableException");

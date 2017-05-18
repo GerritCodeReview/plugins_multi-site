@@ -14,6 +14,7 @@
 
 package com.ericsson.gerrit.plugins.highavailability.websession.file;
 
+import com.ericsson.gerrit.plugins.highavailability.SharedDirectory;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheStats;
 import com.google.common.collect.ImmutableMap;
@@ -22,13 +23,6 @@ import com.google.gerrit.httpd.WebSessionManager;
 import com.google.gerrit.httpd.WebSessionManager.Val;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import com.ericsson.gerrit.plugins.highavailability.SharedDirectory;
-
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -47,18 +41,18 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
-public class FileBasedWebsessionCache
-    implements Cache<String, WebSessionManager.Val> {
-  private static final Logger log =
-      LoggerFactory.getLogger(FileBasedWebsessionCache.class);
+public class FileBasedWebsessionCache implements Cache<String, WebSessionManager.Val> {
+  private static final Logger log = LoggerFactory.getLogger(FileBasedWebsessionCache.class);
 
   private final Path websessionsDir;
 
   @Inject
-  public FileBasedWebsessionCache(@SharedDirectory Path sharedDirectory)
-      throws IOException {
+  public FileBasedWebsessionCache(@SharedDirectory Path sharedDirectory) throws IOException {
     this.websessionsDir = sharedDirectory.resolve("websessions");
     Files.createDirectories(websessionsDir);
   }
@@ -89,8 +83,7 @@ public class FileBasedWebsessionCache
   }
 
   @Override
-  public Val get(String key, Callable<? extends Val> valueLoader)
-      throws ExecutionException {
+  public Val get(String key, Callable<? extends Val> valueLoader) throws ExecutionException {
     Val value = getIfPresent(key);
     if (value == null) {
       try {
@@ -148,12 +141,13 @@ public class FileBasedWebsessionCache
   @Override
   public void put(String key, Val value) {
     try {
-      Path tempFile = Files.createTempFile(websessionsDir,
-          UUID.randomUUID().toString(), null);
+      Path tempFile = Files.createTempFile(websessionsDir, UUID.randomUUID().toString(), null);
       try (OutputStream fileStream = Files.newOutputStream(tempFile);
           ObjectOutputStream objStream = new ObjectOutputStream(fileStream)) {
         objStream.writeObject(value);
-        Files.move(tempFile, tempFile.resolveSibling(key),
+        Files.move(
+            tempFile,
+            tempFile.resolveSibling(key),
             StandardCopyOption.REPLACE_EXISTING,
             StandardCopyOption.ATOMIC_MOVE);
       }
@@ -186,8 +180,11 @@ public class FileBasedWebsessionCache
           ObjectInputStream objStream = new ObjectInputStream(fileStream)) {
         return (Val) objStream.readObject();
       } catch (ClassNotFoundException e) {
-        log.warn("Entry {} in cache {} has an incompatible class and can't be"
-            + " deserialized. Invalidating entry.", path, websessionsDir);
+        log.warn(
+            "Entry {} in cache {} has an incompatible class and can't be"
+                + " deserialized. Invalidating entry.",
+            path,
+            websessionsDir);
         log.debug(e.getMessage(), e);
         invalidate(path.getFileName().toString());
       } catch (IOException e) {
@@ -207,8 +204,7 @@ public class FileBasedWebsessionCache
 
   private List<Path> listFiles() {
     List<Path> files = new ArrayList<>();
-    try (DirectoryStream<Path> dirStream =
-        Files.newDirectoryStream(websessionsDir)) {
+    try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(websessionsDir)) {
       for (Path path : dirStream) {
         files.add(path);
       }

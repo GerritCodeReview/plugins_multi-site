@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 package com.ericsson.gerrit.plugins.highavailability;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -21,7 +20,9 @@ import static org.mockito.Mockito.when;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.ProvisionException;
-
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,23 +31,16 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-
 @RunWith(MockitoJUnitRunner.class)
 public class ModuleTest {
 
   private static String PLUGIN_NAME = "somePluginName";
 
-  @Mock
-  private PluginConfigFactory pluginConfigFactoryMock;
+  @Mock private PluginConfigFactory pluginConfigFactoryMock;
 
-  @Mock
-  private PluginConfig pluginConfigMock;
+  @Mock private PluginConfig pluginConfigMock;
 
-  @Rule
-  public TemporaryFolder tempFolder = new TemporaryFolder();
+  @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
   private Module module;
 
@@ -58,8 +52,7 @@ public class ModuleTest {
   }
 
   @Test(expected = ProvisionException.class)
-  public void shouldThrowExceptionIfSharedDirectoryNotConfigured()
-      throws IOException {
+  public void shouldThrowExceptionIfSharedDirectoryNotConfigured() throws IOException {
     module.getSharedDirectory(pluginConfigFactoryMock, PLUGIN_NAME);
   }
 
@@ -69,10 +62,8 @@ public class ModuleTest {
     when(pluginConfigMock.getString("sharedDirectory"))
         .thenReturn(configuredDirectory.getAbsolutePath());
 
-    Path sharedDirectory =
-        module.getSharedDirectory(pluginConfigFactoryMock, PLUGIN_NAME);
-    assertThat(sharedDirectory.toString())
-        .isEqualTo(configuredDirectory.toString());
+    Path sharedDirectory = module.getSharedDirectory(pluginConfigFactoryMock, PLUGIN_NAME);
+    assertThat(sharedDirectory.toString()).isEqualTo(configuredDirectory.toString());
   }
 
   @Test
@@ -82,14 +73,12 @@ public class ModuleTest {
     when(pluginConfigMock.getString("sharedDirectory"))
         .thenReturn(configuredDirectory.getAbsolutePath());
 
-    Path sharedDirectory =
-        module.getSharedDirectory(pluginConfigFactoryMock, PLUGIN_NAME);
+    Path sharedDirectory = module.getSharedDirectory(pluginConfigFactoryMock, PLUGIN_NAME);
     assertThat(sharedDirectory.toFile().exists()).isTrue();
   }
 
   @Test(expected = IOException.class)
-  public void shouldThrowAnExceptionIfAnErrorOccurCreatingSharedDirectory()
-      throws IOException {
+  public void shouldThrowAnExceptionIfAnErrorOccurCreatingSharedDirectory() throws IOException {
     File configuredDirectory = tempFolder.newFile();
     when(pluginConfigMock.getString("sharedDirectory"))
         .thenReturn(configuredDirectory.getAbsolutePath());

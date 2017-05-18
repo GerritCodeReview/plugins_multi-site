@@ -20,7 +20,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.git.WorkQueue;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,15 +28,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventExecutorProviderTest {
-  @Mock
-  private WorkQueue.Executor executorMock;
+  @Mock private WorkQueue.Executor executorMock;
   private EventExecutorProvider eventsExecutorProvider;
 
   @Before
   public void setUp() throws Exception {
     WorkQueue workQueueMock = mock(WorkQueue.class);
-    when(workQueueMock.createQueue(1, "Forward-stream-event"))
-        .thenReturn(executorMock);
+    when(workQueueMock.createQueue(1, "Forward-stream-event")).thenReturn(executorMock);
     eventsExecutorProvider = new EventExecutorProvider(workQueueMock);
   }
 

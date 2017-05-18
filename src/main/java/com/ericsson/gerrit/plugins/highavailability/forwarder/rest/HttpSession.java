@@ -14,30 +14,26 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
+import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
+import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.net.MediaType;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
-import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
-import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
-
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 class HttpSession {
   private final CloseableHttpClient httpClient;
   private final Provider<Optional<PeerInfo>> peerInfo;
 
   @Inject
-  HttpSession(CloseableHttpClient httpClient,
-      Provider<Optional<PeerInfo>> peerInfo) {
+  HttpSession(CloseableHttpClient httpClient, Provider<Optional<PeerInfo>> peerInfo) {
     this.httpClient = httpClient;
     this.peerInfo = peerInfo;
   }
@@ -57,8 +53,7 @@ class HttpSession {
 
   HttpResult delete(String endpoint) throws IOException {
     return httpClient.execute(
-        new HttpDelete(getPeerInfo().getDirectUrl() + endpoint),
-        new HttpResponseHandler());
+        new HttpDelete(getPeerInfo().getDirectUrl() + endpoint), new HttpResponseHandler());
   }
 
   private PeerInfo getPeerInfo() throws PeerInfoNotAvailableException {

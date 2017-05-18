@@ -19,14 +19,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
-
+import java.io.UnsupportedEncodingException;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.entity.StringEntity;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.UnsupportedEncodingException;
 
 public class HttpResponseHandlerTest {
   private static final int ERROR = 400;
@@ -57,8 +55,7 @@ public class HttpResponseHandlerTest {
     assertThat(result.getMessage()).contains(ERROR_ENTITY);
   }
 
-  private HttpResponse setupMocks(int httpCode, String entity)
-      throws UnsupportedEncodingException {
+  private HttpResponse setupMocks(int httpCode, String entity) throws UnsupportedEncodingException {
     StatusLine status = mock(StatusLine.class);
     when(status.getStatusCode()).thenReturn(httpCode);
     HttpResponse response = mock(HttpResponse.class);

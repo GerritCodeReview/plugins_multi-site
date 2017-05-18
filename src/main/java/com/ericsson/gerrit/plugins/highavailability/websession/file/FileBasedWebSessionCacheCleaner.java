@@ -23,11 +23,9 @@ import com.google.gerrit.server.git.WorkQueue;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
-
+import java.util.concurrent.ScheduledFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.ScheduledFuture;
 
 @Singleton
 class FileBasedWebSessionCacheCleaner implements LifecycleListener {
@@ -38,7 +36,8 @@ class FileBasedWebSessionCacheCleaner implements LifecycleListener {
   private ScheduledFuture<?> scheduledCleanupTask;
 
   @Inject
-  FileBasedWebSessionCacheCleaner(WorkQueue queue,
+  FileBasedWebSessionCacheCleaner(
+      WorkQueue queue,
       Provider<CleanupTask> cleanupTaskProvider,
       @CleanupIntervalMillis long cleanupIntervalMillis) {
     this.queue = queue;
@@ -49,8 +48,13 @@ class FileBasedWebSessionCacheCleaner implements LifecycleListener {
   @Override
   public void start() {
     scheduledCleanupTask =
-        queue.getDefaultQueue().scheduleAtFixedRate(cleanupTaskProvider.get(),
-            SECONDS.toMillis(1), cleanupIntervalMillis, MILLISECONDS);
+        queue
+            .getDefaultQueue()
+            .scheduleAtFixedRate(
+                cleanupTaskProvider.get(),
+                SECONDS.toMillis(1),
+                cleanupIntervalMillis,
+                MILLISECONDS);
   }
 
   @Override
@@ -63,14 +67,12 @@ class FileBasedWebSessionCacheCleaner implements LifecycleListener {
 }
 
 class CleanupTask implements Runnable {
-  private static final Logger logger =
-      LoggerFactory.getLogger(CleanupTask.class);
+  private static final Logger logger = LoggerFactory.getLogger(CleanupTask.class);
   private final FileBasedWebsessionCache fileBasedWebSessionCache;
   private final String pluginName;
 
   @Inject
-  CleanupTask(FileBasedWebsessionCache fileBasedWebSessionCache,
-      @PluginName String pluginName) {
+  CleanupTask(FileBasedWebsessionCache fileBasedWebSessionCache, @PluginName String pluginName) {
     this.fileBasedWebSessionCache = fileBasedWebSessionCache;
     this.pluginName = pluginName;
   }
@@ -84,7 +86,6 @@ class CleanupTask implements Runnable {
 
   @Override
   public String toString() {
-    return String.format("[%s] Clean up expired file based websessions",
-        pluginName);
+    return String.format("[%s] Clean up expired file based websessions", pluginName);
   }
 }

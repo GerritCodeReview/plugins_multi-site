@@ -14,14 +14,12 @@
 
 package com.ericsson.gerrit.plugins.highavailability.cache;
 
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 import com.google.common.cache.RemovalNotification;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.cache.CacheRemovalListener;
 import com.google.inject.Inject;
-
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
-
 import java.util.concurrent.Executor;
 import java.util.regex.Pattern;
 
@@ -32,21 +30,20 @@ class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
   private final Pattern pattern;
 
   @Inject
-  CacheEvictionHandler(Forwarder forwarder,
-      @CacheExecutor Executor executor,
-      @PluginName String pluginName) {
+  CacheEvictionHandler(
+      Forwarder forwarder, @CacheExecutor Executor executor, @PluginName String pluginName) {
     this.forwarder = forwarder;
     this.executor = executor;
     this.pluginName = pluginName;
-    pattern = Pattern.compile(
-        "^accounts.*|^groups.*|ldap_groups|ldap_usernames|^project.*|sshkeys|web_sessions");
+    pattern =
+        Pattern.compile(
+            "^accounts.*|^groups.*|ldap_groups|ldap_usernames|^project.*|sshkeys|web_sessions");
   }
 
   @Override
-  public void onRemoval(String pluginName, String cacheName,
-      RemovalNotification<K, V> notification) {
-    if (!Context.isForwardedEvent() && !notification.wasEvicted()
-        && isSynchronized(cacheName)) {
+  public void onRemoval(
+      String pluginName, String cacheName, RemovalNotification<K, V> notification) {
+    if (!Context.isForwardedEvent() && !notification.wasEvicted() && isSynchronized(cacheName)) {
       executor.execute(new CacheEvictionTask(cacheName, notification.getKey()));
     }
   }
@@ -72,8 +69,7 @@ class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
     @Override
     public String toString() {
       return String.format(
-          "[%s] Evict key '%s' from cache '%s' in target instance", pluginName,
-          key, cacheName);
+          "[%s] Evict key '%s' from cache '%s' in target instance", pluginName, key, cacheName);
     }
   }
 }

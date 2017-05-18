@@ -17,33 +17,28 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
+import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
 import com.google.common.base.Splitter;
 import com.google.common.cache.Cache;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
-import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 class CacheRestApiServlet extends HttpServlet {
   private static final int CACHENAME_INDEX = 1;
   private static final long serialVersionUID = -1L;
   private static final String GERRIT = "gerrit";
-  private static final Logger logger =
-      LoggerFactory.getLogger(CacheRestApiServlet.class);
+  private static final Logger logger = LoggerFactory.getLogger(CacheRestApiServlet.class);
 
   private final DynamicMap<Cache<?, ?>> cacheMap;
 
@@ -74,8 +69,7 @@ class CacheRestApiServlet extends HttpServlet {
     }
   }
 
-  private static void sendError(HttpServletResponse rsp, int statusCode,
-      String message) {
+  private static void sendError(HttpServletResponse rsp, int statusCode, String message) {
     try {
       rsp.sendError(statusCode, message);
     } catch (IOException e) {

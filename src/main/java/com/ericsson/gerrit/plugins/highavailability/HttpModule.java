@@ -14,10 +14,9 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
-import com.google.gerrit.httpd.plugins.HttpPluginModule;
-
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.RestForwarderServletModule;
 import com.ericsson.gerrit.plugins.highavailability.websession.file.FileBasedWebsessionModule;
+import com.google.gerrit.httpd.plugins.HttpPluginModule;
 
 class HttpModule extends HttpPluginModule {
   @Override

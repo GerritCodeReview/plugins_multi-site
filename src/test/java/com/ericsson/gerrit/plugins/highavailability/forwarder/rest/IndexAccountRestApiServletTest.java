@@ -25,7 +25,9 @@ import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.server.index.account.AccountIndexer;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.StandardKeyEncoder;
-
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,21 +35,13 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @RunWith(MockitoJUnitRunner.class)
 public class IndexAccountRestApiServletTest {
   private static final String ACCOUNT_NUMBER = "1";
 
-  @Mock
-  private AccountIndexer indexer;
-  @Mock
-  private HttpServletRequest req;
-  @Mock
-  private HttpServletResponse rsp;
+  @Mock private AccountIndexer indexer;
+  @Mock private HttpServletRequest req;
+  @Mock private HttpServletResponse rsp;
 
   private Account.Id id;
   private IndexAccountRestApiServlet servlet;

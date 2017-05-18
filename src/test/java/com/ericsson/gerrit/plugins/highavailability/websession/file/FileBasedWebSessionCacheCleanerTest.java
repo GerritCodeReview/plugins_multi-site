@@ -27,15 +27,13 @@ import static org.mockito.Mockito.when;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.gerrit.server.git.WorkQueue.Executor;
 import com.google.inject.Provider;
-
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FileBasedWebSessionCacheCleanerTest {
@@ -43,14 +41,10 @@ public class FileBasedWebSessionCacheCleanerTest {
   private static long CLEANUP_INTERVAL = 5000;
   private static String SOME_PLUGIN_NAME = "somePluginName";
 
-  @Mock
-  private Executor executorMock;
-  @Mock
-  private ScheduledFuture<?> scheduledFutureMock;
-  @Mock
-  private WorkQueue workQueueMock;
-  @Mock
-  private Provider<CleanupTask> cleanupTaskProviderMock;
+  @Mock private Executor executorMock;
+  @Mock private ScheduledFuture<?> scheduledFutureMock;
+  @Mock private WorkQueue workQueueMock;
+  @Mock private Provider<CleanupTask> cleanupTaskProviderMock;
 
   private FileBasedWebSessionCacheCleaner cleaner;
 
@@ -58,10 +52,12 @@ public class FileBasedWebSessionCacheCleanerTest {
   public void setUp() {
     when(cleanupTaskProviderMock.get()).thenReturn(new CleanupTask(null, null));
     when(workQueueMock.getDefaultQueue()).thenReturn(executorMock);
-    doReturn(scheduledFutureMock).when(executorMock).scheduleAtFixedRate(
-        isA(CleanupTask.class), anyLong(), anyLong(), isA(TimeUnit.class));
-    cleaner = new FileBasedWebSessionCacheCleaner(workQueueMock,
-        cleanupTaskProviderMock, CLEANUP_INTERVAL);
+    doReturn(scheduledFutureMock)
+        .when(executorMock)
+        .scheduleAtFixedRate(isA(CleanupTask.class), anyLong(), anyLong(), isA(TimeUnit.class));
+    cleaner =
+        new FileBasedWebSessionCacheCleaner(
+            workQueueMock, cleanupTaskProviderMock, CLEANUP_INTERVAL);
   }
 
   @Test
@@ -78,15 +74,16 @@ public class FileBasedWebSessionCacheCleanerTest {
   @Test
   public void testCleanupTaskToString() {
     CleanupTask task = new CleanupTask(null, SOME_PLUGIN_NAME);
-    assertThat(task.toString()).isEqualTo(String.format(
-        "[%s] Clean up expired file based websessions", SOME_PLUGIN_NAME));
+    assertThat(task.toString())
+        .isEqualTo(String.format("[%s] Clean up expired file based websessions", SOME_PLUGIN_NAME));
   }
 
   @Test
   public void testCleanupTaskIsScheduledOnStart() {
     cleaner.start();
-    verify(executorMock, times(1)).scheduleAtFixedRate(isA(CleanupTask.class),
-        eq(1000l), eq(CLEANUP_INTERVAL), eq(TimeUnit.MILLISECONDS));
+    verify(executorMock, times(1))
+        .scheduleAtFixedRate(
+            isA(CleanupTask.class), eq(1000l), eq(CLEANUP_INTERVAL), eq(TimeUnit.MILLISECONDS));
   }
 
   @Test

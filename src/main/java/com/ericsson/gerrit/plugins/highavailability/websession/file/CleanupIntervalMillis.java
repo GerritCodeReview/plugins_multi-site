@@ -17,10 +17,8 @@ package com.ericsson.gerrit.plugins.highavailability.websession.file;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.google.inject.BindingAnnotation;
-
 import java.lang.annotation.Retention;
 
 @Retention(RUNTIME)
 @BindingAnnotation
-public @interface CleanupIntervalMillis {
-}
+public @interface CleanupIntervalMillis {}

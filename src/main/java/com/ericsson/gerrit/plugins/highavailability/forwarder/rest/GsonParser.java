@@ -14,18 +14,16 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
+import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
 import com.google.common.base.Strings;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
-
 final class GsonParser {
 
-  private GsonParser() {
-  }
+  private GsonParser() {}
 
   static Object fromJson(String cacheName, String json) {
     Gson gson = new GsonBuilder().create();
@@ -36,13 +34,11 @@ final class GsonParser {
         key = gson.fromJson(Strings.nullToEmpty(json).trim(), Account.Id.class);
         break;
       case Constants.GROUPS:
-        key = gson.fromJson(Strings.nullToEmpty(json).trim(),
-            AccountGroup.Id.class);
+        key = gson.fromJson(Strings.nullToEmpty(json).trim(), AccountGroup.Id.class);
         break;
       case Constants.GROUPS_BYINCLUDE:
       case Constants.GROUPS_MEMBERS:
-        key = gson.fromJson(Strings.nullToEmpty(json).trim(),
-            AccountGroup.UUID.class);
+        key = gson.fromJson(Strings.nullToEmpty(json).trim(), AccountGroup.UUID.class);
         break;
       case Constants.PROJECT_LIST:
         key = gson.fromJson(Strings.nullToEmpty(json), Object.class);

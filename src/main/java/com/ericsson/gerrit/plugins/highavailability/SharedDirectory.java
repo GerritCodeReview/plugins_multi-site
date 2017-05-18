@@ -17,14 +17,12 @@ package com.ericsson.gerrit.plugins.highavailability;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import com.google.inject.BindingAnnotation;
-
 import java.lang.annotation.Retention;
 
 /**
- * {@link java.nio.file.Path} to a directory accessible from both master
- * instances.
- * <p>
- * Example of usage:
+ * {@link java.nio.file.Path} to a directory accessible from both master instances.
+ *
+ * <p>Example of usage:
  *
  * <pre>
  * {@literal @Inject}
@@ -35,5 +33,4 @@ import java.lang.annotation.Retention;
  */
 @Retention(RUNTIME)
 @BindingAnnotation
-public @interface SharedDirectory {
-}
+public @interface SharedDirectory {}
