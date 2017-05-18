@@ -40,6 +40,7 @@ public class Configuration {
   // main section
   static final String MAIN_SECTION = "main";
   static final String SHARED_DIRECTORY_KEY = "sharedDirectory";
+  static final String DEFAULT_SHARED_DIRECTORY = "shared";
 
   // peerInfo section
   static final String PEER_INFO_SECTION = "peerInfo";
