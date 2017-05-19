@@ -28,10 +28,20 @@ import org.slf4j.LoggerFactory;
 public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
-  private static final int DEFAULT_TIMEOUT_MS = 5000;
-  private static final int DEFAULT_MAX_TRIES = 5;
-  private static final int DEFAULT_RETRY_INTERVAL = 1000;
-  private static final int DEFAULT_THREAD_POOL_SIZE = 1;
+  static final String URL_KEY = "url";
+  static final String USER_KEY = "user";
+  static final String PASSWORD_KEY = "password";
+  static final String CONNECTION_TIMEOUT_KEY = "connectionTimeout";
+  static final String SOCKET_TIMEOUT_KEY = "socketTimeout";
+  static final String MAX_TRIES_KEY = "maxTries";
+  static final String RETRY_INTERVAL_KEY = "retryInterval";
+  static final String INDEX_THREAD_POOL_SIZE_KEY = "indexThreadPoolSize";
+  static final String CACHE_THREAD_POOL_SIZE_KEY = "cacheThreadPoolSize";
+
+  static final int DEFAULT_TIMEOUT_MS = 5000;
+  static final int DEFAULT_MAX_TRIES = 5;
+  static final int DEFAULT_RETRY_INTERVAL = 1000;
+  static final int DEFAULT_THREAD_POOL_SIZE = 1;
 
   private final String url;
   private final String user;
@@ -46,15 +56,15 @@ public class Configuration {
   @Inject
   Configuration(PluginConfigFactory config, @PluginName String pluginName) {
     PluginConfig cfg = config.getFromGerritConfig(pluginName, true);
-    url = Strings.nullToEmpty(cfg.getString("url"));
-    user = Strings.nullToEmpty(cfg.getString("user"));
-    password = Strings.nullToEmpty(cfg.getString("password"));
-    connectionTimeout = getInt(cfg, "connectionTimeout", DEFAULT_TIMEOUT_MS);
-    socketTimeout = getInt(cfg, "socketTimeout", DEFAULT_TIMEOUT_MS);
-    maxTries = getInt(cfg, "maxTries", DEFAULT_MAX_TRIES);
-    retryInterval = getInt(cfg, "retryInterval", DEFAULT_RETRY_INTERVAL);
-    indexThreadPoolSize = getInt(cfg, "indexThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
-    cacheThreadPoolSize = getInt(cfg, "cacheThreadPoolSize", DEFAULT_THREAD_POOL_SIZE);
+    url = Strings.nullToEmpty(cfg.getString(URL_KEY));
+    user = Strings.nullToEmpty(cfg.getString(USER_KEY));
+    password = Strings.nullToEmpty(cfg.getString(PASSWORD_KEY));
+    connectionTimeout = getInt(cfg, CONNECTION_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS);
+    socketTimeout = getInt(cfg, SOCKET_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS);
+    maxTries = getInt(cfg, MAX_TRIES_KEY, DEFAULT_MAX_TRIES);
+    retryInterval = getInt(cfg, RETRY_INTERVAL_KEY, DEFAULT_RETRY_INTERVAL);
+    indexThreadPoolSize = getInt(cfg, INDEX_THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
+    cacheThreadPoolSize = getInt(cfg, CACHE_THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
   }
 
   private int getInt(PluginConfig cfg, String name, int defaultValue) {
