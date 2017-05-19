@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
+  static final String SHARED_DIRECTORY = "sharedDirectory";
   static final String URL_KEY = "url";
   static final String USER_KEY = "user";
   static final String PASSWORD_KEY = "password";
