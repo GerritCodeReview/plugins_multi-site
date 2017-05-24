@@ -14,6 +14,19 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.CACHE_THREAD_POOL_SIZE_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.CONNECTION_TIMEOUT_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_MAX_TRIES;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_RETRY_INTERVAL;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_THREAD_POOL_SIZE;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_TIMEOUT_MS;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.INDEX_THREAD_POOL_SIZE_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAX_TRIES_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.PASSWORD_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.RETRY_INTERVAL_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.SOCKET_TIMEOUT_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.URL_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.USER_KEY;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -93,28 +106,26 @@ public class ConfigurationTest {
         .thenThrow(new IllegalArgumentException("some message"));
 
     configuration = new Configuration(cfgFactoryMock, pluginName);
-    assertThat(configuration.getConnectionTimeout()).isEqualTo(5000);
-    assertThat(configuration.getSocketTimeout()).isEqualTo(5000);
-    assertThat(configuration.getMaxTries()).isEqualTo(5);
-    assertThat(configuration.getRetryInterval()).isEqualTo(1000);
-    assertThat(configuration.getIndexThreadPoolSize()).isEqualTo(1);
-    assertThat(configuration.getCacheThreadPoolSize()).isEqualTo(1);
+    assertThat(configuration.getConnectionTimeout()).isEqualTo(DEFAULT_TIMEOUT_MS);
+    assertThat(configuration.getSocketTimeout()).isEqualTo(DEFAULT_TIMEOUT_MS);
+    assertThat(configuration.getMaxTries()).isEqualTo(DEFAULT_MAX_TRIES);
+    assertThat(configuration.getRetryInterval()).isEqualTo(DEFAULT_RETRY_INTERVAL);
+    assertThat(configuration.getIndexThreadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
+    assertThat(configuration.getCacheThreadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
   }
 
   private void buildMocks(boolean values) {
-    when(configMock.getString("url")).thenReturn(values ? URL : null);
-    when(configMock.getString("user")).thenReturn(values ? USER : null);
-    when(configMock.getString("password")).thenReturn(values ? PASS : null);
-    when(configMock.getInt("connectionTimeout", TIMEOUT)).thenReturn(values ? TIMEOUT : 0);
-    when(configMock.getInt("socketTimeout", TIMEOUT)).thenReturn(values ? TIMEOUT : 0);
-    when(configMock.getInt("maxTries", MAX_TRIES)).thenReturn(values ? MAX_TRIES : 0);
-    when(configMock.getInt("retryInterval", RETRY_INTERVAL))
+    when(configMock.getString(URL_KEY)).thenReturn(values ? URL : null);
+    when(configMock.getString(USER_KEY)).thenReturn(values ? USER : null);
+    when(configMock.getString(PASSWORD_KEY)).thenReturn(values ? PASS : null);
+    when(configMock.getInt(CONNECTION_TIMEOUT_KEY, TIMEOUT)).thenReturn(values ? TIMEOUT : 0);
+    when(configMock.getInt(SOCKET_TIMEOUT_KEY, TIMEOUT)).thenReturn(values ? TIMEOUT : 0);
+    when(configMock.getInt(MAX_TRIES_KEY, MAX_TRIES)).thenReturn(values ? MAX_TRIES : 0);
+    when(configMock.getInt(RETRY_INTERVAL_KEY, RETRY_INTERVAL))
         .thenReturn(values ? RETRY_INTERVAL : 0);
-    when(configMock.getInt("indexThreadPoolSize", THREAD_POOL_SIZE))
+    when(configMock.getInt(INDEX_THREAD_POOL_SIZE_KEY, THREAD_POOL_SIZE))
         .thenReturn(values ? THREAD_POOL_SIZE : 0);
-    when(configMock.getInt("eventThreadPoolSize", THREAD_POOL_SIZE))
-        .thenReturn(values ? THREAD_POOL_SIZE : 0);
-    when(configMock.getInt("cacheThreadPoolSize", THREAD_POOL_SIZE))
+    when(configMock.getInt(CACHE_THREAD_POOL_SIZE_KEY, THREAD_POOL_SIZE))
         .thenReturn(values ? THREAD_POOL_SIZE : 0);
 
     configuration = new Configuration(cfgFactoryMock, pluginName);

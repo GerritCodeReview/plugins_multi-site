@@ -14,6 +14,8 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.SHARED_DIRECTORY;
+
 import com.ericsson.gerrit.plugins.highavailability.cache.CacheModule;
 import com.ericsson.gerrit.plugins.highavailability.event.EventModule;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.RestForwarderModule;
@@ -50,9 +52,9 @@ class Module extends AbstractModule {
   Path getSharedDirectory(PluginConfigFactory cfg, @PluginName String pluginName)
       throws IOException {
     String sharedDirectory =
-        Strings.emptyToNull(cfg.getFromGerritConfig(pluginName, true).getString("sharedDirectory"));
+        Strings.emptyToNull(cfg.getFromGerritConfig(pluginName, true).getString(SHARED_DIRECTORY));
     if (sharedDirectory == null) {
-      throw new ProvisionException("sharedDirectory must be configured");
+      throw new ProvisionException(SHARED_DIRECTORY + " must be configured");
     }
     Path sharedDirectoryPath = Paths.get(sharedDirectory);
     Files.createDirectories(sharedDirectoryPath);

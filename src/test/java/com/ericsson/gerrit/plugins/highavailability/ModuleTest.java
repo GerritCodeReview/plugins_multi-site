@@ -14,6 +14,7 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.SHARED_DIRECTORY;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -59,7 +60,7 @@ public class ModuleTest {
   @Test
   public void shouldReturnConfiguredSharedDirectory() throws IOException {
     File configuredDirectory = tempFolder.newFolder();
-    when(pluginConfigMock.getString("sharedDirectory"))
+    when(pluginConfigMock.getString(SHARED_DIRECTORY))
         .thenReturn(configuredDirectory.getAbsolutePath());
 
     Path sharedDirectory = module.getSharedDirectory(pluginConfigFactoryMock, PLUGIN_NAME);
@@ -70,7 +71,7 @@ public class ModuleTest {
   public void shouldCreateSharedDirectoryIfItDoesNotExist() throws IOException {
     File configuredDirectory = tempFolder.newFolder();
     assertThat(configuredDirectory.delete()).isTrue();
-    when(pluginConfigMock.getString("sharedDirectory"))
+    when(pluginConfigMock.getString(SHARED_DIRECTORY))
         .thenReturn(configuredDirectory.getAbsolutePath());
 
     Path sharedDirectory = module.getSharedDirectory(pluginConfigFactoryMock, PLUGIN_NAME);
@@ -80,7 +81,7 @@ public class ModuleTest {
   @Test(expected = IOException.class)
   public void shouldThrowAnExceptionIfAnErrorOccurCreatingSharedDirectory() throws IOException {
     File configuredDirectory = tempFolder.newFile();
-    when(pluginConfigMock.getString("sharedDirectory"))
+    when(pluginConfigMock.getString(SHARED_DIRECTORY))
         .thenReturn(configuredDirectory.getAbsolutePath());
 
     module.getSharedDirectory(pluginConfigFactoryMock, PLUGIN_NAME);
