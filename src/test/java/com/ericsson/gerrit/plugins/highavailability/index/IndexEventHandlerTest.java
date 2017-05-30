@@ -24,8 +24,10 @@ import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 import com.ericsson.gerrit.plugins.highavailability.index.IndexEventHandler.IndexAccountTask;
 import com.ericsson.gerrit.plugins.highavailability.index.IndexEventHandler.IndexChangeTask;
+import com.ericsson.gerrit.plugins.highavailability.index.IndexEventHandler.IndexGroupTask;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.server.git.WorkQueue.Executor;
 import com.google.gwtorm.client.KeyUtil;
@@ -42,11 +44,13 @@ public class IndexEventHandlerTest {
   private static final String PLUGIN_NAME = "high-availability";
   private static final int CHANGE_ID = 1;
   private static final int ACCOUNT_ID = 2;
+  private static final String UUID = "3";
 
   private IndexEventHandler indexEventHandler;
   @Mock private Forwarder forwarder;
   private Change.Id changeId;
   private Account.Id accountId;
+  private AccountGroup.UUID accountGroupUUID;
 
   @BeforeClass
   public static void setUp() {
@@ -57,6 +61,7 @@ public class IndexEventHandlerTest {
   public void setUpMocks() {
     changeId = Change.Id.parse(Integer.toString(CHANGE_ID));
     accountId = Account.Id.parse(Integer.toString(ACCOUNT_ID));
+    accountGroupUUID = AccountGroup.UUID.parse(UUID);
     indexEventHandler =
         new IndexEventHandler(MoreExecutors.directExecutor(), PLUGIN_NAME, forwarder);
   }
@@ -80,6 +85,12 @@ public class IndexEventHandlerTest {
   }
 
   @Test
+  public void shouldIndexInRemoteOnGroupIndexedEvent() throws Exception {
+    indexEventHandler.onGroupIndexed(accountGroupUUID.get());
+    verify(forwarder).indexGroup(UUID);
+  }
+
+  @Test
   public void shouldNotCallRemoteWhenChangeEventIsForwarded() throws Exception {
     Context.setForwardedEvent(true);
     indexEventHandler.onChangeIndexed(changeId.get());
@@ -93,6 +104,15 @@ public class IndexEventHandlerTest {
     Context.setForwardedEvent(true);
     indexEventHandler.onAccountIndexed(accountId.get());
     indexEventHandler.onAccountIndexed(accountId.get());
+    Context.unsetForwardedEvent();
+    verifyZeroInteractions(forwarder);
+  }
+
+  @Test
+  public void shouldNotCallRemoteWhenGroupEventIsForwarded() throws Exception {
+    Context.setForwardedEvent(true);
+    indexEventHandler.onGroupIndexed(accountGroupUUID.get());
+    indexEventHandler.onGroupIndexed(accountGroupUUID.get());
     Context.unsetForwardedEvent();
     verifyZeroInteractions(forwarder);
   }
@@ -116,6 +136,15 @@ public class IndexEventHandlerTest {
   }
 
   @Test
+  public void duplicateGroupEventOfAQueuedEventShouldGetDiscarded() {
+    Executor poolMock = mock(Executor.class);
+    indexEventHandler = new IndexEventHandler(poolMock, PLUGIN_NAME, forwarder);
+    indexEventHandler.onGroupIndexed(accountGroupUUID.get());
+    indexEventHandler.onGroupIndexed(accountGroupUUID.get());
+    verify(poolMock, times(1)).execute(indexEventHandler.new IndexGroupTask(UUID));
+  }
+
+  @Test
   public void testIndexChangeTaskToString() throws Exception {
     IndexChangeTask task = indexEventHandler.new IndexChangeTask(CHANGE_ID, false);
     assertThat(task.toString())
@@ -129,6 +158,13 @@ public class IndexEventHandlerTest {
     assertThat(task.toString())
         .isEqualTo(
             String.format("[%s] Index account %s in target instance", PLUGIN_NAME, ACCOUNT_ID));
+  }
+
+  @Test
+  public void testIndexGroupTaskToString() throws Exception {
+    IndexGroupTask task = indexEventHandler.new IndexGroupTask(UUID);
+    assertThat(task.toString())
+        .isEqualTo(String.format("[%s] Index group %s in target instance", PLUGIN_NAME, UUID));
   }
 
   @Test
@@ -175,5 +211,26 @@ public class IndexEventHandlerTest {
     IndexAccountTask differentAccountIdTask = indexEventHandler.new IndexAccountTask(123);
     assertThat(task.equals(differentAccountIdTask)).isFalse();
     assertThat(task.hashCode()).isNotEqualTo(differentAccountIdTask.hashCode());
+  }
+
+  @Test
+  public void testIndexGroupTaskHashCodeAndEquals() {
+    IndexGroupTask task = indexEventHandler.new IndexGroupTask(UUID);
+
+    IndexGroupTask sameTask = task;
+    assertThat(task.equals(sameTask)).isTrue();
+    assertThat(task.hashCode()).isEqualTo(sameTask.hashCode());
+
+    IndexGroupTask identicalTask = indexEventHandler.new IndexGroupTask(UUID);
+    assertThat(task.equals(identicalTask)).isTrue();
+    assertThat(task.hashCode()).isEqualTo(identicalTask.hashCode());
+
+    assertThat(task.equals(null)).isFalse();
+    assertThat(task.equals("test")).isFalse();
+    assertThat(task.hashCode()).isNotEqualTo("test".hashCode());
+
+    IndexGroupTask differentGroupIdTask = indexEventHandler.new IndexGroupTask("123");
+    assertThat(task.equals(differentGroupIdTask)).isFalse();
+    assertThat(task.hashCode()).isNotEqualTo(differentGroupIdTask.hashCode());
   }
 }

@@ -44,6 +44,14 @@ public interface Forwarder {
   boolean deleteChangeFromIndex(int changeId);
 
   /**
+   * Forward a group indexing event to the other master.
+   *
+   * @param uuid the group to index.
+   * @return true if successful, otherwise false.
+   */
+  boolean indexGroup(String uuid);
+
+  /**
    * Forward a stream event to the other master.
    *
    * @param event the event to forward.

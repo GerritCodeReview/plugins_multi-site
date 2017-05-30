@@ -21,6 +21,7 @@ public class RestForwarderServletModule extends HttpPluginModule {
   protected void configureServlets() {
     serveRegex("/index/account/\\d+$").with(IndexAccountRestApiServlet.class);
     serveRegex("/index/change/\\d+$").with(IndexChangeRestApiServlet.class);
+    serveRegex("/index/group/\\w+$").with(IndexGroupRestApiServlet.class);
     serve("/event").with(EventRestApiServlet.class);
     serve("/cache/*").with(CacheRestApiServlet.class);
   }

@@ -49,6 +49,9 @@ public class RestForwarderTest {
   private static final int ACCOUNT_NUMBER = 2;
   private static final String INDEX_ACCOUNT_ENDPOINT =
       Joiner.on("/").join("/plugins", PLUGIN_NAME, "index/account", ACCOUNT_NUMBER);
+  private static final String UUID = "we235jdf92nfj2351";
+  private static final String INDEX_GROUP_ENDPOINT =
+      Joiner.on("/").join("/plugins", PLUGIN_NAME, "index/group", UUID);
 
   //Event
   private static final String EVENT_ENDPOINT =
@@ -92,6 +95,25 @@ public class RestForwarderTest {
   public void testIndexAccountThrowsException() throws Exception {
     doThrow(new IOException()).when(httpSessionMock).post(INDEX_ACCOUNT_ENDPOINT);
     assertThat(forwarder.indexAccount(ACCOUNT_NUMBER)).isFalse();
+  }
+
+  @Test
+  public void testIndexGroupOK() throws Exception {
+    when(httpSessionMock.post(INDEX_GROUP_ENDPOINT))
+        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
+    assertThat(forwarder.indexGroup(UUID)).isTrue();
+  }
+
+  @Test
+  public void testIndexGroupFailed() throws Exception {
+    when(httpSessionMock.post(INDEX_GROUP_ENDPOINT)).thenReturn(new HttpResult(FAILED, EMPTY_MSG));
+    assertThat(forwarder.indexGroup(UUID)).isFalse();
+  }
+
+  @Test
+  public void testIndexGroupThrowsException() throws Exception {
+    doThrow(new IOException()).when(httpSessionMock).post(INDEX_GROUP_ENDPOINT);
+    assertThat(forwarder.indexGroup(UUID)).isFalse();
   }
 
   @Test

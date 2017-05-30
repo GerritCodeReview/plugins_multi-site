@@ -74,6 +74,16 @@ class RestForwarder implements Forwarder {
     }.execute();
   }
 
+  @Override
+  public boolean indexGroup(final String uuid) {
+    return new Request("index group " + uuid) {
+      @Override
+      HttpResult send() throws IOException {
+        return httpSession.post(Joiner.on("/").join(pluginRelativePath, "index/group", uuid));
+      }
+    }.execute();
+  }
+
   private String buildIndexEndpoint(int changeId) {
     return Joiner.on("/").join(pluginRelativePath, "index/change", changeId);
   }
