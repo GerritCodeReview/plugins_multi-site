@@ -50,13 +50,29 @@ http.retryInterval
 :   The interval of time in milliseconds between the subsequent auto-retries.
     When not specified, the default value is set to 1000ms.
 
+cache.synchronize
+:   Whether to synchronize cache evictions.
+    Defaults to true.
+
 cache.threadPoolSize
 :   Maximum number of threads used to send cache evictions to the target instance.
     Defaults to 1.
 
+event.synchronize
+:   Whether to synchronize stream events.
+    Defaults to true.
+
+index.synchronize
+:   Whether to synchronize secondary indexes.
+    Defaults to true.
+
 index.threadPoolSize
 :   Maximum number of threads used to send index events to the target instance.
     Defaults to 1.
+
+websession.synchronize
+:   Whether to synchronize web sessions.
+    Defaults to true.
 
 websession.cleanupInterval
 :   Frequency for deleting expired web sessions. Values should use common time

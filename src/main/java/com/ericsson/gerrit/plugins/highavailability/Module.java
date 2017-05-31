@@ -21,8 +21,8 @@ import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.RestForwarder
 import com.ericsson.gerrit.plugins.highavailability.index.IndexModule;
 import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfoModule;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
 import com.google.inject.Provides;
-import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,23 +30,35 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 class Module extends AbstractModule {
+  private final Configuration config;
+
+  @Inject
+  Module(Configuration config) {
+    this.config = config;
+  }
 
   @Override
   protected void configure() {
-    bind(Configuration.class).in(Scopes.SINGLETON);
     install(new ForwarderModule());
     install(new RestForwarderModule());
-    install(new EventModule());
-    install(new IndexModule());
-    install(new CacheModule());
+
+    if (config.cache().synchronize()) {
+      install(new CacheModule());
+    }
+    if (config.event().synchronize()) {
+      install(new EventModule());
+    }
+    if (config.index().synchronize()) {
+      install(new IndexModule());
+    }
     install(new PeerInfoModule());
   }
 
   @Provides
   @Singleton
   @SharedDirectory
-  Path getSharedDirectory(Configuration cfg) throws IOException {
-    Path sharedDirectoryPath = Paths.get(cfg.main().sharedDirectory());
+  Path getSharedDirectory() throws IOException {
+    Path sharedDirectoryPath = Paths.get(config.main().sharedDirectory());
     Files.createDirectories(sharedDirectoryPath);
     return sharedDirectoryPath;
   }
