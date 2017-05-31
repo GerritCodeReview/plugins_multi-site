@@ -44,7 +44,7 @@ class Module extends AbstractModule {
   @Singleton
   @SharedDirectory
   Path getSharedDirectory(Configuration cfg) throws IOException {
-    Path sharedDirectoryPath = Paths.get(cfg.getSharedDirectory());
+    Path sharedDirectoryPath = Paths.get(cfg.main().sharedDirectory());
     Files.createDirectories(sharedDirectoryPath);
     return sharedDirectoryPath;
   }

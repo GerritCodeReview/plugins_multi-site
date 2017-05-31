@@ -26,6 +26,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -34,14 +35,15 @@ public class HttpClientProviderTest {
   private static final int TIME_INTERVAL = 1000;
   private static final String EMPTY = "";
 
-  @Mock private Configuration config;
+  @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+  private Configuration configMock;
 
   @Before
   public void setUp() throws Exception {
-    when(config.getUser()).thenReturn(EMPTY);
-    when(config.getPassword()).thenReturn(EMPTY);
-    when(config.getConnectionTimeout()).thenReturn(TIME_INTERVAL);
-    when(config.getSocketTimeout()).thenReturn(TIME_INTERVAL);
+    when(configMock.http().user()).thenReturn(EMPTY);
+    when(configMock.http().password()).thenReturn(EMPTY);
+    when(configMock.http().connectionTimeout()).thenReturn(TIME_INTERVAL);
+    when(configMock.http().socketTimeout()).thenReturn(TIME_INTERVAL);
   }
 
   @Test
@@ -58,7 +60,7 @@ public class HttpClientProviderTest {
   class TestModule extends AbstractModule {
     @Override
     protected void configure() {
-      bind(Configuration.class).toInstance(config);
+      bind(Configuration.class).toInstance(configMock);
       bind(CloseableHttpClient.class).toProvider(HttpClientProvider.class).in(Scopes.SINGLETON);
     }
   }

@@ -24,6 +24,7 @@ import com.google.gerrit.server.git.WorkQueue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -31,14 +32,15 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class CacheExecutorProviderTest {
 
   @Mock private WorkQueue.Executor executorMock;
+
   private CacheExecutorProvider cacheExecutorProvider;
 
   @Before
   public void setUp() throws Exception {
     WorkQueue workQueueMock = mock(WorkQueue.class);
     when(workQueueMock.createQueue(4, "Forward-cache-eviction-event")).thenReturn(executorMock);
-    Configuration configMock = mock(Configuration.class);
-    when(configMock.getCacheThreadPoolSize()).thenReturn(4);
+    Configuration configMock = mock(Configuration.class, Answers.RETURNS_DEEP_STUBS);
+    when(configMock.cache().threadPoolSize()).thenReturn(4);
 
     cacheExecutorProvider = new CacheExecutorProvider(workQueueMock, configMock);
   }

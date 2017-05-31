@@ -2,57 +2,71 @@
 =========================
 
 The @PLUGIN@ plugin must be installed in both instances and the following fields
-should be specified in the corresponding Gerrit configuration file:
+should be specified in `$site_path/etc/@PLUGIN@.config` file:
 
-File 'gerrit.config'
+File '@PLUGIN@.config'
 --------------------
 
-[plugin "@PLUGIN@"]
+[main]
+:  sharedDirectory = /directory/accessible/from/both/instances
+[peerInfo]
 :  url = target_instance_url
+[http]
 :  user = username
 :  password = password
-:  sharedDirectory = /directory/accessible/from/both/instances
 
-plugin.@PLUGIN@.url
+main.sharedDirectory
+:   Path to a directory accessible from both master instances.
+
+peerInfo.url
 :   Specify the URL for the secondary (target) instance.
 
-plugin.@PLUGIN@.user
+http.user
 :   Username to connect to the secondary (target) instance.
 
-plugin.@PLUGIN@.password
-:   Password to connect to the secondary (target) instance. This value can
-     also be defined in secure.config.
-
-plugin.@PLUGIN@.sharedDirectory
-:   Path to a directory accessible from both master instances.
+http.password
+:   Password to connect to the secondary (target) instance.
 
 @PLUGIN@ plugin uses REST API calls to keep the target instance in-sync. It
 is possible to customize the parameters of the underlying http client doing these
 calls by specifying the following fields:
 
-@PLUGIN@.connectionTimeout
+http.connectionTimeout
 :   Maximum interval of time in milliseconds the plugin waits for a connection
     to the target instance. When not specified, the default value is set to 5000ms.
 
-@PLUGIN@.socketTimeout
+http.socketTimeout
 :   Maximum interval of time in milliseconds the plugin waits for a response from the
     target instance once the connection has been established. When not specified,
     the default value is set to 5000ms.
 
-@PLUGIN@.maxTries
+http.maxTries
 :   Maximum number of times the plugin should attempt when calling a REST API in
     the target instance. Setting this value to 0 will disable retries. When not
     specified, the default value is 5. After this number of failed tries, an
     error is logged.
 
-@PLUGIN@.retryInterval
+http.retryInterval
 :   The interval of time in milliseconds between the subsequent auto-retries.
     When not specified, the default value is set to 1000ms.
 
-@PLUGIN@.indexThreadPoolSize
+cache.threadPoolSize
+:   Maximum number of threads used to send cache evictions to the target instance.
+    Defaults to 1.
+
+index.threadPoolSize
 :   Maximum number of threads used to send index events to the target instance.
     Defaults to 1.
 
-@PLUGIN@.cacheThreadPoolSize
-:   Maximum number of threads used to send cache evictions to the target instance.
-    Defaults to 1.
+websession.cleanupInterval
+:   Frequency for deleting expired web sessions. Values should use common time
+    unit suffixes to express their setting:
+* s, sec, second, seconds
+* m, min, minute, minutes
+* h, hr, hour, hours
+* d, day, days
+* w, week, weeks (`1 week` is treated as `7 days`)
+* mon, month, months (`1 month` is treated as `30 days`)
+* y, year, years (`1 year` is treated as `365 days`)
+If a time unit suffix is not specified, `hours` is assumed.
+Defaults to 24 hours.

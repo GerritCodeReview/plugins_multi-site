@@ -35,6 +35,7 @@ import javax.net.ssl.SSLException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Answers;
 
 public class RestForwarderTest {
   private static final String PLUGIN_NAME = "high-availability";
@@ -58,7 +59,6 @@ public class RestForwarderTest {
 
   private RestForwarder forwarder;
   private HttpSession httpSessionMock;
-  private Configuration configurationMock;
 
   @BeforeClass
   public static void setup() {
@@ -68,10 +68,10 @@ public class RestForwarderTest {
   @Before
   public void setUp() {
     httpSessionMock = mock(HttpSession.class);
-    configurationMock = mock(Configuration.class);
-    when(configurationMock.getMaxTries()).thenReturn(3);
-    when(configurationMock.getRetryInterval()).thenReturn(10);
-    forwarder = new RestForwarder(httpSessionMock, PLUGIN_NAME, configurationMock);
+    Configuration configMock = mock(Configuration.class, Answers.RETURNS_DEEP_STUBS);
+    when(configMock.http().maxTries()).thenReturn(3);
+    when(configMock.http().retryInterval()).thenReturn(10);
+    forwarder = new RestForwarder(httpSessionMock, PLUGIN_NAME, configMock);
   }
 
   @Test

@@ -123,14 +123,14 @@ class RestForwarder implements Forwarder {
             log.error("Failed to {}", name, e);
             return false;
           }
-          if (execCnt >= cfg.getMaxTries()) {
-            log.error("Failed to {}, after {} tries", name, cfg.getMaxTries());
+          if (execCnt >= cfg.http().maxTries()) {
+            log.error("Failed to {}, after {} tries", name, cfg.http().maxTries());
             return false;
           }
 
           logRetry(e);
           try {
-            Thread.sleep(cfg.getRetryInterval());
+            Thread.sleep(cfg.http().retryInterval());
           } catch (InterruptedException ie) {
             log.error("{} was interrupted, giving up", name, ie);
             Thread.currentThread().interrupt();
