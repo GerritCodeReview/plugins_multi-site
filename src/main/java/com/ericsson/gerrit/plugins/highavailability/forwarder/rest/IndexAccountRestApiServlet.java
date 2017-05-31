@@ -78,7 +78,6 @@ class IndexAccountRestApiServlet extends HttpServlet {
     AtomicInteger accountIdLock = getAndIncrementAccountIdLock(id);
     synchronized (accountIdLock) {
       indexer.index(id);
-      ;
       logger.debug("Account {} successfully indexed", id);
     }
     if (accountIdLock.decrementAndGet() == 0) {
