@@ -24,6 +24,7 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.INDEX_T
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAX_TRIES_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PASSWORD_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.RETRY_INTERVAL_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.SHARED_DIRECTORY_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.SOCKET_TIMEOUT_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.URL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.USER_KEY;
@@ -32,6 +33,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
+import com.google.inject.ProvisionException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +50,7 @@ public class ConfigurationTest {
   private static final int MAX_TRIES = 5;
   private static final int RETRY_INTERVAL = 1000;
   private static final int THREAD_POOL_SIZE = 1;
+  private static final String SHARED_DIRECTORY = "/some/directory";
   private static final String ERROR_MESSAGE = "some error message";
 
   @Mock private PluginConfigFactory cfgFactoryMock;
@@ -58,6 +61,7 @@ public class ConfigurationTest {
   @Before
   public void setUp() {
     when(cfgFactoryMock.getFromGerritConfig(pluginName, true)).thenReturn(configMock);
+    when(configMock.getString(SHARED_DIRECTORY_KEY)).thenReturn(SHARED_DIRECTORY);
   }
 
   private void initializeConfiguration() {
@@ -192,5 +196,17 @@ public class ConfigurationTest {
         .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
     initializeConfiguration();
     assertThat(configuration.getCacheThreadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
+  }
+
+  @Test
+  public void testGetSharedDirectory() throws Exception {
+    initializeConfiguration();
+    assertThat(configuration.getSharedDirectory()).isEqualTo(SHARED_DIRECTORY);
+  }
+
+  @Test(expected = ProvisionException.class)
+  public void shouldThrowExceptionIfSharedDirectoryNotConfigured() throws Exception {
+    when(configMock.getString(SHARED_DIRECTORY_KEY)).thenReturn(null);
+    initializeConfiguration();
   }
 }

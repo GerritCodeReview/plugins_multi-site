@@ -47,7 +47,8 @@ public class CacheEvictionIT extends PluginDaemonTest {
   @GerritConfigs({
     @GerritConfig(name = "plugin.high-availability.url", value = "http://localhost:18888"),
     @GerritConfig(name = "plugin.high-availability.user", value = "admin"),
-    @GerritConfig(name = "plugin.high-availability.cacheThreadPoolSize", value = "10")
+    @GerritConfig(name = "plugin.high-availability.cacheThreadPoolSize", value = "10"),
+    @GerritConfig(name = "plugin.high-availability.sharedDirectory", value = "directory")
   })
   public void flushAndSendPost() throws Exception {
     final String flushRequest = "/plugins/high-availability/cache/" + Constants.PROJECT_LIST;

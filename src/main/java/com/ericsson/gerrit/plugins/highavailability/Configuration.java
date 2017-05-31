@@ -20,6 +20,7 @@ import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
+import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ import org.slf4j.LoggerFactory;
 public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
-  static final String SHARED_DIRECTORY = "sharedDirectory";
+  static final String SHARED_DIRECTORY_KEY = "sharedDirectory";
   static final String URL_KEY = "url";
   static final String USER_KEY = "user";
   static final String PASSWORD_KEY = "password";
@@ -53,6 +54,7 @@ public class Configuration {
   private final int retryInterval;
   private final int indexThreadPoolSize;
   private final int cacheThreadPoolSize;
+  private final String sharedDirectory;
 
   @Inject
   Configuration(PluginConfigFactory config, @PluginName String pluginName) {
@@ -66,6 +68,10 @@ public class Configuration {
     retryInterval = getInt(cfg, RETRY_INTERVAL_KEY, DEFAULT_RETRY_INTERVAL);
     indexThreadPoolSize = getInt(cfg, INDEX_THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
     cacheThreadPoolSize = getInt(cfg, CACHE_THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
+    sharedDirectory = Strings.emptyToNull(cfg.getString(SHARED_DIRECTORY_KEY));
+    if (sharedDirectory == null) {
+      throw new ProvisionException(SHARED_DIRECTORY_KEY + " must be configured");
+    }
   }
 
   private int getInt(PluginConfig cfg, String name, int defaultValue) {
@@ -112,5 +118,9 @@ public class Configuration {
 
   public int getCacheThreadPoolSize() {
     return cacheThreadPoolSize;
+  }
+
+  public String getSharedDirectory() {
+    return sharedDirectory;
   }
 }
