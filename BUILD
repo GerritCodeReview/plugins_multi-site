@@ -9,7 +9,6 @@ load(
 gerrit_plugin(
     name = "high-availability",
     srcs = glob(["src/main/java/**/*.java"]),
-    resources = glob(["src/main/resources/**/*"]),
     manifest_entries = [
         "Gerrit-PluginName: high-availability",
         "Gerrit-Module: com.ericsson.gerrit.plugins.highavailability.Module",
@@ -17,18 +16,30 @@ gerrit_plugin(
         "Implementation-Title: high-availability plugin",
         "Implementation-URL: https://gerrit-review.googlesource.com/#/admin/projects/plugins/high-availability",
     ],
+    resources = glob(["src/main/resources/**/*"]),
 )
 
 junit_tests(
     name = "high_availability_tests",
     srcs = glob(["src/test/java/**/*.java"]),
     resources = glob(["src/test/resources/**/*"]),
-    tags = ["high-availability", "local"],
+    tags = [
+        "high-availability",
+        "local",
+    ],
     deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
-        "@wiremock//jar",
-        "@mockito//jar",
-        "@byte-buddy//jar",
-        "@objenesis//jar",
+        ":high-availability__plugin_test_deps",
         ":high-availability__plugin",
+    ],
+)
+
+java_library(
+    name = "high-availability__plugin_test_deps",
+    visibility = ["//visibility:public"],
+    exports = [
+        "@byte-buddy//jar",
+        "@mockito//jar",
+        "@objenesis//jar",
+        "@wiremock//jar",
     ],
 )
