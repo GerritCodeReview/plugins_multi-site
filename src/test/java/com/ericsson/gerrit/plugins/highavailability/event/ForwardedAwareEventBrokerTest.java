@@ -36,7 +36,7 @@ public class ForwardedAwareEventBrokerTest {
     listenerMock = mock(EventListener.class);
     DynamicSet<EventListener> listeners = DynamicSet.emptySet();
     listeners.add(listenerMock);
-    broker = new ForwardedAwareEventBroker(null, listeners, null, null, null);
+    broker = new ForwardedAwareEventBroker(null, listeners, null, null, null, null);
   }
 
   @Test
