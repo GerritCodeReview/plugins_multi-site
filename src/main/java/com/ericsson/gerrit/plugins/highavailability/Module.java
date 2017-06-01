@@ -14,19 +14,13 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.SHARED_DIRECTORY;
-
 import com.ericsson.gerrit.plugins.highavailability.cache.CacheModule;
 import com.ericsson.gerrit.plugins.highavailability.event.EventModule;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.RestForwarderModule;
 import com.ericsson.gerrit.plugins.highavailability.index.IndexModule;
 import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfoModule;
-import com.google.common.base.Strings;
-import com.google.gerrit.extensions.annotations.PluginName;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.ProvisionException;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import java.io.IOException;
@@ -49,14 +43,8 @@ class Module extends AbstractModule {
   @Provides
   @Singleton
   @SharedDirectory
-  Path getSharedDirectory(PluginConfigFactory cfg, @PluginName String pluginName)
-      throws IOException {
-    String sharedDirectory =
-        Strings.emptyToNull(cfg.getFromGerritConfig(pluginName, true).getString(SHARED_DIRECTORY));
-    if (sharedDirectory == null) {
-      throw new ProvisionException(SHARED_DIRECTORY + " must be configured");
-    }
-    Path sharedDirectoryPath = Paths.get(sharedDirectory);
+  Path getSharedDirectory(Configuration cfg) throws IOException {
+    Path sharedDirectoryPath = Paths.get(cfg.getSharedDirectory());
     Files.createDirectories(sharedDirectoryPath);
     return sharedDirectoryPath;
   }
