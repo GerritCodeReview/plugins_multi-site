@@ -15,7 +15,9 @@
 package com.ericsson.gerrit.plugins.highavailability;
 
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.CACHE_THREAD_POOL_SIZE_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.CLEANUP_INTERVAL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.CONNECTION_TIMEOUT_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_CLEANUP_INTERVAL_MS;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_MAX_TRIES;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_RETRY_INTERVAL;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_THREAD_POOL_SIZE;
@@ -29,6 +31,7 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.SOCKET_
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.URL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.USER_KEY;
 import static com.google.common.truth.Truth.assertThat;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.config.PluginConfig;
@@ -208,5 +211,15 @@ public class ConfigurationTest {
   public void shouldThrowExceptionIfSharedDirectoryNotConfigured() throws Exception {
     when(configMock.getString(SHARED_DIRECTORY_KEY)).thenReturn(null);
     initializeConfiguration();
+  }
+
+  @Test
+  public void testGetCleanupInterval() throws Exception {
+    initializeConfiguration();
+    assertThat(configuration.getCleanupInterval()).isEqualTo(DEFAULT_CLEANUP_INTERVAL_MS);
+
+    when(configMock.getString(CLEANUP_INTERVAL_KEY)).thenReturn("30 seconds");
+    initializeConfiguration();
+    assertThat(configuration.getCleanupInterval()).isEqualTo(SECONDS.toMillis(30));
   }
 }

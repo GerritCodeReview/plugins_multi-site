@@ -14,18 +14,9 @@
 
 package com.ericsson.gerrit.plugins.highavailability.websession.file;
 
-import static java.util.concurrent.TimeUnit.HOURS;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-
-import com.google.common.base.Strings;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.httpd.WebSession;
 import com.google.gerrit.lifecycle.LifecycleModule;
-import com.google.gerrit.server.config.ConfigUtil;
-import com.google.gerrit.server.config.PluginConfigFactory;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import com.google.inject.servlet.RequestScoped;
 import com.google.inject.servlet.ServletScopes;
 
@@ -37,14 +28,5 @@ public class FileBasedWebsessionModule extends LifecycleModule {
         .to(FileBasedWebSession.class)
         .in(RequestScoped.class);
     listener().to(FileBasedWebSessionCacheCleaner.class);
-  }
-
-  @Provides
-  @Singleton
-  @CleanupIntervalMillis
-  Long getCleanupInterval(PluginConfigFactory cfg, @PluginName String pluginName) {
-    String fromConfig =
-        Strings.nullToEmpty(cfg.getFromGerritConfig(pluginName, true).getString("cleanupInterval"));
-    return ConfigUtil.getTimeUnit(fromConfig, HOURS.toMillis(24), MILLISECONDS);
   }
 }

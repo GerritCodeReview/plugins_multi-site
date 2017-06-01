@@ -17,6 +17,7 @@ package com.ericsson.gerrit.plugins.highavailability.websession.file;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.git.WorkQueue;
@@ -37,12 +38,10 @@ class FileBasedWebSessionCacheCleaner implements LifecycleListener {
 
   @Inject
   FileBasedWebSessionCacheCleaner(
-      WorkQueue queue,
-      Provider<CleanupTask> cleanupTaskProvider,
-      @CleanupIntervalMillis long cleanupIntervalMillis) {
+      WorkQueue queue, Provider<CleanupTask> cleanupTaskProvider, Configuration config) {
     this.queue = queue;
     this.cleanupTaskProvider = cleanupTaskProvider;
-    this.cleanupIntervalMillis = cleanupIntervalMillis;
+    this.cleanupIntervalMillis = config.getCleanupInterval();
   }
 
   @Override

@@ -24,6 +24,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.gerrit.server.git.WorkQueue.Executor;
 import com.google.inject.Provider;
@@ -45,6 +46,7 @@ public class FileBasedWebSessionCacheCleanerTest {
   @Mock private ScheduledFuture<?> scheduledFutureMock;
   @Mock private WorkQueue workQueueMock;
   @Mock private Provider<CleanupTask> cleanupTaskProviderMock;
+  @Mock private Configuration configMock;
 
   private FileBasedWebSessionCacheCleaner cleaner;
 
@@ -55,9 +57,9 @@ public class FileBasedWebSessionCacheCleanerTest {
     doReturn(scheduledFutureMock)
         .when(executorMock)
         .scheduleAtFixedRate(isA(CleanupTask.class), anyLong(), anyLong(), isA(TimeUnit.class));
+    when(configMock.getCleanupInterval()).thenReturn(CLEANUP_INTERVAL);
     cleaner =
-        new FileBasedWebSessionCacheCleaner(
-            workQueueMock, cleanupTaskProviderMock, CLEANUP_INTERVAL);
+        new FileBasedWebSessionCacheCleaner(workQueueMock, cleanupTaskProviderMock, configMock);
   }
 
   @Test
