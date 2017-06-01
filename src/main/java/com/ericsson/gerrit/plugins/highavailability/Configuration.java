@@ -14,12 +14,17 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
+import static java.util.concurrent.TimeUnit.HOURS;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
+import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +33,7 @@ import org.slf4j.LoggerFactory;
 public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
-  static final String SHARED_DIRECTORY = "sharedDirectory";
+  static final String SHARED_DIRECTORY_KEY = "sharedDirectory";
   static final String URL_KEY = "url";
   static final String USER_KEY = "user";
   static final String PASSWORD_KEY = "password";
@@ -38,11 +43,13 @@ public class Configuration {
   static final String RETRY_INTERVAL_KEY = "retryInterval";
   static final String INDEX_THREAD_POOL_SIZE_KEY = "indexThreadPoolSize";
   static final String CACHE_THREAD_POOL_SIZE_KEY = "cacheThreadPoolSize";
+  static final String CLEANUP_INTERVAL_KEY = "cleanupInterval";
 
   static final int DEFAULT_TIMEOUT_MS = 5000;
   static final int DEFAULT_MAX_TRIES = 5;
   static final int DEFAULT_RETRY_INTERVAL = 1000;
   static final int DEFAULT_THREAD_POOL_SIZE = 1;
+  static final long DEFAULT_CLEANUP_INTERVAL_MS = HOURS.toMillis(24);
 
   private final String url;
   private final String user;
@@ -53,6 +60,8 @@ public class Configuration {
   private final int retryInterval;
   private final int indexThreadPoolSize;
   private final int cacheThreadPoolSize;
+  private final String sharedDirectory;
+  private final long cleanupInterval;
 
   @Inject
   Configuration(PluginConfigFactory config, @PluginName String pluginName) {
@@ -66,6 +75,15 @@ public class Configuration {
     retryInterval = getInt(cfg, RETRY_INTERVAL_KEY, DEFAULT_RETRY_INTERVAL);
     indexThreadPoolSize = getInt(cfg, INDEX_THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
     cacheThreadPoolSize = getInt(cfg, CACHE_THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
+    sharedDirectory = Strings.emptyToNull(cfg.getString(SHARED_DIRECTORY_KEY));
+    if (sharedDirectory == null) {
+      throw new ProvisionException(SHARED_DIRECTORY_KEY + " must be configured");
+    }
+    cleanupInterval =
+        ConfigUtil.getTimeUnit(
+            Strings.nullToEmpty(cfg.getString(CLEANUP_INTERVAL_KEY)),
+            DEFAULT_CLEANUP_INTERVAL_MS,
+            MILLISECONDS);
   }
 
   private int getInt(PluginConfig cfg, String name, int defaultValue) {
@@ -112,5 +130,13 @@ public class Configuration {
 
   public int getCacheThreadPoolSize() {
     return cacheThreadPoolSize;
+  }
+
+  public String getSharedDirectory() {
+    return sharedDirectory;
+  }
+
+  public Long getCleanupInterval() {
+    return cleanupInterval;
   }
 }

@@ -1,9 +1,6 @@
-/.buckd/
-/.buckversion
 /.classpath
 /.project
 /.settings/
-/.watchmanconfig
 /.primary_build_tool
 /bazel-bin
 /bazel-genfiles
@@ -11,6 +8,4 @@
 /bazel-reviewers
 /bazel-testlogs
 /bazel-high-availability
-/buck-out/
-/bucklets
 /eclipse-out/

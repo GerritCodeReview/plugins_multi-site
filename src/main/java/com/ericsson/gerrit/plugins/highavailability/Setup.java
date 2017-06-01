@@ -57,7 +57,7 @@ public class Setup implements InitStep {
   }
 
   private void configureSharedDir() {
-    String sharedDir = mySection.string("Shared directory", SHARED_DIRECTORY, null);
+    String sharedDir = mySection.string("Shared directory", SHARED_DIRECTORY_KEY, null);
     if (sharedDir != null) {
       Path shared = site.site_path.resolve(sharedDir);
       FileUtil.mkdirsOrDie(shared, "cannot create " + shared);

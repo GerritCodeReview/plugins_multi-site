@@ -1,17 +1,15 @@
 # Build
 
-This plugin can be built with Bazel or Buck and two build modes are supported:
+This plugin can be built with Bazel, and two build modes are supported:
 
 * Standalone
-* In Gerrit tree (Buck only)
+* In Gerrit tree
 
 Standalone build mode is recommended, as this mode doesn't require local Gerrit
 tree to exist. Moreover, there are some limitations and additional manual steps
 required when building in Gerrit tree mode (see corresponding sections).
 
 ## Build standalone
-
-### Bazel
 
 To build the plugin, issue the following command:
 
@@ -49,72 +47,7 @@ This project can be imported into the Eclipse IDE:
   ./tools/eclipse.py
 ```
 
-### Buck
-
-Clone bucklets library:
-
-```
-  git clone https://gerrit.googlesource.com/bucklets
-
-```
-
-and link it to @PLUGIN@ directory:
-
-```
-  cd @PLUGIN@ && ln -s ../bucklets .
-```
-
-Add link to the .buckversion file:
-
-```
-  cd @PLUGIN@ && ln -s bucklets/buckversion .buckversion
-```
-
-Add link to the .watchmanconfig file:
-
-```
-  cd @PLUGIN@ && ln -s bucklets/watchmanconfig .watchmanconfig
-```
-
-To build the plugin, issue the following command:
-
-```
-  buck build plugin
-```
-
-The output is created in:
-
-```
-  buck-out/gen/@PLUGIN@.jar
-```
-
-This project can be imported into the Eclipse IDE:
-
-```
-  ./bucklets/tools/eclipse.py
-```
-
-To execute the tests run:
-
-```
-  buck test
-```
-
-To build plugin sources run:
-
-```
-  buck build src
-```
-
-The output is created in:
-
-```
-  buck-out/gen/@PLUGIN@-sources.jar
-```
-
 ## Build in Gerrit tree
-
-### Bazel
 
 Clone or link this plugin to the plugins directory of Gerrit's
 source tree. Put the external dependency Bazel build file into
@@ -146,32 +79,6 @@ Add the plugin name to the `CUSTOM_PLUGINS` and to the
 ```
   ./tools/eclipse/project.py
 ```
-
-### Buck
-
-Clone or link this plugin to the plugins directory of Gerrit's source
-tree, and issue the command:
-
-```
-  buck build plugins/@PLUGIN@
-```
-
-The output is created in:
-
-```
-  buck-out/gen/plugins/@PLUGIN@/@PLUGIN@.jar
-```
-
-This project can be imported into the Eclipse IDE:
-
-```
-  ./tools/eclipse/project.py
-```
-
-* Note: wiremock and mockito jars should be added manually to classpath. In
-Eclipse:
-`Project -> Java Build Path -> Add External JARS`
-
 
 To execute the tests run:
 

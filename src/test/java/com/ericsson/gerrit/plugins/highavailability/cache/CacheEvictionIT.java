@@ -54,8 +54,9 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
 
   @Test
   @GerritConfig(name = "plugin.high-availability.url", value = URL)
-  @GerritConfig(name = "plugin.high-availability`.user", value = "admin")
+  @GerritConfig(name = "plugin.high-availability.user", value = "admin")
   @GerritConfig(name = "plugin.high-availability.cacheThreadPoolSize", value = "10")
+  @GerritConfig(name = "plugin.high-availability.sharedDirectory", value = "directory")
   public void flushAndSendPost() throws Exception {
     final String flushRequest = "/plugins/high-availability/cache/" + Constants.PROJECT_LIST;
     final CyclicBarrier checkPoint = new CyclicBarrier(2);
