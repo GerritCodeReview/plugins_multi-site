@@ -14,6 +14,7 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
@@ -66,7 +67,7 @@ class IndexChangeRestApiServlet extends HttpServlet {
 
   private void process(HttpServletRequest req, HttpServletResponse rsp, String operation) {
     rsp.setContentType("text/plain");
-    rsp.setCharacterEncoding("UTF-8");
+    rsp.setCharacterEncoding(UTF_8.name());
     String path = req.getPathInfo();
     String changeId = path.substring(path.lastIndexOf('/') + 1);
     Change.Id id = Change.Id.parse(changeId);

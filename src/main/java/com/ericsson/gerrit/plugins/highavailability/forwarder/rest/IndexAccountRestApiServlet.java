@@ -14,6 +14,7 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
@@ -50,7 +51,7 @@ class IndexAccountRestApiServlet extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse rsp)
       throws IOException, ServletException {
     rsp.setContentType("text/plain");
-    rsp.setCharacterEncoding("UTF-8");
+    rsp.setCharacterEncoding(UTF_8.name());
     String path = req.getPathInfo();
     String accountId = path.substring(path.lastIndexOf('/') + 1);
     Account.Id id = Account.Id.parse(accountId);
