@@ -95,7 +95,7 @@ public class IndexChangeRestApiServletTest {
   public void schemaThrowsExceptionWhenLookingUpForChange() throws Exception {
     setupPostMocks(CHANGE_EXISTS, THROW_ORM_EXCEPTION);
     indexRestApiServlet.doPost(req, rsp);
-    verify(rsp).sendError(SC_NOT_FOUND, "Error trying to find a change \n");
+    verify(rsp).sendError(SC_NOT_FOUND, "Error trying to find change \n");
   }
 
   @Test
@@ -123,10 +123,10 @@ public class IndexChangeRestApiServletTest {
   public void sendErrorThrowsIOException() throws Exception {
     doThrow(new IOException("someError"))
         .when(rsp)
-        .sendError(SC_NOT_FOUND, "Error trying to find a change \n");
+        .sendError(SC_NOT_FOUND, "Error trying to find change \n");
     setupPostMocks(CHANGE_EXISTS, THROW_ORM_EXCEPTION);
     indexRestApiServlet.doPost(req, rsp);
-    verify(rsp).sendError(SC_NOT_FOUND, "Error trying to find a change \n");
+    verify(rsp).sendError(SC_NOT_FOUND, "Error trying to find change \n");
     verifyZeroInteractions(indexer);
   }
 

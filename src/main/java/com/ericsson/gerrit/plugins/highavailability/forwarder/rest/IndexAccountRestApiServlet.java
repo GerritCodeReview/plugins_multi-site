@@ -14,94 +14,35 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
-import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
-
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.server.index.account.AccountIndexer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
-class IndexAccountRestApiServlet extends HttpServlet {
+class IndexAccountRestApiServlet extends AbstractIndexRestApiServlet<Account.Id> {
   private static final long serialVersionUID = -1L;
   private static final Logger logger = LoggerFactory.getLogger(IndexAccountRestApiServlet.class);
-  private static final Map<Account.Id, AtomicInteger> accountIdLocks = new HashMap<>();
 
   private final AccountIndexer indexer;
 
   @Inject
   IndexAccountRestApiServlet(AccountIndexer indexer) {
+    super("account");
     this.indexer = indexer;
   }
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse rsp)
-      throws IOException, ServletException {
-    rsp.setContentType("text/plain");
-    rsp.setCharacterEncoding(UTF_8.name());
-    String path = req.getPathInfo();
-    String accountId = path.substring(path.lastIndexOf('/') + 1);
-    Account.Id id = Account.Id.parse(accountId);
-    try {
-      Context.setForwardedEvent(true);
-      index(id);
-      rsp.setStatus(SC_NO_CONTENT);
-    } catch (IOException e) {
-      sendError(rsp, SC_CONFLICT, e.getMessage());
-      logger.error("Unable to update account index", e);
-    } finally {
-      Context.unsetForwardedEvent();
-    }
+  Account.Id parse(String id) {
+    return Account.Id.parse(id);
   }
 
-  private static void sendError(HttpServletResponse rsp, int statusCode, String message) {
-    try {
-      rsp.sendError(statusCode, message);
-    } catch (IOException e) {
-      logger.error("Failed to send error messsage: " + e.getMessage(), e);
-    }
-  }
-
-  private void index(Account.Id id) throws IOException {
-    AtomicInteger accountIdLock = getAndIncrementAccountIdLock(id);
-    synchronized (accountIdLock) {
-      indexer.index(id);
-      logger.debug("Account {} successfully indexed", id);
-    }
-    if (accountIdLock.decrementAndGet() == 0) {
-      removeAccountIdLock(id);
-    }
-  }
-
-  private AtomicInteger getAndIncrementAccountIdLock(Account.Id id) {
-    synchronized (accountIdLocks) {
-      AtomicInteger accountIdLock = accountIdLocks.get(id);
-      if (accountIdLock == null) {
-        accountIdLock = new AtomicInteger(1);
-        accountIdLocks.put(id, accountIdLock);
-      } else {
-        accountIdLock.incrementAndGet();
-      }
-      return accountIdLock;
-    }
-  }
-
-  private void removeAccountIdLock(Account.Id id) {
-    synchronized (accountIdLocks) {
-      accountIdLocks.remove(id);
-    }
+  @Override
+  void index(Account.Id id, Operation operation) throws IOException {
+    indexer.index(id);
+    logger.debug("Account {} successfully indexed", id);
   }
 }
