@@ -35,7 +35,7 @@ class IndexChangeRestApiServlet extends AbstractIndexRestApiServlet<Change.Id> {
 
   @Inject
   IndexChangeRestApiServlet(ChangeIndexer indexer, SchemaFactory<ReviewDb> schemaFactory) {
-    super("change");
+    super("change", true);
     this.indexer = indexer;
     this.schemaFactory = schemaFactory;
   }

@@ -16,6 +16,7 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
+import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
@@ -37,6 +38,7 @@ public abstract class AbstractIndexRestApiServlet<T> extends HttpServlet {
   private static final Logger logger = LoggerFactory.getLogger(AbstractIndexRestApiServlet.class);
   private final Map<T, AtomicInteger> idLocks = new HashMap<>();
   private final String type;
+  private final boolean allowDelete;
 
   enum Operation {
     INDEX,
@@ -47,8 +49,13 @@ public abstract class AbstractIndexRestApiServlet<T> extends HttpServlet {
 
   abstract void index(T id, Operation operation) throws IOException, OrmException;
 
-  AbstractIndexRestApiServlet(String type) {
+  AbstractIndexRestApiServlet(String type, boolean allowDelete) {
     this.type = type;
+    this.allowDelete = allowDelete;
+  }
+
+  AbstractIndexRestApiServlet(String type) {
+    this(type, false);
   }
 
   @Override
@@ -60,7 +67,11 @@ public abstract class AbstractIndexRestApiServlet<T> extends HttpServlet {
   @Override
   protected void doDelete(HttpServletRequest req, HttpServletResponse rsp)
       throws IOException, ServletException {
-    process(req, rsp, Operation.DELETE);
+    if (!allowDelete) {
+      sendError(rsp, SC_METHOD_NOT_ALLOWED, String.format("cannot delete %s from index", type));
+    } else {
+      process(req, rsp, Operation.DELETE);
+    }
   }
 
   private void process(HttpServletRequest req, HttpServletResponse rsp, Operation operation) {

@@ -15,6 +15,7 @@
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
+import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -63,6 +64,12 @@ public class IndexGroupRestApiServletTest {
     servlet.doPost(req, rsp);
     verify(indexer, times(1)).index(uuid);
     verify(rsp).setStatus(SC_NO_CONTENT);
+  }
+
+  @Test
+  public void cannotDeleteGroup() throws Exception {
+    servlet.doDelete(req, rsp);
+    verify(rsp).sendError(SC_METHOD_NOT_ALLOWED, "cannot delete group from index");
   }
 
   @Test
