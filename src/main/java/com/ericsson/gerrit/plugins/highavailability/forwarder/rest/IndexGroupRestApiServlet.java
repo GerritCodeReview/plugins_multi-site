@@ -14,8 +14,8 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
-import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.server.index.account.AccountIndexer;
+import com.google.gerrit.reviewdb.client.AccountGroup;
+import com.google.gerrit.server.index.group.GroupIndexer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
@@ -23,26 +23,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
-class IndexAccountRestApiServlet extends AbstractIndexRestApiServlet<Account.Id> {
+class IndexGroupRestApiServlet extends AbstractIndexRestApiServlet<AccountGroup.UUID> {
   private static final long serialVersionUID = -1L;
-  private static final Logger logger = LoggerFactory.getLogger(IndexAccountRestApiServlet.class);
+  private static final Logger logger = LoggerFactory.getLogger(IndexGroupRestApiServlet.class);
 
-  private final AccountIndexer indexer;
+  private final GroupIndexer indexer;
 
   @Inject
-  IndexAccountRestApiServlet(AccountIndexer indexer) {
-    super("account");
+  IndexGroupRestApiServlet(GroupIndexer indexer) {
+    super("group");
     this.indexer = indexer;
   }
 
   @Override
-  Account.Id parse(String id) {
-    return Account.Id.parse(id);
+  AccountGroup.UUID parse(String id) {
+    return AccountGroup.UUID.parse(id);
   }
 
   @Override
-  void index(Account.Id id, Operation operation) throws IOException {
-    indexer.index(id);
-    logger.debug("Account {} successfully indexed", id);
+  void index(AccountGroup.UUID uuid, Operation operation) throws IOException {
+    indexer.index(uuid);
+    logger.debug("Group {} successfully indexed", uuid);
   }
 }

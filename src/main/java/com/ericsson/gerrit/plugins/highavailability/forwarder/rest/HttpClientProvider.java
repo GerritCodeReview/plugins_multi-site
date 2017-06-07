@@ -70,9 +70,9 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
 
   private RequestConfig customRequestConfig() {
     return RequestConfig.custom()
-        .setConnectTimeout(cfg.getConnectionTimeout())
-        .setSocketTimeout(cfg.getSocketTimeout())
-        .setConnectionRequestTimeout(cfg.getConnectionTimeout())
+        .setConnectTimeout(cfg.http().connectionTimeout())
+        .setSocketTimeout(cfg.http().socketTimeout())
+        .setConnectionRequestTimeout(cfg.http().connectionTimeout())
         .build();
   }
 
@@ -109,7 +109,7 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
   private BasicCredentialsProvider buildCredentials() {
     BasicCredentialsProvider creds = new BasicCredentialsProvider();
     creds.setCredentials(
-        AuthScope.ANY, new UsernamePasswordCredentials(cfg.getUser(), cfg.getPassword()));
+        AuthScope.ANY, new UsernamePasswordCredentials(cfg.http().user(), cfg.http().password()));
     return creds;
   }
 

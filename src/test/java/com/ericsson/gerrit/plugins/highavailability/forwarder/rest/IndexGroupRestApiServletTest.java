@@ -22,8 +22,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.server.index.account.AccountIndexer;
+import com.google.gerrit.reviewdb.client.AccountGroup;
+import com.google.gerrit.server.index.group.GroupIndexer;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.StandardKeyEncoder;
 import java.io.IOException;
@@ -37,15 +37,15 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class IndexAccountRestApiServletTest {
-  private static final String ACCOUNT_NUMBER = "1";
+public class IndexGroupRestApiServletTest {
+  private static final String UUID = "we235jdf92nfj2351";
 
-  @Mock private AccountIndexer indexer;
+  @Mock private GroupIndexer indexer;
   @Mock private HttpServletRequest req;
   @Mock private HttpServletResponse rsp;
 
-  private Account.Id id;
-  private IndexAccountRestApiServlet servlet;
+  private AccountGroup.UUID uuid;
+  private IndexGroupRestApiServlet servlet;
 
   @BeforeClass
   public static void setup() {
@@ -54,34 +54,34 @@ public class IndexAccountRestApiServletTest {
 
   @Before
   public void setUpMocks() {
-    servlet = new IndexAccountRestApiServlet(indexer);
-    id = Account.Id.parse(ACCOUNT_NUMBER);
-    when(req.getPathInfo()).thenReturn("/index/account/" + ACCOUNT_NUMBER);
+    servlet = new IndexGroupRestApiServlet(indexer);
+    uuid = AccountGroup.UUID.parse(UUID);
+    when(req.getPathInfo()).thenReturn("/index/group/" + UUID);
   }
 
   @Test
-  public void accountIsIndexed() throws Exception {
+  public void groupIsIndexed() throws Exception {
     servlet.doPost(req, rsp);
-    verify(indexer, times(1)).index(id);
+    verify(indexer, times(1)).index(uuid);
     verify(rsp).setStatus(SC_NO_CONTENT);
   }
 
   @Test
-  public void cannotDeleteAccount() throws Exception {
+  public void cannotDeleteGroup() throws Exception {
     servlet.doDelete(req, rsp);
-    verify(rsp).sendError(SC_METHOD_NOT_ALLOWED, "cannot delete account from index");
+    verify(rsp).sendError(SC_METHOD_NOT_ALLOWED, "cannot delete group from index");
   }
 
   @Test
-  public void indexerThrowsIOExceptionTryingToIndexAccount() throws Exception {
-    doThrow(new IOException("io-error")).when(indexer).index(id);
+  public void indexerThrowsIOExceptionTryingToIndexGroup() throws Exception {
+    doThrow(new IOException("io-error")).when(indexer).index(uuid);
     servlet.doPost(req, rsp);
     verify(rsp).sendError(SC_CONFLICT, "io-error");
   }
 
   @Test
   public void sendErrorThrowsIOException() throws Exception {
-    doThrow(new IOException("io-error")).when(indexer).index(id);
+    doThrow(new IOException("io-error")).when(indexer).index(uuid);
     doThrow(new IOException("someError")).when(rsp).sendError(SC_CONFLICT, "io-error");
     servlet.doPost(req, rsp);
     verify(rsp).sendError(SC_CONFLICT, "io-error");

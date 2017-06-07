@@ -41,6 +41,7 @@ import java.net.SocketTimeoutException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Answers;
 
 public class HttpSessionTest {
   private static final int MAX_TRIES = 3;
@@ -63,23 +64,24 @@ public class HttpSessionTest {
 
   @Rule public WireMockRule wireMockRule = new WireMockRule(0);
 
-  private Configuration cfg;
+  private Configuration configMock;
 
   @Before
   public void setUp() throws Exception {
     String url = "http://localhost:" + wireMockRule.port();
-    cfg = mock(Configuration.class);
-    when(cfg.getUser()).thenReturn("user");
-    when(cfg.getPassword()).thenReturn("pass");
-    when(cfg.getMaxTries()).thenReturn(MAX_TRIES);
-    when(cfg.getConnectionTimeout()).thenReturn(TIMEOUT);
-    when(cfg.getSocketTimeout()).thenReturn(TIMEOUT);
-    when(cfg.getRetryInterval()).thenReturn(RETRY_INTERVAL);
+    configMock = mock(Configuration.class, Answers.RETURNS_DEEP_STUBS);
+    when(configMock.http().user()).thenReturn("user");
+    when(configMock.http().password()).thenReturn("pass");
+    when(configMock.http().maxTries()).thenReturn(MAX_TRIES);
+    when(configMock.http().connectionTimeout()).thenReturn(TIMEOUT);
+    when(configMock.http().socketTimeout()).thenReturn(TIMEOUT);
+    when(configMock.http().retryInterval()).thenReturn(RETRY_INTERVAL);
 
     PeerInfo peerInfo = mock(PeerInfo.class);
     when(peerInfo.getDirectUrl()).thenReturn(url);
     httpSession =
-        new HttpSession(new HttpClientProvider(cfg).get(), Providers.of(Optional.of(peerInfo)));
+        new HttpSession(
+            new HttpClientProvider(configMock).get(), Providers.of(Optional.of(peerInfo)));
   }
 
   @Test
@@ -184,7 +186,7 @@ public class HttpSessionTest {
   public void testNoRequestWhenPeerInfoUnknown() throws IOException {
     httpSession =
         new HttpSession(
-            new HttpClientProvider(cfg).get(), Providers.of(Optional.<PeerInfo>absent()));
+            new HttpClientProvider(configMock).get(), Providers.of(Optional.<PeerInfo>absent()));
     try {
       httpSession.post(ENDPOINT);
       fail("Expected PeerInfoNotAvailableException");

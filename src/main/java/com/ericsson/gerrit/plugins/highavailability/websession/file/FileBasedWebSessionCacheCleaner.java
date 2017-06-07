@@ -41,7 +41,7 @@ class FileBasedWebSessionCacheCleaner implements LifecycleListener {
       WorkQueue queue, Provider<CleanupTask> cleanupTaskProvider, Configuration config) {
     this.queue = queue;
     this.cleanupTaskProvider = cleanupTaskProvider;
-    this.cleanupIntervalMillis = config.getCleanupInterval();
+    this.cleanupIntervalMillis = config.websession().cleanupInterval();
   }
 
   @Override

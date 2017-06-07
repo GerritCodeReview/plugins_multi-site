@@ -16,27 +16,27 @@ package com.ericsson.gerrit.plugins.highavailability;
 
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.*;
 
+import com.google.common.base.Strings;
 import com.google.gerrit.common.FileUtil;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.pgm.init.api.ConsoleUI;
 import com.google.gerrit.pgm.init.api.InitStep;
-import com.google.gerrit.pgm.init.api.Section;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import java.nio.file.Path;
+import org.eclipse.jgit.storage.file.FileBasedConfig;
+import org.eclipse.jgit.util.FS;
 
 public class Setup implements InitStep {
 
   private final ConsoleUI ui;
-  private final Section mySection;
   private final String pluginName;
   private final SitePaths site;
+  private FileBasedConfig config;
 
   @Inject
-  public Setup(
-      ConsoleUI ui, Section.Factory sections, @PluginName String pluginName, SitePaths site) {
+  public Setup(ConsoleUI ui, @PluginName String pluginName, SitePaths site) {
     this.ui = ui;
-    this.mySection = sections.get("plugin", pluginName);
     this.pluginName = pluginName;
     this.site = site;
   }
@@ -48,44 +48,91 @@ public class Setup implements InitStep {
 
     if (ui.yesno(true, "Configure %s", pluginName)) {
       ui.header("Configuring %s", pluginName);
-      configureSharedDir();
-      configurePeer();
-      configureTimeouts();
-      configureRetry();
-      configureThreadPools();
+      Path pluginConfigFile = site.etc_dir.resolve(pluginName + ".config");
+      config = new FileBasedConfig(pluginConfigFile.toFile(), FS.DETECTED);
+      config.load();
+      configureMainSection();
+      configurePeerInfoSection();
+      configureHttp();
+      configureCacheSection();
+      configureIndexSection();
+      configureWebsessiosSection();
+      config.save();
     }
   }
 
-  private void configureSharedDir() {
-    String sharedDir = mySection.string("Shared directory", SHARED_DIRECTORY_KEY, null);
+  private void configureMainSection() {
+    ui.header("Main section");
+    String sharedDir =
+        promptAndSetString("Shared directory", MAIN_SECTION, SHARED_DIRECTORY_KEY, null);
     if (sharedDir != null) {
       Path shared = site.site_path.resolve(sharedDir);
       FileUtil.mkdirsOrDie(shared, "cannot create " + shared);
     }
   }
 
-  private void configurePeer() {
-    mySection.string("Peer URL", URL_KEY, null);
-    mySection.string("User", USER_KEY, null);
-    mySection.string("Password", PASSWORD_KEY, null);
+  private void configurePeerInfoSection() {
+    ui.header("PeerInfo section");
+    promptAndSetString("Peer URL", PEER_INFO_SECTION, URL_KEY, null);
   }
 
-  private void configureTimeouts() {
-    mySection.string("Connection timeout [ms]", CONNECTION_TIMEOUT_KEY, str(DEFAULT_TIMEOUT_MS));
-    mySection.string("Socket timeout [ms]", SOCKET_TIMEOUT_KEY, str(DEFAULT_TIMEOUT_MS));
+  private void configureHttp() {
+    ui.header("Http section");
+    promptAndSetString("User", HTTP_SECTION, USER_KEY, null);
+    promptAndSetString("Password", HTTP_SECTION, PASSWORD_KEY, null);
+    promptAndSetString(
+        "Max number of tries to forward to remote peer",
+        HTTP_SECTION,
+        MAX_TRIES_KEY,
+        str(DEFAULT_MAX_TRIES));
+    promptAndSetString(
+        "Retry interval [ms]", HTTP_SECTION, RETRY_INTERVAL_KEY, str(DEFAULT_RETRY_INTERVAL));
+    promptAndSetString(
+        "Connection timeout [ms]", HTTP_SECTION, CONNECTION_TIMEOUT_KEY, str(DEFAULT_TIMEOUT_MS));
+    promptAndSetString(
+        "Socket timeout [ms]", HTTP_SECTION, SOCKET_TIMEOUT_KEY, str(DEFAULT_TIMEOUT_MS));
   }
 
-  private void configureRetry() {
-    mySection.string(
-        "Max number of tries to forward to remote peer", MAX_TRIES_KEY, str(DEFAULT_MAX_TRIES));
-    mySection.string("Retry interval [ms]", RETRY_INTERVAL_KEY, str(DEFAULT_RETRY_INTERVAL));
+  private void configureCacheSection() {
+    ui.header("Cache section");
+    promptAndSetString(
+        "Cache thread pool size",
+        CACHE_SECTION,
+        THREAD_POOL_SIZE_KEY,
+        str(DEFAULT_THREAD_POOL_SIZE));
   }
 
-  private void configureThreadPools() {
-    mySection.string(
-        "Index thread pool size", INDEX_THREAD_POOL_SIZE_KEY, str(DEFAULT_THREAD_POOL_SIZE));
-    mySection.string(
-        "Cache thread pool size", CACHE_THREAD_POOL_SIZE_KEY, str(DEFAULT_THREAD_POOL_SIZE));
+  private void configureIndexSection() {
+    ui.header("Index section");
+    promptAndSetString(
+        "Index thread pool size",
+        INDEX_SECTION,
+        THREAD_POOL_SIZE_KEY,
+        str(DEFAULT_THREAD_POOL_SIZE));
+  }
+
+  private void configureWebsessiosSection() {
+    ui.header("Websession section");
+    promptAndSetString(
+        "Cleanup interval", WEBSESSION_SECTION, CLEANUP_INTERVAL_KEY, DEFAULT_CLEANUP_INTERVAL);
+  }
+
+  private String promptAndSetString(
+      String title, String section, String name, String defaultValue) {
+    String oldValue = Strings.emptyToNull(config.getString(section, null, name));
+    String newValue = ui.readString(oldValue != null ? oldValue : defaultValue, title);
+    if (!eq(oldValue, newValue)) {
+      if (newValue != null) {
+        config.setString(section, null, name, newValue);
+      } else {
+        config.unset(section, name, name);
+      }
+    }
+    return newValue;
+  }
+
+  private static boolean eq(String a, String b) {
+    return (a == null && b == null) || (a != null && a.equals(b));
   }
 
   private static String str(int n) {

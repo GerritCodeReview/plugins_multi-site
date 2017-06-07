@@ -24,6 +24,7 @@ import com.google.gerrit.server.git.WorkQueue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -37,8 +38,8 @@ public class IndexExecutorProviderTest {
     executorMock = mock(WorkQueue.Executor.class);
     WorkQueue workQueueMock = mock(WorkQueue.class);
     when(workQueueMock.createQueue(4, "Forward-index-event")).thenReturn(executorMock);
-    Configuration configMock = mock(Configuration.class);
-    when(configMock.getIndexThreadPoolSize()).thenReturn(4);
+    Configuration configMock = mock(Configuration.class, Answers.RETURNS_DEEP_STUBS);
+    when(configMock.index().threadPoolSize()).thenReturn(4);
     indexExecutorProvider = new IndexExecutorProvider(workQueueMock, configMock);
   }
 

@@ -25,13 +25,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ModuleTest {
 
-  @Mock private Configuration config;
+  @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+  private Configuration configMock;
 
   @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
@@ -46,17 +48,17 @@ public class ModuleTest {
   public void shouldCreateSharedDirectoryIfItDoesNotExist() throws Exception {
     File configuredDirectory = tempFolder.newFolder();
     assertThat(configuredDirectory.delete()).isTrue();
-    when(config.getSharedDirectory()).thenReturn(configuredDirectory.getAbsolutePath());
+    when(configMock.main().sharedDirectory()).thenReturn(configuredDirectory.getAbsolutePath());
 
-    Path sharedDirectory = module.getSharedDirectory(config);
+    Path sharedDirectory = module.getSharedDirectory(configMock);
     assertThat(sharedDirectory.toFile().exists()).isTrue();
   }
 
   @Test(expected = IOException.class)
   public void shouldThrowAnExceptionIfAnErrorOccurCreatingSharedDirectory() throws Exception {
     File configuredDirectory = tempFolder.newFile();
-    when(config.getSharedDirectory()).thenReturn(configuredDirectory.getAbsolutePath());
+    when(configMock.main().sharedDirectory()).thenReturn(configuredDirectory.getAbsolutePath());
 
-    module.getSharedDirectory(config);
+    module.getSharedDirectory(configMock);
   }
 }

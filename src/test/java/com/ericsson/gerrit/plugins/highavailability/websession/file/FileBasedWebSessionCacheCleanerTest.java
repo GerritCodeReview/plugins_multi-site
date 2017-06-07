@@ -33,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -46,7 +47,9 @@ public class FileBasedWebSessionCacheCleanerTest {
   @Mock private ScheduledFuture<?> scheduledFutureMock;
   @Mock private WorkQueue workQueueMock;
   @Mock private Provider<CleanupTask> cleanupTaskProviderMock;
-  @Mock private Configuration configMock;
+
+  @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+  private Configuration configMock;
 
   private FileBasedWebSessionCacheCleaner cleaner;
 
@@ -57,7 +60,7 @@ public class FileBasedWebSessionCacheCleanerTest {
     doReturn(scheduledFutureMock)
         .when(executorMock)
         .scheduleAtFixedRate(isA(CleanupTask.class), anyLong(), anyLong(), isA(TimeUnit.class));
-    when(configMock.getCleanupInterval()).thenReturn(CLEANUP_INTERVAL);
+    when(configMock.websession().cleanupInterval()).thenReturn(CLEANUP_INTERVAL);
     cleaner =
         new FileBasedWebSessionCacheCleaner(workQueueMock, cleanupTaskProviderMock, configMock);
   }

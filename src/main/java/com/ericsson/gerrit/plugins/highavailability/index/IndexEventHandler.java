@@ -20,13 +20,15 @@ import com.google.common.base.Objects;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.events.AccountIndexedListener;
 import com.google.gerrit.extensions.events.ChangeIndexedListener;
+import com.google.gerrit.extensions.events.GroupIndexedListener;
 import com.google.inject.Inject;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 
-class IndexEventHandler implements ChangeIndexedListener, AccountIndexedListener {
+class IndexEventHandler
+    implements ChangeIndexedListener, AccountIndexedListener, GroupIndexedListener {
   private final Executor executor;
   private final Forwarder forwarder;
   private final String pluginName;
@@ -61,6 +63,16 @@ class IndexEventHandler implements ChangeIndexedListener, AccountIndexedListener
     executeIndexChangeTask(id, true);
   }
 
+  @Override
+  public void onGroupIndexed(String groupUUID) {
+    if (!Context.isForwardedEvent()) {
+      IndexGroupTask task = new IndexGroupTask(groupUUID);
+      if (queuedTasks.add(task)) {
+        executor.execute(task);
+      }
+    }
+  }
+
   private void executeIndexChangeTask(int id, boolean deleted) {
     if (!Context.isForwardedEvent()) {
       IndexChangeTask task = new IndexChangeTask(id, deleted);
@@ -71,12 +83,6 @@ class IndexEventHandler implements ChangeIndexedListener, AccountIndexedListener
   }
 
   abstract class IndexTask implements Runnable {
-    protected int id;
-
-    IndexTask(int id) {
-      this.id = id;
-    }
-
     @Override
     public void run() {
       queuedTasks.remove(this);
@@ -88,24 +94,25 @@ class IndexEventHandler implements ChangeIndexedListener, AccountIndexedListener
 
   class IndexChangeTask extends IndexTask {
     private boolean deleted;
+    private int changeId;
 
     IndexChangeTask(int changeId, boolean deleted) {
-      super(changeId);
+      this.changeId = changeId;
       this.deleted = deleted;
     }
 
     @Override
     public void execute() {
       if (deleted) {
-        forwarder.deleteChangeFromIndex(id);
+        forwarder.deleteChangeFromIndex(changeId);
       } else {
-        forwarder.indexChange(id);
+        forwarder.indexChange(changeId);
       }
     }
 
     @Override
     public int hashCode() {
-      return Objects.hashCode(IndexChangeTask.class, id, deleted);
+      return Objects.hashCode(IndexChangeTask.class, changeId, deleted);
     }
 
     @Override
@@ -114,29 +121,30 @@ class IndexEventHandler implements ChangeIndexedListener, AccountIndexedListener
         return false;
       }
       IndexChangeTask other = (IndexChangeTask) obj;
-      return id == other.id && deleted == other.deleted;
+      return changeId == other.changeId && deleted == other.deleted;
     }
 
     @Override
     public String toString() {
-      return String.format("[%s] Index change %s in target instance", pluginName, id);
+      return String.format("[%s] Index change %s in target instance", pluginName, changeId);
     }
   }
 
   class IndexAccountTask extends IndexTask {
+    private int accountId;
 
     IndexAccountTask(int accountId) {
-      super(accountId);
+      this.accountId = accountId;
     }
 
     @Override
     public void execute() {
-      forwarder.indexAccount(id);
+      forwarder.indexAccount(accountId);
     }
 
     @Override
     public int hashCode() {
-      return Objects.hashCode(IndexAccountTask.class, id);
+      return Objects.hashCode(accountId);
     }
 
     @Override
@@ -145,12 +153,44 @@ class IndexEventHandler implements ChangeIndexedListener, AccountIndexedListener
         return false;
       }
       IndexAccountTask other = (IndexAccountTask) obj;
-      return id == other.id;
+      return accountId == other.accountId;
     }
 
     @Override
     public String toString() {
-      return String.format("[%s] Index account %s in target instance", pluginName, id);
+      return String.format("[%s] Index account %s in target instance", pluginName, accountId);
+    }
+  }
+
+  class IndexGroupTask extends IndexTask {
+    private String groupUUID;
+
+    IndexGroupTask(String groupUUID) {
+      this.groupUUID = groupUUID;
+    }
+
+    @Override
+    public void execute() {
+      forwarder.indexGroup(groupUUID);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hashCode(IndexGroupTask.class, groupUUID);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (!(obj instanceof IndexGroupTask)) {
+        return false;
+      }
+      IndexGroupTask other = (IndexGroupTask) obj;
+      return groupUUID == other.groupUUID;
+    }
+
+    @Override
+    public String toString() {
+      return String.format("[%s] Index group %s in target instance", pluginName, groupUUID);
     }
   }
 }
