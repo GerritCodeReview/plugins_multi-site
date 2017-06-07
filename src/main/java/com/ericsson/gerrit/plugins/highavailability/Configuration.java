@@ -21,11 +21,11 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.config.ConfigUtil;
-import com.google.gerrit.server.config.PluginConfig;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
+import org.eclipse.jgit.lib.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,62 +33,88 @@ import org.slf4j.LoggerFactory;
 public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
+  // main section
+  static final String MAIN_SECTION = "main";
   static final String SHARED_DIRECTORY_KEY = "sharedDirectory";
+
+  // peerInfo section
+  static final String PEER_INFO_SECTION = "peerInfo";
   static final String URL_KEY = "url";
+
+  // http section
+  static final String HTTP_SECTION = "http";
   static final String USER_KEY = "user";
   static final String PASSWORD_KEY = "password";
   static final String CONNECTION_TIMEOUT_KEY = "connectionTimeout";
   static final String SOCKET_TIMEOUT_KEY = "socketTimeout";
   static final String MAX_TRIES_KEY = "maxTries";
   static final String RETRY_INTERVAL_KEY = "retryInterval";
-  static final String INDEX_THREAD_POOL_SIZE_KEY = "indexThreadPoolSize";
-  static final String CACHE_THREAD_POOL_SIZE_KEY = "cacheThreadPoolSize";
+
+  // cache section
+  static final String CACHE_SECTION = "cache";
+
+  // index section
+  static final String INDEX_SECTION = "index";
+
+  // common parameters to cache and index section
+  static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
+
+  // websession section
+  static final String WEBSESSION_SECTION = "websession";
   static final String CLEANUP_INTERVAL_KEY = "cleanupInterval";
 
   static final int DEFAULT_TIMEOUT_MS = 5000;
   static final int DEFAULT_MAX_TRIES = 5;
   static final int DEFAULT_RETRY_INTERVAL = 1000;
   static final int DEFAULT_THREAD_POOL_SIZE = 1;
+  static final String DEFAULT_CLEANUP_INTERVAL = "24 hours";
   static final long DEFAULT_CLEANUP_INTERVAL_MS = HOURS.toMillis(24);
 
-  private final String url;
-  private final String user;
-  private final String password;
-  private final int connectionTimeout;
-  private final int socketTimeout;
-  private final int maxTries;
-  private final int retryInterval;
-  private final int indexThreadPoolSize;
-  private final int cacheThreadPoolSize;
-  private final String sharedDirectory;
-  private final long cleanupInterval;
+  private final Main main;
+  private final PeerInfo peerInfo;
+  private final Http http;
+  private final Cache cache;
+  private final Index index;
+  private final Websession websession;
 
   @Inject
-  Configuration(PluginConfigFactory config, @PluginName String pluginName) {
-    PluginConfig cfg = config.getFromGerritConfig(pluginName, true);
-    url = Strings.nullToEmpty(cfg.getString(URL_KEY));
-    user = Strings.nullToEmpty(cfg.getString(USER_KEY));
-    password = Strings.nullToEmpty(cfg.getString(PASSWORD_KEY));
-    connectionTimeout = getInt(cfg, CONNECTION_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS);
-    socketTimeout = getInt(cfg, SOCKET_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS);
-    maxTries = getInt(cfg, MAX_TRIES_KEY, DEFAULT_MAX_TRIES);
-    retryInterval = getInt(cfg, RETRY_INTERVAL_KEY, DEFAULT_RETRY_INTERVAL);
-    indexThreadPoolSize = getInt(cfg, INDEX_THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
-    cacheThreadPoolSize = getInt(cfg, CACHE_THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
-    sharedDirectory = Strings.emptyToNull(cfg.getString(SHARED_DIRECTORY_KEY));
-    if (sharedDirectory == null) {
-      throw new ProvisionException(SHARED_DIRECTORY_KEY + " must be configured");
-    }
-    cleanupInterval =
-        ConfigUtil.getTimeUnit(
-            Strings.nullToEmpty(cfg.getString(CLEANUP_INTERVAL_KEY)),
-            DEFAULT_CLEANUP_INTERVAL_MS,
-            MILLISECONDS);
+  Configuration(PluginConfigFactory pluginConfigFactory, @PluginName String pluginName) {
+    Config cfg = pluginConfigFactory.getGlobalPluginConfig(pluginName);
+    main = new Main(cfg);
+    peerInfo = new PeerInfo(cfg);
+    http = new Http(cfg);
+    cache = new Cache(cfg);
+    index = new Index(cfg);
+    websession = new Websession(cfg);
   }
 
-  private int getInt(PluginConfig cfg, String name, int defaultValue) {
+  public Main main() {
+    return main;
+  }
+
+  public PeerInfo peerInfo() {
+    return peerInfo;
+  }
+
+  public Http http() {
+    return http;
+  }
+
+  public Cache cache() {
+    return cache;
+  }
+
+  public Index index() {
+    return index;
+  }
+
+  public Websession websession() {
+    return websession;
+  }
+
+  private static int getInt(Config cfg, String section, String name, int defaultValue) {
     try {
-      return cfg.getInt(name, defaultValue);
+      return cfg.getInt(section, name, defaultValue);
     } catch (IllegalArgumentException e) {
       log.error(String.format("invalid value for %s; using default value %d", name, defaultValue));
       log.debug("Failed retrieve integer value: " + e.getMessage(), e);
@@ -96,47 +122,116 @@ public class Configuration {
     }
   }
 
-  public int getConnectionTimeout() {
-    return connectionTimeout;
+  public static class Main {
+    private final String sharedDirectory;
+
+    private Main(Config cfg) {
+      sharedDirectory =
+          Strings.emptyToNull(cfg.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY));
+      if (sharedDirectory == null) {
+        throw new ProvisionException(SHARED_DIRECTORY_KEY + " must be configured");
+      }
+    }
+
+    public String sharedDirectory() {
+      return sharedDirectory;
+    }
   }
 
-  public int getMaxTries() {
-    return maxTries;
+  public static class PeerInfo {
+    private final String url;
+
+    private PeerInfo(Config cfg) {
+      url =
+          CharMatcher.is('/')
+              .trimTrailingFrom(
+                  Strings.nullToEmpty(cfg.getString(PEER_INFO_SECTION, null, URL_KEY)));
+    }
+
+    public String url() {
+      return url;
+    }
   }
 
-  public int getRetryInterval() {
-    return retryInterval;
+  public static class Http {
+    private final String user;
+    private final String password;
+    private final int connectionTimeout;
+    private final int socketTimeout;
+    private final int maxTries;
+    private final int retryInterval;
+
+    private Http(Config cfg) {
+      user = Strings.nullToEmpty(cfg.getString(HTTP_SECTION, null, USER_KEY));
+      password = Strings.nullToEmpty(cfg.getString(HTTP_SECTION, null, PASSWORD_KEY));
+      connectionTimeout = getInt(cfg, HTTP_SECTION, CONNECTION_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS);
+      socketTimeout = getInt(cfg, HTTP_SECTION, SOCKET_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS);
+      maxTries = getInt(cfg, HTTP_SECTION, MAX_TRIES_KEY, DEFAULT_MAX_TRIES);
+      retryInterval = getInt(cfg, HTTP_SECTION, RETRY_INTERVAL_KEY, DEFAULT_RETRY_INTERVAL);
+    }
+
+    public String user() {
+      return user;
+    }
+
+    public String password() {
+      return password;
+    }
+
+    public int connectionTimeout() {
+      return connectionTimeout;
+    }
+
+    public int socketTimeout() {
+      return socketTimeout;
+    }
+
+    public int maxTries() {
+      return maxTries;
+    }
+
+    public int retryInterval() {
+      return retryInterval;
+    }
   }
 
-  public int getSocketTimeout() {
-    return socketTimeout;
+  public static class Cache {
+    private final int threadPoolSize;
+
+    private Cache(Config cfg) {
+      threadPoolSize = getInt(cfg, CACHE_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
+    }
+
+    public int threadPoolSize() {
+      return threadPoolSize;
+    }
   }
 
-  public String getUrl() {
-    return CharMatcher.is('/').trimTrailingFrom(url);
+  public static class Index {
+    private final int threadPoolSize;
+
+    private Index(Config cfg) {
+      threadPoolSize = getInt(cfg, INDEX_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
+    }
+
+    public int threadPoolSize() {
+      return threadPoolSize;
+    }
   }
 
-  public String getUser() {
-    return user;
-  }
+  public static class Websession {
+    private final long cleanupInterval;
 
-  public String getPassword() {
-    return password;
-  }
+    private Websession(Config cfg) {
+      this.cleanupInterval =
+          ConfigUtil.getTimeUnit(
+              Strings.nullToEmpty(cfg.getString(WEBSESSION_SECTION, null, CLEANUP_INTERVAL_KEY)),
+              DEFAULT_CLEANUP_INTERVAL_MS,
+              MILLISECONDS);
+    }
 
-  public int getIndexThreadPoolSize() {
-    return indexThreadPoolSize;
-  }
-
-  public int getCacheThreadPoolSize() {
-    return cacheThreadPoolSize;
-  }
-
-  public String getSharedDirectory() {
-    return sharedDirectory;
-  }
-
-  public Long getCleanupInterval() {
-    return cleanupInterval;
+    public long cleanupInterval() {
+      return cleanupInterval;
+    }
   }
 }
