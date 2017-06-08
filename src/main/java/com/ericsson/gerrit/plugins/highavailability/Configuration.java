@@ -117,7 +117,7 @@ public class Configuration {
       return cfg.getInt(section, name, defaultValue);
     } catch (IllegalArgumentException e) {
       log.error(String.format("invalid value for %s; using default value %d", name, defaultValue));
-      log.debug("Failed retrieve integer value: " + e.getMessage(), e);
+      log.debug("Failed to retrieve integer value: " + e.getMessage(), e);
       return defaultValue;
     }
   }
