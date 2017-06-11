@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Ericsson
+// Copyright (C) 2017 Ericsson
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,19 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability.event;
+package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
-import com.google.gerrit.common.EventListener;
-import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.gerrit.lifecycle.LifecycleModule;
-import java.util.concurrent.Executor;
+import com.google.gerrit.common.EventDispatcher;
+import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.inject.AbstractModule;
 
-public class EventModule extends LifecycleModule {
+public class ForwarderModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(Executor.class).annotatedWith(EventExecutor.class).toProvider(EventExecutorProvider.class);
-    listener().to(EventExecutorProvider.class);
-    DynamicSet.bind(binder(), EventListener.class).to(EventHandler.class);
+    DynamicItem.bind(binder(), EventDispatcher.class).to(ForwardedAwareEventBroker.class);
   }
 }

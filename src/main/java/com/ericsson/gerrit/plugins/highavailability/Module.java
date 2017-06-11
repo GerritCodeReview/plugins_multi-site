@@ -16,6 +16,7 @@ package com.ericsson.gerrit.plugins.highavailability;
 
 import com.ericsson.gerrit.plugins.highavailability.cache.CacheModule;
 import com.ericsson.gerrit.plugins.highavailability.event.EventModule;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwarderModule;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.RestForwarderModule;
 import com.ericsson.gerrit.plugins.highavailability.index.IndexModule;
 import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfoModule;
@@ -33,6 +34,7 @@ class Module extends AbstractModule {
   @Override
   protected void configure() {
     bind(Configuration.class).in(Scopes.SINGLETON);
+    install(new ForwarderModule());
     install(new RestForwarderModule());
     install(new EventModule());
     install(new IndexModule());
