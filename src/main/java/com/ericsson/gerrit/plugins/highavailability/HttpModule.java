@@ -17,11 +17,21 @@ package com.ericsson.gerrit.plugins.highavailability;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.RestForwarderServletModule;
 import com.ericsson.gerrit.plugins.highavailability.websession.file.FileBasedWebsessionModule;
 import com.google.gerrit.httpd.plugins.HttpPluginModule;
+import com.google.inject.Inject;
 
 class HttpModule extends HttpPluginModule {
+  private final Configuration config;
+
+  @Inject
+  HttpModule(Configuration config) {
+    this.config = config;
+  }
+
   @Override
   protected void configureServlets() {
     install(new RestForwarderServletModule());
-    install(new FileBasedWebsessionModule());
+    if (config.websession().synchronize()) {
+      install(new FileBasedWebsessionModule());
+    }
   }
 }

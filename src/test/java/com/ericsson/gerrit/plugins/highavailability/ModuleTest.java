@@ -41,7 +41,7 @@ public class ModuleTest {
 
   @Before
   public void setUp() {
-    module = new Module();
+    module = new Module(configMock);
   }
 
   @Test
@@ -50,7 +50,7 @@ public class ModuleTest {
     assertThat(configuredDirectory.delete()).isTrue();
     when(configMock.main().sharedDirectory()).thenReturn(configuredDirectory.getAbsolutePath());
 
-    Path sharedDirectory = module.getSharedDirectory(configMock);
+    Path sharedDirectory = module.getSharedDirectory();
     assertThat(sharedDirectory.toFile().exists()).isTrue();
   }
 
@@ -59,6 +59,6 @@ public class ModuleTest {
     File configuredDirectory = tempFolder.newFile();
     when(configMock.main().sharedDirectory()).thenReturn(configuredDirectory.getAbsolutePath());
 
-    module.getSharedDirectory(configMock);
+    module.getSharedDirectory();
   }
 }
