@@ -49,7 +49,6 @@ public class EventExecutorProviderTest {
     assertThat(eventsExecutorProvider.get()).isEqualTo(executorMock);
     eventsExecutorProvider.stop();
     verify(executorMock).shutdown();
-    verify(executorMock).unregisterWorkQueue();
     assertThat(eventsExecutorProvider.get()).isNull();
   }
 }

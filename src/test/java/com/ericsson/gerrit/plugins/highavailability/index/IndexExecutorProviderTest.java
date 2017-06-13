@@ -54,7 +54,6 @@ public class IndexExecutorProviderTest {
     assertThat(indexExecutorProvider.get()).isEqualTo(executorMock);
     indexExecutorProvider.stop();
     verify(executorMock).shutdown();
-    verify(executorMock).unregisterWorkQueue();
     assertThat(indexExecutorProvider.get()).isNull();
   }
 }

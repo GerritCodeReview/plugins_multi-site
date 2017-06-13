@@ -56,7 +56,6 @@ public class CacheExecutorProviderTest {
     assertThat(cacheExecutorProvider.get()).isEqualTo(executorMock);
     cacheExecutorProvider.stop();
     verify(executorMock).shutdown();
-    verify(executorMock).unregisterWorkQueue();
     assertThat(cacheExecutorProvider.get()).isNull();
   }
 }
