@@ -27,7 +27,6 @@ import com.google.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 class Module extends AbstractModule {
   private final Configuration config;
@@ -58,7 +57,7 @@ class Module extends AbstractModule {
   @Singleton
   @SharedDirectory
   Path getSharedDirectory() throws IOException {
-    Path sharedDirectoryPath = Paths.get(config.main().sharedDirectory());
+    Path sharedDirectoryPath = config.main().sharedDirectory();
     Files.createDirectories(sharedDirectoryPath);
     return sharedDirectoryPath;
   }

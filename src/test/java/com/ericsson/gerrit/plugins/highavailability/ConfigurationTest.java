@@ -40,10 +40,15 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.USER_KE
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.WEBSESSION_SECTION;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.config.PluginConfigFactory;
+import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.ProvisionException;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,22 +67,27 @@ public class ConfigurationTest {
   private static final int RETRY_INTERVAL = 1000;
   private static final int THREAD_POOL_SIZE = 1;
   private static final String SHARED_DIRECTORY = "/some/directory";
+  private static final Path SHARED_DIR_PATH = Paths.get(SHARED_DIRECTORY);
+  private static final String RELATIVE_SHARED_DIRECTORY = "relative/dir";
+  private static final Path SITE_PATH = Paths.get("/site_path");
   private static final String ERROR_MESSAGE = "some error message";
 
   @Mock private PluginConfigFactory cfgFactoryMock;
   @Mock private Config configMock;
+  private SitePaths site;
   private Configuration configuration;
   private String pluginName = "high-availability";
 
   @Before
-  public void setUp() {
+  public void setUp() throws IOException {
     when(cfgFactoryMock.getGlobalPluginConfig(pluginName)).thenReturn(configMock);
     when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY))
         .thenReturn(SHARED_DIRECTORY);
+    site = new SitePaths(SITE_PATH);
   }
 
   private void initializeConfiguration() {
-    configuration = new Configuration(cfgFactoryMock, pluginName);
+    configuration = new Configuration(cfgFactoryMock, pluginName, site);
   }
 
   @Test
@@ -270,13 +280,23 @@ public class ConfigurationTest {
   @Test
   public void testGetSharedDirectory() throws Exception {
     initializeConfiguration();
-    assertThat(configuration.main().sharedDirectory()).isEqualTo(SHARED_DIRECTORY);
+    assertEquals(configuration.main().sharedDirectory(), SHARED_DIR_PATH);
   }
 
   @Test(expected = ProvisionException.class)
   public void shouldThrowExceptionIfSharedDirectoryNotConfigured() throws Exception {
     when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY)).thenReturn(null);
     initializeConfiguration();
+  }
+
+  @Test
+  public void testRelativeSharedDir() {
+    when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY))
+        .thenReturn(RELATIVE_SHARED_DIRECTORY);
+    initializeConfiguration();
+
+    assertEquals(
+        configuration.main().sharedDirectory(), SITE_PATH.resolve(RELATIVE_SHARED_DIRECTORY));
   }
 
   @Test
