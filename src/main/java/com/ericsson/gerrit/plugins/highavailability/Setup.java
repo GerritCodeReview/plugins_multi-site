@@ -24,6 +24,7 @@ import com.google.gerrit.pgm.init.api.InitStep;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import java.nio.file.Path;
+import java.util.Objects;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.eclipse.jgit.util.FS;
 
@@ -65,7 +66,7 @@ public class Setup implements InitStep {
     ui.header("Main section");
     String sharedDir =
         promptAndSetString("Shared directory", MAIN_SECTION, SHARED_DIRECTORY_KEY, null);
-    if (sharedDir != null) {
+    if (!Strings.isNullOrEmpty(sharedDir)) {
       Path shared = site.site_path.resolve(sharedDir);
       FileUtil.mkdirsOrDie(shared, "cannot create " + shared);
     }
@@ -121,18 +122,14 @@ public class Setup implements InitStep {
       String title, String section, String name, String defaultValue) {
     String oldValue = Strings.emptyToNull(config.getString(section, null, name));
     String newValue = ui.readString(oldValue != null ? oldValue : defaultValue, title);
-    if (!eq(oldValue, newValue)) {
-      if (newValue != null) {
+    if (!Objects.equals(oldValue, newValue)) {
+      if (!Strings.isNullOrEmpty(newValue)) {
         config.setString(section, null, name, newValue);
       } else {
         config.unset(section, name, name);
       }
     }
     return newValue;
-  }
-
-  private static boolean eq(String a, String b) {
-    return (a == null && b == null) || (a != null && a.equals(b));
   }
 
   private static String str(int n) {

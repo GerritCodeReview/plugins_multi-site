@@ -17,6 +17,10 @@ File '@PLUGIN@.config'
 
 main.sharedDirectory
 :   Path to a directory accessible from both master instances.
+    When given as a relative path, then it is resolved against the $SITE_PATH
+    or Gerrit server. For example, if $SITE_PATH is "/gerrit/root" and
+    sharedDirectory is given as "shared/dir" then the real path of the shared
+    directory is "/gerrit/root/shared/dir".
 
 peerInfo.url
 :   Specify the URL for the secondary (target) instance.
