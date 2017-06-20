@@ -29,9 +29,9 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.reviewdb.client.Change;
-import com.google.gerrit.server.git.WorkQueue.Executor;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.StandardKeyEncoder;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -119,7 +119,7 @@ public class IndexEventHandlerTest {
 
   @Test
   public void duplicateChangeEventOfAQueuedEventShouldGetDiscarded() {
-    Executor poolMock = mock(Executor.class);
+    ScheduledThreadPoolExecutor poolMock = mock(ScheduledThreadPoolExecutor.class);
     indexEventHandler = new IndexEventHandler(poolMock, PLUGIN_NAME, forwarder);
     indexEventHandler.onChangeIndexed(changeId.get());
     indexEventHandler.onChangeIndexed(changeId.get());
@@ -128,7 +128,7 @@ public class IndexEventHandlerTest {
 
   @Test
   public void duplicateAccountEventOfAQueuedEventShouldGetDiscarded() {
-    Executor poolMock = mock(Executor.class);
+    ScheduledThreadPoolExecutor poolMock = mock(ScheduledThreadPoolExecutor.class);
     indexEventHandler = new IndexEventHandler(poolMock, PLUGIN_NAME, forwarder);
     indexEventHandler.onAccountIndexed(accountId.get());
     indexEventHandler.onAccountIndexed(accountId.get());
@@ -137,7 +137,7 @@ public class IndexEventHandlerTest {
 
   @Test
   public void duplicateGroupEventOfAQueuedEventShouldGetDiscarded() {
-    Executor poolMock = mock(Executor.class);
+    ScheduledThreadPoolExecutor poolMock = mock(ScheduledThreadPoolExecutor.class);
     indexEventHandler = new IndexEventHandler(poolMock, PLUGIN_NAME, forwarder);
     indexEventHandler.onGroupIndexed(accountGroupUUID.get());
     indexEventHandler.onGroupIndexed(accountGroupUUID.get());

@@ -21,7 +21,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public abstract class ExecutorProvider
     implements Provider<ScheduledThreadPoolExecutor>, LifecycleListener {
-  private WorkQueue.Executor executor;
+  private ScheduledThreadPoolExecutor executor;
 
   protected ExecutorProvider(WorkQueue workQueue, int threadPoolSize, String threadNamePrefix) {
     executor = workQueue.createQueue(threadPoolSize, threadNamePrefix);

@@ -20,6 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.git.WorkQueue;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventExecutorProviderTest {
-  @Mock private WorkQueue.Executor executorMock;
+  @Mock private ScheduledThreadPoolExecutor executorMock;
   private EventExecutorProvider eventsExecutorProvider;
 
   @Before

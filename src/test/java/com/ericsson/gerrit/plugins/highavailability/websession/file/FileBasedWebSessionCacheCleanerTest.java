@@ -26,9 +26,9 @@ import static org.mockito.Mockito.when;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.google.gerrit.server.git.WorkQueue;
-import com.google.gerrit.server.git.WorkQueue.Executor;
 import com.google.inject.Provider;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +43,7 @@ public class FileBasedWebSessionCacheCleanerTest {
   private static long CLEANUP_INTERVAL = 5000;
   private static String SOME_PLUGIN_NAME = "somePluginName";
 
-  @Mock private Executor executorMock;
+  @Mock private ScheduledThreadPoolExecutor executorMock;
   @Mock private ScheduledFuture<?> scheduledFutureMock;
   @Mock private WorkQueue workQueueMock;
   @Mock private Provider<CleanupTask> cleanupTaskProviderMock;
