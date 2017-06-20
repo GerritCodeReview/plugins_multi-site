@@ -66,7 +66,7 @@ public class Setup implements InitStep {
     ui.header("Main section");
     String sharedDir =
         promptAndSetString("Shared directory", MAIN_SECTION, SHARED_DIRECTORY_KEY, null);
-    if (sharedDir != null) {
+    if (!Strings.isNullOrEmpty(sharedDir)) {
       Path shared = site.site_path.resolve(sharedDir);
       FileUtil.mkdirsOrDie(shared, "cannot create " + shared);
     }
@@ -123,7 +123,7 @@ public class Setup implements InitStep {
     String oldValue = Strings.emptyToNull(config.getString(section, null, name));
     String newValue = ui.readString(oldValue != null ? oldValue : defaultValue, title);
     if (!Objects.equals(oldValue, newValue)) {
-      if (newValue != null) {
+      if (!Strings.isNullOrEmpty(newValue)) {
         config.setString(section, null, name, newValue);
       } else {
         config.unset(section, name, name);
