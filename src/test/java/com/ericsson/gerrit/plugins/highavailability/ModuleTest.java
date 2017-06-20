@@ -41,24 +41,24 @@ public class ModuleTest {
 
   @Before
   public void setUp() {
-    module = new Module();
+    module = new Module(configMock);
   }
 
   @Test
   public void shouldCreateSharedDirectoryIfItDoesNotExist() throws Exception {
     File configuredDirectory = tempFolder.newFolder();
     assertThat(configuredDirectory.delete()).isTrue();
-    when(configMock.main().sharedDirectory()).thenReturn(configuredDirectory.getAbsolutePath());
+    when(configMock.main().sharedDirectory()).thenReturn(configuredDirectory.toPath());
 
-    Path sharedDirectory = module.getSharedDirectory(configMock);
+    Path sharedDirectory = module.getSharedDirectory();
     assertThat(sharedDirectory.toFile().exists()).isTrue();
   }
 
   @Test(expected = IOException.class)
   public void shouldThrowAnExceptionIfAnErrorOccurCreatingSharedDirectory() throws Exception {
     File configuredDirectory = tempFolder.newFile();
-    when(configMock.main().sharedDirectory()).thenReturn(configuredDirectory.getAbsolutePath());
+    when(configMock.main().sharedDirectory()).thenReturn(configuredDirectory.toPath());
 
-    module.getSharedDirectory(configMock);
+    module.getSharedDirectory();
   }
 }

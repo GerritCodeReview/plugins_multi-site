@@ -22,9 +22,12 @@ import com.google.common.base.Strings;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.PluginConfigFactory;
+import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.eclipse.jgit.lib.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,11 +56,17 @@ public class Configuration {
   // cache section
   static final String CACHE_SECTION = "cache";
 
+  // event section
+  static final String EVENT_SECTION = "event";
+
   // index section
   static final String INDEX_SECTION = "index";
 
-  // common parameters to cache and index section
+  // common parameters to cache and index sections
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
+
+  // common parameters to cache, event index and websession sections
+  static final String SYNCHRONIZE_KEY = "synchronize";
 
   // websession section
   static final String WEBSESSION_SECTION = "websession";
@@ -69,21 +78,25 @@ public class Configuration {
   static final int DEFAULT_THREAD_POOL_SIZE = 1;
   static final String DEFAULT_CLEANUP_INTERVAL = "24 hours";
   static final long DEFAULT_CLEANUP_INTERVAL_MS = HOURS.toMillis(24);
+  static final boolean DEFAULT_SYNCHRONIZE = true;
 
   private final Main main;
   private final PeerInfo peerInfo;
   private final Http http;
   private final Cache cache;
+  private final Event event;
   private final Index index;
   private final Websession websession;
 
   @Inject
-  Configuration(PluginConfigFactory pluginConfigFactory, @PluginName String pluginName) {
+  Configuration(
+      PluginConfigFactory pluginConfigFactory, @PluginName String pluginName, SitePaths site) {
     Config cfg = pluginConfigFactory.getGlobalPluginConfig(pluginName);
-    main = new Main(cfg);
+    main = new Main(site, cfg);
     peerInfo = new PeerInfo(cfg);
     http = new Http(cfg);
     cache = new Cache(cfg);
+    event = new Event(cfg);
     index = new Index(cfg);
     websession = new Websession(cfg);
   }
@@ -104,6 +117,10 @@ public class Configuration {
     return cache;
   }
 
+  public Event event() {
+    return event;
+  }
+
   public Index index() {
     return index;
   }
@@ -117,23 +134,38 @@ public class Configuration {
       return cfg.getInt(section, name, defaultValue);
     } catch (IllegalArgumentException e) {
       log.error(String.format("invalid value for %s; using default value %d", name, defaultValue));
-      log.debug("Failed retrieve integer value: " + e.getMessage(), e);
+      log.debug("Failed to retrieve integer value: " + e.getMessage(), e);
+      return defaultValue;
+    }
+  }
+
+  private static boolean getBoolean(Config cfg, String section, String name, boolean defaultValue) {
+    try {
+      return cfg.getBoolean(section, name, defaultValue);
+    } catch (IllegalArgumentException e) {
+      log.error(String.format("invalid value for %s; using default value %s", name, defaultValue));
+      log.debug("Failed to retrieve boolean value: " + e.getMessage(), e);
       return defaultValue;
     }
   }
 
   public static class Main {
-    private final String sharedDirectory;
+    private final Path sharedDirectory;
 
-    private Main(Config cfg) {
-      sharedDirectory =
-          Strings.emptyToNull(cfg.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY));
-      if (sharedDirectory == null) {
+    private Main(SitePaths site, Config cfg) {
+      String shared = Strings.emptyToNull(cfg.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY));
+      if (shared == null) {
         throw new ProvisionException(SHARED_DIRECTORY_KEY + " must be configured");
+      }
+      Path p = Paths.get(shared);
+      if (p.isAbsolute()) {
+        sharedDirectory = p;
+      } else {
+        sharedDirectory = site.resolve(shared);
       }
     }
 
-    public String sharedDirectory() {
+    public Path sharedDirectory() {
       return sharedDirectory;
     }
   }
@@ -195,10 +227,24 @@ public class Configuration {
     }
   }
 
-  public static class Cache {
+  /** Common parameters to cache, event, index and websession */
+  public abstract static class Forwarding {
+    private final boolean synchronize;
+
+    private Forwarding(Config cfg, String section) {
+      synchronize = getBoolean(cfg, section, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE);
+    }
+
+    public boolean synchronize() {
+      return synchronize;
+    }
+  }
+
+  public static class Cache extends Forwarding {
     private final int threadPoolSize;
 
     private Cache(Config cfg) {
+      super(cfg, CACHE_SECTION);
       threadPoolSize = getInt(cfg, CACHE_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
     }
 
@@ -207,10 +253,17 @@ public class Configuration {
     }
   }
 
-  public static class Index {
+  public static class Event extends Forwarding {
+    private Event(Config cfg) {
+      super(cfg, EVENT_SECTION);
+    }
+  }
+
+  public static class Index extends Forwarding {
     private final int threadPoolSize;
 
     private Index(Config cfg) {
+      super(cfg, INDEX_SECTION);
       threadPoolSize = getInt(cfg, INDEX_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
     }
 
@@ -219,10 +272,11 @@ public class Configuration {
     }
   }
 
-  public static class Websession {
+  public static class Websession extends Forwarding {
     private final long cleanupInterval;
 
     private Websession(Config cfg) {
+      super(cfg, WEBSESSION_SECTION);
       this.cleanupInterval =
           ConfigUtil.getTimeUnit(
               Strings.nullToEmpty(cfg.getString(WEBSESSION_SECTION, null, CLEANUP_INTERVAL_KEY)),

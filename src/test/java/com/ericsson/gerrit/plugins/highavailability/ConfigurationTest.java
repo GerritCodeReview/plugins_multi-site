@@ -20,8 +20,10 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.CONNECT
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_CLEANUP_INTERVAL_MS;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_MAX_TRIES;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_RETRY_INTERVAL;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_SYNCHRONIZE;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_THREAD_POOL_SIZE;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_TIMEOUT_MS;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.EVENT_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.HTTP_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.INDEX_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAIN_SECTION;
@@ -31,16 +33,22 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.PEER_IN
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.RETRY_INTERVAL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.SHARED_DIRECTORY_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.SOCKET_TIMEOUT_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.SYNCHRONIZE_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.THREAD_POOL_SIZE_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.URL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.USER_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.WEBSESSION_SECTION;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.config.PluginConfigFactory;
+import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.ProvisionException;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,22 +67,27 @@ public class ConfigurationTest {
   private static final int RETRY_INTERVAL = 1000;
   private static final int THREAD_POOL_SIZE = 1;
   private static final String SHARED_DIRECTORY = "/some/directory";
+  private static final Path SHARED_DIR_PATH = Paths.get(SHARED_DIRECTORY);
+  private static final String RELATIVE_SHARED_DIRECTORY = "relative/dir";
+  private static final Path SITE_PATH = Paths.get("/site_path");
   private static final String ERROR_MESSAGE = "some error message";
 
   @Mock private PluginConfigFactory cfgFactoryMock;
   @Mock private Config configMock;
+  private SitePaths site;
   private Configuration configuration;
   private String pluginName = "high-availability";
 
   @Before
-  public void setUp() {
+  public void setUp() throws IOException {
     when(cfgFactoryMock.getGlobalPluginConfig(pluginName)).thenReturn(configMock);
     when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY))
         .thenReturn(SHARED_DIRECTORY);
+    site = new SitePaths(SITE_PATH);
   }
 
   private void initializeConfiguration() {
-    configuration = new Configuration(cfgFactoryMock, pluginName);
+    configuration = new Configuration(cfgFactoryMock, pluginName, site);
   }
 
   @Test
@@ -195,6 +208,24 @@ public class ConfigurationTest {
   }
 
   @Test
+  public void testGetIndexSynchronize() throws Exception {
+    when(configMock.getBoolean(INDEX_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+        .thenReturn(true);
+    initializeConfiguration();
+    assertThat(configuration.index().synchronize()).isTrue();
+
+    when(configMock.getBoolean(INDEX_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+        .thenReturn(false);
+    initializeConfiguration();
+    assertThat(configuration.index().synchronize()).isFalse();
+
+    when(configMock.getBoolean(INDEX_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+        .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
+    initializeConfiguration();
+    assertThat(configuration.index().synchronize()).isTrue();
+  }
+
+  @Test
   public void testGetCacheThreadPoolSize() throws Exception {
     initializeConfiguration();
     assertThat(configuration.cache().threadPoolSize()).isEqualTo(0);
@@ -211,15 +242,61 @@ public class ConfigurationTest {
   }
 
   @Test
+  public void testGetCacheSynchronize() throws Exception {
+    when(configMock.getBoolean(CACHE_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+        .thenReturn(true);
+    initializeConfiguration();
+    assertThat(configuration.cache().synchronize()).isTrue();
+
+    when(configMock.getBoolean(CACHE_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+        .thenReturn(false);
+    initializeConfiguration();
+    assertThat(configuration.cache().synchronize()).isFalse();
+
+    when(configMock.getBoolean(CACHE_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+        .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
+    initializeConfiguration();
+    assertThat(configuration.cache().synchronize()).isTrue();
+  }
+
+  @Test
+  public void testGetEventSynchronize() throws Exception {
+    when(configMock.getBoolean(EVENT_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+        .thenReturn(true);
+    initializeConfiguration();
+    assertThat(configuration.event().synchronize()).isTrue();
+
+    when(configMock.getBoolean(EVENT_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+        .thenReturn(false);
+    initializeConfiguration();
+    assertThat(configuration.event().synchronize()).isFalse();
+
+    when(configMock.getBoolean(EVENT_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+        .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
+    initializeConfiguration();
+    assertThat(configuration.event().synchronize()).isTrue();
+  }
+
+  @Test
   public void testGetSharedDirectory() throws Exception {
     initializeConfiguration();
-    assertThat(configuration.main().sharedDirectory()).isEqualTo(SHARED_DIRECTORY);
+    assertEquals(configuration.main().sharedDirectory(), SHARED_DIR_PATH);
   }
 
   @Test(expected = ProvisionException.class)
   public void shouldThrowExceptionIfSharedDirectoryNotConfigured() throws Exception {
     when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY)).thenReturn(null);
     initializeConfiguration();
+  }
+
+  @Test
+  public void testRelativeSharedDir() {
+    when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY))
+        .thenReturn(RELATIVE_SHARED_DIRECTORY);
+    initializeConfiguration();
+
+    assertEquals(
+        configuration.main().sharedDirectory(), SITE_PATH.resolve(RELATIVE_SHARED_DIRECTORY));
   }
 
   @Test
@@ -231,5 +308,23 @@ public class ConfigurationTest {
         .thenReturn("30 seconds");
     initializeConfiguration();
     assertThat(configuration.websession().cleanupInterval()).isEqualTo(SECONDS.toMillis(30));
+  }
+
+  @Test
+  public void testGetWebsessionSynchronize() throws Exception {
+    when(configMock.getBoolean(WEBSESSION_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+        .thenReturn(true);
+    initializeConfiguration();
+    assertThat(configuration.websession().synchronize()).isTrue();
+
+    when(configMock.getBoolean(WEBSESSION_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+        .thenReturn(false);
+    initializeConfiguration();
+    assertThat(configuration.websession().synchronize()).isFalse();
+
+    when(configMock.getBoolean(WEBSESSION_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+        .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
+    initializeConfiguration();
+    assertThat(configuration.websession().synchronize()).isTrue();
   }
 }
