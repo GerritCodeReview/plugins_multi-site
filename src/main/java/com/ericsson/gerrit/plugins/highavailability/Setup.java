@@ -24,6 +24,7 @@ import com.google.gerrit.pgm.init.api.InitStep;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import java.nio.file.Path;
+import java.util.Objects;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.eclipse.jgit.util.FS;
 
@@ -121,7 +122,7 @@ public class Setup implements InitStep {
       String title, String section, String name, String defaultValue) {
     String oldValue = Strings.emptyToNull(config.getString(section, null, name));
     String newValue = ui.readString(oldValue != null ? oldValue : defaultValue, title);
-    if (!eq(oldValue, newValue)) {
+    if (!Objects.equals(oldValue, newValue)) {
       if (newValue != null) {
         config.setString(section, null, name, newValue);
       } else {
@@ -129,10 +130,6 @@ public class Setup implements InitStep {
       }
     }
     return newValue;
-  }
-
-  private static boolean eq(String a, String b) {
-    return (a == null && b == null) || (a != null && a.equals(b));
   }
 
   private static String str(int n) {
