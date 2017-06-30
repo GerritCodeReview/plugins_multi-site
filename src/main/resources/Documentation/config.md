@@ -1,7 +1,7 @@
 @PLUGIN@ Configuration
 =========================
 
-The @PLUGIN@ plugin must be installed in both instances and the following fields
+The @PLUGIN@ plugin must be installed on both instances and the following fields
 should be specified in `$site_path/etc/@PLUGIN@.config` file:
 
 File '@PLUGIN@.config'
@@ -23,13 +23,13 @@ main.sharedDirectory
     directory is "/gerrit/root/shared/dir".
 
 peerInfo.url
-:   Specify the URL for the secondary (target) instance.
+:   Specify the URL for the peer instance.
 
 http.user
-:   Username to connect to the secondary (target) instance.
+:   Username to connect to the peer instance.
 
 http.password
-:   Password to connect to the secondary (target) instance.
+:   Password to connect to the peer instance.
 
 @PLUGIN@ plugin uses REST API calls to keep the target instance in-sync. It
 is possible to customize the parameters of the underlying http client doing these
