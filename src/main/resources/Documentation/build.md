@@ -92,11 +92,11 @@ Add the plugin name to the `CUSTOM_PLUGINS` and to the
 To execute the tests run:
 
 ```
-  buck test --include @PLUGIN@
+  bazel test --test_tag_filters=@PLUGIN@
 ```
 
 How to build the Gerrit Plugin API is described in the [Gerrit
-documentation](../../../Documentation/dev-buck.html#_extension_and_plugin_api_jar_files).
+documentation](../../../Documentation/dev-bazel.html#_extension_and_plugin_api_jar_files).
 
 [Back to @PLUGIN@ documentation index][index]
 
