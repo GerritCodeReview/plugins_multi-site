@@ -27,16 +27,17 @@ junit_tests(
         "high-availability",
         "local",
     ],
-    deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
+    deps = [
         ":high-availability__plugin_test_deps",
-        ":high-availability__plugin",
     ],
 )
 
 java_library(
     name = "high-availability__plugin_test_deps",
     visibility = ["//visibility:public"],
-    exports = [
+    testonly = 1,
+    exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
+        ":high-availability__plugin",
         "@byte-buddy//jar",
         "@mockito//jar",
         "@objenesis//jar",
