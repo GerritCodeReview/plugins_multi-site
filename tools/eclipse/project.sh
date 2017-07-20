@@ -12,6 +12,4 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-bazel build tools/eclipse:project.py
-`bazel info output_base`/`cat bazel-bin/tools/eclipse/project.py.txt` -n high-availability -r .
+`bazel query @com_googlesource_gerrit_bazlets//tools/eclipse:project --output location | sed s/BUILD:.*//`project.py -n high-availability -r .
