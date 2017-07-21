@@ -38,13 +38,13 @@ The output is created in:
 To execute the tests run:
 
 ```
-  bazel test high_availability_tests
+  bazel test //...
 ```
 
 This project can be imported into the Eclipse IDE:
 
 ```
-  ./tools/eclipse/project.py
+  ./tools/eclipse/project.sh
 ```
 
 ## Build in Gerrit tree
