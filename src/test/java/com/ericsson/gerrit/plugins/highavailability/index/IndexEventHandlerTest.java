@@ -45,6 +45,7 @@ public class IndexEventHandlerTest {
   private static final int CHANGE_ID = 1;
   private static final int ACCOUNT_ID = 2;
   private static final String UUID = "3";
+  private static final String OTHER_UUID = "4";
 
   private IndexEventHandler indexEventHandler;
   @Mock private Forwarder forwarder;
@@ -180,7 +181,7 @@ public class IndexEventHandlerTest {
     assertThat(task.hashCode()).isEqualTo(identicalTask.hashCode());
 
     assertThat(task.equals(null)).isFalse();
-    assertThat(task.equals("test")).isFalse();
+    assertThat(task.equals(indexEventHandler.new IndexChangeTask(CHANGE_ID + 1, false))).isFalse();
     assertThat(task.hashCode()).isNotEqualTo("test".hashCode());
 
     IndexChangeTask differentChangeIdTask = indexEventHandler.new IndexChangeTask(123, false);
@@ -205,7 +206,7 @@ public class IndexEventHandlerTest {
     assertThat(task.hashCode()).isEqualTo(identicalTask.hashCode());
 
     assertThat(task.equals(null)).isFalse();
-    assertThat(task.equals("test")).isFalse();
+    assertThat(task.equals(indexEventHandler.new IndexAccountTask(ACCOUNT_ID + 1))).isFalse();
     assertThat(task.hashCode()).isNotEqualTo("test".hashCode());
 
     IndexAccountTask differentAccountIdTask = indexEventHandler.new IndexAccountTask(123);
@@ -226,7 +227,7 @@ public class IndexEventHandlerTest {
     assertThat(task.hashCode()).isEqualTo(identicalTask.hashCode());
 
     assertThat(task.equals(null)).isFalse();
-    assertThat(task.equals("test")).isFalse();
+    assertThat(task.equals(indexEventHandler.new IndexGroupTask(OTHER_UUID))).isFalse();
     assertThat(task.hashCode()).isNotEqualTo("test".hashCode());
 
     IndexGroupTask differentGroupIdTask = indexEventHandler.new IndexGroupTask("123");
