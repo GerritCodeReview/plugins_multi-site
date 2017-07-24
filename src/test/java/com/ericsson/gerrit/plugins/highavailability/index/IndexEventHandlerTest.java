@@ -143,7 +143,7 @@ public class IndexEventHandlerTest {
     assertThat(task.hashCode()).isEqualTo(identicalTask.hashCode());
 
     assertThat(task.equals(null)).isFalse();
-    assertThat(task.equals("test")).isFalse();
+    assertThat(task.equals(indexEventHandler.new IndexChangeTask(CHANGE_ID + 1, false))).isFalse();
     assertThat(task.hashCode()).isNotEqualTo("test".hashCode());
 
     IndexChangeTask differentChangeIdTask = indexEventHandler.new IndexChangeTask(123, false);
@@ -167,7 +167,7 @@ public class IndexEventHandlerTest {
     assertThat(task.hashCode()).isEqualTo(identicalTask.hashCode());
 
     assertThat(task.equals(null)).isFalse();
-    assertThat(task.equals("test")).isFalse();
+    assertThat(task.equals(indexEventHandler.new IndexAccountTask(ACCOUNT_ID + 1))).isFalse();
     assertThat(task.hashCode()).isNotEqualTo("test".hashCode());
 
     IndexAccountTask differentAccountIdTask = indexEventHandler.new IndexAccountTask(123);
