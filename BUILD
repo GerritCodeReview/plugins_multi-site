@@ -34,8 +34,8 @@ junit_tests(
 
 java_library(
     name = "high-availability__plugin_test_deps",
-    visibility = ["//visibility:public"],
     testonly = 1,
+    visibility = ["//visibility:public"],
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":high-availability__plugin",
         "@byte-buddy//jar",

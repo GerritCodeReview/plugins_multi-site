@@ -1,4 +1,5 @@
 workspace(name = "high_availability")
+
 load("//:bazlets.bzl", "load_bazlets")
 
 load_bazlets(
@@ -25,4 +26,5 @@ gerrit_api_maven_local()
 #gerrit_api()
 
 load("//:external_plugin_deps.bzl", "external_plugin_deps")
+
 external_plugin_deps()
