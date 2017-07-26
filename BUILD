@@ -38,9 +38,7 @@ java_library(
     visibility = ["//visibility:public"],
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":high-availability__plugin",
-        "@byte-buddy//jar",
         "@mockito//jar",
-        "@objenesis//jar",
         "@wiremock//jar",
     ],
 )
