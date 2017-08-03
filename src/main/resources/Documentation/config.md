@@ -62,6 +62,13 @@ cache.threadPoolSize
 :   Maximum number of threads used to send cache evictions to the target instance.
     Defaults to 1.
 
+cache.pattern
+:   Pattern to match names of custom caches for which evictions should be
+    forwarded (in addition to the core caches that are always forwarded). May be
+    specified more than once to add multiple patterns.
+    Defaults to an empty list, meaning only evictions of the core caches are
+    forwarded.
+
 event.synchronize
 :   Whether to synchronize stream events.
     Defaults to true.

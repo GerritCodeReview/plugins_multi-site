@@ -15,7 +15,7 @@
 package com.ericsson.gerrit.plugins.highavailability.cache;
 
 public final class Constants {
-
+  public static final String GERRIT = "gerrit";
   public static final String PROJECT_LIST = "project_list";
   public static final String ACCOUNTS = "accounts";
   public static final String GROUPS = "groups";

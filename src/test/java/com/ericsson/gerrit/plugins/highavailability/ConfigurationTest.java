@@ -29,6 +29,7 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.INDEX_S
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAIN_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAX_TRIES_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PASSWORD_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.PATTERN_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PEER_INFO_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.RETRY_INTERVAL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.SHARED_DIRECTORY_KEY;
@@ -73,6 +74,7 @@ public class ConfigurationTest {
   private static final String RELATIVE_SHARED_DIRECTORY = "relative/dir";
   private static final Path SITE_PATH = Paths.get("/site_path");
   private static final String ERROR_MESSAGE = "some error message";
+  private static final String[] CUSTOM_CACHE_PATTERNS = {"^my_cache.*", "other"};
 
   @Mock private PluginConfigFactory cfgFactoryMock;
   @Mock private Config configMock;
@@ -85,6 +87,8 @@ public class ConfigurationTest {
     when(cfgFactoryMock.getGlobalPluginConfig(pluginName)).thenReturn(configMock);
     when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY))
         .thenReturn(SHARED_DIRECTORY);
+    when(configMock.getStringList(CACHE_SECTION, null, PATTERN_KEY))
+        .thenReturn(CUSTOM_CACHE_PATTERNS);
     site = new SitePaths(SITE_PATH);
   }
 
@@ -333,8 +337,15 @@ public class ConfigurationTest {
   @Test
   public void testGetCachePatterns() throws Exception {
     initializeConfiguration();
-    CachePatternMatcher matcher = new CachePatternMatcher();
-    for (String cache : ImmutableList.of("accounts_byemail", "ldap_groups", "project_list")) {
+    CachePatternMatcher matcher = new CachePatternMatcher(configuration);
+    for (String cache :
+        ImmutableList.of(
+            "accounts_byemail",
+            "ldap_groups",
+            "project_list",
+            "my_cache_a",
+            "my_cache_b",
+            "other")) {
       assertThat(matcher.matches(cache)).isTrue();
     }
     for (String cache : ImmutableList.of("ldap_groups_by_include", "foo")) {

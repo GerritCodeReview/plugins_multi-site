@@ -14,6 +14,7 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
+import static com.google.common.truth.Truth.assertThat;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static org.mockito.Mockito.doThrow;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.CacheRestApiServlet.CacheParameters;
 import com.google.common.cache.Cache;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import java.io.BufferedReader;
@@ -78,14 +80,15 @@ public class CacheRestApiServletTest {
   }
 
   @Test
-  public void evictDefault() throws Exception {
-    configureMocksFor(Constants.PROJECTS);
+  public void evictPluginCache() throws Exception {
+    configureMocksFor("my-plugin", "my-cache");
     verifyResponseIsOK();
   }
 
-  private void verifyResponseIsOK() throws Exception {
-    servlet.doPost(request, response);
-    verify(response).setStatus(SC_NO_CONTENT);
+  @Test
+  public void evictDefault() throws Exception {
+    configureMocksFor(Constants.PROJECTS);
+    verifyResponseIsOK();
   }
 
   @Test
@@ -106,10 +109,34 @@ public class CacheRestApiServletTest {
     verify(response).sendError(SC_BAD_REQUEST, errorMessage);
   }
 
+  @Test
+  public void cacheParameters() throws Exception {
+    CacheParameters key = CacheRestApiServlet.getCacheParameters("accounts_by_name");
+    assertThat(key.pluginName).isEqualTo(Constants.GERRIT);
+    assertThat(key.cacheName).isEqualTo("accounts_by_name");
+
+    key = CacheRestApiServlet.getCacheParameters("my_plugin.my_cache");
+    assertThat(key.pluginName).isEqualTo("my_plugin");
+    assertThat(key.cacheName).isEqualTo("my_cache");
+  }
+
+  private void verifyResponseIsOK() throws Exception {
+    servlet.doPost(request, response);
+    verify(response).setStatus(SC_NO_CONTENT);
+  }
+
+  private void configureMocksFor(String cacheName) throws Exception {
+    configureMocksFor(Constants.GERRIT, cacheName);
+  }
+
   @SuppressWarnings("unchecked")
-  private void configureMocksFor(String cacheName) throws IOException {
-    when(cacheMap.get("gerrit", cacheName)).thenReturn(mock(Cache.class));
-    when(request.getPathInfo()).thenReturn("/" + cacheName);
+  private void configureMocksFor(String pluginName, String cacheName) throws Exception {
+    when(cacheMap.get(pluginName, cacheName)).thenReturn(mock(Cache.class));
+    if (Constants.GERRIT.equals(pluginName)) {
+      when(request.getPathInfo()).thenReturn("/" + cacheName);
+    } else {
+      when(request.getPathInfo()).thenReturn("/" + pluginName + "." + cacheName);
+    }
     when(request.getReader()).thenReturn(reader);
 
     if (Constants.PROJECTS.equals(cacheName)) {

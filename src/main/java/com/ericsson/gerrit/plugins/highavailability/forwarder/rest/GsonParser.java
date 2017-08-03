@@ -44,7 +44,11 @@ final class GsonParser {
         key = gson.fromJson(Strings.nullToEmpty(json), Object.class);
         break;
       default:
-        key = gson.fromJson(Strings.nullToEmpty(json).trim(), String.class);
+        try {
+          key = gson.fromJson(Strings.nullToEmpty(json).trim(), String.class);
+        } catch (Exception e) {
+          key = gson.fromJson(Strings.nullToEmpty(json), Object.class);
+        }
     }
     return key;
   }
