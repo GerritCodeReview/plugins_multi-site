@@ -21,21 +21,18 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
-import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.RequestListener;
 import com.github.tomakehurst.wiremock.http.Response;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.google.common.collect.ImmutableList;
 import com.google.gerrit.acceptance.GlobalPluginConfig;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.UseSsh;
-import com.google.inject.Inject;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
@@ -55,8 +52,6 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
   private static final String URL = "http://localhost:" + PORT;
 
   @Rule public WireMockRule wireMockRule = new WireMockRule(options().port(PORT), false);
-
-  @Inject CachePatternMatcher matcher;
 
   @Test
   @UseLocalDisk
@@ -91,22 +86,5 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
     adminSshSession.exec("gerrit flush-caches --cache " + Constants.PROJECT_LIST);
     checkPoint.await(5, TimeUnit.SECONDS);
     verify(postRequestedFor(urlEqualTo(flushRequest)));
-  }
-
-  @Test
-  @UseLocalDisk
-  @GlobalPluginConfig(
-    pluginName = "high-availability",
-    name = "main.sharedDirectory",
-    value = "directory"
-  )
-  public void matcher() throws Exception {
-    assertThat(matcher).isNotNull();
-    for (String cache : ImmutableList.of("accounts_byemail", "ldap_groups", "project_list")) {
-      assertThat(matcher.matches(cache)).isTrue();
-    }
-    for (String cache : ImmutableList.of("ldap_groups_by_include", "foo")) {
-      assertThat(matcher.matches(cache)).isFalse();
-    }
   }
 }

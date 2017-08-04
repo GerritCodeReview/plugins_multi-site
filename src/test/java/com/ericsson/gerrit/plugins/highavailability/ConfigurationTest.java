@@ -43,6 +43,8 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
+import com.ericsson.gerrit.plugins.highavailability.cache.CachePatternMatcher;
+import com.google.common.collect.ImmutableList;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.ProvisionException;
@@ -326,5 +328,17 @@ public class ConfigurationTest {
         .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
     initializeConfiguration();
     assertThat(configuration.websession().synchronize()).isTrue();
+  }
+
+  @Test
+  public void testGetCachePatterns() throws Exception {
+    initializeConfiguration();
+    CachePatternMatcher matcher = new CachePatternMatcher();
+    for (String cache : ImmutableList.of("accounts_byemail", "ldap_groups", "project_list")) {
+      assertThat(matcher.matches(cache)).isTrue();
+    }
+    for (String cache : ImmutableList.of("ldap_groups_by_include", "foo")) {
+      assertThat(matcher.matches(cache)).isFalse();
+    }
   }
 }

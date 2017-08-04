@@ -34,7 +34,7 @@ public class CachePatternMatcher {
 
   private final Pattern pattern;
 
-  CachePatternMatcher() {
+  public CachePatternMatcher() {
     this.pattern = Pattern.compile(Joiner.on("|").join(DEFAULT_PATTERNS));
   }
 
