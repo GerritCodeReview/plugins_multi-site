@@ -74,7 +74,7 @@ public class CacheRestApiServletTest {
   @Test
   public void evictGroupsMembers() throws Exception {
     configureMocksFor(Constants.GROUPS_MEMBERS);
-    servlet.doPost(request, response);
+    verifyResponseIsOK();
   }
 
   @Test
