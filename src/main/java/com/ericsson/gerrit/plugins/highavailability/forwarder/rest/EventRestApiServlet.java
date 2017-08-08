@@ -28,6 +28,7 @@ import com.google.gerrit.common.EventDispatcher;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventDeserializer;
 import com.google.gerrit.server.events.SupplierDeserializer;
+import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gwtorm.server.OrmException;
@@ -71,7 +72,7 @@ class EventRestApiServlet extends HttpServlet {
     } catch (OrmException e) {
       logger.debug("Error trying to find a change ", e);
       sendError(rsp, SC_NOT_FOUND, "Change not found\n");
-    } catch (IOException e) {
+    } catch (IOException | PermissionBackendException e) {
       logger.error("Unable to re-trigger event", e);
       sendError(rsp, SC_BAD_REQUEST, e.getMessage());
     } finally {
