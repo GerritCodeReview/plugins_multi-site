@@ -16,11 +16,11 @@ package com.ericsson.gerrit.plugins.highavailability.peers;
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStrategy;
 import com.ericsson.gerrit.plugins.highavailability.peers.jgroups.JGroupsPeerInfoProvider;
-import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import java.util.Optional;
 
 @Singleton
 public class PeerInfoProvider implements Provider<Optional<PeerInfo>> {

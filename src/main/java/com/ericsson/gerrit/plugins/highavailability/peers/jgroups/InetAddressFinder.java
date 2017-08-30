@@ -16,7 +16,6 @@ package com.ericsson.gerrit.plugins.highavailability.peers.jgroups;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.net.Inet4Address;
@@ -27,6 +26,7 @@ import java.net.SocketException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Optional;
 
 @Singleton
 public class InetAddressFinder {
@@ -73,7 +73,7 @@ public class InetAddressFinder {
         }
       }
     }
-    return Optional.absent();
+    return Optional.empty();
   }
 
   @VisibleForTesting

@@ -15,9 +15,9 @@
 package com.ericsson.gerrit.plugins.highavailability.peers;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
-import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import java.util.Optional;
 
 public class PluginConfigPeerInfoProvider implements Provider<Optional<PeerInfo>> {
 

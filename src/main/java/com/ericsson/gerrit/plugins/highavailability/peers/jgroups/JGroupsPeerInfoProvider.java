@@ -15,7 +15,6 @@ package com.ericsson.gerrit.plugins.highavailability.peers.jgroups;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
-import com.google.common.base.Optional;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.inject.Inject;
@@ -24,6 +23,7 @@ import com.google.inject.Singleton;
 import java.net.InetAddress;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.util.Optional;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.transport.URIish;
 import org.jgroups.Address;
@@ -54,7 +54,7 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
   private final InetAddressFinder finder;
 
   private JChannel channel;
-  private Optional<PeerInfo> peerInfo = Optional.absent();
+  private Optional<PeerInfo> peerInfo = Optional.empty();
   private Address peerAddress;
 
   @Inject
@@ -98,7 +98,7 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
       if (peerAddress != null && !view.getMembers().contains(peerAddress)) {
         log.info("viewAccepted(): removed peerInfo");
         peerAddress = null;
-        peerInfo = Optional.absent();
+        peerInfo = Optional.empty();
       }
     }
     if (view.size() > 1) {
@@ -142,7 +142,7 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
   public void stop() {
     log.info("closing jgroups channel {}", jgroupsConfig.clusterName());
     channel.close();
-    peerInfo = Optional.absent();
+    peerInfo = Optional.empty();
     peerAddress = null;
   }
 }
