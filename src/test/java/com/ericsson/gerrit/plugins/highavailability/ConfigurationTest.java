@@ -16,16 +16,21 @@ package com.ericsson.gerrit.plugins.highavailability;
 
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.CACHE_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.CLEANUP_INTERVAL_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.CLUSTER_NAME_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.CONNECTION_TIMEOUT_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_CLEANUP_INTERVAL_MS;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_CLUSTER_NAME;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_MAX_TRIES;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_PEER_INFO_STRATEGY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_RETRY_INTERVAL;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_SKIP_INTERFACE_LIST;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_SYNCHRONIZE;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_THREAD_POOL_SIZE;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_TIMEOUT_MS;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.EVENT_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.HTTP_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.INDEX_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGROUPS_SUBSECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAIN_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAX_TRIES_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PASSWORD_KEY;
@@ -33,7 +38,10 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.PATTERN
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PEER_INFO_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.RETRY_INTERVAL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.SHARED_DIRECTORY_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.SKIP_INTERFACE_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.SOCKET_TIMEOUT_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.STATIC_SUBSECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.STRATEGY_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.SYNCHRONIZE_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.THREAD_POOL_SIZE_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.URL_KEY;
@@ -87,6 +95,8 @@ public class ConfigurationTest {
     when(cfgFactoryMock.getGlobalPluginConfig(pluginName)).thenReturn(configMock);
     when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY))
         .thenReturn(SHARED_DIRECTORY);
+    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+        .thenReturn(DEFAULT_PEER_INFO_STRATEGY);
     when(configMock.getStringList(CACHE_SECTION, null, PATTERN_KEY))
         .thenReturn(CUSTOM_CACHE_PATTERNS);
     site = new SitePaths(SITE_PATH);
@@ -97,21 +107,68 @@ public class ConfigurationTest {
   }
 
   @Test
+  public void testGetPeerInfoStrategy() {
+    initializeConfiguration();
+    assertThat(configuration.peerInfo().strategy()).isSameAs(DEFAULT_PEER_INFO_STRATEGY);
+
+    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+        .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
+    initializeConfiguration();
+    assertThat(configuration.peerInfo().strategy())
+        .isSameAs(Configuration.PeerInfoStrategy.JGROUPS);
+  }
+
+  @Test
   public void testGetUrl() throws Exception {
     initializeConfiguration();
-    assertThat(configuration.peerInfo().url()).isEqualTo(EMPTY);
+    assertThat(configuration.peerInfoStatic().url()).isEqualTo(EMPTY);
 
-    when(configMock.getString(PEER_INFO_SECTION, null, URL_KEY)).thenReturn(URL);
+    when(configMock.getString(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY)).thenReturn(URL);
     initializeConfiguration();
-    assertThat(configuration.peerInfo().url()).isEqualTo(URL);
+    assertThat(configuration.peerInfoStatic().url()).isEqualTo(URL);
   }
 
   @Test
   public void testGetUrlIsDroppingTrailingSlash() throws Exception {
-    when(configMock.getString(PEER_INFO_SECTION, null, URL_KEY)).thenReturn(URL + "/");
+    when(configMock.getString(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY)).thenReturn(URL + "/");
     initializeConfiguration();
     assertThat(configuration).isNotNull();
-    assertThat(configuration.peerInfo().url()).isEqualTo(URL);
+    assertThat(configuration.peerInfoStatic().url()).isEqualTo(URL);
+  }
+
+  @Test
+  public void testJGroupsPeerInfoNullWhenStaticPeerInfoConfig() throws Exception {
+    initializeConfiguration();
+    assertThat(configuration.peerInfoJGroups()).isNull();
+  }
+
+  @Test
+  public void testGetJGroupsChannel() throws Exception {
+    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+        .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
+    initializeConfiguration();
+    assertThat(configuration.peerInfoJGroups().clusterName()).isEqualTo(DEFAULT_CLUSTER_NAME);
+
+    when(configMock.getString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, CLUSTER_NAME_KEY))
+        .thenReturn("foo");
+    initializeConfiguration();
+    assertThat(configuration.peerInfoJGroups().clusterName()).isEqualTo("foo");
+  }
+
+  @Test
+  public void testGetJGroupsSkipInterface() throws Exception {
+    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+        .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
+    initializeConfiguration();
+    assertThat(configuration.peerInfoJGroups().skipInterface())
+        .isEqualTo(DEFAULT_SKIP_INTERFACE_LIST);
+
+    when(configMock.getStringList(PEER_INFO_SECTION, JGROUPS_SUBSECTION, SKIP_INTERFACE_KEY))
+        .thenReturn(new String[] {"lo*", "eth0"});
+    initializeConfiguration();
+    assertThat(configuration.peerInfoJGroups().skipInterface())
+        .containsAllOf("lo*", "eth0")
+        .inOrder();
   }
 
   @Test

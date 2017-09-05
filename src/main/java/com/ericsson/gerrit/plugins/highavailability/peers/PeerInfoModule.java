@@ -14,13 +14,25 @@
 
 package com.ericsson.gerrit.plugins.highavailability.peers;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
+import com.ericsson.gerrit.plugins.highavailability.peers.jgroups.JGroupsPeerInfoProvider;
 import com.google.common.base.Optional;
-import com.google.inject.AbstractModule;
+import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.TypeLiteral;
 
-public class PeerInfoModule extends AbstractModule {
+public class PeerInfoModule extends LifecycleModule {
+
+  private final Configuration.PeerInfoStrategy strategy;
+
+  public PeerInfoModule(Configuration.PeerInfoStrategy strategy) {
+    this.strategy = strategy;
+  }
+
   @Override
   protected void configure() {
-    bind(new TypeLiteral<Optional<PeerInfo>>() {}).toProvider(PluginConfigPeerInfoProvider.class);
+    bind(new TypeLiteral<Optional<PeerInfo>>() {}).toProvider(PeerInfoProvider.class);
+    if (strategy == Configuration.PeerInfoStrategy.JGROUPS) {
+      listener().to(JGroupsPeerInfoProvider.class);
+    }
   }
 }

@@ -28,3 +28,9 @@ def external_plugin_deps():
     artifact = "org.objenesis:objenesis:2.6",
     sha1 = "639033469776fd37c08358c6b92a4761feb2af4b",
   )
+
+  maven_jar(
+    name = "jgroups",
+    artifact = "org.jgroups:jgroups:3.6.5.Final",
+    sha1 = "fe575fe2d473566ad3f4ace4702ff4bfcf2587a6",
+  )

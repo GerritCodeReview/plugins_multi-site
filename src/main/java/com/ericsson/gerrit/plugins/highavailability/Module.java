@@ -50,7 +50,7 @@ class Module extends AbstractModule {
     if (config.index().synchronize()) {
       install(new IndexModule());
     }
-    install(new PeerInfoModule());
+    install(new PeerInfoModule(config.peerInfo().strategy()));
   }
 
   @Provides

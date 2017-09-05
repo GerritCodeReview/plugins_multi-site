@@ -55,7 +55,12 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
 
   @Test
   @UseLocalDisk
-  @GlobalPluginConfig(pluginName = "high-availability", name = "peerInfo.url", value = URL)
+  @GlobalPluginConfig(
+    pluginName = "high-availability",
+    name = "peerInfo.strategy",
+    value = "static"
+  )
+  @GlobalPluginConfig(pluginName = "high-availability", name = "peerInfo.static.url", value = URL)
   @GlobalPluginConfig(pluginName = "high-availability", name = "http.user", value = "admin")
   @GlobalPluginConfig(pluginName = "high-availability", name = "cache.threadPoolSize", value = "10")
   @GlobalPluginConfig(

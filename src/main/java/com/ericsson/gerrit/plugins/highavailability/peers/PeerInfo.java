@@ -18,7 +18,7 @@ public class PeerInfo {
 
   private final String directUrl;
 
-  PeerInfo(String directUrl) {
+  public PeerInfo(String directUrl) {
     this.directUrl = directUrl;
   }
 
