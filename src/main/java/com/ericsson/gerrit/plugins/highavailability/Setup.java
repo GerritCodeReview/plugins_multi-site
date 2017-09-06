@@ -95,7 +95,7 @@ public class Setup implements InitStep {
       configureHttp();
       configureCacheSection();
       configureIndexSection();
-      configureWebsessiosSection();
+      configureWebsessionsSection();
       if (!createHAReplicaSite(config)) {
         configureMainSection();
         configurePeerInfoSection();
@@ -168,7 +168,7 @@ public class Setup implements InitStep {
         str(DEFAULT_THREAD_POOL_SIZE));
   }
 
-  private void configureWebsessiosSection() {
+  private void configureWebsessionsSection() {
     ui.header("Websession section");
     promptAndSetString(
         "Cleanup interval", WEBSESSION_SECTION, CLEANUP_INTERVAL_KEY, DEFAULT_CLEANUP_INTERVAL);
