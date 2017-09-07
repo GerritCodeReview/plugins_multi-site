@@ -123,10 +123,12 @@ class RestForwarder implements Forwarder {
     }
 
     boolean execute() {
+      log.debug(name);
       for (; ; ) {
         try {
           execCnt++;
           tryOnce();
+          log.debug("{} OK", name);
           return true;
         } catch (ForwardingException e) {
           if (!e.isRecoverable()) {

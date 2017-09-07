@@ -79,6 +79,7 @@ public abstract class AbstractIndexRestApiServlet<T> extends HttpServlet {
     rsp.setCharacterEncoding(UTF_8.name());
     String path = req.getPathInfo();
     T id = parse(path.substring(path.lastIndexOf('/') + 1));
+    logger.debug("{} {} {}", operation.name(), type, id);
     try {
       Context.setForwardedEvent(true);
       AtomicInteger idLock = getAndIncrementIdLock(id);
