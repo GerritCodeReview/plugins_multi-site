@@ -71,7 +71,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class ConfigurationTest {
   private static final String PASS = "fakePass";
   private static final String USER = "fakeUser";
-  private static final String URL = "fakeUrl";
+  private static final String URL = "http://fakeUrl";
   private static final String EMPTY = "";
   private static final int TIMEOUT = 5000;
   private static final int MAX_TRIES = 5;
