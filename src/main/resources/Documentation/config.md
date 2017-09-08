@@ -22,6 +22,7 @@ File '@PLUGIN@.config'
 [peerInfo]
 :  strategy = jgroups
 [peerInfo "jgroups"]
+:  myUrl = local_instance_url
 :  cluster = foo
 :  skipInterface = lo*
 :  skipInterface = eth2
@@ -65,6 +66,14 @@ peerInfo.jgroups.skipInterface
     This option can be repeated many times in the `jgroups` section.
     Defaults to the list of: `lo*`, `utun*`, `awdl*` which are known to be
     inappropriate for JGroups communication.
+
+peerInfo.jgroups.myUrl
+:   The URL of this instance to be broadcast to other peers. If not specified, the
+    URL is determined from the `httpd.listenUrl` in the `gerrit.config`.
+    If `httpd.listenUrl` is configured with multiple values, is configured to work
+    with a reverse proxy (i.e. uses `proxy-http` or `proxy-https` scheme), or is
+    configured to listen on all local addresses (i.e. using hostname `*`), then
+    the URL must be explicitly specified with `myUrl`.
 
 NOTE: To work properly in certain environments, JGroups needs the System property
 `java.net.preferIPv4Stack` to be set to `true`.

@@ -11,21 +11,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 package com.ericsson.gerrit.plugins.highavailability.peers.jgroups;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
 import com.google.common.base.Optional;
 import com.google.gerrit.extensions.events.LifecycleListener;
-import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import java.net.InetAddress;
-import java.net.URISyntaxException;
-import java.net.UnknownHostException;
-import org.eclipse.jgit.lib.Config;
-import org.eclipse.jgit.transport.URIish;
 import org.jgroups.Address;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
@@ -56,9 +52,9 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
     }
   }
 
-  private final String myUrl;
   private final Configuration.PeerInfoJGroups jgroupsConfig;
   private final InetAddressFinder finder;
+  private final String myUrl;
 
   private JChannel channel;
   private Optional<PeerInfo> peerInfo = Optional.absent();
@@ -66,15 +62,10 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
 
   @Inject
   JGroupsPeerInfoProvider(
-      @GerritServerConfig Config srvConfig,
-      Configuration pluginConfiguration,
-      InetAddressFinder finder)
-      throws UnknownHostException, URISyntaxException {
-    String hostName = InetAddress.getLocalHost().getHostName();
-    URIish u = new URIish(srvConfig.getString("httpd", null, "listenUrl"));
-    this.myUrl = u.setHost(hostName).toString();
+      Configuration pluginConfiguration, InetAddressFinder finder, MyUrlProvider myUrlProvider) {
     this.jgroupsConfig = pluginConfiguration.peerInfoJGroups();
     this.finder = finder;
+    this.myUrl = myUrlProvider.get();
   }
 
   @Override
