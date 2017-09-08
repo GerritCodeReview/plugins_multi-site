@@ -33,6 +33,7 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.INDEX_S
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGROUPS_SUBSECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAIN_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAX_TRIES_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.MY_URL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PASSWORD_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PATTERN_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PEER_INFO_SECTION;
@@ -48,11 +49,15 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.URL_KEY
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.USER_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.WEBSESSION_SECTION;
 import static com.google.common.truth.Truth.assertThat;
+import static java.net.InetAddress.getLocalHost;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.ericsson.gerrit.plugins.highavailability.cache.CachePatternMatcher;
+import com.ericsson.gerrit.plugins.highavailability.peers.jgroups.MyUrlProvider;
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
@@ -62,7 +67,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -86,9 +93,12 @@ public class ConfigurationTest {
 
   @Mock private PluginConfigFactory cfgFactoryMock;
   @Mock private Config configMock;
+  @Mock private Config serverConfigMock;
   private SitePaths site;
   private Configuration configuration;
   private String pluginName = "high-availability";
+
+  @Rule public ExpectedException exception = ExpectedException.none();
 
   @Before
   public void setUp() throws IOException {
@@ -169,6 +179,121 @@ public class ConfigurationTest {
     assertThat(configuration.peerInfoJGroups().skipInterface())
         .containsAllOf("lo*", "eth0")
         .inOrder();
+  }
+
+  @Test
+  public void testGetJGroupsMyUrl() throws Exception {
+    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+        .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
+    initializeConfiguration();
+    assertThat(configuration.peerInfoJGroups().myUrl()).isNull();
+
+    when(configMock.getString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, MY_URL_KEY)).thenReturn(URL);
+    initializeConfiguration();
+    assertThat(configuration.peerInfoJGroups().myUrl()).isEqualTo(URL);
+
+    when(configMock.getString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, MY_URL_KEY))
+        .thenReturn(URL + "/");
+    initializeConfiguration();
+    assertThat(configuration.peerInfoJGroups().myUrl()).isEqualTo(URL);
+  }
+
+  @Test
+  public void testGetJGroupsMyUrlFromListenUrlWhenNoListenUrlSpecified() throws Exception {
+    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+        .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
+    initializeConfiguration();
+
+    when(serverConfigMock.getStringList("httpd", null, "listenUrl")).thenReturn(new String[] {});
+
+    exception.expect(ProvisionException.class);
+    exception.expectMessage("exactly 1 value configured; found 0");
+    getMyUrlProvider();
+  }
+
+  @Test
+  public void testGetJGroupsMyUrlFromListenUrlWhenMultipleListenUrlsSpecified() throws Exception {
+    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+        .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
+    initializeConfiguration();
+
+    when(serverConfigMock.getStringList("httpd", null, "listenUrl"))
+        .thenReturn(new String[] {"a", "b"});
+
+    exception.expect(ProvisionException.class);
+    exception.expectMessage("exactly 1 value configured; found 2");
+    getMyUrlProvider();
+  }
+
+  @Test
+  public void testGetJGroupsMyUrlFromListenUrlWhenReverseProxyConfigured() throws Exception {
+    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+        .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
+    initializeConfiguration();
+
+    when(serverConfigMock.getStringList("httpd", null, "listenUrl"))
+        .thenReturn(new String[] {"proxy-https://foo"});
+
+    exception.expect(ProvisionException.class);
+    exception.expectMessage("when configured as reverse-proxy");
+    getMyUrlProvider();
+  }
+
+  @Test
+  public void testGetJGroupsMyUrlFromListenUrlWhenWildcardConfigured() throws Exception {
+    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+        .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
+    initializeConfiguration();
+
+    when(serverConfigMock.getStringList("httpd", null, "listenUrl"))
+        .thenReturn(new String[] {"https://*"});
+
+    exception.expect(ProvisionException.class);
+    exception.expectMessage("when configured with wildcard");
+    getMyUrlProvider();
+  }
+
+  @Test
+  public void testGetJGroupsMyUrlOverridesListenUrl() throws Exception {
+    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+        .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
+    when(configMock.getString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, MY_URL_KEY)).thenReturn(URL);
+    initializeConfiguration();
+    assertThat(configuration.peerInfoJGroups().myUrl()).isEqualTo(URL);
+
+    verify(serverConfigMock, never()).getStringList("httpd", null, "listenUrl");
+    assertThat(getMyUrlProvider().get()).isEqualTo(URL);
+  }
+
+  @Test
+  public void testGetJGroupsMyUrlFromListenUrl() throws Exception {
+    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+        .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
+    when(configMock.getString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, MY_URL_KEY)).thenReturn(null);
+    initializeConfiguration();
+    assertThat(configuration.peerInfoJGroups().myUrl()).isNull();
+
+    when(serverConfigMock.getStringList("httpd", null, "listenUrl"))
+        .thenReturn(new String[] {"https://foo:8080"});
+
+    String hostName = getLocalHost().getHostName();
+    String expected = "https://" + hostName + ":8080";
+    assertThat(getMyUrlProvider().get()).isEqualTo(expected);
+
+    when(serverConfigMock.getStringList("httpd", null, "listenUrl"))
+        .thenReturn(new String[] {"https://foo"});
+
+    expected = "https://" + hostName;
+    assertThat(getMyUrlProvider().get()).isEqualTo(expected);
+
+    when(serverConfigMock.getStringList("httpd", null, "listenUrl"))
+        .thenReturn(new String[] {"https://foo/"});
+
+    assertThat(getMyUrlProvider().get()).isEqualTo(expected);
+  }
+
+  private MyUrlProvider getMyUrlProvider() {
+    return new MyUrlProvider(serverConfigMock, configuration);
   }
 
   @Test

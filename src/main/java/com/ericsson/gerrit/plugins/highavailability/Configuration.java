@@ -20,6 +20,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.PluginConfigFactory;
@@ -51,6 +52,7 @@ public class Configuration {
   static final String JGROUPS_SUBSECTION = PeerInfoStrategy.JGROUPS.name().toLowerCase();
   static final String URL_KEY = "url";
   static final String STRATEGY_KEY = "strategy";
+  static final String MY_URL_KEY = "myUrl";
 
   // http section
   static final String HTTP_SECTION = "http";
@@ -197,6 +199,11 @@ public class Configuration {
     return ((value == null) ? defaultValue : value);
   }
 
+  @Nullable
+  private static String trimTrailingSlash(@Nullable String in) {
+    return in == null ? null : CharMatcher.is('/').trimTrailingFrom(in);
+  }
+
   public static class Main {
     private final Path sharedDirectory;
 
@@ -235,10 +242,8 @@ public class Configuration {
 
     private PeerInfoStatic(Config cfg) {
       url =
-          CharMatcher.is('/')
-              .trimTrailingFrom(
-                  Strings.nullToEmpty(
-                      cfg.getString(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY)));
+          trimTrailingSlash(
+              Strings.nullToEmpty(cfg.getString(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY)));
     }
 
     public String url() {
@@ -249,6 +254,7 @@ public class Configuration {
   public static class PeerInfoJGroups {
     private final ImmutableList<String> skipInterface;
     private final String clusterName;
+    private final String myUrl;
 
     private PeerInfoJGroups(Config cfg) {
       String[] skip = cfg.getStringList(PEER_INFO_SECTION, JGROUPS_SUBSECTION, SKIP_INTERFACE_KEY);
@@ -256,6 +262,7 @@ public class Configuration {
       clusterName =
           getString(
               cfg, PEER_INFO_SECTION, JGROUPS_SUBSECTION, CLUSTER_NAME_KEY, DEFAULT_CLUSTER_NAME);
+      myUrl = trimTrailingSlash(cfg.getString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, MY_URL_KEY));
     }
 
     public ImmutableList<String> skipInterface() {
@@ -264,6 +271,10 @@ public class Configuration {
 
     public String clusterName() {
       return clusterName;
+    }
+
+    public String myUrl() {
+      return myUrl;
     }
   }
 
