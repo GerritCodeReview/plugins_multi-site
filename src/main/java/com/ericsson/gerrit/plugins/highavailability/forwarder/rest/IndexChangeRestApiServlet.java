@@ -133,7 +133,9 @@ class IndexChangeRestApiServlet extends HttpServlet {
 
   private void removeChangeIdLock(Change.Id id) {
     synchronized (changeIdLocks) {
-      changeIdLocks.remove(id);
+      if (changeIdLocks.get(id).get() == 0) {
+        changeIdLocks.remove(id);
+      }
     }
   }
 }

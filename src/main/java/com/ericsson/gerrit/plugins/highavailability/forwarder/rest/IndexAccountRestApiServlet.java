@@ -100,7 +100,9 @@ class IndexAccountRestApiServlet extends HttpServlet {
 
   private void removeAccountIdLock(Account.Id id) {
     synchronized (accountIdLocks) {
-      accountIdLocks.remove(id);
+      if (accountIdLocks.get(id).get() == 0) {
+        accountIdLocks.remove(id);
+      }
     }
   }
 }
