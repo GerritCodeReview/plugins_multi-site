@@ -123,10 +123,12 @@ class RestForwarder implements Forwarder {
     }
 
     boolean execute() {
+      log.debug(name);
       for (; ; ) {
         try {
           execCnt++;
           tryOnce();
+          log.debug("{} OK", name);
           return true;
         } catch (ForwardingException e) {
           if (!e.isRecoverable()) {
@@ -138,7 +140,7 @@ class RestForwarder implements Forwarder {
             return false;
           }
 
-          logRetry(e);
+          log.debug("Retrying to {} caused by '{}'", name, e);
           try {
             Thread.sleep(cfg.http().retryInterval());
           } catch (InterruptedException ie) {
@@ -165,12 +167,6 @@ class RestForwarder implements Forwarder {
 
     boolean isRecoverable(IOException e) {
       return !(e instanceof SSLException);
-    }
-
-    void logRetry(Throwable cause) {
-      if (log.isDebugEnabled()) {
-        log.debug("Retrying to {} caused by '{}'", name, cause);
-      }
     }
   }
 }

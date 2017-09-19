@@ -34,10 +34,10 @@ import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
 import com.github.tomakehurst.wiremock.http.Fault;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
-import com.google.common.base.Optional;
 import com.google.inject.util.Providers;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -186,7 +186,7 @@ public class HttpSessionTest {
   public void testNoRequestWhenPeerInfoUnknown() throws IOException {
     httpSession =
         new HttpSession(
-            new HttpClientProvider(configMock).get(), Providers.of(Optional.<PeerInfo>absent()));
+            new HttpClientProvider(configMock).get(), Providers.of(Optional.<PeerInfo>empty()));
     try {
       httpSession.post(ENDPOINT);
       fail("Expected PeerInfoNotAvailableException");

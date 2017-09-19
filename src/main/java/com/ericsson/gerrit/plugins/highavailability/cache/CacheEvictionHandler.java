@@ -21,35 +21,31 @@ import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.cache.CacheRemovalListener;
 import com.google.inject.Inject;
 import java.util.concurrent.Executor;
-import java.util.regex.Pattern;
 
 class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
   private final Executor executor;
   private final Forwarder forwarder;
   private final String pluginName;
-  private final Pattern pattern;
+  private final CachePatternMatcher matcher;
 
   @Inject
   CacheEvictionHandler(
-      Forwarder forwarder, @CacheExecutor Executor executor, @PluginName String pluginName) {
+      Forwarder forwarder,
+      @CacheExecutor Executor executor,
+      @PluginName String pluginName,
+      CachePatternMatcher matcher) {
     this.forwarder = forwarder;
     this.executor = executor;
     this.pluginName = pluginName;
-    pattern =
-        Pattern.compile(
-            "^accounts.*|^groups.*|ldap_groups|ldap_usernames|^project.*|sshkeys|web_sessions");
+    this.matcher = matcher;
   }
 
   @Override
   public void onRemoval(
       String pluginName, String cacheName, RemovalNotification<K, V> notification) {
-    if (!Context.isForwardedEvent() && !notification.wasEvicted() && isSynchronized(cacheName)) {
+    if (!Context.isForwardedEvent() && !notification.wasEvicted() && matcher.matches(cacheName)) {
       executor.execute(new CacheEvictionTask(cacheName, notification.getKey()));
     }
-  }
-
-  private boolean isSynchronized(String cacheName) {
-    return pattern.matcher(cacheName).matches();
   }
 
   class CacheEvictionTask implements Runnable {

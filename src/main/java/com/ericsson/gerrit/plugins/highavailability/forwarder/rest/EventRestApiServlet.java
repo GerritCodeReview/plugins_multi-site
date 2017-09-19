@@ -67,6 +67,7 @@ class EventRestApiServlet extends HttpServlet {
         return;
       }
       Event event = getEventFromRequest(req);
+      logger.debug("event {}", event.getType());
       dispatcher.postEvent(event);
       rsp.setStatus(SC_NO_CONTENT);
     } catch (OrmException e) {

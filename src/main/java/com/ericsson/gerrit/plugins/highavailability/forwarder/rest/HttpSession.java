@@ -16,13 +16,13 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
-import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.net.MediaType;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -57,7 +57,7 @@ class HttpSession {
   }
 
   private PeerInfo getPeerInfo() throws PeerInfoNotAvailableException {
-    PeerInfo info = peerInfo.get().orNull();
+    PeerInfo info = peerInfo.get().orElse(null);
     if (info == null) {
       throw new PeerInfoNotAvailableException();
     }

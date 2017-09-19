@@ -14,16 +14,47 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.*;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.CACHE_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.CLEANUP_INTERVAL_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.CLUSTER_NAME_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.CONNECTION_TIMEOUT_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_CLEANUP_INTERVAL;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_CLUSTER_NAME;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_MAX_TRIES;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_RETRY_INTERVAL;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_SHARED_DIRECTORY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_THREAD_POOL_SIZE;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_TIMEOUT_MS;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.HTTP_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.INDEX_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGROUPS_SUBSECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAIN_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAX_TRIES_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.PASSWORD_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.PEER_INFO_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.RETRY_INTERVAL_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.SHARED_DIRECTORY_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.SOCKET_TIMEOUT_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.STATIC_SUBSECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.STRATEGY_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.THREAD_POOL_SIZE_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.URL_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.USER_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.WEBSESSION_SECTION;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStrategy;
 import com.google.common.base.Strings;
 import com.google.gerrit.common.FileUtil;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.pgm.init.api.ConsoleUI;
+import com.google.gerrit.pgm.init.api.InitFlags;
 import com.google.gerrit.pgm.init.api.InitStep;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.EnumSet;
 import java.util.Objects;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.eclipse.jgit.util.FS;
@@ -32,14 +63,24 @@ public class Setup implements InitStep {
 
   private final ConsoleUI ui;
   private final String pluginName;
+  private final InitFlags flags;
   private final SitePaths site;
+  private final SetupLocalHAReplica setupLocalHAReplica;
+
   private FileBasedConfig config;
 
   @Inject
-  public Setup(ConsoleUI ui, @PluginName String pluginName, SitePaths site) {
+  public Setup(
+      ConsoleUI ui,
+      @PluginName String pluginName,
+      InitFlags flags,
+      SitePaths site,
+      SetupLocalHAReplica setupLocalHAReplica) {
     this.ui = ui;
     this.pluginName = pluginName;
+    this.flags = flags;
     this.site = site;
+    this.setupLocalHAReplica = setupLocalHAReplica;
   }
 
   @Override
@@ -52,29 +93,47 @@ public class Setup implements InitStep {
       Path pluginConfigFile = site.etc_dir.resolve(pluginName + ".config");
       config = new FileBasedConfig(pluginConfigFile.toFile(), FS.DETECTED);
       config.load();
-      configureMainSection();
-      configurePeerInfoSection();
       configureHttp();
       configureCacheSection();
       configureIndexSection();
-      configureWebsessiosSection();
-      config.save();
+      configureWebsessionsSection();
+      if (!createHAReplicaSite(config)) {
+        configureMainSection();
+        configurePeerInfoSection();
+        config.save();
+      }
+      flags.cfg.setBoolean("database", "h2", "autoServer", true);
     }
   }
 
   private void configureMainSection() {
     ui.header("Main section");
-    String sharedDir =
-        promptAndSetString("Shared directory", MAIN_SECTION, SHARED_DIRECTORY_KEY, null);
-    if (!Strings.isNullOrEmpty(sharedDir)) {
-      Path shared = site.site_path.resolve(sharedDir);
-      FileUtil.mkdirsOrDie(shared, "cannot create " + shared);
+    String sharedDirDefault = ui.isBatch() ? DEFAULT_SHARED_DIRECTORY : null;
+    String shared =
+        promptAndSetString(
+            "Shared directory", MAIN_SECTION, SHARED_DIRECTORY_KEY, sharedDirDefault);
+    if (!Strings.isNullOrEmpty(shared)) {
+      Path resolved = site.site_path.resolve(Paths.get(shared));
+      FileUtil.mkdirsOrDie(resolved, "cannot create " + resolved);
     }
   }
 
   private void configurePeerInfoSection() {
     ui.header("PeerInfo section");
-    promptAndSetString("Peer URL", PEER_INFO_SECTION, URL_KEY, null);
+    PeerInfoStrategy strategy =
+        ui.readEnum(
+            PeerInfoStrategy.JGROUPS, EnumSet.allOf(PeerInfoStrategy.class), "Peer info strategy");
+    config.setEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, strategy);
+    if (strategy == PeerInfoStrategy.STATIC) {
+      promptAndSetString("Peer URL", PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY, null);
+    } else {
+      promptAndSetString(
+          "JGroups cluster name",
+          PEER_INFO_SECTION,
+          JGROUPS_SUBSECTION,
+          CLUSTER_NAME_KEY,
+          DEFAULT_CLUSTER_NAME);
+    }
   }
 
   private void configureHttp() {
@@ -112,7 +171,7 @@ public class Setup implements InitStep {
         str(DEFAULT_THREAD_POOL_SIZE));
   }
 
-  private void configureWebsessiosSection() {
+  private void configureWebsessionsSection() {
     ui.header("Websession section");
     promptAndSetString(
         "Cleanup interval", WEBSESSION_SECTION, CLEANUP_INTERVAL_KEY, DEFAULT_CLEANUP_INTERVAL);
@@ -120,13 +179,18 @@ public class Setup implements InitStep {
 
   private String promptAndSetString(
       String title, String section, String name, String defaultValue) {
-    String oldValue = Strings.emptyToNull(config.getString(section, null, name));
+    return promptAndSetString(title, section, null, name, defaultValue);
+  }
+
+  private String promptAndSetString(
+      String title, String section, String subsection, String name, String defaultValue) {
+    String oldValue = Strings.emptyToNull(config.getString(section, subsection, name));
     String newValue = ui.readString(oldValue != null ? oldValue : defaultValue, title);
     if (!Objects.equals(oldValue, newValue)) {
       if (!Strings.isNullOrEmpty(newValue)) {
-        config.setString(section, null, name, newValue);
+        config.setString(section, subsection, name, newValue);
       } else {
-        config.unset(section, name, name);
+        config.unset(section, subsection, name);
       }
     }
     return newValue;
@@ -134,6 +198,30 @@ public class Setup implements InitStep {
 
   private static String str(int n) {
     return Integer.toString(n);
+  }
+
+  private boolean createHAReplicaSite(FileBasedConfig pluginConfig) throws Exception {
+    ui.header("HA replica site setup");
+    ui.message(
+        "It is possible to create a copy of the master site and configure both sites to run\n"
+            + "in HA mode as peers. This is possible when the directory where the copy will be\n"
+            + "created is accessible from this machine\n"
+            + "\n"
+            + "NOTE: This step is optional. If you want to create the other site manually, or\n"
+            + "if the other site needs to be created in a directory not accessible from this\n"
+            + "machine then please skip this step.\n");
+    if (ui.yesno(true, "Create a HA replica site")) {
+      String replicaPath = ui.readString("ha/1", "Location of the HA replica");
+      Path replica = site.site_path.resolve(Paths.get(replicaPath));
+      if (Files.exists(replica)) {
+        ui.message("%s already exists, exiting", replica);
+        return true;
+      }
+      config.save();
+      setupLocalHAReplica.run(new SitePaths(replica), pluginConfig);
+      return true;
+    }
+    return false;
   }
 
   @Override

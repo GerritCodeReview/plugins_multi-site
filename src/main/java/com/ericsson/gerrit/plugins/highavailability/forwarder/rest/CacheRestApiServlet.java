@@ -19,6 +19,7 @@ import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
 import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
 import com.google.common.cache.Cache;
 import com.google.gerrit.extensions.registration.DynamicMap;
@@ -37,7 +38,6 @@ import org.slf4j.LoggerFactory;
 class CacheRestApiServlet extends HttpServlet {
   private static final int CACHENAME_INDEX = 1;
   private static final long serialVersionUID = -1L;
-  private static final String GERRIT = "gerrit";
   private static final Logger logger = LoggerFactory.getLogger(CacheRestApiServlet.class);
 
   private final DynamicMap<Cache<?, ?>> cacheMap;
@@ -57,16 +57,43 @@ class CacheRestApiServlet extends HttpServlet {
       String cacheName = params.get(CACHENAME_INDEX);
       String json = req.getReader().readLine();
       Object key = GsonParser.fromJson(cacheName, json);
-      Cache<?, ?> cache = cacheMap.get(GERRIT, cacheName);
-      Context.setForwardedEvent(true);
-      evictCache(cache, cacheName, key);
-      rsp.setStatus(SC_NO_CONTENT);
+      CacheParameters cacheKey = getCacheParameters(cacheName);
+      Cache<?, ?> cache = cacheMap.get(cacheKey.pluginName, cacheKey.cacheName);
+      if (cache == null) {
+        String msg = String.format("cache %s not found", cacheName);
+        logger.error("Failed to process eviction request: " + msg);
+        sendError(rsp, SC_BAD_REQUEST, msg);
+      } else {
+        Context.setForwardedEvent(true);
+        evictCache(cache, cacheKey.cacheName, key);
+        rsp.setStatus(SC_NO_CONTENT);
+      }
     } catch (IOException e) {
       logger.error("Failed to process eviction request: " + e.getMessage(), e);
       sendError(rsp, SC_BAD_REQUEST, e.getMessage());
     } finally {
       Context.unsetForwardedEvent();
     }
+  }
+
+  @VisibleForTesting
+  public static class CacheParameters {
+    public final String pluginName;
+    public final String cacheName;
+
+    public CacheParameters(String pluginName, String cacheName) {
+      this.pluginName = pluginName;
+      this.cacheName = cacheName;
+    }
+  }
+
+  @VisibleForTesting
+  public static CacheParameters getCacheParameters(String cache) {
+    int dot = cache.indexOf(".");
+    if (dot > 0) {
+      return new CacheParameters(cache.substring(0, dot), cache.substring(dot + 1));
+    }
+    return new CacheParameters(Constants.GERRIT, cache);
   }
 
   private static void sendError(HttpServletResponse rsp, int statusCode, String message) {
