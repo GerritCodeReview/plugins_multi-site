@@ -153,7 +153,7 @@ public class ConfigurationTest {
   }
 
   @Test
-  public void testGetJGroupsChannel() throws Exception {
+  public void testGetJGroupsCluster() throws Exception {
     when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
         .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
     initializeConfiguration();
