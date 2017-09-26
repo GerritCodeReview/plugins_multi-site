@@ -29,12 +29,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class InetAddressFinderTest {
 
   @Mock private Configuration configuration;
-  @Mock private Configuration.PeerInfoJGroups jgroupsConfig;
+  @Mock private Configuration.JGroups jgroupsConfig;
   private InetAddressFinder finder;
 
   @Before
   public void setUp() {
-    when(configuration.peerInfoJGroups()).thenReturn(jgroupsConfig);
+    when(configuration.jgroups()).thenReturn(jgroupsConfig);
     finder = new InetAddressFinder(configuration);
   }
 

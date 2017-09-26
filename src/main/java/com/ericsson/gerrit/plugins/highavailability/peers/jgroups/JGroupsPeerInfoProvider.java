@@ -52,7 +52,7 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
     }
   }
 
-  private final Configuration.PeerInfoJGroups jgroupsConfig;
+  private final Configuration.JGroups jgroupsConfig;
   private final InetAddressFinder finder;
   private final String myUrl;
 
@@ -63,7 +63,7 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
   @Inject
   JGroupsPeerInfoProvider(
       Configuration pluginConfiguration, InetAddressFinder finder, MyUrlProvider myUrlProvider) {
-    this.jgroupsConfig = pluginConfiguration.peerInfoJGroups();
+    this.jgroupsConfig = pluginConfiguration.jgroups();
     this.finder = finder;
     this.myUrl = myUrlProvider.get();
   }
