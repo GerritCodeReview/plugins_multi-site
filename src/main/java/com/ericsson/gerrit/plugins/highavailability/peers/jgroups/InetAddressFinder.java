@@ -32,12 +32,12 @@ import java.util.Optional;
 public class InetAddressFinder {
 
   private final boolean preferIPv4;
-  private final Configuration.PeerInfoJGroups jgroupsConfig;
+  private final Configuration.JGroups jgroupsConfig;
 
   @Inject
   InetAddressFinder(Configuration pluginConfiguration) {
     preferIPv4 = Boolean.getBoolean("java.net.preferIPv4Stack");
-    jgroupsConfig = pluginConfiguration.peerInfoJGroups();
+    jgroupsConfig = pluginConfiguration.jgroups();
   }
 
   /**

@@ -45,7 +45,7 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
     implements Provider<Optional<PeerInfo>>, LifecycleListener {
   private static final Logger log = LoggerFactory.getLogger(JGroupsPeerInfoProvider.class);
 
-  private final Configuration.PeerInfoJGroups jgroupsConfig;
+  private final Configuration.JGroups jgroupsConfig;
   private final InetAddressFinder finder;
   private final String myUrl;
 
@@ -56,7 +56,7 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
   @Inject
   JGroupsPeerInfoProvider(
       Configuration pluginConfiguration, InetAddressFinder finder, MyUrlProvider myUrlProvider) {
-    this.jgroupsConfig = pluginConfiguration.peerInfoJGroups();
+    this.jgroupsConfig = pluginConfiguration.jgroups();
     this.finder = finder;
     this.myUrl = myUrlProvider.get();
   }
