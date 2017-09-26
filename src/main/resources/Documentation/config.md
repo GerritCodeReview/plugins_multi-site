@@ -23,7 +23,7 @@ File '@PLUGIN@.config'
 :  strategy = jgroups
 [peerInfo "jgroups"]
 :  myUrl = local_instance_url
-:  cluster = foo
+:  clusterName = foo
 :  skipInterface = lo*
 :  skipInterface = eth2
 [http]
