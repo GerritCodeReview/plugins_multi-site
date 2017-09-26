@@ -30,6 +30,7 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.EVENT_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.HTTP_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.INDEX_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGROUPS_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGROUPS_SUBSECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAIN_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAX_TRIES_KEY;
@@ -157,12 +158,12 @@ public class ConfigurationTest {
     when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
         .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
     initializeConfiguration();
-    assertThat(configuration.peerInfoJGroups().clusterName()).isEqualTo(DEFAULT_CLUSTER_NAME);
+    assertThat(configuration.jgroups().clusterName()).isEqualTo(DEFAULT_CLUSTER_NAME);
 
-    when(configMock.getString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, CLUSTER_NAME_KEY))
+    when(configMock.getString(JGROUPS_SECTION, null, CLUSTER_NAME_KEY))
         .thenReturn("foo");
     initializeConfiguration();
-    assertThat(configuration.peerInfoJGroups().clusterName()).isEqualTo("foo");
+    assertThat(configuration.jgroups().clusterName()).isEqualTo("foo");
   }
 
   @Test
@@ -170,13 +171,13 @@ public class ConfigurationTest {
     when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
         .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
     initializeConfiguration();
-    assertThat(configuration.peerInfoJGroups().skipInterface())
+    assertThat(configuration.jgroups().skipInterface())
         .isEqualTo(DEFAULT_SKIP_INTERFACE_LIST);
 
-    when(configMock.getStringList(PEER_INFO_SECTION, JGROUPS_SUBSECTION, SKIP_INTERFACE_KEY))
+    when(configMock.getStringList(JGROUPS_SECTION, null, SKIP_INTERFACE_KEY))
         .thenReturn(new String[] {"lo*", "eth0"});
     initializeConfiguration();
-    assertThat(configuration.peerInfoJGroups().skipInterface())
+    assertThat(configuration.jgroups().skipInterface())
         .containsAllOf("lo*", "eth0")
         .inOrder();
   }
