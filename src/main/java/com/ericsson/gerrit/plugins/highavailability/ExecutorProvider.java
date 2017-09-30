@@ -17,11 +17,11 @@ package com.ericsson.gerrit.plugins.highavailability;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.inject.Provider;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
-public abstract class ExecutorProvider
-    implements Provider<ScheduledExecutorService>, LifecycleListener {
-  private ScheduledExecutorService executor;
+public abstract class ExecutorProvider implements Provider<Executor>, LifecycleListener {
+  private ExecutorService executor;
 
   protected ExecutorProvider(WorkQueue workQueue, int threadPoolSize, String threadNamePrefix) {
     executor = workQueue.createQueue(threadPoolSize, threadNamePrefix);
@@ -39,7 +39,7 @@ public abstract class ExecutorProvider
   }
 
   @Override
-  public ScheduledExecutorService get() {
+  public Executor get() {
     return executor;
   }
 }
