@@ -160,8 +160,7 @@ public class ConfigurationTest {
     initializeConfiguration();
     assertThat(configuration.jgroups().clusterName()).isEqualTo(DEFAULT_CLUSTER_NAME);
 
-    when(configMock.getString(JGROUPS_SECTION, null, CLUSTER_NAME_KEY))
-        .thenReturn("foo");
+    when(configMock.getString(JGROUPS_SECTION, null, CLUSTER_NAME_KEY)).thenReturn("foo");
     initializeConfiguration();
     assertThat(configuration.jgroups().clusterName()).isEqualTo("foo");
   }
@@ -171,15 +170,12 @@ public class ConfigurationTest {
     when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
         .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
     initializeConfiguration();
-    assertThat(configuration.jgroups().skipInterface())
-        .isEqualTo(DEFAULT_SKIP_INTERFACE_LIST);
+    assertThat(configuration.jgroups().skipInterface()).isEqualTo(DEFAULT_SKIP_INTERFACE_LIST);
 
     when(configMock.getStringList(JGROUPS_SECTION, null, SKIP_INTERFACE_KEY))
         .thenReturn(new String[] {"lo*", "eth0"});
     initializeConfiguration();
-    assertThat(configuration.jgroups().skipInterface())
-        .containsAllOf("lo*", "eth0")
-        .inOrder();
+    assertThat(configuration.jgroups().skipInterface()).containsAllOf("lo*", "eth0").inOrder();
   }
 
   @Test
