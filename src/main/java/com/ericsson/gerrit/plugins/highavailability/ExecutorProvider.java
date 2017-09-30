@@ -17,10 +17,9 @@ package com.ericsson.gerrit.plugins.highavailability;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.inject.Provider;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.Executor;
 
-public abstract class ExecutorProvider
-    implements Provider<ScheduledThreadPoolExecutor>, LifecycleListener {
+public abstract class ExecutorProvider implements Provider<Executor>, LifecycleListener {
   private WorkQueue.Executor executor;
 
   protected ExecutorProvider(WorkQueue workQueue, int threadPoolSize, String threadNamePrefix) {
@@ -40,7 +39,7 @@ public abstract class ExecutorProvider
   }
 
   @Override
-  public ScheduledThreadPoolExecutor get() {
+  public Executor get() {
     return executor;
   }
 }
