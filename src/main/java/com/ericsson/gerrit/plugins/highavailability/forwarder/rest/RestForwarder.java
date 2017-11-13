@@ -131,22 +131,22 @@ class RestForwarder implements Forwarder {
           log.debug("{} OK", name);
           return true;
         } catch (ForwardingException e) {
-          if (e.isRecoverable()) {
-            log.debug("Failed to {}", name, e);
-          } else {
-            log.error("Failed to {}", name, e);
+          int maxTries = cfg.http().maxTries();
+          log.debug("Failed to {} [{}/{}]", name, execCnt, maxTries, e);
+          if (!e.isRecoverable()) {
+            log.error("{} failed with unrecoverable error; giving up", name);
             return false;
           }
-          if (execCnt >= cfg.http().maxTries()) {
-            log.error("Failed to {}, after {} tries", name, cfg.http().maxTries());
+          if (execCnt >= maxTries) {
+            log.error("Failed to {} after {} tries; giving up", name, maxTries);
             return false;
           }
 
-          log.debug("Retrying to {} caused by '{}'", name, e);
+          log.debug("Retrying to {}", name);
           try {
             Thread.sleep(cfg.http().retryInterval());
           } catch (InterruptedException ie) {
-            log.error("{} was interrupted, giving up", name, ie);
+            log.error("{} was interrupted; giving up", name, ie);
             Thread.currentThread().interrupt();
             return false;
           }
