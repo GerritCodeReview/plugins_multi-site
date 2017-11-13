@@ -131,7 +131,9 @@ class RestForwarder implements Forwarder {
           log.debug("{} OK", name);
           return true;
         } catch (ForwardingException e) {
-          if (!e.isRecoverable()) {
+          if (e.isRecoverable()) {
+            log.debug("Failed to {}", name, e);
+          } else {
             log.error("Failed to {}", name, e);
             return false;
           }
