@@ -32,13 +32,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Provider which uses JGroups to find the peer gerrit instances. On startup every gerrit instance
- * joins a jgroups channel. Whenever the set of channel members changes each gerrit server publishes
- * its url to all channel members.
+ * creates its own channel and joins jgroup cluster. Whenever the set of cluster members changes
+ * each gerrit server publishes its url to all cluster members (publishes it to all channels).
  *
- * <p>This provider maintains a list of all members which joined the jgroups channel. This may be
+ * <p>This provider maintains a list of all members which joined the jgroups cluster. This may be
  * more than two. But will always pick the first node which sent its url as the peer to be returned
  * by {@link #get()}. It will continue to return that node until that node leaves the jgroups
- * channel.
+ * cluster.
  */
 @Singleton
 public class JGroupsPeerInfoProvider extends ReceiverAdapter
@@ -81,8 +81,10 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
     synchronized (this) {
       if (view.getMembers().size() > 2) {
         log.warn(
-            "{} members joined the jgroups channel {}. Only two members are supported. Members: {}",
+            "{} members joined the jgroups cluster {} ({}). "
+                + " Only two members are supported. Members: {}",
             view.getMembers().size(),
+            jgroupsConfig.clusterName(),
             channel.getName(),
             view.getMembers());
       }
@@ -98,7 +100,10 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
       } catch (Exception e) {
         // channel communication caused an error. Can't do much about it.
         log.error(
-            "Sending a message over jgroups channel {} failed", jgroupsConfig.clusterName(), e);
+            "Sending a message over channel {} to cluster {} failed",
+            channel.getName(),
+            jgroupsConfig.clusterName(),
+            e);
       }
     }
   }
@@ -113,9 +118,16 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
       channel.setReceiver(this);
       channel.setDiscardOwnMessages(true);
       channel.connect(jgroupsConfig.clusterName());
-      log.info("Succesfully joined jgroups channel {}", channel);
+      log.info(
+          "Channel {} successfully joined jgroups cluster {}",
+          channel.getName(),
+          jgroupsConfig.clusterName());
     } catch (Exception e) {
-      log.error("joining jgroups channel {} failed", e);
+      log.error(
+          "joining cluster {} for channel {} failed",
+          jgroupsConfig.clusterName(),
+          channel.getName(),
+          e);
     }
   }
 
@@ -131,7 +143,8 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
 
   @Override
   public void stop() {
-    log.info("closing jgroups channel {}", jgroupsConfig.clusterName());
+    log.info(
+        "closing jgroups channel {} (cluster {})", channel.getName(), jgroupsConfig.clusterName());
     channel.close();
     peerInfo = Optional.empty();
     peerAddress = null;
