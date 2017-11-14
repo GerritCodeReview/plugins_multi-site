@@ -19,6 +19,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheStats;
 import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.common.Nullable;
+import com.google.gerrit.common.TimeUtil;
 import com.google.gerrit.httpd.WebSessionManager;
 import com.google.gerrit.httpd.WebSessionManager.Val;
 import com.google.inject.Inject;
@@ -32,6 +33,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +43,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutionException;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,8 +75,8 @@ public class FileBasedWebsessionCache implements Cache<String, WebSessionManager
     for (Path path : listFiles()) {
       Val val = readFile(path);
       if (val != null) {
-        DateTime expires = new DateTime(val.getExpiresAt());
-        if (expires.isBefore(new DateTime())) {
+        Instant expires = Instant.ofEpochMilli(val.getExpiresAt());
+        if (expires.isBefore(Instant.ofEpochMilli(TimeUtil.nowMs()))) {
           deleteFile(path);
         }
       }

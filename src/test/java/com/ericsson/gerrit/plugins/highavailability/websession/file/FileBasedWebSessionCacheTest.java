@@ -18,20 +18,23 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.httpd.WebSessionManager.Val;
+import com.google.gerrit.testutil.TestTimeUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeUtils;
+import java.util.concurrent.TimeUnit;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -78,17 +81,19 @@ public class FileBasedWebSessionCacheTest {
     loadKeyToCacheDir(EXISTING_KEY);
     try {
       long existingKeyExpireAt = cache.getIfPresent(EXISTING_KEY).getExpiresAt();
-      DateTimeUtils.setCurrentMillisFixed(
-          new DateTime(existingKeyExpireAt).minusHours(1).getMillis());
+      TestTimeUtil.resetWithClockStep(1, TimeUnit.SECONDS);
+      TestTimeUtil.setClock(
+          new Timestamp(
+              Instant.ofEpochMilli(existingKeyExpireAt).minus(1, ChronoUnit.HOURS).toEpochMilli()));
       cache.cleanUp();
       assertThat(isDirEmpty(websessionDir)).isFalse();
-
-      DateTimeUtils.setCurrentMillisFixed(
-          new DateTime(existingKeyExpireAt).plusHours(1).getMillis());
+      TestTimeUtil.setClock(
+          new Timestamp(
+              Instant.ofEpochMilli(existingKeyExpireAt).plus(1, ChronoUnit.HOURS).toEpochMilli()));
       cache.cleanUp();
       assertThat(isDirEmpty(websessionDir)).isTrue();
     } finally {
-      DateTimeUtils.setCurrentMillisSystem();
+      TestTimeUtil.useSystemTime();
     }
   }
 
