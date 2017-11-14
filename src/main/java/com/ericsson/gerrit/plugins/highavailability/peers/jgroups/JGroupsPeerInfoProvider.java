@@ -113,9 +113,9 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
       channel.setReceiver(this);
       channel.setDiscardOwnMessages(true);
       channel.connect(jgroupsConfig.clusterName());
-      log.info("Succesfully joined jgroups channel {}", channel);
+      log.info("Successfully joined jgroups channel {}", channel.getName());
     } catch (Exception e) {
-      log.error("joining jgroups channel {} failed", e);
+      log.error("joining jgroups channel {} failed", channel.getName(), e);
     }
   }
 
