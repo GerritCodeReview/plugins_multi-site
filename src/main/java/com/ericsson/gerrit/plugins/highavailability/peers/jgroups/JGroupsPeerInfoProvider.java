@@ -114,6 +114,9 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
       Optional<InetAddress> address = finder.findAddress();
       if (address.isPresent()) {
         channel.getProtocolStack().getTransport().setBindAddress(address.get());
+        log.debug("Channel bound to {}", address.get());
+      } else {
+        log.warn("Channel not bound: address not present");
       }
       channel.setReceiver(this);
       channel.setDiscardOwnMessages(true);
