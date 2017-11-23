@@ -248,7 +248,7 @@ public class Configuration {
 
     private PeerInfoJGroups(Config cfg) {
       String[] skip = cfg.getStringList(PEER_INFO_SECTION, JGROUPS_SUBSECTION, SKIP_INTERFACE_KEY);
-      skipInterface = skip == null ? DEFAULT_SKIP_INTERFACE_LIST : ImmutableList.copyOf(skip);
+      skipInterface = skip.length == 0 ? DEFAULT_SKIP_INTERFACE_LIST : ImmutableList.copyOf(skip);
       clusterName =
           getString(
               cfg, PEER_INFO_SECTION, JGROUPS_SUBSECTION, CLUSTER_NAME_KEY, DEFAULT_CLUSTER_NAME);
