@@ -14,6 +14,7 @@
 
 package com.ericsson.gerrit.plugins.highavailability.health;
 
+import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static javax.servlet.http.HttpServletResponse.SC_SERVICE_UNAVAILABLE;
 
@@ -56,6 +57,7 @@ public class HealthServlet extends HttpServlet {
       try {
         rsp.sendError(SC_SERVICE_UNAVAILABLE);
       } catch (IOException e) {
+        rsp.setStatus(SC_INTERNAL_SERVER_ERROR);
         log.error("Failed to send error response", e);
       }
     }
