@@ -185,7 +185,7 @@ class IndexEventHandler
         return false;
       }
       IndexGroupTask other = (IndexGroupTask) obj;
-      return groupUUID == other.groupUUID;
+      return groupUUID.equals(other.groupUUID);
     }
 
     @Override
