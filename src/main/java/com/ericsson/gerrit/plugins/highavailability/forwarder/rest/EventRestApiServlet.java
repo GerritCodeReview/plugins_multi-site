@@ -94,7 +94,7 @@ class EventRestApiServlet extends HttpServlet {
     try {
       rsp.sendError(statusCode, message);
     } catch (IOException e) {
-      logger.error("Failed to send error messsage: " + e.getMessage(), e);
+      logger.error("Failed to send error messsage: {}", e.getMessage(), e);
     }
   }
 }

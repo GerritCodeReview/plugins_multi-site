@@ -184,8 +184,8 @@ public class Configuration {
     try {
       return cfg.getInt(section, name, defaultValue);
     } catch (IllegalArgumentException e) {
-      log.error(String.format("invalid value for %s; using default value %d", name, defaultValue));
-      log.debug("Failed to retrieve integer value: " + e.getMessage(), e);
+      log.error("invalid value for {}; using default value {}", name, defaultValue);
+      log.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
       return defaultValue;
     }
   }
@@ -194,8 +194,8 @@ public class Configuration {
     try {
       return cfg.getBoolean(section, name, defaultValue);
     } catch (IllegalArgumentException e) {
-      log.error(String.format("invalid value for %s; using default value %s", name, defaultValue));
-      log.debug("Failed to retrieve boolean value: " + e.getMessage(), e);
+      log.error("invalid value for {}; using default value {}", name, defaultValue);
+      log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
       return defaultValue;
     }
   }

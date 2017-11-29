@@ -92,7 +92,7 @@ public abstract class AbstractIndexRestApiServlet<T> extends HttpServlet {
       rsp.setStatus(SC_NO_CONTENT);
     } catch (IOException e) {
       sendError(rsp, SC_CONFLICT, e.getMessage());
-      logger.error(String.format("Unable to update %s index", type), e);
+      logger.error("Unable to update {} index", type, e);
     } catch (OrmException e) {
       String msg = String.format("Error trying to find %s \n", type);
       sendError(rsp, SC_NOT_FOUND, msg);
@@ -127,7 +127,7 @@ public abstract class AbstractIndexRestApiServlet<T> extends HttpServlet {
     try {
       rsp.sendError(statusCode, message);
     } catch (IOException e) {
-      logger.error("Failed to send error messsage: " + e.getMessage(), e);
+      logger.error("Failed to send error messsage: {}", e.getMessage(), e);
     }
   }
 }
