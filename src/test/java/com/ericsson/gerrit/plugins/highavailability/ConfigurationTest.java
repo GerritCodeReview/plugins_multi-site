@@ -108,6 +108,8 @@ public class ConfigurationTest {
         .thenReturn(SHARED_DIRECTORY);
     when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
         .thenReturn(DEFAULT_PEER_INFO_STRATEGY);
+    when(configMock.getStringList(JGROUPS_SECTION, null, SKIP_INTERFACE_KEY))
+        .thenReturn(new String[] {});
     when(configMock.getStringList(CACHE_SECTION, null, PATTERN_KEY))
         .thenReturn(CUSTOM_CACHE_PATTERNS);
     site = new SitePaths(SITE_PATH);
