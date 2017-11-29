@@ -105,7 +105,7 @@ class RestForwarder implements Forwarder {
 
   @Override
   public boolean evict(final String cacheName, final Object key) {
-    return new Request("evict for cache " + cacheName + "[" + key + "]") {
+    return new Request("invalidate cache " + cacheName + "[" + key + "]") {
       @Override
       HttpResult send() throws IOException {
         String json = GsonParser.toJson(cacheName, key);
