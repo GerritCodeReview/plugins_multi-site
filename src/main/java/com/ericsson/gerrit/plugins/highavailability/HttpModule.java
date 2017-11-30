@@ -31,7 +31,9 @@ class HttpModule extends HttpPluginModule {
   @Override
   protected void configureServlets() {
     install(new RestForwarderServletModule());
-    install(new HealthServletModule());
+    if (config.healthCheck().enabled()) {
+      install(new HealthServletModule());
+    }
     if (config.websession().synchronize()) {
       install(new FileBasedWebsessionModule());
     }

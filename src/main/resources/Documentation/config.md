@@ -30,6 +30,8 @@ File '@PLUGIN@.config'
 [http]
 :  user = username
 :  password = password
+[healthcheck]
+:  enable = true
 
 main.sharedDirectory
 :   Path to a directory accessible from both master instances.
@@ -152,3 +154,6 @@ websession.cleanupInterval
 * y, year, years (`1 year` is treated as `365 days`)
 If a time unit suffix is not specified, `hours` is assumed.
 Defaults to 24 hours.
+
+healthcheck.enable
+:   Whether to enable the health check endpoint. Defaults to 'true'.
