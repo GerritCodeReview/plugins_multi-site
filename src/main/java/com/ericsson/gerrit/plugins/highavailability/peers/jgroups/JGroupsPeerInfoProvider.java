@@ -21,6 +21,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import java.net.InetAddress;
+import java.nio.file.Path;
 import java.util.Optional;
 import org.jgroups.Address;
 import org.jgroups.JChannel;
@@ -110,9 +111,10 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
 
   public void connect() {
     try {
-      channel = new JChannel();
+      channel = getChannel();
       Optional<InetAddress> address = finder.findAddress();
       if (address.isPresent()) {
+        log.debug("Protocol stack: " + channel.getProtocolStack());
         channel.getProtocolStack().getTransport().setBindAddress(address.get());
         log.debug("Channel bound to {}", address.get());
       } else {
@@ -135,6 +137,21 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
       } else {
         log.error("joining cluster {} failed", jgroupsConfig.clusterName(), e);
       }
+    }
+  }
+
+  private JChannel getChannel() throws Exception {
+    Optional<Path> protocolStack = jgroupsConfig.protocolStack();
+    try {
+      return protocolStack.isPresent()
+          ? new JChannel(protocolStack.get().toString())
+          : new JChannel();
+    } catch (Exception e) {
+      log.error(
+          "Unable to create a channel with protocol stack: {}",
+          protocolStack == null ? "default" : protocolStack,
+          e);
+      throw e;
     }
   }
 
