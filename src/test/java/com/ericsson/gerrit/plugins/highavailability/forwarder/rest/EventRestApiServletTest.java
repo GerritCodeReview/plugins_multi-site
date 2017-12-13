@@ -25,8 +25,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.net.MediaType;
-import com.google.gerrit.common.EventDispatcher;
 import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.server.events.EventDispatcher;
 import com.google.gerrit.server.events.EventTypes;
 import com.google.gerrit.server.events.RefEvent;
 import com.google.gwtorm.client.KeyUtil;

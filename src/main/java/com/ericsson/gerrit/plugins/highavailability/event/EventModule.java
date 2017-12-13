@@ -14,9 +14,9 @@
 
 package com.ericsson.gerrit.plugins.highavailability.event;
 
-import com.google.gerrit.common.EventListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.gerrit.server.events.EventListener;
 import java.util.concurrent.Executor;
 
 public class EventModule extends LifecycleModule {

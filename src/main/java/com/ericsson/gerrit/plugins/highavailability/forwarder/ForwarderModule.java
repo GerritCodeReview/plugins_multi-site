@@ -14,8 +14,8 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
-import com.google.gerrit.common.EventDispatcher;
 import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.gerrit.server.events.EventDispatcher;
 import com.google.inject.AbstractModule;
 
 public class ForwarderModule extends AbstractModule {

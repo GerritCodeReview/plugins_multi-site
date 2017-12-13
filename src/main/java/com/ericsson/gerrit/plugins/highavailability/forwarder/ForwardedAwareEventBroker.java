@@ -14,12 +14,12 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
-import com.google.gerrit.common.EventBroker;
-import com.google.gerrit.common.EventListener;
-import com.google.gerrit.common.UserScopedEventListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.EventBroker;
+import com.google.gerrit.server.events.EventListener;
+import com.google.gerrit.server.events.UserScopedEventListener;
 import com.google.gerrit.server.notedb.ChangeNotes.Factory;
 import com.google.gerrit.server.permissions.PermissionBackend;
 import com.google.gerrit.server.project.ProjectCache;

@@ -18,7 +18,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.httpd.WebSessionManager.Val;
-import com.google.gerrit.testutil.TestTimeUtil;
+import com.google.gerrit.testing.TestTimeUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.DirectoryStream;
