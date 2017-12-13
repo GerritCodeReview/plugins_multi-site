@@ -61,7 +61,7 @@ class CacheRestApiServlet extends HttpServlet {
       Cache<?, ?> cache = cacheMap.get(cacheKey.pluginName, cacheKey.cacheName);
       if (cache == null) {
         String msg = String.format("cache %s not found", cacheName);
-        logger.error("Failed to process eviction request: " + msg);
+        logger.error("Failed to process eviction request: {}", msg);
         sendError(rsp, SC_BAD_REQUEST, msg);
       } else {
         Context.setForwardedEvent(true);
@@ -69,7 +69,7 @@ class CacheRestApiServlet extends HttpServlet {
         rsp.setStatus(SC_NO_CONTENT);
       }
     } catch (IOException e) {
-      logger.error("Failed to process eviction request: " + e.getMessage(), e);
+      logger.error("Failed to process eviction request: {}", e.getMessage(), e);
       sendError(rsp, SC_BAD_REQUEST, e.getMessage());
     } finally {
       Context.unsetForwardedEvent();
@@ -100,7 +100,7 @@ class CacheRestApiServlet extends HttpServlet {
     try {
       rsp.sendError(statusCode, message);
     } catch (IOException e) {
-      logger.error("Failed to send error messsage: " + e.getMessage(), e);
+      logger.error("Failed to send error messsage: {}", e.getMessage(), e);
     }
   }
 
@@ -108,9 +108,10 @@ class CacheRestApiServlet extends HttpServlet {
     if (Constants.PROJECT_LIST.equals(cacheName)) {
       // One key is holding the list of projects
       cache.invalidateAll();
+      logger.debug("Invalidated cache {}", cacheName);
     } else {
       cache.invalidate(key);
+      logger.debug("Invalidated cache {}[{}]", cacheName, key);
     }
-    logger.debug("Invalidated " + cacheName);
   }
 }

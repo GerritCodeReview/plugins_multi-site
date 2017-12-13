@@ -84,6 +84,11 @@ public class Configuration {
   // common parameters to cache, event index and websession sections
   static final String SYNCHRONIZE_KEY = "synchronize";
 
+  // health check section
+  static final String HEALTH_CHECK_SECTION = "healthCheck";
+  static final String ENABLE_KEY = "enable";
+  static final boolean DEFAULT_HEALTH_CHECK_ENABLED = true;
+
   // websession section
   static final String WEBSESSION_SECTION = "websession";
   static final String CLEANUP_INTERVAL_KEY = "cleanupInterval";
@@ -110,6 +115,7 @@ public class Configuration {
   private final Websession websession;
   private PeerInfoStatic peerInfoStatic;
   private PeerInfoJGroups peerInfoJGroups;
+  private HealthCheck healthCheck;
 
   public enum PeerInfoStrategy {
     JGROUPS,
@@ -138,6 +144,7 @@ public class Configuration {
     event = new Event(cfg);
     index = new Index(cfg);
     websession = new Websession(cfg);
+    healthCheck = new HealthCheck(cfg);
   }
 
   public Main main() {
@@ -180,12 +187,16 @@ public class Configuration {
     return websession;
   }
 
+  public HealthCheck healthCheck() {
+    return healthCheck;
+  }
+
   private static int getInt(Config cfg, String section, String name, int defaultValue) {
     try {
       return cfg.getInt(section, name, defaultValue);
     } catch (IllegalArgumentException e) {
-      log.error(String.format("invalid value for %s; using default value %d", name, defaultValue));
-      log.debug("Failed to retrieve integer value: " + e.getMessage(), e);
+      log.error("invalid value for {}; using default value {}", name, defaultValue);
+      log.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
       return defaultValue;
     }
   }
@@ -194,8 +205,8 @@ public class Configuration {
     try {
       return cfg.getBoolean(section, name, defaultValue);
     } catch (IllegalArgumentException e) {
-      log.error(String.format("invalid value for %s; using default value %s", name, defaultValue));
-      log.debug("Failed to retrieve boolean value: " + e.getMessage(), e);
+      log.error("invalid value for {}; using default value {}", name, defaultValue);
+      log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
       return defaultValue;
     }
   }
@@ -401,6 +412,18 @@ public class Configuration {
 
     public long cleanupInterval() {
       return cleanupInterval;
+    }
+  }
+
+  public static class HealthCheck {
+    private final boolean enabled;
+
+    private HealthCheck(Config cfg) {
+      enabled = cfg.getBoolean(HEALTH_CHECK_SECTION, ENABLE_KEY, DEFAULT_HEALTH_CHECK_ENABLED);
+    }
+
+    public boolean enabled() {
+      return enabled;
     }
   }
 }

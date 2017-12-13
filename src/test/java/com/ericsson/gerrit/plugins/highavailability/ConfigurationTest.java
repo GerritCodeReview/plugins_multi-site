@@ -20,6 +20,7 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.CLUSTER
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.CONNECTION_TIMEOUT_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_CLEANUP_INTERVAL_MS;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_CLUSTER_NAME;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_HEALTH_CHECK_ENABLED;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_MAX_TRIES;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_PEER_INFO_STRATEGY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_RETRY_INTERVAL;
@@ -27,7 +28,9 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_SYNCHRONIZE;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_THREAD_POOL_SIZE;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_TIMEOUT_MS;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.ENABLE_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.EVENT_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.HEALTH_CHECK_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.HTTP_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.INDEX_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGROUPS_SECTION;
@@ -532,5 +535,13 @@ public class ConfigurationTest {
     for (String cache : ImmutableList.of("ldap_groups_by_include", "foo")) {
       assertThat(matcher.matches(cache)).isFalse();
     }
+  }
+
+  @Test
+  public void testHealthCheckEnabled() throws Exception {
+    when(configMock.getBoolean(HEALTH_CHECK_SECTION, ENABLE_KEY, DEFAULT_HEALTH_CHECK_ENABLED))
+        .thenReturn(false);
+    initializeConfiguration();
+    assertThat(configuration.healthCheck().enabled()).isFalse();
   }
 }
