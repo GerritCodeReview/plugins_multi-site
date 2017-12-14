@@ -89,6 +89,7 @@ public class HealthServletTest {
     assertIsHealthy();
   }
 
+  @Test
   public void testErrorDuringTransitionToUnhealty() throws IOException {
     // remove plugin data dir to create an IOException
     tempFolder.delete();
@@ -130,6 +131,7 @@ public class HealthServletTest {
     assertIsUnhealthy();
   }
 
+  @Test
   public void testErrorDuringTransitionToHealty() throws IOException {
     //Create unheathy.txt as a folder with content to create a IOException
     Files.createFile(tempFolder.newFolder("unhealthy.txt").toPath().resolve("child"));
