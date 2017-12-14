@@ -126,11 +126,15 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
           channel.getName(),
           jgroupsConfig.clusterName());
     } catch (Exception e) {
-      log.error(
-          "joining cluster {} for channel {} failed",
-          jgroupsConfig.clusterName(),
-          channel.getName(),
-          e);
+      if (channel != null) {
+        log.error(
+            "joining cluster {} (channel {}) failed",
+            jgroupsConfig.clusterName(),
+            channel.getName(),
+            e);
+      } else {
+        log.error("joining cluster {} failed", jgroupsConfig.clusterName(), e);
+      }
     }
   }
 
@@ -146,9 +150,13 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
 
   @Override
   public void stop() {
-    log.info(
-        "closing jgroups channel {} (cluster {})", channel.getName(), jgroupsConfig.clusterName());
-    channel.close();
+    if (channel != null) {
+      log.info(
+          "closing jgroups channel {} (cluster {})",
+          channel.getName(),
+          jgroupsConfig.clusterName());
+      channel.close();
+    }
     peerInfo = Optional.empty();
     peerAddress = null;
   }
