@@ -27,15 +27,20 @@ import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.account.CapabilityControl;
 import com.google.inject.Provider;
 import java.io.IOException;
+import java.nio.file.Files;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HealthServletTest {
+
+  @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
   @Mock private Provider<CurrentUser> currentUserProviderMock;
   @Mock private CurrentUser currentUserMock;
@@ -48,7 +53,7 @@ public class HealthServletTest {
     when(currentUserProviderMock.get()).thenReturn(currentUserMock);
     when(currentUserMock.getCapabilities()).thenReturn(capabilityControlMock);
     when(capabilityControlMock.canAdministrateServer()).thenReturn(true);
-    servlet = new HealthServlet(currentUserProviderMock);
+    servlet = new HealthServlet(currentUserProviderMock, tempFolder.getRoot().toPath());
   }
 
   @Test
@@ -84,6 +89,15 @@ public class HealthServletTest {
     assertIsHealthy();
   }
 
+  public void testErrorDuringTransitionToUnhealty() throws IOException {
+    // remove plugin data dir to create an IOException
+    tempFolder.delete();
+
+    HttpServletResponse responseMock = mock(HttpServletResponse.class);
+    servlet.doDelete(null, responseMock);
+    verify(responseMock).sendError(SC_INTERNAL_SERVER_ERROR);
+  }
+
   @Test
   public void testTransitionToHealty() throws IOException {
     // first, mark as unhealthy
@@ -114,6 +128,15 @@ public class HealthServletTest {
     servlet.doPost(null, responseMock);
     verify(responseMock).sendError(SC_FORBIDDEN);
     assertIsUnhealthy();
+  }
+
+  public void testErrorDuringTransitionToHealty() throws IOException {
+    //Create unheathy.txt as a folder with content to create a IOException
+    Files.createFile(tempFolder.newFolder("unhealthy.txt").toPath().resolve("child"));
+
+    HttpServletResponse responseMock = mock(HttpServletResponse.class);
+    servlet.doPost(null, responseMock);
+    verify(responseMock).sendError(SC_INTERNAL_SERVER_ERROR);
   }
 
   @Test
