@@ -41,6 +41,7 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.MY_URL_
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PASSWORD_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PATTERN_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PEER_INFO_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.PROTOCOL_STACK_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.RETRY_INTERVAL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.SHARED_DIRECTORY_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.SKIP_INTERFACE_KEY;
@@ -53,6 +54,7 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.URL_KEY
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.USER_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.WEBSESSION_SECTION;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth8.assertThat;
 import static java.net.InetAddress.getLocalHost;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
@@ -292,6 +294,31 @@ public class ConfigurationTest {
         .thenReturn(new String[] {"https://foo/"});
 
     assertThat(getMyUrlProvider().get()).isEqualTo(expected);
+  }
+
+  @Test
+  public void testGetJgroupsProtocolWhenNotSpecified() throws Exception {
+    when(configMock.getString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY)).thenReturn(null);
+    initializeConfiguration();
+    assertThat(configuration.jgroups().protocolStack()).isEmpty();
+  }
+
+  @Test
+  public void testGetJgroupsProtocolWithAbsolutePath() throws Exception {
+    Path path = Paths.get("/path/to/file.xml");
+    when(configMock.getString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY))
+        .thenReturn(path.toString());
+    initializeConfiguration();
+    assertThat(configuration.jgroups().protocolStack()).hasValue(path);
+  }
+
+  @Test
+  public void testGetJgroupProtocolWithRelativePath() throws Exception {
+    Path path = Paths.get("file.xml");
+    when(configMock.getString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY))
+        .thenReturn(path.toString());
+    initializeConfiguration();
+    assertThat(configuration.jgroups().protocolStack()).hasValue(site.etc_dir.resolve(path));
   }
 
   private MyUrlProvider getMyUrlProvider() {
