@@ -90,7 +90,7 @@ public class HealthServletTest {
   }
 
   @Test
-  public void testErrorDuringTransitionToUnhealty() throws IOException {
+  public void testErrorDuringTransitionToUnhealthy() throws IOException {
     // remove plugin data dir to create an IOException
     tempFolder.delete();
 
@@ -100,7 +100,7 @@ public class HealthServletTest {
   }
 
   @Test
-  public void testTransitionToHealty() throws IOException {
+  public void testTransitionToHealthy() throws IOException {
     // first, mark as unhealthy
     servlet.doDelete(null, mock(HttpServletResponse.class));
     assertIsUnhealthy();
@@ -132,8 +132,8 @@ public class HealthServletTest {
   }
 
   @Test
-  public void testErrorDuringTransitionToHealty() throws IOException {
-    //Create unheathy.txt as a folder with content to create a IOException
+  public void testErrorDuringTransitionToHealthy() throws IOException {
+    // Create unhealthy.txt as a folder with content to create an IOException
     Files.createFile(tempFolder.newFolder("unhealthy.txt").toPath().resolve("child"));
 
     HttpServletResponse responseMock = mock(HttpServletResponse.class);
