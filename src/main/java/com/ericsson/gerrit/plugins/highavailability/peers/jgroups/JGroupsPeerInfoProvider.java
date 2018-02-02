@@ -49,6 +49,7 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
     implements Provider<Optional<PeerInfo>>, LifecycleListener {
   private static final Logger log = LoggerFactory.getLogger(JGroupsPeerInfoProvider.class);
   private static final String JGROUPS_LOG_FACTORY_PROPERTY = "jgroups.logging.log_factory_class";
+
   static {
     if (System.getProperty(JGROUPS_LOG_FACTORY_PROPERTY) == null) {
       System.setProperty(JGROUPS_LOG_FACTORY_PROPERTY, SLF4JLogFactory.class.getName());
