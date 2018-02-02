@@ -16,8 +16,8 @@ gerrit_plugin(
         "Implementation-Title: high-availability plugin",
         "Implementation-URL: https://gerrit-review.googlesource.com/#/admin/projects/plugins/high-availability",
     ],
-    deps = ["@jgroups//jar"],
     resources = glob(["src/main/resources/**/*"]),
+    deps = ["@jgroups//jar"],
 )
 
 junit_tests(
