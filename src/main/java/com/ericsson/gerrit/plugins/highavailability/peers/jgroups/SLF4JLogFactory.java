@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 public class SLF4JLogFactory implements CustomLogFactory {
 
   @Override
-  public Log getLog(Class clazz) {
+  public Log getLog(@SuppressWarnings("rawtypes") Class clazz) {
     return new SLF4JLog(LoggerFactory.getLogger(clazz));
   }
 
