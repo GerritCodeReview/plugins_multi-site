@@ -23,6 +23,7 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_MAX_TRIES;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_PEER_INFO_STRATEGY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_RETRY_INTERVAL;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_SHARED_DIRECTORY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_SKIP_INTERFACE_LIST;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_SYNCHRONIZE;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_THREAD_POOL_SIZE;
@@ -52,6 +53,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.net.InetAddress.getLocalHost;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -59,7 +61,6 @@ import static org.mockito.Mockito.when;
 import com.ericsson.gerrit.plugins.highavailability.peers.jgroups.MyUrlProvider;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
-import com.google.inject.ProvisionException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -459,15 +460,25 @@ public class ConfigurationTest {
   }
 
   @Test
+  public void testGetDefaultSharedDirectory() throws Exception {
+    PluginConfigFactory cfgFactoryMock = mock(PluginConfigFactory.class);
+    Config configMock = mock(Config.class);
+
+    when(cfgFactoryMock.getGlobalPluginConfig(pluginName)).thenReturn(configMock);
+    when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY)).thenReturn(null);
+    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+        .thenReturn(DEFAULT_PEER_INFO_STRATEGY);
+    when(configMock.getStringList(JGROUPS_SECTION, null, SKIP_INTERFACE_KEY))
+        .thenReturn(new String[] {});
+
+    Configuration configuration = new Configuration(cfgFactoryMock, pluginName, site);
+    assertEquals(configuration.main().sharedDirectory(), site.resolve(DEFAULT_SHARED_DIRECTORY));
+  }
+
+  @Test
   public void testGetSharedDirectory() throws Exception {
     initializeConfiguration();
     assertEquals(configuration.main().sharedDirectory(), SHARED_DIR_PATH);
-  }
-
-  @Test(expected = ProvisionException.class)
-  public void shouldThrowExceptionIfSharedDirectoryNotConfigured() throws Exception {
-    when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY)).thenReturn(null);
-    initializeConfiguration();
   }
 
   @Test
