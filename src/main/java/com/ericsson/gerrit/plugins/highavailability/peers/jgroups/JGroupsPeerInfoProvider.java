@@ -21,6 +21,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import java.net.InetAddress;
+import java.nio.file.Path;
 import java.util.Optional;
 import org.jgroups.Address;
 import org.jgroups.JChannel;
@@ -44,6 +45,13 @@ import org.slf4j.LoggerFactory;
 public class JGroupsPeerInfoProvider extends ReceiverAdapter
     implements Provider<Optional<PeerInfo>>, LifecycleListener {
   private static final Logger log = LoggerFactory.getLogger(JGroupsPeerInfoProvider.class);
+  private static final String JGROUPS_LOG_FACTORY_PROPERTY = "jgroups.logging.log_factory_class";
+
+  static {
+    if (System.getProperty(JGROUPS_LOG_FACTORY_PROPERTY) == null) {
+      System.setProperty(JGROUPS_LOG_FACTORY_PROPERTY, SLF4JLogFactory.class.getName());
+    }
+  }
 
   private final Configuration.JGroups jgroupsConfig;
   private final InetAddressFinder finder;
@@ -110,9 +118,10 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
 
   public void connect() {
     try {
-      channel = new JChannel();
+      channel = getChannel();
       Optional<InetAddress> address = finder.findAddress();
       if (address.isPresent()) {
+        log.debug("Protocol stack: " + channel.getProtocolStack());
         channel.getProtocolStack().getTransport().setBindAddress(address.get());
         log.debug("Channel bound to {}", address.get());
       } else {
@@ -126,11 +135,30 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
           channel.getName(),
           jgroupsConfig.clusterName());
     } catch (Exception e) {
+      if (channel != null) {
+        log.error(
+            "joining cluster {} (channel {}) failed",
+            jgroupsConfig.clusterName(),
+            channel.getName(),
+            e);
+      } else {
+        log.error("joining cluster {} failed", jgroupsConfig.clusterName(), e);
+      }
+    }
+  }
+
+  private JChannel getChannel() throws Exception {
+    Optional<Path> protocolStack = jgroupsConfig.protocolStack();
+    try {
+      return protocolStack.isPresent()
+          ? new JChannel(protocolStack.get().toString())
+          : new JChannel();
+    } catch (Exception e) {
       log.error(
-          "joining cluster {} for channel {} failed",
-          jgroupsConfig.clusterName(),
-          channel.getName(),
+          "Unable to create a channel with protocol stack: {}",
+          protocolStack == null ? "default" : protocolStack,
           e);
+      throw e;
     }
   }
 
@@ -146,9 +174,13 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
 
   @Override
   public void stop() {
-    log.info(
-        "closing jgroups channel {} (cluster {})", channel.getName(), jgroupsConfig.clusterName());
-    channel.close();
+    if (channel != null) {
+      log.info(
+          "closing jgroups channel {} (cluster {})",
+          channel.getName(),
+          jgroupsConfig.clusterName());
+      channel.close();
+    }
     peerInfo = Optional.empty();
     peerAddress = null;
   }

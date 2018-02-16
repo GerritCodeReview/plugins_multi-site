@@ -27,6 +27,7 @@ File '@PLUGIN@.config'
 :  clusterName = foo
 :  skipInterface = lo*
 :  skipInterface = eth2
+:  protocolStack = protocolStack.xml
 [http]
 :  user = username
 :  password = password
@@ -78,9 +79,17 @@ jgroups.skipInterface
     Defaults to the list of: `lo*`, `utun*`, `awdl*` which are known to be
     inappropriate for JGroups communication.
 
+jgroups.protocolStack
+:   This optional parameter specifies the path of an xml file that contains the
+    definition of JGroups protocol stack. If not specified the default protocol stack
+    will be used. May be an absolute or relative path. If the path is relative it is
+    resolved from the site's `etc` folder. For more information on protocol stack and
+    its configuration file syntax please refer to JGroups documentation.
+    See [JGroups - Advanced topics](http://jgroups.org/manual-3.x/html/user-advanced.html).
+
 NOTE: To work properly in certain environments, JGroups needs the System property
 `java.net.preferIPv4Stack` to be set to `true`.
-See (http://jgroups.org/tutorial/index.html#_trouble_shooting).
+See [JGroups - Trouble shooting](http://jgroups.org/tutorial/index.html#_trouble_shooting).
 
 http.user
 :   Username to connect to the peer instance.
