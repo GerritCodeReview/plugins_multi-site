@@ -7,32 +7,40 @@ should be specified in `$site_path/etc/@PLUGIN@.config` file:
 File '@PLUGIN@.config'
 --------------------
 
-[main]
-:  sharedDirectory = /directory/accessible/from/both/instances
-[peerInfo]
-:  strategy = static
-[peerInfo "static"]
-:  url = target_instance_url
-[http]
-:  user = username
-:  password = password
+### Static definition of the high-availability nodes.
 
+```
 [main]
-:  sharedDirectory = /directory/accessible/from/both/instances
+  sharedDirectory = /directory/accessible/from/both/instances
 [peerInfo]
-:  strategy = jgroups
-[peerInfo "jgroups"]
-:  myUrl = local_instance_url
-[jgroups]
-:  clusterName = foo
-:  skipInterface = lo*
-:  skipInterface = eth2
-:  protocolStack = protocolStack.xml
+  strategy = static
+[peerInfo "static"]
+  url = target_instance_url
 [http]
-:  user = username
-:  password = password
+  user = username
+  password = password
+```
+
+### Dynamic jgroups-based discovery of the high-availability nodes
+
+```
+[main]
+  sharedDirectory = /directory/accessible/from/both/instances
+[peerInfo]
+  strategy = jgroups
+[peerInfo "jgroups"]
+  myUrl = local_instance_url
+[jgroups]
+  clusterName = foo
+  skipInterface = lo*
+  skipInterface = eth2
+  protocolStack = protocolStack.xml
+[http]
+  user = username
+  password = password
 [healthcheck]
-:  enable = true
+  enable = true
+```
 
 main.sharedDirectory
 :   Path to a directory accessible from both master instances.
