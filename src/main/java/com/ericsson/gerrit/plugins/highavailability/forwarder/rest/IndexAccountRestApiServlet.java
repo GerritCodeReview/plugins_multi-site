@@ -31,7 +31,7 @@ class IndexAccountRestApiServlet extends AbstractIndexRestApiServlet<Account.Id>
 
   @Inject
   IndexAccountRestApiServlet(AccountIndexer indexer) {
-    super("account");
+    super(IndexName.ACCOUNT);
     this.indexer = indexer;
   }
 
