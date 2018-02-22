@@ -17,6 +17,7 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.index.change.ChangeIndexer;
+import com.google.gerrit.server.project.NoSuchChangeException;
 import com.google.gwtorm.server.OrmException;
 import com.google.gwtorm.server.SchemaFactory;
 import com.google.inject.Inject;
@@ -56,13 +57,28 @@ class IndexChangeRestApiServlet extends AbstractIndexRestApiServlet<Change.Id> {
             return;
           }
           indexer.index(db, change);
+          logger.debug("Change {} successfully indexed", id);
+        } catch (Exception e) {
+          if (!isCausedByNoSuchChangeException(e)) {
+            throw e;
+          }
+          logger.debug("Change {} was deleted, aborting forwarded indexing the change.", id.get());
         }
-        logger.debug("Change {} successfully indexed", id);
         break;
       case DELETE:
         indexer.delete(id);
         logger.debug("Change {} successfully deleted from index", id);
         break;
     }
+  }
+
+  private boolean isCausedByNoSuchChangeException(Throwable throwable) {
+    while (throwable != null) {
+      if (throwable instanceof NoSuchChangeException) {
+        return true;
+      }
+      throwable = throwable.getCause();
+    }
+    return false;
   }
 }
