@@ -22,7 +22,9 @@ File '@PLUGIN@.config'
 [peerInfo]
 :  strategy = jgroups
 [peerInfo "jgroups"]
-:  cluster = foo
+:  myUrl = local_instance_url
+[jgroups]
+:  clusterName = foo
 :  skipInterface = lo*
 :  skipInterface = eth2
 [http]
@@ -52,13 +54,21 @@ a member joins or leaves the cluster.
 peerInfo.static.url
 :   Specify the URL for the peer instance.
 
-peerInfo.jgroups.clusterName
+peerInfo.jgroups.myUrl
+:   The URL of this instance to be broadcast to other peers. If not specified, the
+    URL is determined from the `httpd.listenUrl` in the `gerrit.config`.
+    If `httpd.listenUrl` is configured with multiple values, is configured to work
+    with a reverse proxy (i.e. uses `proxy-http` or `proxy-https` scheme), or is
+    configured to listen on all local addresses (i.e. using hostname `*`), then
+    the URL must be explicitly specified with `myUrl`.
+
+jgroups.clusterName
 :   The name of the high-availability cluster. When peers discover themselves dynamically this
     name is used to determine which instances should work together.  Only those Gerrit
     interfaces which are configured for the same clusterName will communicate with each other.
     Defaults to "GerritHA".
 
-peerInfo.jgroups.skipInterface
+jgroups.skipInterface
 :   A name or a wildcard of network interface(s) which should be skipped
     for JGroups communication. Peer discovery may fail if the host has multiple
     network interfaces and an inappropriate interface is chosen by JGroups.
