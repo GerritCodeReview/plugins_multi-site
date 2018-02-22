@@ -16,6 +16,7 @@ package com.ericsson.gerrit.plugins.highavailability.index;
 
 import com.google.gerrit.extensions.events.AccountIndexedListener;
 import com.google.gerrit.extensions.events.ChangeIndexedListener;
+import com.google.gerrit.extensions.events.GroupIndexedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import java.util.concurrent.Executor;
@@ -28,5 +29,6 @@ public class IndexModule extends LifecycleModule {
     listener().to(IndexExecutorProvider.class);
     DynamicSet.bind(binder(), ChangeIndexedListener.class).to(IndexEventHandler.class);
     DynamicSet.bind(binder(), AccountIndexedListener.class).to(IndexEventHandler.class);
+    DynamicSet.bind(binder(), GroupIndexedListener.class).to(IndexEventHandler.class);
   }
 }

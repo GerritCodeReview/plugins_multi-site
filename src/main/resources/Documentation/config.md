@@ -42,7 +42,7 @@ File '@PLUGIN@.config'
   enable = true
 ```
 
-main.sharedDirectory
+```main.sharedDirectory```
 :   Path to a directory accessible from both master instances.
     When given as a relative path, then it is resolved against the $SITE_PATH
     or Gerrit server. For example, if $SITE_PATH is "/gerrit/root" and
@@ -50,7 +50,7 @@ main.sharedDirectory
     directory is "/gerrit/root/shared/dir". When not specified, the default
     is "shared".
 
-peerInfo.strategy
+```peerInfo.strategy```
 :   Strategy to find other peers. Supported strategies are `static` or `jgroups`.
     Defaults to `static`.
 * The `static` strategy allows to staticly configure the peer gerrit instance using
@@ -62,10 +62,10 @@ the multicast messages. During startup each instance will advertise its address
 over a JGroups multicast message. JGroups takes care to inform each cluster when
 a member joins or leaves the cluster.
 
-peerInfo.static.url
+```peerInfo.static.url```
 :   Specify the URL for the peer instance.
 
-peerInfo.jgroups.myUrl
+```peerInfo.jgroups.myUrl```
 :   The URL of this instance to be broadcast to other peers. If not specified, the
     URL is determined from the `httpd.listenUrl` in the `gerrit.config`.
     If `httpd.listenUrl` is configured with multiple values, is configured to work
@@ -73,13 +73,13 @@ peerInfo.jgroups.myUrl
     configured to listen on all local addresses (i.e. using hostname `*`), then
     the URL must be explicitly specified with `myUrl`.
 
-jgroups.clusterName
+```jgroups.clusterName```
 :   The name of the high-availability cluster. When peers discover themselves dynamically this
     name is used to determine which instances should work together.  Only those Gerrit
     interfaces which are configured for the same clusterName will communicate with each other.
     Defaults to "GerritHA".
 
-jgroups.skipInterface
+```jgroups.skipInterface```
 :   A name or a wildcard of network interface(s) which should be skipped
     for JGroups communication. Peer discovery may fail if the host has multiple
     network interfaces and an inappropriate interface is chosen by JGroups.
@@ -87,7 +87,7 @@ jgroups.skipInterface
     Defaults to the list of: `lo*`, `utun*`, `awdl*` which are known to be
     inappropriate for JGroups communication.
 
-jgroups.protocolStack
+```jgroups.protocolStack```
 :   This optional parameter specifies the path of an xml file that contains the
     definition of JGroups protocol stack. If not specified the default protocol stack
     will be used. May be an absolute or relative path. If the path is relative it is
@@ -99,67 +99,67 @@ NOTE: To work properly in certain environments, JGroups needs the System propert
 `java.net.preferIPv4Stack` to be set to `true`.
 See [JGroups - Trouble shooting](http://jgroups.org/tutorial/index.html#_trouble_shooting).
 
-http.user
+```http.user```
 :   Username to connect to the peer instance.
 
-http.password
+```http.password```
 :   Password to connect to the peer instance.
 
 @PLUGIN@ plugin uses REST API calls to keep the target instance in-sync. It
 is possible to customize the parameters of the underlying http client doing these
 calls by specifying the following fields:
 
-http.connectionTimeout
+```http.connectionTimeout```
 :   Maximum interval of time in milliseconds the plugin waits for a connection
     to the target instance. When not specified, the default value is set to 5000ms.
 
-http.socketTimeout
+```http.socketTimeout```
 :   Maximum interval of time in milliseconds the plugin waits for a response from the
     target instance once the connection has been established. When not specified,
     the default value is set to 5000ms.
 
-http.maxTries
+```http.maxTries```
 :   Maximum number of times the plugin should attempt when calling a REST API in
     the target instance. Setting this value to 0 will disable retries. When not
     specified, the default value is 5. After this number of failed tries, an
     error is logged.
 
-http.retryInterval
+```http.retryInterval```
 :   The interval of time in milliseconds between the subsequent auto-retries.
     When not specified, the default value is set to 1000ms.
 
-cache.synchronize
+```cache.synchronize```
 :   Whether to synchronize cache evictions.
     Defaults to true.
 
-cache.threadPoolSize
+```cache.threadPoolSize```
 :   Maximum number of threads used to send cache evictions to the target instance.
     Defaults to 1.
 
-cache.pattern
+```cache.pattern```
 :   Pattern to match names of custom caches for which evictions should be
     forwarded (in addition to the core caches that are always forwarded). May be
     specified more than once to add multiple patterns.
     Defaults to an empty list, meaning only evictions of the core caches are
     forwarded.
 
-event.synchronize
+```event.synchronize```
 :   Whether to synchronize stream events.
     Defaults to true.
 
-index.synchronize
+```index.synchronize```
 :   Whether to synchronize secondary indexes.
     Defaults to true.
 
-index.threadPoolSize
+```index.threadPoolSize```
 :   Maximum number of threads used to send index events to the target instance.
     Defaults to 1.
 
-websession.synchronize
+```websession.synchronize```
 :   Whether to synchronize web sessions.
     Defaults to true.
 
-websession.cleanupInterval
+```websession.cleanupInterval```
 :   Frequency for deleting expired web sessions. Values should use common time
     unit suffixes to express their setting:
 * s, sec, second, seconds
@@ -172,5 +172,5 @@ websession.cleanupInterval
 If a time unit suffix is not specified, `hours` is assumed.
 Defaults to 24 hours.
 
-healthcheck.enable
+```healthcheck.enable```
 :   Whether to enable the health check endpoint. Defaults to 'true'.
