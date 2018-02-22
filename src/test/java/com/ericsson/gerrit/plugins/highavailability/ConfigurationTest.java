@@ -53,7 +53,6 @@ import static com.google.common.truth.Truth.assertThat;
 import static java.net.InetAddress.getLocalHost;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -462,9 +461,6 @@ public class ConfigurationTest {
 
   @Test
   public void testGetDefaultSharedDirectory() throws Exception {
-    PluginConfigFactory cfgFactoryMock = mock(PluginConfigFactory.class);
-    Config configMock = mock(Config.class);
-
     when(cfgFactoryMock.getGlobalPluginConfig(pluginName)).thenReturn(configMock);
     when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY)).thenReturn(null);
     when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
@@ -472,7 +468,7 @@ public class ConfigurationTest {
     when(configMock.getStringList(JGROUPS_SECTION, null, SKIP_INTERFACE_KEY))
         .thenReturn(new String[] {});
 
-    Configuration configuration = new Configuration(cfgFactoryMock, pluginName, site);
+    initializeConfiguration();
     assertEquals(configuration.main().sharedDirectory(), site.resolve(DEFAULT_SHARED_DIRECTORY));
   }
 
