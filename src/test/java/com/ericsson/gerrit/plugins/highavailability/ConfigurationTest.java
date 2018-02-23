@@ -61,7 +61,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStrategy;
-import com.ericsson.gerrit.plugins.highavailability.cache.CachePatternMatcher;
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
@@ -361,20 +360,7 @@ public class ConfigurationTest {
   public void testGetCachePatterns() throws Exception {
     globalPluginConfig.setStringList(
         CACHE_SECTION, null, PATTERN_KEY, ImmutableList.of("^my_cache.*", "other"));
-    CachePatternMatcher matcher = new CachePatternMatcher(getConfiguration());
-    for (String cache :
-        ImmutableList.of(
-            "accounts_byemail",
-            "ldap_groups",
-            "project_list",
-            "my_cache_a",
-            "my_cache_b",
-            "other")) {
-      assertThat(matcher.matches(cache)).isTrue();
-    }
-    for (String cache : ImmutableList.of("ldap_groups_by_include", "foo")) {
-      assertThat(matcher.matches(cache)).isFalse();
-    }
+    assertThat(getConfiguration().cache().patterns()).containsExactly("^my_cache.*", "other");
   }
 
   @Test
