@@ -24,6 +24,7 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_MAX_TRIES;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_PEER_INFO_STRATEGY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_RETRY_INTERVAL;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_SHARED_DIRECTORY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_SKIP_INTERFACE_LIST;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_SYNCHRONIZE;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_THREAD_POOL_SIZE;
@@ -495,15 +496,21 @@ public class ConfigurationTest {
   }
 
   @Test
+  public void testGetDefaultSharedDirectory() throws Exception {
+    when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY)).thenReturn(null);
+    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+        .thenReturn(DEFAULT_PEER_INFO_STRATEGY);
+    when(configMock.getStringList(JGROUPS_SECTION, null, SKIP_INTERFACE_KEY))
+        .thenReturn(new String[] {});
+
+    initializeConfiguration();
+    assertEquals(configuration.main().sharedDirectory(), site.resolve(DEFAULT_SHARED_DIRECTORY));
+  }
+
+  @Test
   public void testGetSharedDirectory() throws Exception {
     initializeConfiguration();
     assertEquals(configuration.main().sharedDirectory(), SHARED_DIR_PATH);
-  }
-
-  @Test(expected = ProvisionException.class)
-  public void shouldThrowExceptionIfSharedDirectoryNotConfigured() throws Exception {
-    when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY)).thenReturn(null);
-    initializeConfiguration();
   }
 
   @Test
