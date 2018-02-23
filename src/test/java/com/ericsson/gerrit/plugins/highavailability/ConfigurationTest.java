@@ -81,7 +81,6 @@ public class ConfigurationTest {
   private static final String PASS = "fakePass";
   private static final String USER = "fakeUser";
   private static final String URL = "http://fakeUrl";
-  private static final String EMPTY = "";
   private static final int TIMEOUT = 5000;
   private static final int MAX_TRIES = 5;
   private static final int RETRY_INTERVAL = 1000;
@@ -121,7 +120,7 @@ public class ConfigurationTest {
 
   @Test
   public void testGetUrl() throws Exception {
-    assertThat(getConfiguration().peerInfoStatic().url()).isEqualTo(EMPTY);
+    assertThat(getConfiguration().peerInfoStatic().url()).isEmpty();
 
     globalPluginConfig.setString(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY, URL);
     assertThat(getConfiguration().peerInfoStatic().url()).isEqualTo(URL);
@@ -192,7 +191,7 @@ public class ConfigurationTest {
 
   @Test
   public void testGetUser() throws Exception {
-    assertThat(getConfiguration().http().user()).isEqualTo(EMPTY);
+    assertThat(getConfiguration().http().user()).isEmpty();
 
     globalPluginConfig.setString(HTTP_SECTION, null, USER_KEY, USER);
     assertThat(getConfiguration().http().user()).isEqualTo(USER);
@@ -200,7 +199,7 @@ public class ConfigurationTest {
 
   @Test
   public void testGetPassword() throws Exception {
-    assertThat(getConfiguration().http().password()).isEqualTo(EMPTY);
+    assertThat(getConfiguration().http().password()).isEmpty();
 
     globalPluginConfig.setString(HTTP_SECTION, null, PASSWORD_KEY, PASS);
     assertThat(getConfiguration().http().password()).isEqualTo(PASS);
