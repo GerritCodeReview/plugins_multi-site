@@ -91,28 +91,30 @@ public class ConfigurationTest {
   private static final String ERROR_MESSAGE = "some error message";
   private static final String[] CUSTOM_CACHE_PATTERNS = {"^my_cache.*", "other"};
 
-  @Mock private PluginConfigFactory cfgFactoryMock;
-  @Mock private Config configMock;
-  private SitePaths site;
+  @Mock private PluginConfigFactory pluginConfigFactoryMock;
+  @Mock private Config globalPluginConfigMock;
+  private SitePaths sitePaths;
   private Configuration configuration;
   private String pluginName = "high-availability";
 
   @Before
   public void setUp() throws IOException {
-    when(cfgFactoryMock.getGlobalPluginConfig(pluginName)).thenReturn(configMock);
-    when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY))
+    when(pluginConfigFactoryMock.getGlobalPluginConfig(pluginName))
+        .thenReturn(globalPluginConfigMock);
+    when(globalPluginConfigMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY))
         .thenReturn(SHARED_DIRECTORY);
-    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+    when(globalPluginConfigMock.getEnum(
+            PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
         .thenReturn(DEFAULT_PEER_INFO_STRATEGY);
-    when(configMock.getStringList(JGROUPS_SECTION, null, SKIP_INTERFACE_KEY))
+    when(globalPluginConfigMock.getStringList(JGROUPS_SECTION, null, SKIP_INTERFACE_KEY))
         .thenReturn(new String[] {});
-    when(configMock.getStringList(CACHE_SECTION, null, PATTERN_KEY))
+    when(globalPluginConfigMock.getStringList(CACHE_SECTION, null, PATTERN_KEY))
         .thenReturn(CUSTOM_CACHE_PATTERNS);
-    site = new SitePaths(SITE_PATH);
+    sitePaths = new SitePaths(SITE_PATH);
   }
 
   private void initializeConfiguration() {
-    configuration = new Configuration(cfgFactoryMock, pluginName, site);
+    configuration = new Configuration(pluginConfigFactoryMock, pluginName, sitePaths);
   }
 
   @Test
@@ -120,7 +122,8 @@ public class ConfigurationTest {
     initializeConfiguration();
     assertThat(configuration.peerInfo().strategy()).isSameAs(DEFAULT_PEER_INFO_STRATEGY);
 
-    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+    when(globalPluginConfigMock.getEnum(
+            PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
         .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
     initializeConfiguration();
     assertThat(configuration.peerInfo().strategy())
@@ -132,14 +135,16 @@ public class ConfigurationTest {
     initializeConfiguration();
     assertThat(configuration.peerInfoStatic().url()).isEqualTo(EMPTY);
 
-    when(configMock.getString(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY)).thenReturn(URL);
+    when(globalPluginConfigMock.getString(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY))
+        .thenReturn(URL);
     initializeConfiguration();
     assertThat(configuration.peerInfoStatic().url()).isEqualTo(URL);
   }
 
   @Test
   public void testGetUrlIsDroppingTrailingSlash() throws Exception {
-    when(configMock.getString(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY)).thenReturn(URL + "/");
+    when(globalPluginConfigMock.getString(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY))
+        .thenReturn(URL + "/");
     initializeConfiguration();
     assertThat(configuration).isNotNull();
     assertThat(configuration.peerInfoStatic().url()).isEqualTo(URL);
@@ -153,24 +158,27 @@ public class ConfigurationTest {
 
   @Test
   public void testGetJGroupsCluster() throws Exception {
-    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+    when(globalPluginConfigMock.getEnum(
+            PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
         .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
     initializeConfiguration();
     assertThat(configuration.jgroups().clusterName()).isEqualTo(DEFAULT_CLUSTER_NAME);
 
-    when(configMock.getString(JGROUPS_SECTION, null, CLUSTER_NAME_KEY)).thenReturn("foo");
+    when(globalPluginConfigMock.getString(JGROUPS_SECTION, null, CLUSTER_NAME_KEY))
+        .thenReturn("foo");
     initializeConfiguration();
     assertThat(configuration.jgroups().clusterName()).isEqualTo("foo");
   }
 
   @Test
   public void testGetJGroupsSkipInterface() throws Exception {
-    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+    when(globalPluginConfigMock.getEnum(
+            PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
         .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
     initializeConfiguration();
     assertThat(configuration.jgroups().skipInterface()).isEqualTo(DEFAULT_SKIP_INTERFACE_LIST);
 
-    when(configMock.getStringList(JGROUPS_SECTION, null, SKIP_INTERFACE_KEY))
+    when(globalPluginConfigMock.getStringList(JGROUPS_SECTION, null, SKIP_INTERFACE_KEY))
         .thenReturn(new String[] {"lo*", "eth0"});
     initializeConfiguration();
     assertThat(configuration.jgroups().skipInterface()).containsAllOf("lo*", "eth0").inOrder();
@@ -178,16 +186,18 @@ public class ConfigurationTest {
 
   @Test
   public void testGetJGroupsMyUrl() throws Exception {
-    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+    when(globalPluginConfigMock.getEnum(
+            PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
         .thenReturn(Configuration.PeerInfoStrategy.JGROUPS);
     initializeConfiguration();
     assertThat(configuration.peerInfoJGroups().myUrl()).isNull();
 
-    when(configMock.getString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, MY_URL_KEY)).thenReturn(URL);
+    when(globalPluginConfigMock.getString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, MY_URL_KEY))
+        .thenReturn(URL);
     initializeConfiguration();
     assertThat(configuration.peerInfoJGroups().myUrl()).isEqualTo(URL);
 
-    when(configMock.getString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, MY_URL_KEY))
+    when(globalPluginConfigMock.getString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, MY_URL_KEY))
         .thenReturn(URL + "/");
     initializeConfiguration();
     assertThat(configuration.peerInfoJGroups().myUrl()).isEqualTo(URL);
@@ -195,7 +205,8 @@ public class ConfigurationTest {
 
   @Test
   public void testGetJgroupsProtocolWhenNotSpecified() throws Exception {
-    when(configMock.getString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY)).thenReturn(null);
+    when(globalPluginConfigMock.getString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY))
+        .thenReturn(null);
     initializeConfiguration();
     assertThat(configuration.jgroups().protocolStack()).isEmpty();
   }
@@ -203,7 +214,7 @@ public class ConfigurationTest {
   @Test
   public void testGetJgroupsProtocolWithAbsolutePath() throws Exception {
     Path path = Paths.get("/path/to/file.xml");
-    when(configMock.getString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY))
+    when(globalPluginConfigMock.getString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY))
         .thenReturn(path.toString());
     initializeConfiguration();
     assertThat(configuration.jgroups().protocolStack()).hasValue(path);
@@ -212,10 +223,10 @@ public class ConfigurationTest {
   @Test
   public void testGetJgroupProtocolWithRelativePath() throws Exception {
     Path path = Paths.get("file.xml");
-    when(configMock.getString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY))
+    when(globalPluginConfigMock.getString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY))
         .thenReturn(path.toString());
     initializeConfiguration();
-    assertThat(configuration.jgroups().protocolStack()).hasValue(site.etc_dir.resolve(path));
+    assertThat(configuration.jgroups().protocolStack()).hasValue(sitePaths.etc_dir.resolve(path));
   }
 
   @Test
@@ -223,7 +234,7 @@ public class ConfigurationTest {
     initializeConfiguration();
     assertThat(configuration.http().user()).isEqualTo(EMPTY);
 
-    when(configMock.getString(HTTP_SECTION, null, USER_KEY)).thenReturn(USER);
+    when(globalPluginConfigMock.getString(HTTP_SECTION, null, USER_KEY)).thenReturn(USER);
     initializeConfiguration();
     assertThat(configuration.http().user()).isEqualTo(USER);
   }
@@ -233,7 +244,7 @@ public class ConfigurationTest {
     initializeConfiguration();
     assertThat(configuration.http().password()).isEqualTo(EMPTY);
 
-    when(configMock.getString(HTTP_SECTION, null, PASSWORD_KEY)).thenReturn(PASS);
+    when(globalPluginConfigMock.getString(HTTP_SECTION, null, PASSWORD_KEY)).thenReturn(PASS);
     initializeConfiguration();
     assertThat(configuration.http().password()).isEqualTo(PASS);
   }
@@ -243,12 +254,12 @@ public class ConfigurationTest {
     initializeConfiguration();
     assertThat(configuration.http().connectionTimeout()).isEqualTo(0);
 
-    when(configMock.getInt(HTTP_SECTION, CONNECTION_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS))
+    when(globalPluginConfigMock.getInt(HTTP_SECTION, CONNECTION_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS))
         .thenReturn(TIMEOUT);
     initializeConfiguration();
     assertThat(configuration.http().connectionTimeout()).isEqualTo(TIMEOUT);
 
-    when(configMock.getInt(HTTP_SECTION, CONNECTION_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS))
+    when(globalPluginConfigMock.getInt(HTTP_SECTION, CONNECTION_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS))
         .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
     initializeConfiguration();
     assertThat(configuration.http().connectionTimeout()).isEqualTo(DEFAULT_TIMEOUT_MS);
@@ -259,12 +270,12 @@ public class ConfigurationTest {
     initializeConfiguration();
     assertThat(configuration.http().socketTimeout()).isEqualTo(0);
 
-    when(configMock.getInt(HTTP_SECTION, SOCKET_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS))
+    when(globalPluginConfigMock.getInt(HTTP_SECTION, SOCKET_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS))
         .thenReturn(TIMEOUT);
     initializeConfiguration();
     assertThat(configuration.http().socketTimeout()).isEqualTo(TIMEOUT);
 
-    when(configMock.getInt(HTTP_SECTION, SOCKET_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS))
+    when(globalPluginConfigMock.getInt(HTTP_SECTION, SOCKET_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS))
         .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
     initializeConfiguration();
     assertThat(configuration.http().socketTimeout()).isEqualTo(DEFAULT_TIMEOUT_MS);
@@ -275,11 +286,12 @@ public class ConfigurationTest {
     initializeConfiguration();
     assertThat(configuration.http().maxTries()).isEqualTo(0);
 
-    when(configMock.getInt(HTTP_SECTION, MAX_TRIES_KEY, DEFAULT_MAX_TRIES)).thenReturn(MAX_TRIES);
+    when(globalPluginConfigMock.getInt(HTTP_SECTION, MAX_TRIES_KEY, DEFAULT_MAX_TRIES))
+        .thenReturn(MAX_TRIES);
     initializeConfiguration();
     assertThat(configuration.http().maxTries()).isEqualTo(MAX_TRIES);
 
-    when(configMock.getInt(HTTP_SECTION, MAX_TRIES_KEY, DEFAULT_MAX_TRIES))
+    when(globalPluginConfigMock.getInt(HTTP_SECTION, MAX_TRIES_KEY, DEFAULT_MAX_TRIES))
         .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
     initializeConfiguration();
     assertThat(configuration.http().maxTries()).isEqualTo(DEFAULT_MAX_TRIES);
@@ -290,12 +302,12 @@ public class ConfigurationTest {
     initializeConfiguration();
     assertThat(configuration.http().retryInterval()).isEqualTo(0);
 
-    when(configMock.getInt(HTTP_SECTION, RETRY_INTERVAL_KEY, DEFAULT_RETRY_INTERVAL))
+    when(globalPluginConfigMock.getInt(HTTP_SECTION, RETRY_INTERVAL_KEY, DEFAULT_RETRY_INTERVAL))
         .thenReturn(RETRY_INTERVAL);
     initializeConfiguration();
     assertThat(configuration.http().retryInterval()).isEqualTo(RETRY_INTERVAL);
 
-    when(configMock.getInt(HTTP_SECTION, RETRY_INTERVAL_KEY, DEFAULT_RETRY_INTERVAL))
+    when(globalPluginConfigMock.getInt(HTTP_SECTION, RETRY_INTERVAL_KEY, DEFAULT_RETRY_INTERVAL))
         .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
     initializeConfiguration();
     assertThat(configuration.http().retryInterval()).isEqualTo(DEFAULT_RETRY_INTERVAL);
@@ -306,12 +318,14 @@ public class ConfigurationTest {
     initializeConfiguration();
     assertThat(configuration.index().threadPoolSize()).isEqualTo(0);
 
-    when(configMock.getInt(INDEX_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE))
+    when(globalPluginConfigMock.getInt(
+            INDEX_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE))
         .thenReturn(THREAD_POOL_SIZE);
     initializeConfiguration();
     assertThat(configuration.index().threadPoolSize()).isEqualTo(THREAD_POOL_SIZE);
 
-    when(configMock.getInt(INDEX_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE))
+    when(globalPluginConfigMock.getInt(
+            INDEX_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE))
         .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
     initializeConfiguration();
     assertThat(configuration.index().threadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
@@ -319,17 +333,17 @@ public class ConfigurationTest {
 
   @Test
   public void testGetIndexSynchronize() throws Exception {
-    when(configMock.getBoolean(INDEX_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+    when(globalPluginConfigMock.getBoolean(INDEX_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
         .thenReturn(true);
     initializeConfiguration();
     assertThat(configuration.index().synchronize()).isTrue();
 
-    when(configMock.getBoolean(INDEX_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+    when(globalPluginConfigMock.getBoolean(INDEX_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
         .thenReturn(false);
     initializeConfiguration();
     assertThat(configuration.index().synchronize()).isFalse();
 
-    when(configMock.getBoolean(INDEX_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+    when(globalPluginConfigMock.getBoolean(INDEX_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
         .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
     initializeConfiguration();
     assertThat(configuration.index().synchronize()).isTrue();
@@ -340,12 +354,14 @@ public class ConfigurationTest {
     initializeConfiguration();
     assertThat(configuration.cache().threadPoolSize()).isEqualTo(0);
 
-    when(configMock.getInt(CACHE_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE))
+    when(globalPluginConfigMock.getInt(
+            CACHE_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE))
         .thenReturn(THREAD_POOL_SIZE);
     initializeConfiguration();
     assertThat(configuration.cache().threadPoolSize()).isEqualTo(THREAD_POOL_SIZE);
 
-    when(configMock.getInt(CACHE_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE))
+    when(globalPluginConfigMock.getInt(
+            CACHE_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE))
         .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
     initializeConfiguration();
     assertThat(configuration.cache().threadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
@@ -353,17 +369,17 @@ public class ConfigurationTest {
 
   @Test
   public void testGetCacheSynchronize() throws Exception {
-    when(configMock.getBoolean(CACHE_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+    when(globalPluginConfigMock.getBoolean(CACHE_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
         .thenReturn(true);
     initializeConfiguration();
     assertThat(configuration.cache().synchronize()).isTrue();
 
-    when(configMock.getBoolean(CACHE_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+    when(globalPluginConfigMock.getBoolean(CACHE_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
         .thenReturn(false);
     initializeConfiguration();
     assertThat(configuration.cache().synchronize()).isFalse();
 
-    when(configMock.getBoolean(CACHE_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+    when(globalPluginConfigMock.getBoolean(CACHE_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
         .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
     initializeConfiguration();
     assertThat(configuration.cache().synchronize()).isTrue();
@@ -371,17 +387,17 @@ public class ConfigurationTest {
 
   @Test
   public void testGetEventSynchronize() throws Exception {
-    when(configMock.getBoolean(EVENT_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+    when(globalPluginConfigMock.getBoolean(EVENT_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
         .thenReturn(true);
     initializeConfiguration();
     assertThat(configuration.event().synchronize()).isTrue();
 
-    when(configMock.getBoolean(EVENT_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+    when(globalPluginConfigMock.getBoolean(EVENT_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
         .thenReturn(false);
     initializeConfiguration();
     assertThat(configuration.event().synchronize()).isFalse();
 
-    when(configMock.getBoolean(EVENT_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+    when(globalPluginConfigMock.getBoolean(EVENT_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
         .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
     initializeConfiguration();
     assertThat(configuration.event().synchronize()).isTrue();
@@ -389,14 +405,17 @@ public class ConfigurationTest {
 
   @Test
   public void testGetDefaultSharedDirectory() throws Exception {
-    when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY)).thenReturn(null);
-    when(configMock.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
+    when(globalPluginConfigMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY))
+        .thenReturn(null);
+    when(globalPluginConfigMock.getEnum(
+            PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY))
         .thenReturn(DEFAULT_PEER_INFO_STRATEGY);
-    when(configMock.getStringList(JGROUPS_SECTION, null, SKIP_INTERFACE_KEY))
+    when(globalPluginConfigMock.getStringList(JGROUPS_SECTION, null, SKIP_INTERFACE_KEY))
         .thenReturn(new String[] {});
 
     initializeConfiguration();
-    assertEquals(configuration.main().sharedDirectory(), site.resolve(DEFAULT_SHARED_DIRECTORY));
+    assertEquals(
+        configuration.main().sharedDirectory(), sitePaths.resolve(DEFAULT_SHARED_DIRECTORY));
   }
 
   @Test
@@ -407,7 +426,7 @@ public class ConfigurationTest {
 
   @Test
   public void testRelativeSharedDir() {
-    when(configMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY))
+    when(globalPluginConfigMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY))
         .thenReturn(RELATIVE_SHARED_DIRECTORY);
     initializeConfiguration();
 
@@ -420,7 +439,7 @@ public class ConfigurationTest {
     initializeConfiguration();
     assertThat(configuration.websession().cleanupInterval()).isEqualTo(DEFAULT_CLEANUP_INTERVAL_MS);
 
-    when(configMock.getString(WEBSESSION_SECTION, null, CLEANUP_INTERVAL_KEY))
+    when(globalPluginConfigMock.getString(WEBSESSION_SECTION, null, CLEANUP_INTERVAL_KEY))
         .thenReturn("30 seconds");
     initializeConfiguration();
     assertThat(configuration.websession().cleanupInterval()).isEqualTo(SECONDS.toMillis(30));
@@ -428,17 +447,20 @@ public class ConfigurationTest {
 
   @Test
   public void testGetWebsessionSynchronize() throws Exception {
-    when(configMock.getBoolean(WEBSESSION_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+    when(globalPluginConfigMock.getBoolean(
+            WEBSESSION_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
         .thenReturn(true);
     initializeConfiguration();
     assertThat(configuration.websession().synchronize()).isTrue();
 
-    when(configMock.getBoolean(WEBSESSION_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+    when(globalPluginConfigMock.getBoolean(
+            WEBSESSION_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
         .thenReturn(false);
     initializeConfiguration();
     assertThat(configuration.websession().synchronize()).isFalse();
 
-    when(configMock.getBoolean(WEBSESSION_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
+    when(globalPluginConfigMock.getBoolean(
+            WEBSESSION_SECTION, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE))
         .thenThrow(new IllegalArgumentException(ERROR_MESSAGE));
     initializeConfiguration();
     assertThat(configuration.websession().synchronize()).isTrue();
@@ -465,7 +487,8 @@ public class ConfigurationTest {
 
   @Test
   public void testHealthCheckEnabled() throws Exception {
-    when(configMock.getBoolean(HEALTH_CHECK_SECTION, ENABLE_KEY, DEFAULT_HEALTH_CHECK_ENABLED))
+    when(globalPluginConfigMock.getBoolean(
+            HEALTH_CHECK_SECTION, ENABLE_KEY, DEFAULT_HEALTH_CHECK_ENABLED))
         .thenReturn(false);
     initializeConfiguration();
     assertThat(configuration.healthCheck().enabled()).isFalse();
