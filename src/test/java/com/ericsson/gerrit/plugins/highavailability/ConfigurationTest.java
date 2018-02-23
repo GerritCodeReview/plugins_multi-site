@@ -76,6 +76,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConfigurationTest {
+  private static final String PLUGIN_NAME = "high-availability";
   private static final String PASS = "fakePass";
   private static final String USER = "fakeUser";
   private static final String URL = "http://fakeUrl";
@@ -95,11 +96,10 @@ public class ConfigurationTest {
   @Mock private Config globalPluginConfigMock;
   private SitePaths sitePaths;
   private Configuration configuration;
-  private String pluginName = "high-availability";
 
   @Before
   public void setUp() throws IOException {
-    when(pluginConfigFactoryMock.getGlobalPluginConfig(pluginName))
+    when(pluginConfigFactoryMock.getGlobalPluginConfig(PLUGIN_NAME))
         .thenReturn(globalPluginConfigMock);
     when(globalPluginConfigMock.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY))
         .thenReturn(SHARED_DIRECTORY);
@@ -114,7 +114,7 @@ public class ConfigurationTest {
   }
 
   private void initializeConfiguration() {
-    configuration = new Configuration(pluginConfigFactoryMock, pluginName, sitePaths);
+    configuration = new Configuration(pluginConfigFactoryMock, PLUGIN_NAME, sitePaths);
   }
 
   @Test
