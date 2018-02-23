@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Singleton
-public class InetAddressFinder {
+class InetAddressFinder {
 
   private final boolean preferIPv4;
   private final Configuration.JGroups jgroupsConfig;
@@ -48,7 +48,7 @@ public class InetAddressFinder {
    *
    * @return an Optional<InetAddress>
    */
-  public Optional<InetAddress> findAddress() throws SocketException {
+  Optional<InetAddress> findAddress() throws SocketException {
     return findFirstAppropriateAddress(Collections.list(NetworkInterface.getNetworkInterfaces()));
   }
 
