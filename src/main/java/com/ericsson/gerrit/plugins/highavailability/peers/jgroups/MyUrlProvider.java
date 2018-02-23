@@ -15,7 +15,6 @@
 package com.ericsson.gerrit.plugins.highavailability.peers.jgroups;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CharMatcher;
 import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.inject.Inject;
@@ -31,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
-public class MyUrlProvider implements Provider<String> {
+class MyUrlProvider implements Provider<String> {
   private static final Logger log = LoggerFactory.getLogger(MyUrlProvider.class);
 
   private static final String HTTPD_SECTION = "httpd";
@@ -42,8 +41,7 @@ public class MyUrlProvider implements Provider<String> {
   private final String myUrl;
 
   @Inject
-  @VisibleForTesting
-  public MyUrlProvider(@GerritServerConfig Config srvConfig, Configuration pluginConfiguration) {
+  MyUrlProvider(@GerritServerConfig Config srvConfig, Configuration pluginConfiguration) {
     String url = pluginConfiguration.peerInfoJGroups().myUrl();
     if (url == null) {
       log.info("myUrl not configured; attempting to determine from {}", LISTEN_URL);

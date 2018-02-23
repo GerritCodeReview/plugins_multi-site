@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @Singleton
-public class CachePatternMatcher {
+class CachePatternMatcher {
   private static final List<String> DEFAULT_PATTERNS =
       ImmutableList.of(
           "^accounts.*",
@@ -38,13 +38,13 @@ public class CachePatternMatcher {
   private final Pattern pattern;
 
   @Inject
-  public CachePatternMatcher(Configuration cfg) {
+  CachePatternMatcher(Configuration cfg) {
     List<String> patterns = new ArrayList<>(DEFAULT_PATTERNS);
     patterns.addAll(cfg.cache().patterns());
     this.pattern = Pattern.compile(Joiner.on("|").join(patterns));
   }
 
-  public boolean matches(String cacheName) {
+  boolean matches(String cacheName) {
     return pattern.matcher(cacheName).matches();
   }
 }
