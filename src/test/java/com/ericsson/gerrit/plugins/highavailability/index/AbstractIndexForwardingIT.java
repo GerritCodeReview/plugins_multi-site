@@ -32,7 +32,6 @@ import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
-import com.google.gerrit.acceptance.UseSsh;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
@@ -44,7 +43,6 @@ import org.junit.Test;
 
 @Ignore
 @NoHttpd
-@UseSsh
 @TestPlugin(
   name = "high-availability",
   sysModule = "com.ericsson.gerrit.plugins.highavailability.Module",
