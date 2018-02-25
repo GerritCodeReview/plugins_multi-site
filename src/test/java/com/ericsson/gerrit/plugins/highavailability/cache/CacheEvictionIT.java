@@ -21,7 +21,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
-import static org.junit.Assert.fail;
 
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.RequestListener;
@@ -33,8 +32,7 @@ import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.acceptance.UseSsh;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.apache.http.HttpStatus;
 import org.junit.Rule;
@@ -70,17 +68,13 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
   )
   public void flushAndSendPost() throws Exception {
     final String flushRequest = "/plugins/high-availability/cache/" + Constants.PROJECT_LIST;
-    final CyclicBarrier checkPoint = new CyclicBarrier(2);
+    final CountDownLatch expectedRequestLatch = new CountDownLatch(1);
     wireMockRule.addMockServiceRequestListener(
         new RequestListener() {
           @Override
           public void requestReceived(Request request, Response response) {
             if (request.getAbsoluteUrl().contains(flushRequest)) {
-              try {
-                checkPoint.await();
-              } catch (InterruptedException | BrokenBarrierException e) {
-                fail();
-              }
+              expectedRequestLatch.countDown();
             }
           }
         });
@@ -89,7 +83,7 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
             .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
 
     adminSshSession.exec("gerrit flush-caches --cache " + Constants.PROJECT_LIST);
-    checkPoint.await(5, TimeUnit.SECONDS);
+    expectedRequestLatch.await(5, TimeUnit.SECONDS);
     verify(postRequestedFor(urlEqualTo(flushRequest)));
   }
 }
