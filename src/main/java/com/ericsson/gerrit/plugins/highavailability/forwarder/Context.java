@@ -16,13 +16,7 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
 /** Allows to tag a forwarded event to avoid infinitely looping events. */
 public class Context {
-  private static final ThreadLocal<Boolean> FORWARDED_EVENT =
-      new ThreadLocal<Boolean>() {
-        @Override
-        protected Boolean initialValue() {
-          return false;
-        }
-      };
+  private static final ThreadLocal<Boolean> FORWARDED_EVENT = ThreadLocal.withInitial(()->false);
 
   private Context() {}
 
