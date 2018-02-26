@@ -51,7 +51,6 @@ import com.google.gerrit.pgm.init.api.InitFlags;
 import com.google.gerrit.pgm.init.api.InitStep;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.EnumSet;
@@ -213,7 +212,7 @@ public class Setup implements InitStep {
     if (ui.yesno(true, "Create a HA replica site")) {
       String replicaPath = ui.readString("ha/1", "Location of the HA replica");
       Path replica = site.site_path.resolve(Paths.get(replicaPath));
-      if (Files.exists(replica)) {
+      if (replica.toFile().exists()) {
         ui.message("%s already exists, exiting", replica);
         return true;
       }

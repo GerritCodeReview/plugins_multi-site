@@ -123,7 +123,7 @@ class SetupLocalHAReplica {
           private boolean shouldSkip(Path p) throws IOException {
             Path resolved = master.site_path.resolve(p);
             for (Path skip : toSkip) {
-              if (Files.exists(skip) && Files.isSameFile(resolved, skip)) {
+              if (skip.toFile().exists() && Files.isSameFile(resolved, skip)) {
                 return true;
               }
             }
@@ -147,7 +147,7 @@ class SetupLocalHAReplica {
           public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
               throws IOException {
             Path f = source.relativize(file);
-            if (Files.isRegularFile(file)) {
+            if (file.toFile().isFile()) {
               Files.copy(file, target.resolve(f));
             }
             return FileVisitResult.CONTINUE;
