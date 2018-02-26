@@ -89,7 +89,7 @@ class CacheRestApiServlet extends HttpServlet {
 
   @VisibleForTesting
   public static CacheParameters getCacheParameters(String cache) {
-    int dot = cache.indexOf(".");
+    int dot = cache.indexOf('.');
     if (dot > 0) {
       return new CacheParameters(cache.substring(0, dot), cache.substring(dot + 1));
     }
