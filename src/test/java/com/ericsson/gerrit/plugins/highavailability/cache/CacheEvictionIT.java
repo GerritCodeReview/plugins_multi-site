@@ -67,11 +67,11 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
     final String flushRequest = "/plugins/high-availability/cache/" + Constants.PROJECT_LIST;
     final CountDownLatch expectedRequestLatch = new CountDownLatch(1);
     wireMockRule.addMockServiceRequestListener(
-            (request, response) -> {
-              if (request.getAbsoluteUrl().contains(flushRequest)) {
-                expectedRequestLatch.countDown();
-              }
-            });
+        (request, response) -> {
+          if (request.getAbsoluteUrl().contains(flushRequest)) {
+            expectedRequestLatch.countDown();
+          }
+        });
     givenThat(
         post(urlEqualTo(flushRequest))
             .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
