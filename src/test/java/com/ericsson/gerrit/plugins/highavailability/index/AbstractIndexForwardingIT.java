@@ -73,11 +73,11 @@ public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonT
     final String expectedRequest = getExpectedRequest();
     final CountDownLatch expectedRequestLatch = new CountDownLatch(1);
     wireMockRule.addMockServiceRequestListener(
-            (request, response) -> {
-              if (request.getAbsoluteUrl().contains(expectedRequest)) {
-                expectedRequestLatch.countDown();
-              }
-            });
+        (request, response) -> {
+          if (request.getAbsoluteUrl().contains(expectedRequest)) {
+            expectedRequestLatch.countDown();
+          }
+        });
     givenThat(
         post(urlEqualTo(expectedRequest))
             .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
