@@ -115,7 +115,7 @@ class RestForwarder implements Forwarder {
   }
 
   private abstract class Request {
-    private String name;
+    private final String name;
     private int execCnt;
 
     Request(String name) {

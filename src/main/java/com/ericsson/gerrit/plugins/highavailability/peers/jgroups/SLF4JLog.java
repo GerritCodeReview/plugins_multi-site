@@ -26,7 +26,7 @@ import org.slf4j.Logger;
  * @author christian.halstrick@sap.com
  */
 public class SLF4JLog implements Log {
-  private Logger logger;
+  private final Logger logger;
 
   public SLF4JLog(Logger log) {
     this.logger = log;

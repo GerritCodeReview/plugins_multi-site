@@ -22,9 +22,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 
-import com.github.tomakehurst.wiremock.http.Request;
-import com.github.tomakehurst.wiremock.http.RequestListener;
-import com.github.tomakehurst.wiremock.http.Response;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.google.gerrit.acceptance.GlobalPluginConfig;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
@@ -76,14 +73,11 @@ public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonT
     final String expectedRequest = getExpectedRequest();
     final CountDownLatch expectedRequestLatch = new CountDownLatch(1);
     wireMockRule.addMockServiceRequestListener(
-        new RequestListener() {
-          @Override
-          public void requestReceived(Request request, Response response) {
-            if (request.getAbsoluteUrl().contains(expectedRequest)) {
-              expectedRequestLatch.countDown();
-            }
-          }
-        });
+            (request, response) -> {
+              if (request.getAbsoluteUrl().contains(expectedRequest)) {
+                expectedRequestLatch.countDown();
+              }
+            });
     givenThat(
         post(urlEqualTo(expectedRequest))
             .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
