@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,14 +59,12 @@ public abstract class AbstractIndexRestApiServlet<T> extends HttpServlet {
   }
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse rsp)
-      throws IOException, ServletException {
+  protected void doPost(HttpServletRequest req, HttpServletResponse rsp) {
     process(req, rsp, Operation.INDEX);
   }
 
   @Override
-  protected void doDelete(HttpServletRequest req, HttpServletResponse rsp)
-      throws IOException, ServletException {
+  protected void doDelete(HttpServletRequest req, HttpServletResponse rsp) {
     if (!allowDelete) {
       sendError(rsp, SC_METHOD_NOT_ALLOWED, String.format("cannot delete %s from index", type));
     } else {

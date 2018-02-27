@@ -27,7 +27,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
 import java.util.List;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,8 +47,7 @@ class CacheRestApiServlet extends HttpServlet {
   }
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse rsp)
-      throws IOException, ServletException {
+  protected void doPost(HttpServletRequest req, HttpServletResponse rsp) {
     rsp.setContentType("text/plain");
     rsp.setCharacterEncoding("UTF-8");
     try {
