@@ -44,7 +44,7 @@ class EventHandler implements EventListener {
   }
 
   class EventTask implements Runnable {
-    private Event event;
+    private final Event event;
 
     EventTask(Event event) {
       this.event = event;

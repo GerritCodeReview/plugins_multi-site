@@ -93,8 +93,8 @@ class IndexEventHandler
   }
 
   class IndexChangeTask extends IndexTask {
-    private boolean deleted;
-    private int changeId;
+    private final boolean deleted;
+    private final int changeId;
 
     IndexChangeTask(int changeId, boolean deleted) {
       this.changeId = changeId;
@@ -131,7 +131,7 @@ class IndexEventHandler
   }
 
   class IndexAccountTask extends IndexTask {
-    private int accountId;
+    private final int accountId;
 
     IndexAccountTask(int accountId) {
       this.accountId = accountId;
@@ -163,7 +163,7 @@ class IndexEventHandler
   }
 
   class IndexGroupTask extends IndexTask {
-    private String groupUUID;
+    private final String groupUUID;
 
     IndexGroupTask(String groupUUID) {
       this.groupUUID = groupUUID;

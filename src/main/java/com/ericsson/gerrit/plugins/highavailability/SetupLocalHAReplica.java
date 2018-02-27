@@ -45,8 +45,8 @@ import org.eclipse.jgit.util.FS;
 class SetupLocalHAReplica {
   private final SitePaths master;
   private final FileBasedConfig masterConfig;
+  private final Path sharedDir;
 
-  private Path sharedDir;
   private SitePaths replica;
 
   @Inject
