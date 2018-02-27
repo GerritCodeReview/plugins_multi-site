@@ -24,7 +24,6 @@ import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
 import com.google.gwtorm.server.OrmException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.servlet.http.HttpServlet;
@@ -42,7 +41,12 @@ public abstract class AbstractIndexRestApiServlet<T> extends HttpServlet {
 
   enum Operation {
     INDEX,
-    DELETE
+    DELETE;
+
+    @Override
+    public String toString() {
+      return name().toLowerCase();
+    }
   }
 
   abstract T parse(String id);
@@ -77,7 +81,7 @@ public abstract class AbstractIndexRestApiServlet<T> extends HttpServlet {
     rsp.setCharacterEncoding(UTF_8.name());
     String path = req.getPathInfo();
     T id = parse(path.substring(path.lastIndexOf('/') + 1));
-    logger.debug("{} {} {}", operation.name().toLowerCase(Locale.US), type, id);
+    logger.debug("{} {} {}", operation, type, id);
     try {
       Context.setForwardedEvent(true);
       AtomicInteger idLock = getAndIncrementIdLock(id);
