@@ -18,11 +18,10 @@ import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
 import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.CacheNotFoundException;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.EvictCache;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
-import com.google.common.cache.Cache;
-import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
@@ -39,11 +38,11 @@ class CacheRestApiServlet extends HttpServlet {
   private static final long serialVersionUID = -1L;
   private static final Logger logger = LoggerFactory.getLogger(CacheRestApiServlet.class);
 
-  private final DynamicMap<Cache<?, ?>> cacheMap;
+  private final EvictCache evictCache;
 
   @Inject
-  CacheRestApiServlet(DynamicMap<Cache<?, ?>> cacheMap) {
-    this.cacheMap = cacheMap;
+  CacheRestApiServlet(EvictCache evictCache) {
+    this.evictCache = evictCache;
   }
 
   @Override
@@ -56,21 +55,14 @@ class CacheRestApiServlet extends HttpServlet {
       String json = req.getReader().readLine();
       Object key = GsonParser.fromJson(cacheName, json);
       CacheParameters cacheKey = getCacheParameters(cacheName);
-      Cache<?, ?> cache = cacheMap.get(cacheKey.pluginName, cacheKey.cacheName);
-      if (cache == null) {
-        String msg = String.format("cache %s not found", cacheName);
-        logger.error("Failed to process eviction request: {}", msg);
-        sendError(rsp, SC_BAD_REQUEST, msg);
-      } else {
-        Context.setForwardedEvent(true);
-        evictCache(cache, cacheKey.cacheName, key);
-        rsp.setStatus(SC_NO_CONTENT);
-      }
+      evictCache.evict(cacheKey.pluginName, cacheKey.cacheName, key);
+      rsp.setStatus(SC_NO_CONTENT);
+    } catch (CacheNotFoundException e) {
+      logger.error("Failed to process eviction request: {}", e.getMessage());
+      sendError(rsp, SC_BAD_REQUEST, e.getMessage());
     } catch (IOException e) {
       logger.error("Failed to process eviction request: {}", e.getMessage(), e);
       sendError(rsp, SC_BAD_REQUEST, e.getMessage());
-    } finally {
-      Context.unsetForwardedEvent();
     }
   }
 
@@ -99,17 +91,6 @@ class CacheRestApiServlet extends HttpServlet {
       rsp.sendError(statusCode, message);
     } catch (IOException e) {
       logger.error("Failed to send error messsage: {}", e.getMessage(), e);
-    }
-  }
-
-  private void evictCache(Cache<?, ?> cache, String cacheName, Object key) {
-    if (Constants.PROJECT_LIST.equals(cacheName)) {
-      // One key is holding the list of projects
-      cache.invalidateAll();
-      logger.debug("Invalidated cache {}", cacheName);
-    } else {
-      cache.invalidate(key);
-      logger.debug("Invalidated cache {}[{}]", cacheName, key);
     }
   }
 }
