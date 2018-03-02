@@ -360,7 +360,9 @@ public class ConfigurationTest {
   public void testGetCachePatterns() throws Exception {
     globalPluginConfig.setStringList(
         CACHE_SECTION, null, PATTERN_KEY, ImmutableList.of("^my_cache.*", "other"));
-    assertThat(getConfiguration().cache().patterns()).containsExactly("^my_cache.*", "other");
+    assertThat(getConfiguration().cache().patterns())
+        .containsExactly("^my_cache.*", "other")
+        .inOrder();
   }
 
   @Test

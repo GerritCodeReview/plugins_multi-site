@@ -29,6 +29,7 @@ import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.server.ChangeAccess;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.index.change.ChangeIndexer;
+import com.google.gerrit.server.project.NoSuchChangeException;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.OrmException;
 import com.google.gwtorm.server.SchemaFactory;
@@ -96,6 +97,21 @@ public class IndexChangeRestApiServletTest {
     setupPostMocks(CHANGE_EXISTS, THROW_ORM_EXCEPTION);
     indexRestApiServlet.doPost(req, rsp);
     verify(rsp).sendError(SC_NOT_FOUND, "Error trying to find change \n");
+  }
+
+  @Test
+  public void indexerThrowsNoSuchChangeExceptionTryingToPostChange() throws Exception {
+    doThrow(new NoSuchChangeException(id)).when(schemaFactory).open();
+    indexRestApiServlet.doPost(req, rsp);
+    verify(rsp).setStatus(SC_NO_CONTENT);
+  }
+
+  @Test
+  public void indexerThrowsNestedNoSuchChangeExceptionTryingToPostChange() throws Exception {
+    OrmException e = new OrmException("test", new NoSuchChangeException(id));
+    doThrow(e).when(schemaFactory).open();
+    indexRestApiServlet.doPost(req, rsp);
+    verify(rsp).setStatus(SC_NO_CONTENT);
   }
 
   @Test

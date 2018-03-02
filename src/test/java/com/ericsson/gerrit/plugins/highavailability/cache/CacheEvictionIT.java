@@ -21,6 +21,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.google.gerrit.acceptance.GlobalPluginConfig;
@@ -77,7 +78,7 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
             .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
 
     adminSshSession.exec("gerrit flush-caches --cache " + Constants.PROJECT_LIST);
-    expectedRequestLatch.await(5, TimeUnit.SECONDS);
+    assertThat(expectedRequestLatch.await(5, TimeUnit.SECONDS)).isTrue();
     verify(postRequestedFor(urlEqualTo(flushRequest)));
   }
 }
