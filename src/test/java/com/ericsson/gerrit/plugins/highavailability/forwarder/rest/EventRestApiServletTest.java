@@ -48,9 +48,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class EventRestApiServletTest {
   private static final String ERR_MSG = "some Error";
 
-  @Mock private EventDispatcher dispatcher;
-  @Mock private HttpServletRequest req;
-  @Mock private HttpServletResponse rsp;
+  @Mock private EventDispatcher dispatcherMock;
+  @Mock private HttpServletRequest requestMock;
+  @Mock private HttpServletResponse responseMock;
   private EventRestApiServlet eventRestApiServlet;
 
   @BeforeClass
@@ -61,8 +61,8 @@ public class EventRestApiServletTest {
 
   @Before
   public void createEventsRestApiServlet() throws Exception {
-    eventRestApiServlet = new EventRestApiServlet(dispatcher);
-    when(req.getContentType()).thenReturn(MediaType.JSON_UTF_8.toString());
+    eventRestApiServlet = new EventRestApiServlet(dispatcherMock);
+    when(requestMock.getContentType()).thenReturn(MediaType.JSON_UTF_8.toString());
   }
 
   @Test
@@ -71,10 +71,10 @@ public class EventRestApiServletTest {
         "{\"project\":\"gerrit/some-project\",\"ref\":"
             + "\"refs/changes/76/669676/2\",\"nodesCount\":1,\"type\":"
             + "\"ref-replication-done\",\"eventCreatedOn\":1451415011}";
-    when(req.getReader()).thenReturn(new BufferedReader(new StringReader(event)));
-    dispatcher.postEvent(any(RefReplicationDoneEvent.class));
-    eventRestApiServlet.doPost(req, rsp);
-    verify(rsp).setStatus(SC_NO_CONTENT);
+    when(requestMock.getReader()).thenReturn(new BufferedReader(new StringReader(event)));
+    dispatcherMock.postEvent(any(RefReplicationDoneEvent.class));
+    eventRestApiServlet.doPost(requestMock, responseMock);
+    verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
   @Test
@@ -83,35 +83,37 @@ public class EventRestApiServletTest {
         "{\"project\":\"gerrit/some-project\",\"ref\":"
             + "\"refs/changes/76/669676/2\",\"nodesCount\":1,\"type\":"
             + "\"ref-replication-done\",\"eventCreatedOn\":1451415011}";
-    when(req.getReader()).thenReturn(new BufferedReader(new StringReader(event)));
+    when(requestMock.getReader()).thenReturn(new BufferedReader(new StringReader(event)));
     doThrow(new OrmException(ERR_MSG))
-        .when(dispatcher)
+        .when(dispatcherMock)
         .postEvent(any(RefReplicationDoneEvent.class));
-    eventRestApiServlet.doPost(req, rsp);
-    verify(rsp).sendError(SC_NOT_FOUND, "Change not found\n");
+    eventRestApiServlet.doPost(requestMock, responseMock);
+    verify(responseMock).sendError(SC_NOT_FOUND, "Change not found\n");
   }
 
   @Test
   public void testDoPostBadRequest() throws Exception {
-    doThrow(new IOException(ERR_MSG)).when(req).getReader();
-    eventRestApiServlet.doPost(req, rsp);
-    verify(rsp).sendError(SC_BAD_REQUEST, ERR_MSG);
+    doThrow(new IOException(ERR_MSG)).when(requestMock).getReader();
+    eventRestApiServlet.doPost(requestMock, responseMock);
+    verify(responseMock).sendError(SC_BAD_REQUEST, ERR_MSG);
   }
 
   @Test
   public void testDoPostWrongMediaType() throws Exception {
-    when(req.getContentType()).thenReturn(MediaType.APPLICATION_XML_UTF_8.toString());
-    eventRestApiServlet.doPost(req, rsp);
-    verify(rsp)
+    when(requestMock.getContentType()).thenReturn(MediaType.APPLICATION_XML_UTF_8.toString());
+    eventRestApiServlet.doPost(requestMock, responseMock);
+    verify(responseMock)
         .sendError(
             SC_UNSUPPORTED_MEDIA_TYPE, "Expecting " + JSON_UTF_8.toString() + " content type");
   }
 
   @Test
   public void testDoPostErrorWhileSendingErrorMessage() throws Exception {
-    doThrow(new IOException(ERR_MSG)).when(req).getReader();
-    doThrow(new IOException("someOtherError")).when(rsp).sendError(SC_BAD_REQUEST, ERR_MSG);
-    eventRestApiServlet.doPost(req, rsp);
+    doThrow(new IOException(ERR_MSG)).when(requestMock).getReader();
+    doThrow(new IOException("someOtherError"))
+        .when(responseMock)
+        .sendError(SC_BAD_REQUEST, ERR_MSG);
+    eventRestApiServlet.doPost(requestMock, responseMock);
   }
 
   static class RefReplicationDoneEvent extends RefEvent {
