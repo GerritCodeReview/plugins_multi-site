@@ -20,11 +20,10 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static javax.servlet.http.HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE;
 
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.DispatchEvent;
 import com.google.common.base.Supplier;
 import com.google.common.io.CharStreams;
 import com.google.common.net.MediaType;
-import com.google.gerrit.common.EventDispatcher;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventDeserializer;
 import com.google.gerrit.server.events.SupplierDeserializer;
@@ -46,11 +45,11 @@ class EventRestApiServlet extends HttpServlet {
   private static final long serialVersionUID = -1L;
   private static final Logger logger = LoggerFactory.getLogger(EventRestApiServlet.class);
 
-  private final EventDispatcher dispatcher;
+  private final DispatchEvent dispatchEvent;
 
   @Inject
-  EventRestApiServlet(EventDispatcher dispatcher) {
-    this.dispatcher = dispatcher;
+  EventRestApiServlet(DispatchEvent dispatchEvent) {
+    this.dispatchEvent = dispatchEvent;
   }
 
   @Override
@@ -58,15 +57,12 @@ class EventRestApiServlet extends HttpServlet {
     rsp.setContentType("text/plain");
     rsp.setCharacterEncoding("UTF-8");
     try {
-      Context.setForwardedEvent(true);
       if (!MediaType.parse(req.getContentType()).is(JSON_UTF_8)) {
         sendError(
             rsp, SC_UNSUPPORTED_MEDIA_TYPE, "Expecting " + JSON_UTF_8.toString() + " content type");
         return;
       }
-      Event event = getEventFromRequest(req);
-      logger.debug("event {}", event.getType());
-      dispatcher.postEvent(event);
+      dispatchEvent.dispatch(getEventFromRequest(req));
       rsp.setStatus(SC_NO_CONTENT);
     } catch (OrmException e) {
       logger.debug("Error trying to find a change ", e);
@@ -74,8 +70,6 @@ class EventRestApiServlet extends HttpServlet {
     } catch (IOException | PermissionBackendException e) {
       logger.error("Unable to re-trigger event", e);
       sendError(rsp, SC_BAD_REQUEST, e.getMessage());
-    } finally {
-      Context.unsetForwardedEvent();
     }
   }
 
