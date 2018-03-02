@@ -24,8 +24,8 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.ericsson.gerrit.plugins.highavailability.forwarder.DispatchEvent;
 import com.google.common.net.MediaType;
-import com.google.gerrit.common.EventDispatcher;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.events.EventTypes;
 import com.google.gerrit.server.events.RefEvent;
@@ -48,7 +48,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class EventRestApiServletTest {
   private static final String ERR_MSG = "some Error";
 
-  @Mock private EventDispatcher dispatcherMock;
+  @Mock private DispatchEvent dispatchEventMock;
   @Mock private HttpServletRequest requestMock;
   @Mock private HttpServletResponse responseMock;
   private EventRestApiServlet eventRestApiServlet;
@@ -61,7 +61,7 @@ public class EventRestApiServletTest {
 
   @Before
   public void createEventsRestApiServlet() throws Exception {
-    eventRestApiServlet = new EventRestApiServlet(dispatcherMock);
+    eventRestApiServlet = new EventRestApiServlet(dispatchEventMock);
     when(requestMock.getContentType()).thenReturn(MediaType.JSON_UTF_8.toString());
   }
 
@@ -72,8 +72,10 @@ public class EventRestApiServletTest {
             + "\"refs/changes/76/669676/2\",\"nodesCount\":1,\"type\":"
             + "\"ref-replication-done\",\"eventCreatedOn\":1451415011}";
     when(requestMock.getReader()).thenReturn(new BufferedReader(new StringReader(event)));
-    dispatcherMock.postEvent(any(RefReplicationDoneEvent.class));
+
     eventRestApiServlet.doPost(requestMock, responseMock);
+
+    verify(dispatchEventMock).dispatch(any(RefReplicationDoneEvent.class));
     verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
@@ -85,8 +87,8 @@ public class EventRestApiServletTest {
             + "\"ref-replication-done\",\"eventCreatedOn\":1451415011}";
     when(requestMock.getReader()).thenReturn(new BufferedReader(new StringReader(event)));
     doThrow(new OrmException(ERR_MSG))
-        .when(dispatcherMock)
-        .postEvent(any(RefReplicationDoneEvent.class));
+        .when(dispatchEventMock)
+        .dispatch(any(RefReplicationDoneEvent.class));
     eventRestApiServlet.doPost(requestMock, responseMock);
     verify(responseMock).sendError(SC_NOT_FOUND, "Change not found\n");
   }
