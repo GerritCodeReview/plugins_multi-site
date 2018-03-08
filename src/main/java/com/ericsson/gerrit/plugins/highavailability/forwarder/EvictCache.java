@@ -55,20 +55,16 @@ public class EvictCache {
     }
     try {
       Context.setForwardedEvent(true);
-      evictCache(cache, cacheName, key);
+      if (Constants.PROJECT_LIST.equals(cacheName)) {
+        // One key is holding the list of projects
+        cache.invalidateAll();
+        logger.debug("Invalidated cache {}", cacheName);
+      } else {
+        cache.invalidate(key);
+        logger.debug("Invalidated cache {}[{}]", cacheName, key);
+      }
     } finally {
       Context.unsetForwardedEvent();
-    }
-  }
-
-  private void evictCache(Cache<?, ?> cache, String cacheName, Object key) {
-    if (Constants.PROJECT_LIST.equals(cacheName)) {
-      // One key is holding the list of projects
-      cache.invalidateAll();
-      logger.debug("Invalidated cache {}", cacheName);
-    } else {
-      cache.invalidate(key);
-      logger.debug("Invalidated cache {}[{}]", cacheName, key);
     }
   }
 }
