@@ -42,26 +42,23 @@ public class EvictCache {
    * Evict an entry from the cache of the local node, eviction will not be forwarded to the other
    * node.
    *
-   * @param pluginName the plugin name to which the cache belongs, or "gerrit" for a Gerrit core
-   *     cache
-   * @param cacheName the name of the cache to evict the entry from
-   * @param key the key identifying the entry to evict
+   * @param cacheEntry the entry to evict
    * @throws CacheNotFoundException if cache does not exist
    */
-  public void evict(String pluginName, String cacheName, Object key) throws CacheNotFoundException {
-    Cache<?, ?> cache = cacheMap.get(pluginName, cacheName);
+  public void evict(CacheEntry entry) throws CacheNotFoundException {
+    Cache<?, ?> cache = cacheMap.get(entry.getPluginName(), entry.getCacheName());
     if (cache == null) {
-      throw new CacheNotFoundException(pluginName, cacheName);
+      throw new CacheNotFoundException(entry.getPluginName(), entry.getCacheName());
     }
     try {
       Context.setForwardedEvent(true);
-      if (Constants.PROJECT_LIST.equals(cacheName)) {
+      if (Constants.PROJECT_LIST.equals(entry.getCacheName())) {
         // One key is holding the list of projects
         cache.invalidateAll();
-        logger.debug("Invalidated cache {}", cacheName);
+        logger.debug("Invalidated cache {}", entry.getCacheName());
       } else {
-        cache.invalidate(key);
-        logger.debug("Invalidated cache {}[{}]", cacheName, key);
+        cache.invalidate(entry.getKey());
+        logger.debug("Invalidated cache {}[{}]", entry.getCacheName(), entry.getKey());
       }
     } finally {
       Context.unsetForwardedEvent();

@@ -14,11 +14,9 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
-import static com.google.common.truth.Truth.assertThat;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -26,7 +24,6 @@ import static org.mockito.Mockito.when;
 import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.CacheNotFoundException;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.EvictCache;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.CacheRestApiServlet.CacheParameters;
 import java.io.BufferedReader;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
@@ -107,7 +104,7 @@ public class CacheRestApiServletTest {
     String cacheName = "nonexistingCache";
     configureMocksFor(pluginName, cacheName);
     CacheNotFoundException e = new CacheNotFoundException(pluginName, cacheName);
-    doThrow(e).when(evictCacheMock).evict(eq(pluginName), eq(cacheName), any());
+    doThrow(e).when(evictCacheMock).evict(any());
     servlet.doPost(requestMock, responseMock);
     verify(responseMock).sendError(SC_BAD_REQUEST, e.getMessage());
   }
@@ -119,17 +116,6 @@ public class CacheRestApiServletTest {
     doThrow(new IOException(errorMessage)).when(requestMock).getReader();
     servlet.doPost(requestMock, responseMock);
     verify(responseMock).sendError(SC_BAD_REQUEST, errorMessage);
-  }
-
-  @Test
-  public void cacheParameters() throws Exception {
-    CacheParameters key = CacheRestApiServlet.getCacheParameters("accounts_by_name");
-    assertThat(key.pluginName).isEqualTo(Constants.GERRIT);
-    assertThat(key.cacheName).isEqualTo("accounts_by_name");
-
-    key = CacheRestApiServlet.getCacheParameters("my_plugin.my_cache");
-    assertThat(key.pluginName).isEqualTo("my_plugin");
-    assertThat(key.cacheName).isEqualTo("my_cache");
   }
 
   private void verifyResponseIsOK() throws Exception {
