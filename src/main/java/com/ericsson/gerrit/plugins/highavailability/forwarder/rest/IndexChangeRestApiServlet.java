@@ -36,7 +36,7 @@ class IndexChangeRestApiServlet extends AbstractIndexRestApiServlet<Change.Id> {
 
   @Inject
   IndexChangeRestApiServlet(ChangeIndexer indexer, SchemaFactory<ReviewDb> schemaFactory) {
-    super("change", true);
+    super(IndexName.CHANGE, true);
     this.indexer = indexer;
     this.schemaFactory = schemaFactory;
   }
@@ -50,19 +50,22 @@ class IndexChangeRestApiServlet extends AbstractIndexRestApiServlet<Change.Id> {
   void index(Change.Id id, Operation operation) throws IOException, OrmException {
     switch (operation) {
       case INDEX:
+        Change change = null;
         try (ReviewDb db = schemaFactory.open()) {
-          Change change = db.changes().get(id);
-          if (change == null) {
-            indexer.delete(id);
-            return;
+          change = db.changes().get(id);
+          if (change != null) {
+            indexer.index(db, change);
+            logger.debug("Change {} successfully indexed", id);
           }
-          indexer.index(db, change);
-          logger.debug("Change {} successfully indexed", id);
         } catch (Exception e) {
           if (!isCausedByNoSuchChangeException(e)) {
             throw e;
           }
           logger.debug("Change {} was deleted, aborting forwarded indexing the change.", id.get());
+        }
+        if (change == null) {
+          indexer.delete(id);
+          logger.debug("Change {} not found, deleted from index", id);
         }
         break;
       case DELETE:

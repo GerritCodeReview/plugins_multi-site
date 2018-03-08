@@ -103,6 +103,7 @@ public class IndexChangeRestApiServletTest {
   public void indexerThrowsNoSuchChangeExceptionTryingToPostChange() throws Exception {
     doThrow(new NoSuchChangeException(id)).when(schemaFactory).open();
     indexRestApiServlet.doPost(req, rsp);
+    verify(indexer, times(1)).delete(id);
     verify(rsp).setStatus(SC_NO_CONTENT);
   }
 
@@ -111,6 +112,7 @@ public class IndexChangeRestApiServletTest {
     OrmException e = new OrmException("test", new NoSuchChangeException(id));
     doThrow(e).when(schemaFactory).open();
     indexRestApiServlet.doPost(req, rsp);
+    verify(indexer, times(1)).delete(id);
     verify(rsp).setStatus(SC_NO_CONTENT);
   }
 
