@@ -20,7 +20,7 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static javax.servlet.http.HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE;
 
-import com.ericsson.gerrit.plugins.highavailability.forwarder.DispatchEvent;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedEventHandler;
 import com.google.common.base.Supplier;
 import com.google.common.io.CharStreams;
 import com.google.common.net.MediaType;
@@ -44,11 +44,11 @@ class EventRestApiServlet extends HttpServlet {
   private static final long serialVersionUID = -1L;
   private static final Logger logger = LoggerFactory.getLogger(EventRestApiServlet.class);
 
-  private final DispatchEvent dispatchEvent;
+  private final ForwardedEventHandler forwardedEventHandler;
 
   @Inject
-  EventRestApiServlet(DispatchEvent dispatchEvent) {
-    this.dispatchEvent = dispatchEvent;
+  EventRestApiServlet(ForwardedEventHandler forwardedEventHandler) {
+    this.forwardedEventHandler = forwardedEventHandler;
   }
 
   @Override
@@ -61,7 +61,7 @@ class EventRestApiServlet extends HttpServlet {
             rsp, SC_UNSUPPORTED_MEDIA_TYPE, "Expecting " + JSON_UTF_8.toString() + " content type");
         return;
       }
-      dispatchEvent.dispatch(getEventFromRequest(req));
+      forwardedEventHandler.dispatch(getEventFromRequest(req));
       rsp.setStatus(SC_NO_CONTENT);
     } catch (OrmException e) {
       logger.debug("Error trying to find a change ", e);

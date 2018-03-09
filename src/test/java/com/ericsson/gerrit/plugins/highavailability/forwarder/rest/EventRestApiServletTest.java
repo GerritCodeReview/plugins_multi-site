@@ -24,7 +24,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.ericsson.gerrit.plugins.highavailability.forwarder.DispatchEvent;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedEventHandler;
 import com.google.common.net.MediaType;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.events.EventTypes;
@@ -48,7 +48,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class EventRestApiServletTest {
   private static final String ERR_MSG = "some Error";
 
-  @Mock private DispatchEvent dispatchEventMock;
+  @Mock private ForwardedEventHandler forwardedEventHandlerMock;
   @Mock private HttpServletRequest requestMock;
   @Mock private HttpServletResponse responseMock;
   private EventRestApiServlet eventRestApiServlet;
@@ -61,7 +61,7 @@ public class EventRestApiServletTest {
 
   @Before
   public void createEventsRestApiServlet() throws Exception {
-    eventRestApiServlet = new EventRestApiServlet(dispatchEventMock);
+    eventRestApiServlet = new EventRestApiServlet(forwardedEventHandlerMock);
     when(requestMock.getContentType()).thenReturn(MediaType.JSON_UTF_8.toString());
   }
 
@@ -75,7 +75,7 @@ public class EventRestApiServletTest {
 
     eventRestApiServlet.doPost(requestMock, responseMock);
 
-    verify(dispatchEventMock).dispatch(any(RefReplicationDoneEvent.class));
+    verify(forwardedEventHandlerMock).dispatch(any(RefReplicationDoneEvent.class));
     verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
@@ -87,7 +87,7 @@ public class EventRestApiServletTest {
             + "\"ref-replication-done\",\"eventCreatedOn\":1451415011}";
     when(requestMock.getReader()).thenReturn(new BufferedReader(new StringReader(event)));
     doThrow(new OrmException(ERR_MSG))
-        .when(dispatchEventMock)
+        .when(forwardedEventHandlerMock)
         .dispatch(any(RefReplicationDoneEvent.class));
     eventRestApiServlet.doPost(requestMock, responseMock);
     verify(responseMock).sendError(SC_NOT_FOUND, "Change not found\n");

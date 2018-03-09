@@ -33,21 +33,21 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DispatchEventTest {
+public class ForwardedEventHandlerTest {
 
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private EventDispatcher dispatcherMock;
-  private DispatchEvent dispatchEvent;
+  private ForwardedEventHandler handler;
 
   @Before
   public void setUp() throws Exception {
-    dispatchEvent = new DispatchEvent(dispatcherMock);
+    handler = new ForwardedEventHandler(dispatcherMock);
   }
 
   @Test
   public void testSuccessfulDispatching() throws Exception {
     Event event = new ProjectCreatedEvent();
-    dispatchEvent.dispatch(event);
+    handler.dispatch(event);
     verify(dispatcherMock).postEvent(event);
   }
 
@@ -66,7 +66,7 @@ public class DispatchEventTest {
         .postEvent(event);
 
     assertThat(Context.isForwardedEvent()).isFalse();
-    dispatchEvent.dispatch(event);
+    handler.dispatch(event);
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(dispatcherMock).postEvent(event);
@@ -86,7 +86,7 @@ public class DispatchEventTest {
 
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
-      dispatchEvent.dispatch(event);
+      handler.dispatch(event);
       fail("should have throw an OrmException");
     } catch (OrmException e) {
       assertThat(e.getMessage()).isEqualTo("someMessage");
