@@ -33,16 +33,16 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
-public class EvictCacheTest {
+public class ForwardedCacheEvictionHandlerTest {
 
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private DynamicMap<Cache<?, ?>> cacheMapMock;
   @Mock private Cache<?, ?> cacheMock;
-  private EvictCache evictCache;
+  private ForwardedCacheEvictionHandler handler;
 
   @Before
   public void setUp() throws Exception {
-    evictCache = new EvictCache(cacheMapMock);
+    handler = new ForwardedCacheEvictionHandler(cacheMapMock);
   }
 
   @Test
@@ -52,7 +52,7 @@ public class EvictCacheTest {
     exception.expect(CacheNotFoundException.class);
     exception.expectMessage(
         String.format("cache %s.%s not found", entry.getPluginName(), entry.getCacheName()));
-    evictCache.evict(entry);
+    handler.evict(entry);
   }
 
   @Test
@@ -60,7 +60,7 @@ public class EvictCacheTest {
     CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, new Account.Id(123));
     doReturn(cacheMock).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
 
-    evictCache.evict(entry);
+    handler.evict(entry);
     verify(cacheMock).invalidate(entry.getKey());
   }
 
@@ -69,7 +69,7 @@ public class EvictCacheTest {
     CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.PROJECT_LIST, null);
     doReturn(cacheMock).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
 
-    evictCache.evict(entry);
+    handler.evict(entry);
     verify(cacheMock).invalidateAll();
   }
 
@@ -90,7 +90,7 @@ public class EvictCacheTest {
         .invalidate(entry.getKey());
 
     assertThat(Context.isForwardedEvent()).isFalse();
-    evictCache.evict(entry);
+    handler.evict(entry);
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(cacheMock).invalidate(entry.getKey());
@@ -112,7 +112,7 @@ public class EvictCacheTest {
 
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
-      evictCache.evict(entry);
+      handler.evict(entry);
     } catch (RuntimeException e) {
     }
     assertThat(Context.isForwardedEvent()).isFalse();

@@ -19,7 +19,7 @@ import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.CacheEntry;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.CacheNotFoundException;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.EvictCache;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedCacheEvictionHandler;
 import com.google.common.base.Splitter;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -37,11 +37,11 @@ class CacheRestApiServlet extends HttpServlet {
   private static final long serialVersionUID = -1L;
   private static final Logger logger = LoggerFactory.getLogger(CacheRestApiServlet.class);
 
-  private final EvictCache evictCache;
+  private final ForwardedCacheEvictionHandler forwardedCacheEvictionHandler;
 
   @Inject
-  CacheRestApiServlet(EvictCache evictCache) {
-    this.evictCache = evictCache;
+  CacheRestApiServlet(ForwardedCacheEvictionHandler forwardedCacheEvictionHandler) {
+    this.forwardedCacheEvictionHandler = forwardedCacheEvictionHandler;
   }
 
   @Override
@@ -52,7 +52,8 @@ class CacheRestApiServlet extends HttpServlet {
       List<String> params = Splitter.on('/').splitToList(req.getPathInfo());
       String cacheName = params.get(CACHENAME_INDEX);
       String json = req.getReader().readLine();
-      evictCache.evict(CacheEntry.from(cacheName, GsonParser.fromJson(cacheName, json)));
+      forwardedCacheEvictionHandler.evict(
+          CacheEntry.from(cacheName, GsonParser.fromJson(cacheName, json)));
       rsp.setStatus(SC_NO_CONTENT);
     } catch (CacheNotFoundException e) {
       logger.error("Failed to process eviction request: {}", e.getMessage());

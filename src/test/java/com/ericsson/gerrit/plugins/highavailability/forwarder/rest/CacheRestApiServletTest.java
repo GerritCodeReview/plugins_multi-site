@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.CacheNotFoundException;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.EvictCache;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedCacheEvictionHandler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,12 +39,12 @@ public class CacheRestApiServletTest {
   @Mock private HttpServletRequest requestMock;
   @Mock private HttpServletResponse responseMock;
   @Mock private BufferedReader readerMock;
-  @Mock private EvictCache evictCacheMock;
+  @Mock private ForwardedCacheEvictionHandler forwardedCacheEvictionHandlerMock;
   private CacheRestApiServlet servlet;
 
   @Before
   public void setUp() {
-    servlet = new CacheRestApiServlet(evictCacheMock);
+    servlet = new CacheRestApiServlet(forwardedCacheEvictionHandlerMock);
   }
 
   @Test
@@ -104,7 +104,7 @@ public class CacheRestApiServletTest {
     String cacheName = "nonexistingCache";
     configureMocksFor(pluginName, cacheName);
     CacheNotFoundException e = new CacheNotFoundException(pluginName, cacheName);
-    doThrow(e).when(evictCacheMock).evict(any());
+    doThrow(e).when(forwardedCacheEvictionHandlerMock).evict(any());
     servlet.doPost(requestMock, responseMock);
     verify(responseMock).sendError(SC_BAD_REQUEST, e.getMessage());
   }

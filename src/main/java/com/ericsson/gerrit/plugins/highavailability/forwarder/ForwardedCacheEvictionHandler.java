@@ -28,13 +28,13 @@ import org.slf4j.LoggerFactory;
  * forwarding loop between the 2 nodes.
  */
 @Singleton
-public class EvictCache {
-  private static final Logger logger = LoggerFactory.getLogger(EvictCache.class);
+public class ForwardedCacheEvictionHandler {
+  private static final Logger logger = LoggerFactory.getLogger(ForwardedCacheEvictionHandler.class);
 
   private final DynamicMap<Cache<?, ?>> cacheMap;
 
   @Inject
-  public EvictCache(DynamicMap<Cache<?, ?>> cacheMap) {
+  public ForwardedCacheEvictionHandler(DynamicMap<Cache<?, ?>> cacheMap) {
     this.cacheMap = cacheMap;
   }
 
