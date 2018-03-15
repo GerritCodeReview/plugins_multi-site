@@ -14,32 +14,22 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
+import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedIndexAccountHandler;
 import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.server.index.account.AccountIndexer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import java.io.IOException;
 
 @Singleton
 class IndexAccountRestApiServlet extends AbstractIndexRestApiServlet<Account.Id> {
   private static final long serialVersionUID = -1L;
 
-  private final AccountIndexer indexer;
-
   @Inject
-  IndexAccountRestApiServlet(AccountIndexer indexer) {
-    super(IndexName.ACCOUNT);
-    this.indexer = indexer;
+  IndexAccountRestApiServlet(ForwardedIndexAccountHandler handler) {
+    super(handler, IndexName.ACCOUNT);
   }
 
   @Override
   Account.Id parse(String id) {
     return new Account.Id(Integer.parseInt(id));
-  }
-
-  @Override
-  void index(Account.Id id, Operation operation) throws IOException {
-    indexer.index(id);
-    logger.debug("Account {} successfully indexed", id);
   }
 }

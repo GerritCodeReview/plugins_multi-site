@@ -14,32 +14,22 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
+import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedIndexGroupHandler;
 import com.google.gerrit.reviewdb.client.AccountGroup;
-import com.google.gerrit.server.index.group.GroupIndexer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import java.io.IOException;
 
 @Singleton
 class IndexGroupRestApiServlet extends AbstractIndexRestApiServlet<AccountGroup.UUID> {
   private static final long serialVersionUID = -1L;
 
-  private final GroupIndexer indexer;
-
   @Inject
-  IndexGroupRestApiServlet(GroupIndexer indexer) {
-    super(IndexName.GROUP);
-    this.indexer = indexer;
+  IndexGroupRestApiServlet(ForwardedIndexGroupHandler handler) {
+    super(handler, IndexName.GROUP);
   }
 
   @Override
   AccountGroup.UUID parse(String id) {
     return new AccountGroup.UUID(id);
-  }
-
-  @Override
-  void index(AccountGroup.UUID uuid, Operation operation) throws IOException {
-    indexer.index(uuid);
-    logger.debug("Group {} successfully indexed", uuid);
   }
 }
