@@ -19,13 +19,10 @@ import com.google.gerrit.server.index.group.GroupIndexer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 class IndexGroupRestApiServlet extends AbstractIndexRestApiServlet<AccountGroup.UUID> {
   private static final long serialVersionUID = -1L;
-  private static final Logger logger = LoggerFactory.getLogger(IndexGroupRestApiServlet.class);
 
   private final GroupIndexer indexer;
 

@@ -33,16 +33,12 @@ import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
-class EventRestApiServlet extends HttpServlet {
+class EventRestApiServlet extends AbstractRestApiServlet {
   private static final long serialVersionUID = -1L;
-  private static final Logger logger = LoggerFactory.getLogger(EventRestApiServlet.class);
 
   private final ForwardedEventHandler forwardedEventHandler;
 
@@ -53,8 +49,7 @@ class EventRestApiServlet extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse rsp) {
-    rsp.setContentType("text/plain");
-    rsp.setCharacterEncoding("UTF-8");
+    setHeaders(rsp);
     try {
       if (!MediaType.parse(req.getContentType()).is(JSON_UTF_8)) {
         sendError(
@@ -80,13 +75,5 @@ class EventRestApiServlet extends HttpServlet {
             .registerTypeAdapter(Supplier.class, new SupplierDeserializer())
             .create();
     return gson.fromJson(jsonEvent, Event.class);
-  }
-
-  private static void sendError(HttpServletResponse rsp, int statusCode, String message) {
-    try {
-      rsp.sendError(statusCode, message);
-    } catch (IOException e) {
-      logger.error("Failed to send error messsage: {}", e.getMessage(), e);
-    }
   }
 }

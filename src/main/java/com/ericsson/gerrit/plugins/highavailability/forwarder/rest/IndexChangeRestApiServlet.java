@@ -23,13 +23,10 @@ import com.google.gwtorm.server.SchemaFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 class IndexChangeRestApiServlet extends AbstractIndexRestApiServlet<Change.Id> {
   private static final long serialVersionUID = -1L;
-  private static final Logger logger = LoggerFactory.getLogger(IndexChangeRestApiServlet.class);
 
   private final ChangeIndexer indexer;
   private final SchemaFactory<ReviewDb> schemaFactory;
