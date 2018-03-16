@@ -29,13 +29,13 @@ import org.slf4j.LoggerFactory;
  * causing an infinite forwarding loop between the 2 nodes.
  */
 @Singleton
-public class DispatchEvent {
-  private static final Logger logger = LoggerFactory.getLogger(DispatchEvent.class);
+public class ForwardedEventHandler {
+  private static final Logger logger = LoggerFactory.getLogger(ForwardedEventHandler.class);
 
   private final EventDispatcher dispatcher;
 
   @Inject
-  public DispatchEvent(EventDispatcher dispatcher) {
+  public ForwardedEventHandler(EventDispatcher dispatcher) {
     this.dispatcher = dispatcher;
   }
 

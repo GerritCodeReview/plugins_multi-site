@@ -15,14 +15,14 @@
 package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
-import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
-import com.google.common.cache.Cache;
-import com.google.gerrit.extensions.registration.DynamicMap;
-import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.common.EventDispatcher;
+import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.ProjectCreatedEvent;
+import com.google.gwtorm.server.OrmException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,50 +33,27 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
-public class EvictCacheTest {
+public class ForwardedEventHandlerTest {
 
   @Rule public ExpectedException exception = ExpectedException.none();
-  @Mock private DynamicMap<Cache<?, ?>> cacheMapMock;
-  @Mock private Cache<?, ?> cacheMock;
-  private EvictCache evictCache;
+  @Mock private EventDispatcher dispatcherMock;
+  private ForwardedEventHandler handler;
 
   @Before
   public void setUp() throws Exception {
-    evictCache = new EvictCache(cacheMapMock);
+    handler = new ForwardedEventHandler(dispatcherMock);
   }
 
   @Test
-  public void shouldThrowAnExceptionWhenCacheNotFound() throws Exception {
-    String pluginName = "somePlugin";
-    String cacheName = "unexistingCache";
-
-    exception.expect(CacheNotFoundException.class);
-    exception.expectMessage(String.format("cache %s.%s not found", pluginName, cacheName));
-    evictCache.evict(pluginName, cacheName, null);
-  }
-
-  @Test
-  public void testSuccessfulCacheEviction() throws Exception {
-    Account.Id key = new Account.Id(123);
-    doReturn(cacheMock).when(cacheMapMock).get(Constants.GERRIT, Constants.ACCOUNTS);
-
-    evictCache.evict(Constants.GERRIT, Constants.ACCOUNTS, key);
-    verify(cacheMock).invalidate(key);
-  }
-
-  @Test
-  public void testSuccessfulProjectListCacheEviction() throws Exception {
-    doReturn(cacheMock).when(cacheMapMock).get(Constants.GERRIT, Constants.PROJECT_LIST);
-
-    evictCache.evict(Constants.GERRIT, Constants.PROJECT_LIST, null);
-    verify(cacheMock).invalidateAll();
+  public void testSuccessfulDispatching() throws Exception {
+    Event event = new ProjectCreatedEvent();
+    handler.dispatch(event);
+    verify(dispatcherMock).postEvent(event);
   }
 
   @Test
   public void shouldSetAndUnsetForwardedContext() throws Exception {
-    Account.Id key = new Account.Id(456);
-    doReturn(cacheMock).when(cacheMapMock).get(Constants.GERRIT, Constants.ACCOUNTS);
-
+    Event event = new ProjectCreatedEvent();
     //this doAnswer is to allow to assert that context is set to forwarded
     //while cache eviction is called.
     doAnswer(
@@ -85,37 +62,37 @@ public class EvictCacheTest {
                   assertThat(Context.isForwardedEvent()).isTrue();
                   return null;
                 })
-        .when(cacheMock)
-        .invalidate(key);
+        .when(dispatcherMock)
+        .postEvent(event);
 
     assertThat(Context.isForwardedEvent()).isFalse();
-    evictCache.evict(Constants.GERRIT, Constants.ACCOUNTS, key);
+    handler.dispatch(event);
     assertThat(Context.isForwardedEvent()).isFalse();
 
-    verify(cacheMock).invalidate(key);
+    verify(dispatcherMock).postEvent(event);
   }
 
   @Test
   public void shouldSetAndUnsetForwardedContextEvenIfExceptionIsThrown() throws Exception {
-    Account.Id key = new Account.Id(789);
-    doReturn(cacheMock).when(cacheMapMock).get(Constants.GERRIT, Constants.ACCOUNTS);
-
+    Event event = new ProjectCreatedEvent();
     doAnswer(
             (Answer<Void>)
                 invocation -> {
                   assertThat(Context.isForwardedEvent()).isTrue();
-                  throw new RuntimeException();
+                  throw new OrmException("someMessage");
                 })
-        .when(cacheMock)
-        .invalidate(key);
+        .when(dispatcherMock)
+        .postEvent(event);
 
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
-      evictCache.evict(Constants.GERRIT, Constants.ACCOUNTS, key);
-    } catch (RuntimeException e) {
+      handler.dispatch(event);
+      fail("should have throw an OrmException");
+    } catch (OrmException e) {
+      assertThat(e.getMessage()).isEqualTo("someMessage");
     }
     assertThat(Context.isForwardedEvent()).isFalse();
 
-    verify(cacheMock).invalidate(key);
+    verify(dispatcherMock).postEvent(event);
   }
 }

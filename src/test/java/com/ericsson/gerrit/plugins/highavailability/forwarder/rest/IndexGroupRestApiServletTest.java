@@ -40,9 +40,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class IndexGroupRestApiServletTest {
   private static final String UUID = "we235jdf92nfj2351";
 
-  @Mock private GroupIndexer indexer;
-  @Mock private HttpServletRequest req;
-  @Mock private HttpServletResponse rsp;
+  @Mock private GroupIndexer indexerMock;
+  @Mock private HttpServletRequest requestMock;
+  @Mock private HttpServletResponse responseMock;
 
   private AccountGroup.UUID uuid;
   private IndexGroupRestApiServlet servlet;
@@ -54,36 +54,36 @@ public class IndexGroupRestApiServletTest {
 
   @Before
   public void setUpMocks() {
-    servlet = new IndexGroupRestApiServlet(indexer);
+    servlet = new IndexGroupRestApiServlet(indexerMock);
     uuid = AccountGroup.UUID.parse(UUID);
-    when(req.getPathInfo()).thenReturn("/index/group/" + UUID);
+    when(requestMock.getPathInfo()).thenReturn("/index/group/" + UUID);
   }
 
   @Test
   public void groupIsIndexed() throws Exception {
-    servlet.doPost(req, rsp);
-    verify(indexer, times(1)).index(uuid);
-    verify(rsp).setStatus(SC_NO_CONTENT);
+    servlet.doPost(requestMock, responseMock);
+    verify(indexerMock, times(1)).index(uuid);
+    verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
   @Test
   public void cannotDeleteGroup() throws Exception {
-    servlet.doDelete(req, rsp);
-    verify(rsp).sendError(SC_METHOD_NOT_ALLOWED, "cannot delete group from index");
+    servlet.doDelete(requestMock, responseMock);
+    verify(responseMock).sendError(SC_METHOD_NOT_ALLOWED, "cannot delete group from index");
   }
 
   @Test
   public void indexerThrowsIOExceptionTryingToIndexGroup() throws Exception {
-    doThrow(new IOException("io-error")).when(indexer).index(uuid);
-    servlet.doPost(req, rsp);
-    verify(rsp).sendError(SC_CONFLICT, "io-error");
+    doThrow(new IOException("io-error")).when(indexerMock).index(uuid);
+    servlet.doPost(requestMock, responseMock);
+    verify(responseMock).sendError(SC_CONFLICT, "io-error");
   }
 
   @Test
   public void sendErrorThrowsIOException() throws Exception {
-    doThrow(new IOException("io-error")).when(indexer).index(uuid);
-    doThrow(new IOException("someError")).when(rsp).sendError(SC_CONFLICT, "io-error");
-    servlet.doPost(req, rsp);
-    verify(rsp).sendError(SC_CONFLICT, "io-error");
+    doThrow(new IOException("io-error")).when(indexerMock).index(uuid);
+    doThrow(new IOException("someError")).when(responseMock).sendError(SC_CONFLICT, "io-error");
+    servlet.doPost(requestMock, responseMock);
+    verify(responseMock).sendError(SC_CONFLICT, "io-error");
   }
 }

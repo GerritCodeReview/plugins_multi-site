@@ -40,9 +40,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class IndexAccountRestApiServletTest {
   private static final String ACCOUNT_NUMBER = "1";
 
-  @Mock private AccountIndexer indexer;
-  @Mock private HttpServletRequest req;
-  @Mock private HttpServletResponse rsp;
+  @Mock private AccountIndexer indexerMock;
+  @Mock private HttpServletRequest requestMock;
+  @Mock private HttpServletResponse responseMock;
 
   private Account.Id id;
   private IndexAccountRestApiServlet servlet;
@@ -54,36 +54,36 @@ public class IndexAccountRestApiServletTest {
 
   @Before
   public void setUpMocks() {
-    servlet = new IndexAccountRestApiServlet(indexer);
+    servlet = new IndexAccountRestApiServlet(indexerMock);
     id = Account.Id.parse(ACCOUNT_NUMBER);
-    when(req.getPathInfo()).thenReturn("/index/account/" + ACCOUNT_NUMBER);
+    when(requestMock.getPathInfo()).thenReturn("/index/account/" + ACCOUNT_NUMBER);
   }
 
   @Test
   public void accountIsIndexed() throws Exception {
-    servlet.doPost(req, rsp);
-    verify(indexer, times(1)).index(id);
-    verify(rsp).setStatus(SC_NO_CONTENT);
+    servlet.doPost(requestMock, responseMock);
+    verify(indexerMock, times(1)).index(id);
+    verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
   @Test
   public void cannotDeleteAccount() throws Exception {
-    servlet.doDelete(req, rsp);
-    verify(rsp).sendError(SC_METHOD_NOT_ALLOWED, "cannot delete account from index");
+    servlet.doDelete(requestMock, responseMock);
+    verify(responseMock).sendError(SC_METHOD_NOT_ALLOWED, "cannot delete account from index");
   }
 
   @Test
   public void indexerThrowsIOExceptionTryingToIndexAccount() throws Exception {
-    doThrow(new IOException("io-error")).when(indexer).index(id);
-    servlet.doPost(req, rsp);
-    verify(rsp).sendError(SC_CONFLICT, "io-error");
+    doThrow(new IOException("io-error")).when(indexerMock).index(id);
+    servlet.doPost(requestMock, responseMock);
+    verify(responseMock).sendError(SC_CONFLICT, "io-error");
   }
 
   @Test
   public void sendErrorThrowsIOException() throws Exception {
-    doThrow(new IOException("io-error")).when(indexer).index(id);
-    doThrow(new IOException("someError")).when(rsp).sendError(SC_CONFLICT, "io-error");
-    servlet.doPost(req, rsp);
-    verify(rsp).sendError(SC_CONFLICT, "io-error");
+    doThrow(new IOException("io-error")).when(indexerMock).index(id);
+    doThrow(new IOException("someError")).when(responseMock).sendError(SC_CONFLICT, "io-error");
+    servlet.doPost(requestMock, responseMock);
+    verify(responseMock).sendError(SC_CONFLICT, "io-error");
   }
 }

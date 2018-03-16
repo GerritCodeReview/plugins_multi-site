@@ -54,11 +54,11 @@ public class IndexChangeRestApiServletTest {
   private static final boolean THROW_ORM_EXCEPTION = true;
   private static final String CHANGE_NUMBER = "1";
 
-  @Mock private ChangeIndexer indexer;
-  @Mock private SchemaFactory<ReviewDb> schemaFactory;
-  @Mock private ReviewDb db;
-  @Mock private HttpServletRequest req;
-  @Mock private HttpServletResponse rsp;
+  @Mock private ChangeIndexer indexerMock;
+  @Mock private SchemaFactory<ReviewDb> schemaFactoryMock;
+  @Mock private ReviewDb dbMock;
+  @Mock private HttpServletRequest requestMock;
+  @Mock private HttpServletResponse responseMock;
   private Change.Id id;
   private Change change;
   private IndexChangeRestApiServlet indexRestApiServlet;
@@ -70,82 +70,82 @@ public class IndexChangeRestApiServletTest {
 
   @Before
   public void setUpMocks() {
-    indexRestApiServlet = new IndexChangeRestApiServlet(indexer, schemaFactory);
+    indexRestApiServlet = new IndexChangeRestApiServlet(indexerMock, schemaFactoryMock);
     id = Change.Id.parse(CHANGE_NUMBER);
-    when(req.getPathInfo()).thenReturn("/index/change/" + CHANGE_NUMBER);
+    when(requestMock.getPathInfo()).thenReturn("/index/change/" + CHANGE_NUMBER);
     change = new Change(null, id, null, null, TimeUtil.nowTs());
   }
 
   @Test
   public void changeIsIndexed() throws Exception {
     setupPostMocks(CHANGE_EXISTS);
-    indexRestApiServlet.doPost(req, rsp);
-    verify(indexer, times(1)).index(db, change);
-    verify(rsp).setStatus(SC_NO_CONTENT);
+    indexRestApiServlet.doPost(requestMock, responseMock);
+    verify(indexerMock, times(1)).index(dbMock, change);
+    verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
   @Test
   public void changeToIndexDoNotExist() throws Exception {
     setupPostMocks(CHANGE_DOES_NOT_EXIST);
-    indexRestApiServlet.doPost(req, rsp);
-    verify(indexer, times(1)).delete(id);
-    verify(rsp).setStatus(SC_NO_CONTENT);
+    indexRestApiServlet.doPost(requestMock, responseMock);
+    verify(indexerMock, times(1)).delete(id);
+    verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
   @Test
   public void schemaThrowsExceptionWhenLookingUpForChange() throws Exception {
     setupPostMocks(CHANGE_EXISTS, THROW_ORM_EXCEPTION);
-    indexRestApiServlet.doPost(req, rsp);
-    verify(rsp).sendError(SC_NOT_FOUND, "Error trying to find change \n");
+    indexRestApiServlet.doPost(requestMock, responseMock);
+    verify(responseMock).sendError(SC_NOT_FOUND, "Error trying to find change \n");
   }
 
   @Test
   public void indexerThrowsNoSuchChangeExceptionTryingToPostChange() throws Exception {
-    doThrow(new NoSuchChangeException(id)).when(schemaFactory).open();
-    indexRestApiServlet.doPost(req, rsp);
-    verify(indexer, times(1)).delete(id);
-    verify(rsp).setStatus(SC_NO_CONTENT);
+    doThrow(new NoSuchChangeException(id)).when(schemaFactoryMock).open();
+    indexRestApiServlet.doPost(requestMock, responseMock);
+    verify(indexerMock, times(1)).delete(id);
+    verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
   @Test
   public void indexerThrowsNestedNoSuchChangeExceptionTryingToPostChange() throws Exception {
     OrmException e = new OrmException("test", new NoSuchChangeException(id));
-    doThrow(e).when(schemaFactory).open();
-    indexRestApiServlet.doPost(req, rsp);
-    verify(indexer, times(1)).delete(id);
-    verify(rsp).setStatus(SC_NO_CONTENT);
+    doThrow(e).when(schemaFactoryMock).open();
+    indexRestApiServlet.doPost(requestMock, responseMock);
+    verify(indexerMock, times(1)).delete(id);
+    verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
   @Test
   public void indexerThrowsIOExceptionTryingToIndexChange() throws Exception {
     setupPostMocks(CHANGE_EXISTS, DO_NOT_THROW_ORM_EXCEPTION, THROW_IO_EXCEPTION);
-    indexRestApiServlet.doPost(req, rsp);
-    verify(rsp).sendError(SC_CONFLICT, "io-error");
+    indexRestApiServlet.doPost(requestMock, responseMock);
+    verify(responseMock).sendError(SC_CONFLICT, "io-error");
   }
 
   @Test
   public void changeIsDeletedFromIndex() throws Exception {
-    indexRestApiServlet.doDelete(req, rsp);
-    verify(indexer, times(1)).delete(id);
-    verify(rsp).setStatus(SC_NO_CONTENT);
+    indexRestApiServlet.doDelete(requestMock, responseMock);
+    verify(indexerMock, times(1)).delete(id);
+    verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
   @Test
   public void indexerThrowsExceptionTryingToDeleteChange() throws Exception {
-    doThrow(new IOException("io-error")).when(indexer).delete(id);
-    indexRestApiServlet.doDelete(req, rsp);
-    verify(rsp).sendError(SC_CONFLICT, "io-error");
+    doThrow(new IOException("io-error")).when(indexerMock).delete(id);
+    indexRestApiServlet.doDelete(requestMock, responseMock);
+    verify(responseMock).sendError(SC_CONFLICT, "io-error");
   }
 
   @Test
   public void sendErrorThrowsIOException() throws Exception {
     doThrow(new IOException("someError"))
-        .when(rsp)
+        .when(responseMock)
         .sendError(SC_NOT_FOUND, "Error trying to find change \n");
     setupPostMocks(CHANGE_EXISTS, THROW_ORM_EXCEPTION);
-    indexRestApiServlet.doPost(req, rsp);
-    verify(rsp).sendError(SC_NOT_FOUND, "Error trying to find change \n");
-    verifyZeroInteractions(indexer);
+    indexRestApiServlet.doPost(requestMock, responseMock);
+    verify(responseMock).sendError(SC_NOT_FOUND, "Error trying to find change \n");
+    verifyZeroInteractions(indexerMock);
   }
 
   private void setupPostMocks(boolean changeExist) throws Exception {
@@ -160,15 +160,15 @@ public class IndexChangeRestApiServletTest {
   private void setupPostMocks(boolean changeExist, boolean ormException, boolean ioException)
       throws OrmException, IOException {
     if (ormException) {
-      doThrow(new OrmException("")).when(schemaFactory).open();
+      doThrow(new OrmException("")).when(schemaFactoryMock).open();
     } else {
-      when(schemaFactory.open()).thenReturn(db);
+      when(schemaFactoryMock.open()).thenReturn(dbMock);
       ChangeAccess ca = mock(ChangeAccess.class);
-      when(db.changes()).thenReturn(ca);
+      when(dbMock.changes()).thenReturn(ca);
       if (changeExist) {
         when(ca.get(id)).thenReturn(change);
         if (ioException) {
-          doThrow(new IOException("io-error")).when(indexer).index(db, change);
+          doThrow(new IOException("io-error")).when(indexerMock).index(dbMock, change);
         }
       } else {
         when(ca.get(id)).thenReturn(null);
