@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Ericsson
+// Copyright (C) 2018 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability.cache;
+package com.ericsson.gerrit.plugins.highavailability.index;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
@@ -29,25 +29,31 @@ import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
-import com.google.gerrit.acceptance.UseSsh;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.apache.http.HttpStatus;
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
+@Ignore
 @NoHttpd
-@UseSsh
 @TestPlugin(
   name = "high-availability",
   sysModule = "com.ericsson.gerrit.plugins.highavailability.Module",
   httpModule = "com.ericsson.gerrit.plugins.highavailability.HttpModule"
 )
-public class CacheEvictionIT extends LightweightPluginDaemonTest {
-  private static final int PORT = 18888;
+public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonTest {
+  private static final int PORT = 18889;
   private static final String URL = "http://localhost:" + PORT;
 
   @Rule public WireMockRule wireMockRule = new WireMockRule(options().port(PORT), false);
+
+  @Before
+  public void before() throws Exception {
+    setup();
+  }
 
   @Test
   @UseLocalDisk
@@ -58,27 +64,39 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
   )
   @GlobalPluginConfig(pluginName = "high-availability", name = "peerInfo.static.url", value = URL)
   @GlobalPluginConfig(pluginName = "high-availability", name = "http.user", value = "admin")
-  @GlobalPluginConfig(pluginName = "high-availability", name = "cache.threadPoolSize", value = "10")
+  @GlobalPluginConfig(pluginName = "high-availability", name = "index.threadPoolSize", value = "10")
   @GlobalPluginConfig(
     pluginName = "high-availability",
     name = "main.sharedDirectory",
     value = "directory"
   )
-  public void flushAndSendPost() throws Exception {
-    final String flushRequest = "/plugins/high-availability/cache/" + Constants.PROJECT_LIST;
+  public void testIndexForwarding() throws Exception {
+    final String expectedRequest = getExpectedRequest();
     final CountDownLatch expectedRequestLatch = new CountDownLatch(1);
     wireMockRule.addMockServiceRequestListener(
         (request, response) -> {
-          if (request.getAbsoluteUrl().contains(flushRequest)) {
+          if (request.getAbsoluteUrl().contains(expectedRequest)) {
             expectedRequestLatch.countDown();
           }
         });
     givenThat(
-        post(urlEqualTo(flushRequest))
+        post(urlEqualTo(expectedRequest))
             .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
-
-    adminSshSession.exec("gerrit flush-caches --cache " + Constants.PROJECT_LIST);
+    doAction();
     assertThat(expectedRequestLatch.await(5, TimeUnit.SECONDS)).isTrue();
-    verify(postRequestedFor(urlEqualTo(flushRequest)));
+    verify(postRequestedFor(urlEqualTo(expectedRequest)));
   }
+
+  /** Perform pre-test setup. */
+  protected abstract void setup() throws Exception;
+
+  /**
+   * Get the URL on which a request is expected.
+   *
+   * @return the URL.
+   */
+  protected abstract String getExpectedRequest();
+
+  /** Perform the action that should cause an index operation to occur. */
+  protected abstract void doAction() throws Exception;
 }

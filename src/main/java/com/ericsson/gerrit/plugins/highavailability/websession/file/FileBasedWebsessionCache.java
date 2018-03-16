@@ -19,7 +19,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheStats;
 import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.common.Nullable;
-import com.google.gerrit.common.TimeUtil;
 import com.google.gerrit.httpd.WebSessionManager;
 import com.google.gerrit.httpd.WebSessionManager.Val;
 import com.google.inject.Inject;
@@ -33,7 +32,9 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.Clock;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,27 @@ import org.slf4j.LoggerFactory;
 
 @Singleton
 public class FileBasedWebsessionCache implements Cache<String, WebSessionManager.Val> {
+  /** Provides static methods to set the system clock for testing purposes only. */
+  static class TimeMachine {
+    private static Clock clock = Clock.systemDefaultZone();
+
+    static Instant now() {
+      return Instant.now(getClock());
+    }
+
+    static void useFixedClockAt(Instant instant) {
+      clock = Clock.fixed(instant, ZoneId.systemDefault());
+    }
+
+    static void useSystemDefaultZoneClock() {
+      clock = Clock.systemDefaultZone();
+    }
+
+    private static Clock getClock() {
+      return clock;
+    }
+  }
+
   private static final Logger log = LoggerFactory.getLogger(FileBasedWebsessionCache.class);
 
   private final Path websessionsDir;
@@ -76,7 +98,7 @@ public class FileBasedWebsessionCache implements Cache<String, WebSessionManager
       Val val = readFile(path);
       if (val != null) {
         Instant expires = Instant.ofEpochMilli(val.getExpiresAt());
-        if (expires.isBefore(Instant.ofEpochMilli(TimeUtil.nowMs()))) {
+        if (expires.isBefore(TimeMachine.now())) {
           deleteFile(path);
         }
       }

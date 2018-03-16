@@ -16,16 +16,15 @@ package com.ericsson.gerrit.plugins.highavailability.websession.file;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.ericsson.gerrit.plugins.highavailability.websession.file.FileBasedWebsessionCache.TimeMachine;
 import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.httpd.WebSessionManager.Val;
-import com.google.gerrit.testing.TestTimeUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -81,19 +79,17 @@ public class FileBasedWebSessionCacheTest {
     loadKeyToCacheDir(EXISTING_KEY);
     try {
       long existingKeyExpireAt = cache.getIfPresent(EXISTING_KEY).getExpiresAt();
-      TestTimeUtil.resetWithClockStep(1, TimeUnit.SECONDS);
-      TestTimeUtil.setClock(
-          new Timestamp(
-              Instant.ofEpochMilli(existingKeyExpireAt).minus(1, ChronoUnit.HOURS).toEpochMilli()));
+      TimeMachine.useFixedClockAt(
+          Instant.ofEpochMilli(existingKeyExpireAt).minus(1, ChronoUnit.HOURS));
       cache.cleanUp();
       assertThat(isDirEmpty(websessionDir)).isFalse();
-      TestTimeUtil.setClock(
-          new Timestamp(
-              Instant.ofEpochMilli(existingKeyExpireAt).plus(1, ChronoUnit.HOURS).toEpochMilli()));
+
+      TimeMachine.useFixedClockAt(
+          Instant.ofEpochMilli(existingKeyExpireAt).plus(1, ChronoUnit.HOURS));
       cache.cleanUp();
       assertThat(isDirEmpty(websessionDir)).isTrue();
     } finally {
-      TestTimeUtil.useSystemTime();
+      TimeMachine.useSystemDefaultZoneClock();
     }
   }
 

@@ -28,8 +28,8 @@ import org.slf4j.LoggerFactory;
 class HttpResponseHandler implements ResponseHandler<HttpResult> {
 
   static class HttpResult {
-    private boolean successful;
-    private String message;
+    private final boolean successful;
+    private final String message;
 
     HttpResult(boolean successful, String message) {
       this.successful = successful;

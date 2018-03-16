@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Ericsson
+// Copyright (C) 2018 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,21 +14,10 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
-/** Allows to tag a forwarded event to avoid infinitely looping events. */
-public class Context {
-  private static final ThreadLocal<Boolean> forwardedEvent = ThreadLocal.withInitial(() -> false);
+public class CacheNotFoundException extends Exception {
+  private static final long serialVersionUID = 1L;
 
-  private Context() {}
-
-  public static Boolean isForwardedEvent() {
-    return forwardedEvent.get();
-  }
-
-  public static void setForwardedEvent(Boolean b) {
-    forwardedEvent.set(b);
-  }
-
-  public static void unsetForwardedEvent() {
-    forwardedEvent.remove();
+  public CacheNotFoundException(String pluginName, String cacheName) {
+    super(String.format("cache %s.%s not found", pluginName, cacheName));
   }
 }

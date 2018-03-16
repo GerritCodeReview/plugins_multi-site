@@ -1,24 +1,94 @@
-The @PLUGIN@ plugin allows to synchronize eviction of caches, secondary indexes,
-stream events and websessions between two Gerrit instances sharing the same git
-repositories and database. The plugin needs to be installed in both instances.
+This plugin allows making Gerrit highly available by having redundant Gerrit
+masters.
 
-Every time a cache eviction occurs in one of the instances, the other instance's
-cache is updated. This way, both caches are kept synchronized.
+The masters must be:
 
-Every time the secondary index is modified in one of the instances, i.e., a
-change is added, updated or removed from the index, the other instance index is
+* connecting to the same database
+* sharing the git repositories using a shared file system (e.g. NFS)
+* behind a load balancer (e.g. HAProxy)
+
+Currently, the only mode supported is one primary (active) master and one backup
+(passive) master but eventually the plan is to support `n` active masters. In
+the active/passive mode, the active master is handling all traffic while the
+passive is kept updated to be always ready to take over.
+
+Even if database and git repositories are shared by the masters, there are a few
+areas of concern in order to be able to switch traffic between masters in a
+transparent manner from the user's perspective. The 4 areas of concern are
+things that Gerrit stores either in memory or locally in the review site:
+
+* caches
+* secondary indexes
+* stream-events
+* web sessions
+
+They need either to be shared or kept local to each master but synchronized.
+This plugin needs to be installed in both masters and will take care of sharing
+or synchronizing them.
+
+#### Caches
+Every time a cache eviction occurs in one of the masters, the eviction will be
+forwarded the other master so its caches do not contain stale entries.
+
+#### Secondary indexes
+Every time the secondary index is modified in one of the masters, e.g., a change
+is added, updated or removed from the index, the other master's index is
 updated accordingly. This way, both indexes are kept synchronized.
 
-Every time a stream event occurs in one of the instances (see [more events info]
+#### Stream events
+Every time a stream event occurs in one of the masters (see [more events info]
 (https://gerrit-review.googlesource.com/Documentation/cmd-stream-events.html#events)),
-the event is forwarded to the other instance which re-plays it. This way, the
-output of the stream-events command is the same, no matter what instance a
-client is connected to.
+the event is forwarded to the other master which re-plays it. This way, the
+output of the stream-events command is the same, no matter which master a client
+is connected to.
 
-The built-in Gerrit H2 based websession cache is replaced with a file based
-implementation that is shared amongst both instance.
+#### Web session
+The built-in Gerrit H2 based web session cache is replaced with a file based
+implementation that is shared amongst both masters.
 
-For this to work, http must be enabled in both instances, the plugin must be
-configured with valid credentials and a shared directory must be accesssible
-from both instances. For further information, refer to [config](config.md)
+## Setup
+
+Prerequisites:
+
+* Unique database server must be accessible from both masters
+* Git repositories must be located on a shared file system
+* A directory on a shared file system must be available for @PLUGIN@ to use
+
+For both masters:
+
+* Configure database section in gerrit.config to use the shared database
+* Configure gerrit.basePath in gerrit.config to the shared repositories location
+* Install and configure @PLUGIN@ plugin
+
+Here is an example of the minimal @PLUGIN@.config:
+
+Primary master
+
+```
+[main]
+  sharedDirectory = /directory/accessible/from/both/masters
+
+[peerInfo "static"]
+  url = http://backupMasterHost:8081/
+
+[http]
+  user = username
+  password = password
+```
+
+Backup master
+
+```
+[main]
+  sharedDirectory = /directory/accessible/from/both/masters
+
+[peerInfo "static"]
+  url = http://primaryMasterHost:8080/
+
+[http]
+  user = username
+  password = password
+```
+
+For further information and supported options, refer to [config](config.md)
 documentation.

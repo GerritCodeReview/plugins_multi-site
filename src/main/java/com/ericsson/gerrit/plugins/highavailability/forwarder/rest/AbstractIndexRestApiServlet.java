@@ -14,121 +14,100 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
+import com.google.common.util.concurrent.Striped;
 import com.google.gwtorm.server.OrmException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
+import java.util.concurrent.locks.Lock;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public abstract class AbstractIndexRestApiServlet<T> extends HttpServlet {
+public abstract class AbstractIndexRestApiServlet<T> extends AbstractRestApiServlet {
   private static final long serialVersionUID = -1L;
-  private static final Logger logger = LoggerFactory.getLogger(AbstractIndexRestApiServlet.class);
-  private final Map<T, AtomicInteger> idLocks = new HashMap<>();
-  private final String type;
+
+  private final IndexName indexName;
   private final boolean allowDelete;
+  private final Striped<Lock> idLocks;
 
   enum Operation {
     INDEX,
-    DELETE
+    DELETE;
+
+    @Override
+    public String toString() {
+      return name().toLowerCase();
+    }
+  }
+
+  public enum IndexName {
+    CHANGE,
+    ACCOUNT,
+    GROUP;
+
+    @Override
+    public String toString() {
+      return name().toLowerCase();
+    }
   }
 
   abstract T parse(String id);
 
   abstract void index(T id, Operation operation) throws IOException, OrmException;
 
-  AbstractIndexRestApiServlet(String type, boolean allowDelete) {
-    this.type = type;
+  AbstractIndexRestApiServlet(IndexName indexName, boolean allowDelete) {
+    this.indexName = indexName;
     this.allowDelete = allowDelete;
+    this.idLocks = Striped.lock(10);
   }
 
-  AbstractIndexRestApiServlet(String type) {
-    this(type, false);
+  AbstractIndexRestApiServlet(IndexName indexName) {
+    this(indexName, false);
   }
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse rsp)
-      throws IOException, ServletException {
+  protected void doPost(HttpServletRequest req, HttpServletResponse rsp) {
     process(req, rsp, Operation.INDEX);
   }
 
   @Override
-  protected void doDelete(HttpServletRequest req, HttpServletResponse rsp)
-      throws IOException, ServletException {
+  protected void doDelete(HttpServletRequest req, HttpServletResponse rsp) {
     if (!allowDelete) {
-      sendError(rsp, SC_METHOD_NOT_ALLOWED, String.format("cannot delete %s from index", type));
+      sendError(
+          rsp, SC_METHOD_NOT_ALLOWED, String.format("cannot delete %s from index", indexName));
     } else {
       process(req, rsp, Operation.DELETE);
     }
   }
 
   private void process(HttpServletRequest req, HttpServletResponse rsp, Operation operation) {
-    rsp.setContentType("text/plain");
-    rsp.setCharacterEncoding(UTF_8.name());
+    setHeaders(rsp);
     String path = req.getPathInfo();
     T id = parse(path.substring(path.lastIndexOf('/') + 1));
-    logger.debug("{} {} {}", operation.name().toLowerCase(Locale.US), type, id);
+    logger.debug("{} {} {}", operation, indexName, id);
     try {
       Context.setForwardedEvent(true);
-      AtomicInteger idLock = getAndIncrementIdLock(id);
-      synchronized (idLock) {
+      Lock idLock = idLocks.get(id);
+      idLock.lock();
+      try {
         index(id, operation);
-      }
-      if (idLock.decrementAndGet() == 0) {
-        removeIdLock(id);
+      } finally {
+        idLock.unlock();
       }
       rsp.setStatus(SC_NO_CONTENT);
     } catch (IOException e) {
       sendError(rsp, SC_CONFLICT, e.getMessage());
-      logger.error("Unable to update {} index", type, e);
+      logger.error("Unable to update {} index", indexName, e);
     } catch (OrmException e) {
-      String msg = String.format("Error trying to find %s \n", type);
+      String msg = String.format("Error trying to find %s \n", indexName);
       sendError(rsp, SC_NOT_FOUND, msg);
       logger.debug(msg, e);
     } finally {
       Context.unsetForwardedEvent();
-    }
-  }
-
-  private AtomicInteger getAndIncrementIdLock(T id) {
-    synchronized (idLocks) {
-      AtomicInteger lock = idLocks.get(id);
-      if (lock == null) {
-        lock = new AtomicInteger(1);
-        idLocks.put(id, lock);
-      } else {
-        lock.incrementAndGet();
-      }
-      return lock;
-    }
-  }
-
-  private void removeIdLock(T id) {
-    synchronized (idLocks) {
-      if (idLocks.get(id).get() == 0) {
-        idLocks.remove(id);
-      }
-    }
-  }
-
-  private void sendError(HttpServletResponse rsp, int statusCode, String message) {
-    try {
-      rsp.sendError(statusCode, message);
-    } catch (IOException e) {
-      logger.error("Failed to send error messsage: {}", e.getMessage(), e);
     }
   }
 }

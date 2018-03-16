@@ -49,8 +49,8 @@ class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
   }
 
   class CacheEvictionTask implements Runnable {
-    private String cacheName;
-    private Object key;
+    private final String cacheName;
+    private final Object key;
 
     CacheEvictionTask(String cacheName, Object key) {
       this.cacheName = cacheName;

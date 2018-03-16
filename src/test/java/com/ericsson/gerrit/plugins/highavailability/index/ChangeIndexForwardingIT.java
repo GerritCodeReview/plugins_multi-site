@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Ericsson
+// Copyright (C) 2018 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability.forwarder;
+package com.ericsson.gerrit.plugins.highavailability.index;
 
-/** Allows to tag a forwarded event to avoid infinitely looping events. */
-public class Context {
-  private static final ThreadLocal<Boolean> forwardedEvent = ThreadLocal.withInitial(() -> false);
+public class ChangeIndexForwardingIT extends AbstractIndexForwardingIT {
+  private int changeId;
 
-  private Context() {}
-
-  public static Boolean isForwardedEvent() {
-    return forwardedEvent.get();
+  @Override
+  public void setup() throws Exception {
+    changeId = createChange().getChange().getId().get();
   }
 
-  public static void setForwardedEvent(Boolean b) {
-    forwardedEvent.set(b);
+  @Override
+  public String getExpectedRequest() {
+    return "/plugins/high-availability/index/change/" + changeId;
   }
 
-  public static void unsetForwardedEvent() {
-    forwardedEvent.remove();
+  @Override
+  public void doAction() throws Exception {
+    gApi.changes().id(changeId).abandon();
   }
 }

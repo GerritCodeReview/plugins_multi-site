@@ -20,13 +20,12 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 import static javax.servlet.http.HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE;
 
-import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedEventHandler;
 import com.google.common.base.Supplier;
 import com.google.common.io.CharStreams;
 import com.google.common.net.MediaType;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventDeserializer;
-import com.google.gerrit.server.events.EventDispatcher;
 import com.google.gerrit.server.events.SupplierDeserializer;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gson.Gson;
@@ -35,40 +34,30 @@ import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
-class EventRestApiServlet extends HttpServlet {
+class EventRestApiServlet extends AbstractRestApiServlet {
   private static final long serialVersionUID = -1L;
-  private static final Logger logger = LoggerFactory.getLogger(EventRestApiServlet.class);
 
-  private final EventDispatcher dispatcher;
+  private final ForwardedEventHandler forwardedEventHandler;
 
   @Inject
-  EventRestApiServlet(EventDispatcher dispatcher) {
-    this.dispatcher = dispatcher;
+  EventRestApiServlet(ForwardedEventHandler forwardedEventHandler) {
+    this.forwardedEventHandler = forwardedEventHandler;
   }
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse rsp)
-      throws IOException, ServletException {
-    rsp.setContentType("text/plain");
-    rsp.setCharacterEncoding("UTF-8");
+  protected void doPost(HttpServletRequest req, HttpServletResponse rsp) {
+    setHeaders(rsp);
     try {
-      Context.setForwardedEvent(true);
       if (!MediaType.parse(req.getContentType()).is(JSON_UTF_8)) {
         sendError(
             rsp, SC_UNSUPPORTED_MEDIA_TYPE, "Expecting " + JSON_UTF_8.toString() + " content type");
         return;
       }
-      Event event = getEventFromRequest(req);
-      logger.debug("event {}", event.getType());
-      dispatcher.postEvent(event);
+      forwardedEventHandler.dispatch(getEventFromRequest(req));
       rsp.setStatus(SC_NO_CONTENT);
     } catch (OrmException e) {
       logger.debug("Error trying to find a change ", e);
@@ -76,8 +65,6 @@ class EventRestApiServlet extends HttpServlet {
     } catch (IOException | PermissionBackendException e) {
       logger.error("Unable to re-trigger event", e);
       sendError(rsp, SC_BAD_REQUEST, e.getMessage());
-    } finally {
-      Context.unsetForwardedEvent();
     }
   }
 
@@ -89,13 +76,5 @@ class EventRestApiServlet extends HttpServlet {
             .registerTypeAdapter(Supplier.class, new SupplierDeserializer())
             .create();
     return gson.fromJson(jsonEvent, Event.class);
-  }
-
-  private static void sendError(HttpServletResponse rsp, int statusCode, String message) {
-    try {
-      rsp.sendError(statusCode, message);
-    } catch (IOException e) {
-      logger.error("Failed to send error messsage: {}", e.getMessage(), e);
-    }
   }
 }
