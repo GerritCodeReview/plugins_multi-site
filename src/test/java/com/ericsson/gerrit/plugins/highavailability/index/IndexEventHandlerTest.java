@@ -61,7 +61,7 @@ public class IndexEventHandlerTest {
   @Before
   public void setUpMocks() {
     changeId = Change.Id.parse(Integer.toString(CHANGE_ID));
-    accountId = Account.Id.parse(Integer.toString(ACCOUNT_ID));
+    accountId = Account.Id.tryParse(Integer.toString(ACCOUNT_ID)).get();
     accountGroupUUID = AccountGroup.UUID.parse(UUID);
     indexEventHandler =
         new IndexEventHandler(MoreExecutors.directExecutor(), PLUGIN_NAME, forwarder);

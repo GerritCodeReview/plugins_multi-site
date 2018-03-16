@@ -55,7 +55,7 @@ public class IndexAccountRestApiServletTest {
   @Before
   public void setUpMocks() {
     servlet = new IndexAccountRestApiServlet(indexer);
-    id = Account.Id.parse(ACCOUNT_NUMBER);
+    id = Account.Id.tryParse(ACCOUNT_NUMBER).get();
     when(req.getPathInfo()).thenReturn("/index/account/" + ACCOUNT_NUMBER);
   }
 

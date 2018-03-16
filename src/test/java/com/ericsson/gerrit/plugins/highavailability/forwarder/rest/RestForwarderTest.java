@@ -186,7 +186,7 @@ public class RestForwarderTest {
 
   @Test
   public void testEvictAccountsOK() throws Exception {
-    Account.Id key = Account.Id.parse("123");
+    Account.Id key = Account.Id.tryParse("123").get();
     String keyJson = new GsonBuilder().create().toJson(key);
     when(httpSessionMock.post(buildCacheEndpoint(Constants.ACCOUNTS), keyJson))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
