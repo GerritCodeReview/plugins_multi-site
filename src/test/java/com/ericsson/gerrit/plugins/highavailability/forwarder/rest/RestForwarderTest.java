@@ -28,12 +28,9 @@ import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.server.events.Event;
 import com.google.gson.GsonBuilder;
-import com.google.gwtorm.client.KeyUtil;
-import com.google.gwtorm.server.StandardKeyEncoder;
 import java.io.IOException;
 import javax.net.ssl.SSLException;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Answers;
 
@@ -62,11 +59,6 @@ public class RestForwarderTest {
 
   private RestForwarder forwarder;
   private HttpSession httpSessionMock;
-
-  @BeforeClass
-  public static void setup() {
-    KeyUtil.setEncoderImpl(new StandardKeyEncoder());
-  }
 
   @Before
   public void setUp() {

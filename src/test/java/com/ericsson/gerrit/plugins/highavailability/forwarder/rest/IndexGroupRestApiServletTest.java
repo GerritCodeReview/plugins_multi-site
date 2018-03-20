@@ -24,13 +24,10 @@ import static org.mockito.Mockito.when;
 
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.server.index.group.GroupIndexer;
-import com.google.gwtorm.client.KeyUtil;
-import com.google.gwtorm.server.StandardKeyEncoder;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -46,11 +43,6 @@ public class IndexGroupRestApiServletTest {
 
   private AccountGroup.UUID uuid;
   private IndexGroupRestApiServlet servlet;
-
-  @BeforeClass
-  public static void setup() {
-    KeyUtil.setEncoderImpl(new StandardKeyEncoder());
-  }
 
   @Before
   public void setUpMocks() {
