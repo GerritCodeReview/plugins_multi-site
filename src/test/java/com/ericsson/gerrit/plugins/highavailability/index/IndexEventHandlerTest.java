@@ -30,10 +30,7 @@ import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.server.git.WorkQueue.Executor;
-import com.google.gwtorm.client.KeyUtil;
-import com.google.gwtorm.server.StandardKeyEncoder;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -53,16 +50,11 @@ public class IndexEventHandlerTest {
   private Account.Id accountId;
   private AccountGroup.UUID accountGroupUUID;
 
-  @BeforeClass
-  public static void setUp() {
-    KeyUtil.setEncoderImpl(new StandardKeyEncoder());
-  }
-
   @Before
   public void setUpMocks() {
-    changeId = Change.Id.parse(Integer.toString(CHANGE_ID));
-    accountId = Account.Id.parse(Integer.toString(ACCOUNT_ID));
-    accountGroupUUID = AccountGroup.UUID.parse(UUID);
+    changeId = new Change.Id(CHANGE_ID);
+    accountId = new Account.Id(ACCOUNT_ID);
+    accountGroupUUID = new AccountGroup.UUID(UUID);
     indexEventHandler =
         new IndexEventHandler(MoreExecutors.directExecutor(), PLUGIN_NAME, forwarder);
   }

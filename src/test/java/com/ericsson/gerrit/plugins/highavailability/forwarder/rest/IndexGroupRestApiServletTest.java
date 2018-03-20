@@ -55,7 +55,7 @@ public class IndexGroupRestApiServletTest {
   @Before
   public void setUpMocks() {
     servlet = new IndexGroupRestApiServlet(indexerMock);
-    uuid = AccountGroup.UUID.parse(UUID);
+    uuid = new AccountGroup.UUID(UUID);
     when(requestMock.getPathInfo()).thenReturn("/index/group/" + UUID);
   }
 

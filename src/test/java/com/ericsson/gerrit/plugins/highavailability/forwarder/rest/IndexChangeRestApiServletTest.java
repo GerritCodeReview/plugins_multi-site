@@ -52,7 +52,7 @@ public class IndexChangeRestApiServletTest {
   private static final boolean DO_NOT_THROW_ORM_EXCEPTION = false;
   private static final boolean THROW_IO_EXCEPTION = true;
   private static final boolean THROW_ORM_EXCEPTION = true;
-  private static final String CHANGE_NUMBER = "1";
+  private static final int CHANGE_NUMBER = 1;
 
   @Mock private ChangeIndexer indexerMock;
   @Mock private SchemaFactory<ReviewDb> schemaFactoryMock;
@@ -71,7 +71,7 @@ public class IndexChangeRestApiServletTest {
   @Before
   public void setUpMocks() {
     indexRestApiServlet = new IndexChangeRestApiServlet(indexerMock, schemaFactoryMock);
-    id = Change.Id.parse(CHANGE_NUMBER);
+    id = new Change.Id(CHANGE_NUMBER);
     when(requestMock.getPathInfo()).thenReturn("/index/change/" + CHANGE_NUMBER);
     change = new Change(null, id, null, null, TimeUtil.nowTs());
   }

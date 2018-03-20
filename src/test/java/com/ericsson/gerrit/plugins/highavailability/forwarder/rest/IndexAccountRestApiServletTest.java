@@ -38,7 +38,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IndexAccountRestApiServletTest {
-  private static final String ACCOUNT_NUMBER = "1";
+  private static final int ACCOUNT_NUMBER = 1;
 
   @Mock private AccountIndexer indexerMock;
   @Mock private HttpServletRequest requestMock;
@@ -55,7 +55,7 @@ public class IndexAccountRestApiServletTest {
   @Before
   public void setUpMocks() {
     servlet = new IndexAccountRestApiServlet(indexerMock);
-    id = Account.Id.parse(ACCOUNT_NUMBER);
+    id = new Account.Id(ACCOUNT_NUMBER);
     when(requestMock.getPathInfo()).thenReturn("/index/account/" + ACCOUNT_NUMBER);
   }
 
