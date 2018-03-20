@@ -34,7 +34,7 @@ class IndexGroupRestApiServlet extends AbstractIndexRestApiServlet<AccountGroup.
 
   @Override
   AccountGroup.UUID parse(String id) {
-    return AccountGroup.UUID.parse(id);
+    return new AccountGroup.UUID(id);
   }
 
   @Override

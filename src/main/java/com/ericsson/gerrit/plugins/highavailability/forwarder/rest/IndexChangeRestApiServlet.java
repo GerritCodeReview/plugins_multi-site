@@ -40,7 +40,7 @@ class IndexChangeRestApiServlet extends AbstractIndexRestApiServlet<Change.Id> {
 
   @Override
   Change.Id parse(String id) {
-    return Change.Id.parse(id);
+    return new Change.Id(Integer.parseInt(id));
   }
 
   @Override
