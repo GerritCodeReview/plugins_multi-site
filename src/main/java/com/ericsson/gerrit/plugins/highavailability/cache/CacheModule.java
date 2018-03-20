@@ -14,6 +14,8 @@
 
 package com.ericsson.gerrit.plugins.highavailability.cache;
 
+import com.google.gerrit.extensions.events.NewProjectCreatedListener;
+import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.cache.CacheRemovalListener;
@@ -26,5 +28,7 @@ public class CacheModule extends LifecycleModule {
     bind(Executor.class).annotatedWith(CacheExecutor.class).toProvider(CacheExecutorProvider.class);
     listener().to(CacheExecutorProvider.class);
     DynamicSet.bind(binder(), CacheRemovalListener.class).to(CacheEvictionHandler.class);
+    DynamicSet.bind(binder(), NewProjectCreatedListener.class).to(ProjectListUpdateHandler.class);
+    DynamicSet.bind(binder(), ProjectDeletedListener.class).to(ProjectListUpdateHandler.class);
   }
 }
