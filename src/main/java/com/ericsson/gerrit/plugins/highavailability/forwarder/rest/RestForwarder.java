@@ -23,8 +23,6 @@ import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.SupplierSerializer;
 import com.google.gson.GsonBuilder;
-import com.google.gwtorm.client.IntKey;
-import com.google.gwtorm.client.StringKey;
 import com.google.inject.Inject;
 import java.io.IOException;
 import javax.net.ssl.SSLException;
@@ -107,23 +105,13 @@ class RestForwarder implements Forwarder {
 
   @Override
   public boolean evict(final String cacheName, final Object key) {
-    return new Request("invalidate cache " + cacheName + "[" + keyToString(key) + "]") {
+    return new Request("invalidate cache " + cacheName + "[" + key + "]") {
       @Override
       HttpResult send() throws IOException {
         String json = GsonParser.toJson(cacheName, key);
         return httpSession.post(Joiner.on("/").join(pluginRelativePath, "cache", cacheName), json);
       }
     }.execute();
-  }
-
-  private String keyToString(Object key) {
-    if (key instanceof StringKey) {
-      return ((StringKey<?>) key).get();
-    } else if (key instanceof IntKey) {
-      return Integer.toString(((IntKey<?>) key).get());
-    } else {
-      return key.toString();
-    }
   }
 
   private abstract class Request {
