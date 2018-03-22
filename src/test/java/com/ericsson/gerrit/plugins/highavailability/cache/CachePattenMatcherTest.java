@@ -14,7 +14,7 @@
 
 package com.ericsson.gerrit.plugins.highavailability.cache;
 
-import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static org.mockito.Answers.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.when;
 
@@ -37,16 +37,45 @@ public class CachePattenMatcherTest {
     CachePatternMatcher matcher = new CachePatternMatcher(configurationMock);
     for (String cache :
         ImmutableList.of(
+            "accounts",
             "accounts_byemail",
+            "accounts_byname",
+            "groups",
+            "groups_byinclude",
+            "groups_byname",
+            "groups_byuuid",
+            "groups_external",
+            "groups_members",
             "ldap_groups",
+            "ldap_usernames",
             "project_list",
+            "projects",
+            "sshkeys",
             "my_cache_a",
             "my_cache_b",
             "other")) {
-      assertThat(matcher.matches(cache)).isTrue();
+      assertWithMessage(cache + " should match").that(matcher.matches(cache)).isTrue();
     }
-    for (String cache : ImmutableList.of("ldap_groups_by_include", "foo")) {
-      assertThat(matcher.matches(cache)).isFalse();
+    for (String cache :
+        ImmutableList.of(
+            "adv_bases",
+            "change_kind",
+            "change_notes",
+            "changes",
+            "conflicts",
+            "diff",
+            "diff_intraline",
+            "diff_summary",
+            "git_tags",
+            "ldap_group_existence",
+            "ldap_groups_byinclude",
+            "mergeability",
+            "oauth_tokens",
+            "permission_sort",
+            "plugin_resources",
+            "static_content",
+            "foo")) {
+      assertWithMessage(cache + " should not match").that(matcher.matches(cache)).isFalse();
     }
   }
 }
