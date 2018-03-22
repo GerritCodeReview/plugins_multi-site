@@ -65,7 +65,7 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
     value = "directory"
   )
   public void flushAndSendPost() throws Exception {
-    final String flushRequest = "/plugins/high-availability/cache/" + Constants.PROJECT_LIST;
+    final String flushRequest = "/plugins/high-availability/cache/" + Constants.PROJECTS;
     final CountDownLatch expectedRequestLatch = new CountDownLatch(1);
     wireMockRule.addMockServiceRequestListener(
         (request, response) -> {
@@ -77,7 +77,7 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
         post(urlEqualTo(flushRequest))
             .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
 
-    adminSshSession.exec("gerrit flush-caches --cache " + Constants.PROJECT_LIST);
+    adminSshSession.exec("gerrit flush-caches --cache " + Constants.PROJECTS);
     assertThat(expectedRequestLatch.await(5, TimeUnit.SECONDS)).isTrue();
     verify(postRequestedFor(urlEqualTo(flushRequest)));
   }
