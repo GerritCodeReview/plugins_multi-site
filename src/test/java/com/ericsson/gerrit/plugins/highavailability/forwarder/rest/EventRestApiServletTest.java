@@ -29,9 +29,7 @@ import com.google.common.net.MediaType;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.events.EventTypes;
 import com.google.gerrit.server.events.RefEvent;
-import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.OrmException;
-import com.google.gwtorm.server.StandardKeyEncoder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -56,7 +54,6 @@ public class EventRestApiServletTest {
   @BeforeClass
   public static void setup() {
     EventTypes.register(RefReplicationDoneEvent.TYPE, RefReplicationDoneEvent.class);
-    KeyUtil.setEncoderImpl(new StandardKeyEncoder());
   }
 
   @Before

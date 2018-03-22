@@ -33,11 +33,15 @@ import com.google.gwtorm.server.StandardKeyEncoder;
 import java.io.IOException;
 import javax.net.ssl.SSLException;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Answers;
 
 public class RestForwarderTest {
+  static {
+    //required by AccountGroup.UUID.toString()
+    KeyUtil.setEncoderImpl(new StandardKeyEncoder());
+  }
+
   private static final String PLUGIN_NAME = "high-availability";
   private static final String EMPTY_MSG = "";
   private static final boolean SUCCESSFUL = true;
@@ -62,11 +66,6 @@ public class RestForwarderTest {
 
   private RestForwarder forwarder;
   private HttpSession httpSessionMock;
-
-  @BeforeClass
-  public static void setup() {
-    KeyUtil.setEncoderImpl(new StandardKeyEncoder());
-  }
 
   @Before
   public void setUp() {
@@ -186,7 +185,7 @@ public class RestForwarderTest {
 
   @Test
   public void testEvictAccountsOK() throws Exception {
-    Account.Id key = Account.Id.parse("123");
+    Account.Id key = new Account.Id(123);
     String keyJson = new GsonBuilder().create().toJson(key);
     when(httpSessionMock.post(buildCacheEndpoint(Constants.ACCOUNTS), keyJson))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
@@ -195,7 +194,7 @@ public class RestForwarderTest {
 
   @Test
   public void testEvictGroupsOK() throws Exception {
-    AccountGroup.Id key = AccountGroup.Id.parse("123");
+    AccountGroup.Id key = new AccountGroup.Id(123);
     String keyJson = new GsonBuilder().create().toJson(key);
     when(httpSessionMock.post(buildCacheEndpoint(Constants.GROUPS), keyJson))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
@@ -204,7 +203,7 @@ public class RestForwarderTest {
 
   @Test
   public void testEvictGroupsByIncludeOK() throws Exception {
-    AccountGroup.UUID key = AccountGroup.UUID.parse("90b3042d9094a37985f3f9281391dbbe9a5addad");
+    AccountGroup.UUID key = new AccountGroup.UUID("90b3042d9094a37985f3f9281391dbbe9a5addad");
     String keyJson = new GsonBuilder().create().toJson(key);
     when(httpSessionMock.post(buildCacheEndpoint(Constants.GROUPS_BYINCLUDE), keyJson))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
@@ -213,7 +212,7 @@ public class RestForwarderTest {
 
   @Test
   public void testEvictGroupsMembersOK() throws Exception {
-    AccountGroup.UUID key = AccountGroup.UUID.parse("90b3042d9094a37985f3f9281391dbbe9a5addad");
+    AccountGroup.UUID key = new AccountGroup.UUID("90b3042d9094a37985f3f9281391dbbe9a5addad");
     String keyJson = new GsonBuilder().create().toJson(key);
     when(httpSessionMock.post(buildCacheEndpoint(Constants.GROUPS_MEMBERS), keyJson))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
