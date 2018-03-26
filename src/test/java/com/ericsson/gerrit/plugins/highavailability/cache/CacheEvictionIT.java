@@ -51,19 +51,7 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
 
   @Test
   @UseLocalDisk
-  @GlobalPluginConfig(
-    pluginName = "high-availability",
-    name = "peerInfo.strategy",
-    value = "static"
-  )
   @GlobalPluginConfig(pluginName = "high-availability", name = "peerInfo.static.url", value = URL)
-  @GlobalPluginConfig(pluginName = "high-availability", name = "http.user", value = "admin")
-  @GlobalPluginConfig(pluginName = "high-availability", name = "cache.threadPoolSize", value = "10")
-  @GlobalPluginConfig(
-    pluginName = "high-availability",
-    name = "main.sharedDirectory",
-    value = "directory"
-  )
   public void flushAndSendPost() throws Exception {
     final String flushRequest = "/plugins/high-availability/cache/" + Constants.PROJECTS;
     final CountDownLatch expectedRequestLatch = new CountDownLatch(1);
