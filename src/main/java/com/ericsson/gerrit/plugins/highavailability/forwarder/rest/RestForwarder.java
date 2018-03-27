@@ -15,6 +15,7 @@
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
+import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.google.common.base.Joiner;
@@ -112,6 +113,30 @@ class RestForwarder implements Forwarder {
         return httpSession.post(Joiner.on("/").join(pluginRelativePath, "cache", cacheName), json);
       }
     }.execute();
+  }
+
+  @Override
+  public boolean addToProjectList(String projectName) {
+    return new Request("Update project_list, add " + projectName) {
+      @Override
+      HttpResult send() throws IOException {
+        return httpSession.post(buildProjectListEndpoint(projectName));
+      }
+    }.execute();
+  }
+
+  @Override
+  public boolean removeFromProjectList(String projectName) {
+    return new Request("Update project_list, remove " + projectName) {
+      @Override
+      HttpResult send() throws IOException {
+        return httpSession.delete(buildProjectListEndpoint(projectName));
+      }
+    }.execute();
+  }
+
+  private String buildProjectListEndpoint(String projectName) {
+    return Joiner.on("/").join(pluginRelativePath, "cache", Constants.PROJECT_LIST, projectName);
   }
 
   private abstract class Request {

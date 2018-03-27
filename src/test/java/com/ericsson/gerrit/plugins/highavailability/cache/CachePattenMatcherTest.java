@@ -48,7 +48,6 @@ public class CachePattenMatcherTest {
             "groups_members",
             "ldap_groups",
             "ldap_usernames",
-            "project_list",
             "projects",
             "sshkeys",
             "my_cache_a",
@@ -72,6 +71,7 @@ public class CachePattenMatcherTest {
             "mergeability",
             "oauth_tokens",
             "permission_sort",
+            "project_list",
             "plugin_resources",
             "static_content",
             "foo")) {
