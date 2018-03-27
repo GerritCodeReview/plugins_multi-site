@@ -59,8 +59,8 @@ public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonT
   @UseLocalDisk
   @GlobalPluginConfig(pluginName = "high-availability", name = "peerInfo.static.url", value = URL)
   public void testIndexForwarding() throws Exception {
-    final String expectedRequest = getExpectedRequest();
-    final CountDownLatch expectedRequestLatch = new CountDownLatch(1);
+    String expectedRequest = getExpectedRequest();
+    CountDownLatch expectedRequestLatch = new CountDownLatch(1);
     wireMockRule.addMockServiceRequestListener(
         (request, response) -> {
           if (request.getAbsoluteUrl().contains(expectedRequest)) {
