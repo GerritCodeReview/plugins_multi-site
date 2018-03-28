@@ -220,15 +220,6 @@ public class RestForwarderTest {
   }
 
   @Test
-  public void testEvictProjectListOK() throws Exception {
-    String key = "all";
-    String keyJson = new GsonBuilder().create().toJson(key);
-    when(httpSessionMock.post(buildCacheEndpoint(Constants.PROJECT_LIST), keyJson))
-        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(forwarder.evict(Constants.PROJECT_LIST, key)).isTrue();
-  }
-
-  @Test
   public void testEvictCacheFailed() throws Exception {
     String key = "projectName";
     String keyJson = new GsonBuilder().create().toJson(key);
@@ -249,6 +240,60 @@ public class RestForwarderTest {
 
   private String buildCacheEndpoint(String name) {
     return Joiner.on("/").join("/plugins", PLUGIN_NAME, "cache", name);
+  }
+
+  @Test
+  public void testAddToProjectListOK() throws Exception {
+    String projectName = "projectToAdd";
+    when(httpSessionMock.post(buildProjectListCacheEndpoint(projectName)))
+        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
+    assertThat(forwarder.addToProjectList(projectName)).isTrue();
+  }
+
+  @Test
+  public void testAddToProjectListFailed() throws Exception {
+    String projectName = "projectToAdd";
+    when(httpSessionMock.post(buildProjectListCacheEndpoint(projectName)))
+        .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
+    assertThat(forwarder.addToProjectList(projectName)).isFalse();
+  }
+
+  @Test
+  public void testAddToProjectListThrowsException() throws Exception {
+    String projectName = "projectToAdd";
+    doThrow(new IOException())
+        .when(httpSessionMock)
+        .post((buildProjectListCacheEndpoint(projectName)));
+    assertThat(forwarder.addToProjectList(projectName)).isFalse();
+  }
+
+  @Test
+  public void testRemoveFromProjectListOK() throws Exception {
+    String projectName = "projectToDelete";
+    when(httpSessionMock.delete(buildProjectListCacheEndpoint(projectName)))
+        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
+    assertThat(forwarder.removeFromProjectList(projectName)).isTrue();
+  }
+
+  @Test
+  public void testRemoveToProjectListFailed() throws Exception {
+    String projectName = "projectToDelete";
+    when(httpSessionMock.delete(buildProjectListCacheEndpoint(projectName)))
+        .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
+    assertThat(forwarder.removeFromProjectList(projectName)).isFalse();
+  }
+
+  @Test
+  public void testRemoveToProjectListThrowsException() throws Exception {
+    String projectName = "projectToDelete";
+    doThrow(new IOException())
+        .when(httpSessionMock)
+        .delete((buildProjectListCacheEndpoint(projectName)));
+    assertThat(forwarder.removeFromProjectList(projectName)).isFalse();
+  }
+
+  private String buildProjectListCacheEndpoint(String projectName) {
+    return Joiner.on("/").join(buildCacheEndpoint(Constants.PROJECT_LIST), projectName);
   }
 
   @Test

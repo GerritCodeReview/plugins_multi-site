@@ -67,4 +67,20 @@ public interface Forwarder {
    * @return true if successful, otherwise false.
    */
   boolean evict(String cacheName, Object key);
+
+  /**
+   * Forward an addition to the project list cache to the other master.
+   *
+   * @param projectName the name of the project to add to the project list cache
+   * @return true if successful, otherwise false.
+   */
+  boolean addToProjectList(String projectName);
+
+  /**
+   * Forward a removal from the project list cache to the other master.
+   *
+   * @param projectName the name of the project to remove from the project list cache
+   * @return true if successful, otherwise false.
+   */
+  boolean removeFromProjectList(String projectName);
 }

@@ -31,7 +31,7 @@ class CachePatternMatcher {
           "^groups.*",
           "ldap_groups",
           "ldap_usernames",
-          "^project.*",
+          "projects",
           "sshkeys",
           "web_sessions");
 

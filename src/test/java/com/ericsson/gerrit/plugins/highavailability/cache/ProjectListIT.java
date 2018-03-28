@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability.index;
+package com.ericsson.gerrit.plugins.highavailability.cache;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
@@ -32,34 +32,28 @@ import com.google.gerrit.acceptance.UseLocalDisk;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.apache.http.HttpStatus;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
-@Ignore
 @NoHttpd
 @TestPlugin(
   name = "high-availability",
   sysModule = "com.ericsson.gerrit.plugins.highavailability.Module",
   httpModule = "com.ericsson.gerrit.plugins.highavailability.HttpModule"
 )
-public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonTest {
-  private static final int PORT = 18889;
+public class ProjectListIT extends LightweightPluginDaemonTest {
+  private static final int PORT = 18888;
   private static final String URL = "http://localhost:" + PORT;
 
   @Rule public WireMockRule wireMockRule = new WireMockRule(options().port(PORT), false);
 
-  @Before
-  public void before() throws Exception {
-    setup();
-  }
-
   @Test
   @UseLocalDisk
   @GlobalPluginConfig(pluginName = "high-availability", name = "peerInfo.static.url", value = URL)
-  public void testIndexForwarding() throws Exception {
-    String expectedRequest = getExpectedRequest();
+  public void addToProjectListAreForwarded() throws Exception {
+    String createdProject = "someProject";
+    String expectedRequest =
+        "/plugins/high-availability/cache/" + Constants.PROJECT_LIST + "/" + createdProject;
     CountDownLatch expectedRequestLatch = new CountDownLatch(1);
     wireMockRule.addMockServiceRequestListener(
         (request, response) -> {
@@ -70,21 +64,9 @@ public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonT
     givenThat(
         post(urlEqualTo(expectedRequest))
             .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
-    doAction();
+
+    adminRestSession.put("/projects/" + createdProject).assertCreated();
     assertThat(expectedRequestLatch.await(5, TimeUnit.SECONDS)).isTrue();
     verify(postRequestedFor(urlEqualTo(expectedRequest)));
   }
-
-  /** Perform pre-test setup. */
-  protected abstract void setup() throws Exception;
-
-  /**
-   * Get the URL on which a request is expected.
-   *
-   * @return the URL.
-   */
-  protected abstract String getExpectedRequest();
-
-  /** Perform the action that should cause an index operation to occur. */
-  protected abstract void doAction() throws Exception;
 }
