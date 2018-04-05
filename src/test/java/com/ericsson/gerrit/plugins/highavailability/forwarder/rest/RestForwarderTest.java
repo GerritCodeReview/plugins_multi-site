@@ -28,8 +28,6 @@ import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.server.events.Event;
 import com.google.gson.GsonBuilder;
-import com.google.gwtorm.client.KeyUtil;
-import com.google.gwtorm.server.StandardKeyEncoder;
 import java.io.IOException;
 import javax.net.ssl.SSLException;
 import org.junit.Before;
@@ -37,11 +35,6 @@ import org.junit.Test;
 import org.mockito.Answers;
 
 public class RestForwarderTest {
-  static {
-    //required by AccountGroup.UUID.toString()
-    KeyUtil.setEncoderImpl(new StandardKeyEncoder());
-  }
-
   private static final String PLUGIN_NAME = "high-availability";
   private static final String EMPTY_MSG = "";
   private static final boolean SUCCESSFUL = true;
