@@ -58,6 +58,7 @@ public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonT
   @Test
   @UseLocalDisk
   @GlobalPluginConfig(pluginName = "high-availability", name = "peerInfo.static.url", value = URL)
+  @GlobalPluginConfig(pluginName = "high-availability", name = "http.retryInterval", value = "100")
   public void testIndexForwarding() throws Exception {
     String expectedRequest = getExpectedRequest();
     CountDownLatch expectedRequestLatch = new CountDownLatch(1);
