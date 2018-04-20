@@ -54,8 +54,8 @@ public class ForwardedEventHandlerTest {
   @Test
   public void shouldSetAndUnsetForwardedContext() throws Exception {
     Event event = new ProjectCreatedEvent();
-    //this doAnswer is to allow to assert that context is set to forwarded
-    //while cache eviction is called.
+    // this doAnswer is to allow to assert that context is set to forwarded
+    // while cache eviction is called.
     doAnswer(
             (Answer<Void>)
                 invocation -> {

@@ -58,8 +58,8 @@ public class ForwardedProjectListUpdateHandlerTest {
 
   @Test
   public void shouldSetAndUnsetForwardedContextOnAdd() throws Exception {
-    //this doAnswer is to allow to assert that context is set to forwarded
-    //while cache eviction is called.
+    // this doAnswer is to allow to assert that context is set to forwarded
+    // while cache eviction is called.
     doAnswer(
             (Answer<Void>)
                 invocation -> {
@@ -78,8 +78,8 @@ public class ForwardedProjectListUpdateHandlerTest {
 
   @Test
   public void shouldSetAndUnsetForwardedContextOnRemove() throws Exception {
-    //this doAnswer is to allow to assert that context is set to forwarded
-    //while cache eviction is called.
+    // this doAnswer is to allow to assert that context is set to forwarded
+    // while cache eviction is called.
     doAnswer(
             (Answer<Void>)
                 invocation -> {
