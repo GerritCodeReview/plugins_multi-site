@@ -137,7 +137,7 @@ the plugin will keep retrying to forward a message for one hour.
 
 ```cache.threadPoolSize```
 :   Maximum number of threads used to send cache evictions to the target instance.
-    Defaults to 1.
+    Defaults to 4.
 
 ```cache.pattern```
 :   Pattern to match names of custom caches for which evictions should be
@@ -156,7 +156,7 @@ the plugin will keep retrying to forward a message for one hour.
 
 ```index.threadPoolSize```
 :   Maximum number of threads used to send index events to the target instance.
-    Defaults to 1.
+    Defaults to 4.
 
 ```websession.synchronize```
 :   Whether to synchronize web sessions.
