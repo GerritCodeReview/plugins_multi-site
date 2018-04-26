@@ -52,6 +52,7 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
   @Test
   @UseLocalDisk
   @GlobalPluginConfig(pluginName = "high-availability", name = "peerInfo.static.url", value = URL)
+  @GlobalPluginConfig(pluginName = "high-availability", name = "http.retryInterval", value = "100")
   public void flushAndSendPost() throws Exception {
     final String flushRequest = "/plugins/high-availability/cache/" + Constants.PROJECTS;
     final CountDownLatch expectedRequestLatch = new CountDownLatch(1);

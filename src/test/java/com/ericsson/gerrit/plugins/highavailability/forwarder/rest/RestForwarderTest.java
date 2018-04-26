@@ -40,7 +40,7 @@ public class RestForwarderTest {
   private static final boolean SUCCESSFUL = true;
   private static final boolean FAILED = false;
 
-  //Index
+  // Index
   private static final int CHANGE_NUMBER = 1;
   private static final String INDEX_CHANGE_ENDPOINT =
       Joiner.on("/").join("/plugins", PLUGIN_NAME, "index/change", CHANGE_NUMBER);
@@ -51,7 +51,7 @@ public class RestForwarderTest {
   private static final String INDEX_GROUP_ENDPOINT =
       Joiner.on("/").join("/plugins", PLUGIN_NAME, "index/group", UUID);
 
-  //Event
+  // Event
   private static final String EVENT_ENDPOINT =
       Joiner.on("/").join("/plugins", PLUGIN_NAME, "event");
   private static Event event = new Event("test-event") {};

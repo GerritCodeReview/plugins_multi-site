@@ -121,12 +121,15 @@ calls by specifying the following fields:
 ```http.maxTries```
 :   Maximum number of times the plugin should attempt when calling a REST API in
     the target instance. Setting this value to 0 will disable retries. When not
-    specified, the default value is 5. After this number of failed tries, an
+    specified, the default value is 360. After this number of failed tries, an
     error is logged.
 
 ```http.retryInterval```
 :   The interval of time in milliseconds between the subsequent auto-retries.
-    When not specified, the default value is set to 1000ms.
+    When not specified, the default value is set to 10000ms.
+
+NOTE: the default settings for `http.timeout` and `http.maxTries` ensure that
+the plugin will keep retrying to forward a message for one hour.
 
 ```cache.synchronize```
 :   Whether to synchronize cache evictions.
@@ -134,7 +137,7 @@ calls by specifying the following fields:
 
 ```cache.threadPoolSize```
 :   Maximum number of threads used to send cache evictions to the target instance.
-    Defaults to 1.
+    Defaults to 4.
 
 ```cache.pattern```
 :   Pattern to match names of custom caches for which evictions should be
@@ -153,7 +156,7 @@ calls by specifying the following fields:
 
 ```index.threadPoolSize```
 :   Maximum number of threads used to send index events to the target instance.
-    Defaults to 1.
+    Defaults to 4.
 
 ```websession.synchronize```
 :   Whether to synchronize web sessions.
