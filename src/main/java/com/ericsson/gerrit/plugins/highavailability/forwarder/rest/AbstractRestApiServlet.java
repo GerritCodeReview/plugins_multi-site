@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class AbstractRestApiServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
-  protected final Logger logger = LoggerFactory.getLogger(getClass());
+  protected final Logger log = LoggerFactory.getLogger(getClass());
 
   protected static void setHeaders(HttpServletResponse rsp) {
     rsp.setContentType("text/plain");
@@ -35,7 +35,7 @@ public abstract class AbstractRestApiServlet extends HttpServlet {
     try {
       rsp.sendError(statusCode, message);
     } catch (IOException e) {
-      logger.error("Failed to send error messsage: {}", e.getMessage(), e);
+      log.error("Failed to send error messsage: {}", e.getMessage(), e);
     }
   }
 }

@@ -39,6 +39,6 @@ public class ForwardedIndexGroupHandler extends ForwardedIndexingHandler<Account
   @Override
   protected void doIndex(AccountGroup.UUID uuid) throws IOException, OrmException {
     indexer.index(uuid);
-    logger.debug("Group {} successfully indexed", uuid);
+    log.debug("Group {} successfully indexed", uuid);
   }
 }

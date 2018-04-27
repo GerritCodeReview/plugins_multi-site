@@ -49,24 +49,24 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<Change
       change = db.changes().get(id);
       if (change != null) {
         indexer.index(db, change);
-        logger.debug("Change {} successfully indexed", id);
+        log.debug("Change {} successfully indexed", id);
       }
     } catch (Exception e) {
       if (!isCausedByNoSuchChangeException(e)) {
         throw e;
       }
-      logger.debug("Change {} was deleted, aborting forwarded indexing the change.", id.get());
+      log.debug("Change {} was deleted, aborting forwarded indexing the change.", id.get());
     }
     if (change == null) {
       indexer.delete(id);
-      logger.debug("Change {} not found, deleted from index", id);
+      log.debug("Change {} not found, deleted from index", id);
     }
   }
 
   @Override
   protected void doDelete(Id id) throws IOException {
     indexer.delete(id);
-    logger.debug("Change {} successfully deleted from index", id);
+    log.debug("Change {} successfully deleted from index", id);
   }
 
   private boolean isCausedByNoSuchChangeException(Throwable throwable) {

@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 public class ForwardedProjectListUpdateHandler {
-  private static final Logger logger =
+  private static final Logger log =
       LoggerFactory.getLogger(ForwardedProjectListUpdateHandler.class);
 
   private final ProjectCache projectCache;
@@ -50,10 +50,10 @@ public class ForwardedProjectListUpdateHandler {
       Context.setForwardedEvent(true);
       if (remove) {
         projectCache.remove(projectKey);
-        logger.debug("Removed {} from project list", projectName);
+        log.debug("Removed {} from project list", projectName);
       } else {
         projectCache.onCreateProject(projectKey);
-        logger.debug("Added {} to project list", projectName);
+        log.debug("Added {} to project list", projectName);
       }
     } finally {
       Context.unsetForwardedEvent();

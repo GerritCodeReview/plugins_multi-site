@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 public class ForwardedEventHandler {
-  private static final Logger logger = LoggerFactory.getLogger(ForwardedEventHandler.class);
+  private static final Logger log = LoggerFactory.getLogger(ForwardedEventHandler.class);
 
   private final EventDispatcher dispatcher;
 
@@ -47,7 +47,7 @@ public class ForwardedEventHandler {
   public void dispatch(Event event) throws OrmException {
     try {
       Context.setForwardedEvent(true);
-      logger.debug("dispatching event {}", event.getType());
+      log.debug("dispatching event {}", event.getType());
       dispatcher.postEvent(event);
     } finally {
       Context.unsetForwardedEvent();

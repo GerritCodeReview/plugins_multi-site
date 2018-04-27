@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * indexing is done for the same id.
  */
 public abstract class ForwardedIndexingHandler<T> {
-  protected final Logger logger = LoggerFactory.getLogger(getClass());
+  protected final Logger log = LoggerFactory.getLogger(getClass());
 
   public enum Operation {
     INDEX,
@@ -57,7 +57,7 @@ public abstract class ForwardedIndexingHandler<T> {
    * @throws OrmException If an error occur while retrieving a change related to the item to index
    */
   public void index(T id, Operation operation) throws IOException, OrmException {
-    logger.debug("{} {}", operation, id);
+    log.debug("{} {}", operation, id);
     try {
       Context.setForwardedEvent(true);
       Lock idLock = idLocks.get(id);

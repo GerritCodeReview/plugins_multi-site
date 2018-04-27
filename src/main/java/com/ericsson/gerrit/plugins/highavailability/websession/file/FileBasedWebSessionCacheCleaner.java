@@ -66,7 +66,7 @@ class FileBasedWebSessionCacheCleaner implements LifecycleListener {
 }
 
 class CleanupTask implements Runnable {
-  private static final Logger logger = LoggerFactory.getLogger(CleanupTask.class);
+  private static final Logger log = LoggerFactory.getLogger(CleanupTask.class);
   private final FileBasedWebsessionCache fileBasedWebSessionCache;
   private final String pluginName;
 
@@ -78,9 +78,9 @@ class CleanupTask implements Runnable {
 
   @Override
   public void run() {
-    logger.info("Cleaning up expired file based websessions...");
+    log.info("Cleaning up expired file based websessions...");
     fileBasedWebSessionCache.cleanUp();
-    logger.info("Cleaning up expired file based websessions...Done");
+    log.info("Cleaning up expired file based websessions...Done");
   }
 
   @Override
