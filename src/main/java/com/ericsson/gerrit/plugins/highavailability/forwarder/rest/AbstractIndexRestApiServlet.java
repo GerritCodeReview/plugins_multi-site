@@ -77,7 +77,7 @@ public abstract class AbstractIndexRestApiServlet<T> extends AbstractRestApiServ
 
   private void process(HttpServletRequest req, HttpServletResponse rsp, Operation operation) {
     setHeaders(rsp);
-    String path = req.getPathInfo();
+    String path = req.getRequestURI();
     T id = parse(path.substring(path.lastIndexOf('/') + 1));
     try {
       forwardedIndexingHandler.index(id, operation);

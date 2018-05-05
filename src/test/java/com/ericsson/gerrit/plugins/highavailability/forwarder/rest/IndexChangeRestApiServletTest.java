@@ -24,7 +24,6 @@ import static org.mockito.Mockito.when;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedIndexChangeHandler;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedIndexingHandler.Operation;
-import com.google.gerrit.reviewdb.client.Change;
 import com.google.gwtorm.server.OrmException;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,52 +37,54 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class IndexChangeRestApiServletTest {
   private static final int CHANGE_NUMBER = 1;
+  private static final String PROJECT_NAME = "test/project";
+  private static final String PROJECT_NAME_URL_ENC = "test%2Fproject";
+  private static final String CHANGE_ID = PROJECT_NAME + "~" + CHANGE_NUMBER;
 
   @Mock private ForwardedIndexChangeHandler handlerMock;
   @Mock private HttpServletRequest requestMock;
   @Mock private HttpServletResponse responseMock;
 
-  private Change.Id id;
   private IndexChangeRestApiServlet servlet;
 
   @Before
   public void setUpMocks() {
     servlet = new IndexChangeRestApiServlet(handlerMock);
-    id = new Change.Id(CHANGE_NUMBER);
-    when(requestMock.getPathInfo()).thenReturn("/index/change/" + CHANGE_NUMBER);
+    when(requestMock.getRequestURI())
+        .thenReturn("http://gerrit.com/index/change/" + PROJECT_NAME_URL_ENC + "~" + CHANGE_NUMBER);
   }
 
   @Test
   public void changeIsIndexed() throws Exception {
     servlet.doPost(requestMock, responseMock);
-    verify(handlerMock, times(1)).index(id, Operation.INDEX);
+    verify(handlerMock, times(1)).index(CHANGE_ID, Operation.INDEX);
     verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
   @Test
   public void changeIsDeletedFromIndex() throws Exception {
     servlet.doDelete(requestMock, responseMock);
-    verify(handlerMock, times(1)).index(id, Operation.DELETE);
+    verify(handlerMock, times(1)).index(CHANGE_ID, Operation.DELETE);
     verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
   @Test
   public void indexerThrowsIOExceptionTryingToIndexChange() throws Exception {
-    doThrow(new IOException("io-error")).when(handlerMock).index(id, Operation.INDEX);
+    doThrow(new IOException("io-error")).when(handlerMock).index(CHANGE_ID, Operation.INDEX);
     servlet.doPost(requestMock, responseMock);
     verify(responseMock).sendError(SC_CONFLICT, "io-error");
   }
 
   @Test
   public void indexerThrowsOrmExceptionTryingToIndexChange() throws Exception {
-    doThrow(new OrmException("some message")).when(handlerMock).index(id, Operation.INDEX);
+    doThrow(new OrmException("some message")).when(handlerMock).index(CHANGE_ID, Operation.INDEX);
     servlet.doPost(requestMock, responseMock);
     verify(responseMock).sendError(SC_NOT_FOUND, "Error trying to find change");
   }
 
   @Test
   public void sendErrorThrowsIOException() throws Exception {
-    doThrow(new IOException("io-error")).when(handlerMock).index(id, Operation.INDEX);
+    doThrow(new IOException("io-error")).when(handlerMock).index(CHANGE_ID, Operation.INDEX);
     doThrow(new IOException("someError")).when(responseMock).sendError(SC_CONFLICT, "io-error");
     servlet.doPost(requestMock, responseMock);
     verify(responseMock).sendError(SC_CONFLICT, "io-error");

@@ -49,7 +49,8 @@ public class IndexAccountRestApiServletTest {
   public void setUpMocks() {
     servlet = new IndexAccountRestApiServlet(handlerMock);
     id = new Account.Id(ACCOUNT_NUMBER);
-    when(requestMock.getPathInfo()).thenReturn("/index/account/" + ACCOUNT_NUMBER);
+    when(requestMock.getRequestURI())
+        .thenReturn("http://gerrit.com/index/account/" + ACCOUNT_NUMBER);
   }
 
   @Test

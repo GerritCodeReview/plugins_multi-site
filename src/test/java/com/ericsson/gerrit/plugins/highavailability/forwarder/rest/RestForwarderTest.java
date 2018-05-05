@@ -42,8 +42,14 @@ public class RestForwarderTest {
 
   // Index
   private static final int CHANGE_NUMBER = 1;
+  private static final String PROJECT_NAME = "test/project";
+  private static final String PROJECT_NAME_URL_END = "test%2Fproject";
   private static final String INDEX_CHANGE_ENDPOINT =
-      Joiner.on("/").join("/plugins", PLUGIN_NAME, "index/change", CHANGE_NUMBER);
+      Joiner.on("/")
+          .join(
+              "/plugins", PLUGIN_NAME, "index/change", PROJECT_NAME_URL_END + "~" + CHANGE_NUMBER);
+  private static final String DELETE_CHANGE_ENDPOINT =
+      Joiner.on("/").join("/plugins", PLUGIN_NAME, "index/change", "~" + CHANGE_NUMBER);
   private static final int ACCOUNT_NUMBER = 2;
   private static final String INDEX_ACCOUNT_ENDPOINT =
       Joiner.on("/").join("/plugins", PLUGIN_NAME, "index/account", ACCOUNT_NUMBER);
@@ -112,38 +118,38 @@ public class RestForwarderTest {
   public void testIndexChangeOK() throws Exception {
     when(httpSessionMock.post(INDEX_CHANGE_ENDPOINT))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(forwarder.indexChange(CHANGE_NUMBER)).isTrue();
+    assertThat(forwarder.indexChange(PROJECT_NAME, CHANGE_NUMBER)).isTrue();
   }
 
   @Test
   public void testIndexChangeFailed() throws Exception {
     when(httpSessionMock.post(INDEX_CHANGE_ENDPOINT)).thenReturn(new HttpResult(FAILED, EMPTY_MSG));
-    assertThat(forwarder.indexChange(CHANGE_NUMBER)).isFalse();
+    assertThat(forwarder.indexChange(PROJECT_NAME, CHANGE_NUMBER)).isFalse();
   }
 
   @Test
   public void testIndexChangeThrowsException() throws Exception {
     doThrow(new IOException()).when(httpSessionMock).post(INDEX_CHANGE_ENDPOINT);
-    assertThat(forwarder.indexChange(CHANGE_NUMBER)).isFalse();
+    assertThat(forwarder.indexChange(PROJECT_NAME, CHANGE_NUMBER)).isFalse();
   }
 
   @Test
   public void testChangeDeletedFromIndexOK() throws Exception {
-    when(httpSessionMock.delete(INDEX_CHANGE_ENDPOINT))
+    when(httpSessionMock.delete(DELETE_CHANGE_ENDPOINT))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
     assertThat(forwarder.deleteChangeFromIndex(CHANGE_NUMBER)).isTrue();
   }
 
   @Test
   public void testChangeDeletedFromIndexFailed() throws Exception {
-    when(httpSessionMock.delete(INDEX_CHANGE_ENDPOINT))
+    when(httpSessionMock.delete(DELETE_CHANGE_ENDPOINT))
         .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
     assertThat(forwarder.deleteChangeFromIndex(CHANGE_NUMBER)).isFalse();
   }
 
   @Test
   public void testChangeDeletedFromThrowsException() throws Exception {
-    doThrow(new IOException()).when(httpSessionMock).delete(INDEX_CHANGE_ENDPOINT);
+    doThrow(new IOException()).when(httpSessionMock).delete(DELETE_CHANGE_ENDPOINT);
     assertThat(forwarder.deleteChangeFromIndex(CHANGE_NUMBER)).isFalse();
   }
 

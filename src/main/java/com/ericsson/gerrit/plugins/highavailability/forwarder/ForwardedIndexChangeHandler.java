@@ -14,10 +14,12 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
+import com.google.common.base.Splitter;
 import com.google.gerrit.reviewdb.client.Change;
-import com.google.gerrit.reviewdb.client.Change.Id;
 import com.google.gerrit.reviewdb.server.ReviewDb;
+import com.google.gerrit.server.ChangeFinder;
 import com.google.gerrit.server.index.change.ChangeIndexer;
+import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.project.NoSuchChangeException;
 import com.google.gwtorm.server.OrmException;
 import com.google.gwtorm.server.SchemaFactory;
@@ -32,41 +34,49 @@ import java.io.IOException;
  * done for the same change id
  */
 @Singleton
-public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<Change.Id> {
+public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String> {
   private final ChangeIndexer indexer;
   private final SchemaFactory<ReviewDb> schemaFactory;
+  private final ChangeFinder changeFinder;
 
   @Inject
-  ForwardedIndexChangeHandler(ChangeIndexer indexer, SchemaFactory<ReviewDb> schemaFactory) {
+  ForwardedIndexChangeHandler(
+      ChangeIndexer indexer, SchemaFactory<ReviewDb> schemaFactory, ChangeFinder changeFinder) {
     this.indexer = indexer;
     this.schemaFactory = schemaFactory;
+    this.changeFinder = changeFinder;
   }
 
   @Override
-  protected void doIndex(Change.Id id) throws IOException, OrmException {
-    Change change = null;
+  protected void doIndex(String id) throws IOException, OrmException {
+    ChangeNotes change = null;
     try (ReviewDb db = schemaFactory.open()) {
-      change = db.changes().get(id);
+      change = changeFinder.findOne(id);
       if (change != null) {
-        indexer.index(db, change);
+        indexer.index(db, change.getChange());
         log.debug("Change {} successfully indexed", id);
       }
     } catch (Exception e) {
       if (!isCausedByNoSuchChangeException(e)) {
         throw e;
       }
-      log.debug("Change {} was deleted, aborting forwarded indexing the change.", id.get());
+      log.debug("Change {} was deleted, aborting forwarded indexing the change.", id);
     }
     if (change == null) {
-      indexer.delete(id);
+      indexer.delete(parseChangeId(id));
       log.debug("Change {} not found, deleted from index", id);
     }
   }
 
   @Override
-  protected void doDelete(Id id) throws IOException {
-    indexer.delete(id);
+  protected void doDelete(String id) throws IOException {
+    indexer.delete(parseChangeId(id));
     log.debug("Change {} successfully deleted from index", id);
+  }
+
+  private Change.Id parseChangeId(String id) {
+    Change.Id changeId = new Change.Id(Integer.parseInt(Splitter.on("~").splitToList(id).get(1)));
+    return changeId;
   }
 
   private boolean isCausedByNoSuchChangeException(Throwable throwable) {

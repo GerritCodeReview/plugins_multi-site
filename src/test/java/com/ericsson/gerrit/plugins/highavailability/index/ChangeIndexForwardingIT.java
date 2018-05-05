@@ -24,7 +24,7 @@ public class ChangeIndexForwardingIT extends AbstractIndexForwardingIT {
 
   @Override
   public String getExpectedRequest() {
-    return "/plugins/high-availability/index/change/" + changeId;
+    return "/plugins/high-availability/index/change/" + project.get() + "~" + changeId;
   }
 
   @Override
