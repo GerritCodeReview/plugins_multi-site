@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 public class ForwardedCacheEvictionHandler {
-  private static final Logger logger = LoggerFactory.getLogger(ForwardedCacheEvictionHandler.class);
+  private static final Logger log = LoggerFactory.getLogger(ForwardedCacheEvictionHandler.class);
 
   private final DynamicMap<Cache<?, ?>> cacheMap;
 
@@ -55,10 +55,10 @@ public class ForwardedCacheEvictionHandler {
       if (Constants.PROJECT_LIST.equals(entry.getCacheName())) {
         // One key is holding the list of projects
         cache.invalidateAll();
-        logger.debug("Invalidated cache {}", entry.getCacheName());
+        log.debug("Invalidated cache {}", entry.getCacheName());
       } else {
         cache.invalidate(entry.getKey());
-        logger.debug("Invalidated cache {}[{}]", entry.getCacheName(), entry.getKey());
+        log.debug("Invalidated cache {}[{}]", entry.getCacheName(), entry.getKey());
       }
     } finally {
       Context.unsetForwardedEvent();
