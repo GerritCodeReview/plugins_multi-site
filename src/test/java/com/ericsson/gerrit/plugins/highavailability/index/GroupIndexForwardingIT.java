@@ -16,12 +16,10 @@ package com.ericsson.gerrit.plugins.highavailability.index;
 
 public class GroupIndexForwardingIT extends AbstractIndexForwardingIT {
   private String someGroupId;
-  private String someOtherGroupId;
 
   @Override
   public void setup() throws Exception {
     someGroupId = gApi.groups().create("someGroup").get().id;
-    someOtherGroupId = gApi.groups().create("someOtherGroup").get().id;
   }
 
   @Override
@@ -31,6 +29,6 @@ public class GroupIndexForwardingIT extends AbstractIndexForwardingIT {
 
   @Override
   public void doAction() throws Exception {
-    gApi.groups().id(someGroupId).addGroups(someOtherGroupId);
+    gApi.groups().id(someGroupId).index();
   }
 }
