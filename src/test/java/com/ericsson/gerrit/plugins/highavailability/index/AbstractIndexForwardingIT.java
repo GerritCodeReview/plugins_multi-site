@@ -15,6 +15,8 @@
 package com.ericsson.gerrit.plugins.highavailability.index;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.any;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
@@ -47,10 +49,11 @@ public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonT
   private static final int PORT = 18889;
   private static final String URL = "http://localhost:" + PORT;
 
-  @Rule public WireMockRule wireMockRule = new WireMockRule(options().port(PORT), false);
+  @Rule public WireMockRule wireMockRule = new WireMockRule(options().port(PORT));
 
   @Override
   public void setUp() throws Exception {
+    givenThat(any(anyUrl()).willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
     beforeAction();
     super.setUp();
   }

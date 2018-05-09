@@ -15,8 +15,9 @@
 package com.ericsson.gerrit.plugins.highavailability.cache;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.any;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
@@ -45,7 +46,13 @@ public class ProjectListIT extends LightweightPluginDaemonTest {
   private static final int PORT = 18888;
   private static final String URL = "http://localhost:" + PORT;
 
-  @Rule public WireMockRule wireMockRule = new WireMockRule(options().port(PORT), false);
+  @Rule public WireMockRule wireMockRule = new WireMockRule(options().port(PORT));
+
+  @Override
+  public void setUp() throws Exception {
+    givenThat(any(anyUrl()).willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
+    super.setUp();
+  }
 
   @Test
   @UseLocalDisk
@@ -62,9 +69,6 @@ public class ProjectListIT extends LightweightPluginDaemonTest {
             expectedRequestLatch.countDown();
           }
         });
-    givenThat(
-        post(urlEqualTo(expectedRequest))
-            .willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
 
     adminRestSession.put("/projects/" + createdProject).assertCreated();
     assertThat(expectedRequestLatch.await(5, TimeUnit.SECONDS)).isTrue();
