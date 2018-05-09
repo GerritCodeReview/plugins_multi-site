@@ -52,7 +52,7 @@ public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonT
 
   @Before
   public void before() throws Exception {
-    setup();
+    beforeAction();
   }
 
   @Test
@@ -77,7 +77,7 @@ public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonT
   }
 
   /** Perform pre-test setup. */
-  protected abstract void setup() throws Exception;
+  protected abstract void beforeAction() throws Exception;
 
   /**
    * Get the URL on which a request is expected.

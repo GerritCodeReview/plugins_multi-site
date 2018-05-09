@@ -20,7 +20,7 @@ public class AccountIndexForwardingIT extends AbstractIndexForwardingIT {
   private TestAccount testAccount;
 
   @Override
-  public void setup() throws Exception {
+  public void beforeAction() throws Exception {
     testAccount = accounts.create("someUser");
   }
 

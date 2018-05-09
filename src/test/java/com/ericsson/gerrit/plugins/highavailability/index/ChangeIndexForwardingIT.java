@@ -18,7 +18,7 @@ public class ChangeIndexForwardingIT extends AbstractIndexForwardingIT {
   private int changeId;
 
   @Override
-  public void setup() throws Exception {
+  public void beforeAction() throws Exception {
     changeId = createChange().getChange().getId().get();
   }
 

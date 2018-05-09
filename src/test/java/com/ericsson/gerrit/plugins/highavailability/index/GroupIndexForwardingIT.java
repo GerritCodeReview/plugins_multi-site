@@ -18,7 +18,7 @@ public class GroupIndexForwardingIT extends AbstractIndexForwardingIT {
   private String someGroupId;
 
   @Override
-  public void setup() throws Exception {
+  public void beforeAction() throws Exception {
     someGroupId = gApi.groups().create("someGroup").get().id;
   }
 
