@@ -32,7 +32,6 @@ import com.google.gerrit.acceptance.UseLocalDisk;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.apache.http.HttpStatus;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,9 +49,10 @@ public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonT
 
   @Rule public WireMockRule wireMockRule = new WireMockRule(options().port(PORT), false);
 
-  @Before
-  public void before() throws Exception {
+  @Override
+  public void setUp() throws Exception {
     beforeAction();
+    super.setUp();
   }
 
   @Test
