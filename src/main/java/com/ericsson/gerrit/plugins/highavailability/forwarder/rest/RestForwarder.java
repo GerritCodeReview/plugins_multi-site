@@ -15,11 +15,13 @@
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
+import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.google.common.base.Joiner;
 import com.google.common.base.Supplier;
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.extensions.restapi.Url;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.SupplierSerializer;
 import com.google.gson.GsonBuilder;
@@ -45,7 +47,7 @@ class RestForwarder implements Forwarder {
 
   @Override
   public boolean indexAccount(final int accountId) {
-    return new Request("index account " + accountId) {
+    return new Request("index account", accountId) {
       @Override
       HttpResult send() throws IOException {
         return httpSession.post(
@@ -55,18 +57,18 @@ class RestForwarder implements Forwarder {
   }
 
   @Override
-  public boolean indexChange(final int changeId) {
-    return new Request("index change " + changeId) {
+  public boolean indexChange(final String projectName, final int changeId) {
+    return new Request("index change", changeId) {
       @Override
       HttpResult send() throws IOException {
-        return httpSession.post(buildIndexEndpoint(changeId));
+        return httpSession.post(buildIndexEndpoint(projectName, changeId));
       }
     }.execute();
   }
 
   @Override
   public boolean deleteChangeFromIndex(final int changeId) {
-    return new Request("delete change " + changeId + " from index") {
+    return new Request("delete change", changeId) {
       @Override
       HttpResult send() throws IOException {
         return httpSession.delete(buildIndexEndpoint(changeId));
@@ -76,7 +78,7 @@ class RestForwarder implements Forwarder {
 
   @Override
   public boolean indexGroup(final String uuid) {
-    return new Request("index group " + uuid) {
+    return new Request("index group", uuid) {
       @Override
       HttpResult send() throws IOException {
         return httpSession.post(Joiner.on("/").join(pluginRelativePath, "index/group", uuid));
@@ -85,12 +87,18 @@ class RestForwarder implements Forwarder {
   }
 
   private String buildIndexEndpoint(int changeId) {
-    return Joiner.on("/").join(pluginRelativePath, "index/change", changeId);
+    return buildIndexEndpoint("", changeId);
+  }
+
+  private String buildIndexEndpoint(String projectName, int changeId) {
+    String escapedProjectName = Url.encode(projectName);
+    return Joiner.on("/")
+        .join(pluginRelativePath, "index/change", escapedProjectName + '~' + changeId);
   }
 
   @Override
   public boolean send(final Event event) {
-    return new Request("send event " + event.type) {
+    return new Request("send event", event.type) {
       @Override
       HttpResult send() throws IOException {
         String serializedEvent =
@@ -105,7 +113,7 @@ class RestForwarder implements Forwarder {
 
   @Override
   public boolean evict(final String cacheName, final Object key) {
-    return new Request("invalidate cache " + cacheName + "[" + key + "]") {
+    return new Request("invalidate cache " + cacheName, key) {
       @Override
       HttpResult send() throws IOException {
         String json = GsonParser.toJson(cacheName, key);
@@ -114,39 +122,65 @@ class RestForwarder implements Forwarder {
     }.execute();
   }
 
+  @Override
+  public boolean addToProjectList(String projectName) {
+    return new Request("Update project_list, add ", projectName) {
+      @Override
+      HttpResult send() throws IOException {
+        return httpSession.post(buildProjectListEndpoint(projectName));
+      }
+    }.execute();
+  }
+
+  @Override
+  public boolean removeFromProjectList(String projectName) {
+    return new Request("Update project_list, remove ", projectName) {
+      @Override
+      HttpResult send() throws IOException {
+        return httpSession.delete(buildProjectListEndpoint(projectName));
+      }
+    }.execute();
+  }
+
+  private String buildProjectListEndpoint(String projectName) {
+    return Joiner.on("/").join(pluginRelativePath, "cache", Constants.PROJECT_LIST, projectName);
+  }
+
   private abstract class Request {
-    private final String name;
+    private final String action;
+    private final Object key;
     private int execCnt;
 
-    Request(String name) {
-      this.name = name;
+    Request(String action, Object key) {
+      this.action = action;
+      this.key = key;
     }
 
     boolean execute() {
-      log.debug(name);
+      log.debug("Executing {} {}", action, key);
       for (; ; ) {
         try {
           execCnt++;
           tryOnce();
-          log.debug("{} OK", name);
+          log.debug("{} {} OK", action, key);
           return true;
         } catch (ForwardingException e) {
           int maxTries = cfg.http().maxTries();
-          log.debug("Failed to {} [{}/{}]", name, execCnt, maxTries, e);
+          log.debug("Failed to {} {} [{}/{}]", action, key, execCnt, maxTries, e);
           if (!e.isRecoverable()) {
-            log.error("{} failed with unrecoverable error; giving up", name);
+            log.error("{} {} failed with unrecoverable error; giving up", action, key, e);
             return false;
           }
           if (execCnt >= maxTries) {
-            log.error("Failed to {} after {} tries; giving up", name, maxTries);
+            log.error("Failed to {} {} after {} tries; giving up", action, key, maxTries);
             return false;
           }
 
-          log.debug("Retrying to {}", name);
+          log.debug("Retrying to {} {}", action, key);
           try {
             Thread.sleep(cfg.http().retryInterval());
           } catch (InterruptedException ie) {
-            log.error("{} was interrupted; giving up", name, ie);
+            log.error("{} {} was interrupted; giving up", action, key, ie);
             Thread.currentThread().interrupt();
             return false;
           }
@@ -158,7 +192,8 @@ class RestForwarder implements Forwarder {
       try {
         HttpResult result = send();
         if (!result.isSuccessful()) {
-          throw new ForwardingException(true, "Unable to " + name + ": " + result.getMessage());
+          throw new ForwardingException(
+              true, String.format("Unable to %s %s : %s", action, key, result.getMessage()));
         }
       } catch (IOException e) {
         throw new ForwardingException(isRecoverable(e), e.getMessage(), e);

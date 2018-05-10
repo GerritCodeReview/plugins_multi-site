@@ -22,15 +22,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedIndexGroupHandler;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedIndexingHandler.Operation;
 import com.google.gerrit.reviewdb.client.AccountGroup;
-import com.google.gerrit.server.index.group.GroupIndexer;
-import com.google.gwtorm.client.KeyUtil;
-import com.google.gwtorm.server.StandardKeyEncoder;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -40,29 +38,24 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class IndexGroupRestApiServletTest {
   private static final String UUID = "we235jdf92nfj2351";
 
-  @Mock private GroupIndexer indexerMock;
+  @Mock private ForwardedIndexGroupHandler handlerMock;
   @Mock private HttpServletRequest requestMock;
   @Mock private HttpServletResponse responseMock;
 
   private AccountGroup.UUID uuid;
   private IndexGroupRestApiServlet servlet;
 
-  @BeforeClass
-  public static void setup() {
-    KeyUtil.setEncoderImpl(new StandardKeyEncoder());
-  }
-
   @Before
   public void setUpMocks() {
-    servlet = new IndexGroupRestApiServlet(indexerMock);
-    uuid = AccountGroup.UUID.parse(UUID);
-    when(requestMock.getPathInfo()).thenReturn("/index/group/" + UUID);
+    servlet = new IndexGroupRestApiServlet(handlerMock);
+    uuid = new AccountGroup.UUID(UUID);
+    when(requestMock.getRequestURI()).thenReturn("http://gerrit.com/index/group/" + UUID);
   }
 
   @Test
   public void groupIsIndexed() throws Exception {
     servlet.doPost(requestMock, responseMock);
-    verify(indexerMock, times(1)).index(uuid);
+    verify(handlerMock, times(1)).index(uuid, Operation.INDEX);
     verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
@@ -74,14 +67,14 @@ public class IndexGroupRestApiServletTest {
 
   @Test
   public void indexerThrowsIOExceptionTryingToIndexGroup() throws Exception {
-    doThrow(new IOException("io-error")).when(indexerMock).index(uuid);
+    doThrow(new IOException("io-error")).when(handlerMock).index(uuid, Operation.INDEX);
     servlet.doPost(requestMock, responseMock);
     verify(responseMock).sendError(SC_CONFLICT, "io-error");
   }
 
   @Test
   public void sendErrorThrowsIOException() throws Exception {
-    doThrow(new IOException("io-error")).when(indexerMock).index(uuid);
+    doThrow(new IOException("io-error")).when(handlerMock).index(uuid, Operation.INDEX);
     doThrow(new IOException("someError")).when(responseMock).sendError(SC_CONFLICT, "io-error");
     servlet.doPost(requestMock, responseMock);
     verify(responseMock).sendError(SC_CONFLICT, "io-error");

@@ -19,10 +19,10 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 
-import com.google.gerrit.server.events.Event;
-import com.google.gerrit.server.events.EventDispatcher;
-import com.google.gerrit.server.events.ProjectCreatedEvent;
-import com.google.gwtorm.server.OrmException;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedIndexingHandler.Operation;
+import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.server.index.account.AccountIndexer;
+import java.io.IOException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -33,27 +33,34 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ForwardedEventHandlerTest {
+public class ForwardedIndexAccountHandlerTest {
 
   @Rule public ExpectedException exception = ExpectedException.none();
-  @Mock private EventDispatcher dispatcherMock;
-  private ForwardedEventHandler handler;
+  @Mock private AccountIndexer indexerMock;
+  private ForwardedIndexAccountHandler handler;
+  private Account.Id id;
 
   @Before
   public void setUp() throws Exception {
-    handler = new ForwardedEventHandler(dispatcherMock);
+    handler = new ForwardedIndexAccountHandler(indexerMock);
+    id = new Account.Id(123);
   }
 
   @Test
-  public void testSuccessfulDispatching() throws Exception {
-    Event event = new ProjectCreatedEvent();
-    handler.dispatch(event);
-    verify(dispatcherMock).postEvent(event);
+  public void testSuccessfulIndexing() throws Exception {
+    handler.index(id, Operation.INDEX);
+    verify(indexerMock).index(id);
+  }
+
+  @Test
+  public void deleteIsNotSupported() throws Exception {
+    exception.expect(UnsupportedOperationException.class);
+    exception.expectMessage("Delete from index not supported");
+    handler.index(id, Operation.DELETE);
   }
 
   @Test
   public void shouldSetAndUnsetForwardedContext() throws Exception {
-    Event event = new ProjectCreatedEvent();
     // this doAnswer is to allow to assert that context is set to forwarded
     // while cache eviction is called.
     doAnswer(
@@ -62,37 +69,36 @@ public class ForwardedEventHandlerTest {
                   assertThat(Context.isForwardedEvent()).isTrue();
                   return null;
                 })
-        .when(dispatcherMock)
-        .postEvent(event);
+        .when(indexerMock)
+        .index(id);
 
     assertThat(Context.isForwardedEvent()).isFalse();
-    handler.dispatch(event);
+    handler.index(id, Operation.INDEX);
     assertThat(Context.isForwardedEvent()).isFalse();
 
-    verify(dispatcherMock).postEvent(event);
+    verify(indexerMock).index(id);
   }
 
   @Test
   public void shouldSetAndUnsetForwardedContextEvenIfExceptionIsThrown() throws Exception {
-    Event event = new ProjectCreatedEvent();
     doAnswer(
             (Answer<Void>)
                 invocation -> {
                   assertThat(Context.isForwardedEvent()).isTrue();
-                  throw new OrmException("someMessage");
+                  throw new IOException("someMessage");
                 })
-        .when(dispatcherMock)
-        .postEvent(event);
+        .when(indexerMock)
+        .index(id);
 
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
-      handler.dispatch(event);
-      fail("should have throw an OrmException");
-    } catch (OrmException e) {
+      handler.index(id, Operation.INDEX);
+      fail("should have thrown an IOException");
+    } catch (IOException e) {
       assertThat(e.getMessage()).isEqualTo("someMessage");
     }
     assertThat(Context.isForwardedEvent()).isFalse();
 
-    verify(dispatcherMock).postEvent(event);
+    verify(indexerMock).index(id);
   }
 }

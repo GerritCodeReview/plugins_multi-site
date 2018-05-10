@@ -60,10 +60,10 @@ class EventRestApiServlet extends AbstractRestApiServlet {
       forwardedEventHandler.dispatch(getEventFromRequest(req));
       rsp.setStatus(SC_NO_CONTENT);
     } catch (OrmException e) {
-      logger.debug("Error trying to find a change ", e);
+      log.debug("Error trying to find a change ", e);
       sendError(rsp, SC_NOT_FOUND, "Change not found\n");
     } catch (IOException | PermissionBackendException e) {
-      logger.error("Unable to re-trigger event", e);
+      log.error("Unable to re-trigger event", e);
       sendError(rsp, SC_BAD_REQUEST, e.getMessage());
     }
   }

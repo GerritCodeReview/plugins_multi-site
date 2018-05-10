@@ -78,8 +78,8 @@ public class ForwardedCacheEvictionHandlerTest {
     CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, new Account.Id(456));
     doReturn(cacheMock).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
 
-    //this doAnswer is to allow to assert that context is set to forwarded
-    //while cache eviction is called.
+    // this doAnswer is to allow to assert that context is set to forwarded
+    // while cache eviction is called.
     doAnswer(
             (Answer<Void>)
                 invocation -> {

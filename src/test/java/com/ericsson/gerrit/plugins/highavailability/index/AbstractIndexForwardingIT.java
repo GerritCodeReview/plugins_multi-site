@@ -15,6 +15,8 @@
 package com.ericsson.gerrit.plugins.highavailability.index;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.any;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.givenThat;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
@@ -32,7 +34,6 @@ import com.google.gerrit.acceptance.UseLocalDisk;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.apache.http.HttpStatus;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -48,31 +49,22 @@ public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonT
   private static final int PORT = 18889;
   private static final String URL = "http://localhost:" + PORT;
 
-  @Rule public WireMockRule wireMockRule = new WireMockRule(options().port(PORT), false);
+  @Rule public WireMockRule wireMockRule = new WireMockRule(options().port(PORT));
 
-  @Before
-  public void before() throws Exception {
-    setup();
+  @Override
+  public void setUpTestPlugin() throws Exception {
+    givenThat(any(anyUrl()).willReturn(aResponse().withStatus(HttpStatus.SC_NO_CONTENT)));
+    beforeAction();
+    super.setUpTestPlugin();
   }
 
   @Test
   @UseLocalDisk
-  @GlobalPluginConfig(
-    pluginName = "high-availability",
-    name = "peerInfo.strategy",
-    value = "static"
-  )
   @GlobalPluginConfig(pluginName = "high-availability", name = "peerInfo.static.url", value = URL)
-  @GlobalPluginConfig(pluginName = "high-availability", name = "http.user", value = "admin")
-  @GlobalPluginConfig(pluginName = "high-availability", name = "index.threadPoolSize", value = "10")
-  @GlobalPluginConfig(
-    pluginName = "high-availability",
-    name = "main.sharedDirectory",
-    value = "directory"
-  )
+  @GlobalPluginConfig(pluginName = "high-availability", name = "http.retryInterval", value = "100")
   public void testIndexForwarding() throws Exception {
-    final String expectedRequest = getExpectedRequest();
-    final CountDownLatch expectedRequestLatch = new CountDownLatch(1);
+    String expectedRequest = getExpectedRequest();
+    CountDownLatch expectedRequestLatch = new CountDownLatch(1);
     wireMockRule.addMockServiceRequestListener(
         (request, response) -> {
           if (request.getAbsoluteUrl().contains(expectedRequest)) {
@@ -88,7 +80,7 @@ public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonT
   }
 
   /** Perform pre-test setup. */
-  protected abstract void setup() throws Exception;
+  protected abstract void beforeAction() throws Exception;
 
   /**
    * Get the URL on which a request is expected.

@@ -18,13 +18,13 @@ public class ChangeIndexForwardingIT extends AbstractIndexForwardingIT {
   private int changeId;
 
   @Override
-  public void setup() throws Exception {
+  public void beforeAction() throws Exception {
     changeId = createChange().getChange().getId().get();
   }
 
   @Override
   public String getExpectedRequest() {
-    return "/plugins/high-availability/index/change/" + changeId;
+    return "/plugins/high-availability/index/change/" + project.get() + "~" + changeId;
   }
 
   @Override

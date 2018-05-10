@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Ericsson
+// Copyright (C) 2018 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,44 +17,43 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
-import com.ericsson.gerrit.plugins.highavailability.forwarder.CacheEntry;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.CacheNotFoundException;
-import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedCacheEvictionHandler;
-import com.google.common.base.Splitter;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedProjectListUpdateHandler;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Singleton
-class CacheRestApiServlet extends AbstractRestApiServlet {
-  private static final int CACHENAME_INDEX = 1;
+class ProjectListApiServlet extends AbstractRestApiServlet {
   private static final long serialVersionUID = -1L;
 
-  private final ForwardedCacheEvictionHandler forwardedCacheEvictionHandler;
+  private final ForwardedProjectListUpdateHandler forwardedProjectListUpdateHandler;
 
   @Inject
-  CacheRestApiServlet(ForwardedCacheEvictionHandler forwardedCacheEvictionHandler) {
-    this.forwardedCacheEvictionHandler = forwardedCacheEvictionHandler;
+  ProjectListApiServlet(ForwardedProjectListUpdateHandler forwardedProjectListUpdateHandler) {
+    this.forwardedProjectListUpdateHandler = forwardedProjectListUpdateHandler;
   }
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse rsp) {
+    process(req, rsp, false);
+  }
+
+  @Override
+  protected void doDelete(HttpServletRequest req, HttpServletResponse rsp) {
+    process(req, rsp, true);
+  }
+
+  private void process(HttpServletRequest req, HttpServletResponse rsp, boolean delete) {
     setHeaders(rsp);
+    String path = req.getPathInfo();
+    String projectName = path.substring(path.lastIndexOf('/') + 1);
     try {
-      List<String> params = Splitter.on('/').splitToList(req.getPathInfo());
-      String cacheName = params.get(CACHENAME_INDEX);
-      String json = req.getReader().readLine();
-      forwardedCacheEvictionHandler.evict(
-          CacheEntry.from(cacheName, GsonParser.fromJson(cacheName, json)));
+      forwardedProjectListUpdateHandler.update(projectName, delete);
       rsp.setStatus(SC_NO_CONTENT);
-    } catch (CacheNotFoundException e) {
-      log.error("Failed to process eviction request: {}", e.getMessage());
-      sendError(rsp, SC_BAD_REQUEST, e.getMessage());
     } catch (IOException e) {
-      log.error("Failed to process eviction request: {}", e.getMessage(), e);
+      log.error("Unable to update project list", e);
       sendError(rsp, SC_BAD_REQUEST, e.getMessage());
     }
   }

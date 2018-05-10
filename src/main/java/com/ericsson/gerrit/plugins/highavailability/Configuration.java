@@ -95,9 +95,9 @@ public class Configuration {
   static final String CLEANUP_INTERVAL_KEY = "cleanupInterval";
 
   static final int DEFAULT_TIMEOUT_MS = 5000;
-  static final int DEFAULT_MAX_TRIES = 5;
-  static final int DEFAULT_RETRY_INTERVAL = 1000;
-  static final int DEFAULT_THREAD_POOL_SIZE = 1;
+  static final int DEFAULT_MAX_TRIES = 360;
+  static final int DEFAULT_RETRY_INTERVAL = 10000;
+  static final int DEFAULT_THREAD_POOL_SIZE = 4;
   static final String DEFAULT_CLEANUP_INTERVAL = "24 hours";
   static final long DEFAULT_CLEANUP_INTERVAL_MS = HOURS.toMillis(24);
   static final boolean DEFAULT_SYNCHRONIZE = true;

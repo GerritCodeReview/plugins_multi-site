@@ -54,13 +54,13 @@ class IndexEventHandler
   }
 
   @Override
-  public void onChangeIndexed(int id) {
-    executeIndexChangeTask(id, false);
+  public void onChangeIndexed(String projectName, int id) {
+    executeIndexChangeTask(projectName, id, false);
   }
 
   @Override
   public void onChangeDeleted(int id) {
-    executeIndexChangeTask(id, true);
+    executeIndexChangeTask("", id, true);
   }
 
   @Override
@@ -73,9 +73,9 @@ class IndexEventHandler
     }
   }
 
-  private void executeIndexChangeTask(int id, boolean deleted) {
+  private void executeIndexChangeTask(String projectName, int id, boolean deleted) {
     if (!Context.isForwardedEvent()) {
-      IndexChangeTask task = new IndexChangeTask(id, deleted);
+      IndexChangeTask task = new IndexChangeTask(projectName, id, deleted);
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }
@@ -95,8 +95,10 @@ class IndexEventHandler
   class IndexChangeTask extends IndexTask {
     private final boolean deleted;
     private final int changeId;
+    private final String projectName;
 
-    IndexChangeTask(int changeId, boolean deleted) {
+    IndexChangeTask(String projectName, int changeId, boolean deleted) {
+      this.projectName = projectName;
       this.changeId = changeId;
       this.deleted = deleted;
     }
@@ -106,7 +108,7 @@ class IndexEventHandler
       if (deleted) {
         forwarder.deleteChangeFromIndex(changeId);
       } else {
-        forwarder.indexChange(changeId);
+        forwarder.indexChange(projectName, changeId);
       }
     }
 

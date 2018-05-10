@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Ericsson
+// Copyright (C) 2018 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,7 +30,6 @@ import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
-import com.google.gerrit.acceptance.UseSsh;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.apache.http.HttpStatus;
@@ -38,13 +37,12 @@ import org.junit.Rule;
 import org.junit.Test;
 
 @NoHttpd
-@UseSsh
 @TestPlugin(
   name = "high-availability",
   sysModule = "com.ericsson.gerrit.plugins.highavailability.Module",
   httpModule = "com.ericsson.gerrit.plugins.highavailability.HttpModule"
 )
-public class CacheEvictionIT extends LightweightPluginDaemonTest {
+public class ProjectListIT extends LightweightPluginDaemonTest {
   private static final int PORT = 18888;
   private static final String URL = "http://localhost:" + PORT;
 
@@ -60,18 +58,20 @@ public class CacheEvictionIT extends LightweightPluginDaemonTest {
   @UseLocalDisk
   @GlobalPluginConfig(pluginName = "high-availability", name = "peerInfo.static.url", value = URL)
   @GlobalPluginConfig(pluginName = "high-availability", name = "http.retryInterval", value = "100")
-  public void flushAndSendPost() throws Exception {
-    final String flushRequest = "/plugins/high-availability/cache/" + Constants.PROJECTS;
-    final CountDownLatch expectedRequestLatch = new CountDownLatch(1);
+  public void addToProjectListAreForwarded() throws Exception {
+    String createdProject = "someProject";
+    String expectedRequest =
+        "/plugins/high-availability/cache/" + Constants.PROJECT_LIST + "/" + createdProject;
+    CountDownLatch expectedRequestLatch = new CountDownLatch(1);
     wireMockRule.addMockServiceRequestListener(
         (request, response) -> {
-          if (request.getAbsoluteUrl().contains(flushRequest)) {
+          if (request.getAbsoluteUrl().contains(expectedRequest)) {
             expectedRequestLatch.countDown();
           }
         });
 
-    adminSshSession.exec("gerrit flush-caches --cache " + Constants.PROJECTS);
+    adminRestSession.put("/projects/" + createdProject).assertCreated();
     assertThat(expectedRequestLatch.await(5, TimeUnit.SECONDS)).isTrue();
-    verify(postRequestedFor(urlEqualTo(flushRequest)));
+    verify(postRequestedFor(urlEqualTo(expectedRequest)));
   }
 }
