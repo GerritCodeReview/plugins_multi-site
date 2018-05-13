@@ -49,13 +49,13 @@ public class ForwardedProjectListUpdateHandlerTest {
   public void testSuccessfulAdd() throws Exception {
     handler.update(PROJECT_NAME, false);
     verify(projectCacheMock).onCreateProject(PROJECT_KEY);
-  };
+  }
 
   @Test
   public void testSuccessfulRemove() throws Exception {
     handler.update(PROJECT_NAME, true);
     verify(projectCacheMock).remove(PROJECT_KEY);
-  };
+  }
 
   @Test
   public void shouldSetAndUnsetForwardedContextOnAdd() throws Exception {
@@ -134,7 +134,6 @@ public class ForwardedProjectListUpdateHandlerTest {
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
       handler.update(PROJECT_NAME, true);
-      ;
       fail("should have thrown a RuntimeException");
     } catch (RuntimeException e) {
       assertThat(e.getMessage()).isEqualTo(SOME_MESSAGE);
