@@ -43,6 +43,7 @@ public class FileBasedWebSessionCacheTest {
   private static final String EXISTING_KEY = "aSceprtBc02YaMY573T5jfW64ZudJfPbDq";
   private static final String EMPTY_KEY = "aOc2prqlZRpSO3LpauGO5efCLs1L9r9KkG";
   private static final String INVALID_KEY = "aOFdpHriBM6dN055M13PjDdTZagl5r5aSG";
+  private static final String NEW_KEY = "abcde12345";
 
   @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
@@ -214,29 +215,26 @@ public class FileBasedWebSessionCacheTest {
   public void putTest() throws Exception {
     loadKeyToCacheDir(EXISTING_KEY);
     Val val = cache.getIfPresent(EXISTING_KEY);
-    String newKey = "abcde12345";
-    cache.put(newKey, val);
-    assertThat(cache.getIfPresent(newKey)).isNotNull();
+    cache.put(NEW_KEY, val);
+    assertThat(cache.getIfPresent(NEW_KEY)).isNotNull();
   }
 
   @Test
   public void putAllTest() throws Exception {
     loadKeyToCacheDir(EXISTING_KEY);
     Val val = cache.getIfPresent(EXISTING_KEY);
-    String newKey = "abcde12345";
-    Map<String, Val> sessions = ImmutableMap.of(newKey, val);
+    Map<String, Val> sessions = ImmutableMap.of(NEW_KEY, val);
     cache.putAll(sessions);
-    assertThat(cache.asMap()).containsKey(newKey);
+    assertThat(cache.asMap()).containsKey(NEW_KEY);
   }
 
   @Test
   public void putWithErrorsTest() throws Exception {
     loadKeyToCacheDir(EXISTING_KEY);
     Val val = cache.getIfPresent(EXISTING_KEY);
-    String newKey = "abcde12345";
     tempFolder.delete();
-    cache.put(newKey, val);
-    assertThat(cache.getIfPresent(newKey)).isNull();
+    cache.put(NEW_KEY, val);
+    assertThat(cache.getIfPresent(NEW_KEY)).isNull();
   }
 
   @Test

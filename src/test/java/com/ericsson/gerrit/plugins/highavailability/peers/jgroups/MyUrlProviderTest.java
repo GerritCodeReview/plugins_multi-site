@@ -34,6 +34,10 @@ import wiremock.com.google.common.collect.Lists;
 @RunWith(MockitoJUnitRunner.class)
 public class MyUrlProviderTest {
 
+  private static final String HTTPD = "httpd";
+  private static final String HTTPS = "https://";
+  private static final String LISTEN_URL = "listenUrl";
+
   @Rule public ExpectedException exception = ExpectedException.none();
 
   @Mock(answer = RETURNS_DEEP_STUBS)
@@ -54,14 +58,14 @@ public class MyUrlProviderTest {
   public void testGetJGroupsMyUrlFromListenUrl() throws Exception {
     String hostName = getLocalHost().getHostName();
 
-    gerritServerConfig.setString("httpd", null, "listenUrl", "https://foo:8080");
-    assertThat(getMyUrlProvider().get()).isEqualTo("https://" + hostName + ":8080");
+    gerritServerConfig.setString(HTTPD, null, LISTEN_URL, "https://foo:8080");
+    assertThat(getMyUrlProvider().get()).isEqualTo(HTTPS + hostName + ":8080");
 
-    gerritServerConfig.setString("httpd", null, "listenUrl", "https://foo");
-    assertThat(getMyUrlProvider().get()).isEqualTo("https://" + hostName);
+    gerritServerConfig.setString(HTTPD, null, LISTEN_URL, "https://foo");
+    assertThat(getMyUrlProvider().get()).isEqualTo(HTTPS + hostName);
 
-    gerritServerConfig.setString("httpd", null, "listenUrl", "https://foo/");
-    assertThat(getMyUrlProvider().get()).isEqualTo("https://" + hostName);
+    gerritServerConfig.setString(HTTPD, null, LISTEN_URL, "https://foo/");
+    assertThat(getMyUrlProvider().get()).isEqualTo(HTTPS + hostName);
   }
 
   @Test
@@ -73,7 +77,7 @@ public class MyUrlProviderTest {
 
   @Test
   public void testGetJGroupsMyUrlFromListenUrlWhenMultipleListenUrlsSpecified() throws Exception {
-    gerritServerConfig.setStringList("httpd", null, "listenUrl", Lists.newArrayList("a", "b"));
+    gerritServerConfig.setStringList(HTTPD, null, LISTEN_URL, Lists.newArrayList("a", "b"));
     exception.expect(ProvisionException.class);
     exception.expectMessage("exactly 1 value configured; found 2");
     getMyUrlProvider();
@@ -81,7 +85,7 @@ public class MyUrlProviderTest {
 
   @Test
   public void testGetJGroupsMyUrlFromListenUrlWhenReverseProxyConfigured() throws Exception {
-    gerritServerConfig.setString("httpd", null, "listenUrl", "proxy-https://foo");
+    gerritServerConfig.setString(HTTPD, null, LISTEN_URL, "proxy-https://foo");
     exception.expect(ProvisionException.class);
     exception.expectMessage("when configured as reverse-proxy");
     getMyUrlProvider();
@@ -89,7 +93,7 @@ public class MyUrlProviderTest {
 
   @Test
   public void testGetJGroupsMyUrlFromListenUrlWhenWildcardConfigured() throws Exception {
-    gerritServerConfig.setString("httpd", null, "listenUrl", "https://*");
+    gerritServerConfig.setString(HTTPD, null, LISTEN_URL, "https://*");
     exception.expect(ProvisionException.class);
     exception.expectMessage("when configured with wildcard");
     getMyUrlProvider();

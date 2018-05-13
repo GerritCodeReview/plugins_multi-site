@@ -43,6 +43,8 @@ import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.eclipse.jgit.util.FS;
 
 class SetupLocalHAReplica {
+  private static final String DATABASE = "database";
+
   private final SitePaths master;
   private final FileBasedConfig masterConfig;
   private final Path sharedDir;
@@ -77,9 +79,9 @@ class SetupLocalHAReplica {
         new FileBasedConfig(replica.gerrit_config.toFile(), FS.DETECTED);
     replicaConfig.load();
 
-    if ("h2".equals(masterConfig.getString("database", null, "type"))) {
-      masterConfig.setBoolean("database", "h2", "autoServer", true);
-      replicaConfig.setBoolean("database", "h2", "autoServer", true);
+    if ("h2".equals(masterConfig.getString(DATABASE, null, "type"))) {
+      masterConfig.setBoolean(DATABASE, "h2", "autoServer", true);
+      replicaConfig.setBoolean(DATABASE, "h2", "autoServer", true);
       symlinkH2ReviewDbDir();
     }
   }
@@ -93,9 +95,9 @@ class SetupLocalHAReplica {
         replica.site_path,
         master.site_path.resolve(sharedDir),
         master.tmp_dir);
-    if ("h2".equals(masterConfig.getString("database", null, "type"))) {
+    if ("h2".equals(masterConfig.getString(DATABASE, null, "type"))) {
       toSkipBuilder.add(
-          master.resolve(masterConfig.getString("database", null, "database")).getParent());
+          master.resolve(masterConfig.getString(DATABASE, null, DATABASE)).getParent());
     }
     final ImmutableList<Path> toSkip = toSkipBuilder.build();
 
@@ -168,7 +170,7 @@ class SetupLocalHAReplica {
   }
 
   private void symlinkH2ReviewDbDir() throws IOException {
-    symlink(Paths.get(masterConfig.getString("database", null, "database")).getParent());
+    symlink(Paths.get(masterConfig.getString(DATABASE, null, DATABASE)).getParent());
   }
 
   private void configureMainSection(FileBasedConfig pluginConfig) throws IOException {

@@ -37,6 +37,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class IndexAccountRestApiServletTest {
   private static final int ACCOUNT_NUMBER = 1;
+  private static final String IO_ERROR = "io-error";
 
   @Mock private ForwardedIndexAccountHandler handlerMock;
   @Mock private HttpServletRequest requestMock;
@@ -67,16 +68,16 @@ public class IndexAccountRestApiServletTest {
 
   @Test
   public void indexerThrowsIOExceptionTryingToIndexAccount() throws Exception {
-    doThrow(new IOException("io-error")).when(handlerMock).index(id, Operation.INDEX);
+    doThrow(new IOException(IO_ERROR)).when(handlerMock).index(id, Operation.INDEX);
     servlet.doPost(requestMock, responseMock);
-    verify(responseMock).sendError(SC_CONFLICT, "io-error");
+    verify(responseMock).sendError(SC_CONFLICT, IO_ERROR);
   }
 
   @Test
   public void sendErrorThrowsIOException() throws Exception {
-    doThrow(new IOException("io-error")).when(handlerMock).index(id, Operation.INDEX);
-    doThrow(new IOException("someError")).when(responseMock).sendError(SC_CONFLICT, "io-error");
+    doThrow(new IOException(IO_ERROR)).when(handlerMock).index(id, Operation.INDEX);
+    doThrow(new IOException("someError")).when(responseMock).sendError(SC_CONFLICT, IO_ERROR);
     servlet.doPost(requestMock, responseMock);
-    verify(responseMock).sendError(SC_CONFLICT, "io-error");
+    verify(responseMock).sendError(SC_CONFLICT, IO_ERROR);
   }
 }
