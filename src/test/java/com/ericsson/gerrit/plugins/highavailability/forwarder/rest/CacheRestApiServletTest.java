@@ -109,15 +109,6 @@ public class CacheRestApiServletTest {
     verify(responseMock).sendError(SC_BAD_REQUEST, e.getMessage());
   }
 
-  @Test
-  public void errorWhileSendingErrorMessage() throws Exception {
-    when(requestMock.getPathInfo()).thenReturn("/someCache");
-    String errorMessage = "someError";
-    doThrow(new IOException(errorMessage)).when(requestMock).getReader();
-    servlet.doPost(requestMock, responseMock);
-    verify(responseMock).sendError(SC_BAD_REQUEST, errorMessage);
-  }
-
   private void verifyResponseIsOK() throws Exception {
     servlet.doPost(requestMock, responseMock);
     verify(responseMock).setStatus(SC_NO_CONTENT);
