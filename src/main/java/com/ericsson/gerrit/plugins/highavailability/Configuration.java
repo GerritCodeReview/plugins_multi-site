@@ -202,22 +202,6 @@ public class Configuration {
     }
   }
 
-  private static boolean getBoolean(Config cfg, String section, String name, boolean defaultValue) {
-    try {
-      return cfg.getBoolean(section, name, defaultValue);
-    } catch (IllegalArgumentException e) {
-      log.error("invalid value for {}; using default value {}", name, defaultValue);
-      log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
-      return defaultValue;
-    }
-  }
-
-  private static String getString(
-      Config cfg, String section, String subSection, String name, String defaultValue) {
-    String value = cfg.getString(section, subSection, name);
-    return ((value == null) ? defaultValue : value);
-  }
-
   @Nullable
   private static String trimTrailingSlash(@Nullable String in) {
     return in == null ? null : CharMatcher.is('/').trimTrailingFrom(in);
@@ -302,6 +286,12 @@ public class Configuration {
           protocolStack.isPresent() ? protocolStack.get() : "not configured, using default stack.");
     }
 
+    private static String getString(
+        Config cfg, String section, String subSection, String name, String defaultValue) {
+      String value = cfg.getString(section, subSection, name);
+      return ((value == null) ? defaultValue : value);
+    }
+
     private Optional<Path> getProtocolStack(Config cfg, SitePaths site) {
       String location = cfg.getString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY);
       return location == null ? Optional.empty() : Optional.of(site.etc_dir.resolve(location));
@@ -368,6 +358,17 @@ public class Configuration {
 
     private Forwarding(Config cfg, String section) {
       synchronize = getBoolean(cfg, section, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE);
+    }
+
+    private static boolean getBoolean(
+        Config cfg, String section, String name, boolean defaultValue) {
+      try {
+        return cfg.getBoolean(section, name, defaultValue);
+      } catch (IllegalArgumentException e) {
+        log.error("invalid value for {}; using default value {}", name, defaultValue);
+        log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
+        return defaultValue;
+      }
     }
 
     public boolean synchronize() {
