@@ -46,7 +46,7 @@ public class MyUrlProviderTest {
   private Config gerritServerConfig;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     gerritServerConfig = new Config();
   }
 
