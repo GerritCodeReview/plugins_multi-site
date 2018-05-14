@@ -289,7 +289,7 @@ public class Configuration {
     private static String getString(
         Config cfg, String section, String subSection, String name, String defaultValue) {
       String value = cfg.getString(section, subSection, name);
-      return ((value == null) ? defaultValue : value);
+      return value == null ? defaultValue : value;
     }
 
     private Optional<Path> getProtocolStack(Config cfg, SitePaths site) {

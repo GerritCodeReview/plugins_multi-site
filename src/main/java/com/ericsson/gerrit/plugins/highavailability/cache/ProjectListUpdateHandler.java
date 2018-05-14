@@ -79,7 +79,7 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
     public String toString() {
       return String.format(
           "[%s] Update project list in target instance: %s '%s'",
-          pluginName, (delete ? "remove" : "add"), projectName);
+          pluginName, delete ? "remove" : "add", projectName);
     }
   }
 }
