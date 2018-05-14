@@ -20,6 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedProjectListUpdateHandler;
+import com.google.gerrit.extensions.restapi.Url;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
@@ -30,7 +31,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectListRestApiServletTest {
-  private static final String PROJECT_NAME = "someProject";
+  private static final String PROJECT_NAME = "org-a/some-project";
 
   @Mock private ForwardedProjectListUpdateHandler handlerMock;
   @Mock private HttpServletRequest requestMock;
@@ -41,7 +42,10 @@ public class ProjectListRestApiServletTest {
   @Before
   public void setUpMocks() {
     servlet = new ProjectListApiServlet(handlerMock);
-    when(requestMock.getPathInfo()).thenReturn("/cache/project_list/" + PROJECT_NAME);
+    when(requestMock.getRequestURI())
+        .thenReturn(
+            "http://hostname/plugins/high-availability/cache/project_list/"
+                + Url.encode(PROJECT_NAME));
   }
 
   @Test

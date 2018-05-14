@@ -17,6 +17,7 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedProjectListUpdateHandler;
+import com.google.gerrit.extensions.restapi.Url;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import javax.servlet.http.HttpServletRequest;
@@ -45,9 +46,9 @@ class ProjectListApiServlet extends AbstractRestApiServlet {
 
   private void process(HttpServletRequest req, HttpServletResponse rsp, boolean delete) {
     setHeaders(rsp);
-    String path = req.getPathInfo();
-    String projectName = path.substring(path.lastIndexOf('/') + 1);
-    forwardedProjectListUpdateHandler.update(projectName, delete);
+    String requestURI = req.getRequestURI();
+    String projectName = requestURI.substring(requestURI.lastIndexOf('/') + 1);
+    forwardedProjectListUpdateHandler.update(Url.decode(projectName), delete);
     rsp.setStatus(SC_NO_CONTENT);
   }
 }

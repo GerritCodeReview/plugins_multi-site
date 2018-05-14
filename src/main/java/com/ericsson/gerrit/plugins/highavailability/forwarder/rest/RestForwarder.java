@@ -143,7 +143,8 @@ class RestForwarder implements Forwarder {
   }
 
   private String buildProjectListEndpoint(String projectName) {
-    return Joiner.on("/").join(pluginRelativePath, "cache", Constants.PROJECT_LIST, projectName);
+    return Joiner.on("/")
+        .join(pluginRelativePath, "cache", Constants.PROJECT_LIST, Url.encode(projectName));
   }
 
   private abstract class Request {
