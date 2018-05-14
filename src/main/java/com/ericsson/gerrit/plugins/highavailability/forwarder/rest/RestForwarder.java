@@ -21,6 +21,7 @@ import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseH
 import com.google.common.base.Joiner;
 import com.google.common.base.Supplier;
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.extensions.restapi.Url;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.SupplierSerializer;
 import com.google.gson.GsonBuilder;
@@ -136,7 +137,8 @@ class RestForwarder implements Forwarder {
   }
 
   private String buildProjectListEndpoint(String projectName) {
-    return Joiner.on("/").join(pluginRelativePath, "cache", Constants.PROJECT_LIST, projectName);
+    return Joiner.on("/")
+        .join(pluginRelativePath, "cache", Constants.PROJECT_LIST, Url.encode(projectName));
   }
 
   private abstract class Request {

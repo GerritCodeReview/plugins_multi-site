@@ -30,6 +30,7 @@ import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
+import com.google.gerrit.extensions.restapi.Url;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.apache.http.HttpStatus;
@@ -59,9 +60,9 @@ public class ProjectListIT extends LightweightPluginDaemonTest {
   @GlobalPluginConfig(pluginName = "high-availability", name = "peerInfo.static.url", value = URL)
   @GlobalPluginConfig(pluginName = "high-availability", name = "http.retryInterval", value = "100")
   public void addToProjectListAreForwarded() throws Exception {
-    String createdProject = "someProject";
+    String createdProjectEncoded = Url.encode("org-a/some-project");
     String expectedRequest =
-        "/plugins/high-availability/cache/" + Constants.PROJECT_LIST + "/" + createdProject;
+        "/plugins/high-availability/cache/" + Constants.PROJECT_LIST + "/" + createdProjectEncoded;
     CountDownLatch expectedRequestLatch = new CountDownLatch(1);
     wireMockRule.addMockServiceRequestListener(
         (request, response) -> {
@@ -70,7 +71,7 @@ public class ProjectListIT extends LightweightPluginDaemonTest {
           }
         });
 
-    adminRestSession.put("/projects/" + createdProject).assertCreated();
+    adminRestSession.put("/projects/" + createdProjectEncoded).assertCreated();
     assertThat(expectedRequestLatch.await(5, TimeUnit.SECONDS)).isTrue();
     verify(postRequestedFor(urlEqualTo(expectedRequest)));
   }
