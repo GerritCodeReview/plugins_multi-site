@@ -74,12 +74,12 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
     log.debug("Change {} successfully deleted from index", id);
   }
 
-  private Change.Id parseChangeId(String id) {
+  private static Change.Id parseChangeId(String id) {
     Change.Id changeId = new Change.Id(Integer.parseInt(Splitter.on("~").splitToList(id).get(1)));
     return changeId;
   }
 
-  private boolean isCausedByNoSuchChangeException(Throwable throwable) {
+  private static boolean isCausedByNoSuchChangeException(Throwable throwable) {
     while (throwable != null) {
       if (throwable instanceof NoSuchChangeException) {
         return true;

@@ -59,7 +59,7 @@ class MyUrlProvider implements Provider<String> {
     return myUrl;
   }
 
-  private String getMyUrlFromListenUrl(Config srvConfig) throws MyUrlProviderException {
+  private static String getMyUrlFromListenUrl(Config srvConfig) throws MyUrlProviderException {
     String[] listenUrls = srvConfig.getStringList(HTTPD_SECTION, null, LISTEN_URL_KEY);
     if (listenUrls.length != 1) {
       throw new MyUrlProviderException(

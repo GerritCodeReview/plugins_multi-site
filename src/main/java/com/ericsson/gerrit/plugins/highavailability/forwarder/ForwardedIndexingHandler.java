@@ -70,6 +70,9 @@ public abstract class ForwardedIndexingHandler<T> {
           case DELETE:
             doDelete(id);
             break;
+          default:
+            log.error("unexpected operation: {}", operation);
+            break;
         }
       } finally {
         idLock.unlock();

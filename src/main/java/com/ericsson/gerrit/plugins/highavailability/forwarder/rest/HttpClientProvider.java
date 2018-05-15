@@ -90,11 +90,11 @@ class HttpClientProvider implements Provider<CloseableHttpClient> {
     return connManager;
   }
 
-  private SSLConnectionSocketFactory buildSslSocketFactory() {
+  private static SSLConnectionSocketFactory buildSslSocketFactory() {
     return new SSLConnectionSocketFactory(buildSslContext(), NoopHostnameVerifier.INSTANCE);
   }
 
-  private SSLContext buildSslContext() {
+  private static SSLContext buildSslContext() {
     try {
       TrustManager[] trustAllCerts = new TrustManager[] {new DummyX509TrustManager()};
       SSLContext context = SSLContext.getInstance("TLS");

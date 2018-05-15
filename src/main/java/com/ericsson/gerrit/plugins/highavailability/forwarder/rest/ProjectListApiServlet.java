@@ -18,6 +18,7 @@ import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedProjectListUpdateHandler;
+import com.google.gerrit.extensions.restapi.Url;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
@@ -47,10 +48,10 @@ class ProjectListApiServlet extends AbstractRestApiServlet {
 
   private void process(HttpServletRequest req, HttpServletResponse rsp, boolean delete) {
     setHeaders(rsp);
-    String path = req.getPathInfo();
-    String projectName = path.substring(path.lastIndexOf('/') + 1);
+    String requestURI = req.getRequestURI();
+    String projectName = requestURI.substring(requestURI.lastIndexOf('/') + 1);
     try {
-      forwardedProjectListUpdateHandler.update(projectName, delete);
+      forwardedProjectListUpdateHandler.update(Url.decode(projectName), delete);
       rsp.setStatus(SC_NO_CONTENT);
     } catch (IOException e) {
       log.error("Unable to update project list", e);

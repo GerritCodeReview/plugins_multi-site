@@ -20,6 +20,7 @@ import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.UseLocalDisk;
+import com.google.gerrit.extensions.restapi.Url;
 import com.google.gerrit.reviewdb.client.Project;
 import org.junit.Test;
 
@@ -30,24 +31,26 @@ import org.junit.Test;
   httpModule = "com.ericsson.gerrit.plugins.highavailability.HttpModule"
 )
 public class ProjectListRestApiServletIT extends LightweightPluginDaemonTest {
+  private static final Project.NameKey SOME_PROJECT = new Project.NameKey("org-a/some-project");
+
   @Test
   @UseLocalDisk
   public void addProject() throws Exception {
-    Project.NameKey newProject = new Project.NameKey("someNewProject");
-    assertThat(projectCache.all()).doesNotContain(newProject);
+
+    assertThat(projectCache.all()).doesNotContain(SOME_PROJECT);
     adminRestSession
-        .post("/plugins/high-availability/cache/project_list/" + newProject.get())
+        .post("/plugins/high-availability/cache/project_list/" + Url.encode(SOME_PROJECT.get()))
         .assertNoContent();
-    assertThat(projectCache.all()).contains(newProject);
+    assertThat(projectCache.all()).contains(SOME_PROJECT);
   }
 
   @Test
   @UseLocalDisk
   public void removeProject() throws Exception {
-    assertThat(projectCache.all()).contains(project);
+    addProject();
     adminRestSession
-        .delete("/plugins/high-availability/cache/project_list/" + project.get())
+        .delete("/plugins/high-availability/cache/project_list/" + Url.encode(SOME_PROJECT.get()))
         .assertNoContent();
-    assertThat(projectCache.all()).doesNotContain(project);
+    assertThat(projectCache.all()).doesNotContain(SOME_PROJECT);
   }
 }
