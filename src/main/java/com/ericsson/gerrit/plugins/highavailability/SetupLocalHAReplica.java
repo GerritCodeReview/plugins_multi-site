@@ -39,6 +39,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.eclipse.jgit.util.FS;
 
@@ -58,7 +59,8 @@ class SetupLocalHAReplica {
     this.sharedDir = masterSitePaths.site_path.resolve(DEFAULT_SHARED_DIRECTORY);
   }
 
-  void run(SitePaths replica, FileBasedConfig pluginConfig) throws Exception {
+  void run(SitePaths replica, FileBasedConfig pluginConfig)
+      throws IOException, ConfigInvalidException {
     this.replicaSitePaths = replica;
 
     FileUtil.mkdirsOrDie(replicaSitePaths.site_path, "cannot create " + replicaSitePaths.site_path);
