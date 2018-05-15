@@ -52,11 +52,11 @@ class HttpResponseHandler implements ResponseHandler<HttpResult> {
     return new HttpResult(isSuccessful(response), parseResponse(response));
   }
 
-  private boolean isSuccessful(HttpResponse response) {
+  private static boolean isSuccessful(HttpResponse response) {
     return response.getStatusLine().getStatusCode() == SC_NO_CONTENT;
   }
 
-  private String parseResponse(HttpResponse response) {
+  private static String parseResponse(HttpResponse response) {
     HttpEntity entity = response.getEntity();
     String asString = "";
     if (entity != null) {

@@ -292,7 +292,7 @@ public class Configuration {
       return value == null ? defaultValue : value;
     }
 
-    private Optional<Path> getProtocolStack(Config cfg, SitePaths site) {
+    private static Optional<Path> getProtocolStack(Config cfg, SitePaths site) {
       String location = cfg.getString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY);
       return location == null ? Optional.empty() : Optional.of(site.etc_dir.resolve(location));
     }

@@ -88,7 +88,7 @@ public class HealthServlet extends HttpServlet {
     rsp.setStatus(SC_NO_CONTENT);
   }
 
-  private void sendError(HttpServletResponse rsp, int statusCode) {
+  private static void sendError(HttpServletResponse rsp, int statusCode) {
     try {
       rsp.sendError(statusCode);
     } catch (IOException e) {

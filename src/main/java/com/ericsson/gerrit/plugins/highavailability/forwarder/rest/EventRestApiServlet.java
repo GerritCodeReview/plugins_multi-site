@@ -67,7 +67,7 @@ class EventRestApiServlet extends AbstractRestApiServlet {
     }
   }
 
-  private Event getEventFromRequest(HttpServletRequest req) throws IOException {
+  private static Event getEventFromRequest(HttpServletRequest req) throws IOException {
     String jsonEvent = CharStreams.toString(req.getReader());
     Gson gson =
         new GsonBuilder()

@@ -69,7 +69,7 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<Change
     log.debug("Change {} successfully deleted from index", id);
   }
 
-  private boolean isCausedByNoSuchChangeException(Throwable throwable) {
+  private static boolean isCausedByNoSuchChangeException(Throwable throwable) {
     while (throwable != null) {
       if (throwable instanceof NoSuchChangeException) {
         return true;

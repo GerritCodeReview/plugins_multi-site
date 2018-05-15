@@ -182,7 +182,7 @@ class SetupLocalHAReplica {
     pluginConfig.save();
   }
 
-  private void configurePeerInfo(FileBasedConfig pluginConfig) throws IOException {
+  private static void configurePeerInfo(FileBasedConfig pluginConfig) throws IOException {
     pluginConfig.setString(PEER_INFO_SECTION, null, STRATEGY_KEY, "jgroups");
     pluginConfig.setString(
         PEER_INFO_SECTION, JGROUPS_SUBSECTION, CLUSTER_NAME_KEY, DEFAULT_CLUSTER_NAME);

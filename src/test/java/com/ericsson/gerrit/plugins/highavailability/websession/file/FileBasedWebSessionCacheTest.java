@@ -258,7 +258,7 @@ public class FileBasedWebSessionCacheTest {
     return keys;
   }
 
-  private boolean isDirEmpty(final Path dir) throws IOException {
+  private static boolean isDirEmpty(final Path dir) throws IOException {
     try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(dir)) {
       return !dirStream.iterator().hasNext();
     }
