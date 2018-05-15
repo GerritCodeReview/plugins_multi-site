@@ -53,6 +53,10 @@ public class FileBasedWebsessionCache implements Cache<String, WebSessionManager
   static class TimeMachine {
     private static Clock clock = Clock.systemDefaultZone();
 
+    private TimeMachine() {
+      throw new IllegalAccessError("Utility class. Not meant to be instantiated.");
+    }
+
     static Instant now() {
       return Instant.now(getClock());
     }
