@@ -268,10 +268,11 @@ public class FileBasedWebSessionCacheTest {
     if (key.equals(EMPTY_KEY)) {
       return Files.createFile(websessionDir.resolve(EMPTY_KEY));
     }
-    InputStream in = loadFile(key);
-    Path target = websessionDir.resolve(key);
-    Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
-    return target;
+    try (InputStream in = loadFile(key)) {
+      Path target = websessionDir.resolve(key);
+      Files.copy(in, target, StandardCopyOption.REPLACE_EXISTING);
+      return target;
+    }
   }
 
   private InputStream loadFile(String file) {
