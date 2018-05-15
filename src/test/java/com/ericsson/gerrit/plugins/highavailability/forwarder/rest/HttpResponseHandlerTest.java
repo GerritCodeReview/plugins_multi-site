@@ -55,7 +55,8 @@ public class HttpResponseHandlerTest {
     assertThat(result.getMessage()).contains(ERROR_ENTITY);
   }
 
-  private HttpResponse setupMocks(int httpCode, String entity) throws UnsupportedEncodingException {
+  private static HttpResponse setupMocks(int httpCode, String entity)
+      throws UnsupportedEncodingException {
     StatusLine status = mock(StatusLine.class);
     when(status.getStatusCode()).thenReturn(httpCode);
     HttpResponse response = mock(HttpResponse.class);

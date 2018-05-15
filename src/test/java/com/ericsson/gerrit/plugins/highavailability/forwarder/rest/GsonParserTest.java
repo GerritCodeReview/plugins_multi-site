@@ -25,35 +25,35 @@ public class GsonParserTest {
   private static final Object EMPTY_JSON = "{}";
 
   @Test
-  public void AccountIDParse() {
+  public void accountIDParse() {
     Account.Id accountId = new Account.Id(1);
     String json = GsonParser.toJson(Constants.ACCOUNTS, accountId);
     assertThat(accountId).isEqualTo(GsonParser.fromJson(Constants.ACCOUNTS, json));
   }
 
   @Test
-  public void AccountGroupIDParse() {
+  public void accountGroupIDParse() {
     AccountGroup.Id accountGroupId = new AccountGroup.Id(1);
     String json = GsonParser.toJson(Constants.GROUPS, accountGroupId);
     assertThat(accountGroupId).isEqualTo(GsonParser.fromJson(Constants.GROUPS, json));
   }
 
   @Test
-  public void AccountGroupUUIDParse() {
+  public void accountGroupUUIDParse() {
     AccountGroup.UUID accountGroupUuid = new AccountGroup.UUID("abc123");
     String json = GsonParser.toJson(Constants.GROUPS_BYINCLUDE, accountGroupUuid);
     assertThat(accountGroupUuid).isEqualTo(GsonParser.fromJson(Constants.GROUPS_BYINCLUDE, json));
   }
 
   @Test
-  public void StringParse() {
+  public void stringParse() {
     String key = "key";
     String json = GsonParser.toJson(Constants.PROJECTS, key);
     assertThat(key).isEqualTo(GsonParser.fromJson(Constants.PROJECTS, json));
   }
 
   @Test
-  public void NoKeyParse() {
+  public void noKeyParse() {
     Object object = new Object();
     String json = GsonParser.toJson(Constants.PROJECT_LIST, object);
     assertThat(json).isEqualTo(EMPTY_JSON);

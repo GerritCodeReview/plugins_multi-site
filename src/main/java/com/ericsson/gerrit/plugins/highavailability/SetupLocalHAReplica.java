@@ -43,23 +43,25 @@ import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.eclipse.jgit.util.FS;
 
 class SetupLocalHAReplica {
-  private final SitePaths master;
+  private static final String DATABASE = "database";
+
+  private final SitePaths masterSitePaths;
   private final FileBasedConfig masterConfig;
   private final Path sharedDir;
 
-  private SitePaths replica;
+  private SitePaths replicaSitePaths;
 
   @Inject
-  SetupLocalHAReplica(SitePaths master, InitFlags flags) {
-    this.master = master;
+  SetupLocalHAReplica(SitePaths masterSitePaths, InitFlags flags) {
+    this.masterSitePaths = masterSitePaths;
     this.masterConfig = flags.cfg;
-    this.sharedDir = master.site_path.resolve(DEFAULT_SHARED_DIRECTORY);
+    this.sharedDir = masterSitePaths.site_path.resolve(DEFAULT_SHARED_DIRECTORY);
   }
 
   void run(SitePaths replica, FileBasedConfig pluginConfig) throws Exception {
-    this.replica = replica;
+    this.replicaSitePaths = replica;
 
-    FileUtil.mkdirsOrDie(replica.site_path, "cannot create " + replica.site_path);
+    FileUtil.mkdirsOrDie(replicaSitePaths.site_path, "cannot create " + replicaSitePaths.site_path);
 
     configureMainSection(pluginConfig);
     configurePeerInfo(pluginConfig);
@@ -68,18 +70,18 @@ class SetupLocalHAReplica {
       copyFiles(dir);
     }
 
-    mkdir(replica.logs_dir);
-    mkdir(replica.tmp_dir);
+    mkdir(replicaSitePaths.logs_dir);
+    mkdir(replicaSitePaths.tmp_dir);
     symlink(Paths.get(masterConfig.getString("gerrit", null, "basePath")));
     symlink(sharedDir);
 
     FileBasedConfig replicaConfig =
-        new FileBasedConfig(replica.gerrit_config.toFile(), FS.DETECTED);
+        new FileBasedConfig(replicaSitePaths.gerrit_config.toFile(), FS.DETECTED);
     replicaConfig.load();
 
-    if ("h2".equals(masterConfig.getString("database", null, "type"))) {
-      masterConfig.setBoolean("database", "h2", "autoServer", true);
-      replicaConfig.setBoolean("database", "h2", "autoServer", true);
+    if ("h2".equals(masterConfig.getString(DATABASE, null, "type"))) {
+      masterConfig.setBoolean(DATABASE, "h2", "autoServer", true);
+      replicaConfig.setBoolean(DATABASE, "h2", "autoServer", true);
       symlinkH2ReviewDbDir();
     }
   }
@@ -87,32 +89,32 @@ class SetupLocalHAReplica {
   private List<Path> listDirsForCopy() throws IOException {
     ImmutableList.Builder<Path> toSkipBuilder = ImmutableList.builder();
     toSkipBuilder.add(
-        master.resolve(masterConfig.getString("gerrit", null, "basePath")),
-        master.db_dir,
-        master.logs_dir,
-        replica.site_path,
-        master.site_path.resolve(sharedDir),
-        master.tmp_dir);
-    if ("h2".equals(masterConfig.getString("database", null, "type"))) {
+        masterSitePaths.resolve(masterConfig.getString("gerrit", null, "basePath")),
+        masterSitePaths.db_dir,
+        masterSitePaths.logs_dir,
+        replicaSitePaths.site_path,
+        masterSitePaths.site_path.resolve(sharedDir),
+        masterSitePaths.tmp_dir);
+    if ("h2".equals(masterConfig.getString(DATABASE, null, "type"))) {
       toSkipBuilder.add(
-          master.resolve(masterConfig.getString("database", null, "database")).getParent());
+          masterSitePaths.resolve(masterConfig.getString(DATABASE, null, DATABASE)).getParent());
     }
     final ImmutableList<Path> toSkip = toSkipBuilder.build();
 
     final ArrayList<Path> dirsForCopy = new ArrayList<>();
     Files.walkFileTree(
-        master.site_path,
+        masterSitePaths.site_path,
         EnumSet.of(FileVisitOption.FOLLOW_LINKS),
         Integer.MAX_VALUE,
         new SimpleFileVisitor<Path>() {
           @Override
           public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
               throws IOException {
-            if (Files.isSameFile(dir, master.site_path)) {
+            if (Files.isSameFile(dir, masterSitePaths.site_path)) {
               return FileVisitResult.CONTINUE;
             }
 
-            Path p = master.site_path.relativize(dir);
+            Path p = masterSitePaths.site_path.relativize(dir);
             if (shouldSkip(p)) {
               return FileVisitResult.SKIP_SUBTREE;
             }
@@ -121,7 +123,7 @@ class SetupLocalHAReplica {
           }
 
           private boolean shouldSkip(Path p) throws IOException {
-            Path resolved = master.site_path.resolve(p);
+            Path resolved = masterSitePaths.site_path.resolve(p);
             for (Path skip : toSkip) {
               if (skip.toFile().exists() && Files.isSameFile(resolved, skip)) {
                 return true;
@@ -135,8 +137,8 @@ class SetupLocalHAReplica {
   }
 
   private void copyFiles(Path dir) throws IOException {
-    final Path source = master.site_path.resolve(dir);
-    final Path target = replica.site_path.resolve(dir);
+    final Path source = masterSitePaths.site_path.resolve(dir);
+    final Path target = replicaSitePaths.site_path.resolve(dir);
     Files.createDirectories(target);
     Files.walkFileTree(
         source,
@@ -162,13 +164,13 @@ class SetupLocalHAReplica {
   private void symlink(Path path) throws IOException {
     if (!path.isAbsolute()) {
       Files.createSymbolicLink(
-          replica.site_path.resolve(path),
-          master.site_path.resolve(path).toAbsolutePath().normalize());
+          replicaSitePaths.site_path.resolve(path),
+          masterSitePaths.site_path.resolve(path).toAbsolutePath().normalize());
     }
   }
 
   private void symlinkH2ReviewDbDir() throws IOException {
-    symlink(Paths.get(masterConfig.getString("database", null, "database")).getParent());
+    symlink(Paths.get(masterConfig.getString(DATABASE, null, DATABASE)).getParent());
   }
 
   private void configureMainSection(FileBasedConfig pluginConfig) throws IOException {
@@ -176,11 +178,11 @@ class SetupLocalHAReplica {
         MAIN_SECTION,
         null,
         SHARED_DIRECTORY_KEY,
-        master.site_path.relativize(sharedDir).toString());
+        masterSitePaths.site_path.relativize(sharedDir).toString());
     pluginConfig.save();
   }
 
-  private void configurePeerInfo(FileBasedConfig pluginConfig) throws IOException {
+  private static void configurePeerInfo(FileBasedConfig pluginConfig) throws IOException {
     pluginConfig.setString(PEER_INFO_SECTION, null, STRATEGY_KEY, "jgroups");
     pluginConfig.setString(
         PEER_INFO_SECTION, JGROUPS_SUBSECTION, CLUSTER_NAME_KEY, DEFAULT_CLUSTER_NAME);

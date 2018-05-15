@@ -76,6 +76,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConfigurationTest {
+  private static final String INVALID_BOOLEAN = "invalidBoolean";
+  private static final String INVALID_INT = "invalidInt";
   private static final String PLUGIN_NAME = "high-availability";
   private static final String PASS = "fakePass";
   private static final String USER = "fakeUser";
@@ -211,7 +213,7 @@ public class ConfigurationTest {
     globalPluginConfig.setInt(HTTP_SECTION, null, CONNECTION_TIMEOUT_KEY, TIMEOUT);
     assertThat(getConfiguration().http().connectionTimeout()).isEqualTo(TIMEOUT);
 
-    globalPluginConfig.setString(HTTP_SECTION, null, CONNECTION_TIMEOUT_KEY, "invalidInt");
+    globalPluginConfig.setString(HTTP_SECTION, null, CONNECTION_TIMEOUT_KEY, INVALID_INT);
     assertThat(getConfiguration().http().connectionTimeout()).isEqualTo(DEFAULT_TIMEOUT_MS);
   }
 
@@ -222,7 +224,7 @@ public class ConfigurationTest {
     globalPluginConfig.setInt(HTTP_SECTION, null, SOCKET_TIMEOUT_KEY, TIMEOUT);
     assertThat(getConfiguration().http().socketTimeout()).isEqualTo(TIMEOUT);
 
-    globalPluginConfig.setString(HTTP_SECTION, null, SOCKET_TIMEOUT_KEY, "invalidInt");
+    globalPluginConfig.setString(HTTP_SECTION, null, SOCKET_TIMEOUT_KEY, INVALID_INT);
     assertThat(getConfiguration().http().socketTimeout()).isEqualTo(DEFAULT_TIMEOUT_MS);
   }
 
@@ -233,7 +235,7 @@ public class ConfigurationTest {
     globalPluginConfig.setInt(HTTP_SECTION, null, MAX_TRIES_KEY, MAX_TRIES);
     assertThat(getConfiguration().http().maxTries()).isEqualTo(MAX_TRIES);
 
-    globalPluginConfig.setString(HTTP_SECTION, null, MAX_TRIES_KEY, "invalidInt");
+    globalPluginConfig.setString(HTTP_SECTION, null, MAX_TRIES_KEY, INVALID_INT);
     assertThat(getConfiguration().http().maxTries()).isEqualTo(DEFAULT_MAX_TRIES);
   }
 
@@ -244,7 +246,7 @@ public class ConfigurationTest {
     globalPluginConfig.setInt(HTTP_SECTION, null, RETRY_INTERVAL_KEY, RETRY_INTERVAL);
     assertThat(getConfiguration().http().retryInterval()).isEqualTo(RETRY_INTERVAL);
 
-    globalPluginConfig.setString(HTTP_SECTION, null, RETRY_INTERVAL_KEY, "invalidInt");
+    globalPluginConfig.setString(HTTP_SECTION, null, RETRY_INTERVAL_KEY, INVALID_INT);
     assertThat(getConfiguration().http().retryInterval()).isEqualTo(DEFAULT_RETRY_INTERVAL);
   }
 
@@ -255,7 +257,7 @@ public class ConfigurationTest {
     globalPluginConfig.setInt(INDEX_SECTION, null, THREAD_POOL_SIZE_KEY, THREAD_POOL_SIZE);
     assertThat(getConfiguration().index().threadPoolSize()).isEqualTo(THREAD_POOL_SIZE);
 
-    globalPluginConfig.setString(INDEX_SECTION, null, THREAD_POOL_SIZE_KEY, "invalidInt");
+    globalPluginConfig.setString(INDEX_SECTION, null, THREAD_POOL_SIZE_KEY, INVALID_INT);
     assertThat(getConfiguration().index().threadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
   }
 
@@ -269,7 +271,7 @@ public class ConfigurationTest {
     globalPluginConfig.setBoolean(INDEX_SECTION, null, SYNCHRONIZE_KEY, true);
     assertThat(getConfiguration().index().synchronize()).isTrue();
 
-    globalPluginConfig.setString(INDEX_SECTION, null, SYNCHRONIZE_KEY, "invalidBoolean");
+    globalPluginConfig.setString(INDEX_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
     assertThat(getConfiguration().index().synchronize()).isTrue();
   }
 
@@ -280,7 +282,7 @@ public class ConfigurationTest {
     globalPluginConfig.setInt(CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, THREAD_POOL_SIZE);
     assertThat(getConfiguration().cache().threadPoolSize()).isEqualTo(THREAD_POOL_SIZE);
 
-    globalPluginConfig.setString(CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, "invalidInt");
+    globalPluginConfig.setString(CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, INVALID_INT);
     assertThat(getConfiguration().cache().threadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
   }
 
@@ -294,7 +296,7 @@ public class ConfigurationTest {
     globalPluginConfig.setBoolean(CACHE_SECTION, null, SYNCHRONIZE_KEY, true);
     assertThat(getConfiguration().cache().synchronize()).isTrue();
 
-    globalPluginConfig.setString(CACHE_SECTION, null, SYNCHRONIZE_KEY, "invalidBoolean");
+    globalPluginConfig.setString(CACHE_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
     assertThat(getConfiguration().cache().synchronize()).isTrue();
   }
 
@@ -308,7 +310,7 @@ public class ConfigurationTest {
     globalPluginConfig.setBoolean(EVENT_SECTION, null, SYNCHRONIZE_KEY, true);
     assertThat(getConfiguration().event().synchronize()).isTrue();
 
-    globalPluginConfig.setString(EVENT_SECTION, null, SYNCHRONIZE_KEY, "invalidBoolean");
+    globalPluginConfig.setString(EVENT_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
     assertThat(getConfiguration().event().synchronize()).isTrue();
   }
 
@@ -352,7 +354,7 @@ public class ConfigurationTest {
     globalPluginConfig.setBoolean(WEBSESSION_SECTION, null, SYNCHRONIZE_KEY, true);
     assertThat(getConfiguration().websession().synchronize()).isTrue();
 
-    globalPluginConfig.setString(WEBSESSION_SECTION, null, SYNCHRONIZE_KEY, "invalidBoolean");
+    globalPluginConfig.setString(WEBSESSION_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
     assertThat(getConfiguration().websession().synchronize()).isTrue();
   }
 

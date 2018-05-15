@@ -34,6 +34,7 @@ import org.mockito.stubbing.Answer;
 public class ForwardedProjectListUpdateHandlerTest {
 
   private static final String PROJECT_NAME = "someProject";
+  private static final String SOME_MESSAGE = "someMessage";
   private static final Project.NameKey PROJECT_KEY = new Project.NameKey(PROJECT_NAME);
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private ProjectCache projectCacheMock;
@@ -48,13 +49,13 @@ public class ForwardedProjectListUpdateHandlerTest {
   public void testSuccessfulAdd() throws Exception {
     handler.update(PROJECT_NAME, false);
     verify(projectCacheMock).onCreateProject(PROJECT_KEY);
-  };
+  }
 
   @Test
   public void testSuccessfulRemove() throws Exception {
     handler.update(PROJECT_NAME, true);
     verify(projectCacheMock).remove(PROJECT_KEY);
-  };
+  }
 
   @Test
   public void shouldSetAndUnsetForwardedContextOnAdd() throws Exception {
@@ -102,7 +103,7 @@ public class ForwardedProjectListUpdateHandlerTest {
             (Answer<Void>)
                 invocation -> {
                   assertThat(Context.isForwardedEvent()).isTrue();
-                  throw new RuntimeException("someMessage");
+                  throw new RuntimeException(SOME_MESSAGE);
                 })
         .when(projectCacheMock)
         .onCreateProject(PROJECT_KEY);
@@ -112,7 +113,7 @@ public class ForwardedProjectListUpdateHandlerTest {
       handler.update(PROJECT_NAME, false);
       fail("should have thrown a RuntimeException");
     } catch (RuntimeException e) {
-      assertThat(e.getMessage()).isEqualTo("someMessage");
+      assertThat(e.getMessage()).isEqualTo(SOME_MESSAGE);
     }
     assertThat(Context.isForwardedEvent()).isFalse();
 
@@ -125,7 +126,7 @@ public class ForwardedProjectListUpdateHandlerTest {
             (Answer<Void>)
                 invocation -> {
                   assertThat(Context.isForwardedEvent()).isTrue();
-                  throw new RuntimeException("someMessage");
+                  throw new RuntimeException(SOME_MESSAGE);
                 })
         .when(projectCacheMock)
         .remove(PROJECT_KEY);
@@ -133,10 +134,9 @@ public class ForwardedProjectListUpdateHandlerTest {
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
       handler.update(PROJECT_NAME, true);
-      ;
       fail("should have thrown a RuntimeException");
     } catch (RuntimeException e) {
-      assertThat(e.getMessage()).isEqualTo("someMessage");
+      assertThat(e.getMessage()).isEqualTo(SOME_MESSAGE);
     }
     assertThat(Context.isForwardedEvent()).isFalse();
 
