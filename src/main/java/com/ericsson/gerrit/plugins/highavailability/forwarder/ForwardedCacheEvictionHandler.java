@@ -42,7 +42,7 @@ public class ForwardedCacheEvictionHandler {
    * Evict an entry from the cache of the local node, eviction will not be forwarded to the other
    * node.
    *
-   * @param cacheEntry the entry to evict
+   * @param entry the cache entry to evict
    * @throws CacheNotFoundException if cache does not exist
    */
   public void evict(CacheEntry entry) throws CacheNotFoundException {
