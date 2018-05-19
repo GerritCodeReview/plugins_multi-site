@@ -41,4 +41,9 @@ public class ForwardedIndexGroupHandler extends ForwardedIndexingHandler<Account
     indexer.index(uuid);
     log.debug("Group {} successfully indexed", uuid);
   }
+
+  @Override
+  protected void doDelete(AccountGroup.UUID uuid) {
+    throw new UnsupportedOperationException("Delete from group index not supported");
+  }
 }
