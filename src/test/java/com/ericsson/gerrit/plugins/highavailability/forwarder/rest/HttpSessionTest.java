@@ -185,8 +185,7 @@ public class HttpSessionTest {
   @Test
   public void testNoRequestWhenPeerInfoUnknown() throws IOException {
     httpSession =
-        new HttpSession(
-            new HttpClientProvider(configMock).get(), Providers.of(Optional.<PeerInfo>empty()));
+        new HttpSession(new HttpClientProvider(configMock).get(), Providers.of(Optional.empty()));
     try {
       httpSession.post(ENDPOINT);
       fail("Expected PeerInfoNotAvailableException");
