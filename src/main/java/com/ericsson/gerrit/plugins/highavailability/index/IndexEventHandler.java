@@ -16,6 +16,7 @@ package com.ericsson.gerrit.plugins.highavailability.index;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Context;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.IndexEvent;
 import com.google.common.base.Objects;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.events.AccountIndexedListener;
@@ -82,6 +83,12 @@ class IndexEventHandler
   }
 
   abstract class IndexTask implements Runnable {
+    protected final IndexEvent indexEvent;
+
+    IndexTask() {
+      indexEvent = new IndexEvent();
+    }
+
     @Override
     public void run() {
       queuedTasks.remove(this);
@@ -105,9 +112,9 @@ class IndexEventHandler
     @Override
     public void execute() {
       if (deleted) {
-        forwarder.deleteChangeFromIndex(changeId);
+        forwarder.deleteChangeFromIndex(changeId, indexEvent);
       } else {
-        forwarder.indexChange(projectName, changeId);
+        forwarder.indexChange(projectName, changeId, indexEvent);
       }
     }
 
@@ -140,7 +147,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarder.indexAccount(accountId);
+      forwarder.indexAccount(accountId, indexEvent);
     }
 
     @Override
@@ -172,7 +179,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarder.indexGroup(groupUUID);
+      forwarder.indexGroup(groupUUID, indexEvent);
     }
 
     @Override

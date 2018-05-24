@@ -26,6 +26,7 @@ import com.google.gwtorm.server.SchemaFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Index a change using {@link ChangeIndexer}. This class is meant to be used on the receiving side
@@ -48,7 +49,8 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
   }
 
   @Override
-  protected void doIndex(String id) throws IOException, OrmException {
+  protected void doIndex(String id, Optional<IndexEvent> indexEvent)
+      throws IOException, OrmException {
     ChangeNotes change = null;
     try (ReviewDb db = schemaFactory.open()) {
       change = changeFinder.findOne(id);
@@ -70,7 +72,7 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
   }
 
   @Override
-  protected void doDelete(String id) throws IOException {
+  protected void doDelete(String id, Optional<IndexEvent> indexEvent) throws IOException {
     indexer.delete(parseChangeId(id));
     log.debug("Change {} successfully deleted from index", id);
   }

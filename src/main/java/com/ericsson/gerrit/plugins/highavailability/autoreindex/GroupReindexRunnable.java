@@ -76,7 +76,7 @@ public class GroupReindexRunnable extends ReindexRunnable<AccountGroup> {
 
       if (groupLastTs.isPresent() && groupLastTs.get().after(sinceTs)) {
         log.info("Index {}/{}/{}", g.getGroupUUID(), g.getName(), groupLastTs.get());
-        indexer.index(g.getGroupUUID(), Operation.INDEX);
+        indexer.index(g.getGroupUUID(), Operation.INDEX, Optional.empty());
         return groupLastTs;
       }
     } catch (OrmException | IOException e) {

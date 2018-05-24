@@ -23,34 +23,38 @@ public interface Forwarder {
    * Forward a account indexing event to the other master.
    *
    * @param accountId the account to index.
+   * @param indexEvent the details of the index event.
    * @return true if successful, otherwise false.
    */
-  boolean indexAccount(int accountId);
+  boolean indexAccount(int accountId, IndexEvent indexEvent);
 
   /**
    * Forward a change indexing event to the other master.
    *
    * @param projectName the project of the change to index.
    * @param changeId the change to index.
+   * @param indexEvent the details of the index event.
    * @return true if successful, otherwise false.
    */
-  boolean indexChange(String projectName, int changeId);
+  boolean indexChange(String projectName, int changeId, IndexEvent indexEvent);
 
   /**
    * Forward a delete change from index event to the other master.
    *
    * @param changeId the change to remove from the index.
+   * @param indexEvent the details of the index event.
    * @return rue if successful, otherwise false.
    */
-  boolean deleteChangeFromIndex(int changeId);
+  boolean deleteChangeFromIndex(int changeId, IndexEvent indexEvent);
 
   /**
    * Forward a group indexing event to the other master.
    *
    * @param uuid the group to index.
+   * @param indexEvent the details of the index event.
    * @return true if successful, otherwise false.
    */
-  boolean indexGroup(String uuid);
+  boolean indexGroup(String uuid, IndexEvent indexEvent);
 
   /**
    * Forward a stream event to the other master.

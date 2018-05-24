@@ -16,14 +16,19 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
-import com.google.common.base.Strings;
+import com.google.common.base.Charsets;
+import com.google.common.base.Supplier;
 import com.google.common.net.MediaType;
+import com.google.gerrit.server.events.SupplierSerializer;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.net.URI;
 import java.util.Optional;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -31,6 +36,8 @@ import org.apache.http.impl.client.CloseableHttpClient;
 class HttpSession {
   private final CloseableHttpClient httpClient;
   private final Provider<Optional<PeerInfo>> peerInfo;
+  private final Gson gson =
+      new GsonBuilder().registerTypeAdapter(Supplier.class, new SupplierSerializer()).create();
 
   @Inject
   HttpSession(CloseableHttpClient httpClient, Provider<Optional<PeerInfo>> peerInfo) {
@@ -42,18 +49,14 @@ class HttpSession {
     return post(endpoint, null);
   }
 
-  HttpResult post(String endpoint, String content) throws IOException {
+  HttpResult post(String endpoint, Object content) throws IOException {
     HttpPost post = new HttpPost(getPeerInfo().getDirectUrl() + endpoint);
-    if (!Strings.isNullOrEmpty(content)) {
-      post.addHeader("Content-Type", MediaType.JSON_UTF_8.toString());
-      post.setEntity(new StringEntity(content, StandardCharsets.UTF_8));
-    }
+    setContent(post, content);
     return httpClient.execute(post, new HttpResponseHandler());
   }
 
   HttpResult delete(String endpoint) throws IOException {
-    return httpClient.execute(
-        new HttpDelete(getPeerInfo().getDirectUrl() + endpoint), new HttpResponseHandler());
+    return delete(endpoint, null);
   }
 
   private PeerInfo getPeerInfo() throws PeerInfoNotAvailableException {
@@ -62,5 +65,36 @@ class HttpSession {
       throw new PeerInfoNotAvailableException();
     }
     return info;
+  }
+
+  HttpResult delete(String endpoint, Object content) throws IOException {
+    HttpDeleteWithBody delete = new HttpDeleteWithBody(getPeerInfo().getDirectUrl() + endpoint);
+    setContent(delete, content);
+    return httpClient.execute(delete, new HttpResponseHandler());
+  }
+
+  private void setContent(HttpEntityEnclosingRequestBase request, Object content) {
+    if (content != null) {
+      request.addHeader("Content-Type", MediaType.JSON_UTF_8.toString());
+      request.setEntity(new StringEntity(jsonEncode(content), Charsets.UTF_8));
+    }
+  }
+
+  private String jsonEncode(Object content) {
+    if (content instanceof String) {
+      return (String) content;
+    }
+    return gson.toJson(content);
+  }
+
+  private class HttpDeleteWithBody extends HttpEntityEnclosingRequestBase {
+    @Override
+    public String getMethod() {
+      return HttpDelete.METHOD_NAME;
+    }
+
+    private HttpDeleteWithBody(String uri) {
+      setURI(URI.create(uri));
+    }
   }
 }

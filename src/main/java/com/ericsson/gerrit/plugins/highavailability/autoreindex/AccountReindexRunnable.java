@@ -58,7 +58,7 @@ public class AccountReindexRunnable extends ReindexRunnable<Account> {
       Timestamp accountTs = a.getRegisteredOn();
       if (accountTs.after(sinceTs)) {
         log.info("Index {}/{}/{}/{}", a.getId(), a.getFullName(), a.getPreferredEmail(), accountTs);
-        accountIdx.index(a.getId(), Operation.INDEX);
+        accountIdx.index(a.getId(), Operation.INDEX, Optional.empty());
         return Optional.of(accountTs);
       }
     } catch (IOException | OrmException e) {

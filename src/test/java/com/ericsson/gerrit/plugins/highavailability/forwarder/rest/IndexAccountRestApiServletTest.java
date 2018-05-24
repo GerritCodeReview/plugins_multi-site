@@ -17,6 +17,8 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 import static javax.servlet.http.HttpServletResponse.SC_CONFLICT;
 import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
 import static javax.servlet.http.HttpServletResponse.SC_NO_CONTENT;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -57,7 +59,7 @@ public class IndexAccountRestApiServletTest {
   @Test
   public void accountIsIndexed() throws Exception {
     servlet.doPost(requestMock, responseMock);
-    verify(handlerMock, times(1)).index(id, Operation.INDEX);
+    verify(handlerMock, times(1)).index(eq(id), eq(Operation.INDEX), any());
     verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
@@ -69,14 +71,14 @@ public class IndexAccountRestApiServletTest {
 
   @Test
   public void indexerThrowsIOExceptionTryingToIndexAccount() throws Exception {
-    doThrow(new IOException(IO_ERROR)).when(handlerMock).index(id, Operation.INDEX);
+    doThrow(new IOException(IO_ERROR)).when(handlerMock).index(eq(id), eq(Operation.INDEX), any());
     servlet.doPost(requestMock, responseMock);
     verify(responseMock).sendError(SC_CONFLICT, IO_ERROR);
   }
 
   @Test
   public void sendErrorThrowsIOException() throws Exception {
-    doThrow(new IOException(IO_ERROR)).when(handlerMock).index(id, Operation.INDEX);
+    doThrow(new IOException(IO_ERROR)).when(handlerMock).index(eq(id), eq(Operation.INDEX), any());
     doThrow(new IOException("someError")).when(responseMock).sendError(SC_CONFLICT, IO_ERROR);
     servlet.doPost(requestMock, responseMock);
     verify(responseMock).sendError(SC_CONFLICT, IO_ERROR);

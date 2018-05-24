@@ -15,6 +15,8 @@
 package com.ericsson.gerrit.plugins.highavailability.index;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -63,25 +65,25 @@ public class IndexEventHandlerTest {
   @Test
   public void shouldIndexInRemoteOnChangeIndexedEvent() throws Exception {
     indexEventHandler.onChangeIndexed(PROJECT_NAME, changeId.get());
-    verify(forwarder).indexChange(PROJECT_NAME, CHANGE_ID);
+    verify(forwarder).indexChange(eq(PROJECT_NAME), eq(CHANGE_ID), any());
   }
 
   @Test
   public void shouldIndexInRemoteOnAccountIndexedEvent() throws Exception {
     indexEventHandler.onAccountIndexed(accountId.get());
-    verify(forwarder).indexAccount(ACCOUNT_ID);
+    verify(forwarder).indexAccount(eq(ACCOUNT_ID), any());
   }
 
   @Test
   public void shouldDeleteFromIndexInRemoteOnChangeDeletedEvent() throws Exception {
     indexEventHandler.onChangeDeleted(changeId.get());
-    verify(forwarder).deleteChangeFromIndex(CHANGE_ID);
+    verify(forwarder).deleteChangeFromIndex(eq(CHANGE_ID), any());
   }
 
   @Test
   public void shouldIndexInRemoteOnGroupIndexedEvent() throws Exception {
     indexEventHandler.onGroupIndexed(accountGroupUUID.get());
-    verify(forwarder).indexGroup(UUID);
+    verify(forwarder).indexGroup(eq(UUID), any());
   }
 
   @Test

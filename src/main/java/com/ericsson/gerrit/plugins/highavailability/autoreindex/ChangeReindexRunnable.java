@@ -103,7 +103,7 @@ public class ChangeReindexRunnable extends ReindexRunnable<Change> {
       if (changeTs.after(sinceTs)) {
         log.info(
             "Index {}/{}/{} was updated after {}", c.getProject(), c.getId(), changeTs, sinceTs);
-        changeIdx.index(c.getProject() + "~" + c.getId(), Operation.INDEX);
+        changeIdx.index(c.getProject() + "~" + c.getId(), Operation.INDEX, Optional.empty());
         return Optional.of(changeTs);
       }
     } catch (OrmException | IOException e) {
