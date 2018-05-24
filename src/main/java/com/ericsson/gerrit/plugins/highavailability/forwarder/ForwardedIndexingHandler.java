@@ -44,9 +44,7 @@ public abstract class ForwardedIndexingHandler<T> {
 
   protected abstract void doIndex(T id) throws IOException, OrmException;
 
-  protected void doDelete(T id) throws IOException {
-    throw new UnsupportedOperationException("Delete from index not supported");
-  }
+  protected abstract void doDelete(T id) throws IOException;
 
   /**
    * Index an item in the local node, indexing will not be forwarded to the other node.

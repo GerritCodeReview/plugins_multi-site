@@ -17,6 +17,7 @@ package com.ericsson.gerrit.plugins.highavailability.websession.file;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.ericsson.gerrit.plugins.highavailability.websession.file.FileBasedWebsessionCache.TimeMachine;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.httpd.WebSessionManager.Val;
 import java.io.IOException;
@@ -28,7 +29,6 @@ import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -141,7 +141,7 @@ public class FileBasedWebSessionCacheTest {
     loadKeyToCacheDir(EMPTY_KEY);
     loadKeyToCacheDir(INVALID_KEY);
     loadKeyToCacheDir(EXISTING_KEY);
-    List<String> keys = Arrays.asList(new String[] {EMPTY_KEY, EXISTING_KEY});
+    List<String> keys = ImmutableList.of(EMPTY_KEY, EXISTING_KEY);
     assertThat(cache.getAllPresent(keys).size()).isEqualTo(1);
     assertThat(cache.getAllPresent(keys)).containsKey(EXISTING_KEY);
   }

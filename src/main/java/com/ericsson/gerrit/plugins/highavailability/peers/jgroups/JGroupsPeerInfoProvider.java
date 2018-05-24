@@ -152,9 +152,8 @@ public class JGroupsPeerInfoProvider extends ReceiverAdapter
     try {
       if (protocolStack.isPresent()) {
         return new JChannel(protocolStack.get().toString());
-      } else {
-        return new JChannel();
       }
+      return new JChannel();
     } catch (Exception e) {
       log.error(
           "Unable to create a channel with protocol stack: {}",
