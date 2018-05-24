@@ -32,8 +32,7 @@ class IndexEventHandler
   private final Executor executor;
   private final Forwarder forwarder;
   private final String pluginName;
-  private final Set<IndexTask> queuedTasks =
-      Collections.newSetFromMap(new ConcurrentHashMap<IndexTask, Boolean>());
+  private final Set<IndexTask> queuedTasks = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
   @Inject
   IndexEventHandler(

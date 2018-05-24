@@ -30,9 +30,17 @@ public class PeerInfoModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-    bind(new TypeLiteral<Optional<PeerInfo>>() {}).toProvider(PeerInfoProvider.class);
-    if (strategy == Configuration.PeerInfoStrategy.JGROUPS) {
-      listener().to(JGroupsPeerInfoProvider.class);
+    switch (strategy) {
+      case STATIC:
+        bind(new TypeLiteral<Optional<PeerInfo>>() {})
+            .toProvider(PluginConfigPeerInfoProvider.class);
+        break;
+      case JGROUPS:
+        bind(new TypeLiteral<Optional<PeerInfo>>() {}).toProvider(JGroupsPeerInfoProvider.class);
+        listener().to(JGroupsPeerInfoProvider.class);
+        break;
+      default:
+        throw new IllegalArgumentException("Unsupported peer info strategy: " + strategy);
     }
   }
 }

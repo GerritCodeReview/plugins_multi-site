@@ -39,7 +39,7 @@ public class CacheExecutorProviderTest {
   @Before
   public void setUp() throws Exception {
     WorkQueue workQueueMock = mock(WorkQueue.class);
-    when(workQueueMock.createQueue(4, "Forward-cache-eviction-event")).thenReturn(executorMock);
+    when(workQueueMock.createQueue(4, "Forward-Cache-Eviction-Event")).thenReturn(executorMock);
     Configuration configMock = mock(Configuration.class, Answers.RETURNS_DEEP_STUBS);
     when(configMock.cache().threadPoolSize()).thenReturn(4);
 

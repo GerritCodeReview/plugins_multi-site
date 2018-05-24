@@ -24,6 +24,6 @@ class EventExecutorProvider extends ExecutorProvider {
 
   @Inject
   EventExecutorProvider(WorkQueue workQueue) {
-    super(workQueue, 1, "Forward-stream-event");
+    super(workQueue, 1, "Forward-Stream-Event");
   }
 }

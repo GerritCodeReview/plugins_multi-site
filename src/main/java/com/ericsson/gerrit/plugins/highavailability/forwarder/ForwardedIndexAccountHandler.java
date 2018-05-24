@@ -41,4 +41,9 @@ public class ForwardedIndexAccountHandler extends ForwardedIndexingHandler<Accou
     indexer.index(id);
     log.debug("Account {} successfully indexed", id);
   }
+
+  @Override
+  protected void doDelete(Account.Id id) {
+    throw new UnsupportedOperationException("Delete from account index not supported");
+  }
 }

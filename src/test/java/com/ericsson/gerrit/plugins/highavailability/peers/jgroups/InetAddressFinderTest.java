@@ -41,7 +41,7 @@ public class InetAddressFinderTest {
 
   @Test
   public void testNoSkipWhenEmptySkipList() {
-    when(configuration.jgroups().skipInterface()).thenReturn(ImmutableList.<String>of());
+    when(configuration.jgroups().skipInterface()).thenReturn(ImmutableList.of());
     assertThat(finder.shouldSkip("foo")).isFalse();
     assertThat(finder.shouldSkip("bar")).isFalse();
   }
