@@ -53,7 +53,7 @@ class EventRestApiServlet extends AbstractRestApiServlet {
     try {
       if (!MediaType.parse(req.getContentType()).is(JSON_UTF_8)) {
         sendError(
-            rsp, SC_UNSUPPORTED_MEDIA_TYPE, "Expecting " + JSON_UTF_8.toString() + " content type");
+            rsp, SC_UNSUPPORTED_MEDIA_TYPE, "Expecting " + JSON_UTF_8 + " content type");
         return;
       }
       forwardedEventHandler.dispatch(getEventFromRequest(req));
