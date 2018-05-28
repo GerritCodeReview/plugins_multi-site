@@ -51,10 +51,12 @@ import com.google.gerrit.pgm.init.api.InitFlags;
 import com.google.gerrit.pgm.init.api.InitStep;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.EnumSet;
 import java.util.Objects;
+import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.eclipse.jgit.util.FS;
 
@@ -199,7 +201,8 @@ public class Setup implements InitStep {
     return Integer.toString(n);
   }
 
-  private boolean createHAReplicaSite(FileBasedConfig pluginConfig) throws Exception {
+  private boolean createHAReplicaSite(FileBasedConfig pluginConfig)
+      throws ConfigInvalidException, IOException {
     ui.header("HA replica site setup");
     ui.message(
         "It is possible to create a copy of the master site and configure both sites to run\n"
