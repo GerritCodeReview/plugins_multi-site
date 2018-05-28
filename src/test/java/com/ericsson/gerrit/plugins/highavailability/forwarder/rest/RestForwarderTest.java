@@ -261,7 +261,7 @@ public class RestForwarderTest {
     String projectName = PROJECT_TO_ADD;
     doThrow(new IOException())
         .when(httpSessionMock)
-        .post((buildProjectListCacheEndpoint(projectName)));
+        .post(buildProjectListCacheEndpoint(projectName));
     assertThat(forwarder.addToProjectList(projectName)).isFalse();
   }
 
