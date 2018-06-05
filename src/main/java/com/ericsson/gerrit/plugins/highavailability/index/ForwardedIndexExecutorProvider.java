@@ -12,23 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.ericsson.gerrit.plugins.highavailability.forwarder;
+package com.ericsson.gerrit.plugins.highavailability.index;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
+import com.ericsson.gerrit.plugins.highavailability.ExecutorProvider;
+import com.google.gerrit.server.git.WorkQueue;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
-public class IndexEvent {
-  public long eventCreatedOn = System.currentTimeMillis() / 1000;
-  public String targetSha;
+@Singleton
+class ForwardedIndexExecutorProvider extends ExecutorProvider {
 
-  @Override
-  public String toString() {
-    return "IndexEvent@" + format(eventCreatedOn) + ((targetSha != null) ? "/" + targetSha : "");
-  }
-
-  public static String format(long eventTs) {
-    return LocalDateTime.ofEpochSecond(eventTs, 0, ZoneOffset.UTC)
-        .format(DateTimeFormatter.ISO_DATE_TIME);
+  @Inject
+  ForwardedIndexExecutorProvider(WorkQueue workQueue, Configuration config) {
+    super(workQueue, config.index().threadPoolSize(), "Forwarded-Index-Event");
   }
 }

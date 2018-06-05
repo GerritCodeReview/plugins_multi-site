@@ -188,6 +188,17 @@ the plugin will keep retrying to forward a message for one hour.
 :   Maximum number of threads used to send index events to the target instance.
     Defaults to 4.
 
+```index.maxTries```
+:   Maximum number of times the plugin should attempt to reindex changes.
+    Setting this value to 0 will disable retries. After this number of failed tries,
+    an error is logged and the local index should be considered stale and needs
+    to be investigated and manually reindexed.
+    Defaults to 2.
+
+```index.retryInterval```
+:   The interval of time in milliseconds between the subsequent auto-retries.
+    Defaults to 30000 (30 seconds).
+
 ```websession.synchronize```
 :   Whether to synchronize web sessions.
     Defaults to true.
