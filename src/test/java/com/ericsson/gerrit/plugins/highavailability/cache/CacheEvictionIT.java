@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Ericsson
+// Copyright (C) 2015 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,10 +40,9 @@ import org.junit.Test;
 @NoHttpd
 @UseSsh
 @TestPlugin(
-  name = "high-availability",
-  sysModule = "com.ericsson.gerrit.plugins.highavailability.Module",
-  httpModule = "com.ericsson.gerrit.plugins.highavailability.HttpModule"
-)
+    name = "high-availability",
+    sysModule = "com.ericsson.gerrit.plugins.highavailability.Module",
+    httpModule = "com.ericsson.gerrit.plugins.highavailability.HttpModule")
 public class CacheEvictionIT extends LightweightPluginDaemonTest {
   private static final int PORT = 18888;
   private static final String URL = "http://localhost:" + PORT;

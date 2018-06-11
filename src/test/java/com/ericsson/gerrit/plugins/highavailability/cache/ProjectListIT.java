@@ -39,10 +39,9 @@ import org.junit.Test;
 
 @NoHttpd
 @TestPlugin(
-  name = "high-availability",
-  sysModule = "com.ericsson.gerrit.plugins.highavailability.Module",
-  httpModule = "com.ericsson.gerrit.plugins.highavailability.HttpModule"
-)
+    name = "high-availability",
+    sysModule = "com.ericsson.gerrit.plugins.highavailability.Module",
+    httpModule = "com.ericsson.gerrit.plugins.highavailability.HttpModule")
 public class ProjectListIT extends LightweightPluginDaemonTest {
   private static final int PORT = 18888;
   private static final String URL = "http://localhost:" + PORT;

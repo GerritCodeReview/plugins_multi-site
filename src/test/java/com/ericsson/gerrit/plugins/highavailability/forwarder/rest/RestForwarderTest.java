@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Ericsson
+// Copyright (C) 2015 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -265,7 +265,7 @@ public class RestForwarderTest {
     String projectName = PROJECT_TO_ADD;
     doThrow(new IOException())
         .when(httpSessionMock)
-        .post((buildProjectListCacheEndpoint(projectName)));
+        .post(buildProjectListCacheEndpoint(projectName));
     assertThat(forwarder.addToProjectList(projectName)).isFalse();
   }
 

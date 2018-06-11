@@ -56,10 +56,7 @@ class InetAddressFinder {
   Optional<InetAddress> findFirstAppropriateAddress(List<NetworkInterface> networkInterfaces)
       throws SocketException {
     for (NetworkInterface ni : networkInterfaces) {
-      if (ni.isLoopback() || !ni.isUp() || !ni.supportsMulticast()) {
-        continue;
-      }
-      if (shouldSkip(ni.getName())) {
+      if (ni.isLoopback() || !ni.isUp() || !ni.supportsMulticast() || shouldSkip(ni.getName())) {
         continue;
       }
       Enumeration<InetAddress> inetAddresses = ni.getInetAddresses();
