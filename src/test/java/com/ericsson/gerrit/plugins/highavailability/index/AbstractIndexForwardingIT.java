@@ -41,10 +41,9 @@ import org.junit.Test;
 @Ignore
 @NoHttpd
 @TestPlugin(
-  name = "high-availability",
-  sysModule = "com.ericsson.gerrit.plugins.highavailability.Module",
-  httpModule = "com.ericsson.gerrit.plugins.highavailability.HttpModule"
-)
+    name = "high-availability",
+    sysModule = "com.ericsson.gerrit.plugins.highavailability.Module",
+    httpModule = "com.ericsson.gerrit.plugins.highavailability.HttpModule")
 public abstract class AbstractIndexForwardingIT extends LightweightPluginDaemonTest {
   private static final int PORT = 18889;
   private static final String URL = "http://localhost:" + PORT;

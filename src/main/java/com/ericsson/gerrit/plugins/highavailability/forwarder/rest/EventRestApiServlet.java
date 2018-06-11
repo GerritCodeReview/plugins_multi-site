@@ -1,4 +1,4 @@
-// Copyright (C) 2015 Ericsson
+// Copyright (C) 2015 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,8 +53,7 @@ class EventRestApiServlet extends AbstractRestApiServlet {
     setHeaders(rsp);
     try {
       if (!MediaType.parse(req.getContentType()).is(JSON_UTF_8)) {
-        sendError(
-            rsp, SC_UNSUPPORTED_MEDIA_TYPE, "Expecting " + JSON_UTF_8 + " content type");
+        sendError(rsp, SC_UNSUPPORTED_MEDIA_TYPE, "Expecting " + JSON_UTF_8 + " content type");
         return;
       }
       forwardedEventHandler.dispatch(getEventFromRequest(req));

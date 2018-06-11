@@ -26,10 +26,9 @@ import org.junit.Test;
 
 @NoHttpd
 @TestPlugin(
-  name = "high-availability",
-  sysModule = "com.ericsson.gerrit.plugins.highavailability.Module",
-  httpModule = "com.ericsson.gerrit.plugins.highavailability.HttpModule"
-)
+    name = "high-availability",
+    sysModule = "com.ericsson.gerrit.plugins.highavailability.Module",
+    httpModule = "com.ericsson.gerrit.plugins.highavailability.HttpModule")
 public class ProjectListRestApiServletIT extends LightweightPluginDaemonTest {
   private static final Project.NameKey SOME_PROJECT = new Project.NameKey("org-a/some-project");
 
