@@ -53,6 +53,7 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
     try (ReviewDb db = schemaFactory.open()) {
       change = changeFinder.findOne(id);
       if (change != null) {
+        change.reload();
         indexer.index(db, change.getChange());
         log.debug("Change {} successfully indexed", id);
       }
