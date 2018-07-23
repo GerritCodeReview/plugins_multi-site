@@ -33,8 +33,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +53,6 @@ public class IndexTs
   private volatile LocalDateTime groupTs;
 
   class FlusherRunner implements Runnable {
-    private Map<AbstractIndexRestApiServlet.IndexName, LocalDateTime> storedTs = new HashMap<>();
 
     @Override
     public void run() {
@@ -65,12 +62,11 @@ public class IndexTs
     }
 
     private void store(AbstractIndexRestApiServlet.IndexName index, LocalDateTime latestTs) {
-      LocalDateTime currTs = storedTs.get(index);
-      if (currTs == null || latestTs.isAfter(currTs)) {
+      Optional<LocalDateTime> currTs = IndexTs.this.getUpdateTs(index);
+      if (!currTs.isPresent() || latestTs.isAfter(currTs.get())) {
         Path indexTsFile = dataDir.resolve(index.name().toLowerCase());
         try {
           Files.write(indexTsFile, latestTs.format(formatter).getBytes(StandardCharsets.UTF_8));
-          storedTs.put(index, currTs);
         } catch (IOException e) {
           log.error("Unable to update last timestamp for index " + index, e);
         }
