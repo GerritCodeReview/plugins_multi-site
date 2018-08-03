@@ -221,7 +221,9 @@ public class Configuration {
 
     private PeerInfo(Config cfg) {
       strategy = cfg.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY);
-      log.debug("Strategy: {}", strategy.name());
+      if (log.isDebugEnabled()) {
+        log.debug("Strategy: {}", strategy.name());
+      }
     }
 
     public PeerInfoStrategy strategy() {
