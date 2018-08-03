@@ -42,76 +42,12 @@ import org.slf4j.LoggerFactory;
 public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
-  // main section
-  static final String MAIN_SECTION = "main";
-  static final String SHARED_DIRECTORY_KEY = "sharedDirectory";
-  static final String DEFAULT_SHARED_DIRECTORY = "shared";
-
-  // autoReindex section
-  static final String AUTO_REINDEX_SECTION = "autoReindex";
-  static final String ENABLED = "enabled";
-  static final String DELAY = "delay";
-  static final String POLL_INTERVAL = "pollInterval";
-
-  // peerInfo section
+  // common parameter to peerInfo section
   static final String PEER_INFO_SECTION = "peerInfo";
-  static final String STATIC_SUBSECTION = PeerInfoStrategy.STATIC.name().toLowerCase();
-  static final String JGROUPS_SUBSECTION = PeerInfoStrategy.JGROUPS.name().toLowerCase();
-  static final String URL_KEY = "url";
-  static final String STRATEGY_KEY = "strategy";
-  static final String MY_URL_KEY = "myUrl";
-
-  // jgroups section
-  static final String JGROUPS_SECTION = "jgroups";
-  static final String SKIP_INTERFACE_KEY = "skipInterface";
-  static final String CLUSTER_NAME_KEY = "clusterName";
-  static final String PROTOCOL_STACK_KEY = "protocolStack";
-
-  // http section
-  static final String HTTP_SECTION = "http";
-  static final String USER_KEY = "user";
-  static final String PASSWORD_KEY = "password";
-  static final String CONNECTION_TIMEOUT_KEY = "connectionTimeout";
-  static final String SOCKET_TIMEOUT_KEY = "socketTimeout";
-  static final String MAX_TRIES_KEY = "maxTries";
-  static final String RETRY_INTERVAL_KEY = "retryInterval";
-
-  // cache section
-  static final String CACHE_SECTION = "cache";
-  static final String PATTERN_KEY = "pattern";
-
-  // event section
-  static final String EVENT_SECTION = "event";
-
-  // index section
-  static final String INDEX_SECTION = "index";
 
   // common parameters to cache and index sections
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
-
-  // common parameters to cache, event index and websession sections
-  static final String SYNCHRONIZE_KEY = "synchronize";
-
-  // health check section
-  static final String HEALTH_CHECK_SECTION = "healthCheck";
-  static final String ENABLE_KEY = "enable";
-  static final boolean DEFAULT_HEALTH_CHECK_ENABLED = true;
-
-  // websession section
-  static final String WEBSESSION_SECTION = "websession";
-  static final String CLEANUP_INTERVAL_KEY = "cleanupInterval";
-
-  static final int DEFAULT_TIMEOUT_MS = 5000;
-  static final int DEFAULT_MAX_TRIES = 360;
-  static final int DEFAULT_RETRY_INTERVAL = 10000;
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
-  static final String DEFAULT_CLEANUP_INTERVAL = "24 hours";
-  static final long DEFAULT_CLEANUP_INTERVAL_MS = HOURS.toMillis(24);
-  static final boolean DEFAULT_SYNCHRONIZE = true;
-  static final PeerInfoStrategy DEFAULT_PEER_INFO_STRATEGY = PeerInfoStrategy.STATIC;
-  static final ImmutableList<String> DEFAULT_SKIP_INTERFACE_LIST =
-      ImmutableList.of("lo*", "utun*", "awdl*");
-  static final String DEFAULT_CLUSTER_NAME = "GerritHA";
 
   private final Main main;
   private final AutoReindex autoReindex;
@@ -221,6 +157,10 @@ public class Configuration {
   }
 
   public static class Main {
+    static final String MAIN_SECTION = "main";
+    static final String SHARED_DIRECTORY_KEY = "sharedDirectory";
+    static final String DEFAULT_SHARED_DIRECTORY = "shared";
+
     private final Path sharedDirectory;
 
     private Main(SitePaths site, Config cfg) {
@@ -242,6 +182,11 @@ public class Configuration {
   }
 
   public static class AutoReindex {
+    static final String AUTO_REINDEX_SECTION = "autoReindex";
+    static final String ENABLED = "enabled";
+    static final String DELAY = "delay";
+    static final String POLL_INTERVAL = "pollInterval";
+
     private final boolean enabled;
     private final long delaySec;
     private final long pollSec;
@@ -269,6 +214,9 @@ public class Configuration {
   }
 
   public static class PeerInfo {
+    static final PeerInfoStrategy DEFAULT_PEER_INFO_STRATEGY = PeerInfoStrategy.STATIC;
+    static final String STRATEGY_KEY = "strategy";
+
     private final PeerInfoStrategy strategy;
 
     private PeerInfo(Config cfg) {
@@ -281,7 +229,10 @@ public class Configuration {
     }
   }
 
-  public class PeerInfoStatic {
+  public static class PeerInfoStatic {
+    static final String STATIC_SUBSECTION = PeerInfoStrategy.STATIC.name().toLowerCase();
+    static final String URL_KEY = "url";
+
     private final String url;
 
     private PeerInfoStatic(Config cfg) {
@@ -297,6 +248,9 @@ public class Configuration {
   }
 
   public static class PeerInfoJGroups {
+    static final String JGROUPS_SUBSECTION = PeerInfoStrategy.JGROUPS.name().toLowerCase();
+    static final String MY_URL_KEY = "myUrl";
+
     private final String myUrl;
 
     private PeerInfoJGroups(Config cfg) {
@@ -310,6 +264,14 @@ public class Configuration {
   }
 
   public static class JGroups {
+    static final String JGROUPS_SECTION = "jgroups";
+    static final String SKIP_INTERFACE_KEY = "skipInterface";
+    static final String CLUSTER_NAME_KEY = "clusterName";
+    static final String PROTOCOL_STACK_KEY = "protocolStack";
+    static final ImmutableList<String> DEFAULT_SKIP_INTERFACE_LIST =
+        ImmutableList.of("lo*", "utun*", "awdl*");
+    static final String DEFAULT_CLUSTER_NAME = "GerritHA";
+
     private final ImmutableList<String> skipInterface;
     private final String clusterName;
     private final Optional<Path> protocolStack;
@@ -351,6 +313,18 @@ public class Configuration {
   }
 
   public static class Http {
+    static final String HTTP_SECTION = "http";
+    static final String USER_KEY = "user";
+    static final String PASSWORD_KEY = "password";
+    static final String CONNECTION_TIMEOUT_KEY = "connectionTimeout";
+    static final String SOCKET_TIMEOUT_KEY = "socketTimeout";
+    static final String MAX_TRIES_KEY = "maxTries";
+    static final String RETRY_INTERVAL_KEY = "retryInterval";
+
+    static final int DEFAULT_TIMEOUT_MS = 5000;
+    static final int DEFAULT_MAX_TRIES = 360;
+    static final int DEFAULT_RETRY_INTERVAL = 10000;
+
     private final String user;
     private final String password;
     private final int connectionTimeout;
@@ -394,6 +368,9 @@ public class Configuration {
 
   /** Common parameters to cache, event, index and websession */
   public abstract static class Forwarding {
+    static final boolean DEFAULT_SYNCHRONIZE = true;
+    static final String SYNCHRONIZE_KEY = "synchronize";
+
     private final boolean synchronize;
 
     private Forwarding(Config cfg, String section) {
@@ -417,6 +394,9 @@ public class Configuration {
   }
 
   public static class Cache extends Forwarding {
+    static final String CACHE_SECTION = "cache";
+    static final String PATTERN_KEY = "pattern";
+
     private final int threadPoolSize;
     private final List<String> patterns;
 
@@ -436,12 +416,16 @@ public class Configuration {
   }
 
   public static class Event extends Forwarding {
+    static final String EVENT_SECTION = "event";
+
     private Event(Config cfg) {
       super(cfg, EVENT_SECTION);
     }
   }
 
   public static class Index extends Forwarding {
+    static final String INDEX_SECTION = "index";
+
     private final int threadPoolSize;
 
     private Index(Config cfg) {
@@ -455,6 +439,11 @@ public class Configuration {
   }
 
   public static class Websession extends Forwarding {
+    static final String WEBSESSION_SECTION = "websession";
+    static final String CLEANUP_INTERVAL_KEY = "cleanupInterval";
+    static final String DEFAULT_CLEANUP_INTERVAL = "24 hours";
+    static final long DEFAULT_CLEANUP_INTERVAL_MS = HOURS.toMillis(24);
+
     private final long cleanupInterval;
 
     private Websession(Config cfg) {
@@ -472,6 +461,10 @@ public class Configuration {
   }
 
   public static class HealthCheck {
+    static final String HEALTH_CHECK_SECTION = "healthCheck";
+    static final String ENABLE_KEY = "enable";
+    static final boolean DEFAULT_HEALTH_CHECK_ENABLED = true;
+
     private final boolean enabled;
 
     private HealthCheck(Config cfg) {
