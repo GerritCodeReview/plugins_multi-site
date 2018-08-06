@@ -1,7 +1,8 @@
+
 @PLUGIN@ Configuration
 =========================
 
-The @PLUGIN@ plugin must be installed on both instances and the following fields
+The @PLUGIN@ plugin must be installed on all the instances and the following fields
 should be specified in `$site_path/etc/@PLUGIN@.config` file:
 
 File '@PLUGIN@.config'
@@ -17,7 +18,8 @@ File '@PLUGIN@.config'
 [peerInfo]
   strategy = static
 [peerInfo "static"]
-  url = target_instance_url
+  url = first_target_instance_url
+  url = second_target_instance_url
 [http]
   user = username
   password = password
@@ -93,7 +95,8 @@ over a JGroups multicast message. JGroups takes care to inform each cluster when
 a member joins or leaves the cluster.
 
 ```peerInfo.static.url```
-:   Specify the URL for the peer instance.
+:   Specify the URL for the peer instance. If more than one peer instance is to be
+    configured, add as many url entries as necessary.
 
 ```peerInfo.jgroups.myUrl```
 :   The URL of this instance to be broadcast to other peers. If not specified, the
