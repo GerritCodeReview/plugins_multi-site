@@ -14,6 +14,7 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
+import com.ericsson.gerrit.plugins.highavailability.autoreindex.AutoReindexModule;
 import com.ericsson.gerrit.plugins.highavailability.cache.CacheModule;
 import com.ericsson.gerrit.plugins.highavailability.event.EventModule;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwarderModule;
@@ -49,6 +50,9 @@ class Module extends AbstractModule {
     }
     if (config.index().synchronize()) {
       install(new IndexModule());
+    }
+    if (config.autoReindex().enabled()) {
+      install(new AutoReindexModule());
     }
     install(new PeerInfoModule(config.peerInfo().strategy()));
   }
