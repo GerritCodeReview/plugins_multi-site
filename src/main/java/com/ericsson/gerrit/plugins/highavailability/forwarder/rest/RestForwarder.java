@@ -28,6 +28,8 @@ import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import java.io.IOException;
 import javax.net.ssl.SSLException;
+import org.apache.http.HttpException;
+import org.apache.http.client.ClientProtocolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -198,7 +200,10 @@ class RestForwarder implements Forwarder {
     abstract HttpResult send() throws IOException;
 
     boolean isRecoverable(IOException e) {
-      return !(e instanceof SSLException);
+      Throwable cause = e.getCause();
+      return !(e instanceof SSLException
+          || cause instanceof HttpException
+          || cause instanceof ClientProtocolException);
     }
   }
 }
