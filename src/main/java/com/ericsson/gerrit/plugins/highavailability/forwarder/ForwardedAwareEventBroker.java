@@ -14,7 +14,6 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
-import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventBroker;
@@ -22,6 +21,7 @@ import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.events.UserScopedEventListener;
 import com.google.gerrit.server.notedb.ChangeNotes.Factory;
 import com.google.gerrit.server.permissions.PermissionBackend;
+import com.google.gerrit.server.plugincontext.PluginSetContext;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -30,8 +30,8 @@ class ForwardedAwareEventBroker extends EventBroker {
 
   @Inject
   ForwardedAwareEventBroker(
-      DynamicSet<UserScopedEventListener> listeners,
-      DynamicSet<EventListener> unrestrictedListeners,
+      PluginSetContext<UserScopedEventListener> listeners,
+      PluginSetContext<EventListener> unrestrictedListeners,
       PermissionBackend permissionBackend,
       ProjectCache projectCache,
       Factory notesFactory,

@@ -9,3 +9,4 @@
 /bazel-testlogs
 /bazel-high-availability
 /eclipse-out/
+/.apt_generated/

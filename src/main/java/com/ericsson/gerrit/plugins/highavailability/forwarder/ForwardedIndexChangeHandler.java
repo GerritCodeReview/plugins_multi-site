@@ -17,7 +17,7 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder;
 import com.google.common.base.Splitter;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.server.ReviewDb;
-import com.google.gerrit.server.ChangeFinder;
+import com.google.gerrit.server.change.ChangeFinder;
 import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.project.NoSuchChangeException;

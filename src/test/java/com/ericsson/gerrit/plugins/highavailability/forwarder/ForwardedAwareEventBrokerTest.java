@@ -21,6 +21,8 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
+import com.google.gerrit.server.plugincontext.PluginContext.PluginMetrics;
+import com.google.gerrit.server.plugincontext.PluginSetContext;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,9 +34,11 @@ public class ForwardedAwareEventBrokerTest {
 
   @Before
   public void setUp() {
+    PluginMetrics mockMetrics = mock(PluginMetrics.class);
     listenerMock = mock(EventListener.class);
-    DynamicSet<EventListener> listeners = DynamicSet.emptySet();
-    listeners.add("high-availability", listenerMock);
+    DynamicSet<EventListener> set = DynamicSet.emptySet();
+    set.add("high-availability", listenerMock);
+    PluginSetContext<EventListener> listeners = new PluginSetContext<>(set, mockMetrics);
     broker = new ForwardedAwareEventBroker(null, listeners, null, null, null, null);
   }
 
