@@ -15,7 +15,6 @@
 package com.ericsson.gerrit.plugins.highavailability;
 
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.RestForwarderServletModule;
-import com.ericsson.gerrit.plugins.highavailability.health.HealthServletModule;
 import com.ericsson.gerrit.plugins.highavailability.websession.file.FileBasedWebsessionModule;
 import com.google.gerrit.httpd.plugins.HttpPluginModule;
 import com.google.inject.Inject;
@@ -31,9 +30,6 @@ class HttpModule extends HttpPluginModule {
   @Override
   protected void configureServlets() {
     install(new RestForwarderServletModule());
-    if (config.healthCheck().enabled()) {
-      install(new HealthServletModule());
-    }
     if (config.websession().synchronize()) {
       install(new FileBasedWebsessionModule());
     }
