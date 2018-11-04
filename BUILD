@@ -17,9 +17,7 @@ gerrit_plugin(
         "Implementation-URL: https://review.gerrithub.io/admin/repos/GerritForge/plugins_multi-site",
     ],
     resources = glob(["src/main/resources/**/*"]),
-    deps = [
-        "@jgroups//jar",
-    ],
+    deps = [],
 )
 
 junit_tests(

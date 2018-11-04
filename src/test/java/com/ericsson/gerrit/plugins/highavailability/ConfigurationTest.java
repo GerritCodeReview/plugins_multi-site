@@ -34,20 +34,10 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.Http.RE
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.Http.SOCKET_TIMEOUT_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.Http.USER_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.Index.INDEX_SECTION;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGroups.CLUSTER_NAME_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGroups.DEFAULT_CLUSTER_NAME;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGroups.DEFAULT_SKIP_INTERFACE_LIST;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGroups.JGROUPS_SECTION;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGroups.PROTOCOL_STACK_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGroups.SKIP_INTERFACE_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.Main.DEFAULT_SHARED_DIRECTORY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.Main.MAIN_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.Main.SHARED_DIRECTORY_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PEER_INFO_SECTION;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfo.DEFAULT_PEER_INFO_STRATEGY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfo.STRATEGY_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoJGroups.JGROUPS_SUBSECTION;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoJGroups.MY_URL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStatic.STATIC_SUBSECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStatic.URL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.THREAD_POOL_SIZE_KEY;
@@ -55,12 +45,10 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.Websess
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.Websession.DEFAULT_CLEANUP_INTERVAL_MS;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.Websession.WEBSESSION_SECTION;
 import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth8.assertThat;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-import com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStrategy;
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
@@ -109,82 +97,12 @@ public class ConfigurationTest {
   }
 
   @Test
-  public void testGetPeerInfoStrategy() {
-    assertThat(getConfiguration().peerInfo().strategy()).isSameAs(DEFAULT_PEER_INFO_STRATEGY);
-
-    globalPluginConfig.setString(
-        PEER_INFO_SECTION, null, STRATEGY_KEY, PeerInfoStrategy.STATIC.name());
-    assertThat(getConfiguration().peerInfo().strategy()).isSameAs(PeerInfoStrategy.STATIC);
-
-    globalPluginConfig.setString(
-        PEER_INFO_SECTION, null, STRATEGY_KEY, PeerInfoStrategy.JGROUPS.name());
-    assertThat(getConfiguration().peerInfo().strategy()).isSameAs(PeerInfoStrategy.JGROUPS);
-  }
-
-  @Test
   public void testGetUrls() throws Exception {
     assertThat(getConfiguration().peerInfoStatic().urls()).isEmpty();
 
     globalPluginConfig.setStringList(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY, URLS);
     assertThat(getConfiguration().peerInfoStatic().urls())
         .containsAllIn(ImmutableList.of(URL, "http://anotherUrl"));
-  }
-
-  @Test
-  public void testJGroupsPeerInfoNullWhenStaticPeerInfoConfig() throws Exception {
-    globalPluginConfig.setString(
-        PEER_INFO_SECTION, null, STRATEGY_KEY, PeerInfoStrategy.STATIC.name());
-    assertThat(getConfiguration().peerInfoJGroups()).isNull();
-  }
-
-  @Test
-  public void testGetJGroupsCluster() throws Exception {
-    assertThat(getConfiguration().jgroups().clusterName()).isEqualTo(DEFAULT_CLUSTER_NAME);
-
-    globalPluginConfig.setString(JGROUPS_SECTION, null, CLUSTER_NAME_KEY, "foo");
-    assertThat(getConfiguration().jgroups().clusterName()).isEqualTo("foo");
-  }
-
-  @Test
-  public void testGetJGroupsSkipInterface() throws Exception {
-    assertThat(getConfiguration().jgroups().skipInterface()).isEqualTo(DEFAULT_SKIP_INTERFACE_LIST);
-
-    globalPluginConfig.setStringList(
-        JGROUPS_SECTION, null, SKIP_INTERFACE_KEY, ImmutableList.of("lo*", "eth0"));
-    assertThat(getConfiguration().jgroups().skipInterface()).containsAllOf("lo*", "eth0").inOrder();
-  }
-
-  @Test
-  public void testGetJGroupsMyUrl() throws Exception {
-    globalPluginConfig.setString(
-        PEER_INFO_SECTION, null, STRATEGY_KEY, PeerInfoStrategy.JGROUPS.name());
-    assertThat(getConfiguration().peerInfoJGroups().myUrl()).isNull();
-
-    globalPluginConfig.setString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, MY_URL_KEY, URL);
-    assertThat(getConfiguration().peerInfoJGroups().myUrl()).isEqualTo(URL);
-
-    globalPluginConfig.setString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, MY_URL_KEY, URL + "/");
-    assertThat(getConfiguration().peerInfoJGroups().myUrl()).isEqualTo(URL);
-  }
-
-  @Test
-  public void testGetJgroupsProtocolWhenNotSpecified() throws Exception {
-    assertThat(getConfiguration().jgroups().protocolStack()).isEmpty();
-  }
-
-  @Test
-  public void testGetJgroupsProtocolWithAbsolutePath() throws Exception {
-    Path path = Paths.get("/path/to/file.xml");
-    globalPluginConfig.setString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY, path.toString());
-    assertThat(getConfiguration().jgroups().protocolStack()).hasValue(path);
-  }
-
-  @Test
-  public void testGetJgroupProtocolWithRelativePath() throws Exception {
-    Path path = Paths.get("file.xml");
-    globalPluginConfig.setString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY, path.toString());
-    assertThat(getConfiguration().jgroups().protocolStack())
-        .hasValue(sitePaths.etc_dir.resolve(path));
   }
 
   @Test
