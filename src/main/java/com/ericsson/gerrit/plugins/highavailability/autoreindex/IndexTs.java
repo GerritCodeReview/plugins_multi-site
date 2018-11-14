@@ -113,7 +113,7 @@ public class IndexTs
           changeNotes == null
               ? LocalDateTime.now()
               : changeNotes.getChange().getLastUpdatedOn().toLocalDateTime());
-    } catch (OrmException e) {
+    } catch (Exception e) {
       log.warn("Unable to update the latest TS for change {}", e);
     }
   }
