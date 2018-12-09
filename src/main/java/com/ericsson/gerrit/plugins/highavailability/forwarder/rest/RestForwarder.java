@@ -17,14 +17,12 @@ package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.Forwarder;
+import com.ericsson.gerrit.plugins.highavailability.forwarder.IndexEvent;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.google.common.base.Joiner;
-import com.google.common.base.Supplier;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.restapi.Url;
 import com.google.gerrit.server.events.Event;
-import com.google.gerrit.server.events.SupplierSerializer;
-import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import java.io.IOException;
 import javax.net.ssl.SSLException;
@@ -46,42 +44,43 @@ class RestForwarder implements Forwarder {
   }
 
   @Override
-  public boolean indexAccount(final int accountId) {
+  public boolean indexAccount(final int accountId, IndexEvent event) {
     return new Request("index account", accountId) {
       @Override
       HttpResult send() throws IOException {
         return httpSession.post(
-            Joiner.on("/").join(pluginRelativePath, "index/account", accountId));
+            Joiner.on("/").join(pluginRelativePath, "index/account", accountId), event);
       }
     }.execute();
   }
 
   @Override
-  public boolean indexChange(final String projectName, final int changeId) {
+  public boolean indexChange(String projectName, int changeId, IndexEvent event) {
     return new Request("index change", changeId) {
       @Override
       HttpResult send() throws IOException {
-        return httpSession.post(buildIndexEndpoint(projectName, changeId));
+        return httpSession.post(buildIndexEndpoint(projectName, changeId), event);
       }
     }.execute();
   }
 
   @Override
-  public boolean deleteChangeFromIndex(final int changeId) {
+  public boolean deleteChangeFromIndex(final int changeId, IndexEvent event) {
     return new Request("delete change", changeId) {
       @Override
       HttpResult send() throws IOException {
-        return httpSession.delete(buildIndexEndpoint(changeId));
+        return httpSession.delete(buildIndexEndpoint(changeId), event);
       }
     }.execute();
   }
 
   @Override
-  public boolean indexGroup(final String uuid) {
+  public boolean indexGroup(final String uuid, IndexEvent event) {
     return new Request("index group", uuid) {
       @Override
       HttpResult send() throws IOException {
-        return httpSession.post(Joiner.on("/").join(pluginRelativePath, "index/group", uuid));
+        return httpSession.post(
+            Joiner.on("/").join(pluginRelativePath, "index/group", uuid), event);
       }
     }.execute();
   }
@@ -101,12 +100,7 @@ class RestForwarder implements Forwarder {
     return new Request("send event", event.type) {
       @Override
       HttpResult send() throws IOException {
-        String serializedEvent =
-            new GsonBuilder()
-                .registerTypeAdapter(Supplier.class, new SupplierSerializer())
-                .create()
-                .toJson(event);
-        return httpSession.post(Joiner.on("/").join(pluginRelativePath, "event"), serializedEvent);
+        return httpSession.post(Joiner.on("/").join(pluginRelativePath, "event"), event);
       }
     }.execute();
   }

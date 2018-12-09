@@ -23,6 +23,7 @@ import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedIndexingH
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.server.index.account.AccountIndexer;
 import java.io.IOException;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -48,7 +49,7 @@ public class ForwardedIndexAccountHandlerTest {
 
   @Test
   public void testSuccessfulIndexing() throws Exception {
-    handler.index(id, Operation.INDEX);
+    handler.index(id, Operation.INDEX, Optional.empty());
     verify(indexerMock).index(id);
   }
 
@@ -56,7 +57,7 @@ public class ForwardedIndexAccountHandlerTest {
   public void deleteIsNotSupported() throws Exception {
     exception.expect(UnsupportedOperationException.class);
     exception.expectMessage("Delete from account index not supported");
-    handler.index(id, Operation.DELETE);
+    handler.index(id, Operation.DELETE, Optional.empty());
   }
 
   @Test
@@ -73,7 +74,7 @@ public class ForwardedIndexAccountHandlerTest {
         .index(id);
 
     assertThat(Context.isForwardedEvent()).isFalse();
-    handler.index(id, Operation.INDEX);
+    handler.index(id, Operation.INDEX, Optional.empty());
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(indexerMock).index(id);
@@ -92,7 +93,7 @@ public class ForwardedIndexAccountHandlerTest {
 
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
-      handler.index(id, Operation.INDEX);
+      handler.index(id, Operation.INDEX, Optional.empty());
       fail("should have thrown an IOException");
     } catch (IOException e) {
       assertThat(e.getMessage()).isEqualTo("someMessage");

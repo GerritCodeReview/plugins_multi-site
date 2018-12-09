@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import org.eclipse.jgit.lib.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,12 @@ public class Configuration {
   static final String MAIN_SECTION = "main";
   static final String SHARED_DIRECTORY_KEY = "sharedDirectory";
   static final String DEFAULT_SHARED_DIRECTORY = "shared";
+
+  // autoReindex section
+  static final String AUTO_REINDEX_SECTION = "autoReindex";
+  static final String ENABLED = "enabled";
+  static final String DELAY = "delay";
+  static final String POLL_INTERVAL = "pollInterval";
 
   // peerInfo section
   static final String PEER_INFO_SECTION = "peerInfo";
@@ -97,6 +104,8 @@ public class Configuration {
   static final int DEFAULT_TIMEOUT_MS = 5000;
   static final int DEFAULT_MAX_TRIES = 360;
   static final int DEFAULT_RETRY_INTERVAL = 10000;
+  static final int DEFAULT_INDEX_MAX_TRIES = 2;
+  static final int DEFAULT_INDEX_RETRY_INTERVAL = 30000;
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
   static final String DEFAULT_CLEANUP_INTERVAL = "24 hours";
   static final long DEFAULT_CLEANUP_INTERVAL_MS = HOURS.toMillis(24);
@@ -107,6 +116,7 @@ public class Configuration {
   static final String DEFAULT_CLUSTER_NAME = "GerritHA";
 
   private final Main main;
+  private final AutoReindex autoReindex;
   private final PeerInfo peerInfo;
   private final JGroups jgroups;
   private final Http http;
@@ -128,6 +138,7 @@ public class Configuration {
       PluginConfigFactory pluginConfigFactory, @PluginName String pluginName, SitePaths site) {
     Config cfg = pluginConfigFactory.getGlobalPluginConfig(pluginName);
     main = new Main(site, cfg);
+    autoReindex = new AutoReindex(cfg);
     peerInfo = new PeerInfo(cfg);
     switch (peerInfo.strategy()) {
       case STATIC:
@@ -150,6 +161,10 @@ public class Configuration {
 
   public Main main() {
     return main;
+  }
+
+  public AutoReindex autoReindex() {
+    return autoReindex;
   }
 
   public PeerInfo peerInfo() {
@@ -225,6 +240,33 @@ public class Configuration {
 
     public Path sharedDirectory() {
       return sharedDirectory;
+    }
+  }
+
+  public static class AutoReindex {
+    private final boolean enabled;
+    private final long delaySec;
+    private final long pollSec;
+
+    public AutoReindex(Config cfg) {
+      this.enabled = cfg.getBoolean(AUTO_REINDEX_SECTION, ENABLED, false);
+      this.delaySec =
+          ConfigUtil.getTimeUnit(cfg, AUTO_REINDEX_SECTION, null, DELAY, 10L, TimeUnit.SECONDS);
+      this.pollSec =
+          ConfigUtil.getTimeUnit(
+              cfg, AUTO_REINDEX_SECTION, null, POLL_INTERVAL, 0L, TimeUnit.SECONDS);
+    }
+
+    public boolean enabled() {
+      return enabled;
+    }
+
+    public long delaySec() {
+      return delaySec;
+    }
+
+    public long pollSec() {
+      return pollSec;
     }
   }
 
@@ -403,14 +445,26 @@ public class Configuration {
 
   public static class Index extends Forwarding {
     private final int threadPoolSize;
+    private final int retryInterval;
+    private final int maxTries;
 
     private Index(Config cfg) {
       super(cfg, INDEX_SECTION);
       threadPoolSize = getInt(cfg, INDEX_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
+      retryInterval = getInt(cfg, INDEX_SECTION, RETRY_INTERVAL_KEY, DEFAULT_INDEX_RETRY_INTERVAL);
+      maxTries = getInt(cfg, INDEX_SECTION, MAX_TRIES_KEY, DEFAULT_INDEX_MAX_TRIES);
     }
 
     public int threadPoolSize() {
       return threadPoolSize;
+    }
+
+    public int retryInterval() {
+      return retryInterval;
+    }
+
+    public int maxTries() {
+      return maxTries;
     }
   }
 
