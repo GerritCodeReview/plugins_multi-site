@@ -18,7 +18,9 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedIndexingHandler.Operation;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.server.index.group.GroupIndexer;
@@ -37,12 +39,16 @@ public class ForwardedIndexGroupHandlerTest {
 
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private GroupIndexer indexerMock;
+  @Mock private Configuration config;
+  @Mock private Configuration.Index index;
   private ForwardedIndexGroupHandler handler;
   private AccountGroup.UUID uuid;
 
   @Before
   public void setUp() throws Exception {
-    handler = new ForwardedIndexGroupHandler(indexerMock);
+    when(config.index()).thenReturn(index);
+    when(index.numStripedLocks()).thenReturn(10);
+    handler = new ForwardedIndexGroupHandler(indexerMock, config);
     uuid = new AccountGroup.UUID("123");
   }
 

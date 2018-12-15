@@ -14,6 +14,7 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
+import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.server.index.group.GroupIndexer;
 import com.google.gwtorm.server.OrmException;
@@ -32,7 +33,8 @@ public class ForwardedIndexGroupHandler extends ForwardedIndexingHandler<Account
   private final GroupIndexer indexer;
 
   @Inject
-  ForwardedIndexGroupHandler(GroupIndexer indexer) {
+  ForwardedIndexGroupHandler(GroupIndexer indexer, Configuration config) {
+    super(config.index().numStripedLocks());
     this.indexer = indexer;
   }
 

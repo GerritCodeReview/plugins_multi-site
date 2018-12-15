@@ -48,6 +48,8 @@ public class Configuration {
   // common parameters to cache and index sections
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
+  static final String NUM_STRIPED_LOCKS = "numStripedLocks";
+  static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
 
   private final Main main;
   private final AutoReindex autoReindex;
@@ -430,13 +432,20 @@ public class Configuration {
 
     private final int threadPoolSize;
 
+    private final int numStripedLocks;
+
     private Index(Config cfg) {
       super(cfg, INDEX_SECTION);
       threadPoolSize = getInt(cfg, INDEX_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
+      numStripedLocks = getInt(cfg, INDEX_SECTION, NUM_STRIPED_LOCKS, DEFAULT_NUM_STRIPED_LOCKS);
     }
 
     public int threadPoolSize() {
       return threadPoolSize;
+    }
+
+    public int numStripedLocks() {
+      return numStripedLocks;
     }
   }
 
