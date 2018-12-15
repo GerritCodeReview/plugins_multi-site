@@ -24,7 +24,6 @@ import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.ChangeFinder;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.gerrit.server.notedb.ChangeNotes;
-import com.google.gwtorm.server.OrmException;
 import com.google.gwtorm.server.SchemaFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -34,8 +33,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import org.slf4j.Logger;
@@ -58,7 +55,6 @@ public class IndexTs
   private volatile LocalDateTime groupTs;
 
   class FlusherRunner implements Runnable {
-    private Map<AbstractIndexRestApiServlet.IndexName, LocalDateTime> storedTs = new HashMap<>();
 
     @Override
     public void run() {
@@ -68,12 +64,11 @@ public class IndexTs
     }
 
     private void store(AbstractIndexRestApiServlet.IndexName index, LocalDateTime latestTs) {
-      LocalDateTime currTs = storedTs.get(index);
-      if (currTs == null || latestTs.isAfter(currTs)) {
+      Optional<LocalDateTime> currTs = IndexTs.this.getUpdateTs(index);
+      if (!currTs.isPresent() || latestTs.isAfter(currTs.get())) {
         Path indexTsFile = dataDir.resolve(index.name().toLowerCase());
         try {
           Files.write(indexTsFile, latestTs.format(formatter).getBytes(StandardCharsets.UTF_8));
-          storedTs.put(index, currTs);
         } catch (IOException e) {
           log.error("Unable to update last timestamp for index " + index, e);
         }

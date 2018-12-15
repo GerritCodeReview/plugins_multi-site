@@ -180,6 +180,10 @@ the plugin will keep retrying to forward a message for one hour.
 :   Whether to synchronize stream events.
     Defaults to true.
 
+```index.numStripedLocks```
+:   Number of striped locks to use for during secondary indexes reindex.
+    Defaults to 10
+
 ```index.synchronize```
 :   Whether to synchronize secondary indexes.
     Defaults to true.
