@@ -124,6 +124,7 @@ public class FileBasedWebSessionCacheTest {
   }
 
   @Test
+  @SuppressWarnings("IncompatibleArgumentType")
   public void getIfPresentInvalidKeyTest() throws Exception {
     loadKeyToCacheDir(INVALID_KEY);
     Path path = websessionDir.resolve(INVALID_KEY);
