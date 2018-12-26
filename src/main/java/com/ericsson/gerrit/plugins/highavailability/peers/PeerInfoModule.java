@@ -18,7 +18,7 @@ import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.peers.jgroups.JGroupsPeerInfoProvider;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.TypeLiteral;
-import java.util.Optional;
+import java.util.Set;
 
 public class PeerInfoModule extends LifecycleModule {
 
@@ -32,11 +32,10 @@ public class PeerInfoModule extends LifecycleModule {
   protected void configure() {
     switch (strategy) {
       case STATIC:
-        bind(new TypeLiteral<Optional<PeerInfo>>() {})
-            .toProvider(PluginConfigPeerInfoProvider.class);
+        bind(new TypeLiteral<Set<PeerInfo>>() {}).toProvider(PluginConfigPeerInfoProvider.class);
         break;
       case JGROUPS:
-        bind(new TypeLiteral<Optional<PeerInfo>>() {}).toProvider(JGroupsPeerInfoProvider.class);
+        bind(new TypeLiteral<Set<PeerInfo>>() {}).toProvider(JGroupsPeerInfoProvider.class);
         listener().to(JGroupsPeerInfoProvider.class);
         break;
       default:

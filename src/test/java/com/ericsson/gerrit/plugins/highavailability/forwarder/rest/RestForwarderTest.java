@@ -26,22 +26,27 @@ import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.cache.Constants;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.IndexEvent;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
+import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.server.events.Event;
 import com.google.gson.GsonBuilder;
+import com.google.inject.Provider;
 import java.io.IOException;
+import java.util.Set;
 import javax.net.ssl.SSLException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Answers;
 
 public class RestForwarderTest {
+  private static final String URL = "http://fake.com";
   private static final String PLUGIN_NAME = "high-availability";
   private static final String EMPTY_MSG = "";
   private static final String ERROR = "Error";
-  private static final String PLUGINS = "/plugins";
+  private static final String PLUGINS = "plugins";
   private static final String PROJECT_TO_ADD = "projectToAdd";
   private static final String PROJECT_TO_DELETE = "projectToDelete";
   private static final String SUCCESS = "Success";
@@ -54,30 +59,42 @@ public class RestForwarderTest {
   private static final String PROJECT_NAME_URL_END = "test%2Fproject";
   private static final String INDEX_CHANGE_ENDPOINT =
       Joiner.on("/")
-          .join(PLUGINS, PLUGIN_NAME, "index/change", PROJECT_NAME_URL_END + "~" + CHANGE_NUMBER);
+          .join(
+              URL,
+              PLUGINS,
+              PLUGIN_NAME,
+              "index/change",
+              PROJECT_NAME_URL_END + "~" + CHANGE_NUMBER);
   private static final String DELETE_CHANGE_ENDPOINT =
-      Joiner.on("/").join("/plugins", PLUGIN_NAME, "index/change", "~" + CHANGE_NUMBER);
+      Joiner.on("/").join(URL, PLUGINS, PLUGIN_NAME, "index/change", "~" + CHANGE_NUMBER);
   private static final int ACCOUNT_NUMBER = 2;
   private static final String INDEX_ACCOUNT_ENDPOINT =
-      Joiner.on("/").join(PLUGINS, PLUGIN_NAME, "index/account", ACCOUNT_NUMBER);
+      Joiner.on("/").join(URL, PLUGINS, PLUGIN_NAME, "index/account", ACCOUNT_NUMBER);
   private static final String UUID = "we235jdf92nfj2351";
   private static final String INDEX_GROUP_ENDPOINT =
-      Joiner.on("/").join(PLUGINS, PLUGIN_NAME, "index/group", UUID);
+      Joiner.on("/").join(URL, PLUGINS, PLUGIN_NAME, "index/group", UUID);
 
   // Event
-  private static final String EVENT_ENDPOINT = Joiner.on("/").join(PLUGINS, PLUGIN_NAME, "event");
   private static Event event = new Event("test-event") {};
+  private static final String EVENT_ENDPOINT =
+      Joiner.on("/").join(URL, PLUGINS, PLUGIN_NAME, "event", event.type);
+  private static String eventJson = new GsonBuilder().create().toJson(event);
 
   private RestForwarder forwarder;
   private HttpSession httpSessionMock;
 
+  @SuppressWarnings("unchecked")
   @Before
   public void setUp() {
     httpSessionMock = mock(HttpSession.class);
     Configuration configMock = mock(Configuration.class, Answers.RETURNS_DEEP_STUBS);
     when(configMock.http().maxTries()).thenReturn(3);
     when(configMock.http().retryInterval()).thenReturn(10);
-    forwarder = new RestForwarder(httpSessionMock, PLUGIN_NAME, configMock);
+    Provider<Set<PeerInfo>> peersMock = mock(Provider.class);
+    when(peersMock.get()).thenReturn(ImmutableSet.of(new PeerInfo(URL)));
+    forwarder =
+        new RestForwarder(
+            httpSessionMock, PLUGIN_NAME, configMock, peersMock); // TODO: Create provider
   }
 
   @Test
@@ -201,8 +218,8 @@ public class RestForwarderTest {
   public void testEvictGroupsOK() throws Exception {
     AccountGroup.Id key = new AccountGroup.Id(123);
     String keyJson = new GsonBuilder().create().toJson(key);
-    when(httpSessionMock.post(buildCacheEndpoint(Constants.GROUPS), keyJson))
-        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
+    String endpoint = buildCacheEndpoint(Constants.GROUPS);
+    when(httpSessionMock.post(endpoint, keyJson)).thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
     assertThat(forwarder.evict(Constants.GROUPS, key)).isTrue();
   }
 
@@ -244,13 +261,13 @@ public class RestForwarderTest {
   }
 
   private static String buildCacheEndpoint(String name) {
-    return Joiner.on("/").join(PLUGINS, PLUGIN_NAME, "cache", name);
+    return Joiner.on("/").join(URL, PLUGINS, PLUGIN_NAME, "cache", name);
   }
 
   @Test
   public void testAddToProjectListOK() throws Exception {
     String projectName = PROJECT_TO_ADD;
-    when(httpSessionMock.post(buildProjectListCacheEndpoint(projectName)))
+    when(httpSessionMock.post(buildProjectListCacheEndpoint(projectName), null))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
     assertThat(forwarder.addToProjectList(projectName)).isTrue();
   }
@@ -258,7 +275,7 @@ public class RestForwarderTest {
   @Test
   public void testAddToProjectListFailed() throws Exception {
     String projectName = PROJECT_TO_ADD;
-    when(httpSessionMock.post(buildProjectListCacheEndpoint(projectName)))
+    when(httpSessionMock.post(buildProjectListCacheEndpoint(projectName), null))
         .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
     assertThat(forwarder.addToProjectList(projectName)).isFalse();
   }
@@ -268,14 +285,14 @@ public class RestForwarderTest {
     String projectName = PROJECT_TO_ADD;
     doThrow(new IOException())
         .when(httpSessionMock)
-        .post(buildProjectListCacheEndpoint(projectName));
+        .post(buildProjectListCacheEndpoint(projectName), null);
     assertThat(forwarder.addToProjectList(projectName)).isFalse();
   }
 
   @Test
   public void testRemoveFromProjectListOK() throws Exception {
     String projectName = PROJECT_TO_DELETE;
-    when(httpSessionMock.delete(buildProjectListCacheEndpoint(projectName)))
+    when(httpSessionMock.delete(eq(buildProjectListCacheEndpoint(projectName)), any()))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
     assertThat(forwarder.removeFromProjectList(projectName)).isTrue();
   }
@@ -283,7 +300,7 @@ public class RestForwarderTest {
   @Test
   public void testRemoveToProjectListFailed() throws Exception {
     String projectName = PROJECT_TO_DELETE;
-    when(httpSessionMock.delete(buildProjectListCacheEndpoint(projectName)))
+    when(httpSessionMock.delete(eq(buildProjectListCacheEndpoint(projectName)), any()))
         .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
     assertThat(forwarder.removeFromProjectList(projectName)).isFalse();
   }
@@ -293,7 +310,7 @@ public class RestForwarderTest {
     String projectName = PROJECT_TO_DELETE;
     doThrow(new IOException())
         .when(httpSessionMock)
-        .delete((buildProjectListCacheEndpoint(projectName)));
+        .delete(eq(buildProjectListCacheEndpoint(projectName)), any());
     assertThat(forwarder.removeFromProjectList(projectName)).isFalse();
   }
 

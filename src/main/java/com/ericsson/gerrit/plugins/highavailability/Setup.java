@@ -126,7 +126,8 @@ public class Setup implements InitStep {
             PeerInfoStrategy.JGROUPS, EnumSet.allOf(PeerInfoStrategy.class), "Peer info strategy");
     config.setEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, strategy);
     if (strategy == PeerInfoStrategy.STATIC) {
-      promptAndSetString("Peer URL", PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY, null);
+      promptAndSetString(
+          titleWithNote("Peer URL", "urls"), PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY, null);
     } else {
       promptAndSetString(
           "JGroups cluster name",
@@ -199,6 +200,22 @@ public class Setup implements InitStep {
 
   private static String str(int n) {
     return Integer.toString(n);
+  }
+
+  private static String titleForOptionalWithNote(String prefix, String suffix) {
+    return titleWithNote(prefix + " (optional)", suffix);
+  }
+
+  private static String titleWithNote(String prefix, String suffix) {
+    return prefix + "; manually repeat this line to configure more " + suffix;
+  }
+
+  private static String numberToString(int number) {
+    return Integer.toString(number);
+  }
+
+  private static String numberToString(long number) {
+    return Long.toString(number);
   }
 
   private boolean createHAReplicaSite(FileBasedConfig pluginConfig)

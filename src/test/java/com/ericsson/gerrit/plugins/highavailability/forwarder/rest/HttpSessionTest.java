@@ -15,35 +15,27 @@
 package com.ericsson.gerrit.plugins.highavailability.forwarder.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.anyRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.exactly;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.HttpResponseHandler.HttpResult;
-import com.ericsson.gerrit.plugins.highavailability.peers.PeerInfo;
 import com.github.tomakehurst.wiremock.http.Fault;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
-import com.google.inject.util.Providers;
-import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.Optional;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Answers;
 
 public class HttpSessionTest {
+
   private static final int MAX_TRIES = 3;
   private static final int RETRY_INTERVAL = 250;
   private static final int TIMEOUT = 500;
@@ -65,10 +57,12 @@ public class HttpSessionTest {
   @Rule public WireMockRule wireMockRule = new WireMockRule(0);
 
   private Configuration configMock;
+  private String uri;
 
   @Before
   public void setUp() throws Exception {
     String url = "http://localhost:" + wireMockRule.port();
+    uri = url + ENDPOINT;
     configMock = mock(Configuration.class, Answers.RETURNS_DEEP_STUBS);
     when(configMock.http().user()).thenReturn("user");
     when(configMock.http().password()).thenReturn("pass");
@@ -77,11 +71,7 @@ public class HttpSessionTest {
     when(configMock.http().socketTimeout()).thenReturn(TIMEOUT);
     when(configMock.http().retryInterval()).thenReturn(RETRY_INTERVAL);
 
-    PeerInfo peerInfo = mock(PeerInfo.class);
-    when(peerInfo.getDirectUrl()).thenReturn(url);
-    httpSession =
-        new HttpSession(
-            new HttpClientProvider(configMock).get(), Providers.of(Optional.of(peerInfo)));
+    httpSession = new HttpSession(new HttpClientProvider(configMock).get());
   }
 
   @Test
@@ -89,7 +79,7 @@ public class HttpSessionTest {
     wireMockRule.givenThat(
         post(urlEqualTo(ENDPOINT)).willReturn(aResponse().withStatus(NO_CONTENT)));
 
-    assertThat(httpSession.post(ENDPOINT).isSuccessful()).isTrue();
+    assertThat(httpSession.post(uri).isSuccessful()).isTrue();
   }
 
   @Test
@@ -98,7 +88,7 @@ public class HttpSessionTest {
         post(urlEqualTo(ENDPOINT))
             .withRequestBody(equalTo(BODY))
             .willReturn(aResponse().withStatus(NO_CONTENT)));
-    assertThat(httpSession.post(ENDPOINT, BODY).isSuccessful()).isTrue();
+    assertThat(httpSession.post(uri, BODY).isSuccessful()).isTrue();
   }
 
   @Test
@@ -106,7 +96,7 @@ public class HttpSessionTest {
     wireMockRule.givenThat(
         delete(urlEqualTo(ENDPOINT)).willReturn(aResponse().withStatus(NO_CONTENT)));
 
-    assertThat(httpSession.delete(ENDPOINT).isSuccessful()).isTrue();
+    assertThat(httpSession.delete(uri).isSuccessful()).isTrue();
   }
 
   @Test
@@ -116,7 +106,7 @@ public class HttpSessionTest {
         post(urlEqualTo(ENDPOINT))
             .willReturn(aResponse().withStatus(UNAUTHORIZED).withBody(expected)));
 
-    HttpResult result = httpSession.post(ENDPOINT);
+    HttpResult result = httpSession.post(uri);
     assertThat(result.isSuccessful()).isFalse();
     assertThat(result.getMessage()).isEqualTo(expected);
   }
@@ -128,7 +118,7 @@ public class HttpSessionTest {
         post(urlEqualTo(ENDPOINT))
             .willReturn(aResponse().withStatus(NOT_FOUND).withBody(expected)));
 
-    HttpResult result = httpSession.post(ENDPOINT);
+    HttpResult result = httpSession.post(uri);
     assertThat(result.isSuccessful()).isFalse();
     assertThat(result.getMessage()).isEqualTo(expected);
   }
@@ -139,7 +129,7 @@ public class HttpSessionTest {
         post(urlEqualTo(ENDPOINT))
             .willReturn(aResponse().withStatus(ERROR).withBody(ERROR_MESSAGE)));
 
-    HttpResult result = httpSession.post(ENDPOINT);
+    HttpResult result = httpSession.post(uri);
     assertThat(result.isSuccessful()).isFalse();
     assertThat(result.getMessage()).isEqualTo(ERROR_MESSAGE);
   }
@@ -170,7 +160,7 @@ public class HttpSessionTest {
             .whenScenarioStateIs(THIRD_TRY)
             .willReturn(aResponse().withFixedDelay(TIMEOUT)));
 
-    httpSession.post(ENDPOINT);
+    httpSession.post(uri);
   }
 
   @Test
@@ -179,19 +169,6 @@ public class HttpSessionTest {
         post(urlEqualTo(ENDPOINT))
             .willReturn(aResponse().withFault(Fault.MALFORMED_RESPONSE_CHUNK)));
 
-    assertThat(httpSession.post(ENDPOINT).isSuccessful()).isFalse();
-  }
-
-  @Test
-  public void testNoRequestWhenPeerInfoUnknown() throws IOException {
-    httpSession =
-        new HttpSession(new HttpClientProvider(configMock).get(), Providers.of(Optional.empty()));
-    try {
-      httpSession.post(ENDPOINT);
-      fail("Expected PeerInfoNotAvailableException");
-    } catch (PeerInfoNotAvailableException e) {
-      // good
-    }
-    verify(exactly(0), anyRequestedFor(anyUrl()));
+    assertThat(httpSession.post(uri).isSuccessful()).isFalse();
   }
 }

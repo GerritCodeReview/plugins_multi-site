@@ -67,6 +67,7 @@ import com.google.gerrit.server.config.SitePaths;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,6 +83,7 @@ public class ConfigurationTest {
   private static final String PASS = "fakePass";
   private static final String USER = "fakeUser";
   private static final String URL = "http://fakeUrl";
+  private static final List<String> URLS = ImmutableList.of(URL, "http://anotherUrl/");
   private static final int TIMEOUT = 5000;
   private static final int MAX_TRIES = 5;
   private static final int RETRY_INTERVAL = 1000;
@@ -120,17 +122,12 @@ public class ConfigurationTest {
   }
 
   @Test
-  public void testGetUrl() throws Exception {
-    assertThat(getConfiguration().peerInfoStatic().url()).isEmpty();
+  public void testGetUrls() throws Exception {
+    assertThat(getConfiguration().peerInfoStatic().urls()).isEmpty();
 
-    globalPluginConfig.setString(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY, URL);
-    assertThat(getConfiguration().peerInfoStatic().url()).isEqualTo(URL);
-  }
-
-  @Test
-  public void testGetUrlIsDroppingTrailingSlash() throws Exception {
-    globalPluginConfig.setString(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY, URL + "/");
-    assertThat(getConfiguration().peerInfoStatic().url()).isEqualTo(URL);
+    globalPluginConfig.setStringList(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY, URLS);
+    assertThat(getConfiguration().peerInfoStatic().urls())
+        .containsAllIn(ImmutableList.of(URL, "http://anotherUrl"));
   }
 
   @Test
