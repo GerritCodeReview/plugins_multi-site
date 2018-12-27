@@ -18,20 +18,23 @@ import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
-import java.util.Optional;
+import java.util.HashSet;
+import java.util.Set;
 
 @Singleton
-public class PluginConfigPeerInfoProvider implements Provider<Optional<PeerInfo>> {
+public class PluginConfigPeerInfoProvider implements Provider<Set<PeerInfo>> {
 
-  private final Optional<PeerInfo> peerInfo;
+  private final Set<PeerInfo> peers = new HashSet<>();
 
   @Inject
   PluginConfigPeerInfoProvider(Configuration cfg) {
-    peerInfo = Optional.of(new PeerInfo(cfg.peerInfoStatic().url()));
+    for (String url : cfg.peerInfoStatic().urls()) {
+      peers.add(new PeerInfo(url));
+    }
   }
 
   @Override
-  public Optional<PeerInfo> get() {
-    return peerInfo;
+  public Set<PeerInfo> get() {
+    return peers;
   }
 }

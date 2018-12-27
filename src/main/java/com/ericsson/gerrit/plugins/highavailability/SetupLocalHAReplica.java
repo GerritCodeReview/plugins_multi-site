@@ -14,14 +14,14 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.CLUSTER_NAME_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_CLUSTER_NAME;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_SHARED_DIRECTORY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGROUPS_SUBSECTION;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAIN_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGroups.CLUSTER_NAME_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGroups.DEFAULT_CLUSTER_NAME;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Main.DEFAULT_SHARED_DIRECTORY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Main.MAIN_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Main.SHARED_DIRECTORY_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PEER_INFO_SECTION;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.SHARED_DIRECTORY_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.STRATEGY_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfo.STRATEGY_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoJGroups.JGROUPS_SUBSECTION;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.common.FileUtil;

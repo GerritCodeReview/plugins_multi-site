@@ -69,6 +69,7 @@ public class ForwardedIndexChangeHandlerTest {
   @Mock private ReviewDb dbMock;
   @Mock private ChangeNotes changeNotes;
   @Mock private Configuration configurationMock;
+  @Mock private Configuration.Index index;
   @Mock private ScheduledExecutorService indexExecutorMock;
   @Mock private OneOffRequestContext ctxMock;
   @Mock private GitRepositoryManager gitRepoMgrMock;
@@ -86,6 +87,8 @@ public class ForwardedIndexChangeHandlerTest {
     change = new Change(null, id, null, null, TimeUtil.nowTs());
     when(changeNotes.getChange()).thenReturn(change);
     when(changeCheckerFactoryMock.create(any())).thenReturn(changeCheckerAbsentMock);
+    when(configurationMock.index()).thenReturn(index);
+    when(index.numStripedLocks()).thenReturn(10);
     handler =
         new ForwardedIndexChangeHandler(
             indexerMock,

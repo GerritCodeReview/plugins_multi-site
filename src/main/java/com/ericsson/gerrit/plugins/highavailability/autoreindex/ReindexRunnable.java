@@ -33,6 +33,7 @@ abstract class ReindexRunnable<T> implements Runnable {
   private final AbstractIndexRestApiServlet.IndexName itemName;
   private final OneOffRequestContext ctx;
   private final IndexTs indexTs;
+  private Timestamp newLastIndexTs;
 
   @Inject
   public ReindexRunnable(
@@ -47,9 +48,8 @@ abstract class ReindexRunnable<T> implements Runnable {
     Optional<LocalDateTime> maybeIndexTs = indexTs.getUpdateTs(itemName);
     String itemNameString = itemName.name().toLowerCase();
     if (maybeIndexTs.isPresent()) {
-      Timestamp lastIndexTs = Timestamp.valueOf(maybeIndexTs.get());
-      Timestamp newLastIndexTs = lastIndexTs;
-      log.debug("Scanning for all the {}s after {}", itemNameString, lastIndexTs);
+      newLastIndexTs = maxTimestamp(newLastIndexTs, Timestamp.valueOf(maybeIndexTs.get()));
+      log.debug("Scanning for all the {}s after {}", itemNameString, newLastIndexTs);
       try (ManualRequestContext mctx = ctx.open();
           ReviewDb db = mctx.getReviewDbProvider().get()) {
         int count = 0;
@@ -57,12 +57,10 @@ abstract class ReindexRunnable<T> implements Runnable {
         Stopwatch stopwatch = Stopwatch.createStarted();
         for (T c : fetchItems(db)) {
           try {
-            Optional<Timestamp> itemTs = indexIfNeeded(db, c, lastIndexTs);
+            Optional<Timestamp> itemTs = indexIfNeeded(db, c, newLastIndexTs);
             if (itemTs.isPresent()) {
               count++;
-              if (itemTs.get().after(newLastIndexTs)) {
-                newLastIndexTs = itemTs.get();
-              }
+              newLastIndexTs = maxTimestamp(newLastIndexTs, itemTs.get());
             }
           } catch (Exception e) {
             log.error("Unable to reindex {} {}", itemNameString, c, e);
@@ -93,4 +91,19 @@ abstract class ReindexRunnable<T> implements Runnable {
   protected abstract Iterable<T> fetchItems(ReviewDb db) throws Exception;
 
   protected abstract Optional<Timestamp> indexIfNeeded(ReviewDb db, T item, Timestamp sinceTs);
+
+  private Timestamp maxTimestamp(Timestamp ts1, Timestamp ts2) {
+    if (ts1 == null) {
+      return ts2;
+    }
+
+    if (ts2 == null) {
+      return ts1;
+    }
+
+    if (ts1.after(ts2)) {
+      return ts1;
+    }
+    return ts2;
+  }
 }

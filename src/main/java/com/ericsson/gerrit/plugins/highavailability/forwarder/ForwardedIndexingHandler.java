@@ -41,12 +41,16 @@ public abstract class ForwardedIndexingHandler<T> {
     }
   }
 
-  private final Striped<Lock> idLocks = Striped.lock(10);
+  private final Striped<Lock> idLocks;
 
   protected abstract void doIndex(T id, Optional<IndexEvent> indexEvent)
       throws IOException, OrmException;
 
   protected abstract void doDelete(T id, Optional<IndexEvent> indexEvent) throws IOException;
+
+  protected ForwardedIndexingHandler(int lockStripes) {
+    idLocks = Striped.lock(lockStripes);
+  }
 
   /**
    * Index an item in the local node, indexing will not be forwarded to the other node.

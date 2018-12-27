@@ -14,33 +14,33 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.CACHE_SECTION;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.CLEANUP_INTERVAL_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.CLUSTER_NAME_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.CONNECTION_TIMEOUT_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_CLEANUP_INTERVAL;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_CLUSTER_NAME;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_MAX_TRIES;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_RETRY_INTERVAL;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_SHARED_DIRECTORY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Cache.CACHE_SECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_THREAD_POOL_SIZE;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.DEFAULT_TIMEOUT_MS;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.HTTP_SECTION;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.INDEX_SECTION;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGROUPS_SUBSECTION;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAIN_SECTION;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.MAX_TRIES_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.PASSWORD_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Http.CONNECTION_TIMEOUT_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Http.DEFAULT_MAX_TRIES;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Http.DEFAULT_RETRY_INTERVAL;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Http.DEFAULT_TIMEOUT_MS;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Http.HTTP_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Http.MAX_TRIES_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Http.PASSWORD_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Http.RETRY_INTERVAL_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Http.SOCKET_TIMEOUT_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Http.USER_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Index.INDEX_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGroups.CLUSTER_NAME_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.JGroups.DEFAULT_CLUSTER_NAME;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Main.DEFAULT_SHARED_DIRECTORY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Main.MAIN_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Main.SHARED_DIRECTORY_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PEER_INFO_SECTION;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.RETRY_INTERVAL_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.SHARED_DIRECTORY_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.SOCKET_TIMEOUT_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.STATIC_SUBSECTION;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.STRATEGY_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfo.STRATEGY_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoJGroups.JGROUPS_SUBSECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStatic.STATIC_SUBSECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStatic.URL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.THREAD_POOL_SIZE_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.URL_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.USER_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.WEBSESSION_SECTION;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Websession.CLEANUP_INTERVAL_KEY;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Websession.DEFAULT_CLEANUP_INTERVAL;
+import static com.ericsson.gerrit.plugins.highavailability.Configuration.Websession.WEBSESSION_SECTION;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStrategy;
 import com.google.common.base.Strings;
@@ -126,7 +126,8 @@ public class Setup implements InitStep {
             PeerInfoStrategy.JGROUPS, EnumSet.allOf(PeerInfoStrategy.class), "Peer info strategy");
     config.setEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, strategy);
     if (strategy == PeerInfoStrategy.STATIC) {
-      promptAndSetString("Peer URL", PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY, null);
+      promptAndSetString(
+          titleWithNote("Peer URL", "urls"), PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY, null);
     } else {
       promptAndSetString(
           "JGroups cluster name",
@@ -199,6 +200,22 @@ public class Setup implements InitStep {
 
   private static String str(int n) {
     return Integer.toString(n);
+  }
+
+  private static String titleForOptionalWithNote(String prefix, String suffix) {
+    return titleWithNote(prefix + " (optional)", suffix);
+  }
+
+  private static String titleWithNote(String prefix, String suffix) {
+    return prefix + "; manually repeat this line to configure more " + suffix;
+  }
+
+  private static String numberToString(int number) {
+    return Integer.toString(number);
+  }
+
+  private static String numberToString(long number) {
+    return Long.toString(number);
   }
 
   private boolean createHAReplicaSite(FileBasedConfig pluginConfig)
