@@ -17,7 +17,6 @@ package com.ericsson.gerrit.plugins.highavailability.index;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.IndexEvent;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Comment;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.CommentsUtil;
 import com.google.gerrit.server.change.ChangeFinder;
 import com.google.gerrit.server.git.GitRepositoryManager;
@@ -40,7 +39,6 @@ public class ChangeCheckerImpl implements ChangeChecker {
   private static final Logger log = LoggerFactory.getLogger(ChangeCheckerImpl.class);
   private final GitRepositoryManager gitRepoMgr;
   private final CommentsUtil commentsUtil;
-  private final ChangeDb changeDb;
   private final OneOffRequestContext oneOffReqCtx;
   private final String changeId;
   private final ChangeFinder changeFinder;
@@ -55,14 +53,12 @@ public class ChangeCheckerImpl implements ChangeChecker {
   public ChangeCheckerImpl(
       GitRepositoryManager gitRepoMgr,
       CommentsUtil commentsUtil,
-      ChangeDb changeDb,
       ChangeFinder changeFinder,
       OneOffRequestContext oneOffReqCtx,
       @Assisted String changeId) {
     this.changeFinder = changeFinder;
     this.gitRepoMgr = gitRepoMgr;
     this.commentsUtil = commentsUtil;
-    this.changeDb = changeDb;
     this.oneOffReqCtx = oneOffReqCtx;
     this.changeId = changeId;
   }
@@ -150,16 +146,14 @@ public class ChangeCheckerImpl implements ChangeChecker {
   }
 
   private Optional<Long> computeLastChangeTs() throws OrmException {
-    try (ReviewDb db = changeDb.open()) {
-      return getChangeNotes().map(notes -> getTsFromChangeAndDraftComments(db, notes));
-    }
+    return getChangeNotes().map(notes -> getTsFromChangeAndDraftComments(notes));
   }
 
-  private long getTsFromChangeAndDraftComments(ReviewDb db, ChangeNotes notes) {
+  private long getTsFromChangeAndDraftComments(ChangeNotes notes) {
     Change change = notes.getChange();
     Timestamp changeTs = change.getLastUpdatedOn();
     try {
-      for (Comment comment : commentsUtil.draftByChange(db, changeNotes.get())) {
+      for (Comment comment : commentsUtil.draftByChange(changeNotes.get())) {
         Timestamp commentTs = comment.writtenOn;
         changeTs = commentTs.after(changeTs) ? commentTs : changeTs;
       }

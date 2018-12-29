@@ -18,7 +18,6 @@ import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedIndexAcco
 import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedIndexingHandler.Operation;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.AbstractIndexRestApiServlet;
 import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.account.AccountState;
 import com.google.gerrit.server.account.Accounts;
 import com.google.gerrit.server.util.OneOffRequestContext;
@@ -49,12 +48,12 @@ public class AccountReindexRunnable extends ReindexRunnable<AccountState> {
   }
 
   @Override
-  protected Iterable<AccountState> fetchItems(ReviewDb db) throws Exception {
+  protected Iterable<AccountState> fetchItems() throws Exception {
     return accounts.all();
   }
 
   @Override
-  protected Optional<Timestamp> indexIfNeeded(ReviewDb db, AccountState as, Timestamp sinceTs) {
+  protected Optional<Timestamp> indexIfNeeded(AccountState as, Timestamp sinceTs) {
     try {
       Account a = as.getAccount();
       Timestamp accountTs = a.getRegisteredOn();

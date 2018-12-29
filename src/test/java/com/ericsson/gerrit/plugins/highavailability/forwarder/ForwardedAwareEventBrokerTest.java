@@ -39,7 +39,7 @@ public class ForwardedAwareEventBrokerTest {
     DynamicSet<EventListener> set = DynamicSet.emptySet();
     set.add("high-availability", listenerMock);
     PluginSetContext<EventListener> listeners = new PluginSetContext<>(set, mockMetrics);
-    broker = new ForwardedAwareEventBroker(null, listeners, null, null, null, null);
+    broker = new ForwardedAwareEventBroker(null, listeners, null, null, null);
   }
 
   @Test

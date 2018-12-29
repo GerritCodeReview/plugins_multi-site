@@ -18,11 +18,9 @@ import com.ericsson.gerrit.plugins.highavailability.Configuration;
 import com.ericsson.gerrit.plugins.highavailability.Configuration.Index;
 import com.ericsson.gerrit.plugins.highavailability.index.ChangeChecker;
 import com.ericsson.gerrit.plugins.highavailability.index.ChangeCheckerImpl;
-import com.ericsson.gerrit.plugins.highavailability.index.ChangeDb;
 import com.ericsson.gerrit.plugins.highavailability.index.ForwardedIndexExecutor;
 import com.google.common.base.Splitter;
 import com.google.gerrit.reviewdb.client.Change;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.project.NoSuchChangeException;
@@ -45,7 +43,6 @@ import java.util.concurrent.TimeUnit;
 @Singleton
 public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String> {
   private final ChangeIndexer indexer;
-  private final ChangeDb changeDb;
   private final ScheduledExecutorService indexExecutor;
   private final OneOffRequestContext oneOffCtx;
   private final int retryInterval;
@@ -55,14 +52,12 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
   @Inject
   ForwardedIndexChangeHandler(
       ChangeIndexer indexer,
-      ChangeDb changeDb,
       Configuration configuration,
       @ForwardedIndexExecutor ScheduledExecutorService indexExecutor,
       OneOffRequestContext oneOffCtx,
       ChangeCheckerImpl.Factory changeCheckerFactory) {
     super(configuration.index().numStripedLocks());
     this.indexer = indexer;
-    this.changeDb = changeDb;
     this.indexExecutor = indexExecutor;
     this.oneOffCtx = oneOffCtx;
     this.changeCheckerFactory = changeCheckerFactory;
@@ -130,10 +125,8 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
   }
 
   private void reindex(ChangeNotes notes) throws IOException, OrmException {
-    try (ReviewDb db = changeDb.open()) {
-      notes.reload();
-      indexer.index(db, notes.getChange());
-    }
+    notes.reload();
+    indexer.index(notes.getChange());
   }
 
   private void rescheduleIndex(String id, Optional<IndexEvent> indexEvent, int retryCount) {

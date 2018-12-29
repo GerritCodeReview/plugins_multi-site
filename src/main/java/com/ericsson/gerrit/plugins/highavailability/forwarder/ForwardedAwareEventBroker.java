@@ -14,7 +14,6 @@
 
 package com.ericsson.gerrit.plugins.highavailability.forwarder;
 
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventBroker;
 import com.google.gerrit.server.events.EventListener;
@@ -24,7 +23,6 @@ import com.google.gerrit.server.permissions.PermissionBackend;
 import com.google.gerrit.server.plugincontext.PluginSetContext;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 class ForwardedAwareEventBroker extends EventBroker {
 
@@ -34,15 +32,8 @@ class ForwardedAwareEventBroker extends EventBroker {
       PluginSetContext<EventListener> unrestrictedListeners,
       PermissionBackend permissionBackend,
       ProjectCache projectCache,
-      Factory notesFactory,
-      Provider<ReviewDb> dbProvider) {
-    super(
-        listeners,
-        unrestrictedListeners,
-        permissionBackend,
-        projectCache,
-        notesFactory,
-        dbProvider);
+      Factory notesFactory) {
+    super(listeners, unrestrictedListeners, permissionBackend, projectCache, notesFactory);
   }
 
   @Override

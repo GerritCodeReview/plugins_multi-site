@@ -20,7 +20,6 @@ import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.AbstractIndex
 import com.google.common.collect.Streams;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Project;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.notedb.ChangeNotes.Factory.ChangeNotesResult;
@@ -78,14 +77,14 @@ public class ChangeReindexRunnable extends ReindexRunnable<Change> {
   }
 
   @Override
-  protected Iterable<Change> fetchItems(ReviewDb db) throws Exception {
+  protected Iterable<Change> fetchItems() throws Exception {
     Stream<Change> allChangesStream = Stream.empty();
     Iterable<Project.NameKey> projects = projectCache.all();
     for (Project.NameKey projectName : projects) {
       try (Repository repo = repoManager.openRepository(projectName)) {
         Stream<Change> projectChangesStream =
             notesFactory
-                .scan(repo, db, projectName)
+                .scan(repo, projectName)
                 .map(
                     (ChangeNotesResult changeNotes) -> {
                       return changeNotes.notes().getChange();
@@ -97,7 +96,7 @@ public class ChangeReindexRunnable extends ReindexRunnable<Change> {
   }
 
   @Override
-  protected Optional<Timestamp> indexIfNeeded(ReviewDb db, Change c, Timestamp sinceTs) {
+  protected Optional<Timestamp> indexIfNeeded(Change c, Timestamp sinceTs) {
     try {
       Timestamp changeTs = c.getLastUpdatedOn();
       if (changeTs.after(sinceTs)) {

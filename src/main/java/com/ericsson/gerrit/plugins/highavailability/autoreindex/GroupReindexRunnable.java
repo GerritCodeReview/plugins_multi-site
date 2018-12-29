@@ -17,7 +17,6 @@ package com.ericsson.gerrit.plugins.highavailability.autoreindex;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.ForwardedIndexGroupHandler;
 import com.ericsson.gerrit.plugins.highavailability.forwarder.rest.AbstractIndexRestApiServlet;
 import com.google.gerrit.common.data.GroupReference;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.group.db.Groups;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
@@ -44,12 +43,12 @@ public class GroupReindexRunnable extends ReindexRunnable<GroupReference> {
   }
 
   @Override
-  protected Iterable<GroupReference> fetchItems(ReviewDb db) throws Exception {
+  protected Iterable<GroupReference> fetchItems() throws Exception {
     return groups.getAllGroupReferences()::iterator;
   }
 
   @Override
-  protected Optional<Timestamp> indexIfNeeded(ReviewDb db, GroupReference g, Timestamp sinceTs) {
+  protected Optional<Timestamp> indexIfNeeded(GroupReference g, Timestamp sinceTs) {
     return Optional.empty();
   }
 }
