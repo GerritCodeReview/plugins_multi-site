@@ -57,6 +57,15 @@ public interface Forwarder {
   boolean indexGroup(String uuid, IndexEvent indexEvent);
 
   /**
+   * Forward a project indexing event to the other master.
+   *
+   * @param projectName the project to index.
+   * @param indexEvent the details of the index event.
+   * @return true if successful, otherwise false.
+   */
+  boolean indexProject(String projectName, IndexEvent indexEvent);
+
+  /**
    * Forward a stream event to the other master.
    *
    * @param event the event to forward.

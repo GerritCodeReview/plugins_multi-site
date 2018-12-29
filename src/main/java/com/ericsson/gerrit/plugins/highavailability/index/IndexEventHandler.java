@@ -22,6 +22,7 @@ import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.events.AccountIndexedListener;
 import com.google.gerrit.extensions.events.ChangeIndexedListener;
 import com.google.gerrit.extensions.events.GroupIndexedListener;
+import com.google.gerrit.extensions.events.ProjectIndexedListener;
 import com.google.inject.Inject;
 import java.util.Collections;
 import java.util.Set;
@@ -31,7 +32,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class IndexEventHandler
-    implements ChangeIndexedListener, AccountIndexedListener, GroupIndexedListener {
+    implements ChangeIndexedListener,
+        AccountIndexedListener,
+        GroupIndexedListener,
+        ProjectIndexedListener {
   private static final Logger log = LoggerFactory.getLogger(IndexEventHandler.class);
   private final Executor executor;
   private final Forwarder forwarder;
@@ -75,6 +79,16 @@ class IndexEventHandler
   public void onGroupIndexed(String groupUUID) {
     if (!Context.isForwardedEvent()) {
       IndexGroupTask task = new IndexGroupTask(groupUUID);
+      if (queuedTasks.add(task)) {
+        executor.execute(task);
+      }
+    }
+  }
+
+  @Override
+  public void onProjectIndexed(String projectName) {
+    if (!Context.isForwardedEvent()) {
+      IndexProjectTask task = new IndexProjectTask(projectName);
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }
@@ -222,6 +236,38 @@ class IndexEventHandler
     @Override
     public String toString() {
       return String.format("[%s] Index group %s in target instance", pluginName, groupUUID);
+    }
+  }
+
+  class IndexProjectTask extends IndexTask {
+    private final String projectName;
+
+    IndexProjectTask(String projectName) {
+      this.projectName = projectName;
+    }
+
+    @Override
+    public void execute() {
+      forwarder.indexProject(projectName, indexEvent);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hashCode(IndexProjectTask.class, projectName);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (!(obj instanceof IndexProjectTask)) {
+        return false;
+      }
+      IndexProjectTask other = (IndexProjectTask) obj;
+      return projectName.equals(other.projectName);
+    }
+
+    @Override
+    public String toString() {
+      return String.format("[%s] Index project %s in target instance", pluginName, projectName);
     }
   }
 }
