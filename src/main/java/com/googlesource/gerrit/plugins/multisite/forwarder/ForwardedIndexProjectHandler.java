@@ -16,17 +16,15 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.gerrit.index.project.ProjectIndexer;
 import com.google.gerrit.reviewdb.client.Project;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-
 import java.io.IOException;
 import java.util.Optional;
 
 /**
  * Index a project using {@link ProjectIndexer}. This class is meant to be used on the receiving
- * side of the {@link Forwarder} since it will prevent indexed group to be forwarded again causing
+ * side of the {@link Forwarder} since it will prevent indexed project to be forwarded again causing
  * an infinite forwarding loop between the 2 nodes. It will also make sure no concurrent indexing is
  * done for the same project name.
  */
@@ -42,7 +40,7 @@ public class ForwardedIndexProjectHandler extends ForwardedIndexingHandler<Proje
 
   @Override
   protected void doIndex(Project.NameKey projectName, Optional<IndexEvent> indexEvent)
-      throws IOException, OrmException {
+      throws IOException {
     indexer.index(projectName);
     log.debug("Project {} successfully indexed", projectName);
   }
