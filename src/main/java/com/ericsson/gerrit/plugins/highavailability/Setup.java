@@ -35,9 +35,6 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInf
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStatic.STATIC_SUBSECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStatic.URL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.THREAD_POOL_SIZE_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.Websession.CLEANUP_INTERVAL_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.Websession.DEFAULT_CLEANUP_INTERVAL;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.Websession.WEBSESSION_SECTION;
 
 import com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStrategy;
 import com.google.common.base.Strings;
@@ -87,7 +84,6 @@ public class Setup implements InitStep {
       configureHttp();
       configureCacheSection();
       configureIndexSection();
-      configureWebsessionsSection();
       flags.cfg.setBoolean("database", "h2", "autoServer", true);
     }
   }
@@ -149,12 +145,6 @@ public class Setup implements InitStep {
         INDEX_SECTION,
         THREAD_POOL_SIZE_KEY,
         str(DEFAULT_THREAD_POOL_SIZE));
-  }
-
-  private void configureWebsessionsSection() {
-    ui.header("Websession section");
-    promptAndSetString(
-        "Cleanup interval", WEBSESSION_SECTION, CLEANUP_INTERVAL_KEY, DEFAULT_CLEANUP_INTERVAL);
   }
 
   private String promptAndSetString(

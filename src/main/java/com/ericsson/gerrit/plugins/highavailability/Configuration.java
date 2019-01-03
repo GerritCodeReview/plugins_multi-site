@@ -14,8 +14,6 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
-import static java.util.concurrent.TimeUnit.HOURS;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
@@ -49,7 +47,6 @@ public class Configuration {
   // common parameters to cache and index sections
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
 
-  // websession section
   static final int DEFAULT_INDEX_MAX_TRIES = 2;
   static final int DEFAULT_INDEX_RETRY_INTERVAL = 30000;
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
@@ -63,7 +60,6 @@ public class Configuration {
   private final Cache cache;
   private final Event event;
   private final Index index;
-  private final Websession websession;
   private PeerInfoStatic peerInfoStatic;
   private HealthCheck healthCheck;
 
@@ -89,7 +85,6 @@ public class Configuration {
     cache = new Cache(cfg);
     event = new Event(cfg);
     index = new Index(cfg);
-    websession = new Websession(cfg);
     healthCheck = new HealthCheck(cfg);
   }
 
@@ -123,10 +118,6 @@ public class Configuration {
 
   public Index index() {
     return index;
-  }
-
-  public Websession websession() {
-    return websession;
   }
 
   public HealthCheck healthCheck() {
@@ -293,7 +284,7 @@ public class Configuration {
     }
   }
 
-  /** Common parameters to cache, event, index and websession */
+  /** Common parameters to cache, event, index */
   public abstract static class Forwarding {
     static final boolean DEFAULT_SYNCHRONIZE = true;
     static final String SYNCHRONIZE_KEY = "synchronize";
@@ -383,28 +374,6 @@ public class Configuration {
 
     public int numStripedLocks() {
       return numStripedLocks;
-    }
-  }
-
-  public static class Websession extends Forwarding {
-    static final String WEBSESSION_SECTION = "websession";
-    static final String CLEANUP_INTERVAL_KEY = "cleanupInterval";
-    static final String DEFAULT_CLEANUP_INTERVAL = "24 hours";
-    static final long DEFAULT_CLEANUP_INTERVAL_MS = HOURS.toMillis(24);
-
-    private final long cleanupInterval;
-
-    private Websession(Config cfg) {
-      super(cfg, WEBSESSION_SECTION);
-      this.cleanupInterval =
-          ConfigUtil.getTimeUnit(
-              Strings.nullToEmpty(cfg.getString(WEBSESSION_SECTION, null, CLEANUP_INTERVAL_KEY)),
-              DEFAULT_CLEANUP_INTERVAL_MS,
-              MILLISECONDS);
-    }
-
-    public long cleanupInterval() {
-      return cleanupInterval;
     }
   }
 

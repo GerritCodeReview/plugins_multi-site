@@ -41,11 +41,7 @@ import static com.ericsson.gerrit.plugins.highavailability.Configuration.PEER_IN
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStatic.STATIC_SUBSECTION;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.PeerInfoStatic.URL_KEY;
 import static com.ericsson.gerrit.plugins.highavailability.Configuration.THREAD_POOL_SIZE_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.Websession.CLEANUP_INTERVAL_KEY;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.Websession.DEFAULT_CLEANUP_INTERVAL_MS;
-import static com.ericsson.gerrit.plugins.highavailability.Configuration.Websession.WEBSESSION_SECTION;
 import static com.google.common.truth.Truth.assertThat;
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -248,29 +244,6 @@ public class ConfigurationTest {
         MAIN_SECTION, null, SHARED_DIRECTORY_KEY, RELATIVE_SHARED_DIRECTORY);
     assertEquals(
         getConfiguration().main().sharedDirectory(), SITE_PATH.resolve(RELATIVE_SHARED_DIRECTORY));
-  }
-
-  @Test
-  public void testGetCleanupInterval() throws Exception {
-    assertThat(getConfiguration().websession().cleanupInterval())
-        .isEqualTo(DEFAULT_CLEANUP_INTERVAL_MS);
-
-    globalPluginConfig.setString(WEBSESSION_SECTION, null, CLEANUP_INTERVAL_KEY, "30 seconds");
-    assertThat(getConfiguration().websession().cleanupInterval()).isEqualTo(SECONDS.toMillis(30));
-  }
-
-  @Test
-  public void testGetWebsessionSynchronize() throws Exception {
-    assertThat(getConfiguration().websession().synchronize()).isEqualTo(DEFAULT_SYNCHRONIZE);
-
-    globalPluginConfig.setBoolean(WEBSESSION_SECTION, null, SYNCHRONIZE_KEY, false);
-    assertThat(getConfiguration().websession().synchronize()).isFalse();
-
-    globalPluginConfig.setBoolean(WEBSESSION_SECTION, null, SYNCHRONIZE_KEY, true);
-    assertThat(getConfiguration().websession().synchronize()).isTrue();
-
-    globalPluginConfig.setString(WEBSESSION_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
-    assertThat(getConfiguration().websession().synchronize()).isTrue();
   }
 
   @Test

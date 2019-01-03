@@ -43,13 +43,23 @@ File '@PLUGIN@.config'
 ```autoReindex.delay```
 :   When autoReindex is enabled, indicates the delay aftere the plugin startup,
     before triggering the conditional reindexing of all changes, accounts and groups.
-    Delay is expressed in Gerrit time values as in [websession.cleanupInterval](#websessioncleanupInterval).
+    Delay is expressed in Gerrit time values:
+    * s, sec, second, seconds
+    * m, min, minute, minutes
+    * h, hr, hour, hours
+    * d, day, days
+    * w, week, weeks (`1 week` is treated as `7 days`)
+    * mon, month, months (`1 month` is treated as `30 days`)
+    * y, year, years (`1 year` is treated as `365 days`)
+    If a time unit suffix is not specified, `hours` is assumed.
+    Defaults to 24 hours.
+
     When not specified, the default is "10 seconds".
 
 ```autoReindex.pollInterval```
 :   When autoReindex is enabled, indicates the interval between the conditional
     reindexing of all changes, accounts and groups.
-    Delay is expressed in Gerrit time values as in [websession.cleanupInterval](#websessioncleanupInterval).
+    Delay is expressed in Gerrit time values as in [autoReindex.delay](#autoReindex.delay).
     When not specified, polling of conditional reindexing is disabled.
 
 ```autoReindex.interval```
@@ -142,23 +152,6 @@ the plugin will keep retrying to forward a message for one hour.
 ```index.retryInterval```
 :   The interval of time in milliseconds between the subsequent auto-retries.
     Defaults to 30000 (30 seconds).
-
-```websession.synchronize```
-:   Whether to synchronize web sessions.
-    Defaults to true.
-
-```websession.cleanupInterval```
-:   Frequency for deleting expired web sessions. Values should use common time
-    unit suffixes to express their setting:
-* s, sec, second, seconds
-* m, min, minute, minutes
-* h, hr, hour, hours
-* d, day, days
-* w, week, weeks (`1 week` is treated as `7 days`)
-* mon, month, months (`1 month` is treated as `30 days`)
-* y, year, years (`1 year` is treated as `365 days`)
-If a time unit suffix is not specified, `hours` is assumed.
-Defaults to 24 hours.
 
 ```healthcheck.enable```
 :   Whether to enable the health check endpoint. Defaults to 'true'.
