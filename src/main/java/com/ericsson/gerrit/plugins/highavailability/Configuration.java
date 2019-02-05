@@ -14,14 +14,10 @@
 
 package com.ericsson.gerrit.plugins.highavailability;
 
-import static java.util.concurrent.TimeUnit.HOURS;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.PluginConfigFactory;
@@ -34,7 +30,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -52,21 +47,6 @@ public class Configuration {
   // common parameters to cache and index sections
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
 
-  // common parameters to cache, event index and websession sections
-  static final String SYNCHRONIZE_KEY = "synchronize";
-
-  // health check section
-  static final String HEALTH_CHECK_SECTION = "healthCheck";
-  static final String ENABLE_KEY = "enable";
-  static final boolean DEFAULT_HEALTH_CHECK_ENABLED = true;
-
-  // websession section
-  static final String WEBSESSION_SECTION = "websession";
-  static final String CLEANUP_INTERVAL_KEY = "cleanupInterval";
-
-  static final int DEFAULT_TIMEOUT_MS = 5000;
-  static final int DEFAULT_MAX_TRIES = 360;
-  static final int DEFAULT_RETRY_INTERVAL = 10000;
   static final int DEFAULT_INDEX_MAX_TRIES = 2;
   static final int DEFAULT_INDEX_RETRY_INTERVAL = 30000;
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
@@ -76,18 +56,14 @@ public class Configuration {
   private final Main main;
   private final AutoReindex autoReindex;
   private final PeerInfo peerInfo;
-  private final JGroups jgroups;
   private final Http http;
   private final Cache cache;
   private final Event event;
   private final Index index;
-  private final Websession websession;
   private PeerInfoStatic peerInfoStatic;
-  private PeerInfoJGroups peerInfoJGroups;
   private HealthCheck healthCheck;
 
   public enum PeerInfoStrategy {
-    JGROUPS,
     STATIC
   }
 
@@ -102,18 +78,13 @@ public class Configuration {
       case STATIC:
         peerInfoStatic = new PeerInfoStatic(cfg);
         break;
-      case JGROUPS:
-        peerInfoJGroups = new PeerInfoJGroups(cfg);
-        break;
       default:
         throw new IllegalArgumentException("Not supported strategy: " + peerInfo.strategy);
     }
-    jgroups = new JGroups(site, cfg);
     http = new Http(cfg);
     cache = new Cache(cfg);
     event = new Event(cfg);
     index = new Index(cfg);
-    websession = new Websession(cfg);
     healthCheck = new HealthCheck(cfg);
   }
 
@@ -133,14 +104,6 @@ public class Configuration {
     return peerInfoStatic;
   }
 
-  public PeerInfoJGroups peerInfoJGroups() {
-    return peerInfoJGroups;
-  }
-
-  public JGroups jgroups() {
-    return jgroups;
-  }
-
   public Http http() {
     return http;
   }
@@ -155,10 +118,6 @@ public class Configuration {
 
   public Index index() {
     return index;
-  }
-
-  public Websession websession() {
-    return websession;
   }
 
   public HealthCheck healthCheck() {
@@ -176,9 +135,9 @@ public class Configuration {
   }
 
   public static class Main {
-    static final String MAIN_SECTION = "main";
-    static final String SHARED_DIRECTORY_KEY = "sharedDirectory";
-    static final String DEFAULT_SHARED_DIRECTORY = "shared";
+    public static final String MAIN_SECTION = "main";
+    public static final String SHARED_DIRECTORY_KEY = "sharedDirectory";
+    public static final String DEFAULT_SHARED_DIRECTORY = "shared";
 
     private final Path sharedDirectory;
 
@@ -251,8 +210,8 @@ public class Configuration {
   }
 
   public static class PeerInfoStatic {
-    static final String STATIC_SUBSECTION = PeerInfoStrategy.STATIC.name().toLowerCase();
-    static final String URL_KEY = "url";
+    public static final String STATIC_SUBSECTION = PeerInfoStrategy.STATIC.name().toLowerCase();
+    public static final String URL_KEY = "url";
 
     private final Set<String> urls;
 
@@ -268,76 +227,6 @@ public class Configuration {
 
     public Set<String> urls() {
       return ImmutableSet.copyOf(urls);
-    }
-  }
-
-  public static class PeerInfoJGroups {
-    static final String JGROUPS_SUBSECTION = PeerInfoStrategy.JGROUPS.name().toLowerCase();
-    static final String MY_URL_KEY = "myUrl";
-
-    private final String myUrl;
-
-    private PeerInfoJGroups(Config cfg) {
-      myUrl = trimTrailingSlash(cfg.getString(PEER_INFO_SECTION, JGROUPS_SUBSECTION, MY_URL_KEY));
-      log.debug("My Url: {}", myUrl);
-    }
-
-    public String myUrl() {
-      return myUrl;
-    }
-
-    @Nullable
-    private static String trimTrailingSlash(@Nullable String in) {
-      return in == null ? in : CharMatcher.is('/').trimTrailingFrom(in);
-    }
-  }
-
-  public static class JGroups {
-    static final String JGROUPS_SECTION = "jgroups";
-    static final String SKIP_INTERFACE_KEY = "skipInterface";
-    static final String CLUSTER_NAME_KEY = "clusterName";
-    static final String PROTOCOL_STACK_KEY = "protocolStack";
-    static final ImmutableList<String> DEFAULT_SKIP_INTERFACE_LIST =
-        ImmutableList.of("lo*", "utun*", "awdl*");
-    static final String DEFAULT_CLUSTER_NAME = "GerritHA";
-
-    private final ImmutableList<String> skipInterface;
-    private final String clusterName;
-    private final Optional<Path> protocolStack;
-
-    private JGroups(SitePaths site, Config cfg) {
-      String[] skip = cfg.getStringList(JGROUPS_SECTION, null, SKIP_INTERFACE_KEY);
-      skipInterface = skip.length == 0 ? DEFAULT_SKIP_INTERFACE_LIST : ImmutableList.copyOf(skip);
-      log.debug("Skip interface(s): {}", skipInterface);
-      clusterName = getString(cfg, JGROUPS_SECTION, null, CLUSTER_NAME_KEY, DEFAULT_CLUSTER_NAME);
-      log.debug("Cluster name: {}", clusterName);
-      protocolStack = getProtocolStack(cfg, site);
-      log.debug(
-          "Protocol stack config {}",
-          protocolStack.isPresent() ? protocolStack.get() : "not configured, using default stack.");
-    }
-
-    private static String getString(
-        Config cfg, String section, String subSection, String name, String defaultValue) {
-      String value = cfg.getString(section, subSection, name);
-      return value == null ? defaultValue : value;
-    }
-
-    private static Optional<Path> getProtocolStack(Config cfg, SitePaths site) {
-      String location = cfg.getString(JGROUPS_SECTION, null, PROTOCOL_STACK_KEY);
-      return location == null ? Optional.empty() : Optional.of(site.etc_dir.resolve(location));
-    }
-
-    public Optional<Path> protocolStack() {
-      return protocolStack;
-    }
-
-    public ImmutableList<String> skipInterface() {
-      return skipInterface;
-    }
-
-    public String clusterName() {
-      return clusterName;
     }
   }
 
@@ -395,7 +284,7 @@ public class Configuration {
     }
   }
 
-  /** Common parameters to cache, event, index and websession */
+  /** Common parameters to cache, event, index */
   public abstract static class Forwarding {
     static final boolean DEFAULT_SYNCHRONIZE = true;
     static final String SYNCHRONIZE_KEY = "synchronize";
@@ -485,28 +374,6 @@ public class Configuration {
 
     public int numStripedLocks() {
       return numStripedLocks;
-    }
-  }
-
-  public static class Websession extends Forwarding {
-    static final String WEBSESSION_SECTION = "websession";
-    static final String CLEANUP_INTERVAL_KEY = "cleanupInterval";
-    static final String DEFAULT_CLEANUP_INTERVAL = "24 hours";
-    static final long DEFAULT_CLEANUP_INTERVAL_MS = HOURS.toMillis(24);
-
-    private final long cleanupInterval;
-
-    private Websession(Config cfg) {
-      super(cfg, WEBSESSION_SECTION);
-      this.cleanupInterval =
-          ConfigUtil.getTimeUnit(
-              Strings.nullToEmpty(cfg.getString(WEBSESSION_SECTION, null, CLEANUP_INTERVAL_KEY)),
-              DEFAULT_CLEANUP_INTERVAL_MS,
-              MILLISECONDS);
-    }
-
-    public long cleanupInterval() {
-      return cleanupInterval;
     }
   }
 

@@ -90,18 +90,24 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
           }
         } else {
           log.warn(
-              "Change {} seems too old compared to the event timestamp (event-Ts={} >> change-Ts={})",
+              "Change {} seems too old compared to the event timestamp (event={} >> change-Ts={})",
               id,
               indexEvent,
               checker);
           rescheduleIndex(id, indexEvent, retryCount + 1);
         }
       } else {
-        indexer.delete(parseChangeId(id));
         log.warn(
-            "Change {} could not be found in the local Git repository (eventTs={}), deleted from index",
+            "Change {} not present yet in local Git repository (event={}) after {} attempt(s)",
             id,
-            indexEvent);
+            indexEvent,
+            retryCount);
+        if (!rescheduleIndex(id, indexEvent, retryCount + 1)) {
+          log.error(
+              "Change {} could not be found in the local Git repository (event={})",
+              id,
+              indexEvent);
+        }
       }
     } catch (Exception e) {
       if (isCausedByNoSuchChangeException(e)) {
@@ -129,13 +135,13 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
     indexer.index(notes.getChange());
   }
 
-  private void rescheduleIndex(String id, Optional<IndexEvent> indexEvent, int retryCount) {
+  private boolean rescheduleIndex(String id, Optional<IndexEvent> indexEvent, int retryCount) {
     if (retryCount > maxTries) {
       log.error(
           "Change {} could not be indexed after {} retries. Change index could be stale.",
           id,
           retryCount);
-      return;
+      return false;
     }
 
     log.warn(
@@ -154,6 +160,7 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
         },
         retryInterval,
         TimeUnit.MILLISECONDS);
+    return true;
   }
 
   @Override
