@@ -8,7 +8,7 @@ should be specified in `$site_path/etc/@PLUGIN@.config` file:
 File '@PLUGIN@.config'
 --------------------
 
-### Static definition of the high-availability nodes.
+### Static definition of the multi-site nodes.
 
 ```
 [main]
@@ -34,7 +34,7 @@ File '@PLUGIN@.config'
     is "shared".
 
 ```autoReindex.enabled```
-:   Enable the tracking of the latest change indexed under data/high-availability
+:   Enable the tracking of the latest change indexed under data/multi-site
     for each of the indexes. At startup scans all the changes, accounts and groups
     and reindex the ones that have been updated by other nodes while the server was down.
     When not specified, the default is "false", that means no automatic tracking
@@ -63,7 +63,7 @@ File '@PLUGIN@.config'
     When not specified, polling of conditional reindexing is disabled.
 
 ```autoReindex.interval```
-:   Enable the tracking of the latest change indexed under data/high-availability
+:   Enable the tracking of the latest change indexed under data/multi-site
     for each of the indexes. At startup scans all the changes, accounts and groups
     and reindex the ones that have been updated by other nodes while the server was down.
     When not specified, the default is "false", that means no automatic tracking
