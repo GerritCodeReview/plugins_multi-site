@@ -17,7 +17,9 @@ gerrit_plugin(
         "Implementation-URL: https://review.gerrithub.io/admin/repos/GerritForge/plugins_multi-site",
     ],
     resources = glob(["src/main/resources/**/*"]),
-    deps = [],
+    deps = [
+        "@kafka_client//jar",
+    ],
 )
 
 junit_tests(
@@ -25,8 +27,8 @@ junit_tests(
     srcs = glob(["src/test/java/**/*.java"]),
     resources = glob(["src/test/resources/**/*"]),
     tags = [
-        "multi-site",
         "local",
+        "multi-site",
     ],
     deps = [
         ":multi-site__plugin_test_deps",
@@ -41,5 +43,7 @@ java_library(
         ":multi-site__plugin",
         "@mockito//jar",
         "@wiremock//jar",
+        "@kafka_client//jar",
+        "@testcontainers-kafka//jar",
     ],
 )
