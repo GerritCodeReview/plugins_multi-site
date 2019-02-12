@@ -15,7 +15,9 @@
 package com.googlesource.gerrit.plugins.multisite.broker;
 
 import com.google.common.base.Supplier;
-import com.google.gerrit.server.events.SupplierSerializer;
+import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.EventDeserializer;
+import com.google.gerrit.server.events.SupplierDeserializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.inject.Provider;
@@ -23,6 +25,9 @@ import com.google.inject.Provider;
 public class GsonProvider implements Provider<Gson> {
   @Override
   public Gson get() {
-    return new GsonBuilder().registerTypeAdapter(Supplier.class, new SupplierSerializer()).create();
+    return new GsonBuilder()
+        .registerTypeAdapter(Event.class, new EventDeserializer())
+        .registerTypeAdapter(Supplier.class, new SupplierDeserializer())
+        .create();
   }
 }

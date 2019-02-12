@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -56,15 +57,18 @@ public class Configuration {
   static final String NUM_STRIPED_LOCKS = "numStripedLocks";
   static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
   static final String ENABLE_KEY = "enable";
+  public static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
+  static final String KAFKA_SECTION = "kafka";
 
   private final Main main;
   private final AutoReindex autoReindex;
   private final PeerInfo peerInfo;
-  private final Broker broker;
+  private final KafkaPublisher broker;
   private final Http http;
   private final Cache cache;
   private final Event event;
   private final Index index;
+  private final KafkaSubscriber kafkaConsumerConfiguration;
   private PeerInfoStatic peerInfoStatic;
   private HealthCheck healthCheck;
 
@@ -86,15 +90,16 @@ public class Configuration {
       default:
         throw new IllegalArgumentException("Not supported strategy: " + peerInfo.strategy);
     }
-    broker = new Broker(cfg);
+    broker = new KafkaPublisher(cfg);
     http = new Http(cfg);
     cache = new Cache(cfg);
     event = new Event(cfg);
     index = new Index(cfg);
     healthCheck = new HealthCheck(cfg);
+    kafkaConsumerConfiguration = new KafkaSubscriber(cfg);
   }
 
-  public Broker broker() {
+  public KafkaPublisher kafkaProducer() {
     return broker;
   }
 
@@ -132,6 +137,10 @@ public class Configuration {
 
   public HealthCheck healthCheck() {
     return healthCheck;
+  }
+
+  public KafkaSubscriber kafkaSubscriber() {
+    return kafkaConsumerConfiguration;
   }
 
   private static int getInt(Config cfg, String section, String name, int defaultValue) {
@@ -249,25 +258,49 @@ public class Configuration {
     }
   }
 
-  public static class Broker extends Properties {
+  private static void applyKafkaConfig(Config config, String subsectionName, Properties target) {
+    for (String section : config.getSubsections(KAFKA_SECTION)) {
+      if (section.equals(subsectionName)) {
+        for (String name : config.getNames(KAFKA_SECTION, section, true)) {
+          Object value = config.getString(KAFKA_SECTION, subsectionName, name);
+          String propName =
+              CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, name).replaceAll("-", ".");
+          target.put(propName, value);
+        }
+      }
+    }
+    target.put(
+        "bootstrap.servers",
+        getString(
+            config, KAFKA_SECTION, null, "bootstrapServers", DEFAULT_KAFKA_BOOTSTRAP_SERVERS));
+  }
+
+  public static class KafkaPublisher extends Properties {
     private static final long serialVersionUID = 0L;
 
     public static final String KAFKA_STRING_SERIALIZER = StringSerializer.class.getName();
 
-    static final String BROKER_SECTION = "broker";
+    static final String KAFKA_PUBLISHER_SUBSECTION = "publisher";
     static final String BROKER_PRODUCER_INDEX_TOPIC = "index-event-topic";
     static final boolean DEFAULT_BROKER_ENABLED = false;
 
     private final boolean enabled;
     private final String indexEventTopic;
 
-    private Broker(Config cfg) {
-      enabled = cfg.getBoolean(BROKER_SECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
+    private KafkaPublisher(Config cfg) {
+      enabled =
+          cfg.getBoolean(
+              KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
       indexEventTopic =
-          getString(cfg, BROKER_SECTION, null, BROKER_PRODUCER_INDEX_TOPIC, "GERRIT.EVENT.INDEX");
+          getString(
+              cfg,
+              KAFKA_SECTION,
+              KAFKA_PUBLISHER_SUBSECTION,
+              BROKER_PRODUCER_INDEX_TOPIC,
+              "GERRIT.EVENT.INDEX");
       if (enabled) {
         setDefaults();
-        applyConfig(cfg);
+        applyKafkaConfig(cfg, KAFKA_PUBLISHER_SUBSECTION, this);
       }
     }
 
@@ -282,25 +315,64 @@ public class Configuration {
       put("reconnect.backoff.ms", 5000L);
     }
 
-    private void applyConfig(Config config) {
-      for (String section : config.getSections()) {
-        if (section.equals(BROKER_SECTION)) {
-          for (String name : config.getNames(section, true)) {
-            Object value = config.getString(BROKER_SECTION, null, name);
-            String propName =
-                CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, name).replaceAll("-", ".");
-            put(propName, value);
-          }
-        }
-      }
-    }
-
     public boolean enabled() {
       return enabled;
     }
 
     public String getIndexEventTopic() {
       return indexEventTopic;
+    }
+  }
+
+  public class KafkaSubscriber {
+    static final String KAFKA_SECTION = "kafka";
+    static final String KAFKA_SUBSCRIBER_SUBSECTION = "subscriber";
+
+    private final boolean enabled;
+
+    private final String topic;
+    private final Integer pollingInterval;
+    private final Properties props = new Properties();
+    private final Config cfg;
+
+    public KafkaSubscriber(Config cfg) {
+      this.topic = cfg.getString(KAFKA_SECTION, null, "eventTopic");
+      this.pollingInterval =
+          cfg.getInt(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, "pollingIntervalMs", 1000);
+      this.cfg = cfg;
+
+      enabled = cfg.getBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, "enabled", false);
+      applyKafkaConfig(cfg, KAFKA_SUBSCRIBER_SUBSECTION, props);
+    }
+
+    public boolean enabled() {
+      return enabled;
+    }
+
+    public String getTopic() {
+      return topic;
+    }
+
+    public Properties getProps(UUID instanceId) {
+      String groupId =
+          getString(
+              cfg, KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, "groupId", instanceId.toString());
+      props.put("group.id", groupId);
+
+      return props;
+    }
+
+    public Integer getPollingInterval() {
+      return pollingInterval;
+    }
+
+    private String getString(
+        Config cfg, String section, String subsection, String name, String defaultValue) {
+      String value = cfg.getString(section, subsection, name);
+      if (!Strings.isNullOrEmpty(value)) {
+        return value;
+      }
+      return defaultValue;
     }
   }
 

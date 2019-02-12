@@ -15,17 +15,20 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.google.gerrit.extensions.annotations.PluginData;
+import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.autoreindex.AutoReindexModule;
+import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.RestForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
+import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
 import com.googlesource.gerrit.plugins.multisite.peers.PeerInfoModule;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -55,9 +58,6 @@ class Module extends AbstractModule {
     if (config.http().enabled()) {
       install(new RestForwarderModule());
     }
-    if (config.broker().enabled()) {
-      install(new BrokerForwarderModule());
-    }
     if (config.cache().synchronize()) {
       install(new CacheModule());
     }
@@ -71,6 +71,15 @@ class Module extends AbstractModule {
       install(new AutoReindexModule());
     }
     install(new PeerInfoModule(config.peerInfo().strategy()));
+
+    if (config.kafkaSubscriber().enabled()) {
+      install(new KafkaConsumerModule());
+    }
+    if (config.kafkaProducer().enabled()) {
+      install(new BrokerForwarderModule());
+    }
+
+    bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
   }
 
   @Provides

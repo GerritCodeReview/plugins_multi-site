@@ -12,22 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.forwarder.events;
+package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
-import static com.google.gerrit.server.events.EventTypes.register;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import com.google.gerrit.server.events.Event;
+import com.google.inject.BindingAnnotation;
+import java.lang.annotation.Retention;
 
-public abstract class MultiSiteEvent extends Event {
-
-  public static void registerEventTypes() {
-    register(ChangeIndexEvent.TYPE, ChangeIndexEvent.class);
-    register(AccountIndexEvent.TYPE, AccountIndexEvent.class);
-    register(GroupIndexEvent.TYPE, GroupIndexEvent.class);
-    register(ProjectIndexEvent.TYPE, ProjectIndexEvent.class);
-  }
-
-  protected MultiSiteEvent(String type) {
-    super(type);
-  }
-}
+@Retention(RUNTIME)
+@BindingAnnotation
+@interface ConsumerExecutor {}

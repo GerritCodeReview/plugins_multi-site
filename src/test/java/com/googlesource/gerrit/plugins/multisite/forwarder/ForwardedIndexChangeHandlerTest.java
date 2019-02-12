@@ -30,15 +30,16 @@ import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.google.gerrit.server.notedb.ChangeNotes;
+import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gerrit.server.util.time.TimeUtil;
 import com.google.gwtorm.server.OrmException;
+import com.google.inject.util.Providers;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeChecker;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeCheckerImpl;
-import com.googlesource.gerrit.plugins.multisite.index.ChangeDb;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
@@ -68,13 +69,13 @@ public class ForwardedIndexChangeHandlerTest {
 
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private ChangeIndexer indexerMock;
-  @Mock private ChangeDb changeDbMock;
+  @Mock private OneOffRequestContext ctxMock;
+  @Mock private ManualRequestContext manualRequestContextMock;
   @Mock private ReviewDb dbMock;
   @Mock private ChangeNotes changeNotes;
   @Mock private Configuration configurationMock;
   @Mock private Configuration.Index index;
   @Mock private ScheduledExecutorService indexExecutorMock;
-  @Mock private OneOffRequestContext ctxMock;
   @Mock private GitRepositoryManager gitRepoMgrMock;
   @Mock private ChangeCheckerImpl.Factory changeCheckerFactoryMock;
   @Mock private ChangeChecker changeCheckerAbsentMock;
@@ -85,7 +86,8 @@ public class ForwardedIndexChangeHandlerTest {
 
   @Before
   public void setUp() throws Exception {
-    when(changeDbMock.open()).thenReturn(dbMock);
+    when(ctxMock.open()).thenReturn(manualRequestContextMock);
+    when(manualRequestContextMock.getReviewDbProvider()).thenReturn(Providers.of(dbMock));
     id = new Change.Id(TEST_CHANGE_NUMBER);
     change = new Change(null, id, null, null, TimeUtil.nowTs());
     when(changeNotes.getChange()).thenReturn(change);
@@ -94,12 +96,7 @@ public class ForwardedIndexChangeHandlerTest {
     when(index.numStripedLocks()).thenReturn(10);
     handler =
         new ForwardedIndexChangeHandler(
-            indexerMock,
-            changeDbMock,
-            configurationMock,
-            indexExecutorMock,
-            ctxMock,
-            changeCheckerFactoryMock);
+            indexerMock, configurationMock, indexExecutorMock, ctxMock, changeCheckerFactoryMock);
   }
 
   @Test
@@ -209,9 +206,7 @@ public class ForwardedIndexChangeHandlerTest {
       boolean changeExists, boolean ormException, boolean ioException, boolean changeIsUpToDate)
       throws OrmException, IOException {
     if (ormException) {
-      doThrow(new OrmException("")).when(changeDbMock).open();
-    } else {
-      when(changeDbMock.open()).thenReturn(dbMock);
+      doThrow(new OrmException("")).when(ctxMock).open();
     }
 
     if (changeExists) {

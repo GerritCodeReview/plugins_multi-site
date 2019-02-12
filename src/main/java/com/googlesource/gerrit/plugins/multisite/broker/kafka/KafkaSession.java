@@ -30,13 +30,13 @@ import org.slf4j.LoggerFactory;
 
 public class KafkaSession implements BrokerSession {
   private static final Logger LOGGER = LoggerFactory.getLogger(KafkaSession.class);
-  private final Configuration.Broker properties;
+  private final Configuration.KafkaPublisher properties;
   private final UUID instanceId;
   private volatile Producer<String, String> producer;
 
   @Inject
   public KafkaSession(Configuration configuration, @InstanceId UUID instanceId) {
-    this.properties = configuration.broker();
+    this.properties = configuration.kafkaProducer();
     this.instanceId = instanceId;
   }
 

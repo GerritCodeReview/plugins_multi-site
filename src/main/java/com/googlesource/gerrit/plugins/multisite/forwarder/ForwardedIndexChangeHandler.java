@@ -16,7 +16,6 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.common.base.Splitter;
 import com.google.gerrit.reviewdb.client.Change;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.project.NoSuchChangeException;
@@ -30,7 +29,6 @@ import com.googlesource.gerrit.plugins.multisite.Configuration.Index;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeChecker;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeCheckerImpl;
-import com.googlesource.gerrit.plugins.multisite.index.ChangeDb;
 import com.googlesource.gerrit.plugins.multisite.index.ForwardedIndexExecutor;
 import java.io.IOException;
 import java.util.Optional;
@@ -46,7 +44,6 @@ import java.util.concurrent.TimeUnit;
 @Singleton
 public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String> {
   private final ChangeIndexer indexer;
-  private final ChangeDb changeDb;
   private final ScheduledExecutorService indexExecutor;
   private final OneOffRequestContext oneOffCtx;
   private final int retryInterval;
@@ -56,14 +53,12 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
   @Inject
   ForwardedIndexChangeHandler(
       ChangeIndexer indexer,
-      ChangeDb changeDb,
       Configuration configuration,
       @ForwardedIndexExecutor ScheduledExecutorService indexExecutor,
       OneOffRequestContext oneOffCtx,
       ChangeCheckerImpl.Factory changeCheckerFactory) {
     super(configuration.index().numStripedLocks());
     this.indexer = indexer;
-    this.changeDb = changeDb;
     this.indexExecutor = indexExecutor;
     this.oneOffCtx = oneOffCtx;
     this.changeCheckerFactory = changeCheckerFactory;
@@ -137,9 +132,9 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
   }
 
   private void reindex(ChangeNotes notes) throws IOException, OrmException {
-    try (ReviewDb db = changeDb.open()) {
+    try (ManualRequestContext ctx = oneOffCtx.open()) {
       notes.reload();
-      indexer.index(db, notes.getChange());
+      indexer.index(ctx.getReviewDbProvider().get(), notes.getChange());
     }
   }
 
