@@ -23,6 +23,7 @@ import com.googlesource.gerrit.plugins.multisite.autoreindex.AutoReindexModule;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
+import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.RestForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.peers.PeerInfoModule;
@@ -50,8 +51,13 @@ class Module extends AbstractModule {
   protected void configure() {
 
     install(new ForwarderModule());
-    install(new RestForwarderModule());
 
+    if (config.http().enabled()) {
+      install(new RestForwarderModule());
+    }
+    if (config.broker().enabled()) {
+      install(new BrokerForwarderModule());
+    }
     if (config.cache().synchronize()) {
       install(new CacheModule());
     }

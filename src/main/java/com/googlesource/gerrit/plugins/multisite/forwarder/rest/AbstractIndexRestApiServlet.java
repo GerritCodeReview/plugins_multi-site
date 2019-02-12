@@ -24,9 +24,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gwtorm.server.OrmException;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
-
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Optional;
@@ -101,12 +100,12 @@ public abstract class AbstractIndexRestApiServlet<T> extends AbstractRestApiServ
     }
   }
 
-  protected Optional<IndexEvent> parseBody(HttpServletRequest req) throws IOException {
+  protected Optional<ChangeIndexEvent> parseBody(HttpServletRequest req) throws IOException {
     String contentType = req.getContentType();
     if (contentType != null && contentType.contains("application/json")) {
       return Optional.ofNullable(
           gson.fromJson(
-              new InputStreamReader(req.getInputStream(), Charsets.UTF_8), IndexEvent.class));
+              new InputStreamReader(req.getInputStream(), Charsets.UTF_8), ChangeIndexEvent.class));
     }
     return Optional.empty();
   }

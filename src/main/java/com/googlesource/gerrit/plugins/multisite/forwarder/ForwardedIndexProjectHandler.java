@@ -19,6 +19,7 @@ import com.google.gerrit.reviewdb.client.Project;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -39,14 +40,14 @@ public class ForwardedIndexProjectHandler extends ForwardedIndexingHandler<Proje
   }
 
   @Override
-  protected void doIndex(Project.NameKey projectName, Optional<IndexEvent> indexEvent)
+  protected void doIndex(Project.NameKey projectName, Optional<ChangeIndexEvent> indexEvent)
       throws IOException {
     indexer.index(projectName);
     log.debug("Project {} successfully indexed", projectName);
   }
 
   @Override
-  protected void doDelete(Project.NameKey projectName, Optional<IndexEvent> indexEvent) {
+  protected void doDelete(Project.NameKey projectName, Optional<ChangeIndexEvent> indexEvent) {
     throw new UnsupportedOperationException("Delete from project index not supported");
   }
 }

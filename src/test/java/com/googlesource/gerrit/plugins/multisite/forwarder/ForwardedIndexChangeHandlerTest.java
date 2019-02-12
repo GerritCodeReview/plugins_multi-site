@@ -34,14 +34,11 @@ import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gerrit.server.util.time.TimeUtil;
 import com.google.gwtorm.server.OrmException;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeChecker;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeCheckerImpl;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeDb;
-
 import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
@@ -115,7 +112,8 @@ public class ForwardedIndexChangeHandlerTest {
   @Test
   public void changeIsStillIndexedEvenWhenOutdated() throws Exception {
     setupChangeAccessRelatedMocks(CHANGE_EXISTS, CHANGE_OUTDATED);
-    handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.of(new IndexEvent()));
+    handler.index(
+        TEST_CHANGE_ID, Operation.INDEX, Optional.of(new ChangeIndexEvent("foo", 1, false)));
     verify(indexerMock, times(1)).index(any(ReviewDb.class), any(Change.class));
   }
 

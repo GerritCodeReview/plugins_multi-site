@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.google.common.base.CaseFormat;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
@@ -29,9 +30,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.jgit.lib.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,10 +55,12 @@ public class Configuration {
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
   static final String NUM_STRIPED_LOCKS = "numStripedLocks";
   static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
+  static final String ENABLE_KEY = "enable";
 
   private final Main main;
   private final AutoReindex autoReindex;
   private final PeerInfo peerInfo;
+  private final Broker broker;
   private final Http http;
   private final Cache cache;
   private final Event event;
@@ -81,11 +86,16 @@ public class Configuration {
       default:
         throw new IllegalArgumentException("Not supported strategy: " + peerInfo.strategy);
     }
+    broker = new Broker(cfg);
     http = new Http(cfg);
     cache = new Cache(cfg);
     event = new Event(cfg);
     index = new Index(cfg);
     healthCheck = new HealthCheck(cfg);
+  }
+
+  public Broker broker() {
+    return broker;
   }
 
   public Main main() {
@@ -132,6 +142,15 @@ public class Configuration {
       log.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
       return defaultValue;
     }
+  }
+
+  private static String getString(
+      Config cfg, String section, String subsection, String name, String defaultValue) {
+    String value = cfg.getString(section, subsection, name);
+    if (!Strings.isNullOrEmpty(value)) {
+      return value;
+    }
+    return defaultValue;
   }
 
   public static class Main {
@@ -230,6 +249,61 @@ public class Configuration {
     }
   }
 
+  public static class Broker extends Properties {
+    private static final long serialVersionUID = 0L;
+
+    public static final String KAFKA_STRING_SERIALIZER = StringSerializer.class.getName();
+
+    static final String BROKER_SECTION = "broker";
+    static final String BROKER_PRODUCER_INDEX_TOPIC = "index-event-topic";
+    static final boolean DEFAULT_BROKER_ENABLED = false;
+
+    private final boolean enabled;
+    private final String indexEventTopic;
+
+    private Broker(Config cfg) {
+      enabled = cfg.getBoolean(BROKER_SECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
+      indexEventTopic =
+          getString(cfg, BROKER_SECTION, null, BROKER_PRODUCER_INDEX_TOPIC, "GERRIT.EVENT.INDEX");
+      if (enabled) {
+        setDefaults();
+        applyConfig(cfg);
+      }
+    }
+
+    private void setDefaults() {
+      put("acks", "all");
+      put("retries", 0);
+      put("batch.size", 16384);
+      put("linger.ms", 1);
+      put("buffer.memory", 33554432);
+      put("key.serializer", KAFKA_STRING_SERIALIZER);
+      put("value.serializer", KAFKA_STRING_SERIALIZER);
+      put("reconnect.backoff.ms", 5000L);
+    }
+
+    private void applyConfig(Config config) {
+      for (String section : config.getSections()) {
+        if (section.equals(BROKER_SECTION)) {
+          for (String name : config.getNames(section, true)) {
+            Object value = config.getString(BROKER_SECTION, null, name);
+            String propName =
+                CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, name).replaceAll("-", ".");
+            put(propName, value);
+          }
+        }
+      }
+    }
+
+    public boolean enabled() {
+      return enabled;
+    }
+
+    public String getIndexEventTopic() {
+      return indexEventTopic;
+    }
+  }
+
   public static class Http {
     static final String HTTP_SECTION = "http";
     static final String USER_KEY = "user";
@@ -238,11 +312,13 @@ public class Configuration {
     static final String SOCKET_TIMEOUT_KEY = "socketTimeout";
     static final String MAX_TRIES_KEY = "maxTries";
     static final String RETRY_INTERVAL_KEY = "retryInterval";
+    static final boolean DEFAULT_HTTP_ENABLED = true;
 
     static final int DEFAULT_TIMEOUT_MS = 5000;
     static final int DEFAULT_MAX_TRIES = 360;
     static final int DEFAULT_RETRY_INTERVAL = 10000;
 
+    private final boolean enabled;
     private final String user;
     private final String password;
     private final int connectionTimeout;
@@ -251,12 +327,17 @@ public class Configuration {
     private final int retryInterval;
 
     private Http(Config cfg) {
+      enabled = cfg.getBoolean(HTTP_SECTION, ENABLE_KEY, DEFAULT_HTTP_ENABLED);
       user = Strings.nullToEmpty(cfg.getString(HTTP_SECTION, null, USER_KEY));
       password = Strings.nullToEmpty(cfg.getString(HTTP_SECTION, null, PASSWORD_KEY));
       connectionTimeout = getInt(cfg, HTTP_SECTION, CONNECTION_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS);
       socketTimeout = getInt(cfg, HTTP_SECTION, SOCKET_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS);
       maxTries = getInt(cfg, HTTP_SECTION, MAX_TRIES_KEY, DEFAULT_MAX_TRIES);
       retryInterval = getInt(cfg, HTTP_SECTION, RETRY_INTERVAL_KEY, DEFAULT_RETRY_INTERVAL);
+    }
+
+    public boolean enabled() {
+      return enabled;
     }
 
     public String user() {
@@ -379,7 +460,6 @@ public class Configuration {
 
   public static class HealthCheck {
     static final String HEALTH_CHECK_SECTION = "healthCheck";
-    static final String ENABLE_KEY = "enable";
     static final boolean DEFAULT_HEALTH_CHECK_ENABLED = true;
 
     private final boolean enabled;

@@ -16,7 +16,6 @@ package com.googlesource.gerrit.plugins.multisite.index;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -29,7 +28,9 @@ import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.reviewdb.client.Change;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.IndexEventHandler.IndexAccountTask;
 import com.googlesource.gerrit.plugins.multisite.index.IndexEventHandler.IndexChangeTask;
 import com.googlesource.gerrit.plugins.multisite.index.IndexEventHandler.IndexGroupTask;
@@ -64,7 +65,8 @@ public class IndexEventHandlerTest {
     accountId = new Account.Id(ACCOUNT_ID);
     accountGroupUUID = new AccountGroup.UUID(UUID);
     when(changeCheckerFactoryMock.create(any())).thenReturn(changeCheckerMock);
-    when(changeCheckerMock.newIndexEvent()).thenReturn(Optional.of(new IndexEvent()));
+    when(changeCheckerMock.newIndexEvent(PROJECT_NAME, CHANGE_ID, false))
+        .thenReturn(Optional.of(new ChangeIndexEvent(PROJECT_NAME, CHANGE_ID, false)));
     indexEventHandler =
         new IndexEventHandler(
             MoreExecutors.directExecutor(), PLUGIN_NAME, forwarder, changeCheckerFactoryMock);
@@ -73,26 +75,31 @@ public class IndexEventHandlerTest {
   @Test
   public void shouldIndexInRemoteOnChangeIndexedEvent() throws Exception {
     indexEventHandler.onChangeIndexed(PROJECT_NAME, changeId.get());
-    verify(forwarder).indexChange(eq(PROJECT_NAME), eq(CHANGE_ID), any());
+    ChangeIndexEvent changeIndexEvent = new ChangeIndexEvent(PROJECT_NAME, CHANGE_ID, false);
+    verify(forwarder).indexChange(changeIndexEvent);
   }
 
   @Test
   public void shouldIndexInRemoteOnAccountIndexedEvent() throws Exception {
     indexEventHandler.onAccountIndexed(accountId.get());
-    verify(forwarder).indexAccount(eq(ACCOUNT_ID), any());
+    AccountIndexEvent accountIndexEvent = new AccountIndexEvent(accountId.get());
+    verify(forwarder).indexAccount(accountIndexEvent);
   }
 
   @Test
   public void shouldDeleteFromIndexInRemoteOnChangeDeletedEvent() throws Exception {
     indexEventHandler.onChangeDeleted(changeId.get());
-    verify(forwarder).deleteChangeFromIndex(eq(CHANGE_ID), any());
-    verifyZeroInteractions(changeCheckerMock); // Deleted changes should not be checked against NoteDb
+    ChangeIndexEvent changeIndexEvent = new ChangeIndexEvent("", changeId.get(), true);
+    verify(forwarder).deleteChangeFromIndex(changeIndexEvent);
+    verifyZeroInteractions(
+        changeCheckerMock); // Deleted changes should not be checked against NoteDb
   }
 
   @Test
   public void shouldIndexInRemoteOnGroupIndexedEvent() throws Exception {
     indexEventHandler.onGroupIndexed(accountGroupUUID.get());
-    verify(forwarder).indexGroup(eq(UUID), any());
+    GroupIndexEvent groupIndexEvent = new GroupIndexEvent(UUID);
+    verify(forwarder).indexGroup(groupIndexEvent);
   }
 
   @Test
@@ -130,7 +137,9 @@ public class IndexEventHandlerTest {
     indexEventHandler.onChangeIndexed(PROJECT_NAME, changeId.get());
     indexEventHandler.onChangeIndexed(PROJECT_NAME, changeId.get());
     verify(poolMock, times(1))
-        .execute(indexEventHandler.new IndexChangeTask(PROJECT_NAME, CHANGE_ID, false, null));
+        .execute(
+            indexEventHandler
+            .new IndexChangeTask(new ChangeIndexEvent(PROJECT_NAME, CHANGE_ID, false)));
   }
 
   @Test
@@ -140,7 +149,8 @@ public class IndexEventHandlerTest {
         new IndexEventHandler(poolMock, PLUGIN_NAME, forwarder, changeCheckerFactoryMock);
     indexEventHandler.onAccountIndexed(accountId.get());
     indexEventHandler.onAccountIndexed(accountId.get());
-    verify(poolMock, times(1)).execute(indexEventHandler.new IndexAccountTask(ACCOUNT_ID));
+    verify(poolMock, times(1))
+        .execute(indexEventHandler.new IndexAccountTask(new AccountIndexEvent(ACCOUNT_ID)));
   }
 
   @Test
@@ -150,13 +160,14 @@ public class IndexEventHandlerTest {
         new IndexEventHandler(poolMock, PLUGIN_NAME, forwarder, changeCheckerFactoryMock);
     indexEventHandler.onGroupIndexed(accountGroupUUID.get());
     indexEventHandler.onGroupIndexed(accountGroupUUID.get());
-    verify(poolMock, times(1)).execute(indexEventHandler.new IndexGroupTask(UUID));
+    verify(poolMock, times(1))
+        .execute(indexEventHandler.new IndexGroupTask(new GroupIndexEvent(UUID)));
   }
 
   @Test
   public void testIndexChangeTaskToString() throws Exception {
     IndexChangeTask task =
-        indexEventHandler.new IndexChangeTask(PROJECT_NAME, CHANGE_ID, false, null);
+        indexEventHandler.new IndexChangeTask(new ChangeIndexEvent(PROJECT_NAME, CHANGE_ID, false));
     assertThat(task.toString())
         .isEqualTo(
             String.format("[%s] Index change %s in target instance", PLUGIN_NAME, CHANGE_ID));
@@ -164,7 +175,8 @@ public class IndexEventHandlerTest {
 
   @Test
   public void testIndexAccountTaskToString() throws Exception {
-    IndexAccountTask task = indexEventHandler.new IndexAccountTask(ACCOUNT_ID);
+    IndexAccountTask task =
+        indexEventHandler.new IndexAccountTask(new AccountIndexEvent(ACCOUNT_ID));
     assertThat(task.toString())
         .isEqualTo(
             String.format("[%s] Index account %s in target instance", PLUGIN_NAME, ACCOUNT_ID));
@@ -172,7 +184,7 @@ public class IndexEventHandlerTest {
 
   @Test
   public void testIndexGroupTaskToString() throws Exception {
-    IndexGroupTask task = indexEventHandler.new IndexGroupTask(UUID);
+    IndexGroupTask task = indexEventHandler.new IndexGroupTask(new GroupIndexEvent(UUID));
     assertThat(task.toString())
         .isEqualTo(String.format("[%s] Index group %s in target instance", PLUGIN_NAME, UUID));
   }
@@ -180,72 +192,82 @@ public class IndexEventHandlerTest {
   @Test
   public void testIndexChangeTaskHashCodeAndEquals() {
     IndexChangeTask task =
-        indexEventHandler.new IndexChangeTask(PROJECT_NAME, CHANGE_ID, false, null);
+        indexEventHandler.new IndexChangeTask(new ChangeIndexEvent(PROJECT_NAME, CHANGE_ID, false));
 
     IndexChangeTask sameTask = task;
     assertThat(task.equals(sameTask)).isTrue();
     assertThat(task.hashCode()).isEqualTo(sameTask.hashCode());
 
     IndexChangeTask identicalTask =
-        indexEventHandler.new IndexChangeTask(PROJECT_NAME, CHANGE_ID, false, null);
+        indexEventHandler.new IndexChangeTask(new ChangeIndexEvent(PROJECT_NAME, CHANGE_ID, false));
     assertThat(task.equals(identicalTask)).isTrue();
     assertThat(task.hashCode()).isEqualTo(identicalTask.hashCode());
 
     assertThat(task.equals(null)).isFalse();
     assertThat(
             task.equals(
-                indexEventHandler.new IndexChangeTask(PROJECT_NAME, CHANGE_ID + 1, false, null)))
+                indexEventHandler
+                .new IndexChangeTask(new ChangeIndexEvent(PROJECT_NAME, CHANGE_ID + 1, false))))
         .isFalse();
     assertThat(task.hashCode()).isNotEqualTo("test".hashCode());
 
     IndexChangeTask differentChangeIdTask =
-        indexEventHandler.new IndexChangeTask(PROJECT_NAME, 123, false, null);
+        indexEventHandler.new IndexChangeTask(new ChangeIndexEvent(PROJECT_NAME, 123, false));
     assertThat(task.equals(differentChangeIdTask)).isFalse();
     assertThat(task.hashCode()).isNotEqualTo(differentChangeIdTask.hashCode());
 
-    IndexChangeTask removeTask = indexEventHandler.new IndexChangeTask("", CHANGE_ID, true, null);
+    IndexChangeTask removeTask =
+        indexEventHandler.new IndexChangeTask(new ChangeIndexEvent("", CHANGE_ID, true));
     assertThat(task.equals(removeTask)).isFalse();
     assertThat(task.hashCode()).isNotEqualTo(removeTask.hashCode());
   }
 
   @Test
   public void testIndexAccountTaskHashCodeAndEquals() {
-    IndexAccountTask task = indexEventHandler.new IndexAccountTask(ACCOUNT_ID);
+    IndexAccountTask task =
+        indexEventHandler.new IndexAccountTask(new AccountIndexEvent(ACCOUNT_ID));
 
     IndexAccountTask sameTask = task;
     assertThat(task.equals(sameTask)).isTrue();
     assertThat(task.hashCode()).isEqualTo(sameTask.hashCode());
 
-    IndexAccountTask identicalTask = indexEventHandler.new IndexAccountTask(ACCOUNT_ID);
+    IndexAccountTask identicalTask =
+        indexEventHandler.new IndexAccountTask(new AccountIndexEvent(ACCOUNT_ID));
     assertThat(task.equals(identicalTask)).isTrue();
     assertThat(task.hashCode()).isEqualTo(identicalTask.hashCode());
 
     assertThat(task.equals(null)).isFalse();
-    assertThat(task.equals(indexEventHandler.new IndexAccountTask(ACCOUNT_ID + 1))).isFalse();
+    assertThat(
+            task.equals(
+                indexEventHandler.new IndexAccountTask(new AccountIndexEvent(ACCOUNT_ID + 1))))
+        .isFalse();
     assertThat(task.hashCode()).isNotEqualTo("test".hashCode());
 
-    IndexAccountTask differentAccountIdTask = indexEventHandler.new IndexAccountTask(123);
+    IndexAccountTask differentAccountIdTask =
+        indexEventHandler.new IndexAccountTask(new AccountIndexEvent(123));
     assertThat(task.equals(differentAccountIdTask)).isFalse();
     assertThat(task.hashCode()).isNotEqualTo(differentAccountIdTask.hashCode());
   }
 
   @Test
   public void testIndexGroupTaskHashCodeAndEquals() {
-    IndexGroupTask task = indexEventHandler.new IndexGroupTask(UUID);
+    IndexGroupTask task = indexEventHandler.new IndexGroupTask(new GroupIndexEvent(UUID));
 
     IndexGroupTask sameTask = task;
     assertThat(task.equals(sameTask)).isTrue();
     assertThat(task.hashCode()).isEqualTo(sameTask.hashCode());
 
-    IndexGroupTask identicalTask = indexEventHandler.new IndexGroupTask(UUID);
+    IndexGroupTask identicalTask = indexEventHandler.new IndexGroupTask(new GroupIndexEvent(UUID));
     assertThat(task.equals(identicalTask)).isTrue();
     assertThat(task.hashCode()).isEqualTo(identicalTask.hashCode());
 
     assertThat(task.equals(null)).isFalse();
-    assertThat(task.equals(indexEventHandler.new IndexGroupTask(OTHER_UUID))).isFalse();
+    assertThat(task.equals(indexEventHandler.new IndexGroupTask(new GroupIndexEvent(OTHER_UUID))))
+        .isFalse();
     assertThat(task.hashCode()).isNotEqualTo("test".hashCode());
 
-    IndexGroupTask differentGroupIdTask = indexEventHandler.new IndexGroupTask("123");
+    IndexGroupTask differentGroupIdTask =
+        indexEventHandler.new IndexGroupTask(new GroupIndexEvent("123"));
     assertThat(task.equals(differentGroupIdTask)).isFalse();
     assertThat(task.hashCode()).isNotEqualTo(differentGroupIdTask.hashCode());
   }

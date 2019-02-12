@@ -17,11 +17,9 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.rest;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
-
 import org.apache.http.impl.client.CloseableHttpClient;
 
 public class RestForwarderModule extends AbstractModule {
-
   @Override
   protected void configure() {
     bind(CloseableHttpClient.class).toProvider(HttpClientProvider.class).in(Scopes.SINGLETON);

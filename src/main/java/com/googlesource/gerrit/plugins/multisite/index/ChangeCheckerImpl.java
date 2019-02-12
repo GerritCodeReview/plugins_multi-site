@@ -26,8 +26,7 @@ import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEvent;
-
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -69,11 +68,12 @@ public class ChangeCheckerImpl implements ChangeChecker {
   }
 
   @Override
-  public Optional<IndexEvent> newIndexEvent() throws IOException, OrmException {
+  public Optional<ChangeIndexEvent> newIndexEvent(String projectName, int changeId, boolean deleted)
+      throws IOException, OrmException {
     return getComputedChangeTs()
         .map(
             ts -> {
-              IndexEvent event = new IndexEvent();
+              ChangeIndexEvent event = new ChangeIndexEvent(projectName, changeId, deleted);
               event.eventCreatedOn = ts;
               event.targetSha = getBranchTargetSha();
               return event;
@@ -89,7 +89,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
   }
 
   @Override
-  public boolean isChangeUpToDate(Optional<IndexEvent> indexEvent)
+  public boolean isChangeUpToDate(Optional<ChangeIndexEvent> indexEvent)
       throws IOException, OrmException {
     getComputedChangeTs();
     if (!computedChangeTs.isPresent()) {
@@ -124,7 +124,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
       return "change-id="
           + changeId
           + "@"
-          + getComputedChangeTs().map(IndexEvent::format)
+          + getComputedChangeTs().map(ChangeIndexEvent::format)
           + "/"
           + getBranchTargetSha();
     } catch (IOException | OrmException e) {

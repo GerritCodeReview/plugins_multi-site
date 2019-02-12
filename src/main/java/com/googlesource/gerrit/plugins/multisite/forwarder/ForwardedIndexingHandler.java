@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.common.util.concurrent.Striped;
 import com.google.gwtorm.server.OrmException;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
@@ -43,10 +44,10 @@ public abstract class ForwardedIndexingHandler<T> {
 
   private final Striped<Lock> idLocks;
 
-  protected abstract void doIndex(T id, Optional<IndexEvent> indexEvent)
+  protected abstract void doIndex(T id, Optional<ChangeIndexEvent> indexEvent)
       throws IOException, OrmException;
 
-  protected abstract void doDelete(T id, Optional<IndexEvent> indexEvent) throws IOException;
+  protected abstract void doDelete(T id, Optional<ChangeIndexEvent> indexEvent) throws IOException;
 
   protected ForwardedIndexingHandler(int lockStripes) {
     idLocks = Striped.lock(lockStripes);
@@ -61,7 +62,7 @@ public abstract class ForwardedIndexingHandler<T> {
    * @throws IOException If an error occur while indexing.
    * @throws OrmException If an error occur while retrieving a change related to the item to index
    */
-  public void index(T id, Operation operation, Optional<IndexEvent> indexEvent)
+  public void index(T id, Operation operation, Optional<ChangeIndexEvent> indexEvent)
       throws IOException, OrmException {
     log.debug("{} {} {}", operation, id, indexEvent);
     try {

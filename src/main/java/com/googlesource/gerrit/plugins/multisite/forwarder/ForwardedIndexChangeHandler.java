@@ -27,11 +27,11 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Configuration.Index;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeChecker;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeCheckerImpl;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeDb;
 import com.googlesource.gerrit.plugins.multisite.index.ForwardedIndexExecutor;
-
 import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
@@ -74,12 +74,12 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
   }
 
   @Override
-  protected void doIndex(String id, Optional<IndexEvent> indexEvent)
+  protected void doIndex(String id, Optional<ChangeIndexEvent> indexEvent)
       throws IOException, OrmException {
     doIndex(id, indexEvent, 0);
   }
 
-  private void doIndex(String id, Optional<IndexEvent> indexEvent, int retryCount)
+  private void doIndex(String id, Optional<ChangeIndexEvent> indexEvent, int retryCount)
       throws IOException, OrmException {
     try {
       ChangeChecker checker = changeCheckerFactory.create(id);
@@ -143,7 +143,8 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
     }
   }
 
-  private boolean rescheduleIndex(String id, Optional<IndexEvent> indexEvent, int retryCount) {
+  private boolean rescheduleIndex(
+      String id, Optional<ChangeIndexEvent> indexEvent, int retryCount) {
     if (retryCount > maxTries) {
       log.error(
           "Change {} could not be indexed after {} retries. Change index could be stale.",
@@ -172,7 +173,7 @@ public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String
   }
 
   @Override
-  protected void doDelete(String id, Optional<IndexEvent> indexEvent) throws IOException {
+  protected void doDelete(String id, Optional<ChangeIndexEvent> indexEvent) throws IOException {
     indexer.delete(parseChangeId(id));
     log.debug("Change {} successfully deleted from index", id);
   }
