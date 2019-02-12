@@ -32,11 +32,8 @@ import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.rest.HttpSession;
-import com.googlesource.gerrit.plugins.multisite.forwarder.rest.RestForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.googlesource.gerrit.plugins.multisite.peers.PeerInfo;
-
 import java.io.IOException;
 import java.util.Set;
 import javax.net.ssl.SSLException;
@@ -81,7 +78,6 @@ public class RestForwarderTest {
   private static Event event = new Event("test-event") {};
   private static final String EVENT_ENDPOINT =
       Joiner.on("/").join(URL, PLUGINS, PLUGIN_NAME, "event", event.type);
-  private static String eventJson = new GsonBuilder().create().toJson(event);
 
   private RestForwarder forwarder;
   private HttpSession httpSessionMock;
