@@ -1,10 +1,9 @@
-workspace(name = "high_availability")
+workspace(name = "multi_site")
 
 load("//:bazlets.bzl", "load_bazlets")
 
 load_bazlets(
     commit = "c2227415d5044f8439bd47edffb0f052f8da2ac5",
-    #local_path = "/home/ehugare/workspaces/bazlets",
 )
 
 # Snapshot Plugin API

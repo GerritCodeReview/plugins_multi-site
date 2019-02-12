@@ -15,5 +15,5 @@
 
 path=$(bazel query @com_googlesource_gerrit_bazlets//tools/eclipse:project \
     --output location | sed s/BUILD:.*//)
-${path}project.py -n high-availability -r . "$@"
+${path}project.py -n multi-site -r . "$@"
 

@@ -11,8 +11,8 @@ gerrit_plugin(
     srcs = glob(["src/main/java/**/*.java"]),
     manifest_entries = [
         "Gerrit-PluginName: multi-site",
-        "Gerrit-Module: com.ericsson.gerrit.plugins.highavailability.Module",
-        "Gerrit-HttpModule: com.ericsson.gerrit.plugins.highavailability.HttpModule",
+        "Gerrit-Module: com.googlesource.gerrit.plugins.multisite.Module",
+        "Gerrit-HttpModule: com.googlesource.gerrit.plugins.multisite.HttpModule",
         "Implementation-Title: multi-site plugin",
         "Implementation-URL: https://review.gerrithub.io/admin/repos/GerritForge/plugins_multi-site",
     ],

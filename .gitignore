@@ -7,6 +7,6 @@
 /bazel-out
 /bazel-reviewers
 /bazel-testlogs
-/bazel-high-availability
+/bazel-multi-site
 /eclipse-out/
 /.apt_generated/
