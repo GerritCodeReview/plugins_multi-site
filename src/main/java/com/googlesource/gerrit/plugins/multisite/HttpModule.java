@@ -15,17 +15,9 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.google.gerrit.httpd.plugins.HttpPluginModule;
-import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.RestForwarderServletModule;
 
 class HttpModule extends HttpPluginModule {
-  private final Configuration config;
-
-  @Inject
-  HttpModule(Configuration config) {
-    this.config = config;
-  }
-
   @Override
   protected void configureServlets() {
     install(new RestForwarderServletModule());
