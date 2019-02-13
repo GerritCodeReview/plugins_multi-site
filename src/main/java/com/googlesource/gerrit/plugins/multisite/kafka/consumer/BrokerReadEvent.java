@@ -68,7 +68,7 @@ public class BrokerReadEvent {
     }
   }
 
-  BrokerReadEvent(KafkaEventHeader header, JsonObject body) {
+  public BrokerReadEvent(KafkaEventHeader header, JsonObject body) {
     this.header = header;
     this.body = body;
   }

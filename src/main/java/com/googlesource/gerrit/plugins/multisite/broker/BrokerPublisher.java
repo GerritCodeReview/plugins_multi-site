@@ -17,8 +17,12 @@ package com.googlesource.gerrit.plugins.multisite.broker;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.events.Event;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.InstanceId;
+import com.googlesource.gerrit.plugins.multisite.kafka.consumer.BrokerReadEvent;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,11 +32,13 @@ public class BrokerPublisher implements LifecycleListener {
 
   private final BrokerSession session;
   private final Gson gson;
+  private final UUID instanceId;
 
   @Inject
-  public BrokerPublisher(BrokerSession session, Gson gson) {
+  public BrokerPublisher(BrokerSession session, Gson gson, @InstanceId UUID instanceId) {
     this.session = session;
     this.gson = gson;
+    this.instanceId = instanceId;
   }
 
   @Override
@@ -50,6 +56,11 @@ public class BrokerPublisher implements LifecycleListener {
   }
 
   public boolean publishIndexEvent(Event event) {
-    return session.publishIndexEvent(gson.toJson(event));
+    JsonObject obj = gson.toJsonTree(event).getAsJsonObject();
+    BrokerReadEvent eventWithHeader =
+        new BrokerReadEvent(
+            new BrokerReadEvent.KafkaEventHeader(UUID.randomUUID(), "", instanceId, 1L), obj);
+
+    return session.publishIndexEvent(gson.toJson(eventWithHeader));
   }
 }
