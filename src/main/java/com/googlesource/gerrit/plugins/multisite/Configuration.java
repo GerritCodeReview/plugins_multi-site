@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
@@ -41,6 +40,7 @@ import org.slf4j.LoggerFactory;
 public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
+  static final String INSTANCE_ID_FILE = "instanceId.data";
   // common parameter to peerInfo section
   static final String PEER_INFO_SECTION = "peerInfo";
 

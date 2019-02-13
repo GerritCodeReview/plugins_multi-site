@@ -20,6 +20,8 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,9 +30,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.Module;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ModuleTest {
@@ -63,5 +62,19 @@ public class ModuleTest {
     when(configMock.main().sharedDirectory()).thenReturn(configuredDirectory.toPath());
 
     module.getSharedDirectory();
+  }
+
+  @Test
+  public void shouldGetInstanceId() throws Exception {
+    File tmpConfigDirectory = tempFolder.newFolder();
+    Path path = Paths.get(tmpConfigDirectory.getPath(), Configuration.INSTANCE_ID_FILE);
+    assertThat(path.toFile().exists()).isFalse();
+
+    UUID gotUUID1 = module.getInstanceId(Paths.get(tmpConfigDirectory.getPath()));
+    assertThat(gotUUID1).isNotNull();
+    assertThat(path.toFile().exists()).isTrue();
+
+    UUID gotUUID2 = module.getInstanceId(Paths.get(tmpConfigDirectory.getPath()));
+    assertThat(gotUUID1).isEqualTo(gotUUID2);
   }
 }
