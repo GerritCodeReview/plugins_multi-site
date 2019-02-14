@@ -189,7 +189,6 @@ public class Configuration {
 
   public static class AutoReindex {
     static final String AUTO_REINDEX_SECTION = "autoReindex";
-    static final String ENABLED = "enabled";
     static final String DELAY = "delay";
     static final String POLL_INTERVAL = "pollInterval";
 
@@ -198,7 +197,7 @@ public class Configuration {
     private final long pollSec;
 
     public AutoReindex(Config cfg) {
-      this.enabled = cfg.getBoolean(AUTO_REINDEX_SECTION, ENABLED, false);
+      this.enabled = cfg.getBoolean(AUTO_REINDEX_SECTION, ENABLE_KEY, false);
       this.delaySec =
           ConfigUtil.getTimeUnit(cfg, AUTO_REINDEX_SECTION, null, DELAY, 10L, TimeUnit.SECONDS);
       this.pollSec =
@@ -325,7 +324,6 @@ public class Configuration {
   }
 
   public class KafkaSubscriber {
-    static final String KAFKA_SECTION = "kafka";
     static final String KAFKA_SUBSCRIBER_SUBSECTION = "subscriber";
 
     private final boolean enabled;
@@ -341,7 +339,7 @@ public class Configuration {
           cfg.getInt(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, "pollingIntervalMs", 1000);
       this.cfg = cfg;
 
-      enabled = cfg.getBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, "enabled", false);
+      enabled = cfg.getBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
       applyKafkaConfig(cfg, KAFKA_SUBSCRIBER_SUBSECTION, props);
     }
 
