@@ -30,7 +30,7 @@ public class BrokerForwarderModule extends AbstractModule {
   protected void configure() {
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
     DynamicSet.bind(binder(), LifecycleListener.class).to(BrokerPublisher.class);
-    bind(Forwarder.class).to(BrokerForwarder.class);
+    DynamicSet.bind(binder(), Forwarder.class).to(BrokerForwarder.class);
     bind(BrokerSession.class).to(KafkaSession.class);
   }
 }

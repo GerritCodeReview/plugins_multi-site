@@ -20,6 +20,7 @@ import com.google.gerrit.extensions.events.AccountIndexedListener;
 import com.google.gerrit.extensions.events.ChangeIndexedListener;
 import com.google.gerrit.extensions.events.GroupIndexedListener;
 import com.google.gerrit.extensions.events.ProjectIndexedListener;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
@@ -41,7 +42,7 @@ class IndexEventHandler
         ProjectIndexedListener {
   private static final Logger log = LoggerFactory.getLogger(IndexEventHandler.class);
   private final Executor executor;
-  private final Forwarder forwarder;
+  private final DynamicSet<Forwarder> forwarders;
   private final String pluginName;
   private final Set<IndexTask> queuedTasks = Collections.newSetFromMap(new ConcurrentHashMap<>());
   private final ChangeCheckerImpl.Factory changeChecker;
@@ -50,9 +51,9 @@ class IndexEventHandler
   IndexEventHandler(
       @IndexExecutor Executor executor,
       @PluginName String pluginName,
-      Forwarder forwarder,
+      DynamicSet<Forwarder> forwarders,
       ChangeCheckerImpl.Factory changeChecker) {
-    this.forwarder = forwarder;
+    this.forwarders = forwarders;
     this.executor = executor;
     this.pluginName = pluginName;
     this.changeChecker = changeChecker;
@@ -146,9 +147,9 @@ class IndexEventHandler
     @Override
     public void execute() {
       if (changeIndexEvent.deleted) {
-        forwarder.deleteChangeFromIndex(changeIndexEvent);
+        forwarders.forEach(f -> f.deleteChangeFromIndex(changeIndexEvent));
       } else {
-        forwarder.indexChange(changeIndexEvent);
+        forwarders.forEach(f -> f.indexChange(changeIndexEvent));
       }
     }
 
@@ -181,7 +182,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarder.indexAccount(accountIndexEvent);
+      forwarders.forEach(f -> f.indexAccount(accountIndexEvent));
     }
 
     @Override
@@ -213,7 +214,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarder.indexGroup(groupIndexEvent);
+      forwarders.forEach(f -> f.indexGroup(groupIndexEvent));
     }
 
     @Override
@@ -245,7 +246,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarder.indexProject(projectIndexEvent);
+      forwarders.forEach(f -> f.indexProject(projectIndexEvent));
     }
 
     @Override

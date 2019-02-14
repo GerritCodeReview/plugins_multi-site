@@ -20,14 +20,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 import com.google.common.util.concurrent.MoreExecutors;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
-import com.googlesource.gerrit.plugins.multisite.event.EventHandler;
 import com.googlesource.gerrit.plugins.multisite.event.EventHandler.EventTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +43,14 @@ public class EventHandlerTest {
 
   @Before
   public void setUp() {
-    eventHandler = new EventHandler(forwarder, MoreExecutors.directExecutor(), PLUGIN_NAME);
+    eventHandler =
+        new EventHandler(asDynamicSet(forwarder), MoreExecutors.directExecutor(), PLUGIN_NAME);
+  }
+
+  private DynamicSet<Forwarder> asDynamicSet(Forwarder forwarder) {
+    DynamicSet<Forwarder> result = new DynamicSet<>();
+    result.add("multi-site", forwarder);
+    return result;
   }
 
   @Test

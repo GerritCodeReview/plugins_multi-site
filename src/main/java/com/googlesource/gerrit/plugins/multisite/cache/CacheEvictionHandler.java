@@ -16,26 +16,26 @@ package com.googlesource.gerrit.plugins.multisite.cache;
 
 import com.google.common.cache.RemovalNotification;
 import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.cache.CacheRemovalListener;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
-
 import java.util.concurrent.Executor;
 
 class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
   private final Executor executor;
-  private final Forwarder forwarder;
+  private final DynamicSet<Forwarder> forwarders;
   private final String pluginName;
   private final CachePatternMatcher matcher;
 
   @Inject
   CacheEvictionHandler(
-      Forwarder forwarder,
+      DynamicSet<Forwarder> forwarders,
       @CacheExecutor Executor executor,
       @PluginName String pluginName,
       CachePatternMatcher matcher) {
-    this.forwarder = forwarder;
+    this.forwarders = forwarders;
     this.executor = executor;
     this.pluginName = pluginName;
     this.matcher = matcher;
@@ -59,7 +59,7 @@ class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
 
     @Override
     public void run() {
-      forwarder.evict(cacheName, key);
+      forwarders.forEach(f -> f.evict(cacheName, key));
     }
 
     @Override
