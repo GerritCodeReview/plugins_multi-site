@@ -25,6 +25,9 @@ import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEntry;
+import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedCacheEvictionHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
@@ -32,14 +35,17 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHa
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexProjectHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.rest.GsonParser;
 import java.io.IOException;
 import java.util.Optional;
 
 @Singleton
 public class ForwardedEventRouter {
+  private final ForwardedCacheEvictionHandler cacheEvictionHanlder;
   private final ForwardedIndexAccountHandler indexAccountHandler;
   private final ForwardedIndexChangeHandler indexChangeHandler;
   private final ForwardedIndexGroupHandler indexGroupHandler;
@@ -48,11 +54,13 @@ public class ForwardedEventRouter {
 
   @Inject
   public ForwardedEventRouter(
+      ForwardedCacheEvictionHandler cacheEvictionHanlder,
       ForwardedIndexAccountHandler indexAccountHandler,
       ForwardedIndexChangeHandler indexChangeHandler,
       ForwardedIndexGroupHandler indexGroupHandler,
       ForwardedIndexProjectHandler indexProjectHandler,
       ForwardedEventHandler streamEventHandler) {
+    this.cacheEvictionHanlder = cacheEvictionHanlder;
     this.indexAccountHandler = indexAccountHandler;
     this.indexChangeHandler = indexChangeHandler;
     this.indexGroupHandler = indexGroupHandler;
@@ -60,7 +68,8 @@ public class ForwardedEventRouter {
     this.streamEventHandler = streamEventHandler;
   }
 
-  void route(Event sourceEvent) throws IOException, OrmException, PermissionBackendException {
+  void route(Event sourceEvent)
+      throws IOException, OrmException, PermissionBackendException, CacheNotFoundException {
     if (sourceEvent instanceof ChangeIndexEvent) {
       ChangeIndexEvent changeIndexEvent = (ChangeIndexEvent) sourceEvent;
       ForwardedIndexingHandler.Operation operation = changeIndexEvent.deleted ? DELETE : INDEX;
@@ -82,6 +91,11 @@ public class ForwardedEventRouter {
           new Project.NameKey(projectIndexEvent.projectName),
           INDEX,
           Optional.of(projectIndexEvent));
+    } else if (sourceEvent instanceof CacheEvictionEvent) {
+      CacheEvictionEvent cacheEvictionEvent = (CacheEvictionEvent) sourceEvent;
+      Object parsedKey =
+          GsonParser.fromJson(cacheEvictionEvent.cacheName, cacheEvictionEvent.key.toString());
+      cacheEvictionHanlder.evict(CacheEntry.from(cacheEvictionEvent.cacheName, parsedKey));
     } else if (sourceEvent instanceof Event) {
       streamEventHandler.dispatch(sourceEvent);
     } else {

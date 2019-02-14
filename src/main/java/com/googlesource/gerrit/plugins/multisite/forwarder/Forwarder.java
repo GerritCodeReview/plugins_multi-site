@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.gerrit.server.events.Event;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
@@ -74,11 +75,10 @@ public interface Forwarder {
   /**
    * Forward a cache eviction event to the other master.
    *
-   * @param cacheName the name of the cache to evict an entry from.
-   * @param key the key identifying the entry to evict from the cache.
+   * @param cacheEvictionEvent the details of the cache eviction event.
    * @return true if successful, otherwise false.
    */
-  boolean evict(String cacheName, Object key);
+  boolean evict(CacheEvictionEvent cacheEvictionEvent);
 
   /**
    * Forward an addition to the project list cache to the other master.

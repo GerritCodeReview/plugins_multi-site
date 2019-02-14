@@ -32,6 +32,7 @@ import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.HttpResponseHandler.HttpResult;
@@ -215,7 +216,7 @@ public class RestForwarderTest {
     String keyJson = new GsonBuilder().create().toJson(key);
     when(httpSessionMock.post(buildCacheEndpoint(Constants.PROJECTS), keyJson))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(forwarder.evict(Constants.PROJECTS, key)).isTrue();
+    assertThat(forwarder.evict(new CacheEvictionEvent(Constants.PROJECTS, key))).isTrue();
   }
 
   @Test
@@ -224,7 +225,7 @@ public class RestForwarderTest {
     String keyJson = new GsonBuilder().create().toJson(key);
     when(httpSessionMock.post(buildCacheEndpoint(Constants.ACCOUNTS), keyJson))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(forwarder.evict(Constants.ACCOUNTS, key)).isTrue();
+    assertThat(forwarder.evict(new CacheEvictionEvent(Constants.ACCOUNTS, key))).isTrue();
   }
 
   @Test
@@ -233,7 +234,7 @@ public class RestForwarderTest {
     String keyJson = new GsonBuilder().create().toJson(key);
     String endpoint = buildCacheEndpoint(Constants.GROUPS);
     when(httpSessionMock.post(endpoint, keyJson)).thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(forwarder.evict(Constants.GROUPS, key)).isTrue();
+    assertThat(forwarder.evict(new CacheEvictionEvent(Constants.GROUPS, key))).isTrue();
   }
 
   @Test
@@ -242,7 +243,7 @@ public class RestForwarderTest {
     String keyJson = new GsonBuilder().create().toJson(key);
     when(httpSessionMock.post(buildCacheEndpoint(Constants.GROUPS_BYINCLUDE), keyJson))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(forwarder.evict(Constants.GROUPS_BYINCLUDE, key)).isTrue();
+    assertThat(forwarder.evict(new CacheEvictionEvent(Constants.GROUPS_BYINCLUDE, key))).isTrue();
   }
 
   @Test
@@ -251,7 +252,7 @@ public class RestForwarderTest {
     String keyJson = new GsonBuilder().create().toJson(key);
     when(httpSessionMock.post(buildCacheEndpoint(Constants.GROUPS_MEMBERS), keyJson))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(forwarder.evict(Constants.GROUPS_MEMBERS, key)).isTrue();
+    assertThat(forwarder.evict(new CacheEvictionEvent(Constants.GROUPS_MEMBERS, key))).isTrue();
   }
 
   @Test
@@ -260,7 +261,7 @@ public class RestForwarderTest {
     String keyJson = new GsonBuilder().create().toJson(key);
     when(httpSessionMock.post(buildCacheEndpoint(Constants.PROJECTS), keyJson))
         .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
-    assertThat(forwarder.evict(Constants.PROJECTS, key)).isFalse();
+    assertThat(forwarder.evict(new CacheEvictionEvent(Constants.PROJECTS, key))).isFalse();
   }
 
   @Test
@@ -270,7 +271,7 @@ public class RestForwarderTest {
     doThrow(new IOException())
         .when(httpSessionMock)
         .post(buildCacheEndpoint(Constants.PROJECTS), keyJson);
-    assertThat(forwarder.evict(Constants.PROJECTS, key)).isFalse();
+    assertThat(forwarder.evict(new CacheEvictionEvent(Constants.PROJECTS, key))).isFalse();
   }
 
   private static String buildCacheEndpoint(String name) {
@@ -338,7 +339,8 @@ public class RestForwarderTest {
         .thenReturn(new HttpResult(false, ERROR))
         .thenReturn(new HttpResult(true, SUCCESS));
 
-    assertThat(forwarder.evict(Constants.PROJECT_LIST, new Object())).isTrue();
+    assertThat(forwarder.evict(new CacheEvictionEvent(Constants.PROJECT_LIST, new Object())))
+        .isTrue();
   }
 
   @Test
@@ -348,7 +350,8 @@ public class RestForwarderTest {
         .thenThrow(new IOException())
         .thenReturn(new HttpResult(true, SUCCESS));
 
-    assertThat(forwarder.evict(Constants.PROJECT_LIST, new Object())).isTrue();
+    assertThat(forwarder.evict(new CacheEvictionEvent(Constants.PROJECT_LIST, new Object())))
+        .isTrue();
   }
 
   @Test
@@ -357,7 +360,8 @@ public class RestForwarderTest {
         .thenThrow(new SSLException("Non Recoverable"))
         .thenReturn(new HttpResult(true, SUCCESS));
 
-    assertThat(forwarder.evict(Constants.PROJECT_LIST, new Object())).isFalse();
+    assertThat(forwarder.evict(new CacheEvictionEvent(Constants.PROJECT_LIST, new Object())))
+        .isFalse();
   }
 
   @Test
@@ -367,6 +371,7 @@ public class RestForwarderTest {
         .thenReturn(new HttpResult(false, ERROR))
         .thenReturn(new HttpResult(false, ERROR));
 
-    assertThat(forwarder.evict(Constants.PROJECT_LIST, new Object())).isFalse();
+    assertThat(forwarder.evict(new CacheEvictionEvent(Constants.PROJECT_LIST, new Object())))
+        .isFalse();
   }
 }

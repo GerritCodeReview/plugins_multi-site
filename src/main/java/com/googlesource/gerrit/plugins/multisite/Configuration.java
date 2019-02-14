@@ -289,7 +289,8 @@ public class Configuration {
     private static final Map<EventFamily, String> EVENT_TOPICS =
         ImmutableMap.of(
             EventFamily.INDEX_EVENT, "GERRIT.EVENT.INDEX",
-            EventFamily.STREAM_EVENT, "GERRIT.EVENT.STREAM");
+            EventFamily.STREAM_EVENT, "GERRIT.EVENT.STREAM",
+            EventFamily.CACHE_EVICTION_EVENT, "GERRIT.EVENT.CACHE.EVICTION");
 
     private final boolean enabled;
     private final Map<EventFamily, String> eventTopics;

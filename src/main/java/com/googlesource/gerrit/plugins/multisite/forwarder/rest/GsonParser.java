@@ -21,11 +21,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 
-final class GsonParser {
+public final class GsonParser {
 
   private GsonParser() {}
 
-  static Object fromJson(String cacheName, String json) {
+  public static Object fromJson(String cacheName, String json) {
     Gson gson = new GsonBuilder().create();
     Object key;
     // Need to add a case for 'adv_bases'
@@ -53,7 +53,7 @@ final class GsonParser {
     return key;
   }
 
-  static String toJson(String cacheName, Object key) {
+  public static String toJson(String cacheName, Object key) {
     Gson gson = new GsonBuilder().create();
     String json;
     // Need to add a case for 'adv_bases'

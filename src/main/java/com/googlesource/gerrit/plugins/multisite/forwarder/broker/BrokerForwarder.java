@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
+import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.CACHE_EVICTION_EVENT;
 import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.INDEX_EVENT;
 import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.STREAM_EVENT;
 
@@ -23,6 +24,7 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
@@ -69,9 +71,8 @@ class BrokerForwarder implements Forwarder {
   }
 
   @Override
-  public boolean evict(String cacheName, Object key) {
-    log.warn("Evicting cache via broker not yet implemented: " + cacheName);
-    return false;
+  public boolean evict(CacheEvictionEvent event) {
+    return publisher.publishEvent(CACHE_EVICTION_EVENT, event);
   }
 
   @Override

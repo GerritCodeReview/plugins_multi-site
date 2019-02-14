@@ -24,6 +24,7 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
@@ -103,9 +104,14 @@ class RestForwarder implements Forwarder {
   }
 
   @Override
-  public boolean evict(final String cacheName, final Object key) {
-    String json = GsonParser.toJson(cacheName, key);
-    return execute(RequestMethod.POST, "invalidate cache " + cacheName, "cache", cacheName, json);
+  public boolean evict(CacheEvictionEvent cacheEvictionEvent) {
+    String json = GsonParser.toJson(cacheEvictionEvent.cacheName, cacheEvictionEvent.key);
+    return execute(
+        RequestMethod.POST,
+        "invalidate cache " + cacheEvictionEvent.cacheName,
+        "cache",
+        cacheEvictionEvent.cacheName,
+        json);
   }
 
   @Override

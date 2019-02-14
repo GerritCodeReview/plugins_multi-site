@@ -18,7 +18,7 @@ import com.google.common.base.CaseFormat;
 
 public enum EventFamily {
   INDEX_EVENT,
-  CACHE_EVENT,
+  CACHE_EVICTION_EVENT,
   STREAM_EVENT;
 
   public String lowerCamelName() {
