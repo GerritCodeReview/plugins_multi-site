@@ -30,13 +30,9 @@ import com.google.gerrit.reviewdb.client.Change;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEvent;
-import com.googlesource.gerrit.plugins.multisite.index.ChangeChecker;
-import com.googlesource.gerrit.plugins.multisite.index.ChangeCheckerImpl;
-import com.googlesource.gerrit.plugins.multisite.index.IndexEventHandler;
 import com.googlesource.gerrit.plugins.multisite.index.IndexEventHandler.IndexAccountTask;
 import com.googlesource.gerrit.plugins.multisite.index.IndexEventHandler.IndexChangeTask;
 import com.googlesource.gerrit.plugins.multisite.index.IndexEventHandler.IndexGroupTask;
-
 import java.util.Optional;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import org.junit.Before;
@@ -90,6 +86,7 @@ public class IndexEventHandlerTest {
   public void shouldDeleteFromIndexInRemoteOnChangeDeletedEvent() throws Exception {
     indexEventHandler.onChangeDeleted(changeId.get());
     verify(forwarder).deleteChangeFromIndex(eq(CHANGE_ID), any());
+    verifyZeroInteractions(changeCheckerMock); // Deleted changes should not be checked against NoteDb
   }
 
   @Test

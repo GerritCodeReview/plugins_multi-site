@@ -24,7 +24,6 @@ import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEvent;
-
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -68,12 +67,12 @@ class IndexEventHandler
 
   @Override
   public void onChangeIndexed(String projectName, int id) {
-    executeIndexChangeTask(projectName, id, false);
+    executeIndexChangeTask(projectName, id);
   }
 
   @Override
   public void onChangeDeleted(int id) {
-    executeIndexChangeTask("", id, true);
+    executeDeleteChangeTask(id);
   }
 
   @Override
@@ -96,13 +95,13 @@ class IndexEventHandler
     }
   }
 
-  private void executeIndexChangeTask(String projectName, int id, boolean deleted) {
+  private void executeIndexChangeTask(String projectName, int id) {
     if (!Context.isForwardedEvent()) {
       ChangeChecker checker = changeChecker.create(projectName + "~" + id);
       try {
         checker
             .newIndexEvent()
-            .map(event -> new IndexChangeTask(projectName, id, deleted, event))
+            .map(event -> new IndexChangeTask(projectName, id, false, event))
             .ifPresent(
                 task -> {
                   if (queuedTasks.add(task)) {
@@ -111,6 +110,15 @@ class IndexEventHandler
                 });
       } catch (Exception e) {
         log.warn("Unable to create task to handle change {}~{}", projectName, id, e);
+      }
+    }
+  }
+
+  private void executeDeleteChangeTask(int id) {
+    if (!Context.isForwardedEvent()) {
+      IndexChangeTask task = new IndexChangeTask("", id, true, new IndexEvent());
+      if (queuedTasks.add(task)) {
+        executor.execute(task);
       }
     }
   }
