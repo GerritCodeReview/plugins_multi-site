@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.rest;
 
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
@@ -24,6 +25,6 @@ public class RestForwarderModule extends AbstractModule {
   protected void configure() {
     bind(CloseableHttpClient.class).toProvider(HttpClientProvider.class).in(Scopes.SINGLETON);
     bind(HttpSession.class);
-    bind(Forwarder.class).to(RestForwarder.class);
+    DynamicSet.bind(binder(), Forwarder.class).to(RestForwarder.class);
   }
 }

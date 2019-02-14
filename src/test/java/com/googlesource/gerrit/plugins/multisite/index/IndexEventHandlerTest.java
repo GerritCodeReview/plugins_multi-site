@@ -23,6 +23,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.util.concurrent.MoreExecutors;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.reviewdb.client.Change;
@@ -52,6 +53,7 @@ public class IndexEventHandlerTest {
   private static final String OTHER_UUID = "4";
 
   private IndexEventHandler indexEventHandler;
+  @Mock private DynamicSet<Forwarder> forwarders;
   @Mock private Forwarder forwarder;
   @Mock private ChangeCheckerImpl.Factory changeCheckerFactoryMock;
   @Mock private ChangeChecker changeCheckerMock;
@@ -67,9 +69,19 @@ public class IndexEventHandlerTest {
     when(changeCheckerFactoryMock.create(any())).thenReturn(changeCheckerMock);
     when(changeCheckerMock.newIndexEvent(PROJECT_NAME, CHANGE_ID, false))
         .thenReturn(Optional.of(new ChangeIndexEvent(PROJECT_NAME, CHANGE_ID, false)));
+
     indexEventHandler =
         new IndexEventHandler(
-            MoreExecutors.directExecutor(), PLUGIN_NAME, forwarder, changeCheckerFactoryMock);
+            MoreExecutors.directExecutor(),
+            PLUGIN_NAME,
+            asDynamicSet(forwarder),
+            changeCheckerFactoryMock);
+  }
+
+  private DynamicSet<Forwarder> asDynamicSet(Forwarder forwarder) {
+    DynamicSet<Forwarder> result = new DynamicSet<>();
+    result.add("multi-site", forwarder);
+    return result;
   }
 
   @Test
@@ -133,7 +145,8 @@ public class IndexEventHandlerTest {
   public void duplicateChangeEventOfAQueuedEventShouldGetDiscarded() {
     ScheduledThreadPoolExecutor poolMock = mock(ScheduledThreadPoolExecutor.class);
     indexEventHandler =
-        new IndexEventHandler(poolMock, PLUGIN_NAME, forwarder, changeCheckerFactoryMock);
+        new IndexEventHandler(
+            poolMock, PLUGIN_NAME, asDynamicSet(forwarder), changeCheckerFactoryMock);
     indexEventHandler.onChangeIndexed(PROJECT_NAME, changeId.get());
     indexEventHandler.onChangeIndexed(PROJECT_NAME, changeId.get());
     verify(poolMock, times(1))
@@ -146,7 +159,8 @@ public class IndexEventHandlerTest {
   public void duplicateAccountEventOfAQueuedEventShouldGetDiscarded() {
     ScheduledThreadPoolExecutor poolMock = mock(ScheduledThreadPoolExecutor.class);
     indexEventHandler =
-        new IndexEventHandler(poolMock, PLUGIN_NAME, forwarder, changeCheckerFactoryMock);
+        new IndexEventHandler(
+            poolMock, PLUGIN_NAME, asDynamicSet(forwarder), changeCheckerFactoryMock);
     indexEventHandler.onAccountIndexed(accountId.get());
     indexEventHandler.onAccountIndexed(accountId.get());
     verify(poolMock, times(1))
@@ -157,7 +171,8 @@ public class IndexEventHandlerTest {
   public void duplicateGroupEventOfAQueuedEventShouldGetDiscarded() {
     ScheduledThreadPoolExecutor poolMock = mock(ScheduledThreadPoolExecutor.class);
     indexEventHandler =
-        new IndexEventHandler(poolMock, PLUGIN_NAME, forwarder, changeCheckerFactoryMock);
+        new IndexEventHandler(
+            poolMock, PLUGIN_NAME, asDynamicSet(forwarder), changeCheckerFactoryMock);
     indexEventHandler.onGroupIndexed(accountGroupUUID.get());
     indexEventHandler.onGroupIndexed(accountGroupUUID.get());
     verify(poolMock, times(1))

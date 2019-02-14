@@ -23,11 +23,10 @@ import static org.mockito.Mockito.when;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.extensions.events.NewProjectCreatedListener;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
-import com.googlesource.gerrit.plugins.multisite.cache.ProjectListUpdateHandler;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.googlesource.gerrit.plugins.multisite.cache.ProjectListUpdateHandler.ProjectListUpdateTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +43,15 @@ public class ProjectListUpdateHandlerTest {
 
   @Before
   public void setUp() {
-    handler = new ProjectListUpdateHandler(forwarder, MoreExecutors.directExecutor(), PLUGIN_NAME);
+    handler =
+        new ProjectListUpdateHandler(
+            asDynamicSet(forwarder), MoreExecutors.directExecutor(), PLUGIN_NAME);
+  }
+
+  private DynamicSet<Forwarder> asDynamicSet(Forwarder forwarder) {
+    DynamicSet<Forwarder> result = new DynamicSet<>();
+    result.add("multi-site", forwarder);
+    return result;
   }
 
   @Test

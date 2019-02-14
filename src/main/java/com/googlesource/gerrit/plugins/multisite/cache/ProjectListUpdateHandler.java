@@ -18,24 +18,26 @@ import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.events.NewProjectCreatedListener;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.events.ProjectEvent;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
-
 import java.util.concurrent.Executor;
 
 @Singleton
 public class ProjectListUpdateHandler implements NewProjectCreatedListener, ProjectDeletedListener {
 
-  private final Forwarder forwarder;
+  private final DynamicSet<Forwarder> forwarders;
   private final Executor executor;
   private final String pluginName;
 
   @Inject
   public ProjectListUpdateHandler(
-      Forwarder forwarder, @CacheExecutor Executor executor, @PluginName String pluginName) {
-    this.forwarder = forwarder;
+      DynamicSet<Forwarder> forwarders,
+      @CacheExecutor Executor executor,
+      @PluginName String pluginName) {
+    this.forwarders = forwarders;
     this.executor = executor;
     this.pluginName = pluginName;
   }
@@ -70,9 +72,9 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
     @Override
     public void run() {
       if (delete) {
-        forwarder.removeFromProjectList(projectName);
+        forwarders.forEach(f -> f.removeFromProjectList(projectName));
       } else {
-        forwarder.addToProjectList(projectName);
+        forwarders.forEach(f -> f.addToProjectList(projectName));
       }
     }
 
