@@ -40,7 +40,6 @@ public class ChangeCheckerImpl implements ChangeChecker {
   private static final Logger log = LoggerFactory.getLogger(ChangeCheckerImpl.class);
   private final GitRepositoryManager gitRepoMgr;
   private final CommentsUtil commentsUtil;
-  private final ChangeDb changeDb;
   private final OneOffRequestContext oneOffReqCtx;
   private final String changeId;
   private final ChangeFinder changeFinder;
@@ -55,14 +54,12 @@ public class ChangeCheckerImpl implements ChangeChecker {
   public ChangeCheckerImpl(
       GitRepositoryManager gitRepoMgr,
       CommentsUtil commentsUtil,
-      ChangeDb changeDb,
       ChangeFinder changeFinder,
       OneOffRequestContext oneOffReqCtx,
       @Assisted String changeId) {
     this.changeFinder = changeFinder;
     this.gitRepoMgr = gitRepoMgr;
     this.commentsUtil = commentsUtil;
-    this.changeDb = changeDb;
     this.oneOffReqCtx = oneOffReqCtx;
     this.changeId = changeId;
   }
@@ -151,7 +148,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
   }
 
   private Optional<Long> computeLastChangeTs() throws OrmException {
-    try (ReviewDb db = changeDb.open()) {
+    try (ReviewDb db = oneOffReqCtx.open().getReviewDbProvider().get()) {
       return getChangeNotes().map(notes -> getTsFromChangeAndDraftComments(db, notes));
     }
   }
