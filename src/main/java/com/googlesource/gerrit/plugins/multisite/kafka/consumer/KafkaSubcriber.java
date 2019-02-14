@@ -46,11 +46,17 @@ public class KafkaSubcriber implements Runnable {
     this.eventRouter = eventRouter;
     this.gsonProvider = gsonProvider;
     this.instanceId = instanceId;
-    this.consumer =
-        new KafkaConsumer<>(
-            configuration.kafkaSubscriber().getProps(instanceId),
-            keyDeserializer,
-            new ByteArrayDeserializer());
+    final ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
+    try {
+      Thread.currentThread().setContextClassLoader(KafkaSubcriber.class.getClassLoader());
+      this.consumer =
+          new KafkaConsumer<>(
+              configuration.kafkaSubscriber().getProps(instanceId),
+              keyDeserializer,
+              new ByteArrayDeserializer());
+    } finally {
+      Thread.currentThread().setContextClassLoader(previousClassLoader);
+    }
     this.valueDeserializer = valueDeserializer;
   }
 

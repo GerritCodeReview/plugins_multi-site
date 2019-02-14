@@ -37,15 +37,7 @@ public class MultiSiteKafkaConsumerRunner implements LifecycleListener {
 
   @Override
   public void start() {
-    // Read instance id
-
-    final ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
-    try {
-      Thread.currentThread().setContextClassLoader(KafkaSubcriber.class.getClassLoader());
-      executor.execute(consumer);
-    } finally {
-      Thread.currentThread().setContextClassLoader(previousClassLoader);
-    }
+    executor.execute(consumer);
   }
 
   @Override
