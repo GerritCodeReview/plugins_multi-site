@@ -20,7 +20,7 @@ import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -31,7 +31,8 @@ import java.util.Optional;
  * done for the same group uuid
  */
 @Singleton
-public class ForwardedIndexGroupHandler extends ForwardedIndexingHandler<AccountGroup.UUID> {
+public class ForwardedIndexGroupHandler
+    extends ForwardedIndexingHandler<AccountGroup.UUID, GroupIndexEvent> {
   private final GroupIndexer indexer;
 
   @Inject
@@ -41,14 +42,14 @@ public class ForwardedIndexGroupHandler extends ForwardedIndexingHandler<Account
   }
 
   @Override
-  protected void doIndex(AccountGroup.UUID uuid, Optional<ChangeIndexEvent> indexEvent)
+  protected void doIndex(AccountGroup.UUID uuid, Optional<GroupIndexEvent> event)
       throws IOException, OrmException {
     indexer.index(uuid);
     log.debug("Group {} successfully indexed", uuid);
   }
 
   @Override
-  protected void doDelete(AccountGroup.UUID uuid, Optional<ChangeIndexEvent> indexEvent) {
+  protected void doDelete(AccountGroup.UUID uuid, Optional<GroupIndexEvent> event) {
     throw new UnsupportedOperationException("Delete from group index not supported");
   }
 }

@@ -42,7 +42,8 @@ import java.util.concurrent.TimeUnit;
  * done for the same change id
  */
 @Singleton
-public class ForwardedIndexChangeHandler extends ForwardedIndexingHandler<String> {
+public class ForwardedIndexChangeHandler
+    extends ForwardedIndexingHandler<String, ChangeIndexEvent> {
   private final ChangeIndexer indexer;
   private final ScheduledExecutorService indexExecutor;
   private final OneOffRequestContext oneOffCtx;

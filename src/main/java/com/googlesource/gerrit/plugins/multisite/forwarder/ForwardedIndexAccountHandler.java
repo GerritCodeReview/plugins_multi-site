@@ -20,7 +20,7 @@ import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -31,7 +31,8 @@ import java.util.Optional;
  * done for the same account id
  */
 @Singleton
-public class ForwardedIndexAccountHandler extends ForwardedIndexingHandler<Account.Id> {
+public class ForwardedIndexAccountHandler
+    extends ForwardedIndexingHandler<Account.Id, AccountIndexEvent> {
   private final AccountIndexer indexer;
 
   @Inject
@@ -41,14 +42,14 @@ public class ForwardedIndexAccountHandler extends ForwardedIndexingHandler<Accou
   }
 
   @Override
-  protected void doIndex(Account.Id id, Optional<ChangeIndexEvent> indexEvent)
+  protected void doIndex(Account.Id id, Optional<AccountIndexEvent> event)
       throws IOException, OrmException {
     indexer.index(id);
     log.debug("Account {} successfully indexed", id);
   }
 
   @Override
-  protected void doDelete(Account.Id id, Optional<ChangeIndexEvent> indexEvent) {
+  protected void doDelete(Account.Id id, Optional<AccountIndexEvent> event) {
     throw new UnsupportedOperationException("Delete from account index not supported");
   }
 }

@@ -18,9 +18,13 @@ import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import java.io.IOException;
+import java.io.Reader;
 
 @Singleton
-class IndexGroupRestApiServlet extends AbstractIndexRestApiServlet<AccountGroup.UUID> {
+class IndexGroupRestApiServlet
+    extends AbstractIndexRestApiServlet<AccountGroup.UUID, GroupIndexEvent> {
   private static final long serialVersionUID = -1L;
 
   @Inject
@@ -31,5 +35,10 @@ class IndexGroupRestApiServlet extends AbstractIndexRestApiServlet<AccountGroup.
   @Override
   AccountGroup.UUID parse(String id) {
     return new AccountGroup.UUID(id);
+  }
+
+  @Override
+  protected GroupIndexEvent fromJson(Reader reader) throws IOException {
+    return gson.fromJson(reader, GroupIndexEvent.class);
   }
 }

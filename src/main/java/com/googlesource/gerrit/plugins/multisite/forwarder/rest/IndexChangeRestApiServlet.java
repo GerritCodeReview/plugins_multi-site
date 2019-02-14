@@ -18,9 +18,12 @@ import com.google.gerrit.extensions.restapi.Url;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import java.io.IOException;
+import java.io.Reader;
 
 @Singleton
-class IndexChangeRestApiServlet extends AbstractIndexRestApiServlet<String> {
+class IndexChangeRestApiServlet extends AbstractIndexRestApiServlet<String, ChangeIndexEvent> {
   private static final long serialVersionUID = -1L;
 
   @Inject
@@ -31,5 +34,10 @@ class IndexChangeRestApiServlet extends AbstractIndexRestApiServlet<String> {
   @Override
   String parse(String id) {
     return Url.decode(id);
+  }
+
+  @Override
+  protected ChangeIndexEvent fromJson(Reader reader) throws IOException {
+    return gson.fromJson(reader, ChangeIndexEvent.class);
   }
 }

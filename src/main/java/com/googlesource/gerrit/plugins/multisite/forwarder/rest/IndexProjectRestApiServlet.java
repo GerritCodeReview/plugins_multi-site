@@ -19,9 +19,13 @@ import com.google.gerrit.reviewdb.client.Project;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexProjectHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import java.io.IOException;
+import java.io.Reader;
 
 @Singleton
-class IndexProjectRestApiServlet extends AbstractIndexRestApiServlet<Project.NameKey> {
+class IndexProjectRestApiServlet
+    extends AbstractIndexRestApiServlet<Project.NameKey, ProjectIndexEvent> {
   private static final long serialVersionUID = -1L;
 
   @Inject
@@ -32,5 +36,10 @@ class IndexProjectRestApiServlet extends AbstractIndexRestApiServlet<Project.Nam
   @Override
   Project.NameKey parse(String projectName) {
     return new Project.NameKey(Url.decode(projectName));
+  }
+
+  @Override
+  protected ProjectIndexEvent fromJson(Reader reader) throws IOException {
+    return gson.fromJson(reader, ProjectIndexEvent.class);
   }
 }

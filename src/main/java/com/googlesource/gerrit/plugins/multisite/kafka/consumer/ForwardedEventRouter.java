@@ -14,40 +14,74 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
+import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.DELETE;
+import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.INDEX;
+
+import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.reviewdb.client.AccountGroup;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexProjectHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import java.io.IOException;
 import java.util.Optional;
 
+@Singleton
 public class ForwardedEventRouter {
-
+  private final ForwardedIndexAccountHandler indexAccountHandler;
   private final ForwardedIndexChangeHandler indexChangeHandler;
+  private final ForwardedIndexGroupHandler indexGroupHandler;
+  private final ForwardedIndexProjectHandler indexProjectHandler;
   private final ForwardedEventHandler streamEventHandler;
 
   @Inject
   public ForwardedEventRouter(
-      ForwardedIndexChangeHandler indexChangeHandler, ForwardedEventHandler streamEventHandler) {
+      ForwardedIndexAccountHandler indexAccountHandler,
+      ForwardedIndexChangeHandler indexChangeHandler,
+      ForwardedIndexGroupHandler indexGroupHandler,
+      ForwardedIndexProjectHandler indexProjectHandler,
+      ForwardedEventHandler streamEventHandler) {
+    this.indexAccountHandler = indexAccountHandler;
     this.indexChangeHandler = indexChangeHandler;
+    this.indexGroupHandler = indexGroupHandler;
+    this.indexProjectHandler = indexProjectHandler;
     this.streamEventHandler = streamEventHandler;
   }
 
   void route(Event sourceEvent) throws IOException, OrmException, PermissionBackendException {
     if (sourceEvent instanceof ChangeIndexEvent) {
       ChangeIndexEvent changeIndexEvent = (ChangeIndexEvent) sourceEvent;
-      ForwardedIndexingHandler.Operation operation =
-          changeIndexEvent.deleted
-              ? ForwardedIndexingHandler.Operation.DELETE
-              : ForwardedIndexingHandler.Operation.INDEX;
+      ForwardedIndexingHandler.Operation operation = changeIndexEvent.deleted ? DELETE : INDEX;
       indexChangeHandler.index(
           changeIndexEvent.projectName + "~" + changeIndexEvent.changeId,
           operation,
           Optional.of(changeIndexEvent));
+    } else if (sourceEvent instanceof AccountIndexEvent) {
+      AccountIndexEvent accountIndexEvent = (AccountIndexEvent) sourceEvent;
+      indexAccountHandler.index(
+          new Account.Id(accountIndexEvent.accountId), INDEX, Optional.of(accountIndexEvent));
+    } else if (sourceEvent instanceof GroupIndexEvent) {
+      GroupIndexEvent groupIndexEvent = (GroupIndexEvent) sourceEvent;
+      indexGroupHandler.index(
+          AccountGroup.UUID.parse(groupIndexEvent.groupUUID), INDEX, Optional.of(groupIndexEvent));
+    } else if (sourceEvent instanceof ProjectIndexEvent) {
+      ProjectIndexEvent projectIndexEvent = (ProjectIndexEvent) sourceEvent;
+      indexProjectHandler.index(
+          new Project.NameKey(projectIndexEvent.projectName),
+          INDEX,
+          Optional.of(projectIndexEvent));
     } else if (sourceEvent instanceof Event) {
       streamEventHandler.dispatch(sourceEvent);
     } else {
