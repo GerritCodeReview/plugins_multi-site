@@ -66,6 +66,12 @@ public class BrokerReadEvent {
     public Long getEventCreatedOn() {
       return eventCreatedOn;
     }
+
+    @Override
+    public String toString() {
+      return String.format(
+          "ts=%s, id=%s, type=%s, source=%s", eventCreatedOn, eventId, eventType, sourceInstanceId);
+    }
   }
 
   public BrokerReadEvent(KafkaEventHeader header, JsonObject body) {

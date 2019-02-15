@@ -89,6 +89,7 @@ public class KafkaSubcriber implements Runnable {
             event.toString(), instanceId.toString());
       } else {
         try {
+          logger.atInfo().log("Header[%s] Body[%s]", event.getHeader(), event.getBody());
           eventRouter.route(event.getEventBody(gsonProvider));
         } catch (IOException e) {
           logger.atSevere().log(
