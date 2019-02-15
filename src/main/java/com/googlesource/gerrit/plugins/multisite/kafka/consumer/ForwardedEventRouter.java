@@ -85,7 +85,7 @@ public class ForwardedEventRouter {
     } else if (sourceEvent instanceof GroupIndexEvent) {
       GroupIndexEvent groupIndexEvent = (GroupIndexEvent) sourceEvent;
       indexGroupHandler.index(
-          AccountGroup.UUID.parse(groupIndexEvent.groupUUID), INDEX, Optional.of(groupIndexEvent));
+          new AccountGroup.UUID(groupIndexEvent.groupUUID), INDEX, Optional.of(groupIndexEvent));
     } else if (sourceEvent instanceof ProjectIndexEvent) {
       ProjectIndexEvent projectIndexEvent = (ProjectIndexEvent) sourceEvent;
       indexProjectHandler.index(
