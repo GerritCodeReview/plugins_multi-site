@@ -16,7 +16,6 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.server.index.account.AccountIndexer;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -42,8 +41,7 @@ public class ForwardedIndexAccountHandler
   }
 
   @Override
-  protected void doIndex(Account.Id id, Optional<AccountIndexEvent> event)
-      throws IOException, OrmException {
+  protected void doIndex(Account.Id id, Optional<AccountIndexEvent> event) throws IOException {
     indexer.index(id);
     log.debug("Account {} successfully indexed", id);
   }

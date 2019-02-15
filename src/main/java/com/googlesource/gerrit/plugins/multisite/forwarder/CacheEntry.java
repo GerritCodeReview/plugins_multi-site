@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import com.google.common.base.Objects;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 
 /** Represents a cache entry to evict */
@@ -61,5 +62,20 @@ public class CacheEntry {
       return new CacheEntry(cache.substring(0, dot), cache.substring(dot + 1), key);
     }
     return new CacheEntry(Constants.GERRIT, cache, key);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    CacheEntry that = (CacheEntry) o;
+    return Objects.equal(pluginName, that.pluginName)
+        && Objects.equal(cacheName, that.cacheName)
+        && Objects.equal(key, that.key);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(pluginName, cacheName, key);
   }
 }

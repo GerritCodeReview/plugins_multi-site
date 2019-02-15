@@ -21,6 +21,7 @@ import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.RefEvent;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
@@ -96,7 +97,9 @@ public class ForwardedEventRouter {
       Object parsedKey =
           GsonParser.fromJson(cacheEvictionEvent.cacheName, cacheEvictionEvent.key.toString());
       cacheEvictionHanlder.evict(CacheEntry.from(cacheEvictionEvent.cacheName, parsedKey));
-    } else if (sourceEvent instanceof Event) {
+    } else if (sourceEvent instanceof RefEvent) {
+      // ForwardedEventHandler can receive any Event subclass but actually just processes subclasses
+      // of RefEvent
       streamEventHandler.dispatch(sourceEvent);
     } else {
       throw new UnsupportedOperationException(

@@ -28,7 +28,8 @@ public class KafkaConsumerModule extends LifecycleModule {
   protected void configure() {
     MultiSiteEvent.registerEventTypes();
     bind(new TypeLiteral<Deserializer<byte[]>>() {}).toInstance(new ByteArrayDeserializer());
-    bind(new TypeLiteral<Deserializer<BrokerReadEvent>>() {}).to(KafkaEventDeserializer.class);
+    bind(new TypeLiteral<Deserializer<SourceAwareEventWrapper>>() {})
+        .to(KafkaEventDeserializer.class);
 
     bind(Executor.class)
         .annotatedWith(ConsumerExecutor.class)

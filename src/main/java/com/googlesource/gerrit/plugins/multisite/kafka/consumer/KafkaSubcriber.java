@@ -32,13 +32,13 @@ public class KafkaSubcriber implements Runnable {
   private final Provider<Gson> gsonProvider;
   private final UUID instanceId;
   private final AtomicBoolean closed = new AtomicBoolean(false);
-  private final Deserializer<BrokerReadEvent> valueDeserializer;
+  private final Deserializer<SourceAwareEventWrapper> valueDeserializer;
 
   @Inject
   public KafkaSubcriber(
       Configuration configuration,
       Deserializer<byte[]> keyDeserializer,
-      Deserializer<BrokerReadEvent> valueDeserializer,
+      Deserializer<SourceAwareEventWrapper> valueDeserializer,
       ForwardedEventRouter eventRouter,
       Provider<Gson> gsonProvider,
       @InstanceId UUID instanceId) {
@@ -80,7 +80,7 @@ public class KafkaSubcriber implements Runnable {
   private void processRecord(ConsumerRecord<byte[], byte[]> consumerRecord) {
     try {
 
-      BrokerReadEvent event =
+      SourceAwareEventWrapper event =
           valueDeserializer.deserialize(consumerRecord.topic(), consumerRecord.value());
 
       if (event.getHeader().getSourceInstanceId().equals(instanceId)) {

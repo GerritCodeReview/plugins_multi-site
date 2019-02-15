@@ -49,3 +49,9 @@ def external_plugin_deps():
         artifact = "org.testcontainers:kafka:1.10.6",
         sha1 = "5984e31306bd6c84a36092cdd19e0ef7e2268d98",
     )
+
+    maven_jar(
+        name = "commons-lang3",
+        artifact = "org.apache.commons:commons-lang3:3.6",
+        sha1 = "9d28a6b23650e8a7e9063c04588ace6cf7012c17",
+    )
