@@ -73,7 +73,7 @@ class Module extends AbstractModule {
     install(new PeerInfoModule(config.peerInfo().strategy()));
 
     if (config.kafkaSubscriber().enabled()) {
-      install(new KafkaConsumerModule());
+      install(new KafkaConsumerModule(config.kafkaSubscriber()));
     }
     if (config.kafkaProducer().enabled()) {
       install(new BrokerForwarderModule());

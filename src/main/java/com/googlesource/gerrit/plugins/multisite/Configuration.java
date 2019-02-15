@@ -344,18 +344,25 @@ public class Configuration {
     static final String KAFKA_SUBSCRIBER_SUBSECTION = "subscriber";
 
     private final boolean enabled;
-    private final String topic;
     private final Integer pollingInterval;
     private final Properties props = new Properties();
+    private final Map<EventFamily, Boolean> eventsEnabled;
     private final Config cfg;
 
     public KafkaSubscriber(Config cfg) {
-      this.topic = cfg.getString(KAFKA_SECTION, null, "eventTopic");
       this.pollingInterval =
           cfg.getInt(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, "pollingIntervalMs", 1000);
       this.cfg = cfg;
 
       enabled = cfg.getBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
+      eventsEnabled = new HashMap<>();
+      for (EventFamily eventFamily : EventFamily.values()) {
+        String enabledConfigKey = eventFamily.lowerCamelName() + "Enabled";
+        eventsEnabled.put(
+            eventFamily,
+            cfg.getBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, enabledConfigKey, false));
+      }
+
       applyKafkaConfig(cfg, KAFKA_SUBSCRIBER_SUBSECTION, props);
     }
 
@@ -363,8 +370,8 @@ public class Configuration {
       return enabled;
     }
 
-    public String getTopic() {
-      return topic;
+    public boolean enabledEvent(EventFamily eventFamily) {
+      return eventsEnabled.get(eventFamily);
     }
 
     public Properties getProps(UUID instanceId) {
