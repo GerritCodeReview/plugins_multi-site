@@ -28,6 +28,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionE
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.googlesource.gerrit.plugins.multisite.peers.PeerInfo;
 import java.io.IOException;
@@ -115,21 +116,12 @@ class RestForwarder implements Forwarder {
   }
 
   @Override
-  public boolean addToProjectList(String projectName) {
+  public boolean updateProjectList(ProjectListUpdateEvent event) {
     return execute(
-        RequestMethod.POST,
-        "Update project_list, add ",
+        event.remove ? RequestMethod.DELETE : RequestMethod.POST,
+        String.format("Update project_list, %s ", event.remove ? "remove" : "add"),
         buildProjectListEndpoint(),
-        Url.encode(projectName));
-  }
-
-  @Override
-  public boolean removeFromProjectList(String projectName) {
-    return execute(
-        RequestMethod.DELETE,
-        "Update project_list, remove ",
-        buildProjectListEndpoint(),
-        Url.encode(projectName));
+        Url.encode(event.projectName));
   }
 
   private static String buildProjectListEndpoint() {

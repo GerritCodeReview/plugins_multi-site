@@ -14,8 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
-import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.CACHE_EVICTION_EVENT;
+import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.CACHE_EVENT;
 import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.INDEX_EVENT;
+import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.PROJECT_LIST_EVENT;
 import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.STREAM_EVENT;
 
 import com.google.gerrit.server.events.Event;
@@ -28,11 +29,10 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionE
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
-import org.apache.log4j.Logger;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 
 @Singleton
 class BrokerForwarder implements Forwarder {
-  private static final Logger log = Logger.getLogger(BrokerForwarder.class);
   private final BrokerPublisher publisher;
 
   @Inject
@@ -72,18 +72,11 @@ class BrokerForwarder implements Forwarder {
 
   @Override
   public boolean evict(CacheEvictionEvent event) {
-    return publisher.publishEvent(CACHE_EVICTION_EVENT, event);
+    return publisher.publishEvent(CACHE_EVENT, event);
   }
 
   @Override
-  public boolean addToProjectList(String projectName) {
-    log.warn("Adding project to cache via broker not yet implemented: " + projectName);
-    return false;
-  }
-
-  @Override
-  public boolean removeFromProjectList(String projectName) {
-    log.warn("Remove project from cache via broker not yet implemented: " + projectName);
-    return false;
+  public boolean updateProjectList(ProjectListUpdateEvent event) {
+    return publisher.publishEvent(PROJECT_LIST_EVENT, event);
   }
 }

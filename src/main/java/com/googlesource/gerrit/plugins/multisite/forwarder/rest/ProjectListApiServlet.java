@@ -21,7 +21,7 @@ import com.google.gerrit.extensions.restapi.Url;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedProjectListUpdateHandler;
-
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,7 +52,8 @@ class ProjectListApiServlet extends AbstractRestApiServlet {
     String requestURI = req.getRequestURI();
     String projectName = requestURI.substring(requestURI.lastIndexOf('/') + 1);
     try {
-      forwardedProjectListUpdateHandler.update(Url.decode(projectName), delete);
+      forwardedProjectListUpdateHandler.update(
+          new ProjectListUpdateEvent(Url.decode(projectName), delete));
       rsp.setStatus(SC_NO_CONTENT);
     } catch (IOException e) {
       log.error("Unable to update project list", e);

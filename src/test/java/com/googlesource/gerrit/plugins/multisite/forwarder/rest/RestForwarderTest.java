@@ -35,6 +35,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEv
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.googlesource.gerrit.plugins.multisite.peers.PeerInfo;
 import java.io.IOException;
@@ -283,7 +284,8 @@ public class RestForwarderTest {
     String projectName = PROJECT_TO_ADD;
     when(httpSessionMock.post(buildProjectListCacheEndpoint(projectName), null))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(forwarder.addToProjectList(projectName)).isTrue();
+    assertThat(forwarder.updateProjectList(new ProjectListUpdateEvent(projectName, false)))
+        .isTrue();
   }
 
   @Test
@@ -291,7 +293,8 @@ public class RestForwarderTest {
     String projectName = PROJECT_TO_ADD;
     when(httpSessionMock.post(buildProjectListCacheEndpoint(projectName), null))
         .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
-    assertThat(forwarder.addToProjectList(projectName)).isFalse();
+    assertThat(forwarder.updateProjectList(new ProjectListUpdateEvent(projectName, false)))
+        .isFalse();
   }
 
   @Test
@@ -300,7 +303,8 @@ public class RestForwarderTest {
     doThrow(new IOException())
         .when(httpSessionMock)
         .post(buildProjectListCacheEndpoint(projectName), null);
-    assertThat(forwarder.addToProjectList(projectName)).isFalse();
+    assertThat(forwarder.updateProjectList(new ProjectListUpdateEvent(projectName, false)))
+        .isFalse();
   }
 
   @Test
@@ -308,7 +312,7 @@ public class RestForwarderTest {
     String projectName = PROJECT_TO_DELETE;
     when(httpSessionMock.delete(eq(buildProjectListCacheEndpoint(projectName)), any()))
         .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(forwarder.removeFromProjectList(projectName)).isTrue();
+    assertThat(forwarder.updateProjectList(new ProjectListUpdateEvent(projectName, true))).isTrue();
   }
 
   @Test
@@ -316,7 +320,8 @@ public class RestForwarderTest {
     String projectName = PROJECT_TO_DELETE;
     when(httpSessionMock.delete(eq(buildProjectListCacheEndpoint(projectName)), any()))
         .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
-    assertThat(forwarder.removeFromProjectList(projectName)).isFalse();
+    assertThat(forwarder.updateProjectList(new ProjectListUpdateEvent(projectName, true)))
+        .isFalse();
   }
 
   @Test
@@ -325,7 +330,8 @@ public class RestForwarderTest {
     doThrow(new IOException())
         .when(httpSessionMock)
         .delete(eq(buildProjectListCacheEndpoint(projectName)), any());
-    assertThat(forwarder.removeFromProjectList(projectName)).isFalse();
+    assertThat(forwarder.updateProjectList(new ProjectListUpdateEvent(projectName, true)))
+        .isFalse();
   }
 
   private static String buildProjectListCacheEndpoint(String projectName) {

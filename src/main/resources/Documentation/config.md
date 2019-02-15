@@ -31,7 +31,8 @@ File '@PLUGIN@.config'
 [kafka "publisher"]
   indexEventTopic = gerrit_index
   streamEventTopic = gerrit_stream
-  cacheEvictionEventTopic = gerrit_cache_eviction
+  cacheEventTopic = gerrit_cache_eviction
+  projectListEventTopic = gerrit_project_list
   enable = true
 
 [kafka "subscriber"]
@@ -185,9 +186,13 @@ the plugin will keep retrying to forward a message for one hour.
 :   Name of the Kafka topic to use for publishing stream events
     Defaults to GERRIT.EVENT.STREAM
 
-```kafka.publisher.cacheEvictionEventTopic```
+```kafka.publisher.cacheEventTopic```
 :   Name of the Kafka topic to use for publishing cache eviction events
-    Defaults to GERRIT.EVENT.CACHE.EVICTION
+    Defaults to GERRIT.EVENT.CACHE
+
+```kafka.publisher.projectListEventTopic```
+:   Name of the Kafka topic to use for publishing cache eviction events
+    Defaults to GERRIT.EVENT.PROJECT.LIST
 
 ```kafka.publisher.enable```
 :   Enable publishing events to Kafka

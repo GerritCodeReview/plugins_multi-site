@@ -20,6 +20,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionE
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 
 /** Forward indexing, stream events and cache evictions to the other master */
 public interface Forwarder {
@@ -81,18 +82,10 @@ public interface Forwarder {
   boolean evict(CacheEvictionEvent cacheEvictionEvent);
 
   /**
-   * Forward an addition to the project list cache to the other master.
+   * Forward an update the project list cache event to the other master.
    *
-   * @param projectName the name of the project to add to the project list cache
+   * @param projectListUpdateEvent the content of project list update event
    * @return true if successful, otherwise false.
    */
-  boolean addToProjectList(String projectName);
-
-  /**
-   * Forward a removal from the project list cache to the other master.
-   *
-   * @param projectName the name of the project to remove from the project list cache
-   * @return true if successful, otherwise false.
-   */
-  boolean removeFromProjectList(String projectName);
+  boolean updateProjectList(ProjectListUpdateEvent projectListUpdateEvent);
 }

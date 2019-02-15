@@ -35,11 +35,13 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeH
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexProjectHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedProjectListUpdateHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.GsonParser;
 import java.io.IOException;
 import java.util.Optional;
@@ -52,6 +54,7 @@ public class ForwardedEventRouter {
   private final ForwardedIndexGroupHandler indexGroupHandler;
   private final ForwardedIndexProjectHandler indexProjectHandler;
   private final ForwardedEventHandler streamEventHandler;
+  private final ForwardedProjectListUpdateHandler projectListUpdateHandler;
 
   @Inject
   public ForwardedEventRouter(
@@ -60,13 +63,15 @@ public class ForwardedEventRouter {
       ForwardedIndexChangeHandler indexChangeHandler,
       ForwardedIndexGroupHandler indexGroupHandler,
       ForwardedIndexProjectHandler indexProjectHandler,
-      ForwardedEventHandler streamEventHandler) {
+      ForwardedEventHandler streamEventHandler,
+      ForwardedProjectListUpdateHandler projectListUpdateHandler) {
     this.cacheEvictionHanlder = cacheEvictionHanlder;
     this.indexAccountHandler = indexAccountHandler;
     this.indexChangeHandler = indexChangeHandler;
     this.indexGroupHandler = indexGroupHandler;
     this.indexProjectHandler = indexProjectHandler;
     this.streamEventHandler = streamEventHandler;
+    this.projectListUpdateHandler = projectListUpdateHandler;
   }
 
   void route(Event sourceEvent)
@@ -97,6 +102,9 @@ public class ForwardedEventRouter {
       Object parsedKey =
           GsonParser.fromJson(cacheEvictionEvent.cacheName, cacheEvictionEvent.key.toString());
       cacheEvictionHanlder.evict(CacheEntry.from(cacheEvictionEvent.cacheName, parsedKey));
+    } else if (sourceEvent instanceof ProjectListUpdateEvent) {
+      ProjectListUpdateEvent projectListUpdateEvent = (ProjectListUpdateEvent) sourceEvent;
+      projectListUpdateHandler.update(projectListUpdateEvent);
     } else if (sourceEvent instanceof RefEvent) {
       // ForwardedEventHandler can receive any Event subclass but actually just processes subclasses
       // of RefEvent

@@ -290,7 +290,8 @@ public class Configuration {
         ImmutableMap.of(
             EventFamily.INDEX_EVENT, "GERRIT.EVENT.INDEX",
             EventFamily.STREAM_EVENT, "GERRIT.EVENT.STREAM",
-            EventFamily.CACHE_EVICTION_EVENT, "GERRIT.EVENT.CACHE.EVICTION");
+            EventFamily.CACHE_EVENT, "GERRIT.EVENT.CACHE",
+            EventFamily.PROJECT_LIST_EVENT, "GERRIT.EVENT.PROJECT.LIST");
 
     private final boolean enabled;
     private final Map<EventFamily, String> eventTopics;
@@ -343,7 +344,6 @@ public class Configuration {
     static final String KAFKA_SUBSCRIBER_SUBSECTION = "subscriber";
 
     private final boolean enabled;
-
     private final String topic;
     private final Integer pollingInterval;
     private final Properties props = new Properties();

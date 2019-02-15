@@ -27,6 +27,7 @@ import com.google.gerrit.extensions.registration.DynamicSet;
 import com.googlesource.gerrit.plugins.multisite.cache.ProjectListUpdateHandler.ProjectListUpdateTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,7 +61,7 @@ public class ProjectListUpdateHandlerTest {
     NewProjectCreatedListener.Event event = mock(NewProjectCreatedListener.Event.class);
     when(event.getProjectName()).thenReturn(projectName);
     handler.onNewProjectCreated(event);
-    verify(forwarder).addToProjectList(projectName);
+    verify(forwarder).updateProjectList(new ProjectListUpdateEvent(projectName, false));
   }
 
   @Test
@@ -69,7 +70,7 @@ public class ProjectListUpdateHandlerTest {
     ProjectDeletedListener.Event event = mock(ProjectDeletedListener.Event.class);
     when(event.getProjectName()).thenReturn(projectName);
     handler.onProjectDeleted(event);
-    verify(forwarder).removeFromProjectList(projectName);
+    verify(forwarder).updateProjectList(new ProjectListUpdateEvent(projectName, true));
   }
 
   @Test
@@ -84,13 +85,14 @@ public class ProjectListUpdateHandlerTest {
   @Test
   public void testProjectUpdateTaskToString() throws Exception {
     String projectName = "someProjectName";
-    ProjectListUpdateTask task = handler.new ProjectListUpdateTask(projectName, false);
+    ProjectListUpdateTask task =
+        handler.new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, false));
     assertThat(task.toString())
         .isEqualTo(
             String.format(
                 "[%s] Update project list in target instance: add '%s'", PLUGIN_NAME, projectName));
 
-    task = handler.new ProjectListUpdateTask(projectName, true);
+    task = handler.new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, true));
     assertThat(task.toString())
         .isEqualTo(
             String.format(

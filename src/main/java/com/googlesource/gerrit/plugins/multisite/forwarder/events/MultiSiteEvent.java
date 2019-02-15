@@ -26,6 +26,7 @@ public abstract class MultiSiteEvent extends Event {
     register(GroupIndexEvent.TYPE, GroupIndexEvent.class);
     register(ProjectIndexEvent.TYPE, ProjectIndexEvent.class);
     register(CacheEvictionEvent.TYPE, CacheEvictionEvent.class);
+    register(ProjectListUpdateEvent.TYPE, ProjectListUpdateEvent.class);
   }
 
   protected MultiSiteEvent(String type) {
