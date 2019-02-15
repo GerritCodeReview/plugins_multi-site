@@ -295,6 +295,7 @@ public class Configuration {
 
     private final boolean enabled;
     private final Map<EventFamily, String> eventTopics;
+    private final Map<EventFamily, Boolean> eventsEnabled;
 
     private KafkaPublisher(Config cfg) {
       enabled =
@@ -312,6 +313,14 @@ public class Configuration {
                 KAFKA_PUBLISHER_SUBSECTION,
                 topicConfigKey,
                 topicDefault.getValue()));
+      }
+
+      eventsEnabled = new HashMap<>();
+      for (EventFamily eventFamily : EventFamily.values()) {
+        String enabledConfigKey = eventFamily.lowerCamelName() + "Enabled";
+        eventsEnabled.put(
+            eventFamily,
+            cfg.getBoolean(KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, enabledConfigKey, false));
       }
 
       if (enabled) {
@@ -337,6 +346,10 @@ public class Configuration {
 
     public String getTopic(EventFamily eventType) {
       return eventTopics.get(eventType);
+    }
+
+    public boolean enabledEvent(EventFamily eventType) {
+      return eventsEnabled.get(eventType);
     }
   }
 
@@ -418,6 +431,7 @@ public class Configuration {
     private final int socketTimeout;
     private final int maxTries;
     private final int retryInterval;
+    private final Map<EventFamily, Boolean> eventsEnabled;
 
     private Http(Config cfg) {
       enabled = cfg.getBoolean(HTTP_SECTION, ENABLE_KEY, DEFAULT_HTTP_ENABLED);
@@ -427,6 +441,11 @@ public class Configuration {
       socketTimeout = getInt(cfg, HTTP_SECTION, SOCKET_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS);
       maxTries = getInt(cfg, HTTP_SECTION, MAX_TRIES_KEY, DEFAULT_MAX_TRIES);
       retryInterval = getInt(cfg, HTTP_SECTION, RETRY_INTERVAL_KEY, DEFAULT_RETRY_INTERVAL);
+      eventsEnabled = new HashMap<>();
+      for (EventFamily eventFamily : EventFamily.values()) {
+        String enabledConfigKey = eventFamily.lowerCamelName() + "Enabled";
+        eventsEnabled.put(eventFamily, cfg.getBoolean(HTTP_SECTION, null, enabledConfigKey, true));
+      }
     }
 
     public boolean enabled() {
@@ -455,6 +474,10 @@ public class Configuration {
 
     public int retryInterval() {
       return retryInterval;
+    }
+
+    public boolean enabledEvent(EventFamily eventFamily) {
+      return eventsEnabled.get(eventFamily);
     }
   }
 

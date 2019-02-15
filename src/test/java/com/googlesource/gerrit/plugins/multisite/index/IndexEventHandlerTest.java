@@ -28,7 +28,7 @@ import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.reviewdb.client.Change;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
@@ -53,8 +53,7 @@ public class IndexEventHandlerTest {
   private static final String OTHER_UUID = "4";
 
   private IndexEventHandler indexEventHandler;
-  @Mock private DynamicSet<Forwarder> forwarders;
-  @Mock private Forwarder forwarder;
+  @Mock private IndexEventForwarder forwarder;
   @Mock private ChangeCheckerImpl.Factory changeCheckerFactoryMock;
   @Mock private ChangeChecker changeCheckerMock;
   private Change.Id changeId;
@@ -78,8 +77,8 @@ public class IndexEventHandlerTest {
             changeCheckerFactoryMock);
   }
 
-  private DynamicSet<Forwarder> asDynamicSet(Forwarder forwarder) {
-    DynamicSet<Forwarder> result = new DynamicSet<>();
+  private DynamicSet<IndexEventForwarder> asDynamicSet(IndexEventForwarder forwarder) {
+    DynamicSet<IndexEventForwarder> result = new DynamicSet<>();
     result.add("multi-site", forwarder);
     return result;
   }

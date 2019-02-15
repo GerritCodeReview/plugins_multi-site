@@ -31,10 +31,7 @@ import com.google.gson.GsonBuilder;
 import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.googlesource.gerrit.plugins.multisite.peers.PeerInfo;
@@ -58,25 +55,7 @@ public class RestForwarderTest {
   private static final boolean FAILED = false;
 
   // Index
-  private static final int CHANGE_NUMBER = 1;
   private static final String PROJECT_NAME = "test/project";
-  private static final String PROJECT_NAME_URL_END = "test%2Fproject";
-  private static final String INDEX_CHANGE_ENDPOINT =
-      Joiner.on("/")
-          .join(
-              URL,
-              PLUGINS,
-              PLUGIN_NAME,
-              "index/change",
-              PROJECT_NAME_URL_END + "~" + CHANGE_NUMBER);
-  private static final String DELETE_CHANGE_ENDPOINT =
-      Joiner.on("/").join(URL, PLUGINS, PLUGIN_NAME, "index/change", "~" + CHANGE_NUMBER);
-  private static final int ACCOUNT_NUMBER = 2;
-  private static final String INDEX_ACCOUNT_ENDPOINT =
-      Joiner.on("/").join(URL, PLUGINS, PLUGIN_NAME, "index/account", ACCOUNT_NUMBER);
-  private static final String UUID = "we235jdf92nfj2351";
-  private static final String INDEX_GROUP_ENDPOINT =
-      Joiner.on("/").join(URL, PLUGINS, PLUGIN_NAME, "index/group", UUID);
 
   // Event
   private static Event event = new Event("test-event") {};
@@ -98,98 +77,6 @@ public class RestForwarderTest {
     forwarder =
         new RestForwarder(
             httpSessionMock, PLUGIN_NAME, configMock, peersMock); // TODO: Create provider
-  }
-
-  @Test
-  public void testIndexAccountOK() throws Exception {
-    when(httpSessionMock.post(eq(INDEX_ACCOUNT_ENDPOINT), any()))
-        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(forwarder.indexAccount(new AccountIndexEvent(ACCOUNT_NUMBER))).isTrue();
-  }
-
-  @Test
-  public void testIndexAccountFailed() throws Exception {
-    when(httpSessionMock.post(eq(INDEX_ACCOUNT_ENDPOINT), any()))
-        .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
-    assertThat(forwarder.indexAccount(new AccountIndexEvent(ACCOUNT_NUMBER))).isFalse();
-  }
-
-  @Test
-  public void testIndexAccountThrowsException() throws Exception {
-    doThrow(new IOException()).when(httpSessionMock).post(eq(INDEX_ACCOUNT_ENDPOINT), any());
-    assertThat(forwarder.indexAccount(new AccountIndexEvent(ACCOUNT_NUMBER))).isFalse();
-  }
-
-  @Test
-  public void testIndexGroupOK() throws Exception {
-    when(httpSessionMock.post(eq(INDEX_GROUP_ENDPOINT), any()))
-        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(forwarder.indexGroup(new GroupIndexEvent(UUID))).isTrue();
-  }
-
-  @Test
-  public void testIndexGroupFailed() throws Exception {
-    when(httpSessionMock.post(eq(INDEX_GROUP_ENDPOINT), any()))
-        .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
-    assertThat(forwarder.indexGroup(new GroupIndexEvent(UUID))).isFalse();
-  }
-
-  @Test
-  public void testIndexGroupThrowsException() throws Exception {
-    doThrow(new IOException()).when(httpSessionMock).post(eq(INDEX_GROUP_ENDPOINT), any());
-    assertThat(forwarder.indexGroup(new GroupIndexEvent(UUID))).isFalse();
-  }
-
-  @Test
-  public void testIndexChangeOK() throws Exception {
-    when(httpSessionMock.post(eq(INDEX_CHANGE_ENDPOINT), any()))
-        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(forwarder.indexChange(new ChangeIndexEvent(PROJECT_NAME, CHANGE_NUMBER, false)))
-        .isTrue();
-  }
-
-  @Test
-  public void testIndexChangeFailed() throws Exception {
-    when(httpSessionMock.post(eq(INDEX_CHANGE_ENDPOINT), any()))
-        .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
-    assertThat(forwarder.indexChange(new ChangeIndexEvent(PROJECT_NAME, CHANGE_NUMBER, false)))
-        .isFalse();
-  }
-
-  @Test
-  public void testIndexChangeThrowsException() throws Exception {
-    doThrow(new IOException()).when(httpSessionMock).post(eq(INDEX_CHANGE_ENDPOINT), any());
-    assertThat(forwarder.indexChange(new ChangeIndexEvent(PROJECT_NAME, CHANGE_NUMBER, false)))
-        .isFalse();
-  }
-
-  @Test
-  public void testChangeDeletedFromIndexOK() throws Exception {
-    when(httpSessionMock.delete(eq(DELETE_CHANGE_ENDPOINT), any()))
-        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(
-            forwarder.deleteChangeFromIndex(
-                new ChangeIndexEvent(PROJECT_NAME, CHANGE_NUMBER, true)))
-        .isTrue();
-  }
-
-  @Test
-  public void testChangeDeletedFromIndexFailed() throws Exception {
-    when(httpSessionMock.delete(eq(DELETE_CHANGE_ENDPOINT), any()))
-        .thenReturn(new HttpResult(FAILED, EMPTY_MSG));
-    assertThat(
-            forwarder.deleteChangeFromIndex(
-                new ChangeIndexEvent(PROJECT_NAME, CHANGE_NUMBER, false)))
-        .isFalse();
-  }
-
-  @Test
-  public void testChangeDeletedFromThrowsException() throws Exception {
-    doThrow(new IOException()).when(httpSessionMock).delete(eq(DELETE_CHANGE_ENDPOINT), any());
-    assertThat(
-            forwarder.deleteChangeFromIndex(
-                new ChangeIndexEvent(PROJECT_NAME, CHANGE_NUMBER, false)))
-        .isFalse();
   }
 
   @Test

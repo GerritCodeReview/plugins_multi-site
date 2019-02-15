@@ -26,8 +26,8 @@ import java.util.Optional;
 
 /**
  * Index a group using {@link GroupIndexer}. This class is meant to be used on the receiving side of
- * the {@link Forwarder} since it will prevent indexed group to be forwarded again causing an
- * infinite forwarding loop between the 2 nodes. It will also make sure no concurrent indexing is
+ * the {@link IndexEventForwarder} since it will prevent indexed group to be forwarded again causing
+ * an infinite forwarding loop between the 2 nodes. It will also make sure no concurrent indexing is
  * done for the same group uuid
  */
 @Singleton

@@ -25,5 +25,6 @@ public class ForwarderModule extends AbstractModule {
   protected void configure() {
     DynamicItem.bind(binder(), EventDispatcher.class).to(ForwardedAwareEventBroker.class);
     DynamicSet.setOf(binder(), Forwarder.class);
+    DynamicSet.setOf(binder(), IndexEventForwarder.class);
   }
 }

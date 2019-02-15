@@ -25,9 +25,9 @@ import java.util.Optional;
 
 /**
  * Index an account using {@link AccountIndexer}. This class is meant to be used on the receiving
- * side of the {@link Forwarder} since it will prevent indexed account to be forwarded again causing
- * an infinite forwarding loop between the 2 nodes. It will also make sure no concurrent indexing is
- * done for the same account id
+ * side of the {@link IndexEventForwarder} since it will prevent indexed account to be forwarded
+ * again causing an infinite forwarding loop between the 2 nodes. It will also make sure no
+ * concurrent indexing is done for the same account id
  */
 @Singleton
 public class ForwardedIndexAccountHandler

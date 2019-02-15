@@ -23,7 +23,7 @@ import com.google.gerrit.extensions.events.ProjectIndexedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
@@ -42,7 +42,7 @@ class IndexEventHandler
         ProjectIndexedListener {
   private static final Logger log = LoggerFactory.getLogger(IndexEventHandler.class);
   private final Executor executor;
-  private final DynamicSet<Forwarder> forwarders;
+  private final DynamicSet<IndexEventForwarder> forwarders;
   private final String pluginName;
   private final Set<IndexTask> queuedTasks = Collections.newSetFromMap(new ConcurrentHashMap<>());
   private final ChangeCheckerImpl.Factory changeChecker;
@@ -51,7 +51,7 @@ class IndexEventHandler
   IndexEventHandler(
       @IndexExecutor Executor executor,
       @PluginName String pluginName,
-      DynamicSet<Forwarder> forwarders,
+      DynamicSet<IndexEventForwarder> forwarders,
       ChangeCheckerImpl.Factory changeChecker) {
     this.forwarders = forwarders;
     this.executor = executor;

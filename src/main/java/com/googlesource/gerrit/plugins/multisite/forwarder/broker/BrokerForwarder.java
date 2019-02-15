@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
 import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.CACHE_EVENT;
-import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.INDEX_EVENT;
 import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.PROJECT_LIST_EVENT;
 import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.STREAM_EVENT;
 
@@ -24,11 +23,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 
 @Singleton
@@ -38,31 +33,6 @@ class BrokerForwarder implements Forwarder {
   @Inject
   BrokerForwarder(BrokerPublisher publisher) {
     this.publisher = publisher;
-  }
-
-  @Override
-  public boolean indexAccount(AccountIndexEvent event) {
-    return publisher.publishEvent(INDEX_EVENT, event);
-  }
-
-  @Override
-  public boolean indexChange(ChangeIndexEvent event) {
-    return publisher.publishEvent(INDEX_EVENT, event);
-  }
-
-  @Override
-  public boolean indexGroup(GroupIndexEvent event) {
-    return publisher.publishEvent(INDEX_EVENT, event);
-  }
-
-  @Override
-  public boolean deleteChangeFromIndex(ChangeIndexEvent event) {
-    return publisher.publishEvent(INDEX_EVENT, event);
-  }
-
-  @Override
-  public boolean indexProject(ProjectIndexEvent event) {
-    return publisher.publishEvent(INDEX_EVENT, event);
   }
 
   @Override

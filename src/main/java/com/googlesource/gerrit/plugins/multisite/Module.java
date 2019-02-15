@@ -56,7 +56,7 @@ class Module extends AbstractModule {
     install(new ForwarderModule());
 
     if (config.http().enabled()) {
-      install(new RestForwarderModule());
+      install(new RestForwarderModule(config.http()));
     }
     if (config.cache().synchronize()) {
       install(new CacheModule());
@@ -76,7 +76,7 @@ class Module extends AbstractModule {
       install(new KafkaConsumerModule(config.kafkaSubscriber()));
     }
     if (config.kafkaProducer().enabled()) {
-      install(new BrokerForwarderModule());
+      install(new BrokerForwarderModule(config.kafkaProducer()));
     }
 
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
