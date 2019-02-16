@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.config.ConfigUtil;
@@ -24,11 +25,14 @@ import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
@@ -57,7 +61,7 @@ public class Configuration {
   static final String NUM_STRIPED_LOCKS = "numStripedLocks";
   static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
   static final String ENABLE_KEY = "enable";
-  public static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
+  static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
   static final String KAFKA_SECTION = "kafka";
 
   private final Main main;
@@ -279,24 +283,35 @@ public class Configuration {
 
     public static final String KAFKA_STRING_SERIALIZER = StringSerializer.class.getName();
 
-    static final String KAFKA_PUBLISHER_SUBSECTION = "publisher";
-    static final String BROKER_PRODUCER_INDEX_TOPIC = "index-event-topic";
-    static final boolean DEFAULT_BROKER_ENABLED = false;
+    public static final String KAFKA_PUBLISHER_SUBSECTION = "publisher";
+    public static final boolean DEFAULT_BROKER_ENABLED = false;
+
+    private static final Map<EventFamily, String> EVENT_TOPICS =
+        ImmutableMap.of(
+            EventFamily.INDEX_EVENT, "GERRIT.EVENT.INDEX",
+            EventFamily.STREAM_EVENT, "GERRIT.EVENT.STREAM");
 
     private final boolean enabled;
-    private final String indexEventTopic;
+    private final Map<EventFamily, String> eventTopics;
 
     private KafkaPublisher(Config cfg) {
       enabled =
           cfg.getBoolean(
               KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
-      indexEventTopic =
-          getString(
-              cfg,
-              KAFKA_SECTION,
-              KAFKA_PUBLISHER_SUBSECTION,
-              BROKER_PRODUCER_INDEX_TOPIC,
-              "GERRIT.EVENT.INDEX");
+
+      eventTopics = new HashMap<>();
+      for (Map.Entry<EventFamily, String> topicDefault : EVENT_TOPICS.entrySet()) {
+        String topicConfigKey = topicDefault.getKey().lowerCamelName() + "Topic";
+        eventTopics.put(
+            topicDefault.getKey(),
+            getString(
+                cfg,
+                KAFKA_SECTION,
+                KAFKA_PUBLISHER_SUBSECTION,
+                topicConfigKey,
+                topicDefault.getValue()));
+      }
+
       if (enabled) {
         setDefaults();
         applyKafkaConfig(cfg, KAFKA_PUBLISHER_SUBSECTION, this);
@@ -318,8 +333,8 @@ public class Configuration {
       return enabled;
     }
 
-    public String getIndexEventTopic() {
-      return indexEventTopic;
+    public String getTopic(EventFamily eventType) {
+      return eventTopics.get(eventType);
     }
   }
 

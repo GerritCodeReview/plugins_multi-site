@@ -1,95 +1,87 @@
+This plugin allows having multiple Gerrit masters to be deployed across
+various sites without having to share any storage. The alignment between
+the masters happens using the replication plugin and an external message
+broker.
 
-This plugin allows making Gerrit highly available by having redundant Gerrit
-masters.
+This plugin allows Gerrit to publish and to consume events over a Kafka
+message broker for aligning with the other masters over different sites.
 
 The masters must be:
 
-* connecting to the same database
-* sharing the git repositories using a shared file system (e.g. NFS)
-* behind a load balancer (e.g. HAProxy)
+* migrated to NoteDb
+* connected to the same message broker
+* behind a load balancer (e.g., HAProxy)
 
-Currently, the mode supported is one primary (active) master and multiple backup
-(passive) masters but eventually the plan is to support `n` active masters. In
-the active/passive mode, the active master is handling all traffic while the
-passives are kept updated to be always ready to take over.
+Currently, the mode supported is one primary read/write master and multiple
+read-only masters but eventually the plan is to support `n` read/write masters.
+The read/write master is handling any traffic while the
+read-only masters are serving the Gerrit GUI assets, the HTTP GET REST API and
+the git-upload-packs. They read-only masters are kept updated to be always
+ready to become a read/write master.
 
-Even if database and git repositories are shared by the masters, there are a few
-areas of concern in order to be able to switch traffic between masters in a
-transparent manner from the user's perspective. The 4 areas of concern are
-things that Gerrit stores either in memory or locally in the review site:
+The areas of alignment between the masters are:
 
-* caches
-* secondary indexes
-* stream-events
-* web sessions
+1. caches
+2. secondary indexes
+3. stream-events
+4. web sessions
 
-They need either to be shared or kept local to each master but synchronized.
-This plugin needs to be installed in all the masters and it will take care of sharing
-or synchronizing them.
+This plugin is focussing on only the points 1. to 3., while other plugins can be
+used to manage the replication of 4. across sites.
+
+This plugin needs to be installed in all the masters, and it will take care of
+keeping 1., 2. and 3. aligned across all the nodes.
 
 #### Caches
 Every time a cache eviction occurs in one of the masters, the eviction will be
-forwarded the other masters so their caches do not contain stale entries.
+published to the message broker so that other masters can consume the message
+and evict the potential stale entries.
 
 #### Secondary indexes
 Every time the secondary index is modified in one of the masters, e.g., a change
-is added, updated or removed from the index, the others master's index are
-updated accordingly. This way, both indexes are kept synchronized.
+is added, updated or removed from the index, an indexing event is published to the
+message broker so that the other masters can consume the message and keep their indexes
+updated accordingly. This way, all indexes across masters across sites are kept synchronized.
 
 #### Stream events
 Every time a stream event occurs in one of the masters (see [more events info]
 (https://gerrit-review.googlesource.com/Documentation/cmd-stream-events.html#events)),
-the event is forwarded to the other masters which re-plays it. This way, the
-output of the stream-events command is the same, no matter which master a client
+the event is published to the message broker so that other masters can consume it and
+re-play it for all the connected SSH sessions that are listening to stream events.
+This way, the output of the stream-events command is the same, no matter which masters a client
 is connected to.
 
-#### Web session
-The built-in Gerrit H2 based web session cache is replaced with a file based
-implementation that is shared amongst the masters.
 
 ## Setup
 
 Prerequisites:
 
-* Unique database server must be accessible from all the masters
-* Git repositories must be located on a shared file system
-* A directory on a shared file system must be available for @PLUGIN@ to use
+* Kafka message broker deployed in a multi-master setup across all the sites
 
 For the masters:
 
-* Configure database section in gerrit.config to use the shared database
-* Configure gerrit.basePath in gerrit.config to the shared repositories location
 * Install and configure @PLUGIN@ plugin
 
-Here is an example of the minimal @PLUGIN@.config:
+Here is an example of minimal @PLUGIN@.config:
 
-Primary master
-
-```
-[main]
-  sharedDirectory = /directory/accessible/from/both/masters
-
-[peerInfo "static"]
-  url = http://backupMasterHost1:8081/
-
-[http]
-  user = username
-  password = password
-```
-
-Backup master
+For all the masters on all the sites:
 
 ```
-[main]
-  sharedDirectory = /directory/accessible/from/both/masters
+[kafka]
+  bootstrapServers = kafka-1:9092,kafka-2:9092,kafka-3:9092
+  eventTopic = gerrit_index
 
-[peerInfo "static"]
-  url = http://primaryMasterHost:8080/
+[kafka "publisher"]
+  enable = true
+  indexEventTopic = gerrit_index
+  streamEventTopic = gerrit_stream
 
-[http]
-  user = username
-  password = password
+[kafka "subscriber"]
+  enable = true
+  pollingIntervalMs = 1000
+  autoCommitIntervalMs = 1000
 ```
+
 
 For further information and supported options, refer to [config](config.md)
 documentation.

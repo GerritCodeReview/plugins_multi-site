@@ -12,17 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.broker;
+package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.google.common.base.CaseFormat;
 
-public interface BrokerSession {
+public enum EventFamily {
+  INDEX_EVENT,
+  CACHE_EVENT,
+  STREAM_EVENT;
 
-  boolean isOpen();
-
-  void connect();
-
-  void disconnect();
-
-  boolean publishEvent(EventFamily eventFamily, String payload);
+  public String lowerCamelName() {
+    return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, name());
+  }
 }

@@ -14,6 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
+import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.INDEX_EVENT;
+import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.STREAM_EVENT;
+
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -37,33 +40,32 @@ class BrokerForwarder implements Forwarder {
 
   @Override
   public boolean indexAccount(AccountIndexEvent event) {
-    return publisher.publishIndexEvent(event);
+    return publisher.publishEvent(INDEX_EVENT, event);
   }
 
   @Override
   public boolean indexChange(ChangeIndexEvent event) {
-    return publisher.publishIndexEvent(event);
+    return publisher.publishEvent(INDEX_EVENT, event);
   }
 
   @Override
   public boolean indexGroup(GroupIndexEvent event) {
-    return publisher.publishIndexEvent(event);
+    return publisher.publishEvent(INDEX_EVENT, event);
   }
 
   @Override
   public boolean deleteChangeFromIndex(ChangeIndexEvent event) {
-    return publisher.publishIndexEvent(event);
+    return publisher.publishEvent(INDEX_EVENT, event);
   }
 
   @Override
   public boolean indexProject(ProjectIndexEvent event) {
-    return publisher.publishIndexEvent(event);
+    return publisher.publishEvent(INDEX_EVENT, event);
   }
 
   @Override
   public boolean send(Event event) {
-    log.warn("Sending Stream events via broker not yet implemented: " + event.type);
-    return false;
+    return publisher.publishEvent(STREAM_EVENT, event);
   }
 
   @Override

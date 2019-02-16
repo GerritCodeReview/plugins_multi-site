@@ -21,6 +21,7 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.BrokerReadEvent;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -55,12 +56,17 @@ public class BrokerPublisher implements LifecycleListener {
     }
   }
 
-  public boolean publishIndexEvent(Event event) {
+  public boolean publishEvent(EventFamily eventType, Event event) {
+    return session.publishEvent(eventType, getPayload(event));
+  }
+
+  private String getPayload(Event event) {
     JsonObject obj = gson.toJsonTree(event).getAsJsonObject();
     BrokerReadEvent eventWithHeader =
         new BrokerReadEvent(
-            new BrokerReadEvent.KafkaEventHeader(UUID.randomUUID(), "", instanceId, 1L), obj);
-
-    return session.publishIndexEvent(gson.toJson(eventWithHeader));
+            new BrokerReadEvent.KafkaEventHeader(
+                UUID.randomUUID(), event.getType(), instanceId, System.currentTimeMillis()),
+            obj);
+    return gson.toJson(eventWithHeader);
   }
 }
