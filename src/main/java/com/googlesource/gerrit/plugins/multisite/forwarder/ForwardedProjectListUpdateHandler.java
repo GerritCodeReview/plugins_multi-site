@@ -25,8 +25,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Update project list cache. This class is meant to be used on the receiving side of the {@link
- * Forwarder} since it will prevent project list updates to be forwarded again causing an infinite
- * forwarding loop between the 2 nodes.
+ * ProjectListUpdateForwarder} since it will prevent project list updates to be forwarded again
+ * causing an infinite forwarding loop between the 2 nodes.
  */
 @Singleton
 public class ForwardedProjectListUpdateHandler {

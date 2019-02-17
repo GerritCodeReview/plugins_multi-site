@@ -17,17 +17,17 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 
 import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.PROJECT_LIST_EVENT;
 
 @Singleton
-class BrokerForwarder implements Forwarder {
+class BrokerProjectListUpdateForwarder implements ProjectListUpdateForwarder {
   private final BrokerPublisher publisher;
 
   @Inject
-  BrokerForwarder(BrokerPublisher publisher) {
+  BrokerProjectListUpdateForwarder(BrokerPublisher publisher) {
     this.publisher = publisher;
   }
 

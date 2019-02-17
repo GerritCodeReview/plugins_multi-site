@@ -17,7 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 
 /** Forward project list update events to the other master */
-public interface Forwarder {
+public interface ProjectListUpdateForwarder {
   /**
    * Forward an update the project list cache event to the other master.
    *

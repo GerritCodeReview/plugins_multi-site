@@ -22,16 +22,17 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import com.googlesource.gerrit.plugins.multisite.peers.PeerInfo;
 import java.util.Set;
 
 @Singleton
-class RestForwarder extends AbstractRestForwarder implements Forwarder {
+class RestProjectListUpdateForwarder extends AbstractRestForwarder
+    implements ProjectListUpdateForwarder {
 
   @Inject
-  RestForwarder(
+  RestProjectListUpdateForwarder(
       HttpSession httpClient,
       @PluginName String pluginName,
       Configuration cfg,

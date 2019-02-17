@@ -26,7 +26,7 @@ import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.googlesource.gerrit.plugins.multisite.cache.ProjectListUpdateHandler.ProjectListUpdateTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,7 +40,7 @@ public class ProjectListUpdateHandlerTest {
 
   private ProjectListUpdateHandler handler;
 
-  @Mock private Forwarder forwarder;
+  @Mock private ProjectListUpdateForwarder forwarder;
 
   @Before
   public void setUp() {
@@ -49,8 +49,9 @@ public class ProjectListUpdateHandlerTest {
             asDynamicSet(forwarder), MoreExecutors.directExecutor(), PLUGIN_NAME);
   }
 
-  private DynamicSet<Forwarder> asDynamicSet(Forwarder forwarder) {
-    DynamicSet<Forwarder> result = new DynamicSet<>();
+  private DynamicSet<ProjectListUpdateForwarder> asDynamicSet(
+      ProjectListUpdateForwarder forwarder) {
+    DynamicSet<ProjectListUpdateForwarder> result = new DynamicSet<>();
     result.add("multi-site", forwarder);
     return result;
   }

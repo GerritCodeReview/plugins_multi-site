@@ -25,10 +25,10 @@ import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaSession;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 
 public class BrokerForwarderModule extends AbstractModule {
   private final KafkaPublisher kafkaPublisher;
@@ -41,7 +41,6 @@ public class BrokerForwarderModule extends AbstractModule {
   protected void configure() {
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
     DynamicSet.bind(binder(), LifecycleListener.class).to(BrokerPublisher.class);
-    DynamicSet.bind(binder(), Forwarder.class).to(BrokerForwarder.class);
     bind(BrokerSession.class).to(KafkaSession.class);
 
     if (kafkaPublisher.enabledEvent(EventFamily.INDEX_EVENT)) {
@@ -50,6 +49,10 @@ public class BrokerForwarderModule extends AbstractModule {
     if (kafkaPublisher.enabledEvent(EventFamily.CACHE_EVENT)) {
       DynamicSet.bind(binder(), CacheEvictionForwarder.class)
           .to(BrokerCacheEvictionForwarder.class);
+    }
+    if (kafkaPublisher.enabledEvent(EventFamily.PROJECT_LIST_EVENT)) {
+      DynamicSet.bind(binder(), ProjectListUpdateForwarder.class)
+          .to(BrokerProjectListUpdateForwarder.class);
     }
     if (kafkaPublisher.enabledEvent(EventFamily.STREAM_EVENT)) {
       DynamicSet.bind(binder(), StreamEventForwarder.class).to(BrokerStreamEventForwarder.class);

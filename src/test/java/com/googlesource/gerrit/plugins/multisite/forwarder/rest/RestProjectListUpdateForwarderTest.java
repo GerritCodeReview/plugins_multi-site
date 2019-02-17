@@ -35,7 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Answers;
 
-public class RestForwarderTest {
+public class RestProjectListUpdateForwarderTest {
   private static final String URL = "http://fake.com";
   private static final String PLUGIN_NAME = "multi-site";
   private static final String EMPTY_MSG = "";
@@ -46,7 +46,7 @@ public class RestForwarderTest {
   private static final boolean FAILED = false;
 
   // Event
-  private RestForwarder forwarder;
+  private RestProjectListUpdateForwarder forwarder;
   private HttpSession httpSessionMock;
 
   @SuppressWarnings("unchecked")
@@ -59,7 +59,7 @@ public class RestForwarderTest {
     Provider<Set<PeerInfo>> peersMock = mock(Provider.class);
     when(peersMock.get()).thenReturn(ImmutableSet.of(new PeerInfo(URL)));
     forwarder =
-        new RestForwarder(
+        new RestProjectListUpdateForwarder(
             httpSessionMock, PLUGIN_NAME, configMock, peersMock); // TODO: Create provider
   }
 
