@@ -15,10 +15,8 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.google.common.base.CaseFormat;
-import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.PluginConfigFactory;
@@ -30,12 +28,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Properties;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.jgit.lib.Config;
 import org.slf4j.Logger;
@@ -46,8 +41,6 @@ public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
   static final String INSTANCE_ID_FILE = "instanceId.data";
-  // common parameter to peerInfo section
-  static final String PEER_INFO_SECTION = "peerInfo";
 
   // common parameters to cache and index sections
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
@@ -65,15 +58,12 @@ public class Configuration {
   public static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
 
   private final AutoReindex autoReindex;
-  private final PeerInfo peerInfo;
   private final KafkaPublisher publisher;
-  private final Http http;
   private final Cache cache;
   private final Event event;
   private final Index index;
   private final KafkaSubscriber subscriber;
   private final Kafka kafka;
-  private PeerInfoStatic peerInfoStatic;
   private HealthCheck healthCheck;
 
   public enum PeerInfoStrategy {
@@ -84,18 +74,9 @@ public class Configuration {
   Configuration(PluginConfigFactory pluginConfigFactory, @PluginName String pluginName) {
     Config cfg = pluginConfigFactory.getGlobalPluginConfig(pluginName);
     autoReindex = new AutoReindex(cfg);
-    peerInfo = new PeerInfo(cfg);
-    switch (peerInfo.strategy()) {
-      case STATIC:
-        peerInfoStatic = new PeerInfoStatic(cfg);
-        break;
-      default:
-        throw new IllegalArgumentException("Not supported strategy: " + peerInfo.strategy);
-    }
     kafka = new Kafka(cfg);
     publisher = new KafkaPublisher(cfg);
     subscriber = new KafkaSubscriber(cfg);
-    http = new Http(cfg);
     cache = new Cache(cfg);
     event = new Event(cfg);
     index = new Index(cfg);
@@ -112,18 +93,6 @@ public class Configuration {
 
   public AutoReindex autoReindex() {
     return autoReindex;
-  }
-
-  public PeerInfo peerInfo() {
-    return peerInfo;
-  }
-
-  public PeerInfoStatic peerInfoStatic() {
-    return peerInfoStatic;
-  }
-
-  public Http http() {
-    return http;
   }
 
   public Cache cache() {
@@ -193,45 +162,6 @@ public class Configuration {
 
     public long pollSec() {
       return pollSec;
-    }
-  }
-
-  public static class PeerInfo {
-    static final PeerInfoStrategy DEFAULT_PEER_INFO_STRATEGY = PeerInfoStrategy.STATIC;
-    static final String STRATEGY_KEY = "strategy";
-
-    private final PeerInfoStrategy strategy;
-
-    private PeerInfo(Config cfg) {
-      strategy = cfg.getEnum(PEER_INFO_SECTION, null, STRATEGY_KEY, DEFAULT_PEER_INFO_STRATEGY);
-      if (log.isDebugEnabled()) {
-        log.debug("Strategy: {}", strategy.name());
-      }
-    }
-
-    public PeerInfoStrategy strategy() {
-      return strategy;
-    }
-  }
-
-  public static class PeerInfoStatic {
-    public static final String STATIC_SUBSECTION = PeerInfoStrategy.STATIC.name().toLowerCase();
-    public static final String URL_KEY = "url";
-
-    private final Set<String> urls;
-
-    private PeerInfoStatic(Config cfg) {
-      urls =
-          Arrays.stream(cfg.getStringList(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY))
-              .filter(Objects::nonNull)
-              .filter(s -> !s.isEmpty())
-              .map(s -> CharMatcher.is('/').trimTrailingFrom(s))
-              .collect(Collectors.toSet());
-      log.debug("Urls: {}", urls);
-    }
-
-    public Set<String> urls() {
-      return ImmutableSet.copyOf(urls);
     }
   }
 
@@ -403,77 +333,6 @@ public class Configuration {
         return value;
       }
       return defaultValue;
-    }
-  }
-
-  public static class Http {
-    static final String HTTP_SECTION = "http";
-    static final String USER_KEY = "user";
-    static final String PASSWORD_KEY = "password";
-    static final String CONNECTION_TIMEOUT_KEY = "connectionTimeout";
-    static final String SOCKET_TIMEOUT_KEY = "socketTimeout";
-    static final String MAX_TRIES_KEY = "maxTries";
-    static final String RETRY_INTERVAL_KEY = "retryInterval";
-    static final boolean DEFAULT_HTTP_ENABLED = true;
-
-    static final int DEFAULT_TIMEOUT_MS = 5000;
-    static final int DEFAULT_MAX_TRIES = 360;
-    static final int DEFAULT_RETRY_INTERVAL = 10000;
-
-    private final boolean enabled;
-    private final String user;
-    private final String password;
-    private final int connectionTimeout;
-    private final int socketTimeout;
-    private final int maxTries;
-    private final int retryInterval;
-    private final Map<EventFamily, Boolean> eventsEnabled;
-
-    private Http(Config cfg) {
-      enabled = cfg.getBoolean(HTTP_SECTION, ENABLE_KEY, DEFAULT_HTTP_ENABLED);
-      user = Strings.nullToEmpty(cfg.getString(HTTP_SECTION, null, USER_KEY));
-      password = Strings.nullToEmpty(cfg.getString(HTTP_SECTION, null, PASSWORD_KEY));
-      connectionTimeout = getInt(cfg, HTTP_SECTION, CONNECTION_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS);
-      socketTimeout = getInt(cfg, HTTP_SECTION, SOCKET_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS);
-      maxTries = getInt(cfg, HTTP_SECTION, MAX_TRIES_KEY, DEFAULT_MAX_TRIES);
-      retryInterval = getInt(cfg, HTTP_SECTION, RETRY_INTERVAL_KEY, DEFAULT_RETRY_INTERVAL);
-      eventsEnabled = new HashMap<>();
-      for (EventFamily eventFamily : EventFamily.values()) {
-        String enabledConfigKey = eventFamily.lowerCamelName() + "Enabled";
-        eventsEnabled.put(eventFamily, cfg.getBoolean(HTTP_SECTION, null, enabledConfigKey, true));
-      }
-    }
-
-    public boolean enabled() {
-      return enabled;
-    }
-
-    public String user() {
-      return user;
-    }
-
-    public String password() {
-      return password;
-    }
-
-    public int connectionTimeout() {
-      return connectionTimeout;
-    }
-
-    public int socketTimeout() {
-      return socketTimeout;
-    }
-
-    public int maxTries() {
-      return maxTries;
-    }
-
-    public int retryInterval() {
-      return retryInterval;
-    }
-
-    public boolean enabledEvent(EventFamily eventFamily) {
-      return eventsEnabled.get(eventFamily);
     }
   }
 

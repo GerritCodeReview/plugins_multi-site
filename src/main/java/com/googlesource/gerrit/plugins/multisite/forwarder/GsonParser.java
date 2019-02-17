@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.forwarder.rest;
+package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.common.base.Strings;
 import com.google.gerrit.reviewdb.client.Account;
