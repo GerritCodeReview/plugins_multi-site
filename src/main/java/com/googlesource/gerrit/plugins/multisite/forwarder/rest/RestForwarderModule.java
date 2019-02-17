@@ -18,6 +18,7 @@ import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.Configuration.Http;
+import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
@@ -37,6 +38,9 @@ public class RestForwarderModule extends AbstractModule {
     DynamicSet.bind(binder(), Forwarder.class).to(RestForwarder.class);
     if (http.enabledEvent(EventFamily.INDEX_EVENT)) {
       DynamicSet.bind(binder(), IndexEventForwarder.class).to(RestIndexEventForwarder.class);
+    }
+    if (http.enabledEvent(EventFamily.CACHE_EVENT)) {
+      DynamicSet.bind(binder(), CacheEvictionForwarder.class).to(RestCacheEvictionForwarder.class);
     }
   }
 }

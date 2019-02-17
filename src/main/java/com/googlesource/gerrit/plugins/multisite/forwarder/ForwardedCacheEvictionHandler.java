@@ -19,14 +19,13 @@ import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Evict cache entries. This class is meant to be used on the receiving side of the {@link
- * Forwarder} since it will prevent cache evictions to be forwarded again causing an infinite
- * forwarding loop between the 2 nodes.
+ * CacheEvictionForwarder} since it will prevent cache evictions to be forwarded again causing an
+ * infinite forwarding loop between the 2 nodes.
  */
 @Singleton
 public class ForwardedCacheEvictionHandler {

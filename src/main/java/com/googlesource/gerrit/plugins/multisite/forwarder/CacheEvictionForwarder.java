@@ -1,4 +1,4 @@
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2019 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,24 +14,14 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
-import com.google.gerrit.server.events.Event;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 
-/** Forward cache eviction events to the other master */
-public interface Forwarder {
+public interface CacheEvictionForwarder {
   /**
-   * Forward a stream event to the other master.
+   * Forward a cache eviction event to the other master.
    *
-   * @param event the event to forward.
+   * @param cacheEvictionEvent the details of the cache eviction event.
    * @return true if successful, otherwise false.
    */
-  boolean send(Event event);
-
-  /**
-   * Forward an update the project list cache event to the other master.
-   *
-   * @param projectListUpdateEvent the content of project list update event
-   * @return true if successful, otherwise false.
-   */
-  boolean updateProjectList(ProjectListUpdateEvent projectListUpdateEvent);
+  boolean evict(CacheEvictionEvent cacheEvictionEvent);
 }

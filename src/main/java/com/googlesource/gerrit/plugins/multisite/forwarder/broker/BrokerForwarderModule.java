@@ -24,6 +24,7 @@ import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaSession;
+import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
@@ -44,6 +45,10 @@ public class BrokerForwarderModule extends AbstractModule {
 
     if (kafkaPublisher.enabledEvent(EventFamily.INDEX_EVENT)) {
       DynamicSet.bind(binder(), IndexEventForwarder.class).to(BrokerIndexEventForwarder.class);
+    }
+    if (kafkaPublisher.enabledEvent(EventFamily.CACHE_EVENT)) {
+      DynamicSet.bind(binder(), CacheEvictionForwarder.class)
+          .to(BrokerCacheEvictionForwarder.class);
     }
   }
 }
