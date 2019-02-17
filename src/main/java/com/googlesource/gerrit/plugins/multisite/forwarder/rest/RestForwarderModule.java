@@ -22,6 +22,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarde
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 public class RestForwarderModule extends AbstractModule {
@@ -41,6 +42,9 @@ public class RestForwarderModule extends AbstractModule {
     }
     if (http.enabledEvent(EventFamily.CACHE_EVENT)) {
       DynamicSet.bind(binder(), CacheEvictionForwarder.class).to(RestCacheEvictionForwarder.class);
+    }
+    if (http.enabledEvent(EventFamily.STREAM_EVENT)) {
+      DynamicSet.bind(binder(), StreamEventForwarder.class).to(RestStreamEventForwarder.class);
     }
   }
 }

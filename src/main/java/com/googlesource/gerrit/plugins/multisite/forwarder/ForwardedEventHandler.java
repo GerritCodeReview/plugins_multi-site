@@ -25,8 +25,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Dispatch event to the {@link EventDispatcher}. This class is meant to be used on the receiving
- * side of the {@link Forwarder} since it will prevent dispatched event to be forwarded again
- * causing an infinite forwarding loop between the 2 nodes.
+ * side of the {@link StreamEventForwarder} since it will prevent dispatched event to be forwarded
+ * again causing an infinite forwarding loop between the 2 nodes.
  */
 @Singleton
 public class ForwardedEventHandler {

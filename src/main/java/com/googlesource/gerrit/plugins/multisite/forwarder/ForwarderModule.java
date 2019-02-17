@@ -27,5 +27,6 @@ public class ForwarderModule extends AbstractModule {
     DynamicSet.setOf(binder(), Forwarder.class);
     DynamicSet.setOf(binder(), CacheEvictionForwarder.class);
     DynamicSet.setOf(binder(), IndexEventForwarder.class);
+    DynamicSet.setOf(binder(), StreamEventForwarder.class);
   }
 }

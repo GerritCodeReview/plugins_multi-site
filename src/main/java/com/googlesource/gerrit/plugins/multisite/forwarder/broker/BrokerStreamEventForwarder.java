@@ -14,25 +14,24 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
+import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
-
-import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.PROJECT_LIST_EVENT;
+import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 
 @Singleton
-class BrokerForwarder implements Forwarder {
+public class BrokerStreamEventForwarder implements StreamEventForwarder {
   private final BrokerPublisher publisher;
 
   @Inject
-  BrokerForwarder(BrokerPublisher publisher) {
+  BrokerStreamEventForwarder(BrokerPublisher publisher) {
     this.publisher = publisher;
   }
 
   @Override
-  public boolean updateProjectList(ProjectListUpdateEvent event) {
-    return publisher.publishEvent(PROJECT_LIST_EVENT, event);
+  public boolean send(Event event) {
+    return publisher.publishEvent(EventFamily.STREAM_EVENT, event);
   }
 }

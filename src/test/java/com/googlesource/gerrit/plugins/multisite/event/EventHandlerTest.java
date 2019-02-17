@@ -26,7 +26,7 @@ import com.google.gerrit.server.events.ProjectEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.googlesource.gerrit.plugins.multisite.event.EventHandler.EventTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +39,7 @@ public class EventHandlerTest {
 
   private EventHandler eventHandler;
 
-  @Mock private Forwarder forwarder;
+  @Mock private StreamEventForwarder forwarder;
 
   @Before
   public void setUp() {
@@ -47,8 +47,8 @@ public class EventHandlerTest {
         new EventHandler(asDynamicSet(forwarder), MoreExecutors.directExecutor(), PLUGIN_NAME);
   }
 
-  private DynamicSet<Forwarder> asDynamicSet(Forwarder forwarder) {
-    DynamicSet<Forwarder> result = new DynamicSet<>();
+  private DynamicSet<StreamEventForwarder> asDynamicSet(StreamEventForwarder forwarder) {
+    DynamicSet<StreamEventForwarder> result = new DynamicSet<>();
     result.add("multi-site", forwarder);
     return result;
   }

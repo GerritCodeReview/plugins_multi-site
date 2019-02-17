@@ -21,17 +21,17 @@ import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 import java.util.concurrent.Executor;
 
 class EventHandler implements EventListener {
   private final Executor executor;
-  private final DynamicSet<Forwarder> forwarders;
+  private final DynamicSet<StreamEventForwarder> forwarders;
   private final String pluginName;
 
   @Inject
   EventHandler(
-      DynamicSet<Forwarder> forwarders,
+      DynamicSet<StreamEventForwarder> forwarders,
       @EventExecutor Executor executor,
       @PluginName String pluginName) {
     this.forwarders = forwarders;

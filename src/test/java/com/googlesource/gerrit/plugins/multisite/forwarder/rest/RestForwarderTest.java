@@ -23,7 +23,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableSet;
-import com.google.gerrit.server.events.Event;
 import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
@@ -47,10 +46,6 @@ public class RestForwarderTest {
   private static final boolean FAILED = false;
 
   // Event
-  private static Event event = new Event("test-event") {};
-  private static final String EVENT_ENDPOINT =
-      Joiner.on("/").join(URL, PLUGINS, PLUGIN_NAME, "event", event.type);
-
   private RestForwarder forwarder;
   private HttpSession httpSessionMock;
 
@@ -66,25 +61,6 @@ public class RestForwarderTest {
     forwarder =
         new RestForwarder(
             httpSessionMock, PLUGIN_NAME, configMock, peersMock); // TODO: Create provider
-  }
-
-  @Test
-  public void testEventSentOK() throws Exception {
-    when(httpSessionMock.post(EVENT_ENDPOINT, event))
-        .thenReturn(new HttpResult(SUCCESSFUL, EMPTY_MSG));
-    assertThat(forwarder.send(event)).isTrue();
-  }
-
-  @Test
-  public void testEventSentFailed() throws Exception {
-    when(httpSessionMock.post(EVENT_ENDPOINT, event)).thenReturn(new HttpResult(FAILED, EMPTY_MSG));
-    assertThat(forwarder.send(event)).isFalse();
-  }
-
-  @Test
-  public void testEventSentThrowsException() throws Exception {
-    doThrow(new IOException()).when(httpSessionMock).post(EVENT_ENDPOINT, event);
-    assertThat(forwarder.send(event)).isFalse();
   }
 
   private static String buildCacheEndpoint(String name) {

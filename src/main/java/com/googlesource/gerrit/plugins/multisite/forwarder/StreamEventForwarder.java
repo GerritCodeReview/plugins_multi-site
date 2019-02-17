@@ -1,4 +1,4 @@
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2019 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,14 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
+import com.google.gerrit.server.events.Event;
 
-/** Forward project list update events to the other master */
-public interface Forwarder {
+public interface StreamEventForwarder {
   /**
-   * Forward an update the project list cache event to the other master.
+   * Forward a stream event to the other master.
    *
-   * @param projectListUpdateEvent the content of project list update event
+   * @param event the event to forward.
    * @return true if successful, otherwise false.
    */
-  boolean updateProjectList(ProjectListUpdateEvent projectListUpdateEvent);
+  boolean send(Event event);
 }

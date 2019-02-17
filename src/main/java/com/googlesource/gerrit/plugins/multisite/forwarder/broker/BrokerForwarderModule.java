@@ -28,6 +28,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarde
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 
 public class BrokerForwarderModule extends AbstractModule {
   private final KafkaPublisher kafkaPublisher;
@@ -49,6 +50,9 @@ public class BrokerForwarderModule extends AbstractModule {
     if (kafkaPublisher.enabledEvent(EventFamily.CACHE_EVENT)) {
       DynamicSet.bind(binder(), CacheEvictionForwarder.class)
           .to(BrokerCacheEvictionForwarder.class);
+    }
+    if (kafkaPublisher.enabledEvent(EventFamily.STREAM_EVENT)) {
+      DynamicSet.bind(binder(), StreamEventForwarder.class).to(BrokerStreamEventForwarder.class);
     }
   }
 }
