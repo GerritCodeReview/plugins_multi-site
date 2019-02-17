@@ -22,6 +22,7 @@ import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouter;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;

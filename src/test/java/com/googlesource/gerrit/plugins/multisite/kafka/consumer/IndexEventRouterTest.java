@@ -5,28 +5,20 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
-import com.google.gerrit.reviewdb.client.Branch;
-import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Project;
-import com.google.gerrit.server.events.CommentAddedEvent;
 import com.google.gerrit.server.events.Event;
-import com.google.gerrit.server.util.time.TimeUtil;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.StandardKeyEncoder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEntry;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedCacheEvictionHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexProjectHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedProjectListUpdateHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.kafka.router.IndexEventRouter;
 import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Before;
@@ -36,48 +28,23 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ForwardedEventRouterTest {
+public class IndexEventRouterTest {
 
   static {
     KeyUtil.setEncoderImpl(new StandardKeyEncoder());
   }
 
-  private ForwardedEventRouter router;
-  @Mock private ForwardedCacheEvictionHandler cacheEvictionHandler;
+  private IndexEventRouter router;
   @Mock private ForwardedIndexAccountHandler indexAccountHandler;
   @Mock private ForwardedIndexChangeHandler indexChangeHandler;
   @Mock private ForwardedIndexGroupHandler indexGroupHandler;
   @Mock private ForwardedIndexProjectHandler indexProjectHandler;
-  @Mock private ForwardedEventHandler streamEventHandler;
-  @Mock private ForwardedProjectListUpdateHandler projectListUpdateHandler;
 
   @Before
   public void setUp() {
     router =
-        new ForwardedEventRouter(
-            cacheEvictionHandler,
-            indexAccountHandler,
-            indexChangeHandler,
-            indexGroupHandler,
-            indexProjectHandler,
-            streamEventHandler,
-            projectListUpdateHandler);
-  }
-
-  @Test
-  public void routerShouldSendEventsToTheAppropriateHandler_CacheEviction() throws Exception {
-    final CacheEvictionEvent event = new CacheEvictionEvent("cache", "key");
-    router.route(event);
-
-    verify(cacheEvictionHandler).evict(CacheEntry.from(event.cacheName, event.key));
-
-    verifyZeroInteractions(
-        indexAccountHandler,
-        indexChangeHandler,
-        indexGroupHandler,
-        indexProjectHandler,
-        streamEventHandler,
-        projectListUpdateHandler);
+        new IndexEventRouter(
+            indexAccountHandler, indexChangeHandler, indexGroupHandler, indexProjectHandler);
   }
 
   @Test
@@ -91,13 +58,7 @@ public class ForwardedEventRouterTest {
             ForwardedIndexingHandler.Operation.INDEX,
             Optional.of(event));
 
-    verifyZeroInteractions(
-        indexChangeHandler,
-        indexGroupHandler,
-        indexProjectHandler,
-        streamEventHandler,
-        cacheEvictionHandler,
-        projectListUpdateHandler);
+    verifyZeroInteractions(indexChangeHandler, indexGroupHandler, indexProjectHandler);
   }
 
   @Test
@@ -112,13 +73,7 @@ public class ForwardedEventRouterTest {
             ForwardedIndexingHandler.Operation.INDEX,
             Optional.of(event));
 
-    verifyZeroInteractions(
-        indexAccountHandler,
-        indexChangeHandler,
-        indexProjectHandler,
-        streamEventHandler,
-        cacheEvictionHandler,
-        projectListUpdateHandler);
+    verifyZeroInteractions(indexAccountHandler, indexChangeHandler, indexProjectHandler);
   }
 
   @Test
@@ -133,13 +88,7 @@ public class ForwardedEventRouterTest {
             ForwardedIndexingHandler.Operation.INDEX,
             Optional.of(event));
 
-    verifyZeroInteractions(
-        indexAccountHandler,
-        indexChangeHandler,
-        indexGroupHandler,
-        streamEventHandler,
-        cacheEvictionHandler,
-        projectListUpdateHandler);
+    verifyZeroInteractions(indexAccountHandler, indexChangeHandler, indexGroupHandler);
   }
 
   @Test
@@ -153,13 +102,7 @@ public class ForwardedEventRouterTest {
             ForwardedIndexingHandler.Operation.INDEX,
             Optional.of(event));
 
-    verifyZeroInteractions(
-        indexAccountHandler,
-        indexGroupHandler,
-        indexProjectHandler,
-        streamEventHandler,
-        cacheEvictionHandler,
-        projectListUpdateHandler);
+    verifyZeroInteractions(indexAccountHandler, indexGroupHandler, indexProjectHandler);
   }
 
   @Test
@@ -173,27 +116,7 @@ public class ForwardedEventRouterTest {
             ForwardedIndexingHandler.Operation.DELETE,
             Optional.of(event));
 
-    verifyZeroInteractions(
-        indexAccountHandler,
-        indexGroupHandler,
-        indexProjectHandler,
-        streamEventHandler,
-        cacheEvictionHandler,
-        projectListUpdateHandler);
-  }
-
-  @Test
-  public void routerShouldSendEventsToTheAppropriateHandler_StreamEvent() throws Exception {
-    final CommentAddedEvent event = new CommentAddedEvent(aChange());
-    router.route(event);
-    verify(streamEventHandler).dispatch(event);
-    verifyZeroInteractions(
-        indexAccountHandler,
-        indexChangeHandler,
-        indexGroupHandler,
-        indexProjectHandler,
-        cacheEvictionHandler,
-        projectListUpdateHandler);
+    verifyZeroInteractions(indexAccountHandler, indexGroupHandler, indexProjectHandler);
   }
 
   @Test
@@ -205,22 +128,7 @@ public class ForwardedEventRouterTest {
       Assert.fail("Expected exception for not supported event");
     } catch (UnsupportedOperationException expected) {
       verifyZeroInteractions(
-          indexAccountHandler,
-          indexChangeHandler,
-          indexGroupHandler,
-          indexProjectHandler,
-          streamEventHandler,
-          cacheEvictionHandler,
-          projectListUpdateHandler);
+          indexAccountHandler, indexChangeHandler, indexGroupHandler, indexProjectHandler);
     }
-  }
-
-  private Change aChange() {
-    return new Change(
-        new Change.Key("Iabcd1234abcd1234abcd1234abcd1234abcd1234"),
-        new Change.Id(1),
-        new Account.Id(1),
-        new Branch.NameKey("proj", "refs/heads/master"),
-        TimeUtil.nowTs());
   }
 }

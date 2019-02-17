@@ -29,6 +29,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarde
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.RestForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
+import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
 import com.googlesource.gerrit.plugins.multisite.peers.PeerInfoModule;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -74,6 +75,7 @@ class Module extends AbstractModule {
 
     if (config.kafkaSubscriber().enabled()) {
       install(new KafkaConsumerModule(config.kafkaSubscriber()));
+      install(new ForwardedEventRouterModule());
     }
     if (config.kafkaProducer().enabled()) {
       install(new BrokerForwarderModule(config.kafkaProducer()));

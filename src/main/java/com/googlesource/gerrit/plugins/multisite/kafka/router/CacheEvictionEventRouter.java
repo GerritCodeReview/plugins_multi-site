@@ -1,0 +1,47 @@
+// Copyright (C) 2019 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package com.googlesource.gerrit.plugins.multisite.kafka.router;
+
+import com.google.gerrit.server.events.Event;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEntry;
+import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedCacheEvictionHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.rest.GsonParser;
+
+@Singleton
+public class CacheEvictionEventRouter implements ForwardedCacheEvictionEventRouter {
+  private final ForwardedCacheEvictionHandler cacheEvictionHanlder;
+
+  @Inject
+  public CacheEvictionEventRouter(ForwardedCacheEvictionHandler cacheEvictionHanlder) {
+    this.cacheEvictionHanlder = cacheEvictionHanlder;
+  }
+
+  @Override
+  public void route(Event sourceEvent) throws CacheNotFoundException {
+    if (sourceEvent instanceof CacheEvictionEvent) {
+      CacheEvictionEvent cacheEvictionEvent = (CacheEvictionEvent) sourceEvent;
+      Object parsedKey =
+          GsonParser.fromJson(cacheEvictionEvent.cacheName, cacheEvictionEvent.key.toString());
+      cacheEvictionHanlder.evict(CacheEntry.from(cacheEvictionEvent.cacheName, parsedKey));
+    } else {
+      throw new UnsupportedOperationException(
+          String.format("Cannot route event %s", sourceEvent.getType()));
+    }
+  }
+}

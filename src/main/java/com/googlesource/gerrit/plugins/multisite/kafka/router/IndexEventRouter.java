@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
+package com.googlesource.gerrit.plugins.multisite.kafka.router;
 
 import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.DELETE;
 import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.INDEX;
@@ -21,61 +21,42 @@ import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.events.Event;
-import com.google.gerrit.server.events.RefEvent;
-import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEntry;
-import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedCacheEvictionHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexProjectHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedProjectListUpdateHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.rest.GsonParser;
 import java.io.IOException;
 import java.util.Optional;
 
 @Singleton
-public class ForwardedEventRouter {
-  private final ForwardedCacheEvictionHandler cacheEvictionHanlder;
+public class IndexEventRouter implements ForwardedIndexEventRouter {
   private final ForwardedIndexAccountHandler indexAccountHandler;
   private final ForwardedIndexChangeHandler indexChangeHandler;
   private final ForwardedIndexGroupHandler indexGroupHandler;
   private final ForwardedIndexProjectHandler indexProjectHandler;
-  private final ForwardedEventHandler streamEventHandler;
-  private final ForwardedProjectListUpdateHandler projectListUpdateHandler;
 
   @Inject
-  public ForwardedEventRouter(
-      ForwardedCacheEvictionHandler cacheEvictionHanlder,
+  public IndexEventRouter(
       ForwardedIndexAccountHandler indexAccountHandler,
       ForwardedIndexChangeHandler indexChangeHandler,
       ForwardedIndexGroupHandler indexGroupHandler,
-      ForwardedIndexProjectHandler indexProjectHandler,
-      ForwardedEventHandler streamEventHandler,
-      ForwardedProjectListUpdateHandler projectListUpdateHandler) {
-    this.cacheEvictionHanlder = cacheEvictionHanlder;
+      ForwardedIndexProjectHandler indexProjectHandler) {
     this.indexAccountHandler = indexAccountHandler;
     this.indexChangeHandler = indexChangeHandler;
     this.indexGroupHandler = indexGroupHandler;
     this.indexProjectHandler = indexProjectHandler;
-    this.streamEventHandler = streamEventHandler;
-    this.projectListUpdateHandler = projectListUpdateHandler;
   }
 
-  void route(Event sourceEvent)
-      throws IOException, OrmException, PermissionBackendException, CacheNotFoundException {
+  @Override
+  public void route(Event sourceEvent) throws IOException, OrmException {
     if (sourceEvent instanceof ChangeIndexEvent) {
       ChangeIndexEvent changeIndexEvent = (ChangeIndexEvent) sourceEvent;
       ForwardedIndexingHandler.Operation operation = changeIndexEvent.deleted ? DELETE : INDEX;
@@ -97,18 +78,6 @@ public class ForwardedEventRouter {
           new Project.NameKey(projectIndexEvent.projectName),
           INDEX,
           Optional.of(projectIndexEvent));
-    } else if (sourceEvent instanceof CacheEvictionEvent) {
-      CacheEvictionEvent cacheEvictionEvent = (CacheEvictionEvent) sourceEvent;
-      Object parsedKey =
-          GsonParser.fromJson(cacheEvictionEvent.cacheName, cacheEvictionEvent.key.toString());
-      cacheEvictionHanlder.evict(CacheEntry.from(cacheEvictionEvent.cacheName, parsedKey));
-    } else if (sourceEvent instanceof ProjectListUpdateEvent) {
-      ProjectListUpdateEvent projectListUpdateEvent = (ProjectListUpdateEvent) sourceEvent;
-      projectListUpdateHandler.update(projectListUpdateEvent);
-    } else if (sourceEvent instanceof RefEvent) {
-      // ForwardedEventHandler can receive any Event subclass but actually just processes subclasses
-      // of RefEvent
-      streamEventHandler.dispatch(sourceEvent);
     } else {
       throw new UnsupportedOperationException(
           String.format("Cannot route event %s", sourceEvent.getType()));

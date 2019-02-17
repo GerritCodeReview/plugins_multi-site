@@ -21,6 +21,7 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.kafka.router.ProjectListUpdateRouter;
 import java.util.UUID;
 import org.apache.kafka.common.serialization.Deserializer;
 
@@ -31,7 +32,7 @@ public class ProjectUpdateEventSubscriber extends AbstractKafkaSubcriber {
       Configuration configuration,
       Deserializer<byte[]> keyDeserializer,
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
-      ForwardedEventRouter eventRouter,
+      ProjectListUpdateRouter eventRouter,
       Provider<Gson> gsonProvider,
       @InstanceId UUID instanceId) {
     super(configuration, keyDeserializer, valueDeserializer, eventRouter, gsonProvider, instanceId);
