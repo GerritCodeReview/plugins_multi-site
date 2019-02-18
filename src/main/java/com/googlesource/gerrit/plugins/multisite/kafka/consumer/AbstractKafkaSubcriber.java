@@ -74,8 +74,11 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
   @Override
   public void run() {
     try {
-      consumer.subscribe(
-          Collections.singleton(configuration.kafkaProducer().getTopic(getEventFamily())));
+      final String topic = configuration.getKafka().getTopic(getEventFamily());
+      logger.atInfo().log(
+          "Kafka consumer subscribing to topic [%s] for event family [%s]",
+          topic, getEventFamily());
+      consumer.subscribe(Collections.singleton(topic));
       while (!closed.get()) {
         ConsumerRecords<byte[], byte[]> consumerRecords =
             consumer.poll(Duration.ofMillis(configuration.kafkaSubscriber().getPollingInterval()));

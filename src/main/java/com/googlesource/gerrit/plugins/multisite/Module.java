@@ -77,8 +77,8 @@ class Module extends AbstractModule {
       install(new KafkaConsumerModule(config.kafkaSubscriber()));
       install(new ForwardedEventRouterModule());
     }
-    if (config.kafkaProducer().enabled()) {
-      install(new BrokerForwarderModule(config.kafkaProducer()));
+    if (config.kafkaPublisher().enabled()) {
+      install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
 
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);

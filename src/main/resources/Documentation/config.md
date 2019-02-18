@@ -21,24 +21,28 @@ File '@PLUGIN@.config'
   url = first_target_instance_url
   url = second_target_instance_url
 [http]
+  enabled = true
+  
   user = username
   password = password
 
 [kafka]
   bootstrapServers = kafka-1:9092,kafka-2:9092,kafka-3:9092
-  eventTopic = gerrit_index
 
-[kafka "publisher"]
   indexEventTopic = gerrit_index
   streamEventTopic = gerrit_stream
   cacheEventTopic = gerrit_cache_eviction
   projectListEventTopic = gerrit_project_list
-  enable = true
+
+[kafka "publisher"]
+  enabled = true
 
 [kafka "subscriber"]
-  enable = true
+  enabled = true
+  
   pollingIntervalMs = 1000
   autoCommitIntervalMs = 1000
+
 ```
 
 ```main.sharedDirectory```
@@ -175,30 +179,61 @@ the plugin will keep retrying to forward a message for one hour.
 ```kafka.bootstrapServers```
 :	List of Kafka broker hosts:port to use for publishing events to the message broker
 
-```kafka.eventTopic```
-:   Name of the Kafka topic to use for consuming indexing events
-
-```kafka.publisher.indexEventTopic```
+```kafka.indexEventTopic```
 :   Name of the Kafka topic to use for publishing indexing events
     Defaults to GERRIT.EVENT.INDEX
 
-```kafka.publisher.streamEventTopic```
+```kafka.streamEventTopic```
 :   Name of the Kafka topic to use for publishing stream events
     Defaults to GERRIT.EVENT.STREAM
 
-```kafka.publisher.cacheEventTopic```
+```kafka.cacheEventTopic```
 :   Name of the Kafka topic to use for publishing cache eviction events
     Defaults to GERRIT.EVENT.CACHE
 
-```kafka.publisher.projectListEventTopic```
+```kafka.projectListEventTopic```
 :   Name of the Kafka topic to use for publishing cache eviction events
     Defaults to GERRIT.EVENT.PROJECT.LIST
 
-```kafka.publisher.enable```
+```kafka.publisher.enabled```
 :   Enable publishing events to Kafka
+    Defaults: false
 
-```kafka.subscriber.enable```
+```kafka.publisher.indexEventEnabled```
+:   Enable publication of index events
+    Defaults: true
+
+```kafka.publisher.cacheEventEnabled```
+:   Enable publication of cache events
+    Defaults: true
+
+```kafka.publisher.projectListEventEnabled```
+:   Enable publication of project list events
+    Defaults: true
+
+```kafka.publisher.streamEventEnabled```    
+:   Enable publication of stream events
+    Defaults: true
+
+```kafka.subscriber.enabled```
 :   Enable consuming of Kafka events
+    Defaults: false
+
+```kafka.subscriber.indexEventEnabled```
+:   Enable consumption of index events
+    Defaults: true
+
+```kafka.subscriber.cacheEventEnabled```
+:   Enable consumption of cache events
+    Defaults: true
+
+```kafka.subscriber.projectListEventEnabled```
+:   Enable consumption of project list events
+    Defaults: true
+
+```kafka.subscriber.streamEventEnabled```    
+:   Enable consumption of stream events
+    Defaults: true
 
 ```kafka.subscriber.pollingIntervalMs```
 :   Polling interval for checking incoming events
