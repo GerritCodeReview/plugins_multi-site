@@ -1,4 +1,4 @@
-// Copyright (C) 2015 The Android Open Source Project
+// Copyright (C) 2019 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite;
+package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
-import com.google.gerrit.httpd.plugins.HttpPluginModule;
-import com.googlesource.gerrit.plugins.multisite.forwarder.rest.RestForwarderServletModule;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-class HttpModule extends HttpPluginModule {
-  @Override
-  protected void configureServlets() {
-    install(new RestForwarderServletModule());
-  }
-}
+import com.google.inject.BindingAnnotation;
+import java.lang.annotation.Retention;
+
+@Retention(RUNTIME)
+@BindingAnnotation
+@interface ConsumerExecutor {}

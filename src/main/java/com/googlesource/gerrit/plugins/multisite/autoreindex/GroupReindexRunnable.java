@@ -18,28 +18,16 @@ import com.google.gerrit.common.data.GroupReference;
 import com.google.gerrit.server.group.db.Groups;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.AbstractIndexRestApiServlet;
-
 import java.sql.Timestamp;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class GroupReindexRunnable extends ReindexRunnable<GroupReference> {
-  private static final Logger log = LoggerFactory.getLogger(GroupReindexRunnable.class);
-
-  private final ForwardedIndexGroupHandler indexer;
   private final Groups groups;
 
   @Inject
-  public GroupReindexRunnable(
-      ForwardedIndexGroupHandler indexer,
-      IndexTs indexTs,
-      OneOffRequestContext ctx,
-      Groups groups) {
+  public GroupReindexRunnable(IndexTs indexTs, OneOffRequestContext ctx, Groups groups) {
     super(AbstractIndexRestApiServlet.IndexName.GROUP, indexTs, ctx);
-    this.indexer = indexer;
     this.groups = groups;
   }
 

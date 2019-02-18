@@ -24,20 +24,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gwtorm.server.OrmException;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public abstract class AbstractIndexRestApiServlet<T> extends AbstractRestApiServlet {
+public abstract class AbstractIndexRestApiServlet<T, E> extends AbstractRestApiServlet {
   private static final long serialVersionUID = -1L;
-  private static final Gson gson = new GsonBuilder().create();
+  protected static final Gson gson = new GsonBuilder().create();
 
-  private final ForwardedIndexingHandler<T> forwardedIndexingHandler;
+  private final ForwardedIndexingHandler<T, E> forwardedIndexingHandler;
   private final IndexName indexName;
   private final boolean allowDelete;
 
@@ -56,7 +55,7 @@ public abstract class AbstractIndexRestApiServlet<T> extends AbstractRestApiServ
   abstract T parse(String id);
 
   AbstractIndexRestApiServlet(
-      ForwardedIndexingHandler<T> forwardedIndexingHandler,
+      ForwardedIndexingHandler<T, E> forwardedIndexingHandler,
       IndexName indexName,
       boolean allowDelete) {
     this.forwardedIndexingHandler = forwardedIndexingHandler;
@@ -65,7 +64,7 @@ public abstract class AbstractIndexRestApiServlet<T> extends AbstractRestApiServ
   }
 
   AbstractIndexRestApiServlet(
-      ForwardedIndexingHandler<T> forwardedIndexingHandler, IndexName indexName) {
+      ForwardedIndexingHandler<T, E> forwardedIndexingHandler, IndexName indexName) {
     this(forwardedIndexingHandler, indexName, false);
   }
 
@@ -101,13 +100,14 @@ public abstract class AbstractIndexRestApiServlet<T> extends AbstractRestApiServ
     }
   }
 
-  protected Optional<IndexEvent> parseBody(HttpServletRequest req) throws IOException {
+  protected Optional<E> parseBody(HttpServletRequest req) throws IOException {
     String contentType = req.getContentType();
     if (contentType != null && contentType.contains("application/json")) {
       return Optional.ofNullable(
-          gson.fromJson(
-              new InputStreamReader(req.getInputStream(), Charsets.UTF_8), IndexEvent.class));
+          fromJson(new InputStreamReader(req.getInputStream(), Charsets.UTF_8)));
     }
     return Optional.empty();
   }
+
+  protected abstract E fromJson(Reader reader) throws IOException;
 }

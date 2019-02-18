@@ -14,9 +14,10 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-
+import com.google.common.base.CaseFormat;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.config.ConfigUtil;
@@ -24,15 +25,21 @@ import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.jgit.lib.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +48,7 @@ import org.slf4j.LoggerFactory;
 public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
+  static final String INSTANCE_ID_FILE = "instanceId.data";
   // common parameter to peerInfo section
   static final String PEER_INFO_SECTION = "peerInfo";
 
@@ -52,14 +60,19 @@ public class Configuration {
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
   static final String NUM_STRIPED_LOCKS = "numStripedLocks";
   static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
+  static final String ENABLE_KEY = "enable";
+  static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
+  static final String KAFKA_SECTION = "kafka";
 
   private final Main main;
   private final AutoReindex autoReindex;
   private final PeerInfo peerInfo;
+  private final KafkaPublisher broker;
   private final Http http;
   private final Cache cache;
   private final Event event;
   private final Index index;
+  private final KafkaSubscriber kafkaConsumerConfiguration;
   private PeerInfoStatic peerInfoStatic;
   private HealthCheck healthCheck;
 
@@ -81,11 +94,17 @@ public class Configuration {
       default:
         throw new IllegalArgumentException("Not supported strategy: " + peerInfo.strategy);
     }
+    broker = new KafkaPublisher(cfg);
     http = new Http(cfg);
     cache = new Cache(cfg);
     event = new Event(cfg);
     index = new Index(cfg);
     healthCheck = new HealthCheck(cfg);
+    kafkaConsumerConfiguration = new KafkaSubscriber(cfg);
+  }
+
+  public KafkaPublisher kafkaProducer() {
+    return broker;
   }
 
   public Main main() {
@@ -124,6 +143,10 @@ public class Configuration {
     return healthCheck;
   }
 
+  public KafkaSubscriber kafkaSubscriber() {
+    return kafkaConsumerConfiguration;
+  }
+
   private static int getInt(Config cfg, String section, String name, int defaultValue) {
     try {
       return cfg.getInt(section, name, defaultValue);
@@ -132,6 +155,15 @@ public class Configuration {
       log.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
       return defaultValue;
     }
+  }
+
+  private static String getString(
+      Config cfg, String section, String subsection, String name, String defaultValue) {
+    String value = cfg.getString(section, subsection, name);
+    if (!Strings.isNullOrEmpty(value)) {
+      return value;
+    }
+    return defaultValue;
   }
 
   public static class Main {
@@ -161,7 +193,6 @@ public class Configuration {
 
   public static class AutoReindex {
     static final String AUTO_REINDEX_SECTION = "autoReindex";
-    static final String ENABLED = "enabled";
     static final String DELAY = "delay";
     static final String POLL_INTERVAL = "pollInterval";
 
@@ -170,7 +201,7 @@ public class Configuration {
     private final long pollSec;
 
     public AutoReindex(Config cfg) {
-      this.enabled = cfg.getBoolean(AUTO_REINDEX_SECTION, ENABLED, false);
+      this.enabled = cfg.getBoolean(AUTO_REINDEX_SECTION, ENABLE_KEY, false);
       this.delaySec =
           ConfigUtil.getTimeUnit(cfg, AUTO_REINDEX_SECTION, null, DELAY, 10L, TimeUnit.SECONDS);
       this.pollSec =
@@ -230,6 +261,134 @@ public class Configuration {
     }
   }
 
+  private static void applyKafkaConfig(Config config, String subsectionName, Properties target) {
+    for (String section : config.getSubsections(KAFKA_SECTION)) {
+      if (section.equals(subsectionName)) {
+        for (String name : config.getNames(KAFKA_SECTION, section, true)) {
+          Object value = config.getString(KAFKA_SECTION, subsectionName, name);
+          String propName =
+              CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, name).replaceAll("-", ".");
+          target.put(propName, value);
+        }
+      }
+    }
+    target.put(
+        "bootstrap.servers",
+        getString(
+            config, KAFKA_SECTION, null, "bootstrapServers", DEFAULT_KAFKA_BOOTSTRAP_SERVERS));
+  }
+
+  public static class KafkaPublisher extends Properties {
+    private static final long serialVersionUID = 0L;
+
+    public static final String KAFKA_STRING_SERIALIZER = StringSerializer.class.getName();
+
+    public static final String KAFKA_PUBLISHER_SUBSECTION = "publisher";
+    public static final boolean DEFAULT_BROKER_ENABLED = false;
+
+    private static final Map<EventFamily, String> EVENT_TOPICS =
+        ImmutableMap.of(
+            EventFamily.INDEX_EVENT, "GERRIT.EVENT.INDEX",
+            EventFamily.STREAM_EVENT, "GERRIT.EVENT.STREAM");
+
+    private final boolean enabled;
+    private final Map<EventFamily, String> eventTopics;
+
+    private KafkaPublisher(Config cfg) {
+      enabled =
+          cfg.getBoolean(
+              KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
+
+      eventTopics = new HashMap<>();
+      for (Map.Entry<EventFamily, String> topicDefault : EVENT_TOPICS.entrySet()) {
+        String topicConfigKey = topicDefault.getKey().lowerCamelName() + "Topic";
+        eventTopics.put(
+            topicDefault.getKey(),
+            getString(
+                cfg,
+                KAFKA_SECTION,
+                KAFKA_PUBLISHER_SUBSECTION,
+                topicConfigKey,
+                topicDefault.getValue()));
+      }
+
+      if (enabled) {
+        setDefaults();
+        applyKafkaConfig(cfg, KAFKA_PUBLISHER_SUBSECTION, this);
+      }
+    }
+
+    private void setDefaults() {
+      put("acks", "all");
+      put("retries", 0);
+      put("batch.size", 16384);
+      put("linger.ms", 1);
+      put("buffer.memory", 33554432);
+      put("key.serializer", KAFKA_STRING_SERIALIZER);
+      put("value.serializer", KAFKA_STRING_SERIALIZER);
+      put("reconnect.backoff.ms", 5000L);
+    }
+
+    public boolean enabled() {
+      return enabled;
+    }
+
+    public String getTopic(EventFamily eventType) {
+      return eventTopics.get(eventType);
+    }
+  }
+
+  public class KafkaSubscriber {
+    static final String KAFKA_SUBSCRIBER_SUBSECTION = "subscriber";
+
+    private final boolean enabled;
+
+    private final String topic;
+    private final Integer pollingInterval;
+    private final Properties props = new Properties();
+    private final Config cfg;
+
+    public KafkaSubscriber(Config cfg) {
+      this.topic = cfg.getString(KAFKA_SECTION, null, "eventTopic");
+      this.pollingInterval =
+          cfg.getInt(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, "pollingIntervalMs", 1000);
+      this.cfg = cfg;
+
+      enabled = cfg.getBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
+      applyKafkaConfig(cfg, KAFKA_SUBSCRIBER_SUBSECTION, props);
+    }
+
+    public boolean enabled() {
+      return enabled;
+    }
+
+    public String getTopic() {
+      return topic;
+    }
+
+    public Properties getProps(UUID instanceId) {
+      String groupId =
+          getString(
+              cfg, KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, "groupId", instanceId.toString());
+      props.put("group.id", groupId);
+
+      return props;
+    }
+
+    public Integer getPollingInterval() {
+      return pollingInterval;
+    }
+
+    private String getString(
+        Config cfg, String section, String subsection, String name, String defaultValue) {
+      String value = cfg.getString(section, subsection, name);
+      if (!Strings.isNullOrEmpty(value)) {
+        return value;
+      }
+      return defaultValue;
+    }
+  }
+
   public static class Http {
     static final String HTTP_SECTION = "http";
     static final String USER_KEY = "user";
@@ -238,11 +397,13 @@ public class Configuration {
     static final String SOCKET_TIMEOUT_KEY = "socketTimeout";
     static final String MAX_TRIES_KEY = "maxTries";
     static final String RETRY_INTERVAL_KEY = "retryInterval";
+    static final boolean DEFAULT_HTTP_ENABLED = true;
 
     static final int DEFAULT_TIMEOUT_MS = 5000;
     static final int DEFAULT_MAX_TRIES = 360;
     static final int DEFAULT_RETRY_INTERVAL = 10000;
 
+    private final boolean enabled;
     private final String user;
     private final String password;
     private final int connectionTimeout;
@@ -251,12 +412,17 @@ public class Configuration {
     private final int retryInterval;
 
     private Http(Config cfg) {
+      enabled = cfg.getBoolean(HTTP_SECTION, ENABLE_KEY, DEFAULT_HTTP_ENABLED);
       user = Strings.nullToEmpty(cfg.getString(HTTP_SECTION, null, USER_KEY));
       password = Strings.nullToEmpty(cfg.getString(HTTP_SECTION, null, PASSWORD_KEY));
       connectionTimeout = getInt(cfg, HTTP_SECTION, CONNECTION_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS);
       socketTimeout = getInt(cfg, HTTP_SECTION, SOCKET_TIMEOUT_KEY, DEFAULT_TIMEOUT_MS);
       maxTries = getInt(cfg, HTTP_SECTION, MAX_TRIES_KEY, DEFAULT_MAX_TRIES);
       retryInterval = getInt(cfg, HTTP_SECTION, RETRY_INTERVAL_KEY, DEFAULT_RETRY_INTERVAL);
+    }
+
+    public boolean enabled() {
+      return enabled;
     }
 
     public String user() {
@@ -379,7 +545,6 @@ public class Configuration {
 
   public static class HealthCheck {
     static final String HEALTH_CHECK_SECTION = "healthCheck";
-    static final String ENABLE_KEY = "enable";
     static final boolean DEFAULT_HEALTH_CHECK_ENABLED = true;
 
     private final boolean enabled;

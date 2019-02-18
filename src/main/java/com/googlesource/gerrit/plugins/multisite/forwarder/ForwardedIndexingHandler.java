@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * causing an infinite forwarding loop between the 2 nodes. It will also make sure no concurrent
  * indexing is done for the same id.
  */
-public abstract class ForwardedIndexingHandler<T> {
+public abstract class ForwardedIndexingHandler<T, E> {
   protected final Logger log = LoggerFactory.getLogger(getClass());
 
   public enum Operation {
@@ -43,10 +43,9 @@ public abstract class ForwardedIndexingHandler<T> {
 
   private final Striped<Lock> idLocks;
 
-  protected abstract void doIndex(T id, Optional<IndexEvent> indexEvent)
-      throws IOException, OrmException;
+  protected abstract void doIndex(T id, Optional<E> indexEvent) throws IOException, OrmException;
 
-  protected abstract void doDelete(T id, Optional<IndexEvent> indexEvent) throws IOException;
+  protected abstract void doDelete(T id, Optional<E> indexEvent) throws IOException;
 
   protected ForwardedIndexingHandler(int lockStripes) {
     idLocks = Striped.lock(lockStripes);
@@ -57,13 +56,12 @@ public abstract class ForwardedIndexingHandler<T> {
    *
    * @param id The id to index.
    * @param operation The operation to do; index or delete
-   * @param indexEvent The index event details.
+   * @param event The index event details.
    * @throws IOException If an error occur while indexing.
    * @throws OrmException If an error occur while retrieving a change related to the item to index
    */
-  public void index(T id, Operation operation, Optional<IndexEvent> indexEvent)
-      throws IOException, OrmException {
-    log.debug("{} {} {}", operation, id, indexEvent);
+  public void index(T id, Operation operation, Optional<E> event) throws IOException, OrmException {
+    log.debug("{} {} {}", operation, id, event);
     try {
       Context.setForwardedEvent(true);
       Lock idLock = idLocks.get(id);
@@ -71,10 +69,10 @@ public abstract class ForwardedIndexingHandler<T> {
       try {
         switch (operation) {
           case INDEX:
-            doIndex(id, indexEvent);
+            doIndex(id, event);
             break;
           case DELETE:
-            doDelete(id, indexEvent);
+            doDelete(id, event);
             break;
           default:
             log.error("unexpected operation: {}", operation);

@@ -15,16 +15,14 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.DEFAULT_THREAD_POOL_SIZE;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.PEER_INFO_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Cache.CACHE_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Cache.PATTERN_KEY;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.DEFAULT_THREAD_POOL_SIZE;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.ENABLE_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Event.EVENT_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Forwarding.DEFAULT_SYNCHRONIZE;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Forwarding.SYNCHRONIZE_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.HealthCheck.DEFAULT_HEALTH_CHECK_ENABLED;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.HealthCheck.ENABLE_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.HealthCheck.HEALTH_CHECK_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.CONNECTION_TIMEOUT_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.DEFAULT_MAX_TRIES;
@@ -40,16 +38,16 @@ import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.INDE
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Main.DEFAULT_SHARED_DIRECTORY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Main.MAIN_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Main.SHARED_DIRECTORY_KEY;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.PEER_INFO_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.PeerInfoStatic.STATIC_SUBSECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.PeerInfoStatic.URL_KEY;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
-import com.googlesource.gerrit.plugins.multisite.Configuration;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;

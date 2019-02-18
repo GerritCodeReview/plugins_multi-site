@@ -15,6 +15,10 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.gerrit.server.events.Event;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 
 /** Forward indexing, stream events and cache evictions to the other master */
 public interface Forwarder {
@@ -22,48 +26,42 @@ public interface Forwarder {
   /**
    * Forward a account indexing event to the other master.
    *
-   * @param accountId the account to index.
-   * @param indexEvent the details of the index event.
+   * @param accountIndexEvent the details of the account index event.
    * @return true if successful, otherwise false.
    */
-  boolean indexAccount(int accountId, IndexEvent indexEvent);
+  boolean indexAccount(AccountIndexEvent accountIndexEvent);
 
   /**
    * Forward a change indexing event to the other master.
    *
-   * @param projectName the project of the change to index.
-   * @param changeId the change to index.
-   * @param indexEvent the details of the index event.
+   * @param changeIndexEvent the details of the change index event.
    * @return true if successful, otherwise false.
    */
-  boolean indexChange(String projectName, int changeId, IndexEvent indexEvent);
+  boolean indexChange(ChangeIndexEvent changeIndexEvent);
 
   /**
    * Forward a delete change from index event to the other master.
    *
-   * @param changeId the change to remove from the index.
-   * @param indexEvent the details of the index event.
+   * @param changeIndexEvent the details of the change index event.
    * @return rue if successful, otherwise false.
    */
-  boolean deleteChangeFromIndex(int changeId, IndexEvent indexEvent);
+  boolean deleteChangeFromIndex(ChangeIndexEvent changeIndexEvent);
 
   /**
    * Forward a group indexing event to the other master.
    *
-   * @param uuid the group to index.
-   * @param indexEvent the details of the index event.
+   * @param groupIndexEvent the details of the index event.
    * @return true if successful, otherwise false.
    */
-  boolean indexGroup(String uuid, IndexEvent indexEvent);
+  boolean indexGroup(GroupIndexEvent groupIndexEvent);
 
   /**
    * Forward a project indexing event to the other master.
    *
-   * @param projectName the project to index.
-   * @param indexEvent the details of the index event.
+   * @param projectIndexEvent the details of the index event.
    * @return true if successful, otherwise false.
    */
-  boolean indexProject(String projectName, IndexEvent indexEvent);
+  boolean indexProject(ProjectIndexEvent projectIndexEvent);
 
   /**
    * Forward a stream event to the other master.

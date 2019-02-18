@@ -23,6 +23,20 @@ File '@PLUGIN@.config'
 [http]
   user = username
   password = password
+
+[kafka]
+  bootstrapServers = kafka-1:9092,kafka-2:9092,kafka-3:9092
+  eventTopic = gerrit_index
+
+[kafka "publisher"]
+  indexEventTopic = gerrit_index
+  streamEventTopic = gerrit_stream
+  enable = true
+
+[kafka "subscriber"]
+  enable = true
+  pollingIntervalMs = 1000
+  autoCommitIntervalMs = 1000
 ```
 
 ```main.sharedDirectory```
@@ -155,3 +169,29 @@ the plugin will keep retrying to forward a message for one hour.
 
 ```healthcheck.enable```
 :   Whether to enable the health check endpoint. Defaults to 'true'.
+
+```kafka.bootstrapServers```
+:	List of Kafka broker hosts:port to use for publishing events to the message broker
+
+```kafka.eventTopic```
+:   Name of the Kafka topic to use for consuming indexing events
+
+```kafka.publisher.indexEventTopic```
+:   Name of the Kafka topic to use for publishing indexing events
+    Defaults to GERRIT.EVENT.INDEX
+
+```kafka.publisher.streamEventTopic```
+:   Name of the Kafka topic to use for publishing stream events
+    Defaults to GERRIT.EVENT.STREAM
+
+```kafka.publisher.enable```
+:   Enable publishing events to Kafka
+
+```kafka.subscriber.enable```
+:   Enable consuming of Kafka events
+
+```kafka.subscriber.pollingIntervalMs```
+:   Polling interval for checking incoming events
+
+```kafka.subscriber.autoCommitIntervalMs```
+:   Interval for committing incoming events automatically after consumption

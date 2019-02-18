@@ -37,3 +37,15 @@ def external_plugin_deps():
         artifact = "org.objenesis:objenesis:2.6",
         sha1 = "639033469776fd37c08358c6b92a4761feb2af4b",
     )
+
+    maven_jar(
+        name = "kafka_client",
+        artifact = "org.apache.kafka:kafka-clients:2.1.0",
+        sha1 = "34d9983705c953b97abb01e1cd04647f47272fe5",
+    )
+
+    maven_jar(
+        name = "testcontainers-kafka",
+        artifact = "org.testcontainers:kafka:1.10.6",
+        sha1 = "5984e31306bd6c84a36092cdd19e0ef7e2268d98",
+    )

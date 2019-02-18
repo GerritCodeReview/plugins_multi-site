@@ -16,8 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.index;
 
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gwtorm.server.OrmException;
-import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEvent;
-
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -35,11 +34,16 @@ public interface ChangeChecker {
   /**
    * Create a new index event POJO associated with the current Change.
    *
+   * @param projectName change project name
+   * @param changeId change number
+   * @param deleted marker whether or not this event for delete or replace the change in the change
+   *     index
    * @return new IndexEvent
    * @throws IOException if the current Change cannot read
    * @throws OrmException if ReviewDb cannot be opened
    */
-  public Optional<IndexEvent> newIndexEvent() throws IOException, OrmException;
+  public Optional<ChangeIndexEvent> newIndexEvent(String projectName, int changeId, boolean deleted)
+      throws IOException, OrmException;
 
   /**
    * Check if the local Change is aligned with the indexEvent received.
@@ -49,7 +53,8 @@ public interface ChangeChecker {
    * @throws IOException if an I/O error occurred while reading the local Change
    * @throws OrmException if the local ReviewDb cannot be opened
    */
-  public boolean isChangeUpToDate(Optional<IndexEvent> indexEvent) throws IOException, OrmException;
+  public boolean isChangeUpToDate(Optional<ChangeIndexEvent> indexEvent)
+      throws IOException, OrmException;
 
   /**
    * Return the last computed up-to-date Change time-stamp.

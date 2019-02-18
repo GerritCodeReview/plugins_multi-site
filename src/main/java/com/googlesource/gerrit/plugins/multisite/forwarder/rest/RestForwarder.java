@@ -23,7 +23,10 @@ import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.googlesource.gerrit.plugins.multisite.peers.PeerInfo;
 import java.io.IOException;
@@ -63,34 +66,35 @@ class RestForwarder implements Forwarder {
   }
 
   @Override
-  public boolean indexAccount(final int accountId, IndexEvent event) {
-    return execute(RequestMethod.POST, "index account", "index/account", accountId, event);
+  public boolean indexAccount(AccountIndexEvent event) {
+    return execute(RequestMethod.POST, "index account", "index/account", event.accountId, event);
   }
 
   @Override
-  public boolean indexChange(String projectName, final int changeId, IndexEvent event) {
+  public boolean indexChange(ChangeIndexEvent event) {
     return execute(
         RequestMethod.POST,
         "index change",
         "index/change",
-        Url.encode(projectName) + "~" + changeId,
+        Url.encode(event.projectName) + "~" + event.changeId,
         event);
   }
 
   @Override
-  public boolean deleteChangeFromIndex(final int changeId, IndexEvent event) {
-    return execute(RequestMethod.DELETE, "delete change", "index/change", "~" + changeId, event);
-  }
-
-  @Override
-  public boolean indexGroup(String uuid, IndexEvent event) {
-    return execute(RequestMethod.POST, "index group", "index/group", uuid, event);
-  }
-
-  @Override
-  public boolean indexProject(String projectName, IndexEvent event) {
+  public boolean deleteChangeFromIndex(ChangeIndexEvent event) {
     return execute(
-        RequestMethod.POST, "index project", "index/project", Url.encode(projectName), event);
+        RequestMethod.DELETE, "delete change", "index/change", "~" + event.changeId, event);
+  }
+
+  @Override
+  public boolean indexGroup(GroupIndexEvent event) {
+    return execute(RequestMethod.POST, "index group", "index/group", event.groupUUID, event);
+  }
+
+  @Override
+  public boolean indexProject(ProjectIndexEvent event) {
+    return execute(
+        RequestMethod.POST, "index project", "index/project", Url.encode(event.projectName), event);
   }
 
   @Override

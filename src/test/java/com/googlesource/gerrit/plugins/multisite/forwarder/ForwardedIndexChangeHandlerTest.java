@@ -29,17 +29,15 @@ import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.google.gerrit.server.notedb.ChangeNotes;
+import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gerrit.server.util.time.TimeUtil;
 import com.google.gwtorm.server.OrmException;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeChecker;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeCheckerImpl;
-
 import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
@@ -67,11 +65,12 @@ public class ForwardedIndexChangeHandlerTest {
 
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private ChangeIndexer indexerMock;
+  @Mock private OneOffRequestContext ctxMock;
+  @Mock private ManualRequestContext manualRequestContextMock;
   @Mock private ChangeNotes changeNotes;
   @Mock private Configuration configurationMock;
   @Mock private Configuration.Index index;
   @Mock private ScheduledExecutorService indexExecutorMock;
-  @Mock private OneOffRequestContext ctxMock;
   @Mock private GitRepositoryManager gitRepoMgrMock;
   @Mock private ChangeCheckerImpl.Factory changeCheckerFactoryMock;
   @Mock private ChangeChecker changeCheckerAbsentMock;
@@ -82,6 +81,7 @@ public class ForwardedIndexChangeHandlerTest {
 
   @Before
   public void setUp() throws Exception {
+    when(ctxMock.open()).thenReturn(manualRequestContextMock);
     id = new Change.Id(TEST_CHANGE_NUMBER);
     change = new Change(null, id, null, null, TimeUtil.nowTs());
     when(changeNotes.getChange()).thenReturn(change);
@@ -90,11 +90,7 @@ public class ForwardedIndexChangeHandlerTest {
     when(index.numStripedLocks()).thenReturn(10);
     handler =
         new ForwardedIndexChangeHandler(
-            indexerMock,
-            configurationMock,
-            indexExecutorMock,
-            ctxMock,
-            changeCheckerFactoryMock);
+            indexerMock, configurationMock, indexExecutorMock, ctxMock, changeCheckerFactoryMock);
   }
 
   @Test
@@ -107,7 +103,8 @@ public class ForwardedIndexChangeHandlerTest {
   @Test
   public void changeIsStillIndexedEvenWhenOutdated() throws Exception {
     setupChangeAccessRelatedMocks(CHANGE_EXISTS, CHANGE_OUTDATED);
-    handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.of(new IndexEvent()));
+    handler.index(
+        TEST_CHANGE_ID, Operation.INDEX, Optional.of(new ChangeIndexEvent("foo", 1, false)));
     verify(indexerMock, times(1)).index(any(Change.class));
   }
 
@@ -122,14 +119,12 @@ public class ForwardedIndexChangeHandlerTest {
     setupChangeAccessRelatedMocks(CHANGE_DOES_NOT_EXIST, CHANGE_OUTDATED);
     handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
     verify(indexerMock, never()).delete(id);
-    verify(indexerMock, never())
-        .index(any(Project.NameKey.class), any(Change.Id.class));
+    verify(indexerMock, never()).index(any(Project.NameKey.class), any(Change.Id.class));
   }
 
   @Test
   public void indexerThrowsIOExceptionTryingToIndexChange() throws Exception {
-    setupChangeAccessRelatedMocks(
-        CHANGE_EXISTS, THROW_IO_EXCEPTION, CHANGE_UP_TO_DATE);
+    setupChangeAccessRelatedMocks(CHANGE_EXISTS, THROW_IO_EXCEPTION, CHANGE_UP_TO_DATE);
     exception.expect(IOException.class);
     handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
   }
@@ -181,20 +176,17 @@ public class ForwardedIndexChangeHandlerTest {
 
   private void setupChangeAccessRelatedMocks(boolean changeExist, boolean changeUpToDate)
       throws Exception {
-    setupChangeAccessRelatedMocks(
-        changeExist, DO_NOT_THROW_IO_EXCEPTION, changeUpToDate);
+    setupChangeAccessRelatedMocks(changeExist, DO_NOT_THROW_IO_EXCEPTION, changeUpToDate);
   }
 
   private void setupChangeAccessRelatedMocks(
       boolean changeExists, boolean ioException, boolean changeIsUpToDate)
-      throws OrmException, IOException {
+      throws IOException, OrmException {
     if (changeExists) {
       when(changeCheckerFactoryMock.create(TEST_CHANGE_ID)).thenReturn(changeCheckerPresentMock);
       when(changeCheckerPresentMock.getChangeNotes()).thenReturn(Optional.of(changeNotes));
       if (ioException) {
-        doThrow(new IOException("io-error"))
-            .when(indexerMock)
-            .index(any(Change.class));
+        doThrow(new IOException("io-error")).when(indexerMock).index(any(Change.class));
       }
     }
 

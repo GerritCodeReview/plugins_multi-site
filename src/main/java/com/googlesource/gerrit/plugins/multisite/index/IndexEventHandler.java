@@ -20,11 +20,14 @@ import com.google.gerrit.extensions.events.AccountIndexedListener;
 import com.google.gerrit.extensions.events.ChangeIndexedListener;
 import com.google.gerrit.extensions.events.GroupIndexedListener;
 import com.google.gerrit.extensions.events.ProjectIndexedListener;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEvent;
-
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,7 +42,7 @@ class IndexEventHandler
         ProjectIndexedListener {
   private static final Logger log = LoggerFactory.getLogger(IndexEventHandler.class);
   private final Executor executor;
-  private final Forwarder forwarder;
+  private final DynamicSet<Forwarder> forwarders;
   private final String pluginName;
   private final Set<IndexTask> queuedTasks = Collections.newSetFromMap(new ConcurrentHashMap<>());
   private final ChangeCheckerImpl.Factory changeChecker;
@@ -48,9 +51,9 @@ class IndexEventHandler
   IndexEventHandler(
       @IndexExecutor Executor executor,
       @PluginName String pluginName,
-      Forwarder forwarder,
+      DynamicSet<Forwarder> forwarders,
       ChangeCheckerImpl.Factory changeChecker) {
-    this.forwarder = forwarder;
+    this.forwarders = forwarders;
     this.executor = executor;
     this.pluginName = pluginName;
     this.changeChecker = changeChecker;
@@ -59,7 +62,7 @@ class IndexEventHandler
   @Override
   public void onAccountIndexed(int id) {
     if (!Context.isForwardedEvent()) {
-      IndexAccountTask task = new IndexAccountTask(id);
+      IndexAccountTask task = new IndexAccountTask(new AccountIndexEvent(id));
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }
@@ -68,18 +71,18 @@ class IndexEventHandler
 
   @Override
   public void onChangeIndexed(String projectName, int id) {
-    executeIndexChangeTask(projectName, id, false);
+    executeIndexChangeTask(projectName, id);
   }
 
   @Override
   public void onChangeDeleted(int id) {
-    executeIndexChangeTask("", id, true);
+    executeDeleteChangeTask(id);
   }
 
   @Override
   public void onGroupIndexed(String groupUUID) {
     if (!Context.isForwardedEvent()) {
-      IndexGroupTask task = new IndexGroupTask(groupUUID);
+      IndexGroupTask task = new IndexGroupTask(new GroupIndexEvent(groupUUID));
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }
@@ -89,20 +92,20 @@ class IndexEventHandler
   @Override
   public void onProjectIndexed(String projectName) {
     if (!Context.isForwardedEvent()) {
-      IndexProjectTask task = new IndexProjectTask(projectName);
+      IndexProjectTask task = new IndexProjectTask(new ProjectIndexEvent(projectName));
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }
     }
   }
 
-  private void executeIndexChangeTask(String projectName, int id, boolean deleted) {
+  private void executeIndexChangeTask(String projectName, int id) {
     if (!Context.isForwardedEvent()) {
       ChangeChecker checker = changeChecker.create(projectName + "~" + id);
       try {
         checker
-            .newIndexEvent()
-            .map(event -> new IndexChangeTask(projectName, id, deleted, event))
+            .newIndexEvent(projectName, id, false)
+            .map(event -> new IndexChangeTask(event))
             .ifPresent(
                 task -> {
                   if (queuedTasks.add(task)) {
@@ -115,17 +118,16 @@ class IndexEventHandler
     }
   }
 
+  private void executeDeleteChangeTask(int id) {
+    if (!Context.isForwardedEvent()) {
+      IndexChangeTask task = new IndexChangeTask(new ChangeIndexEvent("", id, true));
+      if (queuedTasks.add(task)) {
+        executor.execute(task);
+      }
+    }
+  }
+
   abstract class IndexTask implements Runnable {
-    protected final IndexEvent indexEvent;
-
-    IndexTask() {
-      indexEvent = new IndexEvent();
-    }
-
-    IndexTask(IndexEvent indexEvent) {
-      this.indexEvent = indexEvent;
-    }
-
     @Override
     public void run() {
       queuedTasks.remove(this);
@@ -136,139 +138,134 @@ class IndexEventHandler
   }
 
   class IndexChangeTask extends IndexTask {
-    private final boolean deleted;
-    private final int changeId;
-    private final String projectName;
+    private final ChangeIndexEvent changeIndexEvent;
 
-    IndexChangeTask(String projectName, int changeId, boolean deleted, IndexEvent indexEvent) {
-      super(indexEvent);
-      this.projectName = projectName;
-      this.changeId = changeId;
-      this.deleted = deleted;
+    IndexChangeTask(ChangeIndexEvent changeIndexEvent) {
+      this.changeIndexEvent = changeIndexEvent;
     }
 
     @Override
     public void execute() {
-      if (deleted) {
-        forwarder.deleteChangeFromIndex(changeId, indexEvent);
+      if (changeIndexEvent.deleted) {
+        forwarders.forEach(f -> f.deleteChangeFromIndex(changeIndexEvent));
       } else {
-        forwarder.indexChange(projectName, changeId, indexEvent);
+        forwarders.forEach(f -> f.indexChange(changeIndexEvent));
       }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      IndexChangeTask that = (IndexChangeTask) o;
+      return Objects.equal(changeIndexEvent, that.changeIndexEvent);
     }
 
     @Override
     public int hashCode() {
-      return Objects.hashCode(IndexChangeTask.class, changeId, deleted);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      if (!(obj instanceof IndexChangeTask)) {
-        return false;
-      }
-      IndexChangeTask other = (IndexChangeTask) obj;
-      return changeId == other.changeId && deleted == other.deleted;
+      return Objects.hashCode(changeIndexEvent);
     }
 
     @Override
     public String toString() {
-      return String.format("[%s] Index change %s in target instance", pluginName, changeId);
+      return String.format(
+          "[%s] Index change %s in target instance", pluginName, changeIndexEvent.changeId);
     }
   }
 
   class IndexAccountTask extends IndexTask {
-    private final int accountId;
+    private final AccountIndexEvent accountIndexEvent;
 
-    IndexAccountTask(int accountId) {
-      this.accountId = accountId;
+    IndexAccountTask(AccountIndexEvent accountIndexEvent) {
+      this.accountIndexEvent = accountIndexEvent;
     }
 
     @Override
     public void execute() {
-      forwarder.indexAccount(accountId, indexEvent);
+      forwarders.forEach(f -> f.indexAccount(accountIndexEvent));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      IndexAccountTask that = (IndexAccountTask) o;
+      return Objects.equal(accountIndexEvent, that.accountIndexEvent);
     }
 
     @Override
     public int hashCode() {
-      return Objects.hashCode(accountId);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      if (!(obj instanceof IndexAccountTask)) {
-        return false;
-      }
-      IndexAccountTask other = (IndexAccountTask) obj;
-      return accountId == other.accountId;
+      return Objects.hashCode(accountIndexEvent);
     }
 
     @Override
     public String toString() {
-      return String.format("[%s] Index account %s in target instance", pluginName, accountId);
+      return String.format(
+          "[%s] Index account %s in target instance", pluginName, accountIndexEvent.accountId);
     }
   }
 
   class IndexGroupTask extends IndexTask {
-    private final String groupUUID;
+    private final GroupIndexEvent groupIndexEvent;
 
-    IndexGroupTask(String groupUUID) {
-      this.groupUUID = groupUUID;
+    IndexGroupTask(GroupIndexEvent groupIndexEvent) {
+      this.groupIndexEvent = groupIndexEvent;
     }
 
     @Override
     public void execute() {
-      forwarder.indexGroup(groupUUID, indexEvent);
+      forwarders.forEach(f -> f.indexGroup(groupIndexEvent));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      IndexGroupTask that = (IndexGroupTask) o;
+      return Objects.equal(groupIndexEvent, that.groupIndexEvent);
     }
 
     @Override
     public int hashCode() {
-      return Objects.hashCode(IndexGroupTask.class, groupUUID);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      if (!(obj instanceof IndexGroupTask)) {
-        return false;
-      }
-      IndexGroupTask other = (IndexGroupTask) obj;
-      return groupUUID.equals(other.groupUUID);
+      return Objects.hashCode(groupIndexEvent);
     }
 
     @Override
     public String toString() {
-      return String.format("[%s] Index group %s in target instance", pluginName, groupUUID);
+      return String.format(
+          "[%s] Index group %s in target instance", pluginName, groupIndexEvent.groupUUID);
     }
   }
 
   class IndexProjectTask extends IndexTask {
-    private final String projectName;
+    private final ProjectIndexEvent projectIndexEvent;
 
-    IndexProjectTask(String projectName) {
-      this.projectName = projectName;
+    IndexProjectTask(ProjectIndexEvent projectIndexEvent) {
+      this.projectIndexEvent = projectIndexEvent;
     }
 
     @Override
     public void execute() {
-      forwarder.indexProject(projectName, indexEvent);
+      forwarders.forEach(f -> f.indexProject(projectIndexEvent));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      IndexProjectTask that = (IndexProjectTask) o;
+      return Objects.equal(projectIndexEvent, that.projectIndexEvent);
     }
 
     @Override
     public int hashCode() {
-      return Objects.hashCode(IndexProjectTask.class, projectName);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      if (!(obj instanceof IndexProjectTask)) {
-        return false;
-      }
-      IndexProjectTask other = (IndexProjectTask) obj;
-      return projectName.equals(other.projectName);
+      return Objects.hashCode(projectIndexEvent);
     }
 
     @Override
     public String toString() {
-      return String.format("[%s] Index project %s in target instance", pluginName, projectName);
+      return String.format(
+          "[%s] Index project %s in target instance", pluginName, projectIndexEvent.projectName);
     }
   }
 }
