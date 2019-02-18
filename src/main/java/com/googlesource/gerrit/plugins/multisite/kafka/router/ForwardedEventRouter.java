@@ -14,13 +14,12 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.router;
 
-import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gwtorm.server.OrmException;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
 import java.io.IOException;
 
-public interface ForwardedEventRouter {
-  void route(Event sourceEvent)
+public interface ForwardedEventRouter<EventType> {
+  void route(EventType sourceEvent)
       throws IOException, OrmException, PermissionBackendException, CacheNotFoundException;
 }

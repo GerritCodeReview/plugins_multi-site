@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.router;
 
-import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEntry;
@@ -33,15 +32,10 @@ public class CacheEvictionEventRouter implements ForwardedCacheEvictionEventRout
   }
 
   @Override
-  public void route(Event sourceEvent) throws CacheNotFoundException {
-    if (sourceEvent instanceof CacheEvictionEvent) {
-      CacheEvictionEvent cacheEvictionEvent = (CacheEvictionEvent) sourceEvent;
-      Object parsedKey =
-          GsonParser.fromJson(cacheEvictionEvent.cacheName, cacheEvictionEvent.key.toString());
-      cacheEvictionHanlder.evict(CacheEntry.from(cacheEvictionEvent.cacheName, parsedKey));
-    } else {
-      throw new UnsupportedOperationException(
-          String.format("Cannot route event %s", sourceEvent.getType()));
-    }
+  public void route(CacheEvictionEvent sourceEvent) throws CacheNotFoundException {
+    CacheEvictionEvent cacheEvictionEvent = (CacheEvictionEvent) sourceEvent;
+    Object parsedKey =
+        GsonParser.fromJson(cacheEvictionEvent.cacheName, cacheEvictionEvent.key.toString());
+    cacheEvictionHanlder.evict(CacheEntry.from(cacheEvictionEvent.cacheName, parsedKey));
   }
 }

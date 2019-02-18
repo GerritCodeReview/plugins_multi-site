@@ -14,4 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.router;
 
-public interface ForwardedIndexEventRouter extends ForwardedEventRouter {}
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
+
+public interface ForwardedIndexEventRouter extends ForwardedEventRouter<IndexEvent> {}

@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.router;
 
-import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedProjectListUpdateHandler;
@@ -31,13 +30,7 @@ public class ProjectListUpdateRouter implements ForwardedProjectListUpdateRouter
   }
 
   @Override
-  public void route(Event sourceEvent) throws IOException {
-    if (sourceEvent instanceof ProjectListUpdateEvent) {
-      ProjectListUpdateEvent projectListUpdateEvent = (ProjectListUpdateEvent) sourceEvent;
-      projectListUpdateHandler.update(projectListUpdateEvent);
-    } else {
-      throw new UnsupportedOperationException(
-          String.format("Cannot route event %s", sourceEvent.getType()));
-    }
+  public void route(ProjectListUpdateEvent projectListUpdateEvent) throws IOException {
+    projectListUpdateHandler.update(projectListUpdateEvent);
   }
 }

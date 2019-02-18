@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-public class ChangeIndexEvent extends MultiSiteEvent {
+public class ChangeIndexEvent extends IndexEvent {
   static final String TYPE = "change-index";
 
   public String projectName;

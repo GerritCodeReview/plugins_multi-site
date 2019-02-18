@@ -16,7 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
 import com.google.common.base.Objects;
 
-public class AccountIndexEvent extends MultiSiteEvent {
+public class AccountIndexEvent extends IndexEvent {
   static final String TYPE = "account-index";
 
   public int accountId;

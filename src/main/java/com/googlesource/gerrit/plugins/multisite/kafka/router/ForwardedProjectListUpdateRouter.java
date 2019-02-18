@@ -14,4 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.router;
 
-public interface ForwardedProjectListUpdateRouter extends ForwardedEventRouter {}
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
+
+public interface ForwardedProjectListUpdateRouter
+    extends ForwardedEventRouter<ProjectListUpdateEvent> {}

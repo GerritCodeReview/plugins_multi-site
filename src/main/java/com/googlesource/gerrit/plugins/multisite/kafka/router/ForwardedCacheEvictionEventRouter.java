@@ -14,4 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.router;
 
-public interface ForwardedCacheEvictionEventRouter extends ForwardedEventRouter {}
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
+
+public interface ForwardedCacheEvictionEventRouter
+    extends ForwardedEventRouter<CacheEvictionEvent> {}

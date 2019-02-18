@@ -6,7 +6,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.reviewdb.client.Project;
-import com.google.gerrit.server.events.Event;
 import com.google.gwtorm.client.KeyUtil;
 import com.google.gwtorm.server.StandardKeyEncoder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
@@ -17,6 +16,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHand
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.IndexEventRouter;
 import java.util.Optional;
@@ -121,7 +121,7 @@ public class IndexEventRouterTest {
 
   @Test
   public void routerShouldFailForNotRecognisedEvents() throws Exception {
-    final Event newEventType = new Event("new-type") {};
+    final IndexEvent newEventType = new IndexEvent("new-type") {};
 
     try {
       router.route(newEventType);
