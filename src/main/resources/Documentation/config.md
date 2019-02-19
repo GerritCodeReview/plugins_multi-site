@@ -11,8 +11,6 @@ File '@PLUGIN@.config'
 ### Static definition of the multi-site nodes.
 
 ```
-[main]
-  sharedDirectory = /directory/accessible/from/both/instances
 [autoReindex]
   enabled = false
 [peerInfo]
@@ -21,31 +19,29 @@ File '@PLUGIN@.config'
   url = first_target_instance_url
   url = second_target_instance_url
 [http]
+  enabled = true
+  
   user = username
   password = password
 
 [kafka]
   bootstrapServers = kafka-1:9092,kafka-2:9092,kafka-3:9092
-  eventTopic = gerrit_index
 
-[kafka "publisher"]
   indexEventTopic = gerrit_index
   streamEventTopic = gerrit_stream
-  enable = true
+  cacheEventTopic = gerrit_cache_eviction
+  projectListEventTopic = gerrit_project_list
+
+[kafka "publisher"]
+  enabled = true
 
 [kafka "subscriber"]
-  enable = true
+  enabled = true
+  
   pollingIntervalMs = 1000
   autoCommitIntervalMs = 1000
-```
 
-```main.sharedDirectory```
-:   Path to a directory accessible from both master instances.
-    When given as a relative path, then it is resolved against the $SITE_PATH
-    or Gerrit server. For example, if $SITE_PATH is "/gerrit/root" and
-    sharedDirectory is given as "shared/dir" then the real path of the shared
-    directory is "/gerrit/root/shared/dir". When not specified, the default
-    is "shared".
+```
 
 ```autoReindex.enabled```
 :   Enable the tracking of the latest change indexed under data/multi-site
@@ -173,22 +169,61 @@ the plugin will keep retrying to forward a message for one hour.
 ```kafka.bootstrapServers```
 :	List of Kafka broker hosts:port to use for publishing events to the message broker
 
-```kafka.eventTopic```
-:   Name of the Kafka topic to use for consuming indexing events
-
-```kafka.publisher.indexEventTopic```
+```kafka.indexEventTopic```
 :   Name of the Kafka topic to use for publishing indexing events
     Defaults to GERRIT.EVENT.INDEX
 
-```kafka.publisher.streamEventTopic```
+```kafka.streamEventTopic```
 :   Name of the Kafka topic to use for publishing stream events
     Defaults to GERRIT.EVENT.STREAM
 
-```kafka.publisher.enable```
-:   Enable publishing events to Kafka
+```kafka.cacheEventTopic```
+:   Name of the Kafka topic to use for publishing cache eviction events
+    Defaults to GERRIT.EVENT.CACHE
 
-```kafka.subscriber.enable```
+```kafka.projectListEventTopic```
+:   Name of the Kafka topic to use for publishing cache eviction events
+    Defaults to GERRIT.EVENT.PROJECT.LIST
+
+```kafka.publisher.enabled```
+:   Enable publishing events to Kafka
+    Defaults: false
+
+```kafka.publisher.indexEventEnabled```
+:   Enable publication of index events
+    Defaults: true
+
+```kafka.publisher.cacheEventEnabled```
+:   Enable publication of cache events
+    Defaults: true
+
+```kafka.publisher.projectListEventEnabled```
+:   Enable publication of project list events
+    Defaults: true
+
+```kafka.publisher.streamEventEnabled```    
+:   Enable publication of stream events
+    Defaults: true
+
+```kafka.subscriber.enabled```
 :   Enable consuming of Kafka events
+    Defaults: false
+
+```kafka.subscriber.indexEventEnabled```
+:   Enable consumption of index events
+    Defaults: true
+
+```kafka.subscriber.cacheEventEnabled```
+:   Enable consumption of cache events
+    Defaults: true
+
+```kafka.subscriber.projectListEventEnabled```
+:   Enable consumption of project list events
+    Defaults: true
+
+```kafka.subscriber.streamEventEnabled```    
+:   Enable consumption of stream events
+    Defaults: true
 
 ```kafka.subscriber.pollingIntervalMs```
 :   Polling interval for checking incoming events

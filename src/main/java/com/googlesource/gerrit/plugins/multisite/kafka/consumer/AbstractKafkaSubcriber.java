@@ -1,14 +1,28 @@
+// Copyright (C) 2019 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gson.Gson;
 import com.google.gwtorm.server.OrmException;
-import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouter;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
@@ -21,24 +35,21 @@ import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.Deserializer;
 
-@Singleton
-public class KafkaSubcriber implements Runnable {
-
+public abstract class AbstractKafkaSubcriber implements Runnable {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final KafkaConsumer<byte[], byte[]> consumer;
-  private final Configuration configuration;
   private final ForwardedEventRouter eventRouter;
   private final Provider<Gson> gsonProvider;
   private final UUID instanceId;
   private final AtomicBoolean closed = new AtomicBoolean(false);
-  private final Deserializer<BrokerReadEvent> valueDeserializer;
+  private final Deserializer<SourceAwareEventWrapper> valueDeserializer;
+  private final Configuration configuration;
 
-  @Inject
-  public KafkaSubcriber(
+  public AbstractKafkaSubcriber(
       Configuration configuration,
       Deserializer<byte[]> keyDeserializer,
-      Deserializer<BrokerReadEvent> valueDeserializer,
+      Deserializer<SourceAwareEventWrapper> valueDeserializer,
       ForwardedEventRouter eventRouter,
       Provider<Gson> gsonProvider,
       @InstanceId UUID instanceId) {
@@ -48,7 +59,7 @@ public class KafkaSubcriber implements Runnable {
     this.instanceId = instanceId;
     final ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
     try {
-      Thread.currentThread().setContextClassLoader(KafkaSubcriber.class.getClassLoader());
+      Thread.currentThread().setContextClassLoader(AbstractKafkaSubcriber.class.getClassLoader());
       this.consumer =
           new KafkaConsumer<>(
               configuration.kafkaSubscriber().getProps(instanceId),
@@ -63,7 +74,11 @@ public class KafkaSubcriber implements Runnable {
   @Override
   public void run() {
     try {
-      consumer.subscribe(Collections.singletonList(configuration.kafkaSubscriber().getTopic()));
+      final String topic = configuration.getKafka().getTopic(getEventFamily());
+      logger.atInfo().log(
+          "Kafka consumer subscribing to topic [%s] for event family [%s]",
+          topic, getEventFamily());
+      consumer.subscribe(Collections.singleton(topic));
       while (!closed.get()) {
         ConsumerRecords<byte[], byte[]> consumerRecords =
             consumer.poll(Duration.ofMillis(configuration.kafkaSubscriber().getPollingInterval()));
@@ -77,10 +92,12 @@ public class KafkaSubcriber implements Runnable {
     }
   }
 
+  protected abstract EventFamily getEventFamily();
+
   private void processRecord(ConsumerRecord<byte[], byte[]> consumerRecord) {
     try {
 
-      BrokerReadEvent event =
+      SourceAwareEventWrapper event =
           valueDeserializer.deserialize(consumerRecord.topic(), consumerRecord.value());
 
       if (event.getHeader().getSourceInstanceId().equals(instanceId)) {

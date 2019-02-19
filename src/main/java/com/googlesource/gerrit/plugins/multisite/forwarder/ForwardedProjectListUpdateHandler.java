@@ -18,14 +18,15 @@ import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Update project list cache. This class is meant to be used on the receiving side of the {@link
- * Forwarder} since it will prevent project list updates to be forwarded again causing an infinite
- * forwarding loop between the 2 nodes.
+ * ProjectListUpdateForwarder} since it will prevent project list updates to be forwarded again
+ * causing an infinite forwarding loop between the 2 nodes.
  */
 @Singleton
 public class ForwardedProjectListUpdateHandler {
@@ -42,20 +43,19 @@ public class ForwardedProjectListUpdateHandler {
   /**
    * Update the project list, update will not be forwarded to the other node
    *
-   * @param projectName the name of the project to add or remove.
-   * @param remove true to remove, false to add project.
+   * @param event the content of Project liste update event to add or remove.
    * @throws IOException
    */
-  public void update(String projectName, boolean remove) throws IOException {
-    Project.NameKey projectKey = new Project.NameKey(projectName);
+  public void update(ProjectListUpdateEvent event) throws IOException {
+    Project.NameKey projectKey = new Project.NameKey(event.projectName);
     try {
       Context.setForwardedEvent(true);
-      if (remove) {
+      if (event.remove) {
         projectCache.remove(projectKey);
-        log.debug("Removed {} from project list", projectName);
+        log.debug("Removed {} from project list", event.projectName);
       } else {
         projectCache.onCreateProject(projectKey);
-        log.debug("Added {} to project list", projectName);
+        log.debug("Added {} to project list", event.projectName);
       }
     } finally {
       Context.unsetForwardedEvent();

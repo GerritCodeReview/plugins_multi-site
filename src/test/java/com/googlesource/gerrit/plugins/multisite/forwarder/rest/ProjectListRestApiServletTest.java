@@ -21,8 +21,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.gerrit.extensions.restapi.Url;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedProjectListUpdateHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.rest.ProjectListApiServlet;
-
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
@@ -46,21 +45,20 @@ public class ProjectListRestApiServletTest {
     servlet = new ProjectListApiServlet(handlerMock);
     when(requestMock.getRequestURI())
         .thenReturn(
-            "http://hostname/plugins/multi-site/cache/project_list/"
-                + Url.encode(PROJECT_NAME));
+            "http://hostname/plugins/multi-site/cache/project_list/" + Url.encode(PROJECT_NAME));
   }
 
   @Test
   public void addProject() throws Exception {
     servlet.doPost(requestMock, responseMock);
-    verify(handlerMock, times(1)).update(PROJECT_NAME, false);
+    verify(handlerMock, times(1)).update(new ProjectListUpdateEvent(PROJECT_NAME, false));
     verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 
   @Test
   public void deleteProject() throws Exception {
     servlet.doDelete(requestMock, responseMock);
-    verify(handlerMock, times(1)).update(PROJECT_NAME, true);
+    verify(handlerMock, times(1)).update(new ProjectListUpdateEvent(PROJECT_NAME, true));
     verify(responseMock).setStatus(SC_NO_CONTENT);
   }
 }

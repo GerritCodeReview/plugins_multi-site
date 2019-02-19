@@ -19,19 +19,20 @@ import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.cache.CacheRemovalListener;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 import java.util.concurrent.Executor;
 
 class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
   private final Executor executor;
-  private final DynamicSet<Forwarder> forwarders;
+  private final DynamicSet<CacheEvictionForwarder> forwarders;
   private final String pluginName;
   private final CachePatternMatcher matcher;
 
   @Inject
   CacheEvictionHandler(
-      DynamicSet<Forwarder> forwarders,
+      DynamicSet<CacheEvictionForwarder> forwarders,
       @CacheExecutor Executor executor,
       @PluginName String pluginName,
       CachePatternMatcher matcher) {
@@ -44,28 +45,27 @@ class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
   @Override
   public void onRemoval(String plugin, String cache, RemovalNotification<K, V> notification) {
     if (!Context.isForwardedEvent() && !notification.wasEvicted() && matcher.matches(cache)) {
-      executor.execute(new CacheEvictionTask(cache, notification.getKey()));
+      executor.execute(new CacheEvictionTask(new CacheEvictionEvent(cache, notification.getKey())));
     }
   }
 
   class CacheEvictionTask implements Runnable {
-    private final String cacheName;
-    private final Object key;
+    CacheEvictionEvent cacheEvictionEvent;
 
-    CacheEvictionTask(String cacheName, Object key) {
-      this.cacheName = cacheName;
-      this.key = key;
+    CacheEvictionTask(CacheEvictionEvent cacheEvictionEvent) {
+      this.cacheEvictionEvent = cacheEvictionEvent;
     }
 
     @Override
     public void run() {
-      forwarders.forEach(f -> f.evict(cacheName, key));
+      forwarders.forEach(f -> f.evict(cacheEvictionEvent));
     }
 
     @Override
     public String toString() {
       return String.format(
-          "[%s] Evict key '%s' from cache '%s' in target instance", pluginName, key, cacheName);
+          "[%s] Evict key '%s' from cache '%s' in target instance",
+          pluginName, cacheEvictionEvent.key, cacheEvictionEvent.cacheName);
     }
   }
 }

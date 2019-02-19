@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
+package com.googlesource.gerrit.plugins.multisite.kafka.router;
 
 import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.DELETE;
 import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.INDEX;
@@ -20,12 +20,9 @@ import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndex
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.reviewdb.client.Project;
-import com.google.gerrit.server.events.Event;
-import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
@@ -34,33 +31,32 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHand
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import java.io.IOException;
 import java.util.Optional;
 
 @Singleton
-public class ForwardedEventRouter {
+public class IndexEventRouter implements ForwardedIndexEventRouter {
   private final ForwardedIndexAccountHandler indexAccountHandler;
   private final ForwardedIndexChangeHandler indexChangeHandler;
   private final ForwardedIndexGroupHandler indexGroupHandler;
   private final ForwardedIndexProjectHandler indexProjectHandler;
-  private final ForwardedEventHandler streamEventHandler;
 
   @Inject
-  public ForwardedEventRouter(
+  public IndexEventRouter(
       ForwardedIndexAccountHandler indexAccountHandler,
       ForwardedIndexChangeHandler indexChangeHandler,
       ForwardedIndexGroupHandler indexGroupHandler,
-      ForwardedIndexProjectHandler indexProjectHandler,
-      ForwardedEventHandler streamEventHandler) {
+      ForwardedIndexProjectHandler indexProjectHandler) {
     this.indexAccountHandler = indexAccountHandler;
     this.indexChangeHandler = indexChangeHandler;
     this.indexGroupHandler = indexGroupHandler;
     this.indexProjectHandler = indexProjectHandler;
-    this.streamEventHandler = streamEventHandler;
   }
 
-  void route(Event sourceEvent) throws IOException, OrmException, PermissionBackendException {
+  @Override
+  public void route(IndexEvent sourceEvent) throws IOException, OrmException {
     if (sourceEvent instanceof ChangeIndexEvent) {
       ChangeIndexEvent changeIndexEvent = (ChangeIndexEvent) sourceEvent;
       ForwardedIndexingHandler.Operation operation = changeIndexEvent.deleted ? DELETE : INDEX;
@@ -75,15 +71,13 @@ public class ForwardedEventRouter {
     } else if (sourceEvent instanceof GroupIndexEvent) {
       GroupIndexEvent groupIndexEvent = (GroupIndexEvent) sourceEvent;
       indexGroupHandler.index(
-          AccountGroup.UUID.parse(groupIndexEvent.groupUUID), INDEX, Optional.of(groupIndexEvent));
+          new AccountGroup.UUID(groupIndexEvent.groupUUID), INDEX, Optional.of(groupIndexEvent));
     } else if (sourceEvent instanceof ProjectIndexEvent) {
       ProjectIndexEvent projectIndexEvent = (ProjectIndexEvent) sourceEvent;
       indexProjectHandler.index(
           new Project.NameKey(projectIndexEvent.projectName),
           INDEX,
           Optional.of(projectIndexEvent));
-    } else if (sourceEvent instanceof Event) {
-      streamEventHandler.dispatch(sourceEvent);
     } else {
       throw new UnsupportedOperationException(
           String.format("Cannot route event %s", sourceEvent.getType()));

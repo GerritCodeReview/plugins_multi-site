@@ -1,4 +1,4 @@
-// Copyright (C) 2017 The Android Open Source Project
+// Copyright (C) 2019 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,12 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
-import com.google.gerrit.server.events.Event;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 
-/** Forward indexing, stream events and cache evictions to the other master */
-public interface Forwarder {
-
+public interface IndexEventForwarder {
   /**
    * Forward a account indexing event to the other master.
    *
@@ -62,37 +59,4 @@ public interface Forwarder {
    * @return true if successful, otherwise false.
    */
   boolean indexProject(ProjectIndexEvent projectIndexEvent);
-
-  /**
-   * Forward a stream event to the other master.
-   *
-   * @param event the event to forward.
-   * @return true if successful, otherwise false.
-   */
-  boolean send(Event event);
-
-  /**
-   * Forward a cache eviction event to the other master.
-   *
-   * @param cacheName the name of the cache to evict an entry from.
-   * @param key the key identifying the entry to evict from the cache.
-   * @return true if successful, otherwise false.
-   */
-  boolean evict(String cacheName, Object key);
-
-  /**
-   * Forward an addition to the project list cache to the other master.
-   *
-   * @param projectName the name of the project to add to the project list cache
-   * @return true if successful, otherwise false.
-   */
-  boolean addToProjectList(String projectName);
-
-  /**
-   * Forward a removal from the project list cache to the other master.
-   *
-   * @param projectName the name of the project to remove from the project list cache
-   * @return true if successful, otherwise false.
-   */
-  boolean removeFromProjectList(String projectName);
 }

@@ -16,7 +16,6 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.server.index.account.AccountIndexer;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -26,9 +25,9 @@ import java.util.Optional;
 
 /**
  * Index an account using {@link AccountIndexer}. This class is meant to be used on the receiving
- * side of the {@link Forwarder} since it will prevent indexed account to be forwarded again causing
- * an infinite forwarding loop between the 2 nodes. It will also make sure no concurrent indexing is
- * done for the same account id
+ * side of the {@link IndexEventForwarder} since it will prevent indexed account to be forwarded
+ * again causing an infinite forwarding loop between the 2 nodes. It will also make sure no
+ * concurrent indexing is done for the same account id
  */
 @Singleton
 public class ForwardedIndexAccountHandler
@@ -42,8 +41,7 @@ public class ForwardedIndexAccountHandler
   }
 
   @Override
-  protected void doIndex(Account.Id id, Optional<AccountIndexEvent> event)
-      throws IOException, OrmException {
+  protected void doIndex(Account.Id id, Optional<AccountIndexEvent> event) throws IOException {
     indexer.index(id);
     log.debug("Account {} successfully indexed", id);
   }

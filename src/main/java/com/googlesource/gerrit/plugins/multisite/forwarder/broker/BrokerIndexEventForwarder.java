@@ -14,75 +14,45 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
-import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.INDEX_EVENT;
-import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.STREAM_EVENT;
-
-import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
-import org.apache.log4j.Logger;
 
-@Singleton
-class BrokerForwarder implements Forwarder {
-  private static final Logger log = Logger.getLogger(BrokerForwarder.class);
+public class BrokerIndexEventForwarder implements IndexEventForwarder {
   private final BrokerPublisher publisher;
 
   @Inject
-  BrokerForwarder(BrokerPublisher publisher) {
+  BrokerIndexEventForwarder(BrokerPublisher publisher) {
     this.publisher = publisher;
   }
 
   @Override
   public boolean indexAccount(AccountIndexEvent event) {
-    return publisher.publishEvent(INDEX_EVENT, event);
+    return publisher.publishEvent(EventFamily.INDEX_EVENT, event);
   }
 
   @Override
   public boolean indexChange(ChangeIndexEvent event) {
-    return publisher.publishEvent(INDEX_EVENT, event);
+    return publisher.publishEvent(EventFamily.INDEX_EVENT, event);
   }
 
   @Override
   public boolean indexGroup(GroupIndexEvent event) {
-    return publisher.publishEvent(INDEX_EVENT, event);
+    return publisher.publishEvent(EventFamily.INDEX_EVENT, event);
   }
 
   @Override
   public boolean deleteChangeFromIndex(ChangeIndexEvent event) {
-    return publisher.publishEvent(INDEX_EVENT, event);
+    return publisher.publishEvent(EventFamily.INDEX_EVENT, event);
   }
 
   @Override
   public boolean indexProject(ProjectIndexEvent event) {
-    return publisher.publishEvent(INDEX_EVENT, event);
-  }
-
-  @Override
-  public boolean send(Event event) {
-    return publisher.publishEvent(STREAM_EVENT, event);
-  }
-
-  @Override
-  public boolean evict(String cacheName, Object key) {
-    log.warn("Evicting cache via broker not yet implemented: " + cacheName);
-    return false;
-  }
-
-  @Override
-  public boolean addToProjectList(String projectName) {
-    log.warn("Adding project to cache via broker not yet implemented: " + projectName);
-    return false;
-  }
-
-  @Override
-  public boolean removeFromProjectList(String projectName) {
-    log.warn("Remove project from cache via broker not yet implemented: " + projectName);
-    return false;
+    return publisher.publishEvent(EventFamily.INDEX_EVENT, event);
   }
 }

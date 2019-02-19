@@ -29,13 +29,13 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarde
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.RestForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
+import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
 import com.googlesource.gerrit.plugins.multisite.peers.PeerInfoModule;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -56,7 +56,7 @@ class Module extends AbstractModule {
     install(new ForwarderModule());
 
     if (config.http().enabled()) {
-      install(new RestForwarderModule());
+      install(new RestForwarderModule(config.http()));
     }
     if (config.cache().synchronize()) {
       install(new CacheModule());
@@ -73,22 +73,14 @@ class Module extends AbstractModule {
     install(new PeerInfoModule(config.peerInfo().strategy()));
 
     if (config.kafkaSubscriber().enabled()) {
-      install(new KafkaConsumerModule());
+      install(new KafkaConsumerModule(config.kafkaSubscriber()));
+      install(new ForwardedEventRouterModule());
     }
-    if (config.kafkaProducer().enabled()) {
-      install(new BrokerForwarderModule());
+    if (config.kafkaPublisher().enabled()) {
+      install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
 
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
-  }
-
-  @Provides
-  @Singleton
-  @SharedDirectory
-  Path getSharedDirectory() throws IOException {
-    Path sharedDirectoryPath = config.main().sharedDirectory();
-    Files.createDirectories(sharedDirectoryPath);
-    return sharedDirectoryPath;
   }
 
   @Provides

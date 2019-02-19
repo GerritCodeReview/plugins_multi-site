@@ -75,6 +75,7 @@ For all the masters on all the sites:
   enable = true
   indexEventTopic = gerrit_index
   streamEventTopic = gerrit_stream
+  cacheEvictionEventTopic = gerrit_cache_eviction
 
 [kafka "subscriber"]
   enable = true

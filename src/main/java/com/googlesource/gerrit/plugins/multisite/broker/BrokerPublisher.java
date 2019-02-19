@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
-import com.googlesource.gerrit.plugins.multisite.kafka.consumer.BrokerReadEvent;
+import com.googlesource.gerrit.plugins.multisite.kafka.consumer.SourceAwareEventWrapper;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,12 +61,18 @@ public class BrokerPublisher implements LifecycleListener {
   }
 
   private String getPayload(Event event) {
-    JsonObject obj = gson.toJsonTree(event).getAsJsonObject();
-    BrokerReadEvent eventWithHeader =
-        new BrokerReadEvent(
-            new BrokerReadEvent.KafkaEventHeader(
-                UUID.randomUUID(), event.getType(), instanceId, System.currentTimeMillis()),
-            obj);
-    return gson.toJson(eventWithHeader);
+    return gson.toJson(toBrokerEvent(event));
+  }
+
+  private SourceAwareEventWrapper toBrokerEvent(Event event) {
+    JsonObject body = eventToJson(event);
+    return new SourceAwareEventWrapper(
+        new SourceAwareEventWrapper.KafkaEventHeader(
+            UUID.randomUUID(), event.getType(), instanceId, event.eventCreatedOn),
+        body);
+  }
+
+  private JsonObject eventToJson(Event event) {
+    return gson.toJsonTree(event).getAsJsonObject();
   }
 }

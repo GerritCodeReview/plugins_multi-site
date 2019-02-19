@@ -16,7 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
 import com.google.common.base.Objects;
 
-public class GroupIndexEvent extends MultiSiteEvent {
+public class GroupIndexEvent extends IndexEvent {
   static final String TYPE = "group-index";
 
   public String groupUUID;

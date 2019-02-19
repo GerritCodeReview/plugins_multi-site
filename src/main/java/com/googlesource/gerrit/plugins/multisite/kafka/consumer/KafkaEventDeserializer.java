@@ -23,7 +23,7 @@ import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
 @Singleton
-public class KafkaEventDeserializer implements Deserializer<BrokerReadEvent> {
+public class KafkaEventDeserializer implements Deserializer<SourceAwareEventWrapper> {
 
   private final StringDeserializer stringDeserializer = new StringDeserializer();
   private Provider<Gson> gsonProvider;
@@ -44,10 +44,15 @@ public class KafkaEventDeserializer implements Deserializer<BrokerReadEvent> {
   }
 
   @Override
-  public BrokerReadEvent deserialize(String topic, byte[] data) {
-    return gsonProvider
-        .get()
-        .fromJson(stringDeserializer.deserialize(topic, data), BrokerReadEvent.class);
+  public SourceAwareEventWrapper deserialize(String topic, byte[] data) {
+    final SourceAwareEventWrapper result =
+        gsonProvider
+            .get()
+            .fromJson(stringDeserializer.deserialize(topic, data), SourceAwareEventWrapper.class);
+
+    result.validate();
+
+    return result;
   }
 
   @Override

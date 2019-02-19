@@ -37,9 +37,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Index a change using {@link ChangeIndexer}. This class is meant to be used on the receiving side
- * of the {@link Forwarder} since it will prevent indexed change to be forwarded again causing an
- * infinite forwarding loop between the 2 nodes. It will also make sure no concurrent indexing is
- * done for the same change id
+ * of the {@link IndexEventForwarder} since it will prevent indexed change to be forwarded again
+ * causing an infinite forwarding loop between the 2 nodes. It will also make sure no concurrent
+ * indexing is done for the same change id
  */
 @Singleton
 public class ForwardedIndexChangeHandler

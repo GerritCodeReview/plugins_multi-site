@@ -19,8 +19,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.inject.Provider;
 import java.util.UUID;
+import org.apache.commons.lang3.Validate;
 
-public class BrokerReadEvent {
+public class SourceAwareEventWrapper {
 
   private final KafkaEventHeader header;
   private final JsonObject body;
@@ -67,15 +68,31 @@ public class BrokerReadEvent {
       return eventCreatedOn;
     }
 
+    public void validate() {
+      Validate.notNull(eventId, "EventId cannot be null");
+      Validate.notNull(eventType, "EventType cannot be null");
+      Validate.notNull(sourceInstanceId, "Source Instance ID cannot be null");
+    }
+
     @Override
     public String toString() {
-      return String.format(
-          "ts=%s, id=%s, type=%s, source=%s", eventCreatedOn, eventId, eventType, sourceInstanceId);
+      return "{" +
+                     "eventId=" + eventId +
+                     ", eventType='" + eventType + '\'' +
+                     ", sourceInstanceId=" + sourceInstanceId +
+                     ", eventCreatedOn=" + eventCreatedOn +
+                     '}';
     }
   }
 
-  public BrokerReadEvent(KafkaEventHeader header, JsonObject body) {
+  public SourceAwareEventWrapper(KafkaEventHeader header, JsonObject body) {
     this.header = header;
     this.body = body;
+  }
+
+  public void validate() {
+    Validate.notNull(header, "Header cannot be null");
+    Validate.notNull(body, "Body cannot be null");
+    header.validate();
   }
 }

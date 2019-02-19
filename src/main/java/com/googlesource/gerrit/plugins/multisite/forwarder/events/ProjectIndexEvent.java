@@ -16,7 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
 import com.google.common.base.Objects;
 
-public class ProjectIndexEvent extends MultiSiteEvent {
+public class ProjectIndexEvent extends IndexEvent {
   static final String TYPE = "project-index";
 
   public String projectName;

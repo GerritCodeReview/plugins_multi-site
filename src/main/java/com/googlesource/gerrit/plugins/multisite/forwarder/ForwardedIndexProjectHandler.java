@@ -25,9 +25,9 @@ import java.util.Optional;
 
 /**
  * Index a project using {@link ProjectIndexer}. This class is meant to be used on the receiving
- * side of the {@link Forwarder} since it will prevent indexed project to be forwarded again causing
- * an infinite forwarding loop between the 2 nodes. It will also make sure no concurrent indexing is
- * done for the same project name.
+ * side of the {@link IndexEventForwarder} since it will prevent indexed project to be forwarded
+ * again causing an infinite forwarding loop between the 2 nodes. It will also make sure no
+ * concurrent indexing is done for the same project name.
  */
 @Singleton
 public class ForwardedIndexProjectHandler

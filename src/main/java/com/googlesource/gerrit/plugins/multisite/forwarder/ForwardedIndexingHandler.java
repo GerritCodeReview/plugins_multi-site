@@ -24,9 +24,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Base class to handle forwarded indexing. This class is meant to be extended by classes used on
- * the receiving side of the {@link Forwarder} since it will prevent indexing to be forwarded again
- * causing an infinite forwarding loop between the 2 nodes. It will also make sure no concurrent
- * indexing is done for the same id.
+ * the receiving side of the {@link IndexEventForwarder} since it will prevent indexing to be
+ * forwarded again causing an infinite forwarding loop between the 2 nodes. It will also make sure
+ * no concurrent indexing is done for the same id.
  */
 public abstract class ForwardedIndexingHandler<T, E> {
   protected final Logger log = LoggerFactory.getLogger(getClass());

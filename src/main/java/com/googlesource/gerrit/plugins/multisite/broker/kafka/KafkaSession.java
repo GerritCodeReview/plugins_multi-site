@@ -31,13 +31,13 @@ import org.slf4j.LoggerFactory;
 
 public class KafkaSession implements BrokerSession {
   private static final Logger LOGGER = LoggerFactory.getLogger(KafkaSession.class);
-  private final Configuration.KafkaPublisher properties;
+  private final Configuration properties;
   private final UUID instanceId;
   private volatile Producer<String, String> producer;
 
   @Inject
   public KafkaSession(Configuration configuration, @InstanceId UUID instanceId) {
-    this.properties = configuration.kafkaProducer();
+    this.properties = configuration;
     this.instanceId = instanceId;
   }
 
@@ -56,13 +56,13 @@ public class KafkaSession implements BrokerSession {
       return;
     }
 
-    LOGGER.info("Connect to {}...", properties.getProperty("bootstrap.servers"));
+    LOGGER.info("Connect to {}...", properties.getKafka().getBootstrapServers());
     /* Need to make sure that the thread of the running connection uses
      * the correct class loader otherwize you can endup with hard to debug
      * ClassNotFoundExceptions
      */
     setConnectionClassLoader();
-    producer = new KafkaProducer<>(properties);
+    producer = new KafkaProducer<>(properties.kafkaPublisher());
     LOGGER.info("Connection established.");
   }
 
@@ -82,7 +82,7 @@ public class KafkaSession implements BrokerSession {
 
   @Override
   public boolean publishEvent(EventFamily eventType, String payload) {
-    return publishToTopic(properties.getTopic(eventType), payload);
+    return publishToTopic(properties.getKafka().getTopic(eventType), payload);
   }
 
   private boolean publishToTopic(String topic, String payload) {

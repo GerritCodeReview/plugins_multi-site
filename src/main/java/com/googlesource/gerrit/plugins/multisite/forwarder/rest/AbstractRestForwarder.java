@@ -1,4 +1,4 @@
-// Copyright (C) 2015 The Android Open Source Project
+// Copyright (C) 2019 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,17 +16,8 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.rest;
 
 import com.google.common.base.Joiner;
 import com.google.gerrit.extensions.annotations.PluginName;
-import com.google.gerrit.extensions.restapi.Url;
-import com.google.gerrit.server.events.Event;
-import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.cache.Constants;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.rest.HttpResponseHandler.HttpResult;
 import com.googlesource.gerrit.plugins.multisite.peers.PeerInfo;
 import java.io.IOException;
@@ -40,21 +31,20 @@ import org.apache.http.client.ClientProtocolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class RestForwarder implements Forwarder {
+class AbstractRestForwarder {
   enum RequestMethod {
     POST,
     DELETE
   }
 
-  private static final Logger log = LoggerFactory.getLogger(RestForwarder.class);
+  private static final Logger log = LoggerFactory.getLogger(AbstractRestForwarder.class);
 
   private final HttpSession httpSession;
   private final String pluginRelativePath;
   private final Configuration cfg;
   private final Provider<Set<PeerInfo>> peerInfoProvider;
 
-  @Inject
-  RestForwarder(
+  AbstractRestForwarder(
       HttpSession httpClient,
       @PluginName String pluginName,
       Configuration cfg,
@@ -65,72 +55,15 @@ class RestForwarder implements Forwarder {
     this.peerInfoProvider = peerInfoProvider;
   }
 
-  @Override
-  public boolean indexAccount(AccountIndexEvent event) {
-    return execute(RequestMethod.POST, "index account", "index/account", event.accountId, event);
+  protected boolean post(String action, String endpoint, Object id, Object payload) {
+    return execute(RequestMethod.POST, action, endpoint, id, payload);
   }
 
-  @Override
-  public boolean indexChange(ChangeIndexEvent event) {
-    return execute(
-        RequestMethod.POST,
-        "index change",
-        "index/change",
-        Url.encode(event.projectName) + "~" + event.changeId,
-        event);
+  protected boolean delete(String action, String endpoint, Object id, Object payload) {
+    return execute(RequestMethod.DELETE, action, endpoint, id, payload);
   }
 
-  @Override
-  public boolean deleteChangeFromIndex(ChangeIndexEvent event) {
-    return execute(
-        RequestMethod.DELETE, "delete change", "index/change", "~" + event.changeId, event);
-  }
-
-  @Override
-  public boolean indexGroup(GroupIndexEvent event) {
-    return execute(RequestMethod.POST, "index group", "index/group", event.groupUUID, event);
-  }
-
-  @Override
-  public boolean indexProject(ProjectIndexEvent event) {
-    return execute(
-        RequestMethod.POST, "index project", "index/project", Url.encode(event.projectName), event);
-  }
-
-  @Override
-  public boolean send(final Event event) {
-    return execute(RequestMethod.POST, "send event", "event", event.type, event);
-  }
-
-  @Override
-  public boolean evict(final String cacheName, final Object key) {
-    String json = GsonParser.toJson(cacheName, key);
-    return execute(RequestMethod.POST, "invalidate cache " + cacheName, "cache", cacheName, json);
-  }
-
-  @Override
-  public boolean addToProjectList(String projectName) {
-    return execute(
-        RequestMethod.POST,
-        "Update project_list, add ",
-        buildProjectListEndpoint(),
-        Url.encode(projectName));
-  }
-
-  @Override
-  public boolean removeFromProjectList(String projectName) {
-    return execute(
-        RequestMethod.DELETE,
-        "Update project_list, remove ",
-        buildProjectListEndpoint(),
-        Url.encode(projectName));
-  }
-
-  private static String buildProjectListEndpoint() {
-    return Joiner.on("/").join("cache", Constants.PROJECT_LIST);
-  }
-
-  private boolean execute(RequestMethod method, String action, String endpoint, Object id) {
+  protected boolean execute(RequestMethod method, String action, String endpoint, Object id) {
     return execute(method, action, endpoint, id, null);
   }
 

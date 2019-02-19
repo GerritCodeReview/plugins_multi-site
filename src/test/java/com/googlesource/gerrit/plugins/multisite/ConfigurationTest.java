@@ -35,22 +35,15 @@ import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.RETRY
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.SOCKET_TIMEOUT_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.USER_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.INDEX_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Main.DEFAULT_SHARED_DIRECTORY;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Main.MAIN_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Main.SHARED_DIRECTORY_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.PEER_INFO_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.PeerInfoStatic.STATIC_SUBSECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.PeerInfoStatic.URL_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.server.config.PluginConfigFactory;
-import com.google.gerrit.server.config.SitePaths;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
@@ -72,24 +65,18 @@ public class ConfigurationTest {
   private static final int MAX_TRIES = 5;
   private static final int RETRY_INTERVAL = 1000;
   private static final int THREAD_POOL_SIZE = 1;
-  private static final String SHARED_DIRECTORY = "/some/directory";
-  private static final Path SHARED_DIR_PATH = Paths.get(SHARED_DIRECTORY);
-  private static final String RELATIVE_SHARED_DIRECTORY = "relative/dir";
-  private static final Path SITE_PATH = Paths.get("/site_path");
 
   @Mock private PluginConfigFactory pluginConfigFactoryMock;
   private Config globalPluginConfig;
-  private SitePaths sitePaths;
 
   @Before
   public void setUp() throws IOException {
     globalPluginConfig = new Config();
     when(pluginConfigFactoryMock.getGlobalPluginConfig(PLUGIN_NAME)).thenReturn(globalPluginConfig);
-    sitePaths = new SitePaths(SITE_PATH);
   }
 
   private Configuration getConfiguration() {
-    return new Configuration(pluginConfigFactoryMock, PLUGIN_NAME, sitePaths);
+    return new Configuration(pluginConfigFactoryMock, PLUGIN_NAME);
   }
 
   @Test
@@ -223,27 +210,6 @@ public class ConfigurationTest {
 
     globalPluginConfig.setString(EVENT_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
     assertThat(getConfiguration().event().synchronize()).isTrue();
-  }
-
-  @Test
-  public void testGetDefaultSharedDirectory() throws Exception {
-    assertEquals(
-        getConfiguration().main().sharedDirectory(), sitePaths.resolve(DEFAULT_SHARED_DIRECTORY));
-  }
-
-  @Test
-  public void testGetSharedDirectory() throws Exception {
-    globalPluginConfig.setString(
-        MAIN_SECTION, null, SHARED_DIRECTORY_KEY, SHARED_DIR_PATH.toString());
-    assertEquals(getConfiguration().main().sharedDirectory(), SHARED_DIR_PATH);
-  }
-
-  @Test
-  public void testRelativeSharedDir() {
-    globalPluginConfig.setString(
-        MAIN_SECTION, null, SHARED_DIRECTORY_KEY, RELATIVE_SHARED_DIRECTORY);
-    assertEquals(
-        getConfiguration().main().sharedDirectory(), SITE_PATH.resolve(RELATIVE_SHARED_DIRECTORY));
   }
 
   @Test

@@ -21,9 +21,7 @@ import static org.mockito.Mockito.verify;
 
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.project.ProjectCache;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedProjectListUpdateHandler;
-
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,13 +48,13 @@ public class ForwardedProjectListUpdateHandlerTest {
 
   @Test
   public void testSuccessfulAdd() throws Exception {
-    handler.update(PROJECT_NAME, false);
+    handler.update(new ProjectListUpdateEvent(PROJECT_NAME, false));
     verify(projectCacheMock).onCreateProject(PROJECT_KEY);
   }
 
   @Test
   public void testSuccessfulRemove() throws Exception {
-    handler.update(PROJECT_NAME, true);
+    handler.update(new ProjectListUpdateEvent(PROJECT_NAME, true));
     verify(projectCacheMock).remove(PROJECT_KEY);
   }
 
@@ -74,7 +72,7 @@ public class ForwardedProjectListUpdateHandlerTest {
         .onCreateProject(PROJECT_KEY);
 
     assertThat(Context.isForwardedEvent()).isFalse();
-    handler.update(PROJECT_NAME, false);
+    handler.update(new ProjectListUpdateEvent(PROJECT_NAME, false));
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(projectCacheMock).onCreateProject(PROJECT_KEY);
@@ -94,7 +92,7 @@ public class ForwardedProjectListUpdateHandlerTest {
         .remove(PROJECT_KEY);
 
     assertThat(Context.isForwardedEvent()).isFalse();
-    handler.update(PROJECT_NAME, true);
+    handler.update(new ProjectListUpdateEvent(PROJECT_NAME, true));
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(projectCacheMock).remove(PROJECT_KEY);
@@ -113,7 +111,7 @@ public class ForwardedProjectListUpdateHandlerTest {
 
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
-      handler.update(PROJECT_NAME, false);
+      handler.update(new ProjectListUpdateEvent(PROJECT_NAME, false));
       fail("should have thrown a RuntimeException");
     } catch (RuntimeException e) {
       assertThat(e.getMessage()).isEqualTo(SOME_MESSAGE);
@@ -136,7 +134,7 @@ public class ForwardedProjectListUpdateHandlerTest {
 
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
-      handler.update(PROJECT_NAME, true);
+      handler.update(new ProjectListUpdateEvent(PROJECT_NAME, true));
       fail("should have thrown a RuntimeException");
     } catch (RuntimeException e) {
       assertThat(e.getMessage()).isEqualTo(SOME_MESSAGE);

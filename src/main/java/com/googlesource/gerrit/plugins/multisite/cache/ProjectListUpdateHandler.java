@@ -22,19 +22,20 @@ import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import java.util.concurrent.Executor;
 
 @Singleton
 public class ProjectListUpdateHandler implements NewProjectCreatedListener, ProjectDeletedListener {
 
-  private final DynamicSet<Forwarder> forwarders;
+  private final DynamicSet<ProjectListUpdateForwarder> forwarders;
   private final Executor executor;
   private final String pluginName;
 
   @Inject
   public ProjectListUpdateHandler(
-      DynamicSet<Forwarder> forwarders,
+      DynamicSet<ProjectListUpdateForwarder> forwarders,
       @CacheExecutor Executor executor,
       @PluginName String pluginName) {
     this.forwarders = forwarders;
@@ -56,33 +57,30 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
 
   private void process(ProjectEvent event, boolean delete) {
     if (!Context.isForwardedEvent()) {
-      executor.execute(new ProjectListUpdateTask(event.getProjectName(), delete));
+      executor.execute(
+          new ProjectListUpdateTask(new ProjectListUpdateEvent(event.getProjectName(), delete)));
     }
   }
 
   class ProjectListUpdateTask implements Runnable {
-    private final String projectName;
-    private final boolean delete;
+    private final ProjectListUpdateEvent projectListUpdateEvent;
 
-    ProjectListUpdateTask(String projectName, boolean delete) {
-      this.projectName = projectName;
-      this.delete = delete;
+    ProjectListUpdateTask(ProjectListUpdateEvent projectListUpdateEvent) {
+      this.projectListUpdateEvent = projectListUpdateEvent;
     }
 
     @Override
     public void run() {
-      if (delete) {
-        forwarders.forEach(f -> f.removeFromProjectList(projectName));
-      } else {
-        forwarders.forEach(f -> f.addToProjectList(projectName));
-      }
+      forwarders.forEach(f -> f.updateProjectList(projectListUpdateEvent));
     }
 
     @Override
     public String toString() {
       return String.format(
           "[%s] Update project list in target instance: %s '%s'",
-          pluginName, delete ? "remove" : "add", projectName);
+          pluginName,
+          projectListUpdateEvent.remove ? "remove" : "add",
+          projectListUpdateEvent.projectName);
     }
   }
 }

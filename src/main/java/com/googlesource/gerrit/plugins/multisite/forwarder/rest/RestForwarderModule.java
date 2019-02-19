@@ -17,14 +17,38 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.rest;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Forwarder;
+import com.googlesource.gerrit.plugins.multisite.Configuration.Http;
+import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 public class RestForwarderModule extends AbstractModule {
+  private final Http http;
+
+  public RestForwarderModule(Http http) {
+    this.http = http;
+  }
+
   @Override
   protected void configure() {
     bind(CloseableHttpClient.class).toProvider(HttpClientProvider.class).in(Scopes.SINGLETON);
     bind(HttpSession.class);
-    DynamicSet.bind(binder(), Forwarder.class).to(RestForwarder.class);
+    DynamicSet.bind(binder(), ProjectListUpdateForwarder.class).to(RestProjectListUpdateForwarder.class);
+    if (http.enabledEvent(EventFamily.INDEX_EVENT)) {
+      DynamicSet.bind(binder(), IndexEventForwarder.class).to(RestIndexEventForwarder.class);
+    }
+    if (http.enabledEvent(EventFamily.CACHE_EVENT)) {
+      DynamicSet.bind(binder(), CacheEvictionForwarder.class).to(RestCacheEvictionForwarder.class);
+    }
+    if (http.enabledEvent(EventFamily.STREAM_EVENT)) {
+      DynamicSet.bind(binder(), ProjectListUpdateForwarder.class)
+          .to(RestProjectListUpdateForwarder.class);
+    }
+    if (http.enabledEvent(EventFamily.STREAM_EVENT)) {
+      DynamicSet.bind(binder(), StreamEventForwarder.class).to(RestStreamEventForwarder.class);
+    }
   }
 }

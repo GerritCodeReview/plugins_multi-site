@@ -12,25 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite;
+package com.googlesource.gerrit.plugins.multisite.forwarder;
 
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 
-import com.google.inject.BindingAnnotation;
-import java.lang.annotation.Retention;
-
-/**
- * {@link java.nio.file.Path} to a directory accessible from both master instances.
- *
- * <p>Example of usage:
- *
- * <pre>
- * {@literal @Inject}
- * MyType(@SharedDirectory {@link java.nio.file.Path} dir) {
- *   Path someSharedFilePath = dir.resolve(&quot;someSharedFile.txt&quot;);
- * }
- * </pre>
- */
-@Retention(RUNTIME)
-@BindingAnnotation
-public @interface SharedDirectory {}
+/** Forward project list update events to the other master */
+public interface ProjectListUpdateForwarder {
+  /**
+   * Forward an update the project list cache event to the other master.
+   *
+   * @param projectListUpdateEvent the content of project list update event
+   * @return true if successful, otherwise false.
+   */
+  boolean updateProjectList(ProjectListUpdateEvent projectListUpdateEvent);
+}
