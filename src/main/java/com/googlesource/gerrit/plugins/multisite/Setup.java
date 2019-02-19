@@ -14,20 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.google.common.base.Strings;
-import com.google.gerrit.common.FileUtil;
-import com.google.gerrit.extensions.annotations.PluginName;
-import com.google.gerrit.pgm.init.api.ConsoleUI;
-import com.google.gerrit.pgm.init.api.InitFlags;
-import com.google.gerrit.pgm.init.api.InitStep;
-import com.google.gerrit.server.config.SitePaths;
-import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.Configuration.PeerInfoStrategy;
-
-import static com.googlesource.gerrit.plugins.multisite.Configuration.DEFAULT_THREAD_POOL_SIZE;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.PEER_INFO_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Cache.CACHE_SECTION;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.DEFAULT_THREAD_POOL_SIZE;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.CONNECTION_TIMEOUT_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.DEFAULT_MAX_TRIES;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.DEFAULT_RETRY_INTERVAL;
@@ -39,15 +27,21 @@ import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.SOCKE
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.USER_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.INDEX_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.MAX_TRIES_KEY;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Main.DEFAULT_SHARED_DIRECTORY;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Main.MAIN_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Main.SHARED_DIRECTORY_KEY;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.PEER_INFO_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.PeerInfo.STRATEGY_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.PeerInfoStatic.STATIC_SUBSECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.PeerInfoStatic.URL_KEY;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
 
+import com.google.common.base.Strings;
+import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.pgm.init.api.ConsoleUI;
+import com.google.gerrit.pgm.init.api.InitFlags;
+import com.google.gerrit.pgm.init.api.InitStep;
+import com.google.gerrit.server.config.SitePaths;
+import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.Configuration.PeerInfoStrategy;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.EnumSet;
 import java.util.Objects;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
@@ -80,24 +74,11 @@ public class Setup implements InitStep {
       Path pluginConfigFile = site.etc_dir.resolve(pluginName + ".config");
       config = new FileBasedConfig(pluginConfigFile.toFile(), FS.DETECTED);
       config.load();
-      configureMainSection();
       configurePeerInfoSection();
       configureHttp();
       configureCacheSection();
       configureIndexSection();
       flags.cfg.setBoolean("database", "h2", "autoServer", true);
-    }
-  }
-
-  private void configureMainSection() {
-    ui.header("Main section");
-    String sharedDirDefault = ui.isBatch() ? DEFAULT_SHARED_DIRECTORY : null;
-    String shared =
-        promptAndSetString(
-            "Shared directory", MAIN_SECTION, SHARED_DIRECTORY_KEY, sharedDirDefault);
-    if (!Strings.isNullOrEmpty(shared)) {
-      Path resolved = site.site_path.resolve(Paths.get(shared));
-      FileUtil.mkdirsOrDie(resolved, "cannot create " + resolved);
     }
   }
 

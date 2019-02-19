@@ -36,7 +36,6 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -82,15 +81,6 @@ class Module extends AbstractModule {
     }
 
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
-  }
-
-  @Provides
-  @Singleton
-  @SharedDirectory
-  Path getSharedDirectory() throws IOException {
-    Path sharedDirectoryPath = config.main().sharedDirectory();
-    Files.createDirectories(sharedDirectoryPath);
-    return sharedDirectoryPath;
   }
 
   @Provides
