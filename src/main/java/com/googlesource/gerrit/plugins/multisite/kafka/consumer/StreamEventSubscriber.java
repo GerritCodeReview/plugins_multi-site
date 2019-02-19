@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
+import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -34,8 +35,16 @@ public class StreamEventSubscriber extends AbstractKafkaSubcriber {
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
       StreamEventRouter eventRouter,
       Provider<Gson> gsonProvider,
-      @InstanceId UUID instanceId) {
-    super(configuration, keyDeserializer, valueDeserializer, eventRouter, gsonProvider, instanceId);
+      @InstanceId UUID instanceId,
+      OneOffRequestContext oneOffCtx) {
+    super(
+        configuration,
+        keyDeserializer,
+        valueDeserializer,
+        eventRouter,
+        gsonProvider,
+        instanceId,
+        oneOffCtx);
   }
 
   @Override

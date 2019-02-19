@@ -16,6 +16,8 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.server.permissions.PermissionBackendException;
+import com.google.gerrit.server.util.ManualRequestContext;
+import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gson.Gson;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Provider;
@@ -45,6 +47,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
   private final AtomicBoolean closed = new AtomicBoolean(false);
   private final Deserializer<SourceAwareEventWrapper> valueDeserializer;
   private final Configuration configuration;
+  private final OneOffRequestContext oneOffCtx;
 
   public AbstractKafkaSubcriber(
       Configuration configuration,
@@ -52,11 +55,13 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
       ForwardedEventRouter eventRouter,
       Provider<Gson> gsonProvider,
-      @InstanceId UUID instanceId) {
+      @InstanceId UUID instanceId,
+      OneOffRequestContext oneOffCtx) {
     this.configuration = configuration;
     this.eventRouter = eventRouter;
     this.gsonProvider = gsonProvider;
     this.instanceId = instanceId;
+    this.oneOffCtx = oneOffCtx;
     final ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
     try {
       Thread.currentThread().setContextClassLoader(AbstractKafkaSubcriber.class.getClassLoader());
@@ -95,7 +100,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
   protected abstract EventFamily getEventFamily();
 
   private void processRecord(ConsumerRecord<byte[], byte[]> consumerRecord) {
-    try {
+    try (ManualRequestContext ctx = oneOffCtx.open()) {
 
       SourceAwareEventWrapper event =
           valueDeserializer.deserialize(consumerRecord.topic(), consumerRecord.value());
