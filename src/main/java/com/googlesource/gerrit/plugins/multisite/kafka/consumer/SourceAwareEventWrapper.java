@@ -73,6 +73,16 @@ public class SourceAwareEventWrapper {
       Validate.notNull(eventType, "EventType cannot be null");
       Validate.notNull(sourceInstanceId, "Source Instance ID cannot be null");
     }
+
+    @Override
+    public String toString() {
+      return "{" +
+                     "eventId=" + eventId +
+                     ", eventType='" + eventType + '\'' +
+                     ", sourceInstanceId=" + sourceInstanceId +
+                     ", eventCreatedOn=" + eventCreatedOn +
+                     '}';
+    }
   }
 
   public SourceAwareEventWrapper(KafkaEventHeader header, JsonObject body) {
