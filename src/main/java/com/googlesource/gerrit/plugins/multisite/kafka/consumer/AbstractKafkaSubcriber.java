@@ -24,8 +24,6 @@ import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.UUID;
@@ -96,12 +94,6 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
 
   protected abstract EventFamily getEventFamily();
 
-  private String stringStackTrace(Exception ex) {
-    StringWriter sw = new StringWriter();
-    ex.printStackTrace(new PrintWriter(sw));
-    return sw.toString();
-  }
-
   private void processRecord(ConsumerRecord<byte[], byte[]> consumerRecord) {
     try {
 
@@ -117,19 +109,16 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
           logger.atInfo().log("Header[%s] Body[%s]", event.getHeader(), event.getBody());
           eventRouter.route(event.getEventBody(gsonProvider));
         } catch (IOException e) {
-          logger.atSevere().log(
-              "Malformed event '%s': [Exception: %s]",
-              event.getHeader().getEventType(), stringStackTrace(e));
+          logger.atSevere().withCause(e).log(
+              "Malformed event '%s': [Exception: %s]", event.getHeader().getEventType());
         } catch (PermissionBackendException | OrmException e) {
-          logger.atSevere().log(
-              "Cannot handle message %s: [Exception: %s]",
-              event.getHeader().getEventType(), stringStackTrace(e));
+          logger.atSevere().withCause(e).log(
+              "Cannot handle message %s: [Exception: %s]", event.getHeader().getEventType());
         }
       }
     } catch (Exception e) {
-      logger.atSevere().log(
-          "Malformed event '%s': [Exception: %s]",
-          new String(consumerRecord.value()), stringStackTrace(e));
+      logger.atSevere().withCause(e).log(
+          "Malformed event '%s': [Exception: %s]", new String(consumerRecord.value()));
     }
   }
 
