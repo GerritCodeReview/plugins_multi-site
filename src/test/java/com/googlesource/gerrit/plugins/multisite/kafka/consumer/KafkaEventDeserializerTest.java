@@ -16,13 +16,9 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.base.Supplier;
-import com.google.gerrit.server.events.Event;
-import com.google.gerrit.server.events.EventDeserializer;
-import com.google.gerrit.server.events.SupplierDeserializer;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.inject.Provider;
+import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +28,7 @@ public class KafkaEventDeserializerTest {
 
   @Before
   public void setUp() {
-    final Provider<Gson> gsonProvider = buildGsonProvider();
+    final Provider<Gson> gsonProvider = new GsonProvider();
     deserializer = new KafkaEventDeserializer(gsonProvider);
   }
 
@@ -66,14 +62,5 @@ public class KafkaEventDeserializerTest {
   @Test(expected = RuntimeException.class)
   public void kafkaEventDeserializerShouldFailForInvalidObjectButValidJSON() {
     deserializer.deserialize("ignored", "{}".getBytes());
-  }
-
-  private Provider<Gson> buildGsonProvider() {
-    Gson gson =
-        new GsonBuilder()
-            .registerTypeAdapter(Event.class, new EventDeserializer())
-            .registerTypeAdapter(Supplier.class, new SupplierDeserializer())
-            .create();
-    return () -> gson;
   }
 }

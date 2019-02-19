@@ -76,12 +76,17 @@ public class SourceAwareEventWrapper {
 
     @Override
     public String toString() {
-      return "{" +
-                     "eventId=" + eventId +
-                     ", eventType='" + eventType + '\'' +
-                     ", sourceInstanceId=" + sourceInstanceId +
-                     ", eventCreatedOn=" + eventCreatedOn +
-                     '}';
+      return "{"
+          + "eventId="
+          + eventId
+          + ", eventType='"
+          + eventType
+          + '\''
+          + ", sourceInstanceId="
+          + sourceInstanceId
+          + ", eventCreatedOn="
+          + eventCreatedOn
+          + '}';
     }
   }
 
