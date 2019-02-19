@@ -22,12 +22,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.PluginConfigFactory;
-import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -65,7 +62,6 @@ public class Configuration {
   static final boolean DEFAULT_ENABLE_PROCESSING = true;
   static final String KAFKA_SECTION = "kafka";
 
-  private final Main main;
   private final AutoReindex autoReindex;
   private final PeerInfo peerInfo;
   private final KafkaPublisher publisher;
@@ -83,10 +79,8 @@ public class Configuration {
   }
 
   @Inject
-  Configuration(
-      PluginConfigFactory pluginConfigFactory, @PluginName String pluginName, SitePaths site) {
+  Configuration(PluginConfigFactory pluginConfigFactory, @PluginName String pluginName) {
     Config cfg = pluginConfigFactory.getGlobalPluginConfig(pluginName);
-    main = new Main(site, cfg);
     autoReindex = new AutoReindex(cfg);
     peerInfo = new PeerInfo(cfg);
     switch (peerInfo.strategy()) {
@@ -112,10 +106,6 @@ public class Configuration {
 
   public KafkaPublisher kafkaPublisher() {
     return publisher;
-  }
-
-  public Main main() {
-    return main;
   }
 
   public AutoReindex autoReindex() {
@@ -171,31 +161,6 @@ public class Configuration {
       return value;
     }
     return defaultValue;
-  }
-
-  public static class Main {
-    public static final String MAIN_SECTION = "main";
-    public static final String SHARED_DIRECTORY_KEY = "sharedDirectory";
-    public static final String DEFAULT_SHARED_DIRECTORY = "shared";
-
-    private final Path sharedDirectory;
-
-    private Main(SitePaths site, Config cfg) {
-      String shared = Strings.emptyToNull(cfg.getString(MAIN_SECTION, null, SHARED_DIRECTORY_KEY));
-      if (shared == null) {
-        shared = DEFAULT_SHARED_DIRECTORY;
-      }
-      Path p = Paths.get(shared);
-      if (p.isAbsolute()) {
-        sharedDirectory = p;
-      } else {
-        sharedDirectory = site.resolve(shared);
-      }
-    }
-
-    public Path sharedDirectory() {
-      return sharedDirectory;
-    }
   }
 
   public static class AutoReindex {

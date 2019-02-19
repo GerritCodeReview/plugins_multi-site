@@ -15,10 +15,8 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.when;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -44,24 +42,6 @@ public class ModuleTest {
   @Before
   public void setUp() {
     module = new Module(configMock);
-  }
-
-  @Test
-  public void shouldCreateSharedDirectoryIfItDoesNotExist() throws Exception {
-    File configuredDirectory = tempFolder.newFolder();
-    assertThat(configuredDirectory.delete()).isTrue();
-    when(configMock.main().sharedDirectory()).thenReturn(configuredDirectory.toPath());
-
-    Path sharedDirectory = module.getSharedDirectory();
-    assertThat(sharedDirectory.toFile().exists()).isTrue();
-  }
-
-  @Test(expected = IOException.class)
-  public void shouldThrowAnExceptionIfAnErrorOccurCreatingSharedDirectory() throws Exception {
-    File configuredDirectory = tempFolder.newFile();
-    when(configMock.main().sharedDirectory()).thenReturn(configuredDirectory.toPath());
-
-    module.getSharedDirectory();
   }
 
   @Test
