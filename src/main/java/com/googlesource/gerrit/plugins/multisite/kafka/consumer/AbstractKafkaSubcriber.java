@@ -62,7 +62,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
       Thread.currentThread().setContextClassLoader(AbstractKafkaSubcriber.class.getClassLoader());
       this.consumer =
           new KafkaConsumer<>(
-              configuration.kafkaSubscriber().getProps(instanceId),
+              configuration.kafkaSubscriber().initPropsWith(instanceId),
               keyDeserializer,
               new ByteArrayDeserializer());
     } finally {

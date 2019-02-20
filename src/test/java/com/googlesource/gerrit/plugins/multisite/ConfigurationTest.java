@@ -35,6 +35,10 @@ import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.RETRY
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.SOCKET_TIMEOUT_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.USER_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.INDEX_SECTION;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.KAFKA_PROPERTY_PREFIX;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.KAFKA_SECTION;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.KafkaPublisher.KAFKA_PUBLISHER_SUBSECTION;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.KafkaSubscriber.KAFKA_SUBSCRIBER_SUBSECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.PEER_INFO_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.PeerInfoStatic.STATIC_SUBSECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.PeerInfoStatic.URL_KEY;
@@ -230,5 +234,83 @@ public class ConfigurationTest {
 
     globalPluginConfig.setBoolean(HEALTH_CHECK_SECTION, null, ENABLE_KEY, true);
     assertThat(getConfiguration().healthCheck().enabled()).isTrue();
+  }
+
+  @Test
+  public void kafkaSubscriberPropertiesAreSetWhenSectionIsEnabled() {
+    final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
+    final String kafkaPropertyValue = "aValue";
+    globalPluginConfig.setBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, true);
+    globalPluginConfig.setString(
+        KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
+
+    final String property = getConfiguration().kafkaSubscriber().getProperty("foo.bar.baz");
+
+    assertThat(property.equals(kafkaPropertyValue)).isTrue();
+  }
+
+  @Test
+  public void kafkaSubscriberPropertiesAreNotSetWhenSectionIsDisabled() {
+    final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
+    final String kafkaPropertyValue = "aValue";
+    globalPluginConfig.setBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
+    globalPluginConfig.setString(
+        KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
+
+    final String property = getConfiguration().kafkaSubscriber().getProperty("foo.bar.baz");
+
+    assertThat(property).isNull();
+  }
+
+  @Test
+  public void kafkaSubscriberPropertiesAreIgnoredWhenPrefixIsNotSet() {
+    final String kafkaPropertyName = "fooBarBaz";
+    final String kafkaPropertyValue = "aValue";
+    globalPluginConfig.setBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, true);
+    globalPluginConfig.setString(
+        KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
+
+    final String property = getConfiguration().kafkaSubscriber().getProperty("foo.bar.baz");
+
+    assertThat(property).isNull();
+  }
+
+  @Test
+  public void kafkaPublisherPropertiesAreSetWhenSectionIsEnabled() {
+    final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
+    final String kafkaPropertyValue = "aValue";
+    globalPluginConfig.setBoolean(KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, true);
+    globalPluginConfig.setString(
+        KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
+
+    final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
+
+    assertThat(property.equals(kafkaPropertyValue)).isTrue();
+  }
+
+  @Test
+  public void kafkaPublisherPropertiesAreIgnoredWhenPrefixIsNotSet() {
+    final String kafkaPropertyName = "fooBarBaz";
+    final String kafkaPropertyValue = "aValue";
+    globalPluginConfig.setBoolean(KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, true);
+    globalPluginConfig.setString(
+        KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
+
+    final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
+
+    assertThat(property).isNull();
+  }
+
+  @Test
+  public void kafkaPublisherPropertiesAreNotSetWhenSectionIsDisabled() {
+    final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
+    final String kafkaPropertyValue = "aValue";
+    globalPluginConfig.setBoolean(KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, false);
+    globalPluginConfig.setString(
+        KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
+
+    final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
+
+    assertThat(property).isNull();
   }
 }

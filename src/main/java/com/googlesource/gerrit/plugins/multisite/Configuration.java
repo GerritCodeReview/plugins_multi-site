@@ -54,6 +54,7 @@ public class Configuration {
 
   static final int DEFAULT_INDEX_MAX_TRIES = 2;
   static final int DEFAULT_INDEX_RETRY_INTERVAL = 30000;
+  private static final int DEFAULT_POLLING_INTERVAL_MS = 1000;
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
   static final String NUM_STRIPED_LOCKS = "numStripedLocks";
   static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
@@ -61,6 +62,7 @@ public class Configuration {
   static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
   static final boolean DEFAULT_ENABLE_PROCESSING = true;
   static final String KAFKA_SECTION = "kafka";
+  public static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
 
   private final AutoReindex autoReindex;
   private final PeerInfo peerInfo;
@@ -92,12 +94,12 @@ public class Configuration {
     }
     kafka = new Kafka(cfg);
     publisher = new KafkaPublisher(cfg);
+    subscriber = new KafkaSubscriber(cfg);
     http = new Http(cfg);
     cache = new Cache(cfg);
     event = new Event(cfg);
     index = new Index(cfg);
     healthCheck = new HealthCheck(cfg);
-    subscriber = new KafkaSubscriber(cfg);
   }
 
   public Kafka getKafka() {
@@ -250,10 +252,16 @@ public class Configuration {
     for (String section : config.getSubsections(KAFKA_SECTION)) {
       if (section.equals(subsectionName)) {
         for (String name : config.getNames(KAFKA_SECTION, section, true)) {
-          Object value = config.getString(KAFKA_SECTION, subsectionName, name);
-          String propName =
-              CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, name).replaceAll("-", ".");
-          target.put(propName, value);
+          if (name.startsWith(KAFKA_PROPERTY_PREFIX)) {
+            Object value = config.getString(KAFKA_SECTION, subsectionName, name);
+            String configProperty = name.replaceFirst(KAFKA_PROPERTY_PREFIX, "");
+            String propName =
+                CaseFormat.LOWER_CAMEL
+                    .to(CaseFormat.LOWER_HYPHEN, configProperty)
+                    .replaceAll("-", ".");
+            log.info("[{}] Setting kafka property: {} = {}", subsectionName, propName, value);
+            target.put(propName, value);
+          }
         }
       }
     }
@@ -341,25 +349,30 @@ public class Configuration {
     }
   }
 
-  public class KafkaSubscriber {
+  public class KafkaSubscriber extends Properties {
     static final String KAFKA_SUBSCRIBER_SUBSECTION = "subscriber";
 
     private final boolean enabled;
     private final Integer pollingInterval;
-    private final Properties props = new Properties();
     private Map<EventFamily, Boolean> eventsEnabled;
     private final Config cfg;
 
     public KafkaSubscriber(Config cfg) {
       this.pollingInterval =
-          cfg.getInt(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, "pollingIntervalMs", 1000);
+          cfg.getInt(
+              KAFKA_SECTION,
+              KAFKA_SUBSCRIBER_SUBSECTION,
+              "pollingIntervalMs",
+              DEFAULT_POLLING_INTERVAL_MS);
       this.cfg = cfg;
 
       enabled = cfg.getBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
 
       eventsEnabled = eventsEnabled(cfg, KAFKA_SUBSCRIBER_SUBSECTION);
 
-      applyKafkaConfig(cfg, KAFKA_SUBSCRIBER_SUBSECTION, props);
+      if (enabled) {
+        applyKafkaConfig(cfg, KAFKA_SUBSCRIBER_SUBSECTION, this);
+      }
     }
 
     public boolean enabled() {
@@ -370,13 +383,13 @@ public class Configuration {
       return eventsEnabled.get(eventFamily);
     }
 
-    public Properties getProps(UUID instanceId) {
+    public Properties initPropsWith(UUID instanceId) {
       String groupId =
           getString(
               cfg, KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, "groupId", instanceId.toString());
-      props.put("group.id", groupId);
+      this.put("group.id", groupId);
 
-      return props;
+      return this;
     }
 
     public Integer getPollingInterval() {
