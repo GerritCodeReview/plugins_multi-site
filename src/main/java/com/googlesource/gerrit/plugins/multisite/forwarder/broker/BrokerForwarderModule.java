@@ -14,10 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
-import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gson.Gson;
-import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration.KafkaPublisher;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
@@ -30,7 +29,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForw
 import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 
-public class BrokerForwarderModule extends AbstractModule {
+public class BrokerForwarderModule extends LifecycleModule {
   private final KafkaPublisher kafkaPublisher;
 
   public BrokerForwarderModule(KafkaPublisher kafkaPublisher) {
@@ -40,7 +39,7 @@ public class BrokerForwarderModule extends AbstractModule {
   @Override
   protected void configure() {
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
-    DynamicSet.bind(binder(), LifecycleListener.class).to(BrokerPublisher.class);
+    listener().to(BrokerPublisher.class);
     bind(BrokerSession.class).to(KafkaSession.class);
 
     if (kafkaPublisher.enabledEvent(EventFamily.INDEX_EVENT)) {

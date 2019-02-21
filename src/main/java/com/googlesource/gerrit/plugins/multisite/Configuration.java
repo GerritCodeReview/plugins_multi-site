@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
@@ -64,7 +65,11 @@ public class Configuration {
 
   @Inject
   Configuration(PluginConfigFactory pluginConfigFactory, @PluginName String pluginName) {
-    Config cfg = pluginConfigFactory.getGlobalPluginConfig(pluginName);
+    this(pluginConfigFactory.getGlobalPluginConfig(pluginName));
+  }
+
+  @VisibleForTesting
+  public Configuration(Config cfg) {
     kafka = new Kafka(cfg);
     publisher = new KafkaPublisher(cfg);
     subscriber = new KafkaSubscriber(cfg);
