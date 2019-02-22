@@ -280,6 +280,8 @@ public class Configuration {
   }
 
   public class KafkaSubscriber extends Properties {
+    private static final long serialVersionUID = 1L;
+
     static final String KAFKA_SUBSCRIBER_SUBSECTION = "subscriber";
 
     private final boolean enabled;
