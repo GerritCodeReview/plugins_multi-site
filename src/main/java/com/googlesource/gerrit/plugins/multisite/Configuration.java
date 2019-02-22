@@ -62,10 +62,6 @@ public class Configuration {
   private final KafkaSubscriber subscriber;
   private final Kafka kafka;
 
-  public enum PeerInfoStrategy {
-    STATIC
-  }
-
   @Inject
   Configuration(PluginConfigFactory pluginConfigFactory, @PluginName String pluginName) {
     Config cfg = pluginConfigFactory.getGlobalPluginConfig(pluginName);
