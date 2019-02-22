@@ -22,8 +22,6 @@ import static com.googlesource.gerrit.plugins.multisite.Configuration.ENABLE_KEY
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Event.EVENT_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Forwarding.DEFAULT_SYNCHRONIZE;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Forwarding.SYNCHRONIZE_KEY;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.HealthCheck.DEFAULT_HEALTH_CHECK_ENABLED;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.HealthCheck.HEALTH_CHECK_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.INDEX_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.KAFKA_PROPERTY_PREFIX;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.KAFKA_SECTION;
@@ -132,17 +130,6 @@ public class ConfigurationTest {
     assertThat(getConfiguration().cache().patterns())
         .containsExactly("^my_cache.*", "other")
         .inOrder();
-  }
-
-  @Test
-  public void testHealthCheckEnabled() throws Exception {
-    assertThat(getConfiguration().healthCheck().enabled()).isEqualTo(DEFAULT_HEALTH_CHECK_ENABLED);
-
-    globalPluginConfig.setBoolean(HEALTH_CHECK_SECTION, null, ENABLE_KEY, false);
-    assertThat(getConfiguration().healthCheck().enabled()).isFalse();
-
-    globalPluginConfig.setBoolean(HEALTH_CHECK_SECTION, null, ENABLE_KEY, true);
-    assertThat(getConfiguration().healthCheck().enabled()).isTrue();
   }
 
   @Test

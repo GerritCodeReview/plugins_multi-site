@@ -61,7 +61,6 @@ public class Configuration {
   private final Index index;
   private final KafkaSubscriber subscriber;
   private final Kafka kafka;
-  private HealthCheck healthCheck;
 
   public enum PeerInfoStrategy {
     STATIC
@@ -76,7 +75,6 @@ public class Configuration {
     cache = new Cache(cfg);
     event = new Event(cfg);
     index = new Index(cfg);
-    healthCheck = new HealthCheck(cfg);
   }
 
   public Kafka getKafka() {
@@ -97,10 +95,6 @@ public class Configuration {
 
   public Index index() {
     return index;
-  }
-
-  public HealthCheck healthCheck() {
-    return healthCheck;
   }
 
   public KafkaSubscriber kafkaSubscriber() {
@@ -389,21 +383,6 @@ public class Configuration {
 
     public int numStripedLocks() {
       return numStripedLocks;
-    }
-  }
-
-  public static class HealthCheck {
-    static final String HEALTH_CHECK_SECTION = "healthCheck";
-    static final boolean DEFAULT_HEALTH_CHECK_ENABLED = true;
-
-    private final boolean enabled;
-
-    private HealthCheck(Config cfg) {
-      enabled = cfg.getBoolean(HEALTH_CHECK_SECTION, ENABLE_KEY, DEFAULT_HEALTH_CHECK_ENABLED);
-    }
-
-    public boolean enabled() {
-      return enabled;
     }
   }
 }
