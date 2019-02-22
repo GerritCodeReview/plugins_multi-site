@@ -17,6 +17,8 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventDispatcher;
 import com.google.gerrit.server.permissions.PermissionBackendException;
+import com.google.gerrit.server.util.ManualRequestContext;
+import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -33,10 +35,12 @@ public class ForwardedEventHandler {
   private static final Logger log = LoggerFactory.getLogger(ForwardedEventHandler.class);
 
   private final EventDispatcher dispatcher;
+  private final OneOffRequestContext oneOffCtx;
 
   @Inject
-  public ForwardedEventHandler(EventDispatcher dispatcher) {
+  public ForwardedEventHandler(EventDispatcher dispatcher, OneOffRequestContext oneOffCtx) {
     this.dispatcher = dispatcher;
+    this.oneOffCtx = oneOffCtx;
   }
 
   /**
@@ -46,7 +50,7 @@ public class ForwardedEventHandler {
    * @throws OrmException If an error occur while retrieving the change the event belongs to.
    */
   public void dispatch(Event event) throws OrmException, PermissionBackendException {
-    try {
+    try (ManualRequestContext ctx = oneOffCtx.open()) {
       Context.setForwardedEvent(true);
       log.debug("dispatching event {}", event.getType());
       dispatcher.postEvent(event);

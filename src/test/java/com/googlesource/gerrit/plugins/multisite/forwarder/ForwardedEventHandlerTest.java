@@ -22,10 +22,8 @@ import static org.mockito.Mockito.verify;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventDispatcher;
 import com.google.gerrit.server.events.ProjectCreatedEvent;
+import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gwtorm.server.OrmException;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,11 +38,12 @@ public class ForwardedEventHandlerTest {
 
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private EventDispatcher dispatcherMock;
+  @Mock OneOffRequestContext oneOffCtxMock;
   private ForwardedEventHandler handler;
 
   @Before
   public void setUp() throws Exception {
-    handler = new ForwardedEventHandler(dispatcherMock);
+    handler = new ForwardedEventHandler(dispatcherMock, oneOffCtxMock);
   }
 
   @Test

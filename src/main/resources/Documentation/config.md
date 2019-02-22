@@ -8,22 +8,9 @@ should be specified in `$site_path/etc/@PLUGIN@.config` file:
 File '@PLUGIN@.config'
 --------------------
 
-### Static definition of the multi-site nodes.
+## Sample configuration.
 
 ```
-[autoReindex]
-  enabled = false
-[peerInfo]
-  strategy = static
-[peerInfo "static"]
-  url = first_target_instance_url
-  url = second_target_instance_url
-[http]
-  enabled = true
-  
-  user = username
-  password = password
-
 [kafka]
   bootstrapServers = kafka-1:9092,kafka-2:9092,kafka-3:9092
 
@@ -35,91 +22,29 @@ File '@PLUGIN@.config'
 [kafka "publisher"]
   enabled = true
 
+  indexEventEnabled = true
+  cacheEventEnabled = true
+  projectListEventEnabled = true
+  streamEventEnabled = true
+
+  KafkaProp-compressionType = none
+  KafkaProp-deliveryTimeoutMs = 60000
+
 [kafka "subscriber"]
   enabled = true
-  
   pollingIntervalMs = 1000
-  autoCommitIntervalMs = 1000
 
+  KafkaProp-enableAutoCommit = true
+  KafkaProp-autoCommitIntervalMs = 1000
+  KafkaProp-autoCommitIntervalMs = 5000
+
+  indexEventEnabled = true
+  cacheEventEnabled = true
+  projectListEventEnabled = true
+  streamEventEnabled = true
 ```
 
-```autoReindex.enabled```
-:   Enable the tracking of the latest change indexed under data/multi-site
-    for each of the indexes. At startup scans all the changes, accounts and groups
-    and reindex the ones that have been updated by other nodes while the server was down.
-    When not specified, the default is "false", that means no automatic tracking
-    and indexing at start.
-
-```autoReindex.delay```
-:   When autoReindex is enabled, indicates the delay aftere the plugin startup,
-    before triggering the conditional reindexing of all changes, accounts and groups.
-    Delay is expressed in Gerrit time values:
-    * s, sec, second, seconds
-    * m, min, minute, minutes
-    * h, hr, hour, hours
-    * d, day, days
-    * w, week, weeks (`1 week` is treated as `7 days`)
-    * mon, month, months (`1 month` is treated as `30 days`)
-    * y, year, years (`1 year` is treated as `365 days`)
-    If a time unit suffix is not specified, `hours` is assumed.
-    Defaults to 24 hours.
-
-    When not specified, the default is "10 seconds".
-
-```autoReindex.pollInterval```
-:   When autoReindex is enabled, indicates the interval between the conditional
-    reindexing of all changes, accounts and groups.
-    Delay is expressed in Gerrit time values as in [autoReindex.delay](#autoReindex.delay).
-    When not specified, polling of conditional reindexing is disabled.
-
-```autoReindex.interval```
-:   Enable the tracking of the latest change indexed under data/multi-site
-    for each of the indexes. At startup scans all the changes, accounts and groups
-    and reindex the ones that have been updated by other nodes while the server was down.
-    When not specified, the default is "false", that means no automatic tracking
-    and indexing at start.
-
-```peerInfo.strategy```
-:   Strategy to find other peers. The only supported strategy is `static`.
-    Defaults to `static`.
-* The `static` strategy allows to staticly configure the peer gerrit instance using
-the configuration parameter `peerInfo.static.url`.
-
-```peerInfo.static.url```
-:   Specify the URL for the peer instance. If more than one peer instance is to be
-    configured, add as many url entries as necessary.
-
-```http.user```
-:   Username to connect to the peer instance.
-
-```http.password```
-:   Password to connect to the peer instance.
-
-@PLUGIN@ plugin uses REST API calls to keep the target instance in-sync. It
-is possible to customize the parameters of the underlying http client doing these
-calls by specifying the following fields:
-
-```http.connectionTimeout```
-:   Maximum interval of time in milliseconds the plugin waits for a connection
-    to the target instance. When not specified, the default value is set to 5000ms.
-
-```http.socketTimeout```
-:   Maximum interval of time in milliseconds the plugin waits for a response from the
-    target instance once the connection has been established. When not specified,
-    the default value is set to 5000ms.
-
-```http.maxTries```
-:   Maximum number of times the plugin should attempt when calling a REST API in
-    the target instance. Setting this value to 0 will disable retries. When not
-    specified, the default value is 360. After this number of failed tries, an
-    error is logged.
-
-```http.retryInterval```
-:   The interval of time in milliseconds between the subsequent auto-retries.
-    When not specified, the default value is set to 10000ms.
-
-NOTE: the default settings for `http.timeout` and `http.maxTries` ensure that
-the plugin will keep retrying to forward a message for one hour.
+## Configuration parameters
 
 ```cache.synchronize```
 :   Whether to synchronize cache evictions.
@@ -163,9 +88,6 @@ the plugin will keep retrying to forward a message for one hour.
 :   The interval of time in milliseconds between the subsequent auto-retries.
     Defaults to 30000 (30 seconds).
 
-```healthcheck.enable```
-:   Whether to enable the health check endpoint. Defaults to 'true'.
-
 ```kafka.bootstrapServers```
 :	List of Kafka broker hosts:port to use for publishing events to the message broker
 
@@ -190,43 +112,58 @@ the plugin will keep retrying to forward a message for one hour.
     Defaults: false
 
 ```kafka.publisher.indexEventEnabled```
-:   Enable publication of index events
+:   Enable publication of index events, ignored when `kafka.publisher.enabled` is false
     Defaults: true
 
 ```kafka.publisher.cacheEventEnabled```
-:   Enable publication of cache events
+:   Enable publication of cache events, ignored when `kafka.publisher.enabled` is false
     Defaults: true
 
 ```kafka.publisher.projectListEventEnabled```
-:   Enable publication of project list events
+:   Enable publication of project list events, ignored when `kafka.publisher.enabled` is false
     Defaults: true
 
 ```kafka.publisher.streamEventEnabled```    
-:   Enable publication of stream events
+:   Enable publication of stream events, ignored when `kafka.publisher.enabled` is false
     Defaults: true
 
 ```kafka.subscriber.enabled```
-:   Enable consuming of Kafka events
+:   Enable consuming of events from Kafka
     Defaults: false
 
 ```kafka.subscriber.indexEventEnabled```
-:   Enable consumption of index events
+:   Enable consumption of index events, ignored when `kafka.subscriber.enabled` is false
     Defaults: true
 
 ```kafka.subscriber.cacheEventEnabled```
-:   Enable consumption of cache events
+:   Enable consumption of cache events, ignored when `kafka.subscriber.enabled` is false
     Defaults: true
 
 ```kafka.subscriber.projectListEventEnabled```
-:   Enable consumption of project list events
+:   Enable consumption of project list events, ignored when `kafka.subscriber.enabled` is false
     Defaults: true
 
 ```kafka.subscriber.streamEventEnabled```    
-:   Enable consumption of stream events
+:   Enable consumption of stream events, ignored when `kafka.subscriber.enabled` is false
     Defaults: true
 
 ```kafka.subscriber.pollingIntervalMs```
 :   Polling interval for checking incoming events
+    Defaults: 1000
 
-```kafka.subscriber.autoCommitIntervalMs```
-:   Interval for committing incoming events automatically after consumption
+#### Custom kafka properties:
+
+In addition to the above settings, custom Kafka properties can be explicitly set for `publisher` and `subscriber`.
+In order to be acknowledged, these properties need to be prefixed with the `KafkaProp-` prefix and then camelCased,
+as follows: `KafkaProp-yourPropertyValue`
+
+For example, if you want to set the `auto.commit.interval.ms` property for your consumers, you will need to configure
+this property as `KafkaProp-autoCommitIntervalMs`.
+
+**NOTE**: custom kafka properties will be ignored when the relevant subsection is disabled (i.e. `kafka.subscriber.enabled`
+and/or `kafka.publisher.enabled` are set to `false`).
+
+The complete list of available settings can be found directly in the kafka website:
+
+* **Publisher**: https://kafka.apache.org/documentation/#producerconfigs
+* **Subscriber**: https://kafka.apache.org/documentation/#consumerconfigs

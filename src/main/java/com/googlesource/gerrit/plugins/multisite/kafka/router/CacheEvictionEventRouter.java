@@ -19,8 +19,8 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEntry;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedCacheEvictionHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.GsonParser;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.rest.GsonParser;
 
 @Singleton
 public class CacheEvictionEventRouter implements ForwardedCacheEvictionEventRouter {
@@ -32,8 +32,7 @@ public class CacheEvictionEventRouter implements ForwardedCacheEvictionEventRout
   }
 
   @Override
-  public void route(CacheEvictionEvent sourceEvent) throws CacheNotFoundException {
-    CacheEvictionEvent cacheEvictionEvent = (CacheEvictionEvent) sourceEvent;
+  public void route(CacheEvictionEvent cacheEvictionEvent) throws CacheNotFoundException {
     Object parsedKey =
         GsonParser.fromJson(cacheEvictionEvent.cacheName, cacheEvictionEvent.key.toString());
     cacheEvictionHanlder.evict(CacheEntry.from(cacheEvictionEvent.cacheName, parsedKey));

@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.broker;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.events.Event;
 import com.google.gson.Gson;
@@ -72,7 +73,8 @@ public class BrokerPublisher implements LifecycleListener {
         body);
   }
 
-  private JsonObject eventToJson(Event event) {
+  @VisibleForTesting
+  public JsonObject eventToJson(Event event) {
     return gson.toJsonTree(event).getAsJsonObject();
   }
 }

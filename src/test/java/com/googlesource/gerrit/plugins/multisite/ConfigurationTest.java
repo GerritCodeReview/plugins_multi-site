@@ -22,29 +22,16 @@ import static com.googlesource.gerrit.plugins.multisite.Configuration.ENABLE_KEY
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Event.EVENT_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Forwarding.DEFAULT_SYNCHRONIZE;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Forwarding.SYNCHRONIZE_KEY;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.HealthCheck.DEFAULT_HEALTH_CHECK_ENABLED;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.HealthCheck.HEALTH_CHECK_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.CONNECTION_TIMEOUT_KEY;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.DEFAULT_MAX_TRIES;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.DEFAULT_RETRY_INTERVAL;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.DEFAULT_TIMEOUT_MS;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.HTTP_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.MAX_TRIES_KEY;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.PASSWORD_KEY;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.RETRY_INTERVAL_KEY;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.SOCKET_TIMEOUT_KEY;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Http.USER_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.INDEX_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.PEER_INFO_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.PeerInfoStatic.STATIC_SUBSECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.PeerInfoStatic.URL_KEY;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.KAFKA_PROPERTY_PREFIX;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.KAFKA_SECTION;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.KafkaPublisher.KAFKA_PUBLISHER_SUBSECTION;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.KafkaSubscriber.KAFKA_SUBSCRIBER_SUBSECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.server.config.PluginConfigFactory;
-import java.io.IOException;
-import java.util.List;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,95 +44,19 @@ public class ConfigurationTest {
   private static final String INVALID_BOOLEAN = "invalidBoolean";
   private static final String INVALID_INT = "invalidInt";
   private static final String PLUGIN_NAME = "multi-site";
-  private static final String PASS = "fakePass";
-  private static final String USER = "fakeUser";
-  private static final String URL = "http://fakeUrl";
-  private static final List<String> URLS = ImmutableList.of(URL, "http://anotherUrl/");
-  private static final int TIMEOUT = 5000;
-  private static final int MAX_TRIES = 5;
-  private static final int RETRY_INTERVAL = 1000;
   private static final int THREAD_POOL_SIZE = 1;
 
   @Mock private PluginConfigFactory pluginConfigFactoryMock;
   private Config globalPluginConfig;
 
   @Before
-  public void setUp() throws IOException {
+  public void setUp() {
     globalPluginConfig = new Config();
     when(pluginConfigFactoryMock.getGlobalPluginConfig(PLUGIN_NAME)).thenReturn(globalPluginConfig);
   }
 
   private Configuration getConfiguration() {
     return new Configuration(pluginConfigFactoryMock, PLUGIN_NAME);
-  }
-
-  @Test
-  public void testGetUrls() throws Exception {
-    assertThat(getConfiguration().peerInfoStatic().urls()).isEmpty();
-
-    globalPluginConfig.setStringList(PEER_INFO_SECTION, STATIC_SUBSECTION, URL_KEY, URLS);
-    assertThat(getConfiguration().peerInfoStatic().urls())
-        .containsAllIn(ImmutableList.of(URL, "http://anotherUrl"));
-  }
-
-  @Test
-  public void testGetUser() throws Exception {
-    assertThat(getConfiguration().http().user()).isEmpty();
-
-    globalPluginConfig.setString(HTTP_SECTION, null, USER_KEY, USER);
-    assertThat(getConfiguration().http().user()).isEqualTo(USER);
-  }
-
-  @Test
-  public void testGetPassword() throws Exception {
-    assertThat(getConfiguration().http().password()).isEmpty();
-
-    globalPluginConfig.setString(HTTP_SECTION, null, PASSWORD_KEY, PASS);
-    assertThat(getConfiguration().http().password()).isEqualTo(PASS);
-  }
-
-  @Test
-  public void testGetConnectionTimeout() throws Exception {
-    assertThat(getConfiguration().http().connectionTimeout()).isEqualTo(DEFAULT_TIMEOUT_MS);
-
-    globalPluginConfig.setInt(HTTP_SECTION, null, CONNECTION_TIMEOUT_KEY, TIMEOUT);
-    assertThat(getConfiguration().http().connectionTimeout()).isEqualTo(TIMEOUT);
-
-    globalPluginConfig.setString(HTTP_SECTION, null, CONNECTION_TIMEOUT_KEY, INVALID_INT);
-    assertThat(getConfiguration().http().connectionTimeout()).isEqualTo(DEFAULT_TIMEOUT_MS);
-  }
-
-  @Test
-  public void testGetSocketTimeout() throws Exception {
-    assertThat(getConfiguration().http().socketTimeout()).isEqualTo(DEFAULT_TIMEOUT_MS);
-
-    globalPluginConfig.setInt(HTTP_SECTION, null, SOCKET_TIMEOUT_KEY, TIMEOUT);
-    assertThat(getConfiguration().http().socketTimeout()).isEqualTo(TIMEOUT);
-
-    globalPluginConfig.setString(HTTP_SECTION, null, SOCKET_TIMEOUT_KEY, INVALID_INT);
-    assertThat(getConfiguration().http().socketTimeout()).isEqualTo(DEFAULT_TIMEOUT_MS);
-  }
-
-  @Test
-  public void testGetMaxTries() throws Exception {
-    assertThat(getConfiguration().http().maxTries()).isEqualTo(DEFAULT_MAX_TRIES);
-
-    globalPluginConfig.setInt(HTTP_SECTION, null, MAX_TRIES_KEY, MAX_TRIES);
-    assertThat(getConfiguration().http().maxTries()).isEqualTo(MAX_TRIES);
-
-    globalPluginConfig.setString(HTTP_SECTION, null, MAX_TRIES_KEY, INVALID_INT);
-    assertThat(getConfiguration().http().maxTries()).isEqualTo(DEFAULT_MAX_TRIES);
-  }
-
-  @Test
-  public void testGetRetryInterval() throws Exception {
-    assertThat(getConfiguration().http().retryInterval()).isEqualTo(DEFAULT_RETRY_INTERVAL);
-
-    globalPluginConfig.setInt(HTTP_SECTION, null, RETRY_INTERVAL_KEY, RETRY_INTERVAL);
-    assertThat(getConfiguration().http().retryInterval()).isEqualTo(RETRY_INTERVAL);
-
-    globalPluginConfig.setString(HTTP_SECTION, null, RETRY_INTERVAL_KEY, INVALID_INT);
-    assertThat(getConfiguration().http().retryInterval()).isEqualTo(DEFAULT_RETRY_INTERVAL);
   }
 
   @Test
@@ -222,13 +133,80 @@ public class ConfigurationTest {
   }
 
   @Test
-  public void testHealthCheckEnabled() throws Exception {
-    assertThat(getConfiguration().healthCheck().enabled()).isEqualTo(DEFAULT_HEALTH_CHECK_ENABLED);
+  public void kafkaSubscriberPropertiesAreSetWhenSectionIsEnabled() {
+    final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
+    final String kafkaPropertyValue = "aValue";
+    globalPluginConfig.setBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, true);
+    globalPluginConfig.setString(
+        KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
 
-    globalPluginConfig.setBoolean(HEALTH_CHECK_SECTION, null, ENABLE_KEY, false);
-    assertThat(getConfiguration().healthCheck().enabled()).isFalse();
+    final String property = getConfiguration().kafkaSubscriber().getProperty("foo.bar.baz");
 
-    globalPluginConfig.setBoolean(HEALTH_CHECK_SECTION, null, ENABLE_KEY, true);
-    assertThat(getConfiguration().healthCheck().enabled()).isTrue();
+    assertThat(property.equals(kafkaPropertyValue)).isTrue();
+  }
+
+  @Test
+  public void kafkaSubscriberPropertiesAreNotSetWhenSectionIsDisabled() {
+    final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
+    final String kafkaPropertyValue = "aValue";
+    globalPluginConfig.setBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
+    globalPluginConfig.setString(
+        KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
+
+    final String property = getConfiguration().kafkaSubscriber().getProperty("foo.bar.baz");
+
+    assertThat(property).isNull();
+  }
+
+  @Test
+  public void kafkaSubscriberPropertiesAreIgnoredWhenPrefixIsNotSet() {
+    final String kafkaPropertyName = "fooBarBaz";
+    final String kafkaPropertyValue = "aValue";
+    globalPluginConfig.setBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, true);
+    globalPluginConfig.setString(
+        KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
+
+    final String property = getConfiguration().kafkaSubscriber().getProperty("foo.bar.baz");
+
+    assertThat(property).isNull();
+  }
+
+  @Test
+  public void kafkaPublisherPropertiesAreSetWhenSectionIsEnabled() {
+    final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
+    final String kafkaPropertyValue = "aValue";
+    globalPluginConfig.setBoolean(KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, true);
+    globalPluginConfig.setString(
+        KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
+
+    final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
+
+    assertThat(property.equals(kafkaPropertyValue)).isTrue();
+  }
+
+  @Test
+  public void kafkaPublisherPropertiesAreIgnoredWhenPrefixIsNotSet() {
+    final String kafkaPropertyName = "fooBarBaz";
+    final String kafkaPropertyValue = "aValue";
+    globalPluginConfig.setBoolean(KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, true);
+    globalPluginConfig.setString(
+        KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
+
+    final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
+
+    assertThat(property).isNull();
+  }
+
+  @Test
+  public void kafkaPublisherPropertiesAreNotSetWhenSectionIsDisabled() {
+    final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
+    final String kafkaPropertyValue = "aValue";
+    globalPluginConfig.setBoolean(KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, false);
+    globalPluginConfig.setString(
+        KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
+
+    final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
+
+    assertThat(property).isNull();
   }
 }

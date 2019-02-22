@@ -12,7 +12,6 @@ gerrit_plugin(
     manifest_entries = [
         "Gerrit-PluginName: multi-site",
         "Gerrit-Module: com.googlesource.gerrit.plugins.multisite.Module",
-        "Gerrit-HttpModule: com.googlesource.gerrit.plugins.multisite.HttpModule",
         "Implementation-Title: multi-site plugin",
         "Implementation-URL: https://review.gerrithub.io/admin/repos/GerritForge/plugins_multi-site",
     ],
