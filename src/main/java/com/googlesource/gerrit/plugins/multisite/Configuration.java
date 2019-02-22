@@ -18,7 +18,6 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.extensions.annotations.PluginName;
-import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -30,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.jgit.lib.Config;
 import org.slf4j.Logger;
@@ -57,7 +55,6 @@ public class Configuration {
   static final String KAFKA_SECTION = "kafka";
   public static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
 
-  private final AutoReindex autoReindex;
   private final KafkaPublisher publisher;
   private final Cache cache;
   private final Event event;
@@ -73,7 +70,6 @@ public class Configuration {
   @Inject
   Configuration(PluginConfigFactory pluginConfigFactory, @PluginName String pluginName) {
     Config cfg = pluginConfigFactory.getGlobalPluginConfig(pluginName);
-    autoReindex = new AutoReindex(cfg);
     kafka = new Kafka(cfg);
     publisher = new KafkaPublisher(cfg);
     subscriber = new KafkaSubscriber(cfg);
@@ -89,10 +85,6 @@ public class Configuration {
 
   public KafkaPublisher kafkaPublisher() {
     return publisher;
-  }
-
-  public AutoReindex autoReindex() {
-    return autoReindex;
   }
 
   public Cache cache() {
@@ -132,37 +124,6 @@ public class Configuration {
       return value;
     }
     return defaultValue;
-  }
-
-  public static class AutoReindex {
-    static final String AUTO_REINDEX_SECTION = "autoReindex";
-    static final String DELAY = "delay";
-    static final String POLL_INTERVAL = "pollInterval";
-
-    private final boolean enabled;
-    private final long delaySec;
-    private final long pollSec;
-
-    public AutoReindex(Config cfg) {
-      this.enabled = cfg.getBoolean(AUTO_REINDEX_SECTION, ENABLE_KEY, false);
-      this.delaySec =
-          ConfigUtil.getTimeUnit(cfg, AUTO_REINDEX_SECTION, null, DELAY, 10L, TimeUnit.SECONDS);
-      this.pollSec =
-          ConfigUtil.getTimeUnit(
-              cfg, AUTO_REINDEX_SECTION, null, POLL_INTERVAL, 0L, TimeUnit.SECONDS);
-    }
-
-    public boolean enabled() {
-      return enabled;
-    }
-
-    public long delaySec() {
-      return delaySec;
-    }
-
-    public long pollSec() {
-      return pollSec;
-    }
   }
 
   private static Map<EventFamily, Boolean> eventsEnabled(Config config, String subsection) {
