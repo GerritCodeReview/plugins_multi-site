@@ -17,8 +17,8 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@kafka_client//jar",
         "@commons-lang3//jar",
+        "@kafka_client//jar",
     ],
 )
 
