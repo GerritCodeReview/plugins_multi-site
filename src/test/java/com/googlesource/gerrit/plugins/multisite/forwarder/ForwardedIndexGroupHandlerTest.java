@@ -22,8 +22,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.server.index.group.GroupIndexer;
-import com.google.gwtorm.client.KeyUtil;
-import com.google.gwtorm.server.StandardKeyEncoder;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
 import java.io.IOException;
@@ -101,8 +99,6 @@ public class ForwardedIndexGroupHandlerTest {
 
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
-      // Had to put this here to avoid a NPE during the index call
-      KeyUtil.setEncoderImpl(new StandardKeyEncoder());
       handler.index(uuid, Operation.INDEX, Optional.empty());
       fail("should have thrown an IOException");
     } catch (IOException e) {
