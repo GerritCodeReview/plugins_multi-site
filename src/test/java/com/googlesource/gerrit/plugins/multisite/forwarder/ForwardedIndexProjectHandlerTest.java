@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,8 +25,10 @@ import com.google.gerrit.index.project.ProjectIndexer;
 import com.google.gerrit.reviewdb.client.Project;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
+import com.googlesource.gerrit.plugins.multisite.index.ProjectChecker;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.concurrent.ScheduledExecutorService;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,7 +44,9 @@ public class ForwardedIndexProjectHandlerTest {
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private ProjectIndexer indexerMock;
   @Mock private Configuration configMock;
+  @Mock private ProjectChecker projectCheckerMock;
   @Mock private Configuration.Index indexMock;
+  @Mock private ScheduledExecutorService indexExecutorMock;
   private ForwardedIndexProjectHandler handler;
   private String nameKey;
 
@@ -49,7 +54,12 @@ public class ForwardedIndexProjectHandlerTest {
   public void setUp() {
     when(configMock.index()).thenReturn(indexMock);
     when(indexMock.numStripedLocks()).thenReturn(10);
-    handler = new ForwardedIndexProjectHandler(indexerMock, configMock);
+    when(indexMock.retryInterval()).thenReturn(0);
+    when(indexMock.maxTries()).thenReturn(2);
+    when(projectCheckerMock.isProjectUpToDate(any())).thenReturn(true);
+    handler =
+        new ForwardedIndexProjectHandler(
+            indexerMock, projectCheckerMock, indexExecutorMock, configMock);
     nameKey = "project/name";
   }
 
@@ -107,5 +117,14 @@ public class ForwardedIndexProjectHandlerTest {
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(indexerMock).index(new Project.NameKey(nameKey));
+  }
+
+  @Test
+  public void indexAttemptShouldFailWhenCheckerFails() throws Exception {
+    handler =
+        new ForwardedIndexProjectHandler(
+            indexerMock, (projectName) -> false, indexExecutorMock, configMock);
+
+    assertThat(handler.attemptIndex(nameKey, Optional.empty())).isFalse();
   }
 }

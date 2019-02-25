@@ -20,8 +20,12 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.index.ForwardedIndexExecutor;
+import com.googlesource.gerrit.plugins.multisite.index.ProjectChecker;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Index a project using {@link ProjectIndexer}. This class is meant to be used on the receiving
@@ -33,17 +37,81 @@ import java.util.Optional;
 public class ForwardedIndexProjectHandler
     extends ForwardedIndexingHandler<String, ProjectIndexEvent> {
   private final ProjectIndexer indexer;
+  private final int retryInterval;
+  private final int maxTries;
+  private final ProjectChecker projectChecker;
+  private final ScheduledExecutorService indexExecutor;
 
   @Inject
-  ForwardedIndexProjectHandler(ProjectIndexer indexer, Configuration config) {
+  ForwardedIndexProjectHandler(
+      ProjectIndexer indexer,
+      ProjectChecker projectChecker,
+      @ForwardedIndexExecutor ScheduledExecutorService indexExecutor,
+      Configuration config) {
     super(config.index().numStripedLocks());
     this.indexer = indexer;
+    Configuration.Index indexConfig = config.index();
+    this.retryInterval = indexConfig != null ? indexConfig.retryInterval() : 0;
+    this.maxTries = indexConfig != null ? indexConfig.maxTries() : 0;
+    this.indexExecutor = indexExecutor;
+    this.projectChecker = projectChecker;
   }
 
   @Override
   protected void doIndex(String projectName, Optional<ProjectIndexEvent> event) throws IOException {
-    indexer.index(new Project.NameKey(projectName));
-    log.debug("Project {} successfully indexed", projectName);
+    if (!attemptIndex(projectName, event)) {
+      log.warn("First Attempt failed, scheduling again after {} msecs", retryInterval);
+      rescheduleIndex(projectName, event, 1);
+    }
+  }
+
+  public boolean attemptIndex(String projectName, Optional<ProjectIndexEvent> event)
+      throws IOException {
+    log.debug("Attempt to index project {}, event: [{}]", projectName, event);
+    final Project.NameKey projectNameKey = new Project.NameKey(projectName);
+    if (projectChecker.isProjectUpToDate(projectNameKey)) {
+      indexer.index(projectNameKey);
+      log.debug("Project {} successfully indexed", projectName);
+      return true;
+    }
+    return false;
+  }
+
+  public void rescheduleIndex(
+      String projectName, Optional<ProjectIndexEvent> event, int retryCount) {
+    if (retryCount > maxTries) {
+      log.error(
+          "Project {} could not be indexed after {} retries. index could be stale.",
+          projectName,
+          retryCount);
+
+      return;
+    }
+
+    log.warn(
+        "Retrying for the #{} time to index {} project {} after {} msecs",
+        retryCount,
+        projectName,
+        retryInterval);
+
+    indexExecutor.schedule(
+        () -> {
+          Context.setForwardedEvent(true);
+          try {
+            if (!attemptIndex(projectName, event)) {
+              log.warn(
+                  "Attempt {} to index project {} failed, scheduling again after {} msecs",
+                  retryCount,
+                  projectName,
+                  retryInterval);
+              rescheduleIndex(projectName, event, retryCount + 1);
+            }
+          } catch (IOException e) {
+            log.warn("Project {} could not be indexed", projectName, e);
+          }
+        },
+        retryInterval,
+        TimeUnit.MILLISECONDS);
   }
 
   @Override
