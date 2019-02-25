@@ -23,10 +23,10 @@ import org.apache.commons.lang3.Validate;
 
 public class SourceAwareEventWrapper {
 
-  private final KafkaEventHeader header;
+  private final EventHeader header;
   private final JsonObject body;
 
-  public KafkaEventHeader getHeader() {
+  public EventHeader getHeader() {
     return header;
   }
 
@@ -38,14 +38,13 @@ public class SourceAwareEventWrapper {
     return gsonProvider.get().fromJson(this.body, Event.class);
   }
 
-  public static class KafkaEventHeader {
+  public static class EventHeader {
     private final UUID eventId;
     private final String eventType;
     private final UUID sourceInstanceId;
     private final Long eventCreatedOn;
 
-    public KafkaEventHeader(
-        UUID eventId, String eventType, UUID sourceInstanceId, Long eventCreatedOn) {
+    public EventHeader(UUID eventId, String eventType, UUID sourceInstanceId, Long eventCreatedOn) {
       this.eventId = eventId;
       this.eventType = eventType;
       this.sourceInstanceId = sourceInstanceId;
@@ -90,7 +89,7 @@ public class SourceAwareEventWrapper {
     }
   }
 
-  public SourceAwareEventWrapper(KafkaEventHeader header, JsonObject body) {
+  public SourceAwareEventWrapper(EventHeader header, JsonObject body) {
     this.header = header;
     this.body = body;
   }
