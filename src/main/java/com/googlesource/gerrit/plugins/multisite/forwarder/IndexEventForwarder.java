@@ -14,49 +14,15 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 
 public interface IndexEventForwarder {
-  /**
-   * Forward a account indexing event to the other master.
-   *
-   * @param accountIndexEvent the details of the account index event.
-   * @return true if successful, otherwise false.
-   */
-  boolean indexAccount(AccountIndexEvent accountIndexEvent);
 
   /**
-   * Forward a change indexing event to the other master.
+   * Publish an indexing event to the broker.
    *
-   * @param changeIndexEvent the details of the change index event.
+   * @param event the details of the index event.
    * @return true if successful, otherwise false.
    */
-  boolean indexChange(ChangeIndexEvent changeIndexEvent);
-
-  /**
-   * Forward a delete change from index event to the other master.
-   *
-   * @param changeIndexEvent the details of the change index event.
-   * @return rue if successful, otherwise false.
-   */
-  boolean deleteChangeFromIndex(ChangeIndexEvent changeIndexEvent);
-
-  /**
-   * Forward a group indexing event to the other master.
-   *
-   * @param groupIndexEvent the details of the index event.
-   * @return true if successful, otherwise false.
-   */
-  boolean indexGroup(GroupIndexEvent groupIndexEvent);
-
-  /**
-   * Forward a project indexing event to the other master.
-   *
-   * @param projectIndexEvent the details of the index event.
-   * @return true if successful, otherwise false.
-   */
-  boolean indexProject(ProjectIndexEvent projectIndexEvent);
+  boolean index(IndexEvent event);
 }

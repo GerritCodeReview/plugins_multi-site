@@ -146,11 +146,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      if (changeIndexEvent.deleted) {
-        forwarders.forEach(f -> f.deleteChangeFromIndex(changeIndexEvent));
-      } else {
-        forwarders.forEach(f -> f.indexChange(changeIndexEvent));
-      }
+      forwarders.forEach(f -> f.index(changeIndexEvent));
     }
 
     @Override
@@ -182,7 +178,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarders.forEach(f -> f.indexAccount(accountIndexEvent));
+      forwarders.forEach(f -> f.index(accountIndexEvent));
     }
 
     @Override
@@ -214,7 +210,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarders.forEach(f -> f.indexGroup(groupIndexEvent));
+      forwarders.forEach(f -> f.index(groupIndexEvent));
     }
 
     @Override
@@ -246,7 +242,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarders.forEach(f -> f.indexProject(projectIndexEvent));
+      forwarders.forEach(f -> f.index(projectIndexEvent));
     }
 
     @Override

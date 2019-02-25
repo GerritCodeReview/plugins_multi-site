@@ -17,11 +17,8 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 
 public class BrokerIndexEventForwarder implements IndexEventForwarder {
   private final BrokerPublisher publisher;
@@ -32,27 +29,7 @@ public class BrokerIndexEventForwarder implements IndexEventForwarder {
   }
 
   @Override
-  public boolean indexAccount(AccountIndexEvent event) {
-    return publisher.publishEvent(EventFamily.INDEX_EVENT, event);
-  }
-
-  @Override
-  public boolean indexChange(ChangeIndexEvent event) {
-    return publisher.publishEvent(EventFamily.INDEX_EVENT, event);
-  }
-
-  @Override
-  public boolean indexGroup(GroupIndexEvent event) {
-    return publisher.publishEvent(EventFamily.INDEX_EVENT, event);
-  }
-
-  @Override
-  public boolean deleteChangeFromIndex(ChangeIndexEvent event) {
-    return publisher.publishEvent(EventFamily.INDEX_EVENT, event);
-  }
-
-  @Override
-  public boolean indexProject(ProjectIndexEvent event) {
+  public boolean index(IndexEvent event) {
     return publisher.publishEvent(EventFamily.INDEX_EVENT, event);
   }
 }
