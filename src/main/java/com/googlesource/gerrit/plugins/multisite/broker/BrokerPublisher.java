@@ -68,7 +68,7 @@ public class BrokerPublisher implements LifecycleListener {
   private SourceAwareEventWrapper toBrokerEvent(Event event) {
     JsonObject body = eventToJson(event);
     return new SourceAwareEventWrapper(
-        new SourceAwareEventWrapper.KafkaEventHeader(
+        new SourceAwareEventWrapper.EventHeader(
             UUID.randomUUID(), event.getType(), instanceId, event.eventCreatedOn),
         body);
   }
