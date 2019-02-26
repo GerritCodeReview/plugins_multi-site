@@ -38,12 +38,12 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class Module extends AbstractModule {
+public class Module extends AbstractModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private final Configuration config;
 
   @Inject
-  Module(Configuration config) {
+  public Module(Configuration config) {
     this.config = config;
   }
 

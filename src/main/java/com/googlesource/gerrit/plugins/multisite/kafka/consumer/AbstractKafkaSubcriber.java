@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
@@ -42,6 +43,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
 
   private final KafkaConsumer<byte[], byte[]> consumer;
   private final ForwardedEventRouter eventRouter;
+  private final DynamicSet<DroppedEventListener> droppedEventListeners;
   private final Provider<Gson> gsonProvider;
   private final UUID instanceId;
   private final AtomicBoolean closed = new AtomicBoolean(false);
@@ -54,11 +56,13 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
       Deserializer<byte[]> keyDeserializer,
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
       ForwardedEventRouter eventRouter,
+      DynamicSet<DroppedEventListener> droppedEventListeners,
       Provider<Gson> gsonProvider,
       @InstanceId UUID instanceId,
       OneOffRequestContext oneOffCtx) {
     this.configuration = configuration;
     this.eventRouter = eventRouter;
+    this.droppedEventListeners = droppedEventListeners;
     this.gsonProvider = gsonProvider;
     this.instanceId = instanceId;
     this.oneOffCtx = oneOffCtx;
@@ -109,6 +113,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
         logger.atFiner().log(
             "Dropping event %s produced by our instanceId %s",
             event.toString(), instanceId.toString());
+        droppedEventListeners.forEach(l -> l.onEventDropped(event));
       } else {
         try {
           logger.atInfo().log("Header[%s] Body[%s]", event.getHeader(), event.getBody());

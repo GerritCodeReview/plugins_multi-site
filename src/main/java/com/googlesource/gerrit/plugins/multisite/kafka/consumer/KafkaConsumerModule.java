@@ -61,5 +61,7 @@ public class KafkaConsumerModule extends LifecycleModule {
       DynamicSet.bind(binder(), AbstractKafkaSubcriber.class)
           .to(ProjectUpdateEventSubscriber.class);
     }
+
+    DynamicSet.setOf(binder(), DroppedEventListener.class);
   }
 }

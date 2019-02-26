@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
@@ -34,6 +35,7 @@ public class IndexEventSubscriber extends AbstractKafkaSubcriber {
       Deserializer<byte[]> keyDeserializer,
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
       IndexEventRouter eventRouter,
+      DynamicSet<DroppedEventListener> droppedEventListeners,
       Provider<Gson> gsonProvider,
       @InstanceId UUID instanceId,
       OneOffRequestContext oneOffCtx) {
@@ -42,6 +44,7 @@ public class IndexEventSubscriber extends AbstractKafkaSubcriber {
         keyDeserializer,
         valueDeserializer,
         eventRouter,
+        droppedEventListeners,
         gsonProvider,
         instanceId,
         oneOffCtx);
