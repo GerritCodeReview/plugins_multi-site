@@ -44,7 +44,7 @@ import org.testcontainers.containers.KafkaContainer;
     sysModule =
         "com.googlesource.gerrit.plugins.multisite.kafka.consumer.EventConsumerIT$KafkaTestContainerModule")
 public class EventConsumerIT extends LightweightPluginDaemonTest {
-  private static final int QUEUE_POLL_TIMEOUT_MSECS = 2000;
+  private static final int QUEUE_POLL_TIMEOUT_MSECS = 30000;
 
   public static class KafkaTestContainerModule extends LifecycleModule {
 
