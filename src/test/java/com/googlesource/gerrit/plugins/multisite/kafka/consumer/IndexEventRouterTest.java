@@ -76,7 +76,7 @@ public class IndexEventRouterTest {
 
     verify(indexGroupHandler)
         .index(
-            new AccountGroup.UUID(groupId),
+            groupId,
             ForwardedIndexingHandler.Operation.INDEX,
             Optional.of(event));
 
