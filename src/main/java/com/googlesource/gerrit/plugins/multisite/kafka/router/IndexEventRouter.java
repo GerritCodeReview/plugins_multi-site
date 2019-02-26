@@ -19,7 +19,6 @@ import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndex
 
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
-import com.google.gerrit.reviewdb.client.Project;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -75,9 +74,7 @@ public class IndexEventRouter implements ForwardedIndexEventRouter {
     } else if (sourceEvent instanceof ProjectIndexEvent) {
       ProjectIndexEvent projectIndexEvent = (ProjectIndexEvent) sourceEvent;
       indexProjectHandler.index(
-          new Project.NameKey(projectIndexEvent.projectName),
-          INDEX,
-          Optional.of(projectIndexEvent));
+          projectIndexEvent.projectName, INDEX, Optional.of(projectIndexEvent));
     } else {
       throw new UnsupportedOperationException(
           String.format("Cannot route event %s", sourceEvent.getType()));

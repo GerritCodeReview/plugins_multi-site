@@ -31,7 +31,7 @@ import java.util.Optional;
  */
 @Singleton
 public class ForwardedIndexProjectHandler
-    extends ForwardedIndexingHandler<Project.NameKey, ProjectIndexEvent> {
+    extends ForwardedIndexingHandler<String, ProjectIndexEvent> {
   private final ProjectIndexer indexer;
 
   @Inject
@@ -41,14 +41,13 @@ public class ForwardedIndexProjectHandler
   }
 
   @Override
-  protected void doIndex(Project.NameKey projectName, Optional<ProjectIndexEvent> event)
-      throws IOException {
-    indexer.index(projectName);
+  protected void doIndex(String projectName, Optional<ProjectIndexEvent> event) throws IOException {
+    indexer.index(new Project.NameKey(projectName));
     log.debug("Project {} successfully indexed", projectName);
   }
 
   @Override
-  protected void doDelete(Project.NameKey projectName, Optional<ProjectIndexEvent> event) {
+  protected void doDelete(String projectName, Optional<ProjectIndexEvent> event) {
     throw new UnsupportedOperationException("Delete from project index not supported");
   }
 }

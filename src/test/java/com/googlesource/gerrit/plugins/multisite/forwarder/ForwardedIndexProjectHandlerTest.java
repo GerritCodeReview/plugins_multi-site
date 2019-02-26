@@ -43,20 +43,20 @@ public class ForwardedIndexProjectHandlerTest {
   @Mock private Configuration configMock;
   @Mock private Configuration.Index indexMock;
   private ForwardedIndexProjectHandler handler;
-  private Project.NameKey nameKey;
+  private String nameKey;
 
   @Before
   public void setUp() {
     when(configMock.index()).thenReturn(indexMock);
     when(indexMock.numStripedLocks()).thenReturn(10);
     handler = new ForwardedIndexProjectHandler(indexerMock, configMock);
-    nameKey = new Project.NameKey("project/name");
+    nameKey = "project/name";
   }
 
   @Test
   public void testSuccessfulIndexing() throws Exception {
     handler.index(nameKey, Operation.INDEX, Optional.empty());
-    verify(indexerMock).index(nameKey);
+    verify(indexerMock).index(new Project.NameKey(nameKey));
   }
 
   @Test
@@ -77,13 +77,13 @@ public class ForwardedIndexProjectHandlerTest {
                   return null;
                 })
         .when(indexerMock)
-        .index(nameKey);
+        .index(new Project.NameKey(nameKey));
 
     assertThat(Context.isForwardedEvent()).isFalse();
     handler.index(nameKey, Operation.INDEX, Optional.empty());
     assertThat(Context.isForwardedEvent()).isFalse();
 
-    verify(indexerMock).index(nameKey);
+    verify(indexerMock).index(new Project.NameKey(nameKey));
   }
 
   @Test
@@ -95,7 +95,7 @@ public class ForwardedIndexProjectHandlerTest {
                   throw new IOException("someMessage");
                 })
         .when(indexerMock)
-        .index(nameKey);
+        .index(new Project.NameKey(nameKey));
 
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
@@ -106,6 +106,6 @@ public class ForwardedIndexProjectHandlerTest {
     }
     assertThat(Context.isForwardedEvent()).isFalse();
 
-    verify(indexerMock).index(nameKey);
+    verify(indexerMock).index(new Project.NameKey(nameKey));
   }
 }
