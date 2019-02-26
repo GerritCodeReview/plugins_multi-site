@@ -89,11 +89,12 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
     drainQueue(droppedEventsQueue);
 
     createChange();
-    List<String> createdChangeEvents = receiveFromQueue(droppedEventsQueue, 2);
-    assertThat(createdChangeEvents).hasSize(2);
+    List<String> createdChangeEvents = receiveFromQueue(droppedEventsQueue, 3);
+    assertThat(createdChangeEvents).hasSize(3);
 
     assertThat(createdChangeEvents).contains("change-index");
     assertThat(createdChangeEvents).contains("ref-updated");
+    assertThat(createdChangeEvents).contains("patchset-created");
   }
 
   @Test
