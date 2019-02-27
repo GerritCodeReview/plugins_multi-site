@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6c51405b_c7da9a36",
+        "filename": "setup_local_env/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-27T21:29:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "dd1cc4ff_bafa9547",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 47
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "efaeab01_48929ee4",
         "filename": "setup_local_env/configs/healthcheck.config",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2019-02-27T16:19:24Z",
       "side": 1,
       "message": "This line makes the healthcheck useless for changes :-(\nIs this what you want?",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 34
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fde3bb0f_c9e0e6af",
+        "filename": "setup_local_env/configs/healthcheck.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-27T21:29:19Z",
+      "side": 1,
+      "message": "Yes, it will be disabled for this specific test because it\u0027s a fresh installation, there are not open/merged/abandoned changes.",
+      "parentUuid": "efaeab01_48929ee4",
       "range": {
         "startLine": 6,
         "startChar": 0,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "1e1f687a_f01d2f29",
+        "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-27T21:29:19Z",
+      "side": 1,
+      "message": "I\u0027ve named both containers because the setup.sh script does a few checks if these are already up and running",
+      "parentUuid": "99a50efa_e63339f4",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 32
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "453d1cbd_8f0523ee",
         "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
         "patchSetId": 2
@@ -82,6 +154,30 @@
       "writtenOn": "2019-02-27T16:19:24Z",
       "side": 1,
       "message": "Why is this needed?",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 35
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f1f9fd6_0bf5df3b",
+        "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-27T21:29:19Z",
+      "side": 1,
+      "message": "Same here, setup.sh checks if this container is running.",
+      "parentUuid": "453d1cbd_8f0523ee",
       "range": {
         "startLine": 12,
         "startChar": 4,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "fff668e9_8f160fd4",
+        "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-27T21:29:19Z",
+      "side": 1,
+      "message": "The main advantage in having it here is because I\u0027m in control of the replication factor and number of partitions.",
+      "parentUuid": "b813ff98_c96c08e7",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 113
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "59e9a310_d3fe750a",
         "filename": "setup_local_env/haproxy-config/haproxy.cfg",
         "patchSetId": 2
@@ -137,6 +257,30 @@
       "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8ac742f_eb2e57fc",
+        "filename": "setup_local_env/haproxy-config/haproxy.cfg",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-27T21:29:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "59e9a310_d3fe750a",
+      "range": {
+        "startLine": 49,
+        "startChar": 4,
+        "endLine": 49,
+        "endChar": 15
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "53588e2a_c494eb7c",
+        "filename": "setup_local_env/haproxy-config/haproxy.cfg",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-27T21:29:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7803d12a_c98bf05c",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 18
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e77f35f_099619bc",
         "filename": "setup_local_env/setup.sh",
         "patchSetId": 2
@@ -186,6 +354,30 @@
     },
     {
       "key": {
+        "uuid": "7c9ff0b1_77cf99ae",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-27T21:29:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6e77f35f_099619bc",
+      "range": {
+        "startLine": 315,
+        "startChar": 0,
+        "endLine": 316,
+        "endChar": 109
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f3b42712_60e7bfce",
         "filename": "setup_local_env/setup.sh",
         "patchSetId": 2
@@ -197,6 +389,30 @@
       "writtenOn": "2019-02-27T16:19:24Z",
       "side": 1,
       "message": "Why restart?",
+      "range": {
+        "startLine": 338,
+        "startChar": 36,
+        "endLine": 338,
+        "endChar": 43
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25f65843_2e15f6dc",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-27T21:29:19Z",
+      "side": 1,
+      "message": "The reason is because this setup script allows the user to redeploy new configuration files without reinstalling gerrit. This restart makes sure any previous running instance restarts with the new config files",
+      "parentUuid": "f3b42712_60e7bfce",
       "range": {
         "startLine": 338,
         "startChar": 36,
@@ -229,6 +445,30 @@
       "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "49c012ce_21663682",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-27T21:29:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "85ef6f96_00f730f0",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 344,
+        "endChar": 118
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
