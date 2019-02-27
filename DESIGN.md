@@ -260,7 +260,7 @@ components:
 The combination of the above components makes the Gerrit multi-site
 configuration possible.
 
-![Initial Multi-Site Plugin Architecture](./architecture-first-iteration.png)
+![Initial Multi-Site Plugin Architecture](./images/architecture-first-iteration.png)
 
 ## Current implementation Details
 
