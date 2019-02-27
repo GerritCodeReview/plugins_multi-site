@@ -22,6 +22,30 @@
       "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0610e39_7559e6ed",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-27T20:45:07Z",
+      "side": 1,
+      "message": "All the masters are active, it isn\u0027t an active/passive configuration. You need \"someone\" that knows where to route the reads and the writes. In the current design that is HAProxy (or other similar WLB that can do URL-based routing)\n\nAt this multi-site stage implementation (see DESIGN.md) we are running only one doing R/W traffic while all the others are RO.\n\nIn the next step, they will be al R/W.",
+      "parentUuid": "df98acb8_b97a4399",
+      "range": {
+        "startLine": 12,
+        "startChar": 2,
+        "endLine": 12,
+        "endChar": 51
+      },
+      "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
