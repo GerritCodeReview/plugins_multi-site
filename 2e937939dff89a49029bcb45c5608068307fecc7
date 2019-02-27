@@ -70,6 +70,30 @@
       "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acc11db2_a324fe86",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-27T21:02:03Z",
+      "side": 1,
+      "message": "\u003e Oh, so it\u0027s not possible to have one host exposed? ie for example at the wmf that\u0027s cobalt (and then have gerrit2001) as the second master (without any traffic). Then to fallover to gerrit2001 without HA.\n\nYes, you can do that also. The multi-site plugin would have the benefit to have the second failover node always \"ready\" to take over in case of any problems.\n\nAt GerritHub.io, we do use the other nodes also, even if they are not serving write traffic. The write traffic redirection to them is automatic.\n\nP.S. Bear in mind that problems with the \"write node\" could be even just transient. Example: there is a problem on v2.16 where during the JGit GC of the All-Users.git repo, logins could be disrupted because of a temporary disruption on the in-memory packlist. The \"automatic failover\" of the write traffic provided by HAProxy reduces the impact of the disruption to zero :-) and nobody has to do any manual operation.\n\nHAProxy isn\u0027t mandatory if you are planning to \"manually\" failover to the other node.",
+      "parentUuid": "5bf80e9d_d8850c51",
+      "range": {
+        "startLine": 12,
+        "startChar": 2,
+        "endLine": 12,
+        "endChar": 51
+      },
+      "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
