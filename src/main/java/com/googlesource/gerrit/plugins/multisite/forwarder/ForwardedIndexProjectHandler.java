@@ -89,7 +89,7 @@ public class ForwardedIndexProjectHandler
     }
 
     log.warn(
-        "Retrying for the #{} time to index {} project {} after {} msecs",
+        "Retrying for the #{} time to index project {} after {} msecs",
         retryCount,
         projectName,
         retryInterval);
