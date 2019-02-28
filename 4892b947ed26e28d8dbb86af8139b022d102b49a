@@ -16,6 +16,24 @@
       "revId": "4892b947ed26e28d8dbb86af8139b022d102b49a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ba1dccf_6fc3fc42",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T13:01:37Z",
+      "side": 1,
+      "message": "6. may not have an HA-Proxy because the DR-site is not serving any real user traffic. It is active but only for disaster recovery.\n\n7. means that all the nodes are active and serve traffic based on the healthcheck status of each one of them.\n\nIn a nutshell, 7. has HA-Proxy in front of them, 6. does not.",
+      "parentUuid": "c254244c_23a66863",
+      "revId": "4892b947ed26e28d8dbb86af8139b022d102b49a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
