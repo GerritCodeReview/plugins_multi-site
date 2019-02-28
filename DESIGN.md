@@ -115,6 +115,29 @@ difference that both masters are serving RW traffic, due to the specifics
 of their underlying storage, NFS and JGit implementation that allows concurrent
 locking at filesystem level.
 
+## TODO: Synchronous replication
+Consider also synchronous replication for the cases like 5, 6, 7... in which
+case a write operation is only accepted if it is synchronously replicated to the
+other master node. This would be a 100% loss-less disaster recovery support. Without
+synchronous replication, when the RW master crashes and loses data, there could
+be no way to recover missed replications without involving users who pushed the commits
+in the first place to push them again. Further, with the synchronous replication
+the RW site has to "degrade" to RO mode when the other node is not reachable and
+synchronous replications are not possible.
+
+We have to re-evaluate the useability of the replication plugin for supporting
+the synchronous replication. For example, the replicationDelay doesn't make much
+sense in the synchronous case. Further, the rescheduling of a replication due
+to an in-flight push to the same remote URI also doesn't make much sense as we
+want the replication to happen immediately. Further, if the ref-update of the
+incoming push request has to be blocked until the synchronous replication
+finishes, the replication plugin cannot even start a replication as there is no
+a ref-updated event yet. We may consider implementing the synchronous
+replication on a lower level. For example have an "pack-received" event and
+then simply forward that pack file to the other site. Similarly for the
+ref-updated events, instead of a real git push, we could just forward the
+ref-updates to the other site.
+
 ## History and maturity level of the multi-site plugin
 
 This plugin is coming from the excellent work on the high-availability plugin,
