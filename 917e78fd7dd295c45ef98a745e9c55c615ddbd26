@@ -333,6 +333,30 @@
     },
     {
       "key": {
+        "uuid": "bd0707cb_f8ccf70b",
+        "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-02-28T13:34:24Z",
+      "side": 1,
+      "message": "I don\u0027t think there won\u0027t be any impact to the user in the case of a simple testing environment. Still, I believe it is a good example to show the user that is better not leaving the creation of the topics in the application.",
+      "parentUuid": "30440d34_11b1db72",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 113
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "59e9a310_d3fe750a",
         "filename": "setup_local_env/haproxy-config/haproxy.cfg",
         "patchSetId": 2
