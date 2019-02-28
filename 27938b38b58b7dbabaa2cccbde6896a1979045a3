@@ -107,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "06a54636_03f41607",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T16:09:05Z",
+      "side": 1,
+      "message": "\u003e This is a very good point but I think that discriminating between Sync/Async is not the right view. \n\nThe point that Saša is making is that *IF* you tell the client that a \"git push went through\" you are assuming that the replication will always go well. It is not actually always the case, because if the server-1 blows up (all destroyed, including data) before the data gets replicated to server-2, the push data has gone.\n\n\u003e I think we should rather talk about the durability of the replication information and the failure of write operation if the publication of the replication info fails.\n\nReplication is already durable: it will eventually be replicated assuming that server-1 did not blow up (my example above).\n\n\u003e In this case we could have eventual consistency and no data loss in Async mode.\n\nNot always, that\u0027s why \"sync replication\" is the 100% loss-less, otherwise you have a probability of inconsistency (let\u0027s say 99.999% loss-less but not 100%).\n\nThe CAP theorem is telling us that you can\u0027t have C(onsistency) + A(vailability) + P(erformance) at the same time.\n\nI believe that letting the user chose which one to give priority to is the right way, including \"sync replication\" when needed.",
+      "parentUuid": "b2d559ff_db9b2485",
+      "range": {
+        "startLine": 120,
+        "startChar": 35,
+        "endLine": 120,
+        "endChar": 39
+      },
+      "revId": "27938b38b58b7dbabaa2cccbde6896a1979045a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "80c1ff22_04eaf783",
         "filename": "DESIGN.md",
         "patchSetId": 2
@@ -142,6 +166,30 @@
       "side": 1,
       "message": "Technically correct but such an action would be really impractical. Imagine writing\nan email to 100s of developers with a list of (missing) commit SHA1s in the email and asking\nwho can push them again. This is not how you want to deal with your customers ;-)",
       "parentUuid": "80c1ff22_04eaf783",
+      "range": {
+        "startLine": 122,
+        "startChar": 3,
+        "endLine": 122,
+        "endChar": 40
+      },
+      "revId": "27938b38b58b7dbabaa2cccbde6896a1979045a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "939a491d_cbdba9e5",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T16:09:05Z",
+      "side": 1,
+      "message": "\u003e Technically correct but such an action would be really impractical. Imagine writing\n\u003e an email to 100s of developers with a list of (missing) commit SHA1s in the email and asking\n\u003e who can push them again. This is not how you want to deal with your customers ;-)\n\nActually, with the JGit packlist caching issue we have at the moment in v2.16, that is the case already now and happened in real life in production, even without multi-site :-(",
+      "parentUuid": "ccfe4a9a_d6bbb336",
       "range": {
         "startLine": 122,
         "startChar": 3,
