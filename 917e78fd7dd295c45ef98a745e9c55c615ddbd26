@@ -120,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "16317fde_af4ec979",
+        "filename": "setup_local_env/configs/healthcheck.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-28T14:54:37Z",
+      "side": 1,
+      "message": "No, you could change at a later stage. This goes back to the comment I\u0027ve made about the \"gerrit restart\".\n\nAfter having the system running for a while and created a few changes, you could always change this parameter for something \u003e 0 and then run the setup.sh script again with the option \"--new-deployment false\" and that will just deploy the new version of this configuration file and restart gerrit.",
+      "parentUuid": "bcb3922e_a7026e3e",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 34
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "99a50efa_e63339f4",
         "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
         "patchSetId": 2
@@ -179,6 +203,30 @@
       "side": 1,
       "message": "The default name is the one associated to the service (zookeeper). What\u0027s wrong in using that one?",
       "parentUuid": "1e1f687a_f01d2f29",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 32
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d092127_9b8836c9",
+        "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-28T14:54:37Z",
+      "side": 1,
+      "message": "No, by default it will have the name of the location where the docker-compose file lives and then the name of the service, ie. `setup_local_env_kafka_1`. Unless you have a strong opinion about this, I would prefer to be in control of the name of the containers.\n\nThe only downside to my solution is that if you want to setup multiple kafka brokers, you can\u0027t have the container name specified, but this is a local deployment anyways.",
+      "parentUuid": "5f7b5761_7b4eba61",
       "range": {
         "startLine": 7,
         "startChar": 4,
@@ -357,6 +405,30 @@
     },
     {
       "key": {
+        "uuid": "d4ce3048_307fe31e",
+        "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-28T14:54:37Z",
+      "side": 1,
+      "message": "If it\u0027s not specified here or the topic names in multi-site.conf are different, the application will simply create the kafka topics. I\u0027ve tested this scenario and does not cause any problem to the end-user.\n\nI still think it should be the responsibility of the infrastructure provisioning the creation and management of the kafka topics.",
+      "parentUuid": "bd0707cb_f8ccf70b",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 113
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "59e9a310_d3fe750a",
         "filename": "setup_local_env/haproxy-config/haproxy.cfg",
         "patchSetId": 2
@@ -498,6 +570,30 @@
     },
     {
       "key": {
+        "uuid": "525887d9_593db574",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-28T14:54:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c9ff0b1_77cf99ae",
+      "range": {
+        "startLine": 315,
+        "startChar": 0,
+        "endLine": 316,
+        "endChar": 109
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f3b42712_60e7bfce",
         "filename": "setup_local_env/setup.sh",
         "patchSetId": 2
@@ -569,6 +665,30 @@
     },
     {
       "key": {
+        "uuid": "258d9a12_d28fe3da",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-28T14:54:37Z",
+      "side": 1,
+      "message": "Not a Gerrit version upgrade ie. from 2.15 to 2.16. But it allows you to just re-deploy new configuration files in .../gerrit/etc directory and restart the service without going through a \"gerrit.war init\"",
+      "parentUuid": "16dc02ca_14ebc7bc",
+      "range": {
+        "startLine": 338,
+        "startChar": 36,
+        "endLine": 338,
+        "endChar": 43
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "85ef6f96_00f730f0",
         "filename": "setup_local_env/setup.sh",
         "patchSetId": 2
@@ -604,6 +724,30 @@
       "side": 1,
       "message": "Ack",
       "parentUuid": "85ef6f96_00f730f0",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 344,
+        "endChar": 118
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5a8ee0d9_e3fae922",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-28T14:54:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49c012ce_21663682",
       "range": {
         "startLine": 342,
         "startChar": 0,
