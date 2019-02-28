@@ -115,6 +115,14 @@ difference that both masters are serving RW traffic, due to the specifics
 of their underlying storage, NFS and JGit implementation that allows concurrent
 locking at filesystem level.
 
+TODO: Consider also synchronous replication for the cases like 5, 6, 7... in which
+case a write operation is only accepted if it is synchronously replicated to the
+other master node. This would be a true disaster recovery support. Without 
+synchronous replication, when the RW master crashes and loses data, there could
+be no way to perform missed replications. Further, with the synchronous replication
+the RW site has to "degrade" to RO mode when the other node is not reachable and
+synchronous replications are not possible.
+
 ## History and maturity level of the multi-site plugin
 
 This plugin is coming from the excellent work on the high-availability plugin,
