@@ -192,6 +192,30 @@
     },
     {
       "key": {
+        "uuid": "af7490bc_285a427c",
+        "filename": "setup_local_env/configs/healthcheck.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-28T22:38:30Z",
+      "side": 1,
+      "message": "Proposing this change to disable health-checks\nhttps://gerrit-review.googlesource.com/c/plugins/healthcheck/+/216132",
+      "parentUuid": "8144bb9f_9491e90c",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 34
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "99a50efa_e63339f4",
         "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
         "patchSetId": 2
@@ -561,6 +585,30 @@
       "side": 1,
       "message": "Ack",
       "parentUuid": "4b5dfe9f_89168d3e",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 113
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1b7d2187_f84e38f2",
+        "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-02-28T22:38:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09440c75_13f465b7",
       "range": {
         "startLine": 15,
         "startChar": 6,
