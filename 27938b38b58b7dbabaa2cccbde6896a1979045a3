@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7e5ebf9e_f2c15217",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-02-28T14:10:13Z",
+      "side": 1,
+      "message": "\u003e I really like the idea, shall we tackle this at the next Hackathon in Munich?\n\nYes, this is one of the ideas I have for the Hackathon in Munich. If you are interested\nthen even better :-)",
+      "parentUuid": "69cf05b1_0d54af23",
+      "revId": "27938b38b58b7dbabaa2cccbde6896a1979045a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "af6f3de4_f5c6c186",
         "filename": "DESIGN.md",
         "patchSetId": 2
@@ -76,6 +94,30 @@
       "writtenOn": "2019-02-28T13:07:48Z",
       "side": 1,
       "message": "Actually there is, but only from the clients that pushed the commit in the first place.\nGit is a distributed version control system after all.",
+      "range": {
+        "startLine": 122,
+        "startChar": 3,
+        "endLine": 122,
+        "endChar": 40
+      },
+      "revId": "27938b38b58b7dbabaa2cccbde6896a1979045a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccfe4a9a_d6bbb336",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-02-28T14:10:13Z",
+      "side": 1,
+      "message": "Technically correct but such an action would be really impractical. Imagine writing\nan email to 100s of developers with a list of (missing) commit SHA1s in the email and asking\nwho can push them again. This is not how you want to deal with your customers ;-)",
+      "parentUuid": "80c1ff22_04eaf783",
       "range": {
         "startLine": 122,
         "startChar": 3,
