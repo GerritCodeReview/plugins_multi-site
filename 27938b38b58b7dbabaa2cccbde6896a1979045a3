@@ -131,6 +131,30 @@
     },
     {
       "key": {
+        "uuid": "136bf7b4_a0861ea8",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-02-28T16:15:27Z",
+      "side": 1,
+      "message": "\u003e I think we should rather talk about the durability of the replication information and the failure of write operation if the publication of the replication info fails.\n\u003e \n\u003e In this case we could have eventual consistency and no data loss in Async mode.\n\nI am not sure. We had a real disaster case where an admin by mistake deleted all *.pack\nfiles instead of deleting *.keep files in one repository in Gerrit. In this case even\nif the replication info was published, there was no way to recover some commits without\nhaving to ask developers to search for these commits in their local repositories.\n\nAnother interesting learning from that incident was that Gerrit didn\u0027t start to fail\nup until 1 hour after the *.pack files were deleted. This is because most of the pack\nfile content was cached in memory and Gerrit didn\u0027t realize that the *.pack files were\nmissing. So we had (thin) pack files, uploaded from pushing new changes, which were\nreferencing objects which were supposed to be in other packs, but they actually were not there.\n\nYet another interesting point was that the replication was about 1 hour behind the\nmaster because of a performance issue which was ongoing at the same time. This amplified\nthe effect(s) of the incident.\n\nThese are the reasons I started to think about synchronous replication as a mean to\nguarantee disaster recovery.",
+      "parentUuid": "b2d559ff_db9b2485",
+      "range": {
+        "startLine": 120,
+        "startChar": 35,
+        "endLine": 120,
+        "endChar": 39
+      },
+      "revId": "27938b38b58b7dbabaa2cccbde6896a1979045a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "80c1ff22_04eaf783",
         "filename": "DESIGN.md",
         "patchSetId": 2
