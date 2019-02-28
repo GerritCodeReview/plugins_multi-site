@@ -83,6 +83,30 @@
     },
     {
       "key": {
+        "uuid": "b2d559ff_db9b2485",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-02-28T15:47:47Z",
+      "side": 1,
+      "message": "This is a very good point but I think that discriminating between Sync/Async is not the right view. \n\nI think we should rather talk about the durability of the replication information and the failure of write operation if the publication of the replication info fails.\n\nIn this case we could have eventual consistency and no data loss in Async mode.",
+      "parentUuid": "eb3ca4ff_02a9583a",
+      "range": {
+        "startLine": 120,
+        "startChar": 35,
+        "endLine": 120,
+        "endChar": 39
+      },
+      "revId": "27938b38b58b7dbabaa2cccbde6896a1979045a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "80c1ff22_04eaf783",
         "filename": "DESIGN.md",
         "patchSetId": 2
