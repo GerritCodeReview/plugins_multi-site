@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "4f087702_43dcb373",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-02-28T07:03:59Z",
+      "side": 1,
+      "message": "initial",
+      "range": {
+        "startLine": 10,
+        "startChar": 14,
+        "endLine": 10,
+        "endChar": 20
+      },
+      "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "df98acb8_b97a4399",
         "filename": "README.md",
         "patchSetId": 2
@@ -118,6 +141,75 @@
       "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1d52e208_8b9dd0ef",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-02-28T07:03:59Z",
+      "side": 1,
+      "message": "The.",
+      "range": {
+        "startLine": 18,
+        "startChar": 22,
+        "endLine": 18,
+        "endChar": 26
+      },
+      "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3084fa4e_fc2fba1a",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-02-28T07:03:59Z",
+      "side": 1,
+      "message": "built",
+      "range": {
+        "startLine": 31,
+        "startChar": 25,
+        "endLine": 31,
+        "endChar": 30
+      },
+      "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea16dd26_37685534",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-02-28T07:03:59Z",
+      "side": 1,
+      "message": "Optional: Use a variable, like \u003ckafka-port\u003e.",
+      "range": {
+        "startLine": 77,
+        "startChar": 41,
+        "endLine": 77,
+        "endChar": 45
+      },
+      "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
