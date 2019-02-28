@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c254244c_23a66863",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-02-28T10:27:31Z",
+      "side": 1,
+      "message": "What is the difference between the 6 and 7?",
+      "revId": "4892b947ed26e28d8dbb86af8139b022d102b49a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
