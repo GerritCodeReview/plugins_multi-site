@@ -144,6 +144,30 @@
     },
     {
       "key": {
+        "uuid": "f7640574_e7d0c5b4",
+        "filename": "setup_local_env/configs/healthcheck.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T15:11:13Z",
+      "side": 1,
+      "message": "OK, if you don\u0027t want the healthcheck at querychanges level, why don\u0027t you just disable it?",
+      "parentUuid": "16317fde_af4ec979",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 34
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "99a50efa_e63339f4",
         "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
         "patchSetId": 2
@@ -239,6 +263,30 @@
     },
     {
       "key": {
+        "uuid": "e65abe42_de6d9255",
+        "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T15:11:13Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2d092127_9b8836c9",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 32
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "453d1cbd_8f0523ee",
         "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
         "patchSetId": 2
@@ -307,6 +355,30 @@
       "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ba2d54f_ce39e4a8",
+        "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T15:11:13Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "002ec2a5_cbef0494",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 35
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -417,6 +489,30 @@
       "side": 1,
       "message": "If it\u0027s not specified here or the topic names in multi-site.conf are different, the application will simply create the kafka topics. I\u0027ve tested this scenario and does not cause any problem to the end-user.\n\nI still think it should be the responsibility of the infrastructure provisioning the creation and management of the kafka topics.",
       "parentUuid": "bd0707cb_f8ccf70b",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 113
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b5dfe9f_89168d3e",
+        "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T15:11:13Z",
+      "side": 1,
+      "message": "\u003e If it\u0027s not specified here or the topic names in multi-site.conf are different, the application will simply create the kafka topics. I\u0027ve tested this scenario and does not cause any problem to the end-user.\n\nCool, so we should apply the YANGNI right?\n\n\u003e I still think it should be the responsibility of the infrastructure provisioning the creation and management of the kafka topics.\n\nThis actually creates duplication and lack of clarity. if you have the same info repeated twice, you have one more chance to get it wrong. We don\u0027t have it on GerritHub.io and it works like a charm.",
+      "parentUuid": "d4ce3048_307fe31e",
       "range": {
         "startLine": 15,
         "startChar": 6,
