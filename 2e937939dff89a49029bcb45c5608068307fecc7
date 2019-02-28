@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3ba5ad2a_4c80bbd6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T07:29:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f087702_43dcb373",
+      "range": {
+        "startLine": 10,
+        "startChar": 14,
+        "endLine": 10,
+        "endChar": 20
+      },
+      "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "df98acb8_b97a4399",
         "filename": "README.md",
         "patchSetId": 2
@@ -167,6 +191,30 @@
     },
     {
       "key": {
+        "uuid": "ec7db67d_51d6d330",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T07:29:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d52e208_8b9dd0ef",
+      "range": {
+        "startLine": 18,
+        "startChar": 22,
+        "endLine": 18,
+        "endChar": 26
+      },
+      "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3084fa4e_fc2fba1a",
         "filename": "README.md",
         "patchSetId": 2
@@ -190,6 +238,30 @@
     },
     {
       "key": {
+        "uuid": "770ebe15_ec154fec",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T07:29:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3084fa4e_fc2fba1a",
+      "range": {
+        "startLine": 31,
+        "startChar": 25,
+        "endLine": 31,
+        "endChar": 30
+      },
+      "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ea16dd26_37685534",
         "filename": "README.md",
         "patchSetId": 2
@@ -210,6 +282,30 @@
       "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0bc1ff6a_a0a8a9e3",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T07:29:53Z",
+      "side": 1,
+      "message": "We should then do the same with the kafka-host.",
+      "parentUuid": "ea16dd26_37685534",
+      "range": {
+        "startLine": 77,
+        "startChar": 41,
+        "endLine": 77,
+        "endChar": 45
+      },
+      "revId": "2e937939dff89a49029bcb45c5608068307fecc7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
