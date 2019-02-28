@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "99b13b41_febf2272",
+        "filename": "README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2019-02-28T19:18:34Z",
+      "side": 1,
+      "message": "the only mode",
+      "range": {
+        "startLine": 14,
+        "startChar": 11,
+        "endLine": 14,
+        "endChar": 19
+      },
+      "revId": "734a73eabafad6f61a648d43da0b1ab715066249",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c999f3f0_e92158dd",
+        "filename": "README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2019-02-28T19:18:34Z",
+      "side": 1,
+      "message": "N",
+      "range": {
+        "startLine": 15,
+        "startChar": 69,
+        "endLine": 15,
+        "endChar": 70
+      },
+      "revId": "734a73eabafad6f61a648d43da0b1ab715066249",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4008c38_e93dbaf2",
+        "filename": "README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2019-02-28T19:18:34Z",
+      "side": 1,
+      "message": "same Apache 2.0 license and copyright holders as",
+      "range": {
+        "startLine": 26,
+        "startChar": 34,
+        "endLine": 26,
+        "endChar": 66
+      },
+      "revId": "734a73eabafad6f61a648d43da0b1ab715066249",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab7a5e2e_bddb9b4d",
+        "filename": "README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2019-02-28T19:18:34Z",
+      "side": 1,
+      "message": "like",
+      "range": {
+        "startLine": 31,
+        "startChar": 31,
+        "endLine": 31,
+        "endChar": 33
+      },
+      "revId": "734a73eabafad6f61a648d43da0b1ab715066249",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42dd5dc9_a5ca03b1",
+        "filename": "README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2019-02-28T19:18:34Z",
+      "side": 1,
+      "message": "code,",
+      "range": {
+        "startLine": 32,
+        "startChar": 33,
+        "endLine": 32,
+        "endChar": 37
+      },
+      "revId": "734a73eabafad6f61a648d43da0b1ab715066249",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ebf9e81a_6fbbf3d1",
+        "filename": "README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2019-02-28T19:18:34Z",
+      "side": 1,
+      "message": "T",
+      "range": {
+        "startLine": 62,
+        "startChar": 10,
+        "endLine": 62,
+        "endChar": 11
+      },
+      "revId": "734a73eabafad6f61a648d43da0b1ab715066249",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21fd5899_b2953955",
+        "filename": "README.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2019-02-28T19:18:34Z",
+      "side": 1,
+      "message": "into",
+      "range": {
+        "startLine": 69,
+        "startChar": 30,
+        "endLine": 69,
+        "endChar": 34
+      },
+      "revId": "734a73eabafad6f61a648d43da0b1ab715066249",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
