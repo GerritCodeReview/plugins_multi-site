@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "69cf05b1_0d54af23",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T13:07:48Z",
+      "side": 1,
+      "message": "This is a very good suggestion, reminds me Spokes the solution implemented at GitHub (see https://githubengineering.com/building-resilience-in-spokes/)\n\nI really like the idea, shall we tackle this at the next Hackathon in Munich?",
+      "revId": "27938b38b58b7dbabaa2cccbde6896a1979045a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af6f3de4_f5c6c186",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T13:07:48Z",
+      "side": 1,
+      "message": "Acknowledged to the client",
+      "range": {
+        "startLine": 119,
+        "startChar": 31,
+        "endLine": 119,
+        "endChar": 39
+      },
+      "revId": "27938b38b58b7dbabaa2cccbde6896a1979045a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb3ca4ff_02a9583a",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T13:07:48Z",
+      "side": 1,
+      "message": "100% loss-less",
+      "range": {
+        "startLine": 120,
+        "startChar": 35,
+        "endLine": 120,
+        "endChar": 39
+      },
+      "revId": "27938b38b58b7dbabaa2cccbde6896a1979045a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "80c1ff22_04eaf783",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T13:07:48Z",
+      "side": 1,
+      "message": "Actually there is, but only from the clients that pushed the commit in the first place.\nGit is a distributed version control system after all.",
+      "range": {
+        "startLine": 122,
+        "startChar": 3,
+        "endLine": 122,
+        "endChar": 40
+      },
+      "revId": "27938b38b58b7dbabaa2cccbde6896a1979045a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
