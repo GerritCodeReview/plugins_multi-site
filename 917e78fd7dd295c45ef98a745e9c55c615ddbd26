@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "bcb3922e_a7026e3e",
+        "filename": "setup_local_env/configs/healthcheck.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T13:29:04Z",
+      "side": 1,
+      "message": "But then it stays as-is, that means even if you then have open changes you won\u0027t be able to detect that some of them are failing or are taking too long to complete.",
+      "parentUuid": "fde3bb0f_c9e0e6af",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 34
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "99a50efa_e63339f4",
         "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
         "patchSetId": 2
@@ -131,6 +155,30 @@
       "side": 1,
       "message": "I\u0027ve named both containers because the setup.sh script does a few checks if these are already up and running",
       "parentUuid": "99a50efa_e63339f4",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 32
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f7b5761_7b4eba61",
+        "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T13:29:04Z",
+      "side": 1,
+      "message": "The default name is the one associated to the service (zookeeper). What\u0027s wrong in using that one?",
+      "parentUuid": "1e1f687a_f01d2f29",
       "range": {
         "startLine": 7,
         "startChar": 4,
@@ -190,6 +238,30 @@
     },
     {
       "key": {
+        "uuid": "002ec2a5_cbef0494",
+        "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T13:29:04Z",
+      "side": 1,
+      "message": "Same as before.",
+      "parentUuid": "0f1f9fd6_0bf5df3b",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 35
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b813ff98_c96c08e7",
         "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
         "patchSetId": 2
@@ -225,6 +297,30 @@
       "side": 1,
       "message": "The main advantage in having it here is because I\u0027m in control of the replication factor and number of partitions.",
       "parentUuid": "b813ff98_c96c08e7",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 113
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30440d34_11b1db72",
+        "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T13:29:04Z",
+      "side": 1,
+      "message": "And if you do not specify them here, what is the impact? What is the end-user problem?",
+      "parentUuid": "fff668e9_8f160fd4",
       "range": {
         "startLine": 15,
         "startChar": 6,
@@ -413,6 +509,30 @@
       "side": 1,
       "message": "The reason is because this setup script allows the user to redeploy new configuration files without reinstalling gerrit. This restart makes sure any previous running instance restarts with the new config files",
       "parentUuid": "f3b42712_60e7bfce",
+      "range": {
+        "startLine": 338,
+        "startChar": 36,
+        "endLine": 338,
+        "endChar": 43
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16dc02ca_14ebc7bc",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-02-28T13:29:04Z",
+      "side": 1,
+      "message": "so actually this isn\u0027t an \u0027install\u0027 but also an \u0027upgrade\u0027?",
+      "parentUuid": "25f65843_2e15f6dc",
       "range": {
         "startLine": 338,
         "startChar": 36,
