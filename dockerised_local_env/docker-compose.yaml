@@ -21,6 +21,8 @@ services:
        - "8080:8080"
     depends_on:
       - sshd
+      - zookeeper
+      - kafka-broker
   gerrit-2:
     build: ./gerrit-2
     networks:
@@ -42,6 +44,8 @@ services:
        - "8081:8080"
     depends_on:
       - sshd
+      - zookeeper
+      - kafka-broker
   sshd:
     build: ./sshd
     networks:
@@ -50,6 +54,21 @@ services:
        - ./gerrit-2/git:/var/gerrit-2/git
        - ./gerrit-2/ssh:/root/.ssh
        - ./gerrit-1/git:/var/gerrit-1/git
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    networks:
+      gerrit-net:
+    ports:
+      - "2181:2181"
+  kafka-broker:
+    image: wurstmeister/kafka:2.12-2.1.0
+    networks:
+      gerrit-net:
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka-broker
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 networks:
   gerrit-net:
     driver: bridge
