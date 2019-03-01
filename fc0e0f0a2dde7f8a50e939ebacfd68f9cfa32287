@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1dfdf551_cc258c57",
+        "filename": "setup_local_env/gerrit-2/docker-entrypoint.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-01T19:19:52Z",
+      "side": 1,
+      "message": "Need a better way to understand when replication is done :P",
+      "revId": "fc0e0f0a2dde7f8a50e939ebacfd68f9cfa32287",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
