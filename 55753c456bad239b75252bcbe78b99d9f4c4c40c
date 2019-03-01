@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "44367862_22e82ddc",
+        "filename": "setup_local_env/gerrit-1/ssh/known_hosts",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-01T16:40:12Z",
+      "side": 1,
+      "message": "Need to dynamically add the host at startup",
+      "revId": "55753c456bad239b75252bcbe78b99d9f4c4c40c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ed2a4750_97af0a79",
+        "filename": "setup_local_env/gerrit-2/docker-entrypoint.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-01T16:40:12Z",
+      "side": 1,
+      "message": "When the replication is finished this should start the second gerrit instance.",
+      "revId": "55753c456bad239b75252bcbe78b99d9f4c4c40c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
