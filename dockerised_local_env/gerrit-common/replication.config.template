@@ -11,7 +11,7 @@
     replicateHiddenProjects = true
 [gerrit]
     autoReload = true
-    replicateOnStartup = ${REPLICATE_ON_STARTUP}
+    replicateOnStartup = false
 [replication]
     lockErrorMaxRetries = 5
     maxRetries = 5
