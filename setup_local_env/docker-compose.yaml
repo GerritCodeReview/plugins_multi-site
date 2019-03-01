@@ -1,0 +1,44 @@
+version: '3'
+services:
+  gerrit-1:
+    build: ./gerrit-1
+    networks:
+      gerrit-net:
+    volumes:
+       - ./gerrit-1/git:/var/gerrit/git
+       - ./gerrit-1/db:/var/gerrit/db
+       - ./gerrit-1/logs:/var/gerrit/logs
+       - ./gerrit-1/ssh:/var/gerrit/.ssh
+    ports:
+       - "29418:29418"
+       - "8080:8080"
+    depends_on:
+      - gerrit-2
+      - sshd
+    # entrypoint: sleep 3600
+  gerrit-2:
+    build: ./gerrit-2
+    networks:
+      gerrit-net:
+    volumes:
+       - ./gerrit-2/git:/var/gerrit/git
+       - ./gerrit-2/db:/var/gerrit/db
+       - ./gerrit-2/logs:/var/gerrit/logs
+       - ./gerrit-2/ssh:/var/gerrit/.ssh
+    ports:
+       - "39418:39418"
+       - "8081:8081"
+    depends_on:
+      - sshd
+  sshd:
+    build: ./sshd
+    networks:
+      gerrit-net:
+    volumes:
+       - ./gerrit-2/git:/var/gerrit-2/git
+       - ./gerrit-2/ssh:/root/.ssh
+       - ./gerrit-1/git:/var/gerrit-1/git
+       # - ./gerrit-1/ssh:/root/.ssh
+networks:
+  gerrit-net:
+    driver: bridge
