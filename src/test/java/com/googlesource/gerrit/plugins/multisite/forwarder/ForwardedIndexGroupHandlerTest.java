@@ -43,20 +43,20 @@ public class ForwardedIndexGroupHandlerTest {
   @Mock private Configuration config;
   @Mock private Configuration.Index index;
   private ForwardedIndexGroupHandler handler;
-  private AccountGroup.UUID uuid;
+  private String uuid;
 
   @Before
   public void setUp() throws Exception {
     when(config.index()).thenReturn(index);
     when(index.numStripedLocks()).thenReturn(10);
     handler = new ForwardedIndexGroupHandler(indexerMock, config);
-    uuid = new AccountGroup.UUID("123");
+    uuid = "123";
   }
 
   @Test
   public void testSuccessfulIndexing() throws Exception {
     handler.index(uuid, Operation.INDEX, Optional.empty());
-    verify(indexerMock).index(uuid);
+    verify(indexerMock).index(new AccountGroup.UUID(uuid));
   }
 
   @Test
@@ -77,13 +77,13 @@ public class ForwardedIndexGroupHandlerTest {
                   return null;
                 })
         .when(indexerMock)
-        .index(uuid);
+        .index(new AccountGroup.UUID(uuid));
 
     assertThat(Context.isForwardedEvent()).isFalse();
     handler.index(uuid, Operation.INDEX, Optional.empty());
     assertThat(Context.isForwardedEvent()).isFalse();
 
-    verify(indexerMock).index(uuid);
+    verify(indexerMock).index(new AccountGroup.UUID(uuid));
   }
 
   @Test
@@ -95,7 +95,7 @@ public class ForwardedIndexGroupHandlerTest {
                   throw new IOException("someMessage");
                 })
         .when(indexerMock)
-        .index(uuid);
+        .index(new AccountGroup.UUID(uuid));
 
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
@@ -106,6 +106,6 @@ public class ForwardedIndexGroupHandlerTest {
     }
     assertThat(Context.isForwardedEvent()).isFalse();
 
-    verify(indexerMock).index(uuid);
+    verify(indexerMock).index(new AccountGroup.UUID(uuid));
   }
 }

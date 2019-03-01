@@ -19,7 +19,6 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
-import com.google.gerrit.reviewdb.client.Project;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
@@ -77,7 +76,7 @@ public class IndexEventRouterTest {
 
     verify(indexGroupHandler)
         .index(
-            new AccountGroup.UUID(groupId),
+            groupId,
             ForwardedIndexingHandler.Operation.INDEX,
             Optional.of(event));
 
@@ -91,10 +90,7 @@ public class IndexEventRouterTest {
     router.route(event);
 
     verify(indexProjectHandler)
-        .index(
-            Project.NameKey.parse(projectName),
-            ForwardedIndexingHandler.Operation.INDEX,
-            Optional.of(event));
+        .index(projectName, ForwardedIndexingHandler.Operation.INDEX, Optional.of(event));
 
     verifyZeroInteractions(indexAccountHandler, indexChangeHandler, indexGroupHandler);
   }

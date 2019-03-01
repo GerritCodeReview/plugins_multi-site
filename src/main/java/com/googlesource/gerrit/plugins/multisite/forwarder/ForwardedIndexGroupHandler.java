@@ -32,7 +32,7 @@ import java.util.Optional;
  */
 @Singleton
 public class ForwardedIndexGroupHandler
-    extends ForwardedIndexingHandler<AccountGroup.UUID, GroupIndexEvent> {
+    extends ForwardedIndexingHandler<String, GroupIndexEvent> {
   private final GroupIndexer indexer;
 
   @Inject
@@ -42,14 +42,14 @@ public class ForwardedIndexGroupHandler
   }
 
   @Override
-  protected void doIndex(AccountGroup.UUID uuid, Optional<GroupIndexEvent> event)
+  protected void doIndex(String uuid, Optional<GroupIndexEvent> event)
       throws IOException, OrmException {
-    indexer.index(uuid);
+    indexer.index(new AccountGroup.UUID(uuid));
     log.debug("Group {} successfully indexed", uuid);
   }
 
   @Override
-  protected void doDelete(AccountGroup.UUID uuid, Optional<GroupIndexEvent> event) {
+  protected void doDelete(String uuid, Optional<GroupIndexEvent> event) {
     throw new UnsupportedOperationException("Delete from group index not supported");
   }
 }
