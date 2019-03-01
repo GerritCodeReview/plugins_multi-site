@@ -1,0 +1,5 @@
+Host *
+   User root
+   IdentityFile /var/gerrit/.ssh/id_rsa
+   PreferredAuthentications publickey
+   StrictHostKeyChecking no
