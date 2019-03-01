@@ -1,9 +1,9 @@
 GERRIT_JOB=Gerrit-bazel-stable-2.16
-BUILD_NUM=259
-GERRIT_1_PLUGINS_DIRECTORY=./gerrit-1/plugins
-GERRIT_2_PLUGINS_DIRECTORY=./gerrit-2/plugins
+BUILD_NUM=377
 GERRIT_1_BIN_DIRECTORY=./gerrit-1/bin
 GERRIT_2_BIN_DIRECTORY=./gerrit-2/bin
+GERRIT_1_LIB_DIRECTORY=./gerrit-1/lib
+GERRIT_2_LIB_DIRECTORY=./gerrit-2/lib
 GERRIT_1_ETC_DIRECTORY=./gerrit-1/etc
 GERRIT_2_ETC_DIRECTORY=./gerrit-2/etc
 GERRIT_1_PLUGINS_DIRECTORY=./gerrit-1/plugins
@@ -34,8 +34,8 @@ plugin_websession_flatfile: prepare
 	cp $(GERRIT_1_PLUGINS_DIRECTORY)/websession-flatfile.jar $(GERRIT_2_PLUGINS_DIRECTORY)/websession-flatfile.jar
 
 plugin_multi_site: prepare
-	$(WGET) $(CI_URL)/plugin-multi-site-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/multi-site/multi-site.jar -P $(GERRIT_1_PLUGINS_DIRECTORY)
-	cp $(GERRIT_1_PLUGINS_DIRECTORY)/multi-site.jar $(GERRIT_2_PLUGINS_DIRECTORY)/multi-site.jar
+	$(WGET) $(CI_URL)/plugin-multi-site-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/multi-site/multi-site.jar -P $(GERRIT_1_LIB_DIRECTORY)
+	cp $(GERRIT_1_LIB_DIRECTORY)/multi-site.jar $(GERRIT_2_LIB_DIRECTORY)/multi-site.jar
 
 plugin_healthcheck: prepare
 	$(WGET) $(CI_URL)/plugin-healthcheck-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/healthcheck/healthcheck.jar -P $(GERRIT_1_PLUGINS_DIRECTORY)
@@ -46,11 +46,11 @@ build:
 	docker build -t $(MYDIR) ./gerrit-2
 
 clean_gerrit: prepare
-	-rm -fr gerrit-{1,2}/{db,data,cache,db,git,index,etc,bin,tmp}/*
-	export GERRIT_REPLICATION_INSTANCE=gerrit-2 REPLICATE_ON_STARTUP=true; cat ./gerrit-common/replication.config.template | envsubst '$${GERRIT_REPLICATION_INSTANCE} $${REPLICATE_ON_STARTUP}'  > ./gerrit-1/etc/replication.config
+	-rm -fr gerrit-{1,2}/{db,data,cache,db,git,index,etc,bin,tmp,plugins}/*
+	export GERRIT_REPLICATION_INSTANCE=gerrit-2 REPLICATE_ON_STARTUP=false; cat ./gerrit-common/replication.config.template | envsubst '$${GERRIT_REPLICATION_INSTANCE} $${REPLICATE_ON_STARTUP}'  > ./gerrit-1/etc/replication.config
 	export GERRIT_REPLICATION_INSTANCE=gerrit-1 REPLICATE_ON_STARTUP=false; cat ./gerrit-common/replication.config.template | envsubst '$${GERRIT_REPLICATION_INSTANCE} $${REPLICATE_ON_STARTUP}'  > ./gerrit-2/etc/replication.config
-	cp ./gerrit-common/gerrit.config ./gerrit-1/etc
-	cp ./gerrit-common/gerrit.config ./gerrit-2/etc
+	cp ./gerrit-common/*.config ./gerrit-1/etc
+	cp ./gerrit-common/*.config ./gerrit-2/etc
 	cp ./gerrit-common/git-daemon.sh ./gerrit-1/bin
 	cp ./gerrit-common/git-daemon.sh ./gerrit-2/bin
 
