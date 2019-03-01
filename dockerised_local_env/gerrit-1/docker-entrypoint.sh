@@ -10,4 +10,5 @@ if [[ $INIT == 1 ]]; then
   java -jar /var/gerrit/bin/gerrit.war reindex -d /var/gerrit --index groups
 fi
 
+java -jar /var/gerrit/bin/gerrit.war reindex -d /var/gerrit --index projects
 java -jar /var/gerrit/bin/gerrit.war daemon
