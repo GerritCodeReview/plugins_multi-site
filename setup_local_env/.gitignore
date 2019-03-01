@@ -1,0 +1,10 @@
+gerrit-1/plugins
+gerrit-1/db
+gerrit-1/git
+gerrit-1/logs
+gerrit-1/bin/release.war
+gerrit-2/plugins
+gerrit-2/db
+gerrit-2/git
+gerrit-2/logs
+gerrit-2/bin/release.war
