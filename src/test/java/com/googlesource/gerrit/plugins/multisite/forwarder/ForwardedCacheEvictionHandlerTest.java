@@ -23,11 +23,6 @@ import com.google.common.cache.Cache;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.reviewdb.client.Account;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
-import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEntry;
-import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedCacheEvictionHandler;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

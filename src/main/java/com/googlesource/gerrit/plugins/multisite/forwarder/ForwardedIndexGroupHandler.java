@@ -31,8 +31,7 @@ import java.util.Optional;
  * done for the same group uuid
  */
 @Singleton
-public class ForwardedIndexGroupHandler
-    extends ForwardedIndexingHandler<String, GroupIndexEvent> {
+public class ForwardedIndexGroupHandler extends ForwardedIndexingHandler<String, GroupIndexEvent> {
   private final GroupIndexer indexer;
 
   @Inject

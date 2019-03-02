@@ -16,10 +16,8 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Test;
-
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
-import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEntry;
+import org.junit.Test;
 
 public class CacheEntryTest {
 

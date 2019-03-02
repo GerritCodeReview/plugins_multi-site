@@ -20,8 +20,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.cache.CachePatternMatcher;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
