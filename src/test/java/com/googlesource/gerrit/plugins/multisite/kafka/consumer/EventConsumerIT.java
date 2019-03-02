@@ -89,10 +89,11 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
     drainQueue(droppedEventsQueue);
 
     createChange();
-    List<String> createdChangeEvents = receiveFromQueue(droppedEventsQueue, 3);
-    assertThat(createdChangeEvents).hasSize(3);
+    List<String> createdChangeEvents = receiveFromQueue(droppedEventsQueue, 4);
+    assertThat(createdChangeEvents).hasSize(4);
 
     assertThat(createdChangeEvents).contains("change-index");
+    // Ref-Update is received two times
     assertThat(createdChangeEvents).contains("ref-updated");
     assertThat(createdChangeEvents).contains("patchset-created");
   }
@@ -107,10 +108,11 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
     in.message = "LGTM";
     gApi.changes().id(r.getChangeId()).revision("current").review(in);
 
-    List<String> createdChangeEvents = receiveFromQueue(droppedEventsQueue, 2);
+    List<String> createdChangeEvents = receiveFromQueue(droppedEventsQueue, 3);
 
-    assertThat(createdChangeEvents).hasSize(2);
+    assertThat(createdChangeEvents).hasSize(3);
     assertThat(createdChangeEvents).contains("change-index");
+    assertThat(createdChangeEvents).contains("ref-updated");
     assertThat(createdChangeEvents).contains("comment-added");
   }
 
