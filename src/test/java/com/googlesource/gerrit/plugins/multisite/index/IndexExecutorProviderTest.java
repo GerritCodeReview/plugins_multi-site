@@ -21,8 +21,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.git.WorkQueue;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.index.IndexExecutorProvider;
-
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import org.junit.Before;
 import org.junit.Test;

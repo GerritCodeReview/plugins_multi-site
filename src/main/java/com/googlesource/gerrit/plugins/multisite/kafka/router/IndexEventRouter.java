@@ -18,7 +18,6 @@ import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndex
 import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.INDEX;
 
 import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -69,8 +68,7 @@ public class IndexEventRouter implements ForwardedIndexEventRouter {
           new Account.Id(accountIndexEvent.accountId), INDEX, Optional.of(accountIndexEvent));
     } else if (sourceEvent instanceof GroupIndexEvent) {
       GroupIndexEvent groupIndexEvent = (GroupIndexEvent) sourceEvent;
-      indexGroupHandler.index(
-          groupIndexEvent.groupUUID, INDEX, Optional.of(groupIndexEvent));
+      indexGroupHandler.index(groupIndexEvent.groupUUID, INDEX, Optional.of(groupIndexEvent));
     } else if (sourceEvent instanceof ProjectIndexEvent) {
       ProjectIndexEvent projectIndexEvent = (ProjectIndexEvent) sourceEvent;
       indexProjectHandler.index(
