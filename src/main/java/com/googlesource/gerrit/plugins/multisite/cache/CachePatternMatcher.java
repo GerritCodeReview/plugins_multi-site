@@ -19,7 +19,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;

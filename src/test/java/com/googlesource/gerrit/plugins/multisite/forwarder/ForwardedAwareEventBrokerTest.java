@@ -22,8 +22,6 @@ import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.plugincontext.PluginContext.PluginMetrics;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedAwareEventBroker;
 import com.google.gerrit.server.plugincontext.PluginSetContext;
 import org.junit.Before;
 import org.junit.Test;
