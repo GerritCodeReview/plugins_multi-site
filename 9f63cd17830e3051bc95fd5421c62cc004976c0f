@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a6c7c462_720e8a28",
+        "filename": "DESIGN.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-04T16:46:58Z",
+      "side": 1,
+      "message": "I would just add a note here to mention that this pattern should be applied for the case of two nodes only and with high replication performance to avoid the write operations to get stuck for too long",
+      "revId": "9f63cd17830e3051bc95fd5421c62cc004976c0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
