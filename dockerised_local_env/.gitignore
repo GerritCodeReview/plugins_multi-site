@@ -8,3 +8,5 @@ gerrit-2/db
 gerrit-2/git
 gerrit-2/logs
 gerrit-2/bin/release.war
+syslog-sidecar/logs
+syslog-sidecar/socket
