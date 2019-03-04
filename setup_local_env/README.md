@@ -47,6 +47,8 @@ Usage: sh setup.sh [--option ]
 [--replication-type]            Options [file,ssh]; default ssh
 [--replication-ssh-user]        SSH user for the replication plugin; default $(whoami)
 [--just-cleanup-env]            Cleans up previous deployment; default false
+
+[--enabled-https]               Enabled https; default true
 ```
 
 ## Limitations
