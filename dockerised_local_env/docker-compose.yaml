@@ -10,6 +10,7 @@ services:
        - ./gerrit-1/logs:/var/gerrit/logs
        - ./gerrit-1/ssh:/var/gerrit/.ssh
     ports:
+      # These are exposed to access a specific instance
        - "29418:29418"
        - "8080:8080"
     depends_on:
@@ -27,6 +28,7 @@ services:
        - ./gerrit-2/logs:/var/gerrit/logs
        - ./gerrit-2/ssh:/var/gerrit/.ssh
     ports:
+      # These are exposed to access a specific instance
        - "39418:39418"
        - "8081:8081"
     depends_on:
@@ -56,6 +58,31 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: kafka-broker
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  haproxy:
+    build: haproxy
+    ports:
+      - "80:80"
+      - "29418:29418"
+    networks:
+      gerrit-net:
+    depends_on:
+      - syslog-sidecar
+    environment:
+      - SYSLOG_SIDECAR=syslog-sidecar
+      - GERRIT_1=gerrit-1
+      - GERRIT_1_SSH=29418
+      - GERRIT_1_HTTP=8080
+      - GERRIT_2=gerrit-2
+      - GERRIT_2_SSH=29419
+      - GERRIT_2_HTTP=8081
+  syslog-sidecar:
+    build: syslog-sidecar
+    volumes:
+      - "./syslog-sidecar/logs:/var/log/syslog-ng"
+      - "./syslog-sidecar/socket:/var/run/syslog-ng"
+      - "./syslog-sidecar/config/:/etc/syslog-ng"
+    networks:
+      gerrit-net:
 networks:
   gerrit-net:
     driver: bridge
