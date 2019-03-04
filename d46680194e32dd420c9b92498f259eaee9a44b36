@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8a9c061e_8e7172a2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-04T22:16:09Z",
+      "side": 1,
+      "message": "Use the imperative form: \"Add\"",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 7
+      },
+      "revId": "d46680194e32dd420c9b92498f259eaee9a44b36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e280450_02464af9",
+        "filename": "setup_local_env/haproxy-config/haproxy.cfg",
+        "patchSetId": 3
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-04T22:16:09Z",
+      "side": 1,
+      "message": "Unrelated change? (extra empty line at the end)",
+      "revId": "d46680194e32dd420c9b92498f259eaee9a44b36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fc3c3e7_bdc06f62",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-04T22:16:09Z",
+      "side": 1,
+      "message": "A bit too much for a test environment :-)\nSet to 2048",
+      "range": {
+        "startLine": 44,
+        "startChar": 30,
+        "endLine": 44,
+        "endChar": 34
+      },
+      "revId": "d46680194e32dd420c9b92498f259eaee9a44b36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1da1a386_7cd01841",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-04T22:16:09Z",
+      "side": 1,
+      "message": "This is a test environment, why only 8 days? Set to 365.",
+      "range": {
+        "startLine": 44,
+        "startChar": 55,
+        "endLine": 44,
+        "endChar": 56
+      },
+      "revId": "d46680194e32dd420c9b92498f259eaee9a44b36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "83cebf34_323d7567",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-04T22:16:09Z",
+      "side": 1,
+      "message": "Would be best to enable SSL by default",
+      "range": {
+        "startLine": 274,
+        "startChar": 32,
+        "endLine": 274,
+        "endChar": 37
+      },
+      "revId": "d46680194e32dd420c9b92498f259eaee9a44b36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
