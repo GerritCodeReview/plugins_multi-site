@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "23fd01e7_aa04280d",
+        "filename": "DESIGN.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-04T21:14:27Z",
+      "side": 1,
+      "message": "nit: trailing space",
+      "range": {
+        "startLine": 120,
+        "startChar": 74,
+        "endLine": 120,
+        "endChar": 75
+      },
+      "revId": "9f63cd17830e3051bc95fd5421c62cc004976c0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a6c7c462_720e8a28",
         "filename": "DESIGN.md",
         "patchSetId": 3
@@ -31,6 +54,24 @@
       "side": 1,
       "message": "We have also to (re)consider some behavior of the replication plugin in order to make\nit more useable for the synchronous replication. For example, the replicationDelay doesn\u0027t\nmake much sense in the synchronous case. Further, the rescheduling of a replication\ndue to an in-flight push to the same remote URI also doesn\u0027t make much sense as we\nwant the replication to happen immediately. At least for change refs it doesn\u0027t make much\nsense to reschedule and await for more refs to be replicated. A client who pushed\na change is awaiting a response and we should produce a response asap.",
       "parentUuid": "a6c7c462_720e8a28",
+      "revId": "9f63cd17830e3051bc95fd5421c62cc004976c0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a5b7d0c_f0d1c1fe",
+        "filename": "DESIGN.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-04T21:14:27Z",
+      "side": 1,
+      "message": "\u003e We have also to (re)consider some behavior of the replication plugin in order to make\n\u003e it more useable for the synchronous replication.\n\nYes, if you want to \"block\" the ref-update of the incoming push, you cannot start a replication because the event isn\u0027t triggered yet.\n\nI believe the current replication plugin isn\u0027t suitable for that, we need something possibly simpler (no need for all logic of queueing and retrying and persisting).\n\n\u003e For example, the replicationDelay doesn\u0027t\n\u003e make much sense in the synchronous case.\n\nYes, you need to push an \"in-flight\" commit, not landed/confirmed yet on the local repo.\n\n\u003e Further, the rescheduling of a replication\n\u003e due to an in-flight push to the same remote URI also doesn\u0027t make much sense as we\n\u003e want the replication to happen immediately. \n\nAgreed.\n\n\u003e At least for change refs it doesn\u0027t make much\n\u003e sense to reschedule and await for more refs to be replicated. A client who pushed\n\u003e a change is awaiting a response and we should produce a response asap.\n\nThis new \"synchronous replication\" needs to work on the same \"batch-size\" of the incoming push.\n\nCan you amend your proposal with those additional insights?",
+      "parentUuid": "e72b1ac9_dd9f56c4",
       "revId": "9f63cd17830e3051bc95fd5421c62cc004976c0f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
