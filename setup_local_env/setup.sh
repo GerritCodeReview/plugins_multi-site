@@ -24,6 +24,7 @@ function check_application_requirements {
 	type docker-compose >/dev/null 2>&1 || { echo >&2 "Require docker-compose but it's not installed. Aborting."; exit 1; }
 	type wget >/dev/null 2>&1 || { echo >&2 "Require wget but it's not installed. Aborting."; exit 1; }
 	type envsubst >/dev/null 2>&1 || { echo >&2 "Require envsubst but it's not installed. Aborting."; exit 1; }
+	type openssl >/dev/null 2>&1 || { echo >&2 "Require openssl but it's not installed. Aborting."; exit 1; }
 }
 
 function get_replication_url {
@@ -36,6 +37,15 @@ function get_replication_url {
 	elif [ "$REPLICATION_TYPE" = "ssh" ];then
 		echo "url = ssh://$USER@$REPLICATION_HOSTNAME:$REPLICATION_LOCATION_TEST_SITE/git/#{name}#.git"
 	fi
+}
+
+function deploy_tls_certificates {
+	echo "Deplying certificates in $HA_PROXY_CERTIFICATES_DIR..."
+	openssl req -new -newkey rsa:4096 -x509 -sha256 -days 8 -nodes \
+	-out $HA_PROXY_CERTIFICATES_DIR/MyCertificate.crt \
+	-keyout $HA_PROXY_CERTIFICATES_DIR/GerritLocalKey.key \
+	-subj "/C=GB/ST=London/L=London/O=Gerrit Org/OU=IT Department/CN=localhost"
+	cat $HA_PROXY_CERTIFICATES_DIR/MyCertificate.crt $HA_PROXY_CERTIFICATES_DIR/GerritLocalKey.key | tee $HA_PROXY_CERTIFICATES_DIR/GerritLocalKey.pem
 }
 
 function copy_config_files {
@@ -63,6 +73,8 @@ function start_ha_proxy {
 	export HA_GERRIT_CANONICAL_HOSTNAME=$GERRIT_CANONICAL_HOSTNAME
 	export HA_GERRIT_CANONICAL_PORT=$GERRIT_CANONICAL_PORT
 
+	export HA_HTTPS_BIND=$HTTPS_BIND
+
 	export HA_GERRIT_SITE1_HOSTNAME=$GERRIT_1_HOSTNAME
 	export HA_GERRIT_SITE2_HOSTNAME=$GERRIT_2_HOSTNAME
 	export HA_GERRIT_SITE1_HTTPD_PORT=$GERRIT_1_HTTPD_PORT
@@ -74,6 +86,8 @@ function start_ha_proxy {
 	cat $SCRIPT_DIR/haproxy-config/haproxy.cfg | envsubst > $HA_PROXY_CONFIG_DIR/haproxy.cfg
 
 	echo "Starting HA-PROXY..."
+	echo "THE SCRIPT LOCATION $SCRIPT_DIR"
+	echo "THE HA SCRIPT_LOCATION $HA_SCRIPT_DIR"
 	haproxy -f $HA_PROXY_CONFIG_DIR/haproxy.cfg &
 }
 
@@ -146,6 +160,8 @@ case "$1" in
 		echo "[--replication-type]				Options [file,ssh]; default ssh"
 		echo "[--replication-ssh-user]			SSH user for the replication plugin; default $(whoami)"
 		echo "[--just-cleanup-env]				Cleans up previous deployment; default false"
+		echo
+		echo "[--enabled-https]					Enabled https; default false"
 		echo
 		exit 0
   ;;
@@ -224,6 +240,11 @@ case "$1" in
 		shift
 		shift
   ;;
+  "--enabled-https" )
+		HTTPS_ENABLED=$2
+		shift
+		shift
+  ;;
   *	   )
 		echo "Unknown option argument: $1"
 		shift
@@ -250,15 +271,16 @@ GERRIT_2_SSHD_PORT=${GERRIT_2_SSHD_PORT:-"49418"}
 REPLICATION_TYPE=${REPLICATION_TYPE:-"ssh"}
 REPLICATION_SSH_USER=${REPLICATION_SSH_USER:-$(whoami)}
 export SSH_ADVERTISED_PORT=${SSH_ADVERTISED_PORT:-"29418"}
+HTTPS_ENABLED=${HTTPS_ENABLED:-"false"}
 
 COMMON_LOCATION=$DEPLOYMENT_LOCATION/gerrit_setup
 LOCATION_TEST_SITE_1=$COMMON_LOCATION/instance-1
 LOCATION_TEST_SITE_2=$COMMON_LOCATION/instance-2
 HA_PROXY_CONFIG_DIR=$COMMON_LOCATION/ha-proxy-config
+HA_PROXY_CERTIFICATES_DIR="$HA_PROXY_CONFIG_DIR/certificates"
 
 RELEASE_WAR_FILE_LOCATION=${RELEASE_WAR_FILE_LOCATION:-bazel-bin/release.war}
 MULTISITE_PLUGIN_LOCATION=${MULTISITE_PLUGIN_LOCATION:-bazel-genfiles/plugins/multi-site/multi-site.jar}
-
 
 export FAKE_NFS=$COMMON_LOCATION/fake_nfs
 
@@ -294,14 +316,27 @@ if [ "$REPLICATION_TYPE" = "ssh" ];then
 	echo "Make sure ~/.ssh/authorized_keys and ~/.ssh/known_hosts are configured correctly"
 fi
 
+if [ "$HTTPS_ENABLED" = "true" ];then
+	export HTTP_PROTOCOL="https"
+	export GERRIT_CANONICAL_WEB_URL="$HTTP_PROTOCOL://$GERRIT_CANONICAL_HOSTNAME/"
+	export HTTPS_BIND="bind *:443 ssl crt $HA_PROXY_CONFIG_DIR/certificates/GerritLocalKey.pem"
+	HTTPS_CLONE_MSG="Using self-signed certificates, to clone via https - 'git config --global http.sslVerify false'"
+else
+	export HTTP_PROTOCOL="http"
+	export GERRIT_CANONICAL_WEB_URL="$HTTP_PROTOCOL://$GERRIT_CANONICAL_HOSTNAME:$GERRIT_CANONICAL_PORT/"
+fi
+
 # New installation
 if [ $NEW_INSTALLATION = "true" ]; then
 
 	cleanup_environment $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $COMMON_LOCATION
 
 	echo "Setting up directories"
-	mkdir -p $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $HA_PROXY_CONFIG_DIR $FAKE_NFS
+	mkdir -p $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $HA_PROXY_CERTIFICATES_DIR $FAKE_NFS
 	java -jar $DEPLOYMENT_LOCATION/gerrit.war init --batch --no-auto-start --install-all-plugins --dev -d $LOCATION_TEST_SITE_1
+
+	# Deploying TLS certificates
+	if [ "$HTTPS_ENABLED" = "true" ];then deploy_tls_certificates;fi
 
 	echo "Copy multi-site plugin"
 	cp -f $DEPLOYMENT_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/plugins/multi-site.jar
@@ -345,15 +380,20 @@ fi
 echo "==============================="
 echo "Current gerrit multi-site setup"
 echo "==============================="
+echo "The admin password is 'secret'"
 echo "deployment-location=$DEPLOYMENT_LOCATION"
 echo "replication-type=$REPLICATION_TYPE"
 echo "replication-ssh-user=$REPLICATION_SSH_USER"
+echo "enable-https=$HTTPS_ENABLED"
 echo
-echo "GERRIT HA-PROXY: http://$GERRIT_CANONICAL_HOSTNAME:$GERRIT_CANONICAL_PORT"
+echo "GERRIT HA-PROXY: $GERRIT_CANONICAL_WEB_URL"
 echo "GERRIT-1: http://$GERRIT_1_HOSTNAME:$GERRIT_1_HTTPD_PORT"
 echo "GERRIT-2: http://$GERRIT_2_HOSTNAME:$GERRIT_2_HTTPD_PORT"
 echo
 echo "Site-1: $LOCATION_TEST_SITE_1"
 echo "Site-2: $LOCATION_TEST_SITE_2"
+echo
+echo "$HTTPS_CLONE_MSG"
+echo
 
 exit $?
