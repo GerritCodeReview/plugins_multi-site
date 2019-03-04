@@ -216,6 +216,30 @@
     },
     {
       "key": {
+        "uuid": "842251f8_5d5e5660",
+        "filename": "setup_local_env/configs/healthcheck.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-04T17:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af7490bc_285a427c",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 34
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "99a50efa_e63339f4",
         "filename": "setup_local_env/docker-compose.kafka-broker.yaml",
         "patchSetId": 2
@@ -878,6 +902,30 @@
       "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2cc7eb6f_a77c253c",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-04T17:53:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "258d9a12_d28fe3da",
+      "range": {
+        "startLine": 338,
+        "startChar": 36,
+        "endLine": 338,
+        "endChar": 43
+      },
+      "revId": "917e78fd7dd295c45ef98a745e9c55c615ddbd26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
