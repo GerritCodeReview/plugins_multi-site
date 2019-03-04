@@ -19,8 +19,8 @@ services:
        - ./gerrit-1/tmp:/var/gerrit/tmp
        - ./gerrit-common/shared-dir:/var/gerrit/shared-dir
     ports:
-       - "29418:29418"
-       - "8080:8080"
+       - "39418:29418"
+       - "8081:8080"
     depends_on:
       - sshd
       - zookeeper
@@ -45,8 +45,8 @@ services:
        - ./gerrit-2/tmp:/var/gerrit/tmp
        - ./gerrit-common/shared-dir:/var/gerrit/shared-dir
     ports:
-       - "39418:29418"
-       - "8081:8080"
+       - "49418:29418"
+       - "8082:8080"
     depends_on:
       - sshd
       - zookeeper
@@ -77,6 +77,35 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: kafka-broker
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  haproxy:
+    build: haproxy
+    ports:
+      - "8080:8080"
+      - "29418:29418"
+    networks:
+      gerrit-net:
+    depends_on:
+      - syslog-sidecar
+      - gerrit-1
+      - gerrit-2
+    environment:
+      - SYSLOG_SIDECAR=syslog-sidecar
+      - GERRIT_1=gerrit-1
+      - GERRIT_1_SSH=29418
+      - GERRIT_1_HTTP=8080
+      - GERRIT_2=gerrit-2
+      - GERRIT_2_SSH=29418
+      - GERRIT_2_HTTP=8080
+      - HAPROXY_HTTP_PORT=8080
+      - HAPROXY_SSH_PORT=29418
+  syslog-sidecar:
+    image: balabit/syslog-ng:3.19.1
+    volumes:
+      - "./syslog-sidecar/logs:/var/log/syslog-ng"
+      - "./syslog-sidecar/socket:/var/run/syslog-ng"
+      - "./syslog-sidecar/config/:/etc/syslog-ng"
+    networks:
+      gerrit-net:
 networks:
   gerrit-net:
     driver: bridge
