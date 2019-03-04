@@ -16,6 +16,24 @@
       "revId": "9f63cd17830e3051bc95fd5421c62cc004976c0f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e72b1ac9_dd9f56c4",
+        "filename": "DESIGN.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-04T17:00:32Z",
+      "side": 1,
+      "message": "We have also to (re)consider some behavior of the replication plugin in order to make\nit more useable for the synchronous replication. For example, the replicationDelay doesn\u0027t\nmake much sense in the synchronous case. Further, the rescheduling of a replication\ndue to an in-flight push to the same remote URI also doesn\u0027t make much sense as we\nwant the replication to happen immediately. At least for change refs it doesn\u0027t make much\nsense to reschedule and await for more refs to be replicated. A client who pushed\na change is awaiting a response and we should produce a response asap.",
+      "parentUuid": "a6c7c462_720e8a28",
+      "revId": "9f63cd17830e3051bc95fd5421c62cc004976c0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
