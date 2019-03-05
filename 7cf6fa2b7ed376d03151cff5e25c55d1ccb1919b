@@ -1,0 +1,152 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b5416333_249ad741",
+        "filename": "dockerised_local_env/haproxy/Dockerfile",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T11:15:37Z",
+      "side": 1,
+      "message": "This version is quite old, the latest is 1.9.\nare you using this to match our production environment? is 15 the version we use there?",
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "afde0baf_a3873f58",
+        "filename": "dockerised_local_env/haproxy/Dockerfile",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T11:15:37Z",
+      "side": 1,
+      "message": "Perhaps you could consider clearing the cache after this apt-get install:\n\n`\u0026\u0026 rm -rf /var/lib/apt/lists/*`",
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "abcf6645_5b92a916",
+        "filename": "dockerised_local_env/haproxy/docker-entrypoint.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T11:15:37Z",
+      "side": 1,
+      "message": "is this necessary?\nWhat\u0027s the benefit of using this in a test environment?\nDon\u0027t we always hard reload haproxy in production by restarting the docker image?",
+      "range": {
+        "startLine": 12,
+        "startChar": 1,
+        "endLine": 12,
+        "endChar": 67
+      },
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e7df486_852551ea",
+        "filename": "dockerised_local_env/haproxy/haproxy.cfg",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T11:15:37Z",
+      "side": 1,
+      "message": "- This could be replaced with the environment variable\n\n- Also, I can\u0027t find any configuration regarding the gerrit-2 SSH port (39418) in haproxy. How does haproxy talk to gerrit-2 via ssh?",
+      "range": {
+        "startLine": 26,
+        "startChar": 11,
+        "endLine": 26,
+        "endChar": 16
+      },
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61ccda3c_d7a172e6",
+        "filename": "dockerised_local_env/haproxy/haproxy.cfg",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T11:15:37Z",
+      "side": 1,
+      "message": "Don\u0027t we want roundrobin here?",
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5cf96d35_a3552bdd",
+        "filename": "dockerised_local_env/haproxy/haproxy.cfg",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T11:15:37Z",
+      "side": 1,
+      "message": "I think we might want a:\n\nhttp-check expect status 200\n\nafter this?",
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ed9ae86_229a6841",
+        "filename": "dockerised_local_env/haproxy/haproxy.cfg",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T11:15:37Z",
+      "side": 1,
+      "message": "I think in production we use `balance source` for this.\nThe rationale behind this is that we want all ssh request being consistently sent to the same backend.\nWanna consider changing this?",
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "285f4c9d_5bce0699",
+        "filename": "dockerised_local_env/syslog-sidecar/Dockerfile",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T11:15:37Z",
+      "side": 1,
+      "message": "Do we need this at all?\nCan\u0027t we just use it in the docker-compose?",
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
