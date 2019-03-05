@@ -75,6 +75,24 @@
       "revId": "9f63cd17830e3051bc95fd5421c62cc004976c0f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c15f648_61bbbdba",
+        "filename": "DESIGN.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-05T13:20:51Z",
+      "side": 1,
+      "message": "\u003e I believe the current replication plugin isn\u0027t suitable for that, we need something possibly simpler (no need for all logic of queueing and retrying and persisting).\n\nMaybe we really need something which operates on a lower level. For example have\nan \"pack-received\" event and then simply forward that pack file to the other site.\nSimilarly for the ref-updated events, instead of a real git push, we could just forward\nthe ref-updates to the other site.\n\n\u003e Can you amend your proposal with those additional insights?\n\nYes, will do it.",
+      "parentUuid": "1a5b7d0c_f0d1c1fe",
+      "revId": "9f63cd17830e3051bc95fd5421c62cc004976c0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
