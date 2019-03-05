@@ -2,6 +2,75 @@
   "comments": [
     {
       "key": {
+        "uuid": "5231d9be_7bf097f5",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T15:36:48Z",
+      "side": 1,
+      "message": "some trailing spaces throughout the docs",
+      "range": {
+        "startLine": 336,
+        "startChar": 73,
+        "endLine": 336,
+        "endChar": 75
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7f7f68d_fa67ca81",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T15:36:48Z",
+      "side": 1,
+      "message": "experienced",
+      "range": {
+        "startLine": 339,
+        "startChar": 42,
+        "endLine": 339,
+        "endChar": 52
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4136f8b0_aa8e8c35",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T15:36:48Z",
+      "side": 1,
+      "message": "consider: [...] might occur more often when moving to stage #8 [...]",
+      "range": {
+        "startLine": 340,
+        "startChar": 18,
+        "endLine": 340,
+        "endChar": 59
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a717571e_feff01a6",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -18,6 +87,29 @@
         "startChar": 15,
         "endLine": 348,
         "endChar": 28
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3bf3ca5b_c4eff5a5",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T15:36:48Z",
+      "side": 1,
+      "message": "perhaps `same reference` would be more appropriate?",
+      "range": {
+        "startLine": 349,
+        "startChar": 9,
+        "endLine": 349,
+        "endChar": 15
       },
       "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
@@ -71,6 +163,52 @@
     },
     {
       "key": {
+        "uuid": "c5dbe221_c04b1655",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T15:36:48Z",
+      "side": 1,
+      "message": "Redis and Memcached support compare and set too if we want to mention them.",
+      "range": {
+        "startLine": 399,
+        "startChar": 40,
+        "endLine": 399,
+        "endChar": 85
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1693b7a0_af711ad7",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T15:36:48Z",
+      "side": 1,
+      "message": "nit: reference instead of branch?",
+      "range": {
+        "startLine": 413,
+        "startChar": 18,
+        "endLine": 413,
+        "endChar": 24
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "df2bf37c_c09a1c3e",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -82,6 +220,29 @@
       "writtenOn": "2019-03-05T15:33:41Z",
       "side": 1,
       "message": "If we shard the repositories across the various instances using some consistent hashing and make sure that each repo never \"write fallbacks\" into another box, that could solve the split brain issue and avoid a full cluster in read mode. \nHowever not sure if it\u0027s acceptable to have a few repos in just read mode (until the write instance comes back up for those repos)",
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7d20841a_63ce14ea",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-05T15:36:48Z",
+      "side": 1,
+      "message": "it seems text got interrupted here, is that the case?",
+      "range": {
+        "startLine": 419,
+        "startChar": 54,
+        "endLine": 419,
+        "endChar": 55
+      },
       "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
