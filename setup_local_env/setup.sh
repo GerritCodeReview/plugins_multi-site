@@ -139,29 +139,29 @@ case "$1" in
   "--help" )
 		echo "Usage: sh $0 [--option $value]"
 		echo
-		echo "[--release-war-file]				Location to release.war file"
-		echo "[--multisite-plugin-file]			Location to plugin multi-site.jar file"
+		echo "[--release-war-file]            Location to release.war file"
+		echo "[--multisite-plugin-file]       Location to plugin multi-site.jar file"
 		echo
-		echo "[--new-deployment]				Cleans up previous gerrit deployment and re-installs it. default true"
-		echo "[--get-websession-plugin]			Download websession-flatfile plugin from CI lastSuccessfulBuild; default true"
-		echo "[--deployment-location]			Base location for the test deployment; default /tmp"
+		echo "[--new-deployment]              Cleans up previous gerrit deployment and re-installs it. default true"
+		echo "[--get-websession-plugin]       Download websession-flatfile plugin from CI lastSuccessfulBuild; default true"
+		echo "[--deployment-location]         Base location for the test deployment; default /tmp"
 		echo
-		echo "[--gerrit-canonical-host]			The default host for Gerrit to be accessed through; default localhost"
-		echo "[--gerrit-canonical-port]			The default port for Gerrit to be accessed throug; default 8080"
+		echo "[--gerrit-canonical-host]       The default host for Gerrit to be accessed through; default localhost"
+		echo "[--gerrit-canonical-port]       The default port for Gerrit to be accessed throug; default 8080"
 		echo
-		echo "[--gerrit-ssh-advertised-port]	Gerrit Instance 1 sshd port; default 29418"
+		echo "[--gerrit-ssh-advertised-port]  Gerrit Instance 1 sshd port; default 29418"
 		echo
-		echo "[--gerrit1-httpd-port]			Gerrit Instance 1 http port; default 18080"
-		echo "[--gerrit1-sshd-port]				Gerrit Instance 1 sshd port; default 39418"
+		echo "[--gerrit1-httpd-port]          Gerrit Instance 1 http port; default 18080"
+		echo "[--gerrit1-sshd-port]           Gerrit Instance 1 sshd port; default 39418"
 		echo
-		echo "[--gerrit2-httpd-port]			Gerrit Instance 2 http port; default 18081"
-		echo "[--gerrit2-sshd-port]				Gerrit Instance 2 sshd port; default 49418"
+		echo "[--gerrit2-httpd-port]          Gerrit Instance 2 http port; default 18081"
+		echo "[--gerrit2-sshd-port]           Gerrit Instance 2 sshd port; default 49418"
 		echo
-		echo "[--replication-type]				Options [file,ssh]; default ssh"
-		echo "[--replication-ssh-user]			SSH user for the replication plugin; default $(whoami)"
-		echo "[--just-cleanup-env]				Cleans up previous deployment; default false"
+		echo "[--replication-type]            Options [file,ssh]; default ssh"
+		echo "[--replication-ssh-user]        SSH user for the replication plugin; default $(whoami)"
+		echo "[--just-cleanup-env]            Cleans up previous deployment; default false"
 		echo
-		echo "[--enabled-https]					Enabled https; default true"
+		echo "[--enabled-https]               Enabled https; default true"
 		echo
 		exit 0
   ;;
