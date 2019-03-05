@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "713b464f_ace983ed",
+        "filename": "dockerised_local_env/gerrit-1/etc/gerrit.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-05T14:52:48Z",
+      "side": 1,
+      "message": "I believe you need `advertisedAddress` to be $HAPROXY_SSH_PORT",
+      "revId": "bb72fa8420e975adb8ebd701415aa9ae5595d677",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa6aadbb_bafe0c53",
+        "filename": "dockerised_local_env/gerrit-1/etc/gerrit.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-05T14:52:48Z",
+      "side": 1,
+      "message": "I believe this should be http-proxy\nhttps://gerrit-review.googlesource.com/Documentation/config-reverseproxy.html",
+      "range": {
+        "startLine": 30,
+        "startChar": 13,
+        "endLine": 30,
+        "endChar": 17
+      },
+      "revId": "bb72fa8420e975adb8ebd701415aa9ae5595d677",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10ccebd2_c4045d7d",
+        "filename": "dockerised_local_env/gerrit-2/etc/gerrit.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-05T14:52:48Z",
+      "side": 1,
+      "message": "Same here",
+      "revId": "bb72fa8420e975adb8ebd701415aa9ae5595d677",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a45cac0a_e15279e8",
+        "filename": "dockerised_local_env/gerrit-2/etc/gerrit.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-05T14:52:48Z",
+      "side": 1,
+      "message": "here as well http-proxy",
+      "range": {
+        "startLine": 30,
+        "startChar": 13,
+        "endLine": 30,
+        "endChar": 17
+      },
+      "revId": "bb72fa8420e975adb8ebd701415aa9ae5595d677",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
