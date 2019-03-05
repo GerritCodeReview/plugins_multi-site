@@ -371,6 +371,30 @@
     },
     {
       "key": {
+        "uuid": "8851f15e_2acc186c",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:57:38Z",
+      "side": 1,
+      "message": "Yeah, good point. Will try to clarify",
+      "parentUuid": "9a399567_afe38e5c",
+      "range": {
+        "startLine": 362,
+        "startChar": 42,
+        "endLine": 362,
+        "endChar": 69
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "72bcc088_7a9640cd",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -388,6 +412,24 @@
     },
     {
       "key": {
+        "uuid": "91e53001_e993403b",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:57:38Z",
+      "side": 1,
+      "message": "This is essentially the Split-Brain case just moved one ref-update further",
+      "parentUuid": "72bcc088_7a9640cd",
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a996e27d_f8a20186",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -399,6 +441,24 @@
       "writtenOn": "2019-03-05T16:28:32Z",
       "side": 1,
       "message": "This implicates that synchronous replication can be avoided? What happens\nif an instance realizes that it is out of sync, but cannot bring itself back in sync\nbecause the other instance crashed and lost the data?",
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f851a192_04b1e939",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:57:38Z",
+      "side": 1,
+      "message": "Good point. I will add that the two options are not exclusive.\nIn the case you mention what would happen is that the out of sync instance would operate in RO mode until it is put back in sync (this should be a manual operation possibly).",
+      "parentUuid": "a996e27d_f8a20186",
       "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -463,6 +523,30 @@
       "writtenOn": "2019-03-05T16:28:32Z",
       "side": 1,
       "message": "Having a shared RefDB is definitely an interesting idea. It would allow Gerrit instances to\nfind out that they are out of sync. More specifically, it would allow atomic ref-updates\nin a distributed system consisting of many Gerrit instances.\n\nI still think that this cannot eliminate the need to synchronously replicate current push\noperation to the majority of other Gerrit servers. If we do not do that, then the same\nquestion remains: what if the only instance who received a new commit crashes before any\nother instance realizes that it is missing that commit and pulls it to itself?",
+      "range": {
+        "startLine": 406,
+        "startChar": 60,
+        "endLine": 406,
+        "endChar": 77
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e49f30a_23329dfe",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:57:38Z",
+      "side": 1,
+      "message": "Yes correct. I will mentions more clearly the synchronous mode",
+      "parentUuid": "366a736f_34bde7b9",
       "range": {
         "startLine": 406,
         "startChar": 60,
