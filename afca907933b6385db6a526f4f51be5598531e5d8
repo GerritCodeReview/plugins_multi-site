@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c03576ba_f040b34d",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:23:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5231d9be_7bf097f5",
+      "range": {
+        "startLine": 336,
+        "startChar": 73,
+        "endLine": 336,
+        "endChar": 75
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a7f7f68d_fa67ca81",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e2aa81e8_90d3e23d",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:23:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7f7f68d_fa67ca81",
+      "range": {
+        "startLine": 339,
+        "startChar": 42,
+        "endLine": 339,
+        "endChar": 52
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "a5e44406_814cbd38",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:23:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4136f8b0_aa8e8c35",
+      "range": {
+        "startLine": 340,
+        "startChar": 18,
+        "endLine": 340,
+        "endChar": 59
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a717571e_feff01a6",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -91,6 +163,30 @@
       "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4efa3745_23472be2",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:23:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a717571e_feff01a6",
+      "range": {
+        "startLine": 348,
+        "startChar": 15,
+        "endLine": 348,
+        "endChar": 28
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "fcb5c130_e169681b",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:23:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3bf3ca5b_c4eff5a5",
+      "range": {
+        "startLine": 349,
+        "startChar": 9,
+        "endLine": 349,
+        "endChar": 15
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ffa49b7d_685b0b0b",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -137,6 +257,30 @@
       "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87afb491_a8335265",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:23:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ffa49b7d_685b0b0b",
+      "range": {
+        "startLine": 353,
+        "startChar": 19,
+        "endLine": 353,
+        "endChar": 26
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "d11ceb70_3533a855",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:23:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "081fa9b8_7bdb32d5",
+      "range": {
+        "startLine": 361,
+        "startChar": 19,
+        "endLine": 361,
+        "endChar": 26
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c5dbe221_c04b1655",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -183,6 +351,30 @@
       "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "70462b6a_6b5dd8f9",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:23:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c5dbe221_c04b1655",
+      "range": {
+        "startLine": 399,
+        "startChar": 40,
+        "endLine": 399,
+        "endChar": 85
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -209,6 +401,30 @@
     },
     {
       "key": {
+        "uuid": "d3e0550e_1997757b",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:23:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1693b7a0_af711ad7",
+      "range": {
+        "startLine": 413,
+        "startChar": 18,
+        "endLine": 413,
+        "endChar": 24
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "df2bf37c_c09a1c3e",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -220,6 +436,24 @@
       "writtenOn": "2019-03-05T15:33:41Z",
       "side": 1,
       "message": "If we shard the repositories across the various instances using some consistent hashing and make sure that each repo never \"write fallbacks\" into another box, that could solve the split brain issue and avoid a full cluster in read mode. \nHowever not sure if it\u0027s acceptable to have a few repos in just read mode (until the write instance comes back up for those repos)",
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c5f7df9a_dfcdc5d2",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:23:27Z",
+      "side": 1,
+      "message": "This is a valid point of discussion. Not sure How to put it in the document..",
+      "parentUuid": "df2bf37c_c09a1c3e",
       "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -246,6 +480,30 @@
       "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "90c7f3fd_e7822336",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-05T16:23:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7d20841a_63ce14ea",
+      "range": {
+        "startLine": 419,
+        "startChar": 54,
+        "endLine": 419,
+        "endChar": 55
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
