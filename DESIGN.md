@@ -330,6 +330,105 @@ configuration and allows to tune the QoS of the publication process. Failures
 are explicitly not handled at the moment, and they are just logged as errors.
 There is no retry mechanism to handle temporary failures.
 
+### Avoiding Split Brain and Supporting Multiple Write Instances
+
+The current solution of multi-site at stage #7 with asynchronous replication is
+exposed to the risk of the system reaching a Split - Brain situation (see 
+[issue #10554](https://bugs.chromium.org/p/gerrit/issues/detail?id=10554).
+
+While this situation, at stage #7, can be experienced only as a consequence of a
+failure in the RW,  it might occur more often when moving to stage #8
+because of the presence of multiple RW nodes.
+
+The diagram below shows happy path with a crash recovery situation bringing to a
+healthy system.
+
+![Healthy Use Case](src/main/resources/Documentation/git-replication-healthy.png)
+
+In this case we are considering two different clients each doing a `push` on top of
+the same reference. This could be a new commit in a branch or the change of an existing commit.
+
+At `t0`: both clients are seeing the status of `HEAD` being `W0`. `Instance1` is the
+RW node and will receive any `push` request. `Instance1` and `Instance2` are in sync
+at `W0`.
+
+At `t1`: `Client1` pushes `W1`. The request is served by `Instance1` that acknowledges it
+and starts the replication process (with some delay).
+
+At `t2`: The replication operation is completed. Both instances are in a consistent state
+`W0 -> W1`. `Client1` shares that state but `Client2` is still behind
+
+At `t3`: `Instance1` crashes
+
+At `t4`: `Client2` pushes `W2` that is still based on `W0` (`W0 -> W2`).
+The request is served by `Instance2` that recognised the misalignment and notifies it
+to the client. `Client2` rebases its commit and pushes `W0 -> W1 -> W2` that is considered
+valid, acknowledged and put in the replication queue until `Instance1` will become available.
+
+At `t5`: `Instance1` restarts and gets replicated at `W0 -> W1 -> W2`
+
+The Split Brain situation is shown in the following diagram.
+
+![Split Brain Use Case](src/main/resources/Documentation/git-replication-split-brain.png)
+
+In this case the steps are very similar but `Instance1` fails after acknowledging the
+push of `W0 -> W1` but before having replicated the status to `Instance2`.
+
+When in `t4` `Client2` pushes `W0 -> W2` to `Instance2`, this is considered a valid operation.
+It gets acknowledged and inserted in the replication queue.
+
+At `t5` `Instance1` restarts. At this point both instances have pending replication
+operations. They are executed in parallel and they bring the system to divergence.
+
+The problem is caused by the fact that:
+- the RW node acknowledges a `push` operation before __all__ replicas are fully in sync
+- the other instances are not able to understand that they are out of sync
+
+The two problems above could be solved using different approaches:
+
+- _Synchronous replication_. This would solve the problem operating on the first of the causes,
+at the expense of availability and scalability. It is a viable and simple solution for two nodes
+set up with an infrastructure allowing fast replication.
+
+- _Centralise the information about the latest status of mutable refs_. This will operate
+on the second cause, i.e. allowing instances to realise that _they are not in sync on a particular ref_
+and refuse any operation on it. This option is discussed in further detail below.
+
+It is important to notice that the two options are not exclusive. It is possible
+to implement a synchronous replication approach to a _quorum_ of instances and
+add the detection of out-of-sync scenarios in order to ensure that instances out of the
+synchronised quorum are not bringing the sytem into an inconsistent state.
+
+#### Recognising Out-of-Sync Status in a Master Node
+
+A possible implementation of the out-of-sync detection logic is based on a central
+coordinator holding the _last known status_ of a _mutable ref_ (immutable refs won't
+have to be stored here). 
+This component needs to be able to perform atomic Compare and Set operations on a
+key -> value storage. Examples could be `Zookeeper`, `etcd`, `Consul`, `Hazelcast`,
+`Redis` and `Memcached`.
+
+The interaction diagram in this case is shown below:
+
+![Split Brain Prevented](src/main/resources/Documentation/git-replication-split-brain-detected.png)
+
+What changes in respect to the split brain use case is that now, whenever a change of a
+_mutable ref_ is requested, the gerrit server verifies with the central RefDB that its
+status __for this ref__ is consistent with the latest cluster status. If that is true
+the operation succeeds. The ref status is atomically compared and set to the new status
+to prevent race conditions.
+
+We can see that in this case `Instance2` enters a Read Only mode for the specific branch
+until the replication from `Instance1` is completed successfully. At this point write
+operations on the reference can be recovered.
+If `Client2` can perform the `push` again vs `Instance2`, the server would recognise that
+the client status needs update, the client will `rebase` and `push` the correct status.
+
+__NOTE__:
+This implementation will prevent the cluster to enter split brain but might bring the
+full cluster to a Read Only state if the RW node is failing after having sent the request
+to the Ref-DB but before persisting this request into its `git` layer.
+
 # Next steps in the road-map
 
 ## Step-1: fill the gaps of multi-site stage #7:
