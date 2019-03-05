@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a717571e_feff01a6",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-05T15:33:41Z",
+      "side": 1,
+      "message": "\"when we have\"?",
+      "range": {
+        "startLine": 348,
+        "startChar": 15,
+        "endLine": 348,
+        "endChar": 28
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ffa49b7d_685b0b0b",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-05T15:33:41Z",
+      "side": 1,
+      "message": "pushes",
+      "range": {
+        "startLine": 353,
+        "startChar": 19,
+        "endLine": 353,
+        "endChar": 26
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "081fa9b8_7bdb32d5",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-05T15:33:41Z",
+      "side": 1,
+      "message": "pushes",
+      "range": {
+        "startLine": 361,
+        "startChar": 19,
+        "endLine": 361,
+        "endChar": 26
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df2bf37c_c09a1c3e",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-05T15:33:41Z",
+      "side": 1,
+      "message": "If we shard the repositories across the various instances using some consistent hashing and make sure that each repo never \"write fallbacks\" into another box, that could solve the split brain issue and avoid a full cluster in read mode. \nHowever not sure if it\u0027s acceptable to have a few repos in just read mode (until the write instance comes back up for those repos)",
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
