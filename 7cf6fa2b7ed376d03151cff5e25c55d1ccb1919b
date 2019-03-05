@@ -82,6 +82,30 @@
     },
     {
       "key": {
+        "uuid": "9de915ba_b4dc0bc8",
+        "filename": "dockerised_local_env/haproxy/haproxy.cfg",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-05T14:33:10Z",
+      "side": 1,
+      "message": "good catch...gerrit-2 SSH port was missing :/ ...I have amended it in the ssh backend section",
+      "parentUuid": "7e7df486_852551ea",
+      "range": {
+        "startLine": 26,
+        "startChar": 11,
+        "endLine": 26,
+        "endChar": 16
+      },
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "61ccda3c_d7a172e6",
         "filename": "dockerised_local_env/haproxy/haproxy.cfg",
         "patchSetId": 3
@@ -93,6 +117,24 @@
       "writtenOn": "2019-03-05T11:15:37Z",
       "side": 1,
       "message": "Don\u0027t we want roundrobin here?",
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a3052bb_f80b7443",
+        "filename": "dockerised_local_env/haproxy/haproxy.cfg",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-05T14:33:10Z",
+      "side": 1,
+      "message": "I am a bit uncertain about which configuration to refer to. I have used the one we currently have for the non-dickerised environment as a reference. I wanted to have a consistent local environments.",
+      "parentUuid": "61ccda3c_d7a172e6",
       "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -116,6 +158,24 @@
     },
     {
       "key": {
+        "uuid": "79b258b7_761c374b",
+        "filename": "dockerised_local_env/haproxy/haproxy.cfg",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-05T14:33:10Z",
+      "side": 1,
+      "message": "True..amended",
+      "parentUuid": "5cf96d35_a3552bdd",
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ed9ae86_229a6841",
         "filename": "dockerised_local_env/haproxy/haproxy.cfg",
         "patchSetId": 3
@@ -133,6 +193,24 @@
     },
     {
       "key": {
+        "uuid": "baa93466_7b425801",
+        "filename": "dockerised_local_env/haproxy/haproxy.cfg",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-05T14:33:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ed9ae86_229a6841",
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "285f4c9d_5bce0699",
         "filename": "dockerised_local_env/syslog-sidecar/Dockerfile",
         "patchSetId": 3
@@ -147,6 +225,24 @@
       "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be09e530_d6c5c937",
+        "filename": "dockerised_local_env/syslog-sidecar/Dockerfile",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-05T14:33:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "285f4c9d_5bce0699",
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
