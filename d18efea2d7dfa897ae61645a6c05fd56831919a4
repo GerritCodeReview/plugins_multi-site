@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a2254cd5_779cc493",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-06T11:08:45Z",
+      "side": 1,
+      "message": "I don\u0027t see any change here :/",
+      "revId": "d18efea2d7dfa897ae61645a6c05fd56831919a4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
