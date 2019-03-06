@@ -101,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "645dc792_b354f745",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T16:37:49Z",
+      "side": 1,
+      "message": "\u003e Copying a discussion from the PS1 here, to avoid ongoing discussion in several patch-sets.\n\u003e \n\u003e \u003e \u003e How would you actually define a misalignment?\n\u003e \u003e \n\u003e \u003e Misalignment with RefDirectory on the local git bare repo seen by Gerrit vs. a remote DfsRefDatabase, implemented on top of Zookeeper.\n\u003e \n\u003e The possibility of using a DfsRefDatabase is not yet introduced at this point in the document\n\u003e and is only discussed later (line 402 in this PS). It is hard to read when such\n\u003e assumptions are implicit.\n\n+1, it would be best to have a chapter dedicated to \"The introduction of a DfsRefDatabase\". Zookeeper could be the first implementation of it, just because it already exists :-)",
+      "parentUuid": "4de0f47c_6c7bf375",
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "698cfc99_baafa983",
         "filename": "DESIGN.md",
         "patchSetId": 5
