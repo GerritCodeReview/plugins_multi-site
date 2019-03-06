@@ -525,6 +525,24 @@
     },
     {
       "key": {
+        "uuid": "b9c07e13_6d6e4614",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-06T14:32:37Z",
+      "side": 1,
+      "message": "\u003e @Saša your point is a valid one and it is still unresolved at this stage of multi-site.\n\u003e Bear in mind that you mention \"instance\" whilst the design is about \"site\". Inside each site, you should have an high-availability setup, with definitely more than one instance of Gerrit.\n\nOK, thanks I will keep this terminology in mind :-)\nBtw, maybe our first target could be to add synchronous replication to the stage 5\n(single location - separate disks). This would protect from data loss in the RW master\nand provide a true hot standby replica. Of course, this wouldn\u0027t protect against\na disaster where the whole data center is lost.",
+      "parentUuid": "b8f6100e_2becc184",
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c5dbe221_c04b1655",
         "filename": "DESIGN.md",
         "patchSetId": 1
