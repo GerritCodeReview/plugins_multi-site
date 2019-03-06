@@ -561,6 +561,24 @@
     },
     {
       "key": {
+        "uuid": "1182d50e_0380154e",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-06T14:59:48Z",
+      "side": 1,
+      "message": "\u003e Actually, if you are targeting a single site, why don\u0027t you use a shared NFS as a secondary disk instead?\n\u003e You can define the replication plugin to point to a NFS volume using the filesystem protocol and delay zero and thus all the operations will go to the second disk in msecs.\n\nThis may work as you describe it. We actually have a fast replication (over http) to\na colocated machine. Still with a high number of refs (600K+) we see replication times\nwhich takes minutes. We should try using the filesystem protocol.\n\n\u003e \n\u003e That is not, of course, a DR-site solution, because it does not protect from the unavailability of one site, but it would work with a single-site and separate disks.\n\u003e \n\u003e In case of a crash of one server, you can always have another in stand-by pointing to the NFS share.\n\nReplication times can also be affected by the overall system performance. Before our last\ndisaster (lost pack files) the replication was 2 hours behind the master instance due\nto an ongoing performance issue (which we were trying to resolve).\nMy point is that as long as the replication is asynchronous, there is always a possibility\nof loosing data. This may be acceptable or not. As you already wrote, I think the users/customers should decide on the tradeoff between Consistency/Availability/Partition tolerance.\n\nIf we anyway consider synchronous replication as a feature, then there is nothing against\nenabling it also between instances within a single site.",
+      "parentUuid": "a6803768_ee44ad6d",
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c5dbe221_c04b1655",
         "filename": "DESIGN.md",
         "patchSetId": 1
