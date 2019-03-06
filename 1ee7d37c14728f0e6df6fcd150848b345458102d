@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fb639f32_228f32a8",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-06T11:09:48Z",
+      "side": 1,
+      "message": "Does any of these technologies provide cross-data-center CAS operations?",
+      "range": {
+        "startLine": 407,
+        "startChar": 0,
+        "endLine": 409,
+        "endChar": 24
+      },
+      "revId": "1ee7d37c14728f0e6df6fcd150848b345458102d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
