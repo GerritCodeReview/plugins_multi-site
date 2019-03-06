@@ -543,6 +543,24 @@
     },
     {
       "key": {
+        "uuid": "a6803768_ee44ad6d",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T14:36:45Z",
+      "side": 1,
+      "message": "\u003e \u003e @Saša your point is a valid one and it is still unresolved at this stage of multi-site.\n\u003e \u003e Bear in mind that you mention \"instance\" whilst the design is about \"site\". Inside each site, you should have an high-availability setup, with definitely more than one instance of Gerrit.\n\u003e \n\u003e OK, thanks I will keep this terminology in mind :-)\n\u003e Btw, maybe our first target could be to add synchronous replication to the stage 5\n\u003e (single location - separate disks). This would protect from data loss in the RW master\n\u003e and provide a true hot standby replica. Of course, this wouldn\u0027t protect against\n\u003e a disaster where the whole data center is lost.\n\nActually, if you are targeting a single site, why don\u0027t you use a shared NFS as a secondary disk instead?\nYou can define the replication plugin to point to a NFS volume using the filesystem protocol and delay zero and thus all the operations will go to the second disk in msecs.\n\nThat is not, of course, a DR-site solution, because it does not protect from the unavailability of one site, but it would work with a single-site and separate disks.\n\nIn case of a crash of one server, you can always have another in stand-by pointing to the NFS share.",
+      "parentUuid": "b9c07e13_6d6e4614",
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c5dbe221_c04b1655",
         "filename": "DESIGN.md",
         "patchSetId": 1
