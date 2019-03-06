@@ -46,6 +46,30 @@
       "revId": "1ee7d37c14728f0e6df6fcd150848b345458102d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee2e417f_398a9f40",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T14:13:59Z",
+      "side": 1,
+      "message": "\u003e Yes for Zookeeper and etcd\n\u003e Need an enterprise edition for consul and redis\n\u003e Not sure about Memcached and Hazelcast\n\nWe should not mention a full list, because it would be outdated very soon.\nThanks to the adoption of K8s, the distributed systems and OpenSource projects are starting every day, let\u0027s call it only a centralised DfsRefDatabase with one example (e.g. Zookeeper).",
+      "parentUuid": "9da76d4b_7a335764",
+      "range": {
+        "startLine": 407,
+        "startChar": 0,
+        "endLine": 409,
+        "endChar": 24
+      },
+      "revId": "1ee7d37c14728f0e6df6fcd150848b345458102d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
