@@ -579,6 +579,24 @@
     },
     {
       "key": {
+        "uuid": "847c9789_48d7f1d8",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T15:12:12Z",
+      "side": 1,
+      "message": "\u003e \u003e Actually, if you are targeting a single site, why don\u0027t you use a shared NFS as a secondary disk instead?\n\u003e \u003e You can define the replication plugin to point to a NFS volume using the filesystem protocol and delay zero and thus all the operations will go to the second disk in msecs.\n\u003e \n\u003e This may work as you describe it. We actually have a fast replication (over http) to\n\u003e a colocated machine. Still with a high number of refs (600K+) we see replication times\n\u003e which takes minutes. We should try using the filesystem protocol.\n\nYes, with filesystem protocol and delay\u003d0 you won\u0027t perceive any latency in propagation, just msecs, which is the NFS latency anyway.\n\nP.S. make sure that the NFS is dedicated and the latency at TCP/IP level is microseconds.\n\n\u003e Replication times can also be affected by the overall system performance.\n\nOh yes, if you have a lot of slowdown and queueing, situation may actually degrade very quickly.\nBut if you guys have performance issues, I wouldn\u0027t recommend to put more burden created by a synchronous replication either. Have you guys posted any issue on the Gerrit Issue Tracker about it? Is the ReviewDb SQL query overload one?\n\n\u003e Before our last\n\u003e disaster (lost pack files) the replication was 2 hours behind the master instance due\n\u003e to an ongoing performance issue (which we were trying to resolve).\n\nYes, if you have stuff piling up in queue, I do understand how you could accumulate 2h delay :-(\nMulti-site won\u0027t help at all in that case.\n\n\u003e My point is that as long as the replication is asynchronous, there is always a possibility\n\u003e of loosing data. This may be acceptable or not. As you already wrote, I think the users/customers should decide on the tradeoff between Consistency/Availability/Partition tolerance.\n\nYes, and that depends on how *big* or *small* is the window of uncertainty. With a 2h delay across sites, there won\u0027t be any trade-off possible or multi-site solution feasible: one of the two would persistently be read-only because it would always \"see\" the data of 2h ago.\n\n\u003e If we anyway consider synchronous replication as a feature, then there is nothing against\n\u003e enabling it also between instances within a single site.\n\nYes, that would be one of the options as well. Good idea.",
+      "parentUuid": "1182d50e_0380154e",
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c5dbe221_c04b1655",
         "filename": "DESIGN.md",
         "patchSetId": 1
