@@ -395,6 +395,30 @@
     },
     {
       "key": {
+        "uuid": "30416a97_26d82512",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T14:10:49Z",
+      "side": 1,
+      "message": "\u003e How would you actually define a misalignment?\n\nMisalignment with RefDirectory on the local git bare repo seen by Gerrit vs. a remote DfsRefDatabase, implemented on top of Zookeeper. \n\n\u003e What does it mean \"Missing W1\" in your drawing?\n\u003e I actually do not fully understand what W0, W1, W2, ... exactly mean in your drawings?\n\nI believe Stefano means SHA1 of ref-updates. W0 \u003d a Git write operation of a SHA1 bringing a repo/ref to a certain status.\n\n\u003e Are they ref-updates? Are you referring to a non-fast-forward update when you write \"missing W1\"?\n\nI believe Stefano refers to the error you get in JGit when you are asking for a SHA1 that doesn\u0027t exist (e.g. Missing Unknown).\n\n\u003e We need to stick to using the standard Git/Gerrit terminology as much as possible in order to\navoid misalignments in our discussions :-)\n\nAs long as we define at the beginning what \u0027W\u0027 means (status after a ref-update on a repo/ref) we should be good. The diagram would become a lot messy if we say \"status after a ref-update on a repo/ref #0\" all the times.",
+      "parentUuid": "8851f15e_2acc186c",
+      "range": {
+        "startLine": 362,
+        "startChar": 42,
+        "endLine": 362,
+        "endChar": 69
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "72bcc088_7a9640cd",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -430,6 +454,24 @@
     },
     {
       "key": {
+        "uuid": "dff2055b_8c4f50a6",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T14:10:49Z",
+      "side": 1,
+      "message": "I believe that the CAP theorem answers the question: you cannot have full consistency with full availability and maximum performance :-) For whatever trade-off is chosen, we cannot fall into a split-brain situation.\n\nExample-1: Maximum consistency\nIf any of the two nodes is down, Gerrit should refuse to respond to any incoming request because any answers could miss a bit of \"data lost\" in a sudden crash.\n\nExample-2: Maximum availability\nIf any of the two nodes is down, Gerrit should allow all operations, managing the \"delta of consistency\" to re-synch back when the other node is back up.\n\nExample-3: Maximum performance\nAny of two nodes serve any operation on specific repos, without bothering about sync between the two. They just \"federate\" into a unique view/URL.\n\nI believe we need to build a solution that is flexible enough to allow the user to decide the trade-offs between the three examples above.",
+      "parentUuid": "91e53001_e993403b",
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a996e27d_f8a20186",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -462,6 +504,24 @@
       "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8f6100e_2becc184",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T14:10:49Z",
+      "side": 1,
+      "message": "@Saša your point is a valid one and it is still unresolved at this stage of multi-site.\nBear in mind that you mention \"instance\" whilst the design is about \"site\". Inside each site, you should have an high-availability setup, with definitely more than one instance of Gerrit.\n\nThis is well explained in the design, where we talk about \"site in USA\" and \"site in India\", where the two sites would have for sure plenty of nodes to assure high-availability.\n\nI still believe that even with just two sites, we have a huge benefit and is worth investing into it.\nIt is also a milestone to reach, and then to look at multiple sites with quorum, where the problem you\u0027re mentioning is less likely to happen.",
+      "parentUuid": "f851a192_04b1e939",
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -559,6 +619,30 @@
     },
     {
       "key": {
+        "uuid": "d553d7f4_bc5513f4",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T14:10:49Z",
+      "side": 1,
+      "message": "I believe it is already answered above: it isn\u0027t a \"single instance\" but a full site.\nAnd yes, the synchronous replication and split-brain detection are not mutually exclusive at all: they could be both used effectively.\n\nThe DtfRefDatabase on Zookeeper (or other) isn\u0027t a new idea, it came from Dave Borowitz a few years ago :-)",
+      "parentUuid": "4e49f30a_23329dfe",
+      "range": {
+        "startLine": 406,
+        "startChar": 60,
+        "endLine": 406,
+        "endChar": 77
+      },
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1693b7a0_af711ad7",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -638,6 +722,24 @@
       "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df7be7b6_a5d7b72e",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T14:10:49Z",
+      "side": 1,
+      "message": "You would never have a full cluster in real mode, ever. It is very unlikely that *all the branches* on *all the repos* were pushed *exactly at the same time* and *exactly before a catastrophic crash* isn\u0027t it? Possible yes, but not very likely to happen.\n\nEven if that was happening and the whole machine crashed exactly 1msec after the *big giant global push*, what alternatives can be put in place? The only machine that has the data is dead anyway.",
+      "parentUuid": "c5f7df9a_dfcdc5d2",
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
