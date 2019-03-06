@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "4eaf84e6_bab016a3",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-06T14:41:02Z",
+      "side": 1,
+      "message": "I think my explanation to the note below should answer.",
+      "parentUuid": "cea25b84_e2792dc9",
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "70e5027c_0dd1f775",
         "filename": "DESIGN.md",
         "patchSetId": 5
@@ -30,6 +48,30 @@
       "writtenOn": "2019-03-06T13:45:47Z",
       "side": 1,
       "message": "Why that? Stage #8 is sharding, that means that you are still sending writes to a single node on a per-repo basis.\nThe split brain may happen exactly with the same frequency and probability of stage #7.",
+      "range": {
+        "startLine": 340,
+        "startChar": 20,
+        "endLine": 341,
+        "endChar": 45
+      },
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "452f7fd3_18252485",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-06T14:41:02Z",
+      "side": 1,
+      "message": "The reason is the sharding reallocation when a node goes down. I should have clarified that.\n\nWhen a node owning a shard goes down you have two options:\n\n1. You make the full shard read only\n2. You reallocate the primary (RW instance) for that shard to one or other nodes hoping the data is fully in sync\n\nOption 2 will bring you to the risk of split brain",
+      "parentUuid": "70e5027c_0dd1f775",
       "range": {
         "startLine": 340,
         "startChar": 20,
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "d0926213_d529f4d5",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-06T14:41:02Z",
+      "side": 1,
+      "message": "True, performance is the first element to be affected. I mentioned scalability since increasing the number of nodes will actually make the system perform worse instead of better",
+      "parentUuid": "698cfc99_baafa983",
+      "range": {
+        "startLine": 390,
+        "startChar": 35,
+        "endLine": 390,
+        "endChar": 46
+      },
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5bcf6c20_5230528b",
         "filename": "DESIGN.md",
         "patchSetId": 5
@@ -76,6 +142,30 @@
       "writtenOn": "2019-03-06T13:45:47Z",
       "side": 1,
       "message": "This is not true: they can still perform a lot of operations even if they are not 100% with the \"latest and greatest\" of a branch.\n\n- Serving the GUI\n- Reads\n- Accepting new changes\n- Accepting new patch-sets on existing changes",
+      "range": {
+        "startLine": 395,
+        "startChar": 11,
+        "endLine": 395,
+        "endChar": 30
+      },
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "92cdd213_d06d0800",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-06T14:41:02Z",
+      "side": 1,
+      "message": "I should have wrote \"any write operation on that ref\"",
+      "parentUuid": "5bcf6c20_5230528b",
       "range": {
         "startLine": 395,
         "startChar": 11,
@@ -215,6 +305,30 @@
       "writtenOn": "2019-03-06T13:45:47Z",
       "side": 1,
       "message": "Nope, that could never happen because only *certain operations* on *specific refs* would be blocked. Overall Gerrit masters will work as expected.",
+      "range": {
+        "startLine": 429,
+        "startChar": 0,
+        "endLine": 429,
+        "endChar": 33
+      },
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "455c6c01_2bc8b41b",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-06T14:41:02Z",
+      "side": 1,
+      "message": "Ok, I need to find a better description.\n\nWhat about \"a set of refs in Read Only state across all the cluster\"?",
+      "parentUuid": "6736b3b4_bc0e4846",
       "range": {
         "startLine": 429,
         "startChar": 0,
