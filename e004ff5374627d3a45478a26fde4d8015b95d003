@@ -1,0 +1,193 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cea25b84_e2792dc9",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T13:45:47Z",
+      "side": 1,
+      "message": "Supporting multiple writes is a different problem.\nEven with R/W \u003c--\u003e R multi-site, you have the risk to go in split-brain.\n\nSee, for instance, what happened at GitHub in the last 24h outage: the connectivity was lost for a few seconds and the DR-site took control and went into split-brain straight away.",
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "70e5027c_0dd1f775",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T13:45:47Z",
+      "side": 1,
+      "message": "Why that? Stage #8 is sharding, that means that you are still sending writes to a single node on a per-repo basis.\nThe split brain may happen exactly with the same frequency and probability of stage #7.",
+      "range": {
+        "startLine": 340,
+        "startChar": 20,
+        "endLine": 341,
+        "endChar": 45
+      },
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "698cfc99_baafa983",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T13:45:47Z",
+      "side": 1,
+      "message": "Performance, rather than scalability. Every push is paid more than twice in terms of elapsed time from a client perspective.",
+      "range": {
+        "startLine": 390,
+        "startChar": 35,
+        "endLine": 390,
+        "endChar": 46
+      },
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5bcf6c20_5230528b",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T13:45:47Z",
+      "side": 1,
+      "message": "This is not true: they can still perform a lot of operations even if they are not 100% with the \"latest and greatest\" of a branch.\n\n- Serving the GUI\n- Reads\n- Accepting new changes\n- Accepting new patch-sets on existing changes",
+      "range": {
+        "startLine": 395,
+        "startChar": 11,
+        "endLine": 395,
+        "endChar": 30
+      },
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4795256d_78911d53",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T13:45:47Z",
+      "side": 1,
+      "message": "At stages #7 and #8 we are talking about two sites only. Can you clarify the quorum here? I believe only from stage #9 you can start talking about \"majority\" and \"consensus\", but not before that.",
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f89361e_c8aad9b1",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T13:45:47Z",
+      "side": 1,
+      "message": "Quorum is out of context here, IMHO",
+      "range": {
+        "startLine": 400,
+        "startChar": 13,
+        "endLine": 400,
+        "endChar": 19
+      },
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3d655e9_8656b7b9",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T13:45:47Z",
+      "side": 1,
+      "message": "I would mention one example only (e.g. Zookeeper, which is the one we use already in multi-site), otherwise it looks like a complete list, which is not.",
+      "range": {
+        "startLine": 408,
+        "startChar": 40,
+        "endLine": 409,
+        "endChar": 23
+      },
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91c50b83_7853d7ad",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T13:45:47Z",
+      "side": 1,
+      "message": "It is worth mentioning that an implementation of RefDb on top  of Zookeeper has been written already by Dave Borowitz.",
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6736b3b4_bc0e4846",
+        "filename": "DESIGN.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-06T13:45:47Z",
+      "side": 1,
+      "message": "Nope, that could never happen because only *certain operations* on *specific refs* would be blocked. Overall Gerrit masters will work as expected.",
+      "range": {
+        "startLine": 429,
+        "startChar": 0,
+        "endLine": 429,
+        "endChar": 33
+      },
+      "revId": "e004ff5374627d3a45478a26fde4d8015b95d003",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
