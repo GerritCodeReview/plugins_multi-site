@@ -22,6 +22,30 @@
       "revId": "1ee7d37c14728f0e6df6fcd150848b345458102d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9da76d4b_7a335764",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-06T13:17:12Z",
+      "side": 1,
+      "message": "Yes for Zookeeper and etcd\nNeed an enterprise edition for consul and redis\nNot sure about Memcached and Hazelcast",
+      "parentUuid": "fb639f32_228f32a8",
+      "range": {
+        "startLine": 407,
+        "startChar": 0,
+        "endLine": 409,
+        "endChar": 24
+      },
+      "revId": "1ee7d37c14728f0e6df6fcd150848b345458102d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
