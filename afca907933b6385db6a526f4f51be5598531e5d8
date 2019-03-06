@@ -597,6 +597,24 @@
     },
     {
       "key": {
+        "uuid": "26af9df4_f3cee763",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-06T15:22:57Z",
+      "side": 1,
+      "message": "\u003e But if you guys have performance issues, I wouldn\u0027t recommend to put more burden created by a synchronous replication either.\n\nSynchronous replication wouldn\u0027t help with performance but would help with consistency.\nBy rejecting write operations (as syncrhonous replication wouldn\u0027t finish within a given timeout) it would effectively bring the master node to RO mode.\n\n\u003e Have you guys posted any issue on the Gerrit Issue Tracker about it? Is the ReviewDb SQL query overload one?\n\nNo. First it is an old(er) Gerrit version and second I know that it is a combination of\nhigh memory allocation caused by a lot of concurrent git operations and Java GC which\nsometimes cannot keep the pace. We are offloading the (read only) git requests to slaves\nin this case in order to address the issue.",
+      "parentUuid": "847c9789_48d7f1d8",
+      "revId": "afca907933b6385db6a526f4f51be5598531e5d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c5dbe221_c04b1655",
         "filename": "DESIGN.md",
         "patchSetId": 1
