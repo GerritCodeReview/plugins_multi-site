@@ -70,6 +70,30 @@
       "revId": "96c32d760f68bd88810338f27334ebad972c7e1d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3da14050_4a000181",
+        "filename": "DESIGN.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-07T15:25:31Z",
+      "side": 1,
+      "message": "I think there was a confusion on my or Luca\u0027s side in that answer, sorry. The answer would have been correct if we were in the third section (the split-brain detected one). In this case the operation is refused in the same way it would be in a single node instance where the server realises that the client is not in-sync and the push cannot succeed",
+      "parentUuid": "db4abf8a_e0cc8a55",
+      "range": {
+        "startLine": 360,
+        "startChar": 42,
+        "endLine": 361,
+        "endChar": 70
+      },
+      "revId": "96c32d760f68bd88810338f27334ebad972c7e1d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
