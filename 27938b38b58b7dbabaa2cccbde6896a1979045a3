@@ -60,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "e19641c0_4d5023e2",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-07T13:09:26Z",
+      "side": 1,
+      "message": "IMO, it is not only about acknowledging to the client.\nIf a write operation couldn\u0027t be replicated then IMO it is important to also reject (or rollback) it in the instance processing the client request. If we:\n(a) fail to replicate\n(b) accept the push in the instance processing the request\n(c) send an error to the client\n\nthen the client would intuitively expect that the operation succeeds if he (re)tries later.\nHowever, due to (b), a retried push may fail (\"no new changes\") because the pushed commit is\nalready known.",
+      "parentUuid": "af6f3de4_f5c6c186",
+      "range": {
+        "startLine": 119,
+        "startChar": 31,
+        "endLine": 119,
+        "endChar": 39
+      },
+      "revId": "27938b38b58b7dbabaa2cccbde6896a1979045a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "eb3ca4ff_02a9583a",
         "filename": "DESIGN.md",
         "patchSetId": 2
