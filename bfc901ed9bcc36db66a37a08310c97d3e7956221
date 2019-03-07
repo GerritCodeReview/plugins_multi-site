@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "26c26248_cfc6501c",
+        "filename": "dockerised_local_env/gerrit-1/etc/multi-site.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T17:39:30Z",
+      "side": 1,
+      "message": "No need to customize it, the default values would work",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 32
+      },
+      "revId": "bfc901ed9bcc36db66a37a08310c97d3e7956221",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5557af1e_ee95296c",
+        "filename": "dockerised_local_env/gerrit-1/etc/multi-site.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T17:39:30Z",
+      "side": 1,
+      "message": "Do the defaults work? If yes, best to use them.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 39
+      },
+      "revId": "bfc901ed9bcc36db66a37a08310c97d3e7956221",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2be51531_0a7a0cf4",
+        "filename": "dockerised_local_env/gerrit-2/etc/multi-site.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T17:39:30Z",
+      "side": 1,
+      "message": "This seems identical to the multi-site.config on gerrit-1",
+      "revId": "bfc901ed9bcc36db66a37a08310c97d3e7956221",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
