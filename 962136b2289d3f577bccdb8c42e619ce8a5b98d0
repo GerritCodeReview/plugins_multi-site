@@ -1,0 +1,175 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0cffcbcf_7c3d387d",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T17:09:27Z",
+      "side": 1,
+      "message": "No need to have db as external volume in v2.16: there is no data stored there.",
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a97d589c_1a4cb5a2",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T17:09:27Z",
+      "side": 1,
+      "message": "what about /index? For sure you don\u0027t want to recalculate all the indexes at startup.\n/data also contains information that needs to be kept across restarts",
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "276faa9a_9a1b7f25",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T17:09:27Z",
+      "side": 1,
+      "message": "Same as above.",
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5113e77e_c2a51273",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T17:09:27Z",
+      "side": 1,
+      "message": "Leftover?",
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3888ddf_7c11d761",
+        "filename": "dockerised_local_env/gerrit-1/etc/replication.config",
+        "patchSetId": 11
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T17:09:27Z",
+      "side": 1,
+      "message": "why don\u0027t you call this as generic names (e.g. gerrit.replication) and re-map them as extra hosts in the docker-compose?\nThat would allow you to avoid having different configuration files between gerrit-1 and gerrit-2, which is always hard to manage.",
+      "range": {
+        "startLine": 2,
+        "startChar": 16,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "289c9e15_24de6966",
+        "filename": "dockerised_local_env/gerrit-1/etc/replication.config",
+        "patchSetId": 11
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T17:09:27Z",
+      "side": 1,
+      "message": "why not gerrit?",
+      "range": {
+        "startLine": 3,
+        "startChar": 38,
+        "endLine": 3,
+        "endChar": 46
+      },
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f21dce22_47e41ba0",
+        "filename": "dockerised_local_env/gerrit-1/etc/replication.config",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T17:09:27Z",
+      "side": 1,
+      "message": "You are missing two important settings:\n  \n  mirror \u003d true\n  createMissingRepositories \u003d true\n  replicateProjectDeletions \u003d true\n  replicateHiddenProjects \u003d true",
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91b97eb4_1e66e9bc",
+        "filename": "dockerised_local_env/gerrit-1/ssh/id_rsa",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T17:09:27Z",
+      "side": 1,
+      "message": "Private keys should not be checked in. However, this is only a test, so I believe we should be OK for now.",
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c5cc1879_c8c2b9a0",
+        "filename": "dockerised_local_env/gerrit-2/etc/gerrit.config",
+        "patchSetId": 11
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T17:09:27Z",
+      "side": 1,
+      "message": "Why not using the same ports for gerrit-1 and gerrit-2, and then remap them in the docker-compose?",
+      "range": {
+        "startLine": 30,
+        "startChar": 22,
+        "endLine": 30,
+        "endChar": 26
+      },
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
