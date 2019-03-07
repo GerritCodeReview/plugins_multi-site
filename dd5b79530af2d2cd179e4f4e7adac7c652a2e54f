@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "da945a43_40b91264",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-07T09:00:43Z",
+      "side": 1,
+      "message": "Conceptually yes you are right...in this case I did the contrary since I thought at the cluster as a whole and I wanted to make sure gerrit-1 could replicate to something. I don\u0027t think it will make any difference in this case.",
+      "parentUuid": "69a870b6_5f57f00e",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 16
+      },
+      "revId": "dd5b79530af2d2cd179e4f4e7adac7c652a2e54f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bcd404de_fb02c159",
         "filename": "dockerised_local_env/gerrit-1/etc/multi-site.config",
         "patchSetId": 3
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "5f834952_00349280",
+        "filename": "dockerised_local_env/gerrit-1/etc/multi-site.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-07T09:00:43Z",
+      "side": 1,
+      "message": "yep that\u0027s the default https://kafka.apache.org/documentation/#consumerconfigs",
+      "parentUuid": "bcd404de_fb02c159",
+      "revId": "dd5b79530af2d2cd179e4f4e7adac7c652a2e54f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "10019a05_2d478042",
         "filename": "dockerised_local_env/gerrit-2/etc/multi-site.config",
         "patchSetId": 3
@@ -53,6 +95,24 @@
       "writtenOn": "2019-03-07T08:16:10Z",
       "side": 1,
       "message": "Any reason the default 10 is not enough?",
+      "revId": "dd5b79530af2d2cd179e4f4e7adac7c652a2e54f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9c97485_57f52a65",
+        "filename": "dockerised_local_env/gerrit-2/etc/multi-site.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-07T09:00:43Z",
+      "side": 1,
+      "message": "We had a problem in production because we were using the default value. It might not happen here but I think is good to have meaningful values.",
+      "parentUuid": "10019a05_2d478042",
       "revId": "dd5b79530af2d2cd179e4f4e7adac7c652a2e54f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
