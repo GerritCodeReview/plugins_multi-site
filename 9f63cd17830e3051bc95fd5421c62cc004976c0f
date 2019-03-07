@@ -135,6 +135,24 @@
       "revId": "9f63cd17830e3051bc95fd5421c62cc004976c0f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3bba7a6_8d19ad95",
+        "filename": "DESIGN.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-07T14:52:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0929cf68_8d56200e",
+      "revId": "9f63cd17830e3051bc95fd5421c62cc004976c0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
