@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "64fb0d64_6c187158",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-07T08:05:12Z",
+      "side": 1,
+      "message": "No need to have this here",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 18,
+        "endChar": 28
+      },
+      "revId": "511adb98da5079717362798b2c86455159f5d893",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d2c7fe1_407492d7",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 10
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-07T08:05:12Z",
+      "side": 1,
+      "message": "No need to have this here",
+      "range": {
+        "startLine": 41,
+        "startChar": 7,
+        "endLine": 41,
+        "endChar": 36
+      },
+      "revId": "511adb98da5079717362798b2c86455159f5d893",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
