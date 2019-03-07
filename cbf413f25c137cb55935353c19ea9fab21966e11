@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6ffda0d6_111f7979",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T17:45:12Z",
+      "side": 1,
+      "message": "No need to use a different port: just use 8080 also for gerrit-2",
+      "range": {
+        "startLine": 71,
+        "startChar": 22,
+        "endLine": 71,
+        "endChar": 26
+      },
+      "revId": "cbf413f25c137cb55935353c19ea9fab21966e11",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
