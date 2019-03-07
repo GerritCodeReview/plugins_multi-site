@@ -126,6 +126,30 @@
     },
     {
       "key": {
+        "uuid": "e56f05c8_d3cbfe6c",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-07T14:11:06Z",
+      "side": 1,
+      "message": "\u003e No, if we send an error and we fail the ref-update operation on the receiving site, the client would be able to push again.\n\nThis was exactly what I was trying to tell :-)\nFrom your first comment (\"acknowledged to the client\") I didn\u0027t understand that you\nagreed on failing that ref-update on the receiving site.\n\nAnyway, we are on the same path regarding this question :-)",
+      "parentUuid": "0966f293_040e2c5f",
+      "range": {
+        "startLine": 119,
+        "startChar": 31,
+        "endLine": 119,
+        "endChar": 39
+      },
+      "revId": "27938b38b58b7dbabaa2cccbde6896a1979045a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "eb3ca4ff_02a9583a",
         "filename": "DESIGN.md",
         "patchSetId": 2
