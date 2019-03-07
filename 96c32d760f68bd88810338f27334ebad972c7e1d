@@ -22,6 +22,30 @@
       "revId": "96c32d760f68bd88810338f27334ebad972c7e1d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa385a26_2f273580",
+        "filename": "DESIGN.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-07T13:41:05Z",
+      "side": 1,
+      "message": "\u003e Same as I already commented in the PS5: it is here only implicitly assumed that Instance1 and Instance2 access a shared RefDb in order to detect that a local ref is outdated.\n\nThis is in the \"healthy use-case\" scenario, where the push of W2 happens *after* the replication from Instance1 to Instance2 happened.\n\nThe push is always a \"regular\" push in this example, not a forced push.\n\n\u003e Without that information it is not at all clear how would Instance2 detect that a ref is outdated.\n\nInstance2 doesn\u0027t know anything about a shared ref, this is the case where the ref is up-to-date because replication between Instance1 to Instance2 completed *before* the Instance1 crash.\n\nIn the non-healthy use-case instead, yes, you are right: without a shared DfsRefDatabase there is no way to know that the local ref is outdated and thus you go in split-brain :-)",
+      "parentUuid": "caeeb999_1fbb38b0",
+      "range": {
+        "startLine": 360,
+        "startChar": 42,
+        "endLine": 361,
+        "endChar": 70
+      },
+      "revId": "96c32d760f68bd88810338f27334ebad972c7e1d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
