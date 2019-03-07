@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "69a870b6_5f57f00e",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-07T08:16:10Z",
+      "side": 1,
+      "message": "Not that it makes a difference to the installation process, but shouldn\u0027t the gerrit-2 depend_on gerrit-1 instead?",
+      "range": {
+        "startLine": 16,
+        "startChar": 8,
+        "endLine": 16,
+        "endChar": 16
+      },
+      "revId": "dd5b79530af2d2cd179e4f4e7adac7c652a2e54f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bcd404de_fb02c159",
+        "filename": "dockerised_local_env/gerrit-1/etc/multi-site.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-07T08:16:10Z",
+      "side": 1,
+      "message": "I\u0027m not sure if it\u0027s required or the consumer does it by default.\nKafkaProp-autoOffsetReset \u003d latest",
+      "revId": "dd5b79530af2d2cd179e4f4e7adac7c652a2e54f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10019a05_2d478042",
+        "filename": "dockerised_local_env/gerrit-2/etc/multi-site.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-07T08:16:10Z",
+      "side": 1,
+      "message": "Any reason the default 10 is not enough?",
+      "revId": "dd5b79530af2d2cd179e4f4e7adac7c652a2e54f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
