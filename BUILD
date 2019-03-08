@@ -45,6 +45,7 @@ java_library(
         "@wiremock//jar",
         "@kafka_client//jar",
         "@testcontainers-kafka//jar",
+        "@curator-test//jar",
         "//lib/testcontainers",
     ],
 )

@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
+import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +70,8 @@ public class Module extends AbstractModule {
     if (config.kafkaPublisher().enabled()) {
       install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
+
+    install(new ValidationModule());
 
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
   }

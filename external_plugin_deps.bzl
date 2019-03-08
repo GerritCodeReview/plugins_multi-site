@@ -55,3 +55,9 @@ def external_plugin_deps():
         artifact = "org.apache.commons:commons-lang3:3.6",
         sha1 = "9d28a6b23650e8a7e9063c04588ace6cf7012c17",
     )
+
+    maven_jar(
+        name = "curator-test",
+        artifact = "org.apache.curator:curator-test:4.2.0",
+        sha1 = "98ac2dd69b8c07dcaab5e5473f93fdb9e320cd73"
+    )
