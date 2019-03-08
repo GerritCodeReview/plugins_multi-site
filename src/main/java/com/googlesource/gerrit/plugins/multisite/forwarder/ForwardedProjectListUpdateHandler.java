@@ -14,14 +14,14 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import static com.googlesource.gerrit.plugins.multisite.MultiSiteLogFile.multisiteLog;
+
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Update project list cache. This class is meant to be used on the receiving side of the {@link
@@ -30,8 +30,6 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 public class ForwardedProjectListUpdateHandler {
-  private static final Logger log =
-      LoggerFactory.getLogger(ForwardedProjectListUpdateHandler.class);
 
   private final ProjectCache projectCache;
 
@@ -52,10 +50,10 @@ public class ForwardedProjectListUpdateHandler {
       Context.setForwardedEvent(true);
       if (event.remove) {
         projectCache.remove(projectKey);
-        log.debug("Removed {} from project list", event.projectName);
+        multisiteLog.debug("Removed {} from project list", event.projectName);
       } else {
         projectCache.onCreateProject(projectKey);
-        log.debug("Added {} to project list", event.projectName);
+        multisiteLog.debug("Added {} to project list", event.projectName);
       }
     } finally {
       Context.unsetForwardedEvent();

@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import static com.googlesource.gerrit.plugins.multisite.MultiSiteLogFile.multisiteLog;
+
 import com.google.gerrit.index.project.ProjectIndexer;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.inject.Inject;
@@ -60,18 +62,18 @@ public class ForwardedIndexProjectHandler
   @Override
   protected void doIndex(String projectName, Optional<ProjectIndexEvent> event) throws IOException {
     if (!attemptIndex(projectName, event)) {
-      log.warn("First Attempt failed, scheduling again after {} msecs", retryInterval);
+      multisiteLog.warn("First Attempt failed, scheduling again after {} msecs", retryInterval);
       rescheduleIndex(projectName, event, 1);
     }
   }
 
   public boolean attemptIndex(String projectName, Optional<ProjectIndexEvent> event)
       throws IOException {
-    log.debug("Attempt to index project {}, event: [{}]", projectName, event);
+    multisiteLog.debug("Attempt to index project {}, event: [{}]", projectName, event);
     final Project.NameKey projectNameKey = new Project.NameKey(projectName);
     if (projectChecker.isProjectUpToDate(projectNameKey)) {
       indexer.index(projectNameKey);
-      log.debug("Project {} successfully indexed", projectName);
+      multisiteLog.debug("Project {} successfully indexed", projectName);
       return true;
     }
     return false;
@@ -80,7 +82,7 @@ public class ForwardedIndexProjectHandler
   public void rescheduleIndex(
       String projectName, Optional<ProjectIndexEvent> event, int retryCount) {
     if (retryCount > maxTries) {
-      log.error(
+      multisiteLog.error(
           "Project {} could not be indexed after {} retries. index could be stale.",
           projectName,
           retryCount);
@@ -88,7 +90,7 @@ public class ForwardedIndexProjectHandler
       return;
     }
 
-    log.warn(
+    multisiteLog.warn(
         "Retrying for the #{} time to index project {} after {} msecs",
         retryCount,
         projectName,
@@ -99,7 +101,7 @@ public class ForwardedIndexProjectHandler
           Context.setForwardedEvent(true);
           try {
             if (!attemptIndex(projectName, event)) {
-              log.warn(
+              multisiteLog.warn(
                   "Attempt {} to index project {} failed, scheduling again after {} msecs",
                   retryCount,
                   projectName,
@@ -107,7 +109,7 @@ public class ForwardedIndexProjectHandler
               rescheduleIndex(projectName, event, retryCount + 1);
             }
           } catch (IOException e) {
-            log.warn("Project {} could not be indexed", projectName, e);
+            multisiteLog.warn("Project {} could not be indexed", projectName, e);
           }
         },
         retryInterval,

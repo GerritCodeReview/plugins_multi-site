@@ -14,7 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
-import com.google.common.flogger.FluentLogger;
+import static com.googlesource.gerrit.plugins.multisite.MultiSiteLogFile.multisiteLog;
+
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.util.ManualRequestContext;
@@ -39,7 +40,6 @@ import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.Deserializer;
 
 public abstract class AbstractKafkaSubcriber implements Runnable {
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final KafkaConsumer<byte[], byte[]> consumer;
   private final ForwardedEventRouter eventRouter;
@@ -84,9 +84,8 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
   public void run() {
     try {
       final String topic = configuration.getKafka().getTopic(getEventFamily());
-      logger.atInfo().log(
-          "Kafka consumer subscribing to topic [%s] for event family [%s]",
-          topic, getEventFamily());
+      multisiteLog.info(
+          "Kafka consumer subscribing to topic {} for event family {}", topic, getEventFamily());
       consumer.subscribe(Collections.singleton(topic));
       while (!closed.get()) {
         ConsumerRecords<byte[], byte[]> consumerRecords =
@@ -110,25 +109,26 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
           valueDeserializer.deserialize(consumerRecord.topic(), consumerRecord.value());
 
       if (event.getHeader().getSourceInstanceId().equals(instanceId)) {
-        logger.atFiner().log(
-            "Dropping event %s produced by our instanceId %s",
-            event.toString(), instanceId.toString());
+        multisiteLog.debug(
+            "Dropping event {} produced by our instanceId {}",
+            event.toString(),
+            instanceId.toString());
         droppedEventListeners.forEach(l -> l.onEventDropped(event));
       } else {
         try {
-          logger.atInfo().log("Header[%s] Body[%s]", event.getHeader(), event.getBody());
+          multisiteLog.debug("Header[{}] Body[{}]", event.getHeader(), event.getBody());
           eventRouter.route(event.getEventBody(gsonProvider));
         } catch (IOException e) {
-          logger.atSevere().withCause(e).log(
-              "Malformed event '%s': [Exception: %s]", event.getHeader().getEventType());
+          multisiteLog.error(
+              "Malformed event '{}': [Exception: {}]", event.getHeader().getEventType(), e);
         } catch (PermissionBackendException | OrmException e) {
-          logger.atSevere().withCause(e).log(
-              "Cannot handle message %s: [Exception: %s]", event.getHeader().getEventType());
+          multisiteLog.error(
+              "Cannot handle message {}: [Exception: {}]", event.getHeader().getEventType(), e);
         }
       }
     } catch (Exception e) {
-      logger.atSevere().withCause(e).log(
-          "Malformed event '%s': [Exception: %s]", new String(consumerRecord.value()));
+      multisiteLog.error(
+          "Malformed event '{}': [Exception: {}]", new String(consumerRecord.value()), e);
     }
   }
 
