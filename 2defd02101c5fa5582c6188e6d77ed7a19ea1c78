@@ -1,0 +1,198 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b7456a52_9c419ed0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-08T17:24:38Z",
+      "side": 1,
+      "message": "This also should stay in the error_log",
+      "revId": "2defd02101c5fa5582c6188e6d77ed7a19ea1c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b39c418_1629eaa5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-08T17:24:38Z",
+      "side": 1,
+      "message": "This should stay in error_log",
+      "revId": "2defd02101c5fa5582c6188e6d77ed7a19ea1c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7f880751_e587a7e4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-08T17:24:38Z",
+      "side": 1,
+      "message": "Same as above",
+      "revId": "2defd02101c5fa5582c6188e6d77ed7a19ea1c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47e0ead1_394b14fc",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-08T17:24:38Z",
+      "side": 1,
+      "message": "This should be a LifecycleModule",
+      "range": {
+        "startLine": 43,
+        "startChar": 28,
+        "endLine": 43,
+        "endChar": 42
+      },
+      "revId": "2defd02101c5fa5582c6188e6d77ed7a19ea1c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb7009c4_706438bb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-08T17:24:38Z",
+      "side": 1,
+      "message": "this becomes:\n\n  listener().",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 50
+      },
+      "revId": "2defd02101c5fa5582c6188e6d77ed7a19ea1c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2179951a_b35d821a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-08T17:24:38Z",
+      "side": 1,
+      "message": "This would be best named as \u0027msgLog\u0027",
+      "range": {
+        "startLine": 17,
+        "startChar": 73,
+        "endLine": 17,
+        "endChar": 85
+      },
+      "revId": "2defd02101c5fa5582c6188e6d77ed7a19ea1c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "843059e9_53f3d4e4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-08T17:24:38Z",
+      "side": 1,
+      "message": "This should stay in error_log as all the others below.",
+      "revId": "2defd02101c5fa5582c6188e6d77ed7a19ea1c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42bede1c_b5139024",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-08T17:24:38Z",
+      "side": 1,
+      "message": "Stay in error_log",
+      "revId": "2defd02101c5fa5582c6188e6d77ed7a19ea1c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c319ebc_f5ba0eba",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-08T17:24:38Z",
+      "side": 1,
+      "message": "Stay in error_log",
+      "revId": "2defd02101c5fa5582c6188e6d77ed7a19ea1c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "370bd127_60c97ade",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-08T17:24:38Z",
+      "side": 1,
+      "message": "This is the *most precious info* we want in the multi-site log, what\u0027s coming through :-)\nNot a debug data, but rather a runtime info.",
+      "range": {
+        "startLine": 119,
+        "startChar": 23,
+        "endLine": 119,
+        "endChar": 28
+      },
+      "revId": "2defd02101c5fa5582c6188e6d77ed7a19ea1c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
