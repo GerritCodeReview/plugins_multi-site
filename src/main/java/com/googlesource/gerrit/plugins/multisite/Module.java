@@ -14,12 +14,16 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import static com.googlesource.gerrit.plugins.multisite.MultiSiteLogFile.multisiteLog;
+
 import com.google.gerrit.extensions.annotations.PluginData;
+import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.google.inject.internal.UniqueAnnotations;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
@@ -35,11 +39,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Module extends AbstractModule {
-  private static final Logger log = LoggerFactory.getLogger(Module.class);
   private final Configuration config;
 
   @Inject
@@ -49,6 +50,10 @@ public class Module extends AbstractModule {
 
   @Override
   protected void configure() {
+
+    bind(LifecycleListener.class)
+        .annotatedWith(UniqueAnnotations.create())
+        .to(MultiSiteLogFile.class);
 
     install(new ForwarderModule());
 
@@ -89,7 +94,7 @@ public class Module extends AbstractModule {
       try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(serverIdFile))) {
         writer.write(instanceId.toString());
       } catch (IOException e) {
-        log.warn(
+        multisiteLog.warn(
             String.format(
                 "Cannot write instance ID, a new one will be generated at instance restart. (%s)",
                 e.getMessage()));
@@ -103,14 +108,14 @@ public class Module extends AbstractModule {
       try (BufferedReader br = new BufferedReader(new FileReader(serverIdFile))) {
         return UUID.fromString(br.readLine());
       } catch (IOException e) {
-        log.warn(
+        multisiteLog.warn(
             String.format(
                 "Cannot read instance ID from path '%s', deleting the old file and generating a new ID: (%s)",
                 serverIdFile, e.getMessage()));
         try {
           Files.delete(Paths.get(serverIdFile));
         } catch (IOException e1) {
-          log.warn(
+          multisiteLog.warn(
               String.format(
                   "Cannot delete old instance ID file at path '%s' with instance ID while generating a new one: (%s)",
                   serverIdFile, e1.getMessage()));

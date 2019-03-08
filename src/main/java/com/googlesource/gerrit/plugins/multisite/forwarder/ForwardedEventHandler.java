@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import static com.googlesource.gerrit.plugins.multisite.MultiSiteLogFile.multisiteLog;
+
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventDispatcher;
 import com.google.gerrit.server.permissions.PermissionBackendException;
@@ -22,8 +24,6 @@ import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Dispatch event to the {@link EventDispatcher}. This class is meant to be used on the receiving
@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 public class ForwardedEventHandler {
-  private static final Logger log = LoggerFactory.getLogger(ForwardedEventHandler.class);
 
   private final EventDispatcher dispatcher;
   private final OneOffRequestContext oneOffCtx;
@@ -52,7 +51,7 @@ public class ForwardedEventHandler {
   public void dispatch(Event event) throws OrmException, PermissionBackendException {
     try (ManualRequestContext ctx = oneOffCtx.open()) {
       Context.setForwardedEvent(true);
-      log.debug("dispatching event {}", event.getType());
+      multisiteLog.debug("dispatching event {}", event.getType());
       dispatcher.postEvent(event);
     } finally {
       Context.unsetForwardedEvent();

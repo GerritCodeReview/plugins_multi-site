@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import static com.googlesource.gerrit.plugins.multisite.MultiSiteLogFile.multisiteLog;
+
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.server.index.account.AccountIndexer;
 import com.google.inject.Inject;
@@ -43,7 +45,7 @@ public class ForwardedIndexAccountHandler
   @Override
   protected void doIndex(Account.Id id, Optional<AccountIndexEvent> event) throws IOException {
     indexer.index(id);
-    log.debug("Account {} successfully indexed", id);
+    multisiteLog.debug("Account {} successfully indexed", id);
   }
 
   @Override

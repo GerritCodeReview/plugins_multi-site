@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.broker.kafka;
 
+import static com.googlesource.gerrit.plugins.multisite.MultiSiteLogFile.multisiteLog;
+
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
@@ -26,11 +28,8 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class KafkaSession implements BrokerSession {
-  private static final Logger LOGGER = LoggerFactory.getLogger(KafkaSession.class);
   private final Configuration properties;
   private final UUID instanceId;
   private volatile Producer<String, String> producer;
@@ -52,18 +51,18 @@ public class KafkaSession implements BrokerSession {
   @Override
   public void connect() {
     if (isOpen()) {
-      LOGGER.debug("Already connected.");
+      multisiteLog.debug("Already connected.");
       return;
     }
 
-    LOGGER.info("Connect to {}...", properties.getKafka().getBootstrapServers());
+    multisiteLog.info("Connect to {}...", properties.getKafka().getBootstrapServers());
     /* Need to make sure that the thread of the running connection uses
      * the correct class loader otherwize you can endup with hard to debug
      * ClassNotFoundExceptions
      */
     setConnectionClassLoader();
     producer = new KafkaProducer<>(properties.kafkaPublisher());
-    LOGGER.info("Connection established.");
+    multisiteLog.info("Connection established.");
   }
 
   private void setConnectionClassLoader() {
@@ -72,9 +71,9 @@ public class KafkaSession implements BrokerSession {
 
   @Override
   public void disconnect() {
-    LOGGER.info("Disconnecting...");
+    multisiteLog.info("Disconnecting...");
     if (producer != null) {
-      LOGGER.info("Closing Producer {}...", producer);
+      multisiteLog.info("Closing Producer {}...", producer);
       producer.close();
     }
     producer = null;
@@ -90,10 +89,10 @@ public class KafkaSession implements BrokerSession {
         producer.send(new ProducerRecord<>(topic, instanceId.toString(), payload));
     try {
       RecordMetadata metadata = future.get();
-      LOGGER.debug("The offset of the record we just sent is: {}", metadata.offset());
+      multisiteLog.debug("The offset of the record we just sent is: {}", metadata.offset());
       return true;
     } catch (InterruptedException | ExecutionException e) {
-      LOGGER.error("Cannot send the message", e);
+      multisiteLog.error("Cannot send the message", e);
       return false;
     }
   }

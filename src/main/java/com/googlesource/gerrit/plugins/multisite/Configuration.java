@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import static com.googlesource.gerrit.plugins.multisite.MultiSiteLogFile.multisiteLog;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
@@ -32,13 +34,9 @@ import java.util.Properties;
 import java.util.UUID;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.jgit.lib.Config;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Singleton
 public class Configuration {
-  private static final Logger log = LoggerFactory.getLogger(Configuration.class);
-
   static final String INSTANCE_ID_FILE = "instanceId.data";
 
   // common parameters to cache and index sections
@@ -106,8 +104,8 @@ public class Configuration {
     try {
       return cfg.getInt(section, name, defaultValue);
     } catch (IllegalArgumentException e) {
-      log.error("invalid value for {}; using default value {}", name, defaultValue);
-      log.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
+      multisiteLog.error("invalid value for {}; using default value {}", name, defaultValue);
+      multisiteLog.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
       return defaultValue;
     }
   }
@@ -145,7 +143,8 @@ public class Configuration {
                 CaseFormat.LOWER_CAMEL
                     .to(CaseFormat.LOWER_HYPHEN, configProperty)
                     .replaceAll("-", ".");
-            log.info("[{}] Setting kafka property: {} = {}", subsectionName, propName, value);
+            multisiteLog.info(
+                "[{}] Setting kafka property: {} = {}", subsectionName, propName, value);
             target.put(propName, value);
           }
         }
@@ -310,8 +309,8 @@ public class Configuration {
       try {
         return cfg.getBoolean(section, name, defaultValue);
       } catch (IllegalArgumentException e) {
-        log.error("invalid value for {}; using default value {}", name, defaultValue);
-        log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
+        multisiteLog.error("invalid value for {}; using default value {}", name, defaultValue);
+        multisiteLog.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
         return defaultValue;
       }
     }

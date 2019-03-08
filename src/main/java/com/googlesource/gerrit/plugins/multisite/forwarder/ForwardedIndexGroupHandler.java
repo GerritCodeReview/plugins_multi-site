@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import static com.googlesource.gerrit.plugins.multisite.MultiSiteLogFile.multisiteLog;
+
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.server.index.group.GroupIndexer;
 import com.google.gwtorm.server.OrmException;
@@ -44,7 +46,7 @@ public class ForwardedIndexGroupHandler extends ForwardedIndexingHandler<String,
   protected void doIndex(String uuid, Optional<GroupIndexEvent> event)
       throws IOException, OrmException {
     indexer.index(new AccountGroup.UUID(uuid));
-    log.debug("Group {} successfully indexed", uuid);
+    multisiteLog.debug("Group {} successfully indexed", uuid);
   }
 
   @Override

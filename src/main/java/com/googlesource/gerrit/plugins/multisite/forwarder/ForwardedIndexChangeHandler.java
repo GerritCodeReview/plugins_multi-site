@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import static com.googlesource.gerrit.plugins.multisite.MultiSiteLogFile.multisiteLog;
+
 import com.google.common.base.Splitter;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.server.index.change.ChangeIndexer;
@@ -86,12 +88,13 @@ public class ForwardedIndexChangeHandler
 
         if (checker.isChangeUpToDate(indexEvent)) {
           if (retryCount > 0) {
-            log.warn("Change {} has been eventually indexed after {} attempt(s)", id, retryCount);
+            multisiteLog.warn(
+                "Change {} has been eventually indexed after {} attempt(s)", id, retryCount);
           } else {
-            log.debug("Change {} successfully indexed", id);
+            multisiteLog.debug("Change {} successfully indexed", id);
           }
         } else {
-          log.warn(
+          multisiteLog.warn(
               "Change {} seems too old compared to the event timestamp (event={} >> change-Ts={})",
               id,
               indexEvent,
@@ -99,13 +102,13 @@ public class ForwardedIndexChangeHandler
           rescheduleIndex(id, indexEvent, retryCount + 1);
         }
       } else {
-        log.warn(
+        multisiteLog.warn(
             "Change {} not present yet in local Git repository (event={}) after {} attempt(s)",
             id,
             indexEvent,
             retryCount);
         if (!rescheduleIndex(id, indexEvent, retryCount + 1)) {
-          log.error(
+          multisiteLog.error(
               "Change {} could not be found in the local Git repository (event={})",
               id,
               indexEvent);
@@ -114,7 +117,7 @@ public class ForwardedIndexChangeHandler
     } catch (Exception e) {
       if (isCausedByNoSuchChangeException(e)) {
         indexer.delete(parseChangeId(id));
-        log.warn("Error trying to index Change {}. Deleted from index", id, e);
+        multisiteLog.warn("Error trying to index Change {}. Deleted from index", id, e);
         return;
       }
 
@@ -142,14 +145,14 @@ public class ForwardedIndexChangeHandler
   private boolean rescheduleIndex(
       String id, Optional<ChangeIndexEvent> indexEvent, int retryCount) {
     if (retryCount > maxTries) {
-      log.error(
+      multisiteLog.error(
           "Change {} could not be indexed after {} retries. Change index could be stale.",
           id,
           retryCount);
       return false;
     }
 
-    log.warn(
+    multisiteLog.warn(
         "Retrying for the #{} time to index Change {} after {} msecs",
         retryCount,
         id,
@@ -160,7 +163,7 @@ public class ForwardedIndexChangeHandler
             Context.setForwardedEvent(true);
             doIndex(id, indexEvent, retryCount);
           } catch (Exception e) {
-            log.warn("Change {} could not be indexed", id, e);
+            multisiteLog.warn("Change {} could not be indexed", id, e);
           }
         },
         retryInterval,
@@ -171,7 +174,7 @@ public class ForwardedIndexChangeHandler
   @Override
   protected void doDelete(String id, Optional<ChangeIndexEvent> indexEvent) throws IOException {
     indexer.delete(parseChangeId(id));
-    log.debug("Change {} successfully deleted from index", id);
+    multisiteLog.debug("Change {} successfully deleted from index", id);
   }
 
   private static Change.Id parseChangeId(String id) {
