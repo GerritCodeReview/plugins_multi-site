@@ -38,7 +38,6 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
-
   static final String INSTANCE_ID_FILE = "instanceId.data";
 
   // common parameters to cache and index sections
