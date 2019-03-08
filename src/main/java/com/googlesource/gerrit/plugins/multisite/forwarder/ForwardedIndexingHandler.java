@@ -16,11 +16,12 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.common.util.concurrent.Striped;
 import com.google.gwtorm.server.OrmException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Base class to handle forwarded indexing. This class is meant to be extended by classes used on

@@ -28,6 +28,8 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.googlesource.gerrit.plugins.multisite.MultiSiteLogFile.msgLog;
+
 @Singleton
 public class BrokerPublisher implements LifecycleListener {
   protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -58,6 +60,7 @@ public class BrokerPublisher implements LifecycleListener {
   }
 
   public boolean publishEvent(EventFamily eventType, Event event) {
+    msgLog.info("Publishing {} event: [{}]", eventType, getPayload(event));
     return session.publishEvent(eventType, getPayload(event));
   }
 

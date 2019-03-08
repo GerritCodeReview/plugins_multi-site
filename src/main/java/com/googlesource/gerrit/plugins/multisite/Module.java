@@ -15,8 +15,8 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.google.gerrit.extensions.annotations.PluginData;
+import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gson.Gson;
-import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -28,6 +28,9 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarde
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -35,10 +38,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class Module extends AbstractModule {
+public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private final Configuration config;
 
@@ -49,6 +50,8 @@ public class Module extends AbstractModule {
 
   @Override
   protected void configure() {
+
+    listener().to(MultiSiteLogFile.class);
 
     install(new ForwarderModule());
 
