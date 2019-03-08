@@ -28,6 +28,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarde
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
+import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -69,6 +70,8 @@ public class Module extends AbstractModule {
     if (config.kafkaPublisher().enabled()) {
       install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
+
+    install(new ValidationModule());
 
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
   }
