@@ -1,0 +1,38 @@
+title Replication - Split Brain 
+
+participant Client1 
+participant Instance1
+participant Instance2
+participant Client2
+
+state over Client1, Client2, Instance1, Instance2: W0
+state over Client1 : W0 -> W1
+Client1 -> +Instance1: Push W1
+Instance1 -> -Client1: Ack W1
+state over Instance1 : W0 -> W1
+state over Instance1 : Crash
+
+state over Client2 : W0 -> W2
+Client2 -> +Instance2: Push W2
+Instance2 -> -Client2 : Ack W2
+state over Instance2 : W0 -> W2
+
+state over Instance1:  Restart
+
+par 
+    Instance2->Instance1: Replicate W2
+    Instance1->Instance2: Replicate W1 
+end
+
+parallel {
+    state over Instance2: W0 -> W1 
+    state over Instance1: W0 -> W2
+    state over Client1: W0 -> W1
+    state over Client2: W0 -> W2
+}
+
+note over Instance1, Instance2
+    Instances status diverged 
+    and is even swapped from 
+    original 
+end note
