@@ -22,6 +22,7 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
+import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.StreamEventRouter;
 import java.util.UUID;
@@ -38,7 +39,8 @@ public class StreamEventSubscriber extends AbstractKafkaSubcriber {
       DynamicSet<DroppedEventListener> droppedEventListeners,
       Provider<Gson> gsonProvider,
       @InstanceId UUID instanceId,
-      OneOffRequestContext oneOffCtx) {
+      OneOffRequestContext oneOffCtx,
+      MessageLogger msgLog) {
     super(
         configuration,
         keyDeserializer,
@@ -47,7 +49,8 @@ public class StreamEventSubscriber extends AbstractKafkaSubcriber {
         droppedEventListeners,
         gsonProvider,
         instanceId,
-        oneOffCtx);
+        oneOffCtx,
+        msgLog);
   }
 
   @Override

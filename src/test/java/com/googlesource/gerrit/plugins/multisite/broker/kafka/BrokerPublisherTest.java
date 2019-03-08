@@ -27,6 +27,8 @@ import com.google.gerrit.server.util.time.TimeUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.googlesource.gerrit.plugins.multisite.DisabledMessageLogger;
+import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
@@ -37,11 +39,12 @@ import org.junit.Test;
 
 public class BrokerPublisherTest {
   private BrokerPublisher publisher;
+  private MessageLogger NO_MSG_LOG = new DisabledMessageLogger();
   private Gson gson = new GsonProvider().get();
 
   @Before
   public void setUp() {
-    publisher = new BrokerPublisher(new TestBrokerSession(), gson, UUID.randomUUID());
+    publisher = new BrokerPublisher(new TestBrokerSession(), gson, UUID.randomUUID(), NO_MSG_LOG);
   }
 
   @Test

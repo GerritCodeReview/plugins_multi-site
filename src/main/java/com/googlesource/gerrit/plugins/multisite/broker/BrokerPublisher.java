@@ -22,6 +22,8 @@ import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
+import com.googlesource.gerrit.plugins.multisite.MessageLogger;
+import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.SourceAwareEventWrapper;
 import java.util.UUID;
@@ -35,12 +37,14 @@ public class BrokerPublisher implements LifecycleListener {
   private final BrokerSession session;
   private final Gson gson;
   private final UUID instanceId;
+  private final MessageLogger msgLog;
 
   @Inject
-  public BrokerPublisher(BrokerSession session, Gson gson, @InstanceId UUID instanceId) {
+  public BrokerPublisher(BrokerSession session, Gson gson, @InstanceId UUID instanceId, MessageLogger msgLog) {
     this.session = session;
     this.gson = gson;
     this.instanceId = instanceId;
+    this.msgLog = msgLog;
   }
 
   @Override
@@ -58,11 +62,13 @@ public class BrokerPublisher implements LifecycleListener {
   }
 
   public boolean publishEvent(EventFamily eventType, Event event) {
-    return session.publishEvent(eventType, getPayload(event));
+    SourceAwareEventWrapper brokerEvent = toBrokerEvent(event);
+    msgLog.log(Direction.PUBLISH, brokerEvent);
+    return session.publishEvent(eventType, getPayload(brokerEvent));
   }
 
-  private String getPayload(Event event) {
-    return gson.toJson(toBrokerEvent(event));
+  private String getPayload(SourceAwareEventWrapper event) {
+    return gson.toJson(event);
   }
 
   private SourceAwareEventWrapper toBrokerEvent(Event event) {
