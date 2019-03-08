@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ed0d81aa_6c409347",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-08T07:19:23Z",
+      "side": 1,
+      "message": "The typo in the username that has been fixed by this.\nhttps://gerrit-review.googlesource.com/c/plugins/healthcheck/+/215696\nHas not been merged yet, just noticed it has a comment from @david which I will fix",
+      "parentUuid": "2ca74e79_d7dd369d",
+      "range": {
+        "startLine": 9,
+        "startChar": 32,
+        "endLine": 10,
+        "endChar": 8
+      },
+      "revId": "c552fdf7420a1417554b87aa7fccdec7400a6b28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0b210850_bc5edbd7",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -39,6 +63,24 @@
       "revId": "c552fdf7420a1417554b87aa7fccdec7400a6b28",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97d4a652_0d1510db",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-08T07:19:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b210850_bc5edbd7",
+      "revId": "c552fdf7420a1417554b87aa7fccdec7400a6b28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
