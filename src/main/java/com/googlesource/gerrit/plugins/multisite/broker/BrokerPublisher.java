@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.broker;
 
+import static com.googlesource.gerrit.plugins.multisite.MultiSiteLogFile.msgLog;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.events.Event;
@@ -58,6 +60,7 @@ public class BrokerPublisher implements LifecycleListener {
   }
 
   public boolean publishEvent(EventFamily eventType, Event event) {
+    msgLog.info("Publishing event [{}]: [{}]", eventType, getPayload(event));
     return session.publishEvent(eventType, getPayload(event));
   }
 

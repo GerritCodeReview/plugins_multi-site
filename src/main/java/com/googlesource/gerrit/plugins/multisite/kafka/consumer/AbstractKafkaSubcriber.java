@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
+import static com.googlesource.gerrit.plugins.multisite.MultiSiteLogFile.msgLog;
+
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.permissions.PermissionBackendException;
@@ -116,7 +118,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
         droppedEventListeners.forEach(l -> l.onEventDropped(event));
       } else {
         try {
-          logger.atInfo().log("Header[%s] Body[%s]", event.getHeader(), event.getBody());
+          msgLog.info("Consuming event: Header[{}] Body[{}]", event.getHeader(), event.getBody());
           eventRouter.route(event.getEventBody(gsonProvider));
         } catch (IOException e) {
           logger.atSevere().withCause(e).log(
