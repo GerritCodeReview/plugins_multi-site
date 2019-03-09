@@ -212,6 +212,30 @@
       "revId": "4a9e6722b93c716aac623e2c10539c0404d01953",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fc3d0521_33c20c9f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/MultiSiteLogFile.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-09T01:01:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d112b584_e95da275",
+      "range": {
+        "startLine": 18,
+        "startChar": 77,
+        "endLine": 18,
+        "endChar": 79
+      },
+      "revId": "4a9e6722b93c716aac623e2c10539c0404d01953",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
