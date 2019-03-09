@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3567c95f_8a49a524",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-03-09T00:21:41Z",
+      "side": 1,
+      "message": "This is needed to make the tests non flaky when executing single test in the Eclipse-IDE (selecting just one test to run). In that case, \"refs/sequences/changes\" ref is presented in the list of the events. With this annotation Gerrit server is started for every test method and thus the whole server is restarted from scratch and the events are consistent.",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 10
+      },
+      "revId": "a6a9c34bbbc742eeadd0e738ae198f51d82147f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
