@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "029b8ef9_8e48de05",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/InSyncChangeValidator.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-09T22:02:30Z",
+      "side": 1,
+      "message": "2019",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc03bcc6_a126b8c9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/InSyncChangeValidator.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-09T22:02:30Z",
+      "side": 1,
+      "message": "and is not ending with \u0027/meta\u0027.\nThe refs/changes/NN/NNNN/PP/meta is mutable :-(",
+      "range": {
+        "startLine": 87,
+        "startChar": 11,
+        "endLine": 87,
+        "endChar": 45
+      },
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c485ba7d_a3ece4ea",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/DfsRefDatabase.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-09T22:02:30Z",
+      "side": 1,
+      "message": "DfsRefDatabase is a JGit interface, what is the value of redefining it here?",
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a6bbebc_14fedd78",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/memory/InMemoryDfsRefDatabase.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-09T22:02:30Z",
+      "side": 1,
+      "message": "MemRefDatabase already exists in JGit, what is the value of defining it again?",
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
