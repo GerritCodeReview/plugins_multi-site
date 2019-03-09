@@ -22,6 +22,53 @@
       "revId": "a6a9c34bbbc742eeadd0e738ae198f51d82147f5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c948ac1_ad93a22a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-09T21:36:11Z",
+      "side": 1,
+      "message": "I believe we had a similar discussion on the Gerrit audit events testing also, and Dave managed to drain all the events before the tests so that it would have not been flaky.\n\nIs our \"drain\" method not good enough then?",
+      "parentUuid": "3567c95f_8a49a524",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 10
+      },
+      "revId": "a6a9c34bbbc742eeadd0e738ae198f51d82147f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c15017f_07b95900",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-09T21:36:11Z",
+      "side": 1,
+      "message": "Basically, this is the minimum change that fixed the bug: we should get a ref-updated also.",
+      "range": {
+        "startLine": 180,
+        "startChar": 39,
+        "endLine": 180,
+        "endChar": 52
+      },
+      "revId": "a6a9c34bbbc742eeadd0e738ae198f51d82147f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
