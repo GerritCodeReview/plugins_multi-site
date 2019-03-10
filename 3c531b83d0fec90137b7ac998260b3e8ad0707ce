@@ -71,6 +71,30 @@
     },
     {
       "key": {
+        "uuid": "cb86a5f7_abbdc178",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/InSyncChangeValidator.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-10T19:18:53Z",
+      "side": 1,
+      "message": "Ok, I think this was my mistake. I assumed that was the old ref from the local repo. I might have to browse the repo then.",
+      "parentUuid": "1596032a_929723a1",
+      "range": {
+        "startLine": 119,
+        "startChar": 62,
+        "endLine": 119,
+        "endChar": 89
+      },
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c485ba7d_a3ece4ea",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/DfsRefDatabase.java",
         "patchSetId": 7
@@ -88,6 +112,24 @@
     },
     {
       "key": {
+        "uuid": "10c2f97d_43d5f9d2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/DfsRefDatabase.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-10T19:18:53Z",
+      "side": 1,
+      "message": "Ah, didn\u0027t know. Actually this interface is probably very different to that one. I will have a look but I think the operations we need are different. One can be based on the other but the three interactions I think we need are the ones below",
+      "parentUuid": "c485ba7d_a3ece4ea",
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7a6bbebc_14fedd78",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/memory/InMemoryDfsRefDatabase.java",
         "patchSetId": 7
@@ -99,6 +141,24 @@
       "writtenOn": "2019-03-09T22:02:30Z",
       "side": 1,
       "message": "MemRefDatabase already exists in JGit, what is the value of defining it again?",
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2edef13_a9bb477e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/memory/InMemoryDfsRefDatabase.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-10T19:18:53Z",
+      "side": 1,
+      "message": "Same as above. Mine was bad naming so the error is consistent",
+      "parentUuid": "7a6bbebc_14fedd78",
       "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
