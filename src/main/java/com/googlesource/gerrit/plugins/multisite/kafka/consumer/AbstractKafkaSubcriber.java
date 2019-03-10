@@ -24,6 +24,8 @@ import com.google.gwtorm.server.OrmException;
 import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
+import com.googlesource.gerrit.plugins.multisite.MessageLogger;
+import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouter;
 import java.io.IOException;
@@ -50,6 +52,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
   private final Deserializer<SourceAwareEventWrapper> valueDeserializer;
   private final Configuration configuration;
   private final OneOffRequestContext oneOffCtx;
+  private final MessageLogger msgLog;
 
   public AbstractKafkaSubcriber(
       Configuration configuration,
@@ -59,13 +62,15 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
       DynamicSet<DroppedEventListener> droppedEventListeners,
       Provider<Gson> gsonProvider,
       @InstanceId UUID instanceId,
-      OneOffRequestContext oneOffCtx) {
+      OneOffRequestContext oneOffCtx,
+      MessageLogger msgLog) {
     this.configuration = configuration;
     this.eventRouter = eventRouter;
     this.droppedEventListeners = droppedEventListeners;
     this.gsonProvider = gsonProvider;
     this.instanceId = instanceId;
     this.oneOffCtx = oneOffCtx;
+    this.msgLog = msgLog;
     final ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
     try {
       Thread.currentThread().setContextClassLoader(AbstractKafkaSubcriber.class.getClassLoader());
@@ -116,7 +121,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
         droppedEventListeners.forEach(l -> l.onEventDropped(event));
       } else {
         try {
-          logger.atInfo().log("Header[%s] Body[%s]", event.getHeader(), event.getBody());
+          msgLog.log(Direction.CONSUME, event);
           eventRouter.route(event.getEventBody(gsonProvider));
         } catch (IOException e) {
           logger.atSevere().withCause(e).log(
