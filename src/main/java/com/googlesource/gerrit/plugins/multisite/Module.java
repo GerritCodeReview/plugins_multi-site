@@ -42,14 +42,21 @@ import org.slf4j.LoggerFactory;
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private final Configuration config;
+  private final NoteDbStatus noteDb;
 
   @Inject
-  public Module(Configuration config) {
+  public Module(Configuration config, NoteDbStatus noteDb) {
     this.config = config;
+    this.noteDb = noteDb;
   }
 
   @Override
   protected void configure() {
+    if (!noteDb.enabled()) {
+      log.error(
+          "Gerrit is still running on ReviewDb: please migrate to NoteDb and then reload the multi-site plugin.");
+      return;
+    }
 
     listener().to(Log4jMessageLogger.class);
     bind(MessageLogger.class).to(Log4jMessageLogger.class);
