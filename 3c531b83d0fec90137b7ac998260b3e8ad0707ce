@@ -72,6 +72,29 @@
     },
     {
       "key": {
+        "uuid": "e9f8a58c_f93e15d3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/InSyncChangeValidator.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T10:37:17Z",
+      "side": 1,
+      "message": "Would it make sense to add a more specific ValidatioExpection to distinguish between this case and the one at line 94?",
+      "range": {
+        "startLine": 106,
+        "startChar": 16,
+        "endLine": 106,
+        "endChar": 35
+      },
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1596032a_929723a1",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/InSyncChangeValidator.java",
         "patchSetId": 7
@@ -177,6 +200,29 @@
     },
     {
       "key": {
+        "uuid": "f3d4ffe7_92f44260",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/DfsRefDatabase.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T10:37:17Z",
+      "side": 1,
+      "message": "Does this method set a CREATED (i.e.: not DELETED) state for the ref? Is it worth mentioning it in the doc? Which one are the possible states for the ref? If there are several it might be worth describing the possible transactions.",
+      "range": {
+        "startLine": 45,
+        "startChar": 2,
+        "endLine": 45,
+        "endChar": 78
+      },
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7a6bbebc_14fedd78",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/memory/InMemoryDfsRefDatabase.java",
         "patchSetId": 7
@@ -223,6 +269,121 @@
       "writtenOn": "2019-03-11T06:47:51Z",
       "side": 1,
       "message": "The cleanup of shared refs is a different problem, we should address this into a separate change.",
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e886b809_d2f849e7",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/memory/InMemoryDfsRefDatabaseCleanerTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T10:37:17Z",
+      "side": 1,
+      "message": "Can we abstract this in a helper method, maybe something like sequentialId?\n\nI believe that trying to figure out what it is doing drives your attention away from what the test is trying to do.",
+      "range": {
+        "startLine": 59,
+        "startChar": 32,
+        "endLine": 59,
+        "endChar": 72
+      },
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "047cdd27_0e7a2afe",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/memory/InMemoryDfsRefDatabaseCleanerTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T10:37:17Z",
+      "side": 1,
+      "message": "Do we need to delete here? Can we just return from the test with a failure?",
+      "range": {
+        "startLine": 79,
+        "startChar": 16,
+        "endLine": 79,
+        "endChar": 46
+      },
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68cf4f78_6a8ba5af",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/memory/InMemoryDfsRefDatabaseTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T10:37:17Z",
+      "side": 1,
+      "message": "Is there a gerRef we can use to make sure the ref has been deleted instead of deleting twice?",
+      "range": {
+        "startLine": 61,
+        "startChar": 26,
+        "endLine": 61,
+        "endChar": 35
+      },
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b1d1a48_05953106",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/memory/InMemoryDfsRefDatabaseTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T10:37:17Z",
+      "side": 1,
+      "message": "Would it also make sense to check that OBJECT_ID_1 is no more in the DB while OBJECT_ID_2 has been added? If updateRefId had a bug that always return \u0027true\u0027 we wouldn\u0027t catch it.",
+      "range": {
+        "startLine": 69,
+        "startChar": 12,
+        "endLine": 69,
+        "endChar": 81
+      },
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "476c854e_c1487bd9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/memory/InMemoryDfsRefDatabaseTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T10:37:17Z",
+      "side": 1,
+      "message": "same as line 69",
+      "range": {
+        "startLine": 86,
+        "startChar": 12,
+        "endLine": 86,
+        "endChar": 82
+      },
       "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
