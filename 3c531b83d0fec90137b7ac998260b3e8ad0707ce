@@ -95,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "80501f78_9f6b47c9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/InSyncChangeValidator.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-11T11:28:51Z",
+      "side": 1,
+      "message": "I\u0027m just not sure if anyone would use the subclass in any way to extract information. I hoped the root cause would have done the job",
+      "parentUuid": "e9f8a58c_f93e15d3",
+      "range": {
+        "startLine": 106,
+        "startChar": 16,
+        "endLine": 106,
+        "endChar": 35
+      },
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1596032a_929723a1",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/InSyncChangeValidator.java",
         "patchSetId": 7
@@ -223,6 +247,30 @@
     },
     {
       "key": {
+        "uuid": "e2fd7772_19dd2388",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/DfsRefDatabase.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-11T11:28:51Z",
+      "side": 1,
+      "message": "It just stores the reference in the DB, the only special state is the DELETED one where we have to keep a tombstone to avoid the instance to be erroneously re-created.",
+      "parentUuid": "f3d4ffe7_92f44260",
+      "range": {
+        "startLine": 45,
+        "startChar": 2,
+        "endLine": 45,
+        "endChar": 78
+      },
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f8f314a4_643e54a9",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/NoOpDfsRefDatabase.java",
         "patchSetId": 7
@@ -234,6 +282,30 @@
       "writtenOn": "2019-03-11T10:40:10Z",
       "side": 1,
       "message": "What is this used for?",
+      "range": {
+        "startLine": 20,
+        "startChar": 13,
+        "endLine": 20,
+        "endChar": 31
+      },
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "42e842a3_b23c2c54",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/NoOpDfsRefDatabase.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-11T11:28:51Z",
+      "side": 1,
+      "message": "Yeah, it is not used now, but it should be the one to use to make this code almost effectless and equal to not having the validator running",
+      "parentUuid": "f8f314a4_643e54a9",
       "range": {
         "startLine": 20,
         "startChar": 13,
