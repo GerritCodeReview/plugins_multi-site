@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f8ee8134_7968ca72",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/InSyncChangeValidator.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-11T14:13:13Z",
+      "side": 1,
+      "message": "Please see the previous comment: we should exclude the \u0027/meta\u0027 ref name.",
+      "range": {
+        "startLine": 98,
+        "startChar": 19,
+        "endLine": 98,
+        "endChar": 45
+      },
+      "revId": "b79b1e1f80eb7df613d1b319d448187da8057fae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
