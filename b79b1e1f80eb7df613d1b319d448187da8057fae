@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "e5850704_088104ac",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/InSyncChangeValidator.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-11T14:57:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f8ee8134_7968ca72",
+      "range": {
+        "startLine": 98,
+        "startChar": 19,
+        "endLine": 98,
+        "endChar": 45
+      },
+      "revId": "b79b1e1f80eb7df613d1b319d448187da8057fae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7b37c61e_055c6774",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java",
         "patchSetId": 12
@@ -45,6 +69,30 @@
       "revId": "b79b1e1f80eb7df613d1b319d448187da8057fae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3fbe466f_4ac22bc0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-11T14:57:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7b37c61e_055c6774",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "b79b1e1f80eb7df613d1b319d448187da8057fae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "32ea5c67_16db9edf",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/InSyncChangeValidatorTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-11T14:57:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e9abd6dd_76d1a7da",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "b79b1e1f80eb7df613d1b319d448187da8057fae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "880c3d0b_0b3bc17f",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/InSyncChangeValidatorTest.java",
         "patchSetId": 12
@@ -91,6 +163,30 @@
       "revId": "b79b1e1f80eb7df613d1b319d448187da8057fae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e023faa_f145e0b3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/InSyncChangeValidatorTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-11T14:57:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "880c3d0b_0b3bc17f",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 186,
+        "endChar": 51
+      },
+      "revId": "b79b1e1f80eb7df613d1b319d448187da8057fae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
