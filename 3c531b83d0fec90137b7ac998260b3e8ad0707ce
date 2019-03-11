@@ -119,6 +119,29 @@
     },
     {
       "key": {
+        "uuid": "b4451fbf_7bc1504a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-11T06:47:51Z",
+      "side": 1,
+      "message": "These should not be hardcoded in the ValidationModule but rather injected in the InMemoryDfsRefDatabase.\n\nJust use a bind(DfsRefDatabase.class).to(InMemoryDfsRefDatabase.class) and then rely on  Guice to make it a singleton and inject the parameters.",
+      "range": {
+        "startLine": 33,
+        "startChar": 8,
+        "endLine": 37,
+        "endChar": 22
+      },
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c485ba7d_a3ece4ea",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/DfsRefDatabase.java",
         "patchSetId": 7
@@ -183,6 +206,23 @@
       "side": 1,
       "message": "Same as above. Mine was bad naming so the error is consistent",
       "parentUuid": "7a6bbebc_14fedd78",
+      "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be4585bf_05b3f518",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/memory/InMemoryDfsRefDatabaseCleaner.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-11T06:47:51Z",
+      "side": 1,
+      "message": "The cleanup of shared refs is a different problem, we should address this into a separate change.",
       "revId": "3c531b83d0fec90137b7ac998260b3e8ad0707ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
