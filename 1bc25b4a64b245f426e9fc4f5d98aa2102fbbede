@@ -16,6 +16,24 @@
       "revId": "1bc25b4a64b245f426e9fc4f5d98aa2102fbbede",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d63af185_26b1cf10",
+        "filename": "setup_local_env/gerrit-1/ssh/config",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T16:43:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57d4a8fd_a6503ae3",
+      "revId": "1bc25b4a64b245f426e9fc4f5d98aa2102fbbede",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

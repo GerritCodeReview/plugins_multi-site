@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5ed6fee4_a841affa",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T16:43:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0cffcbcf_7c3d387d",
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a97d589c_1a4cb5a2",
         "filename": "dockerised_local_env/docker-compose.yaml",
         "patchSetId": 11
@@ -33,6 +51,24 @@
       "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad2235b7_bb3bae8e",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T16:43:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a97d589c_1a4cb5a2",
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "f404bf5a_43e526c5",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T16:43:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "276faa9a_9a1b7f25",
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5113e77e_c2a51273",
         "filename": "dockerised_local_env/docker-compose.yaml",
         "patchSetId": 11
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "c5846e5a_e0b38c4c",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T16:43:23Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5113e77e_c2a51273",
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b3888ddf_7c11d761",
         "filename": "dockerised_local_env/gerrit-1/etc/replication.config",
         "patchSetId": 11
@@ -81,6 +153,30 @@
       "writtenOn": "2019-03-07T17:09:27Z",
       "side": 1,
       "message": "why don\u0027t you call this as generic names (e.g. gerrit.replication) and re-map them as extra hosts in the docker-compose?\nThat would allow you to avoid having different configuration files between gerrit-1 and gerrit-2, which is always hard to manage.",
+      "range": {
+        "startLine": 2,
+        "startChar": 16,
+        "endLine": 2,
+        "endChar": 24
+      },
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c687c3d_8f929d31",
+        "filename": "dockerised_local_env/gerrit-1/etc/replication.config",
+        "patchSetId": 11
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T16:43:23Z",
+      "side": 1,
+      "message": "AFAIK extra hosts only allow mapping of IPs, not logical name of the services, hence you can\u0027t do something like:\n\nextra_hosts:\n- \"gerrit.replication:gerrit-1\"",
+      "parentUuid": "b3888ddf_7c11d761",
       "range": {
         "startLine": 2,
         "startChar": 16,
@@ -116,6 +212,30 @@
     },
     {
       "key": {
+        "uuid": "b51cfdad_0c603cce",
+        "filename": "dockerised_local_env/gerrit-1/etc/replication.config",
+        "patchSetId": 11
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T16:43:23Z",
+      "side": 1,
+      "message": "I\u0027m using a single sshd service, updating the git directory of both the Gerrit instances, hence I need a way to dispatch the replication updates.",
+      "parentUuid": "289c9e15_24de6966",
+      "range": {
+        "startLine": 3,
+        "startChar": 38,
+        "endLine": 3,
+        "endChar": 46
+      },
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f21dce22_47e41ba0",
         "filename": "dockerised_local_env/gerrit-1/etc/replication.config",
         "patchSetId": 11
@@ -133,6 +253,24 @@
     },
     {
       "key": {
+        "uuid": "2a3995d5_1f02cf63",
+        "filename": "dockerised_local_env/gerrit-1/etc/replication.config",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T16:43:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f21dce22_47e41ba0",
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "91b97eb4_1e66e9bc",
         "filename": "dockerised_local_env/gerrit-1/ssh/id_rsa",
         "patchSetId": 11
@@ -144,6 +282,24 @@
       "writtenOn": "2019-03-07T17:09:27Z",
       "side": 1,
       "message": "Private keys should not be checked in. However, this is only a test, so I believe we should be OK for now.",
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ba15e10_0e74da7b",
+        "filename": "dockerised_local_env/gerrit-1/ssh/id_rsa",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T16:43:23Z",
+      "side": 1,
+      "message": "Yep exactly. The cool thing is you are warned about that and you need to add the \"-o nokeycheck\" to push the keys :)",
+      "parentUuid": "91b97eb4_1e66e9bc",
       "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -170,6 +326,30 @@
       "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01973862_5ae2fdf8",
+        "filename": "dockerised_local_env/gerrit-2/etc/gerrit.config",
+        "patchSetId": 11
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-11T16:43:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5cc1879_c8c2b9a0",
+      "range": {
+        "startLine": 30,
+        "startChar": 22,
+        "endLine": 30,
+        "endChar": 26
+      },
+      "revId": "962136b2289d3f577bccdb8c42e619ce8a5b98d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
