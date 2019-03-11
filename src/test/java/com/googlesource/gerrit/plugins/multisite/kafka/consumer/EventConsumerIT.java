@@ -25,15 +25,18 @@ import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.inject.Inject;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Module;
+import com.googlesource.gerrit.plugins.multisite.NoteDbStatus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import org.eclipse.jgit.lib.Config;
+import org.junit.Before;
 import org.junit.Test;
 import org.testcontainers.containers.KafkaContainer;
 
@@ -44,7 +47,11 @@ import org.testcontainers.containers.KafkaContainer;
     sysModule =
         "com.googlesource.gerrit.plugins.multisite.kafka.consumer.EventConsumerIT$KafkaTestContainerModule")
 public class EventConsumerIT extends LightweightPluginDaemonTest {
-  private static final int QUEUE_POLL_TIMEOUT_MSECS = 30000;
+  private static final int QUEUE_POLL_TIMEOUT_MSECS = 10000;
+
+  static {
+    System.setProperty("gerrit.notedb", "ON");
+  }
 
   public static class KafkaTestContainerModule extends LifecycleModule {
 
@@ -66,6 +73,13 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
       }
     }
 
+    private final NoteDbStatus noteDb;
+
+    @Inject
+    public KafkaTestContainerModule(NoteDbStatus noteDb) {
+      this.noteDb = noteDb;
+    }
+
     @Override
     protected void configure() {
       final KafkaContainer kafka = new KafkaContainer();
@@ -77,9 +91,19 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
       config.setBoolean("kafka", "subscriber", "enabled", true);
       Configuration multiSiteConfig = new Configuration(config);
       bind(Configuration.class).toInstance(multiSiteConfig);
-      install(new Module(multiSiteConfig));
+      install(new Module(multiSiteConfig, noteDb));
 
       listener().toInstance(new KafkaStopAtShutdown(kafka));
+    }
+  }
+
+  @Override
+  @Before
+  public void setUpTestPlugin() throws Exception {
+    super.setUpTestPlugin();
+
+    if (!notesMigration.commitChangeWrites()) {
+      throw new IllegalStateException("NoteDb is mandatory for running the multi-site plugin");
     }
   }
 
@@ -89,8 +113,7 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
     drainQueue(droppedEventsQueue);
 
     createChange();
-    List<String> createdChangeEvents = receiveFromQueue(droppedEventsQueue, 3);
-    assertThat(createdChangeEvents).hasSize(3);
+    List<String> createdChangeEvents = receiveFromQueue(droppedEventsQueue);
 
     assertThat(createdChangeEvents).contains("change-index");
     assertThat(createdChangeEvents).contains("ref-updated");
@@ -107,9 +130,8 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
     in.message = "LGTM";
     gApi.changes().id(r.getChangeId()).revision("current").review(in);
 
-    List<String> createdChangeEvents = receiveFromQueue(droppedEventsQueue, 2);
+    List<String> createdChangeEvents = receiveFromQueue(droppedEventsQueue);
 
-    assertThat(createdChangeEvents).hasSize(2);
     assertThat(createdChangeEvents).contains("change-index");
     assertThat(createdChangeEvents).contains("comment-added");
   }
@@ -133,15 +155,12 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
     return droppedEvents;
   }
 
-  private List<String> receiveFromQueue(
-      LinkedBlockingQueue<SourceAwareEventWrapper> queue, int numEvents)
+  private List<String> receiveFromQueue(LinkedBlockingQueue<SourceAwareEventWrapper> queue)
       throws InterruptedException {
     List<String> eventsList = new ArrayList<>();
-    for (int i = 0; i < numEvents; i++) {
-      SourceAwareEventWrapper event = queue.poll(QUEUE_POLL_TIMEOUT_MSECS, TimeUnit.MILLISECONDS);
-      if (event != null) {
-        eventsList.add(event.getHeader().getEventType());
-      }
+    SourceAwareEventWrapper event;
+    while ((event = queue.poll(QUEUE_POLL_TIMEOUT_MSECS, TimeUnit.MILLISECONDS)) != null) {
+      eventsList.add(event.getHeader().getEventType());
     }
     return eventsList;
   }

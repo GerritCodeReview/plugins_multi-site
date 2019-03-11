@@ -19,6 +19,7 @@ import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
@@ -42,14 +43,21 @@ import org.slf4j.LoggerFactory;
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private final Configuration config;
+  private final NoteDbStatus noteDb;
 
   @Inject
-  public Module(Configuration config) {
+  public Module(Configuration config, NoteDbStatus noteDb) {
     this.config = config;
+    this.noteDb = noteDb;
   }
 
   @Override
   protected void configure() {
+    if (!noteDb.enabled()) {
+      throw new ProvisionException(
+          "Gerrit is still running on ReviewDb: please migrate to NoteDb "
+              + "and then reload the multi-site plugin.");
+    }
 
     listener().to(Log4jMessageLogger.class);
     bind(MessageLogger.class).to(Log4jMessageLogger.class);

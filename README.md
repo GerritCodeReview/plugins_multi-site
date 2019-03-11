@@ -11,6 +11,9 @@ The Gerrit masters requirements are:
 - Connected to the same message broker
 - Accessible behind a load balancer (e.g., HAProxy)
 
+**NOTE**: The multi-site plugin will not start if Gerrit is not yet migrated
+to NoteDb.
+
 Currently, the only mode supported is one primary read/write master
 and multiple read-only masters but eventually the plan is to support N
 read/write masters. The read/write master is handling any traffic while the
