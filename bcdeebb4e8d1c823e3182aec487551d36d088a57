@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5eaa9b1b_d6ff5bf2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-03-12T06:30:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50a81c98_5b3a2fb6",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 51
+      },
+      "revId": "bcdeebb4e8d1c823e3182aec487551d36d088a57",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b8b0074b_132746ad",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -36,6 +60,30 @@
       "writtenOn": "2019-03-11T16:08:42Z",
       "side": 1,
       "message": "Is there any way to enforce this in tests? So that when we run them we will always be in NoteDb state?",
+      "range": {
+        "startLine": 18,
+        "startChar": 16,
+        "endLine": 18,
+        "endChar": 51
+      },
+      "revId": "bcdeebb4e8d1c823e3182aec487551d36d088a57",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a574963c_d5f9adff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-03-12T06:30:03Z",
+      "side": 1,
+      "message": "We could fix the CI and pass this parameter per default.",
+      "parentUuid": "b8b0074b_132746ad",
       "range": {
         "startLine": 18,
         "startChar": 16,
