@@ -14,34 +14,87 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.LogThreshold;
 import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
-import com.google.inject.AbstractModule;
+import com.google.gerrit.extensions.events.LifecycleListener;
+import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
+import com.googlesource.gerrit.plugins.multisite.Module;
+import com.googlesource.gerrit.plugins.multisite.NoteDbStatus;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZookeeperTestContainerSupport;
+import org.junit.Before;
 import org.junit.Test;
 
 @NoHttpd
 @LogThreshold(level = "INFO")
 @TestPlugin(
     name = "multi-site",
-    sysModule = "com.googlesource.gerrit.plugins.multisite.validation.ValidationIT$Module")
+    sysModule =
+        "com.googlesource.gerrit.plugins.multisite.validation.ValidationIT$ZookeeperTestModule")
 public class ValidationIT extends LightweightPluginDaemonTest {
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  public static class Module extends AbstractModule {
+  static {
+    System.setProperty("gerrit.notedb", "ON");
+  }
+
+  public static class ZookeeperTestModule extends LifecycleModule {
+
+    public class ZookeeperStopAtShutdown implements LifecycleListener {
+      private final ZookeeperTestContainerSupport zookeeperContainer;
+
+      public ZookeeperStopAtShutdown(ZookeeperTestContainerSupport zk) {
+        this.zookeeperContainer = zk;
+      }
+
+      @Override
+      public void stop() {
+        zookeeperContainer.cleanup();
+      }
+
+      @Override
+      public void start() {
+        // Do nothing
+      }
+    }
+
+    private final NoteDbStatus noteDb;
+
+    @Inject
+    public ZookeeperTestModule(NoteDbStatus noteDb) {
+      this.noteDb = noteDb;
+    }
+
     @Override
     protected void configure() {
-      install(new ValidationModule());
+      ZookeeperTestContainerSupport zookeeperContainer = new ZookeeperTestContainerSupport();
+      Configuration multiSiteConfig = zookeeperContainer.getConfig();
+      bind(Configuration.class).toInstance(multiSiteConfig);
+      install(new Module(multiSiteConfig, noteDb));
+
+      listener().toInstance(new ZookeeperStopAtShutdown(zookeeperContainer));
+    }
+  }
+
+  @Override
+  @Before
+  public void setUpTestPlugin() throws Exception {
+    super.setUpTestPlugin();
+
+    if (!notesMigration.commitChangeWrites()) {
+      throw new IllegalStateException("NoteDb is mandatory for running the multi-site plugin");
     }
   }
 
   @Test
   public void inSyncChangeValidatorShouldAcceptNewChange() throws Exception {
-    final PushOneCommit.Result change = createChange("refs/for/master");
-
+    // FIXME: The code does not work for already existing refs (need a migration step for first
+    // run - T0). Using "refs/heads/master2" in this test for now
+    final PushOneCommit.Result change =
+        createCommitAndPush(testRepo, "refs/heads/master2", "msg", "file", "content");
     change.assertOkStatus();
   }
 }
