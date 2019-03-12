@@ -1,0 +1,55 @@
+// Copyright (C) 2019 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// Copyright (C) 2018 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
+
+import com.google.gerrit.reviewdb.client.RefNames;
+import org.eclipse.jgit.lib.ObjectId;
+import org.junit.Ignore;
+
+@Ignore
+public interface RefFixture {
+
+  static final String ALLOWED_CHARS = "abcdefghilmnopqrstuvz";
+  static final String ALLOWED_DIGITS = "1234567890";
+  static final String ALLOWED_NAME_CHARS =
+      ALLOWED_CHARS + ALLOWED_CHARS.toUpperCase() + ALLOWED_DIGITS;
+  static final String A_TEST_PROJECT_NAME = "A_TEST_PROJECT_NAME";
+  static final ObjectId AN_OBJECT_ID_1 = new ObjectId(1, 2, 3, 4, 5);
+  static final ObjectId AN_OBJECT_ID_2 = new ObjectId(1, 2, 3, 4, 6);
+  static final ObjectId AN_OBJECT_ID_3 = new ObjectId(1, 2, 3, 4, 7);
+
+  default ZkRefInfo aZkRefInfo(ObjectId objectId) {
+    return new ZkRefInfo(A_TEST_PROJECT_NAME, aBranchRef(), objectId);
+  }
+
+  default String aBranchRef() {
+    return RefNames.REFS_HEADS + testBranch();
+  }
+
+  String testBranch();
+}

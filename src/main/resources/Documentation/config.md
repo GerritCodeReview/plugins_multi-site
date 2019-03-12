@@ -42,6 +42,16 @@ File '@PLUGIN@.config'
   cacheEventEnabled = true
   projectListEventEnabled = true
   streamEventEnabled = true
+
+[split-brain]
+  enabled = true
+  
+[split-brain "zookeeper"]
+  connectionString = "localhost:2181"
+  sessionTimeoutMs = 1000
+  connectionTimeoutMs = 1000
+  root_node = "/gerrit/multi-site"  
+
 ```
 
 ## Configuration parameters
