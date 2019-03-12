@@ -16,13 +16,14 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
 import java.io.IOException;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
 
 public class NoOpDfsRefDatabase implements SharedRefDatabase {
 
   @Override
   public Ref newRef(String refName, ObjectId objectId) {
-    return null;
+    return new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, refName, objectId);
   }
 
   @Override
