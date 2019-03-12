@@ -93,6 +93,30 @@
       "revId": "bcdeebb4e8d1c823e3182aec487551d36d088a57",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b160d98_82b509bb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-12T07:40:00Z",
+      "side": 1,
+      "message": "With the change in the parent change, that isn\u0027t needed anymore.",
+      "parentUuid": "a574963c_d5f9adff",
+      "range": {
+        "startLine": 18,
+        "startChar": 16,
+        "endLine": 18,
+        "endChar": 51
+      },
+      "revId": "bcdeebb4e8d1c823e3182aec487551d36d088a57",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
