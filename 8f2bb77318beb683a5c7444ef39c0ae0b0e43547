@@ -22,6 +22,30 @@
       "revId": "8f2bb77318beb683a5c7444ef39c0ae0b0e43547",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "801fbd4b_cabe1681",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-12T11:53:51Z",
+      "side": 1,
+      "message": "Found the culprit and also why you are setting @Sandboxed.\nIt looks like (need to double-check) that when the Gerrit server instance is shared across tests, it is always set to ReviewDb, regardless of the env or system property.",
+      "parentUuid": "03c72654_d4498367",
+      "range": {
+        "startLine": 135,
+        "startChar": 44,
+        "endLine": 135,
+        "endChar": 45
+      },
+      "revId": "8f2bb77318beb683a5c7444ef39c0ae0b0e43547",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
