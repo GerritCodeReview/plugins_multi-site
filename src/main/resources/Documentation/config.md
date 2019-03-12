@@ -42,6 +42,19 @@ File '@PLUGIN@.config'
   cacheEventEnabled = true
   projectListEventEnabled = true
   streamEventEnabled = true
+
+[split-brain]
+  enabled = true
+  
+[split-brain "zookeeper"]
+  connectString = "localhost:2181"
+  rootNode = "/gerrit/multi-site"  
+  sessionTimeoutMs = 1000
+  connectionTimeoutMs = 1000
+  retryPolicyBaseSleepTimeMs = 1000
+  retryPolicyMaxSleepTimeMs = 3000
+  retryPolicyMaxRetries = 3
+  lockTimeoutMs = 10000
 ```
 
 ## Configuration parameters
@@ -150,6 +163,41 @@ File '@PLUGIN@.config'
 ```kafka.subscriber.pollingIntervalMs```
 :   Polling interval for checking incoming events
     Defaults: 1000
+
+```split-brain.zookeeper.connectString```
+:   Connection string to  zookeeper
+
+```split-brain.zookeeper.rootNode```
+:   Root node to use under Zookeeper to store/retrieve information
+    Defaults: "/gerrit/multi-site"
+
+
+```split-brain.zookeeper.sessionTimeoutMs```
+:   Root node to use under Zookeeper to store/retrieve information
+    Defaults: 1000
+
+```split-brain.zookeeper.connectionTimeoutMs```
+:   Root node to use under Zookeeper to store/retrieve information
+    Defaults: 1000
+
+```split-brain.zookeeper.retryPolicyBaseSleepTimeMs```
+:   Configuration for the base sleep timeout (iun ms) to use to create the BoundedExponentialBackoffRetry policy
+used for the Zookeeper connection
+    Defaults: 1000
+
+```split-brain.zookeeper.retryPolicyMaxSleepTimeMs```
+:   Configuration for the max sleep timeout (iun ms) to use to create the BoundedExponentialBackoffRetry policy
+used for the Zookeeper connection
+    Defaults: 3000
+
+```split-brain.zookeeper.retryPolicyMaxRetries```
+:   Configuration for the max number of retries to use to create the BoundedExponentialBackoffRetry policy
+used for the Zookeeper connection
+    Defaults: 3
+
+```split-brain.zookeeper.lockTimeoutMs```
+:   Configuration for InterProcessMutex lock timeout
+    Defaults: 10000
 
 #### Custom kafka properties:
 

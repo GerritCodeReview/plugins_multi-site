@@ -84,6 +84,12 @@ following basic settings:
 
 [kafka "subscriber"]
   enabled = true
+
+[split-brain]
+  enabled = true
+
+[split-brain "zookeeper"]
+  connectString = "localhost:2181"
 ```
 
 For more details on the configuration settings, please refer to the

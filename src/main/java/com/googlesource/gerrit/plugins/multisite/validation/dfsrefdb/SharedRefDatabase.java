@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
 import java.io.IOException;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
 
 public interface SharedRefDatabase {
@@ -69,7 +70,9 @@ public interface SharedRefDatabase {
    * @param refName ref name
    * @param objectId object id
    */
-  Ref newRef(String refName, ObjectId objectId);
+  default Ref newRef(String refName, ObjectId objectId) {
+    return new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, refName, objectId);
+  }
 
   /**
    * Utility method for new refs.
