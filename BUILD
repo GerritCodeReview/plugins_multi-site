@@ -19,6 +19,10 @@ gerrit_plugin(
     deps = [
         "@commons-lang3//jar",
         "@kafka_client//jar",
+        "@curator-framework//jar",
+        "@curator-recipes//jar",
+        "@curator-client//jar",
+        "@zookeeper//jar",
     ],
 )
 
@@ -46,5 +50,9 @@ java_library(
         "@kafka_client//jar",
         "@testcontainers-kafka//jar",
         "//lib/testcontainers",
+        "@curator-framework//jar",
+        "@curator-recipes//jar",
+        "@curator-test//jar",
+        "@zookeeper//jar",
     ],
 )
