@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
@@ -23,6 +25,7 @@ import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,6 +33,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
+import org.apache.commons.lang.StringUtils;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.BoundedExponentialBackoffRetry;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.jgit.lib.Config;
 import org.slf4j.Logger;
@@ -62,6 +69,7 @@ public class Configuration {
   private final Index index;
   private final KafkaSubscriber subscriber;
   private final Kafka kafka;
+  private final SplitBrain splitBrain;
 
   @Inject
   Configuration(PluginConfigFactory pluginConfigFactory, @PluginName String pluginName) {
@@ -76,6 +84,11 @@ public class Configuration {
     cache = new Cache(cfg);
     event = new Event(cfg);
     index = new Index(cfg);
+    splitBrain = new SplitBrain(cfg);
+  }
+
+  public SplitBrain getSplitBrain() {
+    return splitBrain;
   }
 
   public Kafka getKafka() {
@@ -102,9 +115,21 @@ public class Configuration {
     return subscriber;
   }
 
-  private static int getInt(Config cfg, String section, String name, int defaultValue) {
+  private static boolean getBoolean(
+      Config cfg, String section, String subsection, String name, boolean defaultValue) {
     try {
-      return cfg.getInt(section, name, defaultValue);
+      return cfg.getBoolean(section, subsection, name, defaultValue);
+    } catch (IllegalArgumentException e) {
+      log.error("invalid value for {}; using default value {}", name, defaultValue);
+      log.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
+      return defaultValue;
+    }
+  }
+
+  private static int getInt(
+      Config cfg, String section, String subSection, String name, int defaultValue) {
+    try {
+      return cfg.getInt(section, subSection, name, defaultValue);
     } catch (IllegalArgumentException e) {
       log.error("invalid value for {}; using default value {}", name, defaultValue);
       log.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
@@ -330,7 +355,8 @@ public class Configuration {
 
     private Cache(Config cfg) {
       super(cfg, CACHE_SECTION);
-      threadPoolSize = getInt(cfg, CACHE_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
+      threadPoolSize =
+          getInt(cfg, CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
       patterns = Arrays.asList(cfg.getStringList(CACHE_SECTION, null, PATTERN_KEY));
     }
 
@@ -364,10 +390,13 @@ public class Configuration {
 
     private Index(Config cfg) {
       super(cfg, INDEX_SECTION);
-      threadPoolSize = getInt(cfg, INDEX_SECTION, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
-      retryInterval = getInt(cfg, INDEX_SECTION, RETRY_INTERVAL_KEY, DEFAULT_INDEX_RETRY_INTERVAL);
-      maxTries = getInt(cfg, INDEX_SECTION, MAX_TRIES_KEY, DEFAULT_INDEX_MAX_TRIES);
-      numStripedLocks = getInt(cfg, INDEX_SECTION, NUM_STRIPED_LOCKS, DEFAULT_NUM_STRIPED_LOCKS);
+      threadPoolSize =
+          getInt(cfg, INDEX_SECTION, null, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
+      retryInterval =
+          getInt(cfg, INDEX_SECTION, null, RETRY_INTERVAL_KEY, DEFAULT_INDEX_RETRY_INTERVAL);
+      maxTries = getInt(cfg, INDEX_SECTION, null, MAX_TRIES_KEY, DEFAULT_INDEX_MAX_TRIES);
+      numStripedLocks =
+          getInt(cfg, INDEX_SECTION, null, NUM_STRIPED_LOCKS, DEFAULT_NUM_STRIPED_LOCKS);
     }
 
     public int threadPoolSize() {
@@ -384,6 +413,134 @@ public class Configuration {
 
     public int numStripedLocks() {
       return numStripedLocks;
+    }
+  }
+
+  public static class Zookeeper {
+    public static final int defaultSessionTimeoutMs;
+    public static final int defaultConnectionTimeoutMs;
+    private final int DEFAULT_LOCK_TIMEOUT_MS = 10000;
+    private final int DEFAULT_RETRY_POLICY_BASE_SLEEP_TIME_MS = 1000;
+    private final int DEFAULT_RETRY_POLICY_MAX_SLEEP_TIME_MS = 1000;
+    private final int DEFAULT_RETRY_POLICY_MAX_RETRIES = 1;
+
+    static {
+      CuratorFrameworkFactory.Builder b = CuratorFrameworkFactory.builder();
+      defaultSessionTimeoutMs = b.getSessionTimeoutMs();
+      defaultConnectionTimeoutMs = b.getConnectionTimeoutMs();
+    }
+
+    private final String SUBSECTION = "zookeeper";
+
+    private final String KEY_CONNECT_STRING = "connectString";
+    private final String KEY_SESSION_TIMEOUT_MS = "sessionTimeoutMs";
+    private final String KEY_CONNECTION_TIMEOUT_MS = "connectionTimeoutMs";
+    private final String KEY_RETRY_POLICY_BASE_SLEEP_TIME_MS = "retryPolicyBaseSleepTimeMs";
+    private final String KEY_RETRY_POLICY_MAX_SLEEP_TIME_MS = "retryPolicyMaxSleepTimeMs";
+    private final String KEY_RETRY_POLICY_MAX_RETRIES = "retryPolicyMaxRetries";
+    private final String KEY_LOCK_TIMEOUT_MS = "lockTimeoutMs";
+    private final String KEY_ROOT_NODE = "rootNode";
+
+    private final String connectionString;
+    private final String root;
+    private final int sessionTimeoutMs;
+    private final int connectionTimeoutMs;
+    private final int baseSleepTimeMs;
+    private final int maxSleepTimeMs;
+    private final int maxRetries;
+    private CuratorFramework build;
+
+    public Duration getLockTimeout() {
+      return lockTimeout;
+    }
+
+    private final Duration lockTimeout;
+
+    private Zookeeper(Config cfg) {
+      connectionString = getString(cfg, SplitBrain.SECTION, SUBSECTION, KEY_CONNECT_STRING, null);
+      root = getString(cfg, SplitBrain.SECTION, SUBSECTION, KEY_ROOT_NODE, "gerrit/multi-site");
+      sessionTimeoutMs =
+          getInt(
+              cfg, SplitBrain.SECTION, SUBSECTION, KEY_SESSION_TIMEOUT_MS, defaultSessionTimeoutMs);
+      connectionTimeoutMs =
+          getInt(
+              cfg,
+              SplitBrain.SECTION,
+              SUBSECTION,
+              KEY_CONNECTION_TIMEOUT_MS,
+              defaultConnectionTimeoutMs);
+
+      baseSleepTimeMs =
+          getInt(
+              cfg,
+              SplitBrain.SECTION,
+              SUBSECTION,
+              KEY_RETRY_POLICY_BASE_SLEEP_TIME_MS,
+              DEFAULT_RETRY_POLICY_BASE_SLEEP_TIME_MS);
+
+      maxSleepTimeMs =
+          getInt(
+              cfg,
+              SplitBrain.SECTION,
+              SUBSECTION,
+              KEY_RETRY_POLICY_MAX_SLEEP_TIME_MS,
+              DEFAULT_RETRY_POLICY_MAX_SLEEP_TIME_MS);
+
+      maxRetries =
+          getInt(
+              cfg,
+              SplitBrain.SECTION,
+              SUBSECTION,
+              KEY_RETRY_POLICY_MAX_RETRIES,
+              DEFAULT_RETRY_POLICY_MAX_RETRIES);
+
+      lockTimeout =
+          Duration.ofMillis(
+              getInt(
+                  cfg,
+                  SplitBrain.SECTION,
+                  SUBSECTION,
+                  KEY_LOCK_TIMEOUT_MS,
+                  DEFAULT_LOCK_TIMEOUT_MS));
+
+      checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
+    }
+
+    public CuratorFramework buildCurator() {
+      if (build == null) {
+        this.build =
+            CuratorFrameworkFactory.builder()
+                .connectString(connectionString)
+                .sessionTimeoutMs(sessionTimeoutMs)
+                .connectionTimeoutMs(connectionTimeoutMs)
+                .retryPolicy(
+                    new BoundedExponentialBackoffRetry(baseSleepTimeMs, maxSleepTimeMs, maxRetries))
+                .namespace(root)
+                .build();
+        this.build.start();
+      }
+
+      return this.build;
+    }
+  }
+
+  public static class SplitBrain {
+    private final boolean enabled;
+
+    private final Zookeeper zookeeper;
+    static final String SECTION = "split-brain";
+
+    private SplitBrain(Config cfg) {
+      this.enabled = getBoolean(cfg, SECTION, null, "enabled", false);
+      zookeeper = enabled ? new Zookeeper(cfg) : null;
+    }
+
+    public boolean enabled() {
+      return enabled;
+    }
+
+    public Zookeeper getZookeeper() {
+      return zookeeper;
     }
   }
 }
