@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f6136b40_18b51f8b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-12T13:02:21Z",
+      "side": 1,
+      "message": "This isn\u0027t actually enough, because it would still have ReviewDb enabled.\nSet to \"ON\" to have a fully working NoteDb without ReviewDb.",
+      "range": {
+        "startLine": 53,
+        "startChar": 41,
+        "endLine": 53,
+        "endChar": 52
+      },
+      "revId": "0a06dde5a988bf02410f8e0a09e1b3ba687f39c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
