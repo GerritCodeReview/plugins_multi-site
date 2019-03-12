@@ -104,6 +104,7 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
       config.setString("kafka", null, "bootstrapServers", kafka.getBootstrapServers());
       config.setBoolean("kafka", "publisher", "enabled", true);
       config.setBoolean("kafka", "subscriber", "enabled", true);
+      config.setBoolean("split-brain", null, "enabled", false);
       Configuration multiSiteConfig = new Configuration(config);
       bind(Configuration.class).toInstance(multiSiteConfig);
       install(new Module(multiSiteConfig, noteDb));
