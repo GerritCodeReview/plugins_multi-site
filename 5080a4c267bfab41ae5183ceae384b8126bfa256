@@ -25,6 +25,52 @@
     },
     {
       "key": {
+        "uuid": "56da21ea_1f4dd32d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/GerritNoteDbStatus.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-03-12T05:29:33Z",
+      "side": 1,
+      "message": "Why this indirection is needed? Why not just inject the NotesMigration itself and call notesMigration.commitChangeWrites()?",
+      "range": {
+        "startLine": 20,
+        "startChar": 13,
+        "endLine": 20,
+        "endChar": 31
+      },
+      "revId": "5080a4c267bfab41ae5183ceae384b8126bfa256",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f8fa03d0_8839b8ad",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-03-12T05:29:33Z",
+      "side": 1,
+      "message": "The usual way to interfere the Guice loading mechanism is to throw com.google.inject.ProvisionException exception.",
+      "range": {
+        "startLine": 58,
+        "startChar": 6,
+        "endLine": 58,
+        "endChar": 12
+      },
+      "revId": "5080a4c267bfab41ae5183ceae384b8126bfa256",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "de534aa4_1d909680",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/NoteDbStatus.java",
         "patchSetId": 3
@@ -41,6 +87,52 @@
         "startChar": 17,
         "endLine": 1,
         "endChar": 21
+      },
+      "revId": "5080a4c267bfab41ae5183ceae384b8126bfa256",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb781667_dbf9c4b3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-03-12T05:29:33Z",
+      "side": 1,
+      "message": "This is a workaround to not pass this property from the CI side? Why the check, if it never can be false?",
+      "range": {
+        "startLine": 52,
+        "startChar": 2,
+        "endLine": 54,
+        "endChar": 3
+      },
+      "revId": "5080a4c267bfab41ae5183ceae384b8126bfa256",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6f2e238_7dd38e5a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-03-12T05:29:33Z",
+      "side": 1,
+      "message": "The plugin wouldn\u0027t load if the site wasn\u0027t migrated why this additional check is needed?",
+      "range": {
+        "startLine": 106,
+        "startChar": 16,
+        "endLine": 106,
+        "endChar": 37
       },
       "revId": "5080a4c267bfab41ae5183ceae384b8126bfa256",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
