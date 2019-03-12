@@ -15,3 +15,10 @@ docker-compose logs -f
 ```
 
 *NOTE:* If you want to run any ssh command as admin you can use the ssh keys into the *gerrit-{1,2}/ssh* directory.
+
+If you need to restart one of the Gerrit instances to simulate, for example,
+an upgrade, you can do it this way:
+
+```bash
+make restart_gerrit_1 # (or make restart_gerrit_2)
+```
