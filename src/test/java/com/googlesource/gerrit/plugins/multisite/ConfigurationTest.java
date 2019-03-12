@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite;
 import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Cache.CACHE_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Cache.PATTERN_KEY;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.DEFAULT_SPLIT_BRAIN;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.DEFAULT_THREAD_POOL_SIZE;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.ENABLE_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Event.EVENT_SECTION;
@@ -32,6 +33,8 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.server.config.PluginConfigFactory;
+import com.googlesource.gerrit.plugins.multisite.Configuration.SplitBrain;
+import com.googlesource.gerrit.plugins.multisite.Configuration.Zookeeper;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,6 +48,7 @@ public class ConfigurationTest {
   private static final String INVALID_INT = "invalidInt";
   private static final String PLUGIN_NAME = "multi-site";
   private static final int THREAD_POOL_SIZE = 1;
+  private static final boolean SPLIT_BRAIN_ENABLED = true;
 
   @Mock private PluginConfigFactory pluginConfigFactoryMock;
   private Config globalPluginConfig;
@@ -93,6 +97,22 @@ public class ConfigurationTest {
 
     globalPluginConfig.setString(CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, INVALID_INT);
     assertThat(getConfiguration().cache().threadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
+  }
+
+  @Test
+  public void testGetEnabledSplitBrain() throws Exception {
+    assertThat(getConfiguration().getSplitBrain().enabled()).isEqualTo(DEFAULT_SPLIT_BRAIN);
+
+    globalPluginConfig.setBoolean(
+        SplitBrain.SECTION, null, SplitBrain.ENABLED_KEY, SPLIT_BRAIN_ENABLED);
+    // If split-brain enabled, zookeeper 'connect' is required
+    globalPluginConfig.setString(
+        SplitBrain.SECTION,
+        Zookeeper.SUBSECTION,
+        Zookeeper.KEY_CONNECT_STRING,
+        Zookeeper.DEFAULT_ZK_CONNECT);
+
+    assertThat(getConfiguration().getSplitBrain().enabled()).isEqualTo(SPLIT_BRAIN_ENABLED);
   }
 
   @Test
