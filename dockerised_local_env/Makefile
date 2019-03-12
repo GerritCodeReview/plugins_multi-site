@@ -42,11 +42,10 @@ build:
 	docker build -t $(MYDIR) ./gerrit-1
 	docker build -t $(MYDIR) ./gerrit-2
 clean_gerrit:
-	rm -fr gerrit-1/db/ gerrit-1/data/ gerrit-1/cache/ gerrit-1/db/ gerrit-1/git/ gerrit-1/indexes/ gerrit-1/etc/
-	rm -fr gerrit-2/db/ gerrit-2/data/ gerrit-2/cache/ gerrit-2/db/ gerrit-2/git/ gerrit-2/indexes/ gerrit-1/etc/
-	-mkdir -p gerrit-{1,2}/etc/
-	export GERRIT_REPLICATION_INSTANCE=gerrit-2; cat ./gerrit-common/replication.config.template | envsubst '$${GERRIT_REPLICATION_INSTANCE}'  > ./gerrit-1/etc/replication.config
-	export GERRIT_REPLICATION_INSTANCE=gerrit-1; cat ./gerrit-common/replication.config.template | envsubst '$${GERRIT_REPLICATION_INSTANCE}'  > ./gerrit-2/etc/replication.config
+	-rm -fr gerrit-{1,2}/{db,data,cache,db,git,index,etc,bin,tmp}
+	-mkdir -p gerrit-{1,2}/{etc,bin,db}/
+	export GERRIT_REPLICATION_INSTANCE=gerrit-2 REPLICATE_ON_STARTUP=true; cat ./gerrit-common/replication.config.template | envsubst '$${GERRIT_REPLICATION_INSTANCE} $${REPLICATE_ON_STARTUP}'  > ./gerrit-1/etc/replication.config
+	export GERRIT_REPLICATION_INSTANCE=gerrit-1 REPLICATE_ON_STARTUP=false; cat ./gerrit-common/replication.config.template | envsubst '$${GERRIT_REPLICATION_INSTANCE} $${REPLICATE_ON_STARTUP}'  > ./gerrit-2/etc/replication.config
 	cp ./gerrit-common/gerrit.config ./gerrit-1/etc
 	cp ./gerrit-common/gerrit.config ./gerrit-2/etc
 	cp ./gerrit-common/git-daemon.sh ./gerrit-1/bin
@@ -56,4 +55,12 @@ init_gerrit:
 	docker-compose down && docker-compose build gerrit-1 && docker-compose build gerrit-2 && docker-compose up -d gerrit-1 && docker-compose up -d gerrit-2
 
 init_all: clean_gerrit download
-		docker-compose down && docker-compose build && docker-compose up -d
+		docker-compose down && docker-compose build && INIT=1 docker-compose up -d
+restart_gerrit_1:
+		cp ./gerrit-common/*.db ./gerrit-1/db
+		-docker-compose kill gerrit-1
+		sleep 3; INIT=0 docker-compose up -d gerrit-1
+restart_gerrit_2:
+		cp ./gerrit-common/*.db ./gerrit-2/db
+		-docker-compose kill gerrit-1
+		sleep 3; INIT=0 docker-compose up -d gerrit-1

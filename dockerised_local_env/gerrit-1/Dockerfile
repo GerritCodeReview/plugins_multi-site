@@ -6,7 +6,7 @@ RUN adduser -D -h /var/gerrit gerrit && \
     apk add --no-cache git-daemon
 
 COPY --chown=gerrit:gerrit bin/release.war /var/gerrit/bin/gerrit.war
-COPY --chown=gerrit:gerrit plugins/* /var/gerrit/plugins/
+COPY --chown=gerrit:gerrit plugins /var/gerrit/plugins
 COPY --chown=gerrit:gerrit etc /var/gerrit/etc
 
 ADD bin/git-daemon.sh /usr/local/bin/git-daemon.sh
