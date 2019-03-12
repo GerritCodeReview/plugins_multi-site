@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf7a2f1c_50b4b597",
+        "filename": "README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-03-12T08:20:42Z",
+      "side": 1,
+      "message": "will",
+      "range": {
+        "startLine": 14,
+        "startChar": 32,
+        "endLine": 14,
+        "endChar": 37
+      },
+      "revId": "ff16437280be7aa65acc5aa3a1978cd90376a6a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "caf778d3_404375e3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/GerritNoteDbStatus.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-03-12T08:20:42Z",
+      "side": 1,
+      "message": "@Singleton?",
+      "revId": "ff16437280be7aa65acc5aa3a1978cd90376a6a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
