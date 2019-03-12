@@ -20,7 +20,11 @@ import com.google.gerrit.acceptance.LogThreshold;
 import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
-import com.google.inject.AbstractModule;
+import com.google.gerrit.extensions.events.LifecycleListener;
+import com.google.gerrit.lifecycle.LifecycleModule;
+import java.io.IOException;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.test.TestingServer;
 import org.junit.Test;
 
 @NoHttpd
@@ -31,10 +35,48 @@ import org.junit.Test;
 public class ValidationIT extends LightweightPluginDaemonTest {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  public static class Module extends AbstractModule {
+  CuratorFramework framework;
+
+  public static class Module extends LifecycleModule {
+    public class ZookeeperStopAtShutdown implements LifecycleListener {
+      private final TestingServer zookeeper;
+
+      public ZookeeperStopAtShutdown(TestingServer zookeeper) {
+        this.zookeeper = zookeeper;
+      }
+
+      @Override
+      public void stop() {
+        try {
+          zookeeper.stop();
+        } catch (IOException e) {
+          logger.atWarning().withCause(e).log("Cannot start zookeeper");
+          throw new RuntimeException("Cannot start zookeeper", e);
+        }
+      }
+
+      @Override
+      public void start() {
+        try {
+          zookeeper.start();
+        } catch (Exception e) {
+          logger.atWarning().withCause(e).log("Cannot stop zookeeper");
+        }
+      }
+    }
+
     @Override
     protected void configure() {
+      TestingServer zookeeper = null;
+      try {
+        zookeeper = new TestingServer();
+      } catch (Exception e) {
+        throw new RuntimeException("Cannot init zookeeper", e);
+      }
       install(new ValidationModule());
+
+      super.configure();
+      listener().toInstance(new ZookeeperStopAtShutdown(zookeeper));
     }
   }
 
