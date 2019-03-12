@@ -82,7 +82,9 @@ public class Module extends LifecycleModule {
       install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
 
-    install(new ValidationModule());
+    if (config.getSplitBrain().enabled()) {
+      install(new ValidationModule(config));
+    }
 
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
   }
