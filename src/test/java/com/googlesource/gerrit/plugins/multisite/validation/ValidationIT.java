@@ -20,21 +20,49 @@ import com.google.gerrit.acceptance.LogThreshold;
 import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
-import com.google.inject.AbstractModule;
+import com.google.gerrit.extensions.events.LifecycleListener;
+import com.google.gerrit.lifecycle.LifecycleModule;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZookeeperTestContainerSupport;
 import org.junit.Test;
 
 @NoHttpd
 @LogThreshold(level = "INFO")
 @TestPlugin(
     name = "multi-site",
-    sysModule = "com.googlesource.gerrit.plugins.multisite.validation.ValidationIT$Module")
+    sysModule =
+        "com.googlesource.gerrit.plugins.multisite.validation.ValidationIT$ZookeeperTestModule")
 public class ValidationIT extends LightweightPluginDaemonTest {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  public static class Module extends AbstractModule {
+  public static class ZookeeperTestModule extends LifecycleModule {
+    public class ZookeeperStopAtShutdown implements LifecycleListener {
+      private final ZookeeperTestContainerSupport zookeeperContainer;
+
+      public ZookeeperStopAtShutdown(ZookeeperTestContainerSupport zk) {
+        this.zookeeperContainer = zk;
+      }
+
+      @Override
+      public void stop() {
+        zookeeperContainer.cleanup();
+      }
+
+      @Override
+      public void start() {
+        // Do nothing
+      }
+    }
+
     @Override
     protected void configure() {
-      install(new ValidationModule());
+      ZookeeperTestContainerSupport zookeeperContainer = new ZookeeperTestContainerSupport();
+      Configuration multiSiteConfig = new Configuration(zookeeperContainer.getSplitBrainconfig());
+      bind(Configuration.class).toInstance(multiSiteConfig);
+
+      install(new ValidationModule(multiSiteConfig));
+
+      listener().toInstance(new ZookeeperStopAtShutdown(zookeeperContainer));
     }
   }
 
