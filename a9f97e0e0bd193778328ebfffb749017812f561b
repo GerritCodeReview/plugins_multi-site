@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d3f49716_ad88348b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/NoteDbStatus.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-13T09:35:55Z",
+      "side": 1,
+      "message": "Why @ImplemetedBy and not a bind statement in a guice module?\nI think we prefer bind statements over the @ImplementedBy annotations\nin Gerrit. Performing a grep over Gerrit + core plugins there are only a few\nplaces where ImplementedBy is used. By keeping all the bindings in modules, I believe\nwe have a better overview.\n\nAnother downside of using the @ImplementedBy is that it adds a compile-time dependency\nfrom the interface to its implementation!",
+      "revId": "a9f97e0e0bd193778328ebfffb749017812f561b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
