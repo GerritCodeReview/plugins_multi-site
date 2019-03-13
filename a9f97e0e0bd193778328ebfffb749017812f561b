@@ -16,6 +16,24 @@
       "revId": "a9f97e0e0bd193778328ebfffb749017812f561b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a62b61da_b8d335cb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/NoteDbStatus.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-13T10:00:23Z",
+      "side": 1,
+      "message": "\u003e Why @ImplemetedBy and not a bind statement in a guice module?\n\u003e I think we prefer bind statements over the @ImplementedBy annotations\n\u003e in Gerrit. Performing a grep over Gerrit + core plugins there are only a few\n\u003e places where ImplementedBy is used. By keeping all the bindings in modules, I believe\n\u003e we have a better overview.\n\u003e \n\u003e Another downside of using the @ImplementedBy is that it adds a compile-time dependency\n\u003e from the interface to its implementation!\n\nThe problem with the binding is that can\u0027t be replaced, unless you use a dynamic item.\nThe reason for having a NoteDbStatus interface is because we don\u0027t want necessarily always the real implementation in tests. Otherwise, I\u0027m with you, I prefer the explicit binding in the module.",
+      "parentUuid": "d3f49716_ad88348b",
+      "revId": "a9f97e0e0bd193778328ebfffb749017812f561b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
