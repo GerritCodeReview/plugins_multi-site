@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d98d148d_88d89d1a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-13T07:43:24Z",
+      "side": 1,
+      "message": "True, let me add this.",
+      "parentUuid": "2cd9b016_4811a5d1",
+      "range": {
+        "startLine": 148,
+        "startChar": 9,
+        "endLine": 148,
+        "endChar": 22
+      },
+      "revId": "c1a4c10d969542e08af68fcbabc5f128168d7d0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a55eadd6_3d428266",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
         "patchSetId": 9
@@ -45,6 +69,30 @@
       "revId": "c1a4c10d969542e08af68fcbabc5f128168d7d0c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33c5f81b_91be74f2",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-13T07:43:24Z",
+      "side": 1,
+      "message": "\u003e Left over diagnostic statement.\n\nThanks, will remove it.",
+      "parentUuid": "a55eadd6_3d428266",
+      "range": {
+        "startLine": 244,
+        "startChar": 6,
+        "endLine": 244,
+        "endChar": 91
+      },
+      "revId": "c1a4c10d969542e08af68fcbabc5f128168d7d0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
