@@ -27,18 +27,20 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture.aRefObject;
-
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Optional;
 import java.util.UUID;
+import org.apache.curator.retry.RetryNTimes;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Ref.Storage;
 import org.junit.Before;
 import org.junit.Test;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture.aRefObject;
+import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase.pathFor;
+import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase.writeObjectId;
 
 public class ZKRefsSharedDatabaseTest extends ZookeeperTestContainerSupport {
 
@@ -49,7 +51,8 @@ public class ZKRefsSharedDatabaseTest extends ZookeeperTestContainerSupport {
   public void setUp() throws IOException {
     super.setUp();
     zkSharedRefDatabase =
-        new ZkSharedRefDatabase(curator, Duration.ofMinutes(10), UUID.randomUUID());
+        new ZkSharedRefDatabase(curator, Duration.ofMinutes(10), UUID.randomUUID(),
+                new RetryNTimes(5, 30));
   }
 
   @Test
@@ -65,11 +68,23 @@ public class ZKRefsSharedDatabaseTest extends ZookeeperTestContainerSupport {
   }
 
   @Test
+  public void shouldCompareAndCreateSuccessfully() throws Exception {
+    Ref ref = aRefObject();
+    String projectName = RefFixture.aProjectName();
+
+    createRefInZk(projectName, ref);
+
+    assertThat(zkSharedRefDatabase.compareAndCreate(projectName, ref)).isTrue();
+
+    assertThat(readRefValueFromZk(projectName, ref)).isEqualTo(ref.getObjectId());
+  }
+
+  @Test
   public void shouldCompareAndPutSuccessfully() throws Exception {
     Ref oldRef = aRefObject();
     String projectName = RefFixture.aProjectName();
 
-    marshaller.create(new ZkRefInfo(projectName, oldRef));
+    createRefInZk(projectName, oldRef);
 
     assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRef, aRefObject(oldRef.getName())))
         .isTrue();
@@ -82,7 +97,7 @@ public class ZKRefsSharedDatabaseTest extends ZookeeperTestContainerSupport {
     Ref oldRef = aRefObject();
     Ref expectedRef = aRefObject(oldRef.getName());
 
-    marshaller.create(new ZkRefInfo(projectName, oldRef));
+    createRefInZk(projectName, oldRef);
 
     assertThat(
             zkSharedRefDatabase.compareAndPut(
@@ -104,7 +119,7 @@ public class ZKRefsSharedDatabaseTest extends ZookeeperTestContainerSupport {
     Ref oldRef = aRefObject();
     String projectName = RefFixture.aProjectName();
 
-    marshaller.create(new ZkRefInfo(projectName, oldRef));
+    createRefInZk(projectName, oldRef);
 
     assertThat(zkSharedRefDatabase.compareAndRemove(projectName, oldRef)).isTrue();
   }
@@ -114,15 +129,11 @@ public class ZKRefsSharedDatabaseTest extends ZookeeperTestContainerSupport {
     Ref oldRef = aRefObject();
     String projectName = RefFixture.aProjectName();
 
-    marshaller.create(new ZkRefInfo(projectName, oldRef));
+    createRefInZk(projectName, oldRef);
 
     assertThat(zkSharedRefDatabase.compareAndRemove(projectName, oldRef)).isTrue();
 
-    Optional<ZkRefInfo> inZk = marshaller.read(projectName, oldRef.getName());
-    assertThat(inZk.isPresent()).isTrue();
-    assertThat(inZk.get().projectName()).isEqualTo(projectName);
-    assertThat(inZk.get().refName()).isEqualTo(oldRef.getName());
-    assertThat(inZk.get().objectId()).isEqualTo(ObjectId.zeroId());
+    assertThat(readRefValueFromZk(projectName, oldRef)).isEqualTo(ObjectId.zeroId());
   }
 
   @Test
@@ -130,10 +141,19 @@ public class ZKRefsSharedDatabaseTest extends ZookeeperTestContainerSupport {
     Ref oldRef = aRefObject();
     String projectName = RefFixture.aProjectName();
 
-    marshaller.create(new ZkRefInfo(projectName, oldRef));
+    createRefInZk(projectName, oldRef);
 
     zkSharedRefDatabase.compareAndRemove(projectName, oldRef);
     assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRef, aRefObject(oldRef.getName())))
         .isFalse();
+  }
+
+  private ObjectId readRefValueFromZk(String projectName, Ref ref) throws Exception {
+    final byte[] bytes = curator.getData().forPath(pathFor(projectName, ref));
+    return ZkSharedRefDatabase.readObjectId(bytes);
+  }
+
+  private void createRefInZk(String projectName, Ref ref) throws Exception {
+    curator.create().creatingParentContainersIfNeeded().forPath(pathFor(projectName, ref), writeObjectId(ref.getObjectId()));
   }
 }
