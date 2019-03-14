@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d1ec7a74_3154325a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoMarshaller.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-14T10:40:14Z",
+      "side": 1,
+      "message": "Very good question. Unfortunately, if you see the code of the create, the creation of the root path and of the subpath is done in different transactions since we couldn\u0027t find a way to make them in the same.",
+      "parentUuid": "a4d88b9b_0ee43aba",
+      "revId": "50d2c3ec9b972e1e563b9deef72f73917f084ee7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f76e012d_f1a81986",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2019-03-14T10:24:53Z",
       "side": 1,
       "message": "Should we log this case?",
+      "revId": "50d2c3ec9b972e1e563b9deef72f73917f084ee7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "086d5ba9_73bef7cf",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-14T10:40:14Z",
+      "side": 1,
+      "message": "maybe at `finer` since it is expected to be happening",
+      "parentUuid": "f76e012d_f1a81986",
       "revId": "50d2c3ec9b972e1e563b9deef72f73917f084ee7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "df8f701b_a03395ec",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-14T10:40:14Z",
+      "side": 1,
+      "message": "It is exactly that, I agree a comment would be heplful",
+      "parentUuid": "5c2c6925_b3df5180",
+      "revId": "50d2c3ec9b972e1e563b9deef72f73917f084ee7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "419b9c23_3bd69a39",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoMarshallerTest.java",
         "patchSetId": 1
@@ -64,6 +118,24 @@
       "writtenOn": "2019-03-14T10:24:53Z",
       "side": 1,
       "message": "What is the chance they are equals?\nEven if they were, this shouldn\u0027t fail the test imho, but a new zkref should perhaps be generated.\n\nwe could make sure that they are not the same by creating updateRefInfo based on some modified newRefInfo values.",
+      "revId": "50d2c3ec9b972e1e563b9deef72f73917f084ee7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "814ec26a_846134cd",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoMarshallerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-14T10:40:14Z",
+      "side": 1,
+      "message": "Yeah, I agree. Currently we are based on a random string generator but altering the ID might be more deterministic and remove this check that actually is more confusing that anything else... we could have been using a `require` (validation from apache lang) but I agree let\u0027s go with the manual alteration",
+      "parentUuid": "419b9c23_3bd69a39",
       "revId": "50d2c3ec9b972e1e563b9deef72f73917f084ee7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
