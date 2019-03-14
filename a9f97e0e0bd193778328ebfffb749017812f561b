@@ -52,6 +52,24 @@
       "revId": "a9f97e0e0bd193778328ebfffb749017812f561b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "069182de_94ec7390",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/NoteDbStatus.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T23:21:12Z",
+      "side": 1,
+      "message": "Nope, it is not possible because NoteDbStatus is injected into the main SysModule of the plugin and thus needs to be already bound when the model gets created.\n\nI need to keep thus the @ImplementedBy",
+      "parentUuid": "0ab59380_6be6b3e2",
+      "revId": "a9f97e0e0bd193778328ebfffb749017812f561b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
