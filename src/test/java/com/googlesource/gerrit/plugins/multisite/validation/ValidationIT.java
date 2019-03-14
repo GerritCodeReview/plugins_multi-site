@@ -68,8 +68,13 @@ public class ValidationIT extends LightweightPluginDaemonTest {
 
   @Test
   public void inSyncChangeValidatorShouldAcceptNewChange() throws Exception {
-    final PushOneCommit.Result change = createChange("refs/for/master");
+    final String ref = "refs/for/master";
+    final PushOneCommit.Result change = createChange(ref);
 
     change.assertOkStatus();
+
+    final PushOneCommit.Result amend = amendChange(change.getChangeId(), ref, admin, testRepo);
+
+    amend.assertOkStatus();
   }
 }

@@ -25,7 +25,6 @@ import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,6 +33,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
+import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.BoundedExponentialBackoffRetry;
@@ -419,10 +419,13 @@ public class Configuration {
   public static class Zookeeper {
     public static final int defaultSessionTimeoutMs;
     public static final int defaultConnectionTimeoutMs;
-    private final int DEFAULT_LOCK_TIMEOUT_MS = 10000;
     private final int DEFAULT_RETRY_POLICY_BASE_SLEEP_TIME_MS = 1000;
-    private final int DEFAULT_RETRY_POLICY_MAX_SLEEP_TIME_MS = 1000;
-    private final int DEFAULT_RETRY_POLICY_MAX_RETRIES = 1;
+    private final int DEFAULT_RETRY_POLICY_MAX_SLEEP_TIME_MS = 3000;
+    private final int DEFAULT_RETRY_POLICY_MAX_RETRIES = 3;
+
+    private final int DEFAULT_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS = 100;
+    private final int DEFAULT_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS = 300;
+    private final int DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES = 3;
 
     static {
       CuratorFrameworkFactory.Builder b = CuratorFrameworkFactory.builder();
@@ -438,7 +441,9 @@ public class Configuration {
     private final String KEY_RETRY_POLICY_BASE_SLEEP_TIME_MS = "retryPolicyBaseSleepTimeMs";
     private final String KEY_RETRY_POLICY_MAX_SLEEP_TIME_MS = "retryPolicyMaxSleepTimeMs";
     private final String KEY_RETRY_POLICY_MAX_RETRIES = "retryPolicyMaxRetries";
-    private final String KEY_LOCK_TIMEOUT_MS = "lockTimeoutMs";
+    private final String KEY_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS = "casRetryPolicyBaseSleepTimeMs";
+    private final String KEY_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS = "casRetryPolicyMaxSleepTimeMs";
+    private final String KEY_CAS_RETRY_POLICY_MAX_RETRIES = "casRetryPolicyMaxRetries";
     private final String KEY_ROOT_NODE = "rootNode";
 
     private final String connectionString;
@@ -448,12 +453,9 @@ public class Configuration {
     private final int baseSleepTimeMs;
     private final int maxSleepTimeMs;
     private final int maxRetries;
-
-    public Duration getLockTimeout() {
-      return lockTimeout;
-    }
-
-    private final Duration lockTimeout;
+    private final int casBaseSleepTimeMs;
+    private final int casMaxSleepTimeMs;
+    private final int casMaxRetries;
 
     private Zookeeper(Config cfg) {
       connectionString = getString(cfg, SplitBrain.SECTION, SUBSECTION, KEY_CONNECT_STRING, null);
@@ -493,14 +495,29 @@ public class Configuration {
               KEY_RETRY_POLICY_MAX_RETRIES,
               DEFAULT_RETRY_POLICY_MAX_RETRIES);
 
-      lockTimeout =
-          Duration.ofMillis(
-              getInt(
-                  cfg,
-                  SplitBrain.SECTION,
-                  SUBSECTION,
-                  KEY_LOCK_TIMEOUT_MS,
-                  DEFAULT_LOCK_TIMEOUT_MS));
+      casBaseSleepTimeMs =
+          getInt(
+              cfg,
+              SplitBrain.SECTION,
+              SUBSECTION,
+              KEY_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS,
+              DEFAULT_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS);
+
+      casMaxSleepTimeMs =
+          getInt(
+              cfg,
+              SplitBrain.SECTION,
+              SUBSECTION,
+              KEY_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS,
+              DEFAULT_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS);
+
+      casMaxRetries =
+          getInt(
+              cfg,
+              SplitBrain.SECTION,
+              SUBSECTION,
+              KEY_CAS_RETRY_POLICY_MAX_RETRIES,
+              DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES);
 
       checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
     }
@@ -514,6 +531,11 @@ public class Configuration {
               new BoundedExponentialBackoffRetry(baseSleepTimeMs, maxSleepTimeMs, maxRetries))
           .namespace(root)
           .build();
+    }
+
+    public RetryPolicy buildCasRetryPolicy() {
+      return new BoundedExponentialBackoffRetry(
+          casBaseSleepTimeMs, casMaxSleepTimeMs, casMaxRetries);
     }
   }
 
