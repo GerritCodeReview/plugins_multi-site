@@ -1,0 +1,498 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e58e67e7_35e72871",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "This can thus be renamed as defaultSessionTimeoutMs",
+      "range": {
+        "startLine": 28,
+        "startChar": 19,
+        "endLine": 28,
+        "endChar": 45
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a05f9627_3e1fd29c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "Same as above",
+      "range": {
+        "startLine": 30,
+        "startChar": 19,
+        "endLine": 30,
+        "endChar": 48
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c96fab9_22699f5a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfo.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "Best to call it \u0027other\u0027",
+      "range": {
+        "startLine": 62,
+        "startChar": 31,
+        "endLine": 62,
+        "endChar": 32
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "623320ea_da161640",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoMarshaller.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "Remove the double \u0027ds\u0027 readUuidAt",
+      "range": {
+        "startLine": 161,
+        "startChar": 25,
+        "endLine": 161,
+        "endChar": 36
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6af58f5e_6fe3aeb0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoMarshaller.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "This can be inlined at L195",
+      "range": {
+        "startLine": 194,
+        "startChar": 30,
+        "endLine": 194,
+        "endChar": 60
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d3b4b8c0_5cde6371",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "Is this really needed? We throw the exception anyway that would record this point in its stacktrace.\nThe exception will be eventually traced with the error message and the stack point.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 60
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce6ea1dc_61d117cc",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "We do not really want an optional here, isn\u0027t it?\nIf we pass an Optional.empty() then we return a runtime error.",
+      "range": {
+        "startLine": 91,
+        "startChar": 6,
+        "endLine": 91,
+        "endChar": 48
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d0afdfa_0a5c6a7e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "Just don\u0027t pass an Optional and have the compiler complain for you :-)",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 5
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "94af5328_2b9463c9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "How can we make sure that the two operations are done atomically?",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 33
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a344e333_c1ecefbb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "Why are we sending an Optional\u003c\u003e if we do not expect to be present?",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 5
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "657a8a23_2e7e4873",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "StartStop?\n(it looks like it is starting zookeeper also)",
+      "range": {
+        "startLine": 41,
+        "startChar": 17,
+        "endLine": 41,
+        "endChar": 40
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cefafb6e_01cd888c",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "Throw a Guice Binding failure exception",
+      "range": {
+        "startLine": 74,
+        "startChar": 18,
+        "endLine": 74,
+        "endChar": 34
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "36e3e027_49e5e37e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "Not needed",
+      "range": {
+        "startLine": 78,
+        "startChar": 6,
+        "endLine": 78,
+        "endChar": 24
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84e03015_15db4b1e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/RefFixture.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "No random please.",
+      "range": {
+        "startLine": 50,
+        "startChar": 11,
+        "endLine": 50,
+        "endChar": 59
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "759431d3_a23bff52",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/RefFixture.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "This is a test anti-pattern: never rely on random values, because they would be subject to flakyiness.\nWhy do we want random values here?",
+      "range": {
+        "startLine": 54,
+        "startChar": 31,
+        "endLine": 54,
+        "endChar": 66
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c4a7ff10_4c9e6f55",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/RefFixture.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "No random please.",
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57122e27_1354b156",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZKRefsSharedDatabaseTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "Is there any value of using random UUIDs?",
+      "range": {
+        "startLine": 52,
+        "startChar": 65,
+        "endLine": 52,
+        "endChar": 82
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c564d83c_392f6a2e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZKRefsSharedDatabaseTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "Import static RefFixture.\u003cmethods you need\u003e",
+      "range": {
+        "startLine": 57,
+        "startChar": 24,
+        "endLine": 57,
+        "endChar": 35
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d334da1a_171ecffb",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZKRefsSharedDatabaseTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "This test is not part of the Zookeeper testing, because it is a default method.",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 64
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "41190a03_fcb61e67",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZKRefsSharedDatabaseTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "Why random again?",
+      "range": {
+        "startLine": 72,
+        "startChar": 57,
+        "endLine": 72,
+        "endChar": 74
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad347f59_d7958868",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZKRefsSharedDatabaseTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "The Tombstone should be a singleton right? Can we just assert for equality?",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 67
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d48d77b4_d3e977b1",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoMarshallerTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T13:41:09Z",
+      "side": 1,
+      "message": "Why twice?",
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
