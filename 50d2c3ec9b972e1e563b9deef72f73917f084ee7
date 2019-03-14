@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a4d88b9b_0ee43aba",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoMarshaller.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-14T10:24:53Z",
+      "side": 1,
+      "message": "In what scenarios could an object in zookeper be corrupted? Can the object have been \"partially\" written? Doesn\u0027t zookeeper guarantee atomic success OR fail?",
+      "revId": "50d2c3ec9b972e1e563b9deef72f73917f084ee7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f76e012d_f1a81986",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-14T10:24:53Z",
+      "side": 1,
+      "message": "Should we log this case?",
+      "revId": "50d2c3ec9b972e1e563b9deef72f73917f084ee7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c2c6925_b3df5180",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-14T10:24:53Z",
+      "side": 1,
+      "message": "is this a Tobstone reference for deletion, as defined in cassandra?\nPerhaps we should explain what it is and why is needed",
+      "revId": "50d2c3ec9b972e1e563b9deef72f73917f084ee7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "419b9c23_3bd69a39",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoMarshallerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-14T10:24:53Z",
+      "side": 1,
+      "message": "What is the chance they are equals?\nEven if they were, this shouldn\u0027t fail the test imho, but a new zkref should perhaps be generated.\n\nwe could make sure that they are not the same by creating updateRefInfo based on some modified newRefInfo values.",
+      "revId": "50d2c3ec9b972e1e563b9deef72f73917f084ee7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
