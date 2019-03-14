@@ -27,12 +27,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase.TombstoneRef;
 import java.io.IOException;
-import java.time.Duration;
-import java.util.Optional;
+import org.apache.curator.retry.RetryNTimes;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Ref.Storage;
@@ -42,19 +38,20 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-public class ZKRefsSharedDatabaseTest implements RefFixture {
+import static com.google.common.truth.Truth.assertThat;
+
+
+public class ZkSharedRefDatabaseTest implements RefFixture {
   @Rule public TestName nameRule = new TestName();
 
   ZookeeperTestContainerSupport zookeeperContainer;
   ZkSharedRefDatabase zkSharedRefDatabase;
-  ZkRefInfoDAO marshaller;
 
   @Before
   public void setup() {
     zookeeperContainer = new ZookeeperTestContainerSupport();
     zkSharedRefDatabase =
-        new ZkSharedRefDatabase(zookeeperContainer.getCurator(), Duration.ofMinutes(10));
-    marshaller = zookeeperContainer.getMarshaller();
+            new ZkSharedRefDatabase(zookeeperContainer.getCurator(), new RetryNTimes(5, 30));
   }
 
   @After
@@ -76,24 +73,35 @@ public class ZKRefsSharedDatabaseTest implements RefFixture {
   }
 
   @Test
+  public void shouldCompareAndCreateSuccessfully() throws Exception {
+    Ref ref = refOf(AN_OBJECT_ID_1);
+
+    zookeeperContainer.createRefInZk(A_TEST_PROJECT_NAME, ref);
+
+    assertThat(zkSharedRefDatabase.compareAndCreate(A_TEST_PROJECT_NAME, ref)).isTrue();
+
+    assertThat(zookeeperContainer.readRefValueFromZk(A_TEST_PROJECT_NAME, ref)).isEqualTo(ref.getObjectId());
+  }
+
+  @Test
   public void shouldCompareAndPutSuccessfully() throws Exception {
     Ref oldRef = refOf(AN_OBJECT_ID_1);
     Ref newRef = refOf(AN_OBJECT_ID_2);
-    String projectName = RefFixture.A_TEST_PROJECT_NAME;
+    String projectName = A_TEST_PROJECT_NAME;
 
-    marshaller.create(new ZkRefInfo(projectName, oldRef));
+    zookeeperContainer.createRefInZk(projectName, oldRef);
 
     assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRef, newRef)).isTrue();
   }
 
   @Test
   public void compareAndPutShouldFailIfTheObjectionHasNotTheExpectedValue() throws Exception {
-    String projectName = RefFixture.A_TEST_PROJECT_NAME;
+    String projectName = A_TEST_PROJECT_NAME;
 
     Ref oldRef = refOf(AN_OBJECT_ID_1);
     Ref expectedRef = refOf(AN_OBJECT_ID_2);
 
-    marshaller.create(new ZkRefInfo(projectName, oldRef));
+    zookeeperContainer.createRefInZk(projectName, oldRef);
 
     assertThat(zkSharedRefDatabase.compareAndPut(projectName, expectedRef, refOf(AN_OBJECT_ID_3)))
         .isFalse();
@@ -104,16 +112,16 @@ public class ZKRefsSharedDatabaseTest implements RefFixture {
     Ref oldRef = refOf(AN_OBJECT_ID_1);
     assertThat(
             zkSharedRefDatabase.compareAndPut(
-                RefFixture.A_TEST_PROJECT_NAME, oldRef, refOf(AN_OBJECT_ID_2)))
+                A_TEST_PROJECT_NAME, oldRef, refOf(AN_OBJECT_ID_2)))
         .isFalse();
   }
 
   @Test
   public void shouldCompareAndRemoveSuccessfully() throws Exception {
     Ref oldRef = refOf(AN_OBJECT_ID_1);
-    String projectName = RefFixture.A_TEST_PROJECT_NAME;
+    String projectName = A_TEST_PROJECT_NAME;
 
-    marshaller.create(new ZkRefInfo(projectName, oldRef));
+    zookeeperContainer.createRefInZk(projectName, oldRef);
 
     assertThat(zkSharedRefDatabase.compareAndRemove(projectName, oldRef)).isTrue();
   }
@@ -121,23 +129,21 @@ public class ZKRefsSharedDatabaseTest implements RefFixture {
   @Test
   public void shouldReplaceTheRefWithATombstoneAfterCompareAndPutRemove() throws Exception {
     Ref oldRef = refOf(AN_OBJECT_ID_1);
-    String projectName = RefFixture.A_TEST_PROJECT_NAME;
+    String projectName = A_TEST_PROJECT_NAME;
 
-    marshaller.create(new ZkRefInfo(projectName, oldRef));
+    zookeeperContainer.createRefInZk(projectName, oldRef);
 
     assertThat(zkSharedRefDatabase.compareAndRemove(projectName, oldRef)).isTrue();
 
-    Optional<ZkRefInfo> inZk = marshaller.read(projectName, oldRef.getName());
-    assertThat(inZk.isPresent()).isTrue();
-    inZk.get().equals(TombstoneRef.forRef(oldRef));
+    assertThat(zookeeperContainer.readRefValueFromZk(projectName, oldRef)).isEqualTo(ObjectId.zeroId());
   }
 
   @Test
   public void shouldNotCompareAndPutSuccessfullyAfterACompareAndRemove() throws Exception {
     Ref oldRef = refOf(AN_OBJECT_ID_1);
-    String projectName = RefFixture.A_TEST_PROJECT_NAME;
+    String projectName = A_TEST_PROJECT_NAME;
 
-    marshaller.create(new ZkRefInfo(projectName, oldRef));
+    zookeeperContainer.createRefInZk(projectName, oldRef);
 
     zkSharedRefDatabase.compareAndRemove(projectName, oldRef);
     assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRef, refOf(AN_OBJECT_ID_2)))
@@ -152,4 +158,5 @@ public class ZKRefsSharedDatabaseTest implements RefFixture {
   public String testBranch() {
     return "branch_" + nameRule.getMethodName();
   }
+
 }

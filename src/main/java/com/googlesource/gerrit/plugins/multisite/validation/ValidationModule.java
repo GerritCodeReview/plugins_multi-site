@@ -22,24 +22,25 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase;
 import java.time.Duration;
+import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 
 public class ValidationModule extends AbstractModule {
 
-  private Configuration cfg;
+    private Configuration cfg;
 
-  public ValidationModule(Configuration cfg) {
-    this.cfg = cfg;
-  }
+    public ValidationModule(Configuration cfg) {
+        this.cfg = cfg;
+    }
 
-  @Override
-  protected void configure() {
-    DynamicSet.bind(binder(), RefOperationValidationListener.class).to(InSyncChangeValidator.class);
+    @Override
+    protected void configure() {
+        DynamicSet.bind(binder(), RefOperationValidationListener.class).to(InSyncChangeValidator.class);
 
-    bind(SharedRefDatabase.class).to(ZkSharedRefDatabase.class);
-    bind(CuratorFramework.class).toInstance(cfg.getSplitBrain().getZookeeper().buildCurator());
-    bind(Duration.class)
-        .annotatedWith(Names.named("ZkLockTimeout"))
-        .toInstance(cfg.getSplitBrain().getZookeeper().getLockTimeout());
-  }
+        bind(SharedRefDatabase.class).to(ZkSharedRefDatabase.class);
+        bind(CuratorFramework.class).toInstance(cfg.getSplitBrain().getZookeeper().buildCurator());
+        bind(RetryPolicy.class)
+                .annotatedWith(Names.named("ZkLockRetryPolicy"))
+                .toInstance(cfg.getSplitBrain().getZookeeper().buildCasRetryPolicy());
+    }
 }
