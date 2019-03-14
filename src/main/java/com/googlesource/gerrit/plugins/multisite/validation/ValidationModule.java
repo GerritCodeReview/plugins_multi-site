@@ -17,12 +17,8 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.git.validators.RefOperationValidationListener;
 import com.google.inject.AbstractModule;
-import com.google.inject.name.Names;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase;
-import java.time.Duration;
-import org.apache.curator.framework.CuratorFramework;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 
 public class ValidationModule extends AbstractModule {
 
@@ -36,10 +32,6 @@ public class ValidationModule extends AbstractModule {
   protected void configure() {
     DynamicSet.bind(binder(), RefOperationValidationListener.class).to(InSyncChangeValidator.class);
 
-    bind(SharedRefDatabase.class).to(ZkSharedRefDatabase.class);
-    bind(CuratorFramework.class).toInstance(cfg.getSplitBrain().getZookeeper().buildCurator());
-    bind(Duration.class)
-        .annotatedWith(Names.named("ZkLockTimeout"))
-        .toInstance(cfg.getSplitBrain().getZookeeper().getLockTimeout());
+    install(new ZkValidationModule(cfg));
   }
 }
