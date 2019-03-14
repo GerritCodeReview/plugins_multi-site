@@ -139,6 +139,24 @@
       "revId": "50d2c3ec9b972e1e563b9deef72f73917f084ee7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60ecbb86_73602e08",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoMarshallerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-14T10:45:23Z",
+      "side": 1,
+      "message": "Agree will remove this check. This check was created when we were generating the 2 ZkRefInfo randomly",
+      "parentUuid": "814ec26a_846134cd",
+      "revId": "50d2c3ec9b972e1e563b9deef72f73917f084ee7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
