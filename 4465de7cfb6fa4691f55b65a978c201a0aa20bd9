@@ -2,6 +2,46 @@
   "comments": [
     {
       "key": {
+        "uuid": "3c36de67_2ce05262",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T15:12:20Z",
+      "side": 1,
+      "message": "This is not really a marshaller but rather the guy that is storing/loading the info back and forth to Zookeeper.\nWould ZkRefInfoStore be more approriate?",
+      "revId": "4465de7cfb6fa4691f55b65a978c201a0aa20bd9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a62cfaa2_7e3713a0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoMarshaller.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T15:12:20Z",
+      "side": 1,
+      "message": "These aren\u0027t needed in the first change that is implementing split-brain protection",
+      "range": {
+        "startLine": 50,
+        "startChar": 2,
+        "endLine": 51,
+        "endChar": 68
+      },
+      "revId": "4465de7cfb6fa4691f55b65a978c201a0aa20bd9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7d9202dd_66a5fbc1",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoMarshaller.java",
         "patchSetId": 4
