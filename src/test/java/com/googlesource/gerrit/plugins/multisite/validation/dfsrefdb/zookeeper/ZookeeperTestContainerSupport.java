@@ -40,7 +40,6 @@ public abstract class ZookeeperTestContainerSupport {
 
   GenericContainer container;
   CuratorFramework curator;
-  ZkRefInfoDAO marshaller;
 
   @Before
   public void setUp() throws IOException {
@@ -54,7 +53,6 @@ public abstract class ZookeeperTestContainerSupport {
     ZkConfig zkConfig = new ZkConfig(connectString, "root", 1000, 5000);
     curator = new CuratorFrameworkBuilder().config(zkConfig).build();
     curator.start();
-    marshaller = new ZkRefInfoDAO(curator);
   }
 
   @After

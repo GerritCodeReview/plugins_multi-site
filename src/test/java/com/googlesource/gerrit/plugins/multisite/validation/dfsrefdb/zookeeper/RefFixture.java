@@ -39,10 +39,6 @@ public interface RefFixture {
   String ALLOWED_DIGITS = "1234567890";
   String ALLOWED_NAME_CHARS = ALLOWED_CHARS + ALLOWED_CHARS.toUpperCase() + ALLOWED_DIGITS;
 
-  static ZkRefInfo aZkRefInfo() {
-    return new ZkRefInfo(aProjectName(), aChangeRefName(), anObjectId());
-  }
-
   static String aProjectName() {
     return RandomStringUtils.random(20, ALLOWED_NAME_CHARS);
   }
