@@ -53,6 +53,7 @@ java_library(
         "@curator-framework//jar",
         "@curator-recipes//jar",
         "@curator-test//jar",
+        "@curator-client//jar",
         "@zookeeper//jar",
     ],
 )

@@ -45,16 +45,18 @@ File '@PLUGIN@.config'
 
 [split-brain]
   enabled = true
-  
+
 [split-brain "zookeeper"]
   connectString = "localhost:2181"
-  rootNode = "/gerrit/multi-site"  
+  rootNode = "/gerrit/multi-site"
   sessionTimeoutMs = 1000
   connectionTimeoutMs = 1000
   retryPolicyBaseSleepTimeMs = 1000
   retryPolicyMaxSleepTimeMs = 3000
   retryPolicyMaxRetries = 3
-  lockTimeoutMs = 10000
+  casRetryPolicyBaseSleepTimeMs = 100
+  casRetryPolicyMaxSleepTimeMs = 100
+  casRetryPolicyMaxRetries = 3
 ```
 
 ## Configuration parameters
@@ -136,7 +138,7 @@ File '@PLUGIN@.config'
 :   Enable publication of project list events, ignored when `kafka.publisher.enabled` is false
     Defaults: true
 
-```kafka.publisher.streamEventEnabled```    
+```kafka.publisher.streamEventEnabled``` 
 :   Enable publication of stream events, ignored when `kafka.publisher.enabled` is false
     Defaults: true
 
@@ -195,10 +197,21 @@ used for the Zookeeper connection
 used for the Zookeeper connection
     Defaults: 3
 
-```split-brain.zookeeper.lockTimeoutMs```
-:   Configuration for InterProcessMutex lock timeout
-    Defaults: 10000
-
+```split-brain.zookeeper.casRetryPolicyBaseSleepTimeMs```
+:   Configuration for the base sleep timeout (iun ms) to use to create the BoundedExponentialBackoffRetry policy
+used for the Compare and Swap operations on Zookeeper
+    Defaults: 1000
+    
+```split-brain.zookeeper.casRetryPolicyMaxSleepTimeMs```
+:   Configuration for the max sleep timeout (iun ms) to use to create the BoundedExponentialBackoffRetry policy
+used for the Compare and Swap operations on Zookeeper
+    Defaults: 3000
+    
+```split-brain.zookeeper.casRetryPolicyMaxRetries```
+:   Configuration for the max number of retries to use to create the BoundedExponentialBackoffRetry policy
+used for the Compare and Swap operations on Zookeeper
+    Defaults: 3
+    
 #### Custom kafka properties:
 
 In addition to the above settings, custom Kafka properties can be explicitly set for `publisher` and `subscriber`.
