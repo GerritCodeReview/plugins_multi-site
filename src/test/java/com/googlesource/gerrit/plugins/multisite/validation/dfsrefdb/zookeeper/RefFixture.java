@@ -43,10 +43,6 @@ public interface RefFixture {
   static final ObjectId AN_OBJECT_ID_2 = new ObjectId(1, 2, 3, 4, 6);
   static final ObjectId AN_OBJECT_ID_3 = new ObjectId(1, 2, 3, 4, 7);
 
-  default ZkRefInfo aZkRefInfo(ObjectId objectId) {
-    return new ZkRefInfo(A_TEST_PROJECT_NAME, aBranchRef(), objectId);
-  }
-
   default String aBranchRef() {
     return RefNames.REFS_HEADS + testBranch();
   }

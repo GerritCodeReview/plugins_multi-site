@@ -95,6 +95,7 @@ public class ValidationIT extends LightweightPluginDaemonTest {
     // run - T0). Using "refs/heads/master2" in this test for now
     final PushOneCommit.Result change =
         createCommitAndPush(testRepo, "refs/heads/master2", "msg", "file", "content");
+
     change.assertOkStatus();
   }
 }
