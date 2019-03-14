@@ -34,6 +34,24 @@
       "revId": "a9f97e0e0bd193778328ebfffb749017812f561b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ab59380_6be6b3e2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/NoteDbStatus.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-14T23:11:41Z",
+      "side": 1,
+      "message": "Actually, let me check if a regular binding would work also. You\u0027re right, it would be easier to find if that is possible.",
+      "parentUuid": "a62b61da_b8d335cb",
+      "revId": "a9f97e0e0bd193778328ebfffb749017812f561b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
