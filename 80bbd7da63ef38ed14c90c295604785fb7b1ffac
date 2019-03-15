@@ -95,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "b1ecb07b_1c89ee3b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-15T12:44:38Z",
+      "side": 1,
+      "message": "This file is taken from the original implementation by Dave Borowitz done in 2012",
+      "parentUuid": "d9002fb6_60953728",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "80bbd7da63ef38ed14c90c295604785fb7b1ffac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "95a672d0_f0ecc47a",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
         "patchSetId": 6
@@ -142,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "c6298e53_ab9b8440",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-15T12:44:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7782647f_ce317aba",
+      "range": {
+        "startLine": 45,
+        "startChar": 6,
+        "endLine": 45,
+        "endChar": 33
+      },
+      "revId": "80bbd7da63ef38ed14c90c295604785fb7b1ffac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ff588cda_165c45f7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
         "patchSetId": 6
@@ -153,6 +201,30 @@
       "writtenOn": "2019-03-14T22:58:48Z",
       "side": 1,
       "message": "I don\u0027t think there is any need to call doCreate if `infoCurrentlyInZkMaybe` is empty, probalby the check currently done in doCreate should be done here.",
+      "range": {
+        "startLine": 71,
+        "startChar": 15,
+        "endLine": 71,
+        "endChar": 58
+      },
+      "revId": "80bbd7da63ef38ed14c90c295604785fb7b1ffac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0e9efff_1ba0fbb0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-03-15T12:44:38Z",
+      "side": 1,
+      "message": "makes sense, but we liked the idea that the full logic including checks was in the function..",
+      "parentUuid": "ff588cda_165c45f7",
       "range": {
         "startLine": 71,
         "startChar": 15,
