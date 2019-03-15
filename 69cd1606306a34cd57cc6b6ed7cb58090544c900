@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bef23b5f_0faaf17d",
+        "filename": "dockerised_local_env/gerrit-1/etc/healthcheck.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-15T15:53:57Z",
+      "side": 1,
+      "message": "Yes, at the time I was working on this the \"enable\" feature wasn\u0027t merged yet",
+      "parentUuid": "0cc6fbd3_501a092d",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 11
+      },
+      "revId": "69cd1606306a34cd57cc6b6ed7cb58090544c900",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "088a1300_6626fb6b",
         "filename": "dockerised_local_env/gerrit-2/etc/healthcheck.config",
         "patchSetId": 3
