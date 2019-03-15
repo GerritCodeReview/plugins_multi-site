@@ -15,10 +15,11 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.google.gerrit.extensions.annotations.PluginData;
+import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gson.Gson;
-import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
@@ -28,6 +29,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarde
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
+import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -38,7 +40,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Module extends AbstractModule {
+public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private final Configuration config;
 
@@ -49,6 +51,8 @@ public class Module extends AbstractModule {
 
   @Override
   protected void configure() {
+    listener().to(Log4jMessageLogger.class);
+    bind(MessageLogger.class).to(Log4jMessageLogger.class);
 
     install(new ForwarderModule());
 
@@ -69,6 +73,8 @@ public class Module extends AbstractModule {
     if (config.kafkaPublisher().enabled()) {
       install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
+
+    install(new ValidationModule());
 
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
   }
