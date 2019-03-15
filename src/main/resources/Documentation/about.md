@@ -8,7 +8,6 @@ message broker for aligning with the other masters over different sites.
 
 The masters must be:
 
-* migrated to NoteDb
 * connected to the same message broker
 * behind a load balancer (e.g., HAProxy)
 
