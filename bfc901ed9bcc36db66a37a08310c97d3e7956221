@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6caaaf7b_c6c3719b",
+        "filename": "dockerised_local_env/gerrit-1/etc/multi-site.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-15T15:49:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26c26248_cfc6501c",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 32
+      },
+      "revId": "bfc901ed9bcc36db66a37a08310c97d3e7956221",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5557af1e_ee95296c",
         "filename": "dockerised_local_env/gerrit-1/etc/multi-site.config",
         "patchSetId": 4
@@ -45,6 +69,30 @@
       "revId": "bfc901ed9bcc36db66a37a08310c97d3e7956221",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53f6e938_6c933be3",
+        "filename": "dockerised_local_env/gerrit-1/etc/multi-site.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-03-15T15:49:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5557af1e_ee95296c",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 39
+      },
+      "revId": "bfc901ed9bcc36db66a37a08310c97d3e7956221",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
