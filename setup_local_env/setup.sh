@@ -159,6 +159,8 @@ case "$1" in
 		echo
 		echo "[--replication-type]            Options [file,ssh]; default ssh"
 		echo "[--replication-ssh-user]        SSH user for the replication plugin; default $(whoami)"
+		echo "[--replication-delay]           Replication delay across the two instances in seconds"
+		echo
 		echo "[--just-cleanup-env]            Cleans up previous deployment; default false"
 		echo
 		echo "[--enabled-https]               Enabled https; default true"
@@ -235,6 +237,11 @@ case "$1" in
 		shift
 		shift
   ;;
+  "--replication-delay")
+		export REPLICATION_DELAY_SEC=$2
+		shift
+		shift
+  ;;
   "--just-cleanup-env" )
        	JUST_CLEANUP_ENV=$2
 		shift
@@ -270,6 +277,7 @@ GERRIT_1_SSHD_PORT=${GERRIT_1_SSHD_PORT:-"39418"}
 GERRIT_2_SSHD_PORT=${GERRIT_2_SSHD_PORT:-"49418"}
 REPLICATION_TYPE=${REPLICATION_TYPE:-"ssh"}
 REPLICATION_SSH_USER=${REPLICATION_SSH_USER:-$(whoami)}
+export REPLICATION_DELAY_SEC=${REPLICATION_DELAY_SEC:-"5"}
 export SSH_ADVERTISED_PORT=${SSH_ADVERTISED_PORT:-"29418"}
 HTTPS_ENABLED=${HTTPS_ENABLED:-"true"}
 
@@ -385,6 +393,7 @@ echo "The admin password is 'secret'"
 echo "deployment-location=$DEPLOYMENT_LOCATION"
 echo "replication-type=$REPLICATION_TYPE"
 echo "replication-ssh-user=$REPLICATION_SSH_USER"
+echo "replication-delay=$REPLICATION_DELAY_SEC"
 echo "enable-https=$HTTPS_ENABLED"
 echo
 echo "GERRIT HA-PROXY: $GERRIT_CANONICAL_WEB_URL"
