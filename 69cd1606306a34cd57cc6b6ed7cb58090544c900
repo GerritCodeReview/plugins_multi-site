@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "3a89aa7e_d0c49e14",
+        "filename": "dockerised_local_env/gerrit-1/etc/healthcheck.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-16T09:39:10Z",
+      "side": 1,
+      "message": "Yeap, enabled\u003dfalse",
+      "parentUuid": "bef23b5f_0faaf17d",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 11
+      },
+      "revId": "69cd1606306a34cd57cc6b6ed7cb58090544c900",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "088a1300_6626fb6b",
         "filename": "dockerised_local_env/gerrit-2/etc/healthcheck.config",
         "patchSetId": 3
