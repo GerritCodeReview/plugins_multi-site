@@ -41,5 +41,8 @@ public class ValidationModule extends AbstractModule {
     bind(RetryPolicy.class)
         .annotatedWith(Names.named("ZkLockRetryPolicy"))
         .toInstance(cfg.getSplitBrain().getZookeeper().buildCasRetryPolicy());
+    bind(ZkSharedRefDatabase.OperationMode.class)
+            .toInstance(cfg.getSplitBrain().getZookeeper().getOperationMode());
+
   }
 }
