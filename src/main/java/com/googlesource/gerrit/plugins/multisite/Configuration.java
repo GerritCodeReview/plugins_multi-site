@@ -25,6 +25,7 @@ import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -425,6 +426,7 @@ public class Configuration {
     private final int DEFAULT_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS = 100;
     private final int DEFAULT_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS = 300;
     private final int DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES = 3;
+    private final boolean DEFAULT_MIGRATE = false;
 
     static {
       CuratorFrameworkFactory.Builder b = CuratorFrameworkFactory.builder();
@@ -432,18 +434,21 @@ public class Configuration {
       defaultConnectionTimeoutMs = b.getConnectionTimeoutMs();
     }
 
-    private final String SUBSECTION = "zookeeper";
+    public static final String SUBSECTION = "zookeeper";
 
-    private final String KEY_CONNECT_STRING = "connectString";
-    private final String KEY_SESSION_TIMEOUT_MS = "sessionTimeoutMs";
-    private final String KEY_CONNECTION_TIMEOUT_MS = "connectionTimeoutMs";
-    private final String KEY_RETRY_POLICY_BASE_SLEEP_TIME_MS = "retryPolicyBaseSleepTimeMs";
-    private final String KEY_RETRY_POLICY_MAX_SLEEP_TIME_MS = "retryPolicyMaxSleepTimeMs";
-    private final String KEY_RETRY_POLICY_MAX_RETRIES = "retryPolicyMaxRetries";
-    private final String KEY_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS = "casRetryPolicyBaseSleepTimeMs";
-    private final String KEY_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS = "casRetryPolicyMaxSleepTimeMs";
-    private final String KEY_CAS_RETRY_POLICY_MAX_RETRIES = "casRetryPolicyMaxRetries";
-    private final String KEY_ROOT_NODE = "rootNode";
+    public static final String KEY_CONNECT_STRING = "connectString";
+    public static final String KEY_SESSION_TIMEOUT_MS = "sessionTimeoutMs";
+    public static final String KEY_CONNECTION_TIMEOUT_MS = "connectionTimeoutMs";
+    public static final String KEY_RETRY_POLICY_BASE_SLEEP_TIME_MS = "retryPolicyBaseSleepTimeMs";
+    public static final String KEY_RETRY_POLICY_MAX_SLEEP_TIME_MS = "retryPolicyMaxSleepTimeMs";
+    public static final String KEY_RETRY_POLICY_MAX_RETRIES = "retryPolicyMaxRetries";
+    public static final String KEY_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS =
+        "casRetryPolicyBaseSleepTimeMs";
+    public static final String KEY_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS =
+        "casRetryPolicyMaxSleepTimeMs";
+    public static final String KEY_CAS_RETRY_POLICY_MAX_RETRIES = "casRetryPolicyMaxRetries";
+    public static final String KEY_ROOT_NODE = "rootNode";
+    public static final String KEY_MIGRATE = "migrate";
 
     private final String connectionString;
     private final String root;
@@ -455,6 +460,7 @@ public class Configuration {
     private final int casBaseSleepTimeMs;
     private final int casMaxSleepTimeMs;
     private final int casMaxRetries;
+    private final boolean migrate;
 
     private CuratorFramework build;
 
@@ -520,6 +526,8 @@ public class Configuration {
               KEY_CAS_RETRY_POLICY_MAX_RETRIES,
               DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES);
 
+      migrate = getBoolean(cfg, SplitBrain.SECTION, SUBSECTION, KEY_MIGRATE, DEFAULT_MIGRATE);
+
       checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
     }
 
@@ -543,6 +551,12 @@ public class Configuration {
     public RetryPolicy buildCasRetryPolicy() {
       return new BoundedExponentialBackoffRetry(
           casBaseSleepTimeMs, casMaxSleepTimeMs, casMaxRetries);
+    }
+
+    public ZkSharedRefDatabase.OperationMode getOperationMode() {
+      return migrate
+          ? ZkSharedRefDatabase.OperationMode.MIGRATION
+          : ZkSharedRefDatabase.OperationMode.NORMAL;
     }
   }
 

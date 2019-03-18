@@ -58,7 +58,7 @@ public class ZookeeperTestContainerSupport {
     return configuration;
   }
 
-  public ZookeeperTestContainerSupport() {
+  public ZookeeperTestContainerSupport(boolean migrationMode) {
     container =
         new GenericContainer("zookeeper:latest")
             .withExposedPorts(2181)
@@ -69,6 +69,16 @@ public class ZookeeperTestContainerSupport {
     String connectString = "localhost:" + zkHostPort;
     splitBrainconfig.setBoolean("split-brain", null, "enabled", true);
     splitBrainconfig.setString("split-brain", "zookeeper", "connectString", connectString);
+    splitBrainconfig.setString(
+        "split-brain",
+        Configuration.Zookeeper.SUBSECTION,
+        Configuration.Zookeeper.KEY_CONNECT_STRING,
+        connectString);
+    splitBrainconfig.setBoolean(
+        "split-brain",
+        Configuration.Zookeeper.SUBSECTION,
+        Configuration.Zookeeper.KEY_MIGRATE,
+        migrationMode);
 
     configuration = new Configuration(splitBrainconfig);
     this.curator = configuration.getSplitBrain().getZookeeper().buildCurator();

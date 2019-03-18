@@ -215,6 +215,14 @@ used for the Compare and Swap operations on Zookeeper
 :   Configuration for the max number of retries to use to create the BoundedExponentialBackoffRetry policy
 used for the Compare and Swap operations on Zookeeper
     Defaults: 3
+
+```split-brain.zookeeper.migrate```
+:   Set to true when the plugin has been applied to an already existing module and there are no entries in
+Zookeeper for the existing refs. It will handle update failures caused by the old refs not existing forcing
+the creation of the new one
+    Defaults: false
+    
+
     
 #### Custom kafka properties:
 
