@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase;
 import org.apache.commons.lang.StringUtils;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
@@ -425,6 +426,7 @@ public class Configuration {
     private final int DEFAULT_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS = 100;
     private final int DEFAULT_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS = 300;
     private final int DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES = 3;
+    private final boolean DEFAULT_MIGRATE = false;
 
     static {
       CuratorFrameworkFactory.Builder b = CuratorFrameworkFactory.builder();
@@ -444,6 +446,7 @@ public class Configuration {
     private final String KEY_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS = "casRetryPolicyMaxSleepTimeMs";
     private final String KEY_CAS_RETRY_POLICY_MAX_RETRIES = "casRetryPolicyMaxRetries";
     private final String KEY_ROOT_NODE = "rootNode";
+    private final String KEY_MIGRATE = "migrate";
 
     private final String connectionString;
     private final String root;
@@ -455,6 +458,7 @@ public class Configuration {
     private final int casBaseSleepTimeMs;
     private final int casMaxSleepTimeMs;
     private final int casMaxRetries;
+    private final boolean migrate;
 
     private CuratorFramework build;
 
@@ -520,6 +524,15 @@ public class Configuration {
               KEY_CAS_RETRY_POLICY_MAX_RETRIES,
               DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES);
 
+      migrate =
+              getBoolean(
+                      cfg,
+                      SplitBrain.SECTION,
+                      SUBSECTION,
+                      KEY_MIGRATE,
+                      DEFAULT_MIGRATE
+              );
+
       checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
     }
 
@@ -543,6 +556,10 @@ public class Configuration {
     public RetryPolicy buildCasRetryPolicy() {
       return new BoundedExponentialBackoffRetry(
           casBaseSleepTimeMs, casMaxSleepTimeMs, casMaxRetries);
+    }
+
+    public ZkSharedRefDatabase.OperationMode getOperationMode() {
+      return migrate ? ZkSharedRefDatabase.OperationMode.MIGRATION : ZkSharedRefDatabase.OperationMode.NORMAL;
     }
   }
 
