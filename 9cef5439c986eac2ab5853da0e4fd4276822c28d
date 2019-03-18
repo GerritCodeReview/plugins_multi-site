@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "288feeca_c7cb0b02",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-18T16:24:40Z",
+      "side": 1,
+      "message": "This repository seems to be empty",
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
