@@ -70,7 +70,7 @@ public class ValidationIT extends LightweightPluginDaemonTest {
 
     @Override
     protected void configure() {
-      ZookeeperTestContainerSupport zookeeperContainer = new ZookeeperTestContainerSupport();
+      ZookeeperTestContainerSupport zookeeperContainer = new ZookeeperTestContainerSupport(true);
       Configuration multiSiteConfig = zookeeperContainer.getConfig();
       bind(Configuration.class).toInstance(multiSiteConfig);
       install(new Module(multiSiteConfig, noteDb));
@@ -91,10 +91,8 @@ public class ValidationIT extends LightweightPluginDaemonTest {
 
   @Test
   public void inSyncChangeValidatorShouldAcceptNewChange() throws Exception {
-    // FIXME: The code does not work for already existing refs (need a migration step for first
-    // run - T0). Using "refs/heads/master2" in this test for now
     final PushOneCommit.Result change =
-        createCommitAndPush(testRepo, "refs/heads/master2", "msg", "file", "content");
+        createCommitAndPush(testRepo, "refs/heads/master", "msg", "file", "content");
 
     change.assertOkStatus();
   }
