@@ -34,11 +34,21 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   private final CuratorFramework client;
   private final RetryPolicy retryPolicy;
 
+  private final OperationMode operationMode;
+
+  public enum OperationMode {
+    NORMAL,
+    MIGRATION;
+  }
+
   @Inject
   public ZkSharedRefDatabase(
-      CuratorFramework client, @Named("ZkLockRetryPolicy") RetryPolicy retryPolicy) {
+      CuratorFramework client,
+      @Named("ZkLockRetryPolicy") RetryPolicy retryPolicy,
+      OperationMode operationMode) {
     this.client = client;
     this.retryPolicy = retryPolicy;
+    this.operationMode = operationMode;
   }
 
   @Override
@@ -61,6 +71,16 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
             distributedRefValue.compareAndSet(
                 writeObjectId(oldRef.getObjectId()), writeObjectId(newValue));
 
+        if (!newDistributedValue.succeeded()
+            && operationMode == OperationMode.MIGRATION
+            && refNotInZk(projectName, oldRef)) {
+          logger.atInfo().log(
+              "Missing entry in ZK for ref at path '%'. Assuming this is because we are in migration mode and creating it",
+              pathFor(projectName, oldRef));
+
+          return distributedRefValue.initialize(writeObjectId(newRef.getObjectId()));
+        }
+
         return newDistributedValue.succeeded();
       }
     } catch (Exception e) {
@@ -69,6 +89,10 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
       throw new IOException(
           String.format("Error trying to perform CAS at path %s", pathFor(projectName, newRef)), e);
     }
+  }
+
+  private boolean refNotInZk(String projectName, Ref oldRef) throws Exception {
+    return client.checkExists().forPath(pathFor(projectName, oldRef)) == null;
   }
 
   static String pathFor(String projectName, Ref ref) {
