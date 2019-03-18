@@ -34,6 +34,138 @@
       "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d608386_29acba38",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 16
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-18T17:15:58Z",
+      "side": 1,
+      "message": "wrong indentation",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 9
+      },
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95a893c2_050c15d9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-18T17:15:58Z",
+      "side": 1,
+      "message": "Which value does this code add? Wouldn\u0027t JGit already throw an exception which is descriptive enough?",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 5
+      },
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f54e948_5ab16e79",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-18T17:15:58Z",
+      "side": 1,
+      "message": "subsection\n\nJust do a grep over Gerrit source code and/or JGit source code.",
+      "range": {
+        "startLine": 130,
+        "startChar": 42,
+        "endLine": 130,
+        "endChar": 51
+      },
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c095cbae_cc463be7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-18T17:15:58Z",
+      "side": 1,
+      "message": "Could we make more use of Guice instead of performing static initialization?",
+      "range": {
+        "startLine": 427,
+        "startChar": 0,
+        "endLine": 431,
+        "endChar": 5
+      },
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fee021f6_3760f149",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoDAO.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-18T17:15:58Z",
+      "side": 1,
+      "message": "This is not Gerrit project\u0027s code style.\nI guess that neither of the changed files in this change are formatted with the google-java-format?",
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1dd0cdd_85020731",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2019-03-18T17:15:58Z",
+      "side": 1,
+      "message": "This is strange. Why convert an Exception into an IOException? What is the added value?\n\nWhy the method declaration in the interface throws IOException?",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 28
+      },
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
