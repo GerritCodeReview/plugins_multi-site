@@ -16,6 +16,24 @@
       "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b7536eb_cb67a993",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-18T16:50:03Z",
+      "side": 1,
+      "message": "You\u0027re right, I\u0027ve updated with the abandoned change",
+      "parentUuid": "288feeca_c7cb0b02",
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
