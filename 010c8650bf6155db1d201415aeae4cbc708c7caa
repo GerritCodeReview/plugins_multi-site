@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1237ddbf_66a58db1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-19T13:24:31Z",
+      "side": 1,
+      "message": "We need to think a bit deeper about this compareAndPut signature.\nIf a normal change is pushed, then I think the logic holds: the reference will be refs/heads/somebranch and zookeper can coordinate access to it.\n\n\nHowever, in case of a magic change, the reference will be always `refs/for/master`, for all changes, regardless they are, in fact different changes.\n\nTarged information is possible not enough for zookeper to coordinate this particular change, since _all_ changes for master, will share the same magic reference.\n\nI think a way for zookeper to discriminate one change from another would be to have access to the change-id, perhaps we can do some more thinking on how to achieve this.",
+      "revId": "010c8650bf6155db1d201415aeae4cbc708c7caa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1181c5bf_d2850ecf",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-19T13:24:31Z",
+      "side": 1,
+      "message": "It seems this is not going to work in the case where oldRef \u003d\u003d NULL_REF, as zookeeper will keep generating the same path (specifically `repository/null`), for all these changes which will keep clobbering each other.",
+      "range": {
+        "startLine": 51,
+        "startChar": 1,
+        "endLine": 52,
+        "endChar": 86
+      },
+      "revId": "010c8650bf6155db1d201415aeae4cbc708c7caa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d1e79e6_c8fbed05",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-03-19T13:24:31Z",
+      "side": 1,
+      "message": "In this case the path should be constructed by looking at the newReference instead",
+      "revId": "010c8650bf6155db1d201415aeae4cbc708c7caa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
