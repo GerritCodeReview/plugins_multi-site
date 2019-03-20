@@ -27,9 +27,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 import com.google.gerrit.reviewdb.client.Project;
-import com.google.gerrit.server.events.RefReceivedEvent;
+import com.google.gerrit.server.events.CommitReceivedEvent;
 import com.google.gerrit.server.git.GitRepositoryManager;
-import com.google.gerrit.server.git.validators.ValidationMessage;
+import com.google.gerrit.server.git.validators.CommitValidationMessage;
 import com.google.gerrit.server.validators.ValidationException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import java.io.IOException;
@@ -158,8 +158,8 @@ public class InSyncChangeValidatorTest {
   }
 
   Ref testRef = new TestRef(REF_NAME, REF_OBJID);
-  RefReceivedEvent testRefReceivedEvent =
-      new RefReceivedEvent() {
+  CommitReceivedEvent testRefReceivedEvent =
+      new CommitReceivedEvent() {
 
         @Override
         public String getRefName() {
@@ -197,10 +197,10 @@ public class InSyncChangeValidatorTest {
   @Test
   public void shouldNotVerifyStatusOfImmutablePatchSetRefs() throws Exception {
     testRefReceivedEvent.command = RECEIVE_COMMAND_CREATE_PATCHSET_REF;
-    final List<ValidationMessage> validationMessages =
-        validator.onRefOperation(testRefReceivedEvent);
+    final List<CommitValidationMessage> commitValidationMessages =
+        validator.onCommitReceived(testRefReceivedEvent);
 
-    assertThat(validationMessages).isEmpty();
+    assertThat(commitValidationMessages).isEmpty();
 
     verifyZeroInteractions(dfsRefDatabase);
   }
@@ -212,7 +212,7 @@ public class InSyncChangeValidatorTest {
     Ref testRefMeta = new TestRef(REF_PATCHSET_META_NAME, REF_OBJID);
     doReturn(testRefMeta).when(dfsRefDatabase).newRef(REF_PATCHSET_META_NAME, REF_OBJID);
 
-    validator.onRefOperation(testRefReceivedEvent);
+    validator.onCommitReceived(testRefReceivedEvent);
 
     verify(dfsRefDatabase)
         .compareAndCreate(eq(PROJECT_NAME), eqRef(REF_PATCHSET_META_NAME, REF_OBJID));
@@ -222,10 +222,10 @@ public class InSyncChangeValidatorTest {
   public void shouldInsertNewRefInDfsDatabaseWhenHandlingRefCreationEvents() throws Exception {
     testRefReceivedEvent.command = RECEIVE_COMMAND_CREATE_REF;
 
-    final List<ValidationMessage> validationMessages =
-        validator.onRefOperation(testRefReceivedEvent);
+    final List<CommitValidationMessage> commitValidationMessages =
+        validator.onCommitReceived(testRefReceivedEvent);
 
-    assertThat(validationMessages).isEmpty();
+    assertThat(commitValidationMessages).isEmpty();
     verify(dfsRefDatabase).compareAndCreate(eq(PROJECT_NAME), eqRef(REF_NAME, REF_OBJID));
   }
 
@@ -242,7 +242,7 @@ public class InSyncChangeValidatorTest {
     expectedException.expect(ValidationException.class);
     expectedException.expectCause(sameInstance(alreadyInDb));
 
-    validator.onRefOperation(testRefReceivedEvent);
+    validator.onCommitReceived(testRefReceivedEvent);
   }
 
   @Test
@@ -254,10 +254,10 @@ public class InSyncChangeValidatorTest {
         .compareAndPut(
             eq(PROJECT_NAME), eqRef(REF_NAME, REF_OBJID_OLD), eqRef(REF_NAME, REF_OBJID));
 
-    final List<ValidationMessage> validationMessages =
-        validator.onRefOperation(testRefReceivedEvent);
+    final List<CommitValidationMessage> commitValidationMessages =
+        validator.onCommitReceived(testRefReceivedEvent);
 
-    assertThat(validationMessages).isEmpty();
+    assertThat(commitValidationMessages).isEmpty();
     verify(dfsRefDatabase)
         .compareAndPut(
             eq(PROJECT_NAME), eqRef(REF_NAME, REF_OBJID_OLD), eqRef(REF_NAME, REF_OBJID));
@@ -274,7 +274,7 @@ public class InSyncChangeValidatorTest {
     expectedException.expect(ValidationException.class);
     expectedException.expectCause(nullValue(Exception.class));
 
-    validator.onRefOperation(testRefReceivedEvent);
+    validator.onCommitReceived(testRefReceivedEvent);
   }
 
   @Test
@@ -285,7 +285,7 @@ public class InSyncChangeValidatorTest {
     expectedException.expect(ValidationException.class);
     expectedException.expectCause(nullValue(Exception.class));
 
-    validator.onRefOperation(testRefReceivedEvent);
+    validator.onCommitReceived(testRefReceivedEvent);
   }
 
   @Test
@@ -296,10 +296,10 @@ public class InSyncChangeValidatorTest {
         .when(dfsRefDatabase)
         .compareAndRemove(eq(PROJECT_NAME), eqRef(REF_NAME, REF_OBJID_OLD));
 
-    final List<ValidationMessage> validationMessages =
-        validator.onRefOperation(testRefReceivedEvent);
+    final List<CommitValidationMessage> commitValidationMessages =
+        validator.onCommitReceived(testRefReceivedEvent);
 
-    assertThat(validationMessages).isEmpty();
+    assertThat(commitValidationMessages).isEmpty();
 
     verify(dfsRefDatabase).compareAndRemove(eq(PROJECT_NAME), eqRef(REF_NAME, REF_OBJID_OLD));
   }
@@ -315,7 +315,7 @@ public class InSyncChangeValidatorTest {
     expectedException.expect(ValidationException.class);
     expectedException.expectCause(nullValue(Exception.class));
 
-    validator.onRefOperation(testRefReceivedEvent);
+    validator.onCommitReceived(testRefReceivedEvent);
   }
 
   @Test
@@ -326,6 +326,6 @@ public class InSyncChangeValidatorTest {
     expectedException.expect(ValidationException.class);
     expectedException.expectCause(nullValue(Exception.class));
 
-    validator.onRefOperation(testRefReceivedEvent);
+    validator.onCommitReceived(testRefReceivedEvent);
   }
 }

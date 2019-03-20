@@ -28,11 +28,11 @@
 package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.common.flogger.FluentLogger;
-import com.google.gerrit.server.events.RefReceivedEvent;
+import com.google.gerrit.server.events.CommitReceivedEvent;
 import com.google.gerrit.server.git.GitRepositoryManager;
-import com.google.gerrit.server.git.validators.RefOperationValidationListener;
-import com.google.gerrit.server.git.validators.ValidationMessage;
-import com.google.gerrit.server.validators.ValidationException;
+import com.google.gerrit.server.git.validators.CommitValidationException;
+import com.google.gerrit.server.git.validators.CommitValidationListener;
+import com.google.gerrit.server.git.validators.CommitValidationMessage;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import java.io.IOException;
@@ -48,7 +48,7 @@ import org.eclipse.jgit.lib.Repository;
  * consequence of ref updates, creation and deletions. The operation is done for mutable updates
  * only. Operation on immutable ones are always considered valid.
  */
-public class InSyncChangeValidator implements RefOperationValidationListener {
+public class InSyncChangeValidator implements CommitValidationListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final SharedRefDatabase dfsRefDatabase;
@@ -61,8 +61,8 @@ public class InSyncChangeValidator implements RefOperationValidationListener {
   }
 
   @Override
-  public List<ValidationMessage> onRefOperation(RefReceivedEvent refEvent)
-      throws ValidationException {
+  public List<CommitValidationMessage> onCommitReceived(CommitReceivedEvent refEvent)
+      throws CommitValidationException {
     logger.atFine().log("Validating operation %s", refEvent);
 
     if (isImmutableRef(refEvent.getRefName())) {
@@ -89,7 +89,7 @@ public class InSyncChangeValidator implements RefOperationValidationListener {
                   refEvent.command.getType().name(), refEvent));
       }
     } catch (IOException e) {
-      throw new ValidationException(
+      throw new CommitValidationException(
           "Unable to access repository " + refEvent.getProjectNameKey(), e);
     }
   }
@@ -98,8 +98,8 @@ public class InSyncChangeValidator implements RefOperationValidationListener {
     return refName.startsWith("refs/changes") && !refName.endsWith("/meta");
   }
 
-  private List<ValidationMessage> onDeleteRef(Repository repo, RefReceivedEvent refEvent)
-      throws ValidationException {
+  private List<CommitValidationMessage> onDeleteRef(Repository repo, CommitReceivedEvent refEvent)
+      throws CommitValidationException {
     try {
       Ref localRef = repo.findRef(refEvent.getRefName());
       if (localRef == null) {
@@ -108,14 +108,14 @@ public class InSyncChangeValidator implements RefOperationValidationListener {
                 + "Trying to delete it but it is not in the local DB",
             refEvent.getRefName());
 
-        throw new ValidationException(
+        throw new CommitValidationException(
             String.format(
                 "Unable to delete ref '%s', cannot find it in the local ref database",
                 refEvent.getRefName()));
       }
 
       if (!dfsRefDatabase.compareAndRemove(refEvent.getProjectNameKey().get(), localRef)) {
-        throw new ValidationException(
+        throw new CommitValidationException(
             String.format(
                 "Unable to delete ref '%s', the local ObjectId '%s' is not equal to the one "
                     + "in the shared ref database",
@@ -127,7 +127,7 @@ public class InSyncChangeValidator implements RefOperationValidationListener {
               + "Trying to delete it but it is not in the DB",
           refEvent.getRefName());
 
-      throw new ValidationException(
+      throw new CommitValidationException(
           String.format(
               "Unable to delete ref '%s', cannot find it in the shared ref database",
               refEvent.getRefName()),
@@ -136,8 +136,8 @@ public class InSyncChangeValidator implements RefOperationValidationListener {
     return Collections.emptyList();
   }
 
-  private List<ValidationMessage> onUpdateRef(Repository repo, RefReceivedEvent refEvent)
-      throws ValidationException {
+  private List<CommitValidationMessage> onUpdateRef(Repository repo, CommitReceivedEvent refEvent)
+      throws CommitValidationException {
     try {
       Ref localRef = repo.findRef(refEvent.getRefName());
       if (localRef == null) {
@@ -146,7 +146,7 @@ public class InSyncChangeValidator implements RefOperationValidationListener {
                 + "Trying to update it but it is not in the local DB",
             refEvent.getRefName());
 
-        throw new ValidationException(
+        throw new CommitValidationException(
             String.format(
                 "Unable to update ref '%s', cannot find it in the local ref database",
                 refEvent.getRefName()));
@@ -154,7 +154,7 @@ public class InSyncChangeValidator implements RefOperationValidationListener {
 
       Ref newRef = dfsRefDatabase.newRef(refEvent.getRefName(), refEvent.command.getNewId());
       if (!dfsRefDatabase.compareAndPut(refEvent.getProjectNameKey().get(), localRef, newRef)) {
-        throw new ValidationException(
+        throw new CommitValidationException(
             String.format(
                 "Unable to update ref '%s', the local objectId '%s' is not equal to the one "
                     + "in the shared ref database",
@@ -166,7 +166,7 @@ public class InSyncChangeValidator implements RefOperationValidationListener {
               + "Trying to update it cannot extract the existing one on DB",
           refEvent.getRefName());
 
-      throw new ValidationException(
+      throw new CommitValidationException(
           String.format(
               "Unable to update ref '%s', cannot open the local ref on the local DB",
               refEvent.getRefName()),
@@ -176,8 +176,8 @@ public class InSyncChangeValidator implements RefOperationValidationListener {
     return Collections.emptyList();
   }
 
-  private List<ValidationMessage> onCreateRef(RefReceivedEvent refEvent)
-      throws ValidationException {
+  private List<CommitValidationMessage> onCreateRef(CommitReceivedEvent refEvent)
+      throws CommitValidationException {
     try {
       Ref newRef = dfsRefDatabase.newRef(refEvent.getRefName(), refEvent.command.getNewId());
       dfsRefDatabase.compareAndCreate(refEvent.getProjectNameKey().get(), newRef);
@@ -187,7 +187,7 @@ public class InSyncChangeValidator implements RefOperationValidationListener {
               + "Trying to delete it but it is not in the DB",
           refEvent.getRefName());
 
-      throw new ValidationException(
+      throw new CommitValidationException(
           String.format(
               "Unable to update ref '%s', cannot find it in the shared ref database",
               refEvent.getRefName()),
