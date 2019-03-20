@@ -15,7 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.gerrit.server.git.validators.RefOperationValidationListener;
+import com.google.gerrit.server.git.validators.CommitValidationListener;
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -34,7 +34,7 @@ public class ValidationModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    DynamicSet.bind(binder(), RefOperationValidationListener.class).to(InSyncChangeValidator.class);
+    DynamicSet.bind(binder(), CommitValidationListener.class).to(InSyncChangeValidator.class);
 
     bind(SharedRefDatabase.class).to(ZkSharedRefDatabase.class);
     bind(CuratorFramework.class).toInstance(cfg.getSplitBrain().getZookeeper().buildCurator());

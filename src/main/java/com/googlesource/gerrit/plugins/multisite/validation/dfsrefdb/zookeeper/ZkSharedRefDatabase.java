@@ -58,13 +58,13 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
 
   @Override
   public boolean compareAndPut(String projectName, Ref oldRef, Ref newRef) throws IOException {
-    final DistributedAtomicValue distributedRefValue =
-        new DistributedAtomicValue(client, pathFor(projectName, oldRef), retryPolicy);
-
+    DistributedAtomicValue distributedRefValue;
     try {
       if (oldRef == NULL_REF) {
+        distributedRefValue = new DistributedAtomicValue(client, pathFor(projectName, newRef), retryPolicy);
         return distributedRefValue.initialize(writeObjectId(newRef.getObjectId()));
       } else {
+        distributedRefValue = new DistributedAtomicValue(client, pathFor(projectName, oldRef), retryPolicy);
         final ObjectId newValue =
             newRef.getObjectId() == null ? ObjectId.zeroId() : newRef.getObjectId();
         final AtomicValue<byte[]> newDistributedValue =

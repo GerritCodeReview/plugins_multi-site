@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.LogThreshold;
@@ -42,15 +44,16 @@ public class ValidationIT extends LightweightPluginDaemonTest {
     System.setProperty("gerrit.notedb", "ON");
   }
 
+  private static ZookeeperTestContainerSupport zookeeperContainer;
+
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   public static class ZookeeperTestModule extends LifecycleModule {
 
     public class ZookeeperStopAtShutdown implements LifecycleListener {
-      private final ZookeeperTestContainerSupport zookeeperContainer;
 
       public ZookeeperStopAtShutdown(ZookeeperTestContainerSupport zk) {
-        this.zookeeperContainer = zk;
+        zookeeperContainer = zk;
       }
 
       @Override
@@ -94,9 +97,10 @@ public class ValidationIT extends LightweightPluginDaemonTest {
 
   @Test
   public void inSyncChangeValidatorShouldAcceptNewChange() throws Exception {
-    final PushOneCommit.Result change =
-        createCommitAndPush(testRepo, "refs/heads/master", "msg", "file", "content");
-
+    final PushOneCommit.Result change = createChange("refs/for/master");
     change.assertOkStatus();
+    String rootPathForRefs =
+        "/" + getClass().getName() + "_inSyncChangeValidatorShouldAcceptNewChange_project";
+    assertThat(zookeeperContainer.getCurator().checkExists().forPath(rootPathForRefs)).isNotNull();
   }
 }
