@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "22df3467_869a43b4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-22T13:26:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b7536eb_cb67a993",
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2d608386_29acba38",
         "filename": "external_plugin_deps.bzl",
         "patchSetId": 16
@@ -57,6 +75,30 @@
       "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "619221d3_38e49f85",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 16
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-22T13:26:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d608386_29acba38",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 83,
+        "endChar": 9
+      },
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -83,6 +125,30 @@
     },
     {
       "key": {
+        "uuid": "b722434e_e6747239",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-22T13:26:10Z",
+      "side": 1,
+      "message": "The only reason this extra try-catch logic is here is when the configuration file contains the wrong value. ie. the application tries to read a boolean but finds an int, fails and returns the defaultValue.\n\nYou\u0027re right this logic shouldn\u0027t exist, I think we should fail rather than giving the false impression the application is running with the values given in the configuration file but instead it\u0027s using the defaultValue.\nThis extra try/catch logic is present in other methods but this change will only remove it from getBoolean.\n\nI will address the other methods in a different change",
+      "parentUuid": "95a893c2_050c15d9",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 5
+      },
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0f54e948_5ab16e79",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 16
@@ -103,6 +169,30 @@
       "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9325bf90_471fe0f9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-22T13:26:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f54e948_5ab16e79",
+      "range": {
+        "startLine": 130,
+        "startChar": 42,
+        "endLine": 130,
+        "endChar": 51
+      },
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -129,6 +219,30 @@
     },
     {
       "key": {
+        "uuid": "d41114c6_26219af8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-22T13:26:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c095cbae_cc463be7",
+      "range": {
+        "startLine": 427,
+        "startChar": 0,
+        "endLine": 431,
+        "endChar": 5
+      },
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fee021f6_3760f149",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoDAO.java",
         "patchSetId": 16
@@ -143,6 +257,24 @@
       "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d978e44_ac5972f2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkRefInfoDAO.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-22T13:26:10Z",
+      "side": 1,
+      "message": "Yes, we are using google-java-format. Not sure why is not picking this one up. Will fix it",
+      "parentUuid": "fee021f6_3760f149",
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -166,6 +298,30 @@
       "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6f283718_bedd3b72",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-03-22T13:26:10Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d1dd0cdd_85020731",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 28
+      },
+      "revId": "9cef5439c986eac2ab5853da0e4fd4276822c28d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
