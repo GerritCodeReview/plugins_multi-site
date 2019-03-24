@@ -82,9 +82,7 @@ public class Module extends LifecycleModule {
       install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
 
-    if (config.getRefDatabaseConfig().enabled()) {
-      install(new ValidationModule(config));
-    }
+    install(new ValidationModule(config));
 
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
   }
