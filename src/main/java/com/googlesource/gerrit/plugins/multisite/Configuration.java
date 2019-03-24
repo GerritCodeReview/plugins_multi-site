@@ -416,7 +416,6 @@ public class Configuration {
     public static final int defaultSessionTimeoutMs;
     public static final int defaultConnectionTimeoutMs;
     public static final String DEFAULT_ZK_CONNECT = "localhost:2181";
-    private final int DEFAULT_LOCK_TIMEOUT_MS = 10000;
     private final int DEFAULT_RETRY_POLICY_BASE_SLEEP_TIME_MS = 1000;
     private final int DEFAULT_RETRY_POLICY_MAX_SLEEP_TIME_MS = 3000;
     private final int DEFAULT_RETRY_POLICY_MAX_RETRIES = 3;
