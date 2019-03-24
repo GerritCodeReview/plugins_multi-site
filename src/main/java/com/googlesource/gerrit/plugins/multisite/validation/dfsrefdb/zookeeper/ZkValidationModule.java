@@ -32,12 +32,11 @@ public class ZkValidationModule extends AbstractModule {
   @Override
   protected void configure() {
     bind(SharedRefDatabase.class).to(ZkSharedRefDatabase.class);
-    bind(CuratorFramework.class)
-        .toInstance(cfg.getRefDatabaseConfig().getZookeeper().buildCurator());
+    bind(CuratorFramework.class).toInstance(cfg.getZookeeperConfig().buildCurator());
     bind(RetryPolicy.class)
         .annotatedWith(Names.named("ZkLockRetryPolicy"))
-        .toInstance(cfg.getRefDatabaseConfig().getZookeeper().buildCasRetryPolicy());
+        .toInstance(cfg.getZookeeperConfig().buildCasRetryPolicy());
     bind(ZkSharedRefDatabase.OperationMode.class)
-        .toInstance(cfg.getRefDatabaseConfig().getZookeeper().getOperationMode());
+        .toInstance(cfg.getZookeeperConfig().getOperationMode());
   }
 }
