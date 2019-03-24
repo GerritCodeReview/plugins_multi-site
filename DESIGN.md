@@ -500,5 +500,3 @@ sent the request to the Ref-DB but before persisting this request into its `git`
 - Serve RW/RW traffic based on the project name/ref-name.
 
 - Balance traffic with "locally-aware" policies based on historical data
-
-- Preventing split-brain in case of temporary sites isolation

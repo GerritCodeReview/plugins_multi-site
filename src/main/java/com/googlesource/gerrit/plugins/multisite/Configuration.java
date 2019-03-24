@@ -71,7 +71,7 @@ public class Configuration {
   private final Index index;
   private final KafkaSubscriber subscriber;
   private final Kafka kafka;
-  private final SplitBrain splitBrain;
+  private final RefDatabaseConfig splitBrain;
 
   @Inject
   Configuration(PluginConfigFactory pluginConfigFactory, @PluginName String pluginName) {
@@ -86,10 +86,10 @@ public class Configuration {
     cache = new Cache(cfg);
     event = new Event(cfg);
     index = new Index(cfg);
-    splitBrain = new SplitBrain(cfg);
+    splitBrain = new RefDatabaseConfig(cfg);
   }
 
-  public SplitBrain getSplitBrain() {
+  public RefDatabaseConfig getRefDatabaseConfig() {
     return splitBrain;
   }
 
@@ -460,15 +460,21 @@ public class Configuration {
 
     private Zookeeper(Config cfg) {
       connectionString =
-          getString(cfg, SplitBrain.SECTION, SUBSECTION, KEY_CONNECT_STRING, DEFAULT_ZK_CONNECT);
-      root = getString(cfg, SplitBrain.SECTION, SUBSECTION, KEY_ROOT_NODE, "gerrit/multi-site");
+          getString(
+              cfg, RefDatabaseConfig.SECTION, SUBSECTION, KEY_CONNECT_STRING, DEFAULT_ZK_CONNECT);
+      root =
+          getString(cfg, RefDatabaseConfig.SECTION, SUBSECTION, KEY_ROOT_NODE, "gerrit/multi-site");
       sessionTimeoutMs =
           getInt(
-              cfg, SplitBrain.SECTION, SUBSECTION, KEY_SESSION_TIMEOUT_MS, defaultSessionTimeoutMs);
+              cfg,
+              RefDatabaseConfig.SECTION,
+              SUBSECTION,
+              KEY_SESSION_TIMEOUT_MS,
+              defaultSessionTimeoutMs);
       connectionTimeoutMs =
           getInt(
               cfg,
-              SplitBrain.SECTION,
+              RefDatabaseConfig.SECTION,
               SUBSECTION,
               KEY_CONNECTION_TIMEOUT_MS,
               defaultConnectionTimeoutMs);
@@ -476,7 +482,7 @@ public class Configuration {
       baseSleepTimeMs =
           getInt(
               cfg,
-              SplitBrain.SECTION,
+              RefDatabaseConfig.SECTION,
               SUBSECTION,
               KEY_RETRY_POLICY_BASE_SLEEP_TIME_MS,
               DEFAULT_RETRY_POLICY_BASE_SLEEP_TIME_MS);
@@ -484,7 +490,7 @@ public class Configuration {
       maxSleepTimeMs =
           getInt(
               cfg,
-              SplitBrain.SECTION,
+              RefDatabaseConfig.SECTION,
               SUBSECTION,
               KEY_RETRY_POLICY_MAX_SLEEP_TIME_MS,
               DEFAULT_RETRY_POLICY_MAX_SLEEP_TIME_MS);
@@ -492,7 +498,7 @@ public class Configuration {
       maxRetries =
           getInt(
               cfg,
-              SplitBrain.SECTION,
+              RefDatabaseConfig.SECTION,
               SUBSECTION,
               KEY_RETRY_POLICY_MAX_RETRIES,
               DEFAULT_RETRY_POLICY_MAX_RETRIES);
@@ -500,7 +506,7 @@ public class Configuration {
       casBaseSleepTimeMs =
           getInt(
               cfg,
-              SplitBrain.SECTION,
+              RefDatabaseConfig.SECTION,
               SUBSECTION,
               KEY_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS,
               DEFAULT_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS);
@@ -508,7 +514,7 @@ public class Configuration {
       casMaxSleepTimeMs =
           getInt(
               cfg,
-              SplitBrain.SECTION,
+              RefDatabaseConfig.SECTION,
               SUBSECTION,
               KEY_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS,
               DEFAULT_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS);
@@ -516,12 +522,13 @@ public class Configuration {
       casMaxRetries =
           getInt(
               cfg,
-              SplitBrain.SECTION,
+              RefDatabaseConfig.SECTION,
               SUBSECTION,
               KEY_CAS_RETRY_POLICY_MAX_RETRIES,
               DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES);
 
-      migrate = getBoolean(cfg, SplitBrain.SECTION, SUBSECTION, KEY_MIGRATE, DEFAULT_MIGRATE);
+      migrate =
+          getBoolean(cfg, RefDatabaseConfig.SECTION, SUBSECTION, KEY_MIGRATE, DEFAULT_MIGRATE);
 
       checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
     }
@@ -555,14 +562,14 @@ public class Configuration {
     }
   }
 
-  public static class SplitBrain {
+  public static class RefDatabaseConfig {
     private final boolean enabled;
 
     private final Zookeeper zookeeper;
-    static final String SECTION = "split-brain";
+    static final String SECTION = "ref-database";
     static final String ENABLED_KEY = "enabled";
 
-    private SplitBrain(Config cfg) {
+    private RefDatabaseConfig(Config cfg) {
 
       this.enabled = getBoolean(cfg, SECTION, null, ENABLED_KEY, DEFAULT_SPLIT_BRAIN);
       zookeeper = this.enabled ? new Zookeeper(cfg) : null;

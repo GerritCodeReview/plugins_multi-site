@@ -43,10 +43,10 @@ File '@PLUGIN@.config'
   projectListEventEnabled = true
   streamEventEnabled = true
 
-[split-brain]
+[ref-database]
   enabled = true
 
-[split-brain "zookeeper"]
+[ref-database "zookeeper"]
   connectString = "localhost:2181"
   rootNode = "/gerrit/multi-site"
   sessionTimeoutMs = 1000
@@ -188,65 +188,65 @@ File '@PLUGIN@.config'
 
     Defaults: 1000
 
-```split-brain.zookeeper.connectString```
+```ref-database.zookeeper.connectString```
 :   Connection string to  zookeeper
 
-```split-brain.zookeeper.rootNode```
+```ref-database.zookeeper.rootNode```
 :   Root node to use under Zookeeper to store/retrieve information
 
     Defaults: "/gerrit/multi-site"
 
 
-```split-brain.zookeeper.sessionTimeoutMs```
+```ref-database.zookeeper.sessionTimeoutMs```
 :   Root node to use under Zookeeper to store/retrieve information
 
     Defaults: 1000
 
-```split-brain.zookeeper.connectionTimeoutMs```
+```ref-database.zookeeper.connectionTimeoutMs```
 :   Root node to use under Zookeeper to store/retrieve information
 
     Defaults: 1000
 
-```split-brain.zookeeper.retryPolicyBaseSleepTimeMs```
+```ref-database.zookeeper.retryPolicyBaseSleepTimeMs```
 :   Configuration for the base sleep timeout (iun ms) to use to create the
     BoundedExponentialBackoffRetry policy used for the Zookeeper connection
 
     Defaults: 1000
 
-```split-brain.zookeeper.retryPolicyMaxSleepTimeMs```
+```ref-database.zookeeper.retryPolicyMaxSleepTimeMs```
 :   Configuration for the max sleep timeout (iun ms) to use to create the
     BoundedExponentialBackoffRetry policy used for the Zookeeper connection
 
     Defaults: 3000
 
-```split-brain.zookeeper.retryPolicyMaxRetries```
+```ref-database.zookeeper.retryPolicyMaxRetries```
 :   Configuration for the max number of retries to use to create the
     BoundedExponentialBackoffRetry policy used for the Zookeeper connection
 
     Defaults: 3
 
-```split-brain.zookeeper.casRetryPolicyBaseSleepTimeMs```
+```ref-database.zookeeper.casRetryPolicyBaseSleepTimeMs```
 :   Configuration for the base sleep timeout (iun ms) to use to create the
     BoundedExponentialBackoffRetry policy used for the Compare and Swap
     operations on Zookeeper
 
     Defaults: 1000
-
-```split-brain.zookeeper.casRetryPolicyMaxSleepTimeMs```
+    
+```ref-database.zookeeper.casRetryPolicyMaxSleepTimeMs```
 :   Configuration for the max sleep timeout (iun ms) to use to create the
     BoundedExponentialBackoffRetry policy used for the Compare and Swap
     operations on Zookeeper
 
     Defaults: 3000
-
-```split-brain.zookeeper.casRetryPolicyMaxRetries```
+    
+```ref-database.zookeeper.casRetryPolicyMaxRetries```
 :   Configuration for the max number of retries to use to create the
     BoundedExponentialBackoffRetry policy used for the Compare and Swap
     operations on Zookeeper
 
     Defaults: 3
 
-```split-brain.zookeeper.migrate```
+```ref-database.zookeeper.migrate```
 :   Set to true when the plugin has been applied to an already existing module
     and there are no entries in Zookeeper for the existing refs. It will handle
     update failures caused by the old refs not existing forcing the creation of
