@@ -70,7 +70,7 @@ public class Configuration {
   private final Index index;
   private final KafkaSubscriber subscriber;
   private final Kafka kafka;
-  private final RefDatabaseConfig splitBrain;
+  private final ZookeeperConfig zookeeperConfig;
 
   @Inject
   Configuration(PluginConfigFactory pluginConfigFactory, @PluginName String pluginName) {
@@ -85,11 +85,11 @@ public class Configuration {
     cache = new Cache(cfg);
     event = new Event(cfg);
     index = new Index(cfg);
-    splitBrain = new RefDatabaseConfig(cfg);
+    zookeeperConfig = new ZookeeperConfig(cfg);
   }
 
-  public RefDatabaseConfig getRefDatabaseConfig() {
-    return splitBrain;
+  public ZookeeperConfig getZookeeperConfig() {
+    return zookeeperConfig;
   }
 
   public Kafka getKafka() {
@@ -411,7 +411,8 @@ public class Configuration {
     }
   }
 
-  public static class Zookeeper {
+  public static class ZookeeperConfig {
+    public static final String SECTION = "ref-database";
     public static final int defaultSessionTimeoutMs;
     public static final int defaultConnectionTimeoutMs;
     public static final String DEFAULT_ZK_CONNECT = "localhost:2181";
@@ -458,31 +459,19 @@ public class Configuration {
 
     private CuratorFramework build;
 
-    private Zookeeper(Config cfg) {
+    private ZookeeperConfig(Config cfg) {
       connectionString =
-          getString(
-              cfg, RefDatabaseConfig.SECTION, SUBSECTION, KEY_CONNECT_STRING, DEFAULT_ZK_CONNECT);
-      root =
-          getString(cfg, RefDatabaseConfig.SECTION, SUBSECTION, KEY_ROOT_NODE, "gerrit/multi-site");
+          getString(cfg, SECTION, SUBSECTION, KEY_CONNECT_STRING, DEFAULT_ZK_CONNECT);
+      root = getString(cfg, SECTION, SUBSECTION, KEY_ROOT_NODE, "gerrit/multi-site");
       sessionTimeoutMs =
-          getInt(
-              cfg,
-              RefDatabaseConfig.SECTION,
-              SUBSECTION,
-              KEY_SESSION_TIMEOUT_MS,
-              defaultSessionTimeoutMs);
+          getInt(cfg, SECTION, SUBSECTION, KEY_SESSION_TIMEOUT_MS, defaultSessionTimeoutMs);
       connectionTimeoutMs =
-          getInt(
-              cfg,
-              RefDatabaseConfig.SECTION,
-              SUBSECTION,
-              KEY_CONNECTION_TIMEOUT_MS,
-              defaultConnectionTimeoutMs);
+          getInt(cfg, SECTION, SUBSECTION, KEY_CONNECTION_TIMEOUT_MS, defaultConnectionTimeoutMs);
 
       baseSleepTimeMs =
           getInt(
               cfg,
-              RefDatabaseConfig.SECTION,
+              SECTION,
               SUBSECTION,
               KEY_RETRY_POLICY_BASE_SLEEP_TIME_MS,
               DEFAULT_RETRY_POLICY_BASE_SLEEP_TIME_MS);
@@ -490,7 +479,7 @@ public class Configuration {
       maxSleepTimeMs =
           getInt(
               cfg,
-              RefDatabaseConfig.SECTION,
+              SECTION,
               SUBSECTION,
               KEY_RETRY_POLICY_MAX_SLEEP_TIME_MS,
               DEFAULT_RETRY_POLICY_MAX_SLEEP_TIME_MS);
@@ -498,7 +487,7 @@ public class Configuration {
       maxRetries =
           getInt(
               cfg,
-              RefDatabaseConfig.SECTION,
+              SECTION,
               SUBSECTION,
               KEY_RETRY_POLICY_MAX_RETRIES,
               DEFAULT_RETRY_POLICY_MAX_RETRIES);
@@ -506,7 +495,7 @@ public class Configuration {
       casBaseSleepTimeMs =
           getInt(
               cfg,
-              RefDatabaseConfig.SECTION,
+              SECTION,
               SUBSECTION,
               KEY_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS,
               DEFAULT_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS);
@@ -514,7 +503,7 @@ public class Configuration {
       casMaxSleepTimeMs =
           getInt(
               cfg,
-              RefDatabaseConfig.SECTION,
+              SECTION,
               SUBSECTION,
               KEY_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS,
               DEFAULT_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS);
@@ -522,13 +511,12 @@ public class Configuration {
       casMaxRetries =
           getInt(
               cfg,
-              RefDatabaseConfig.SECTION,
+              SECTION,
               SUBSECTION,
               KEY_CAS_RETRY_POLICY_MAX_RETRIES,
               DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES);
 
-      migrate =
-          getBoolean(cfg, RefDatabaseConfig.SECTION, SUBSECTION, KEY_MIGRATE, DEFAULT_MIGRATE);
+      migrate = getBoolean(cfg, SECTION, SUBSECTION, KEY_MIGRATE, DEFAULT_MIGRATE);
 
       checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
     }
@@ -559,21 +547,6 @@ public class Configuration {
       return migrate
           ? ZkSharedRefDatabase.OperationMode.MIGRATION
           : ZkSharedRefDatabase.OperationMode.NORMAL;
-    }
-  }
-
-  public static class RefDatabaseConfig {
-    static final String SECTION = "ref-database";
-
-    private final Zookeeper zookeeper;
-
-    private RefDatabaseConfig(Config cfg) {
-
-      zookeeper = new Zookeeper(cfg);
-    }
-
-    public Zookeeper getZookeeper() {
-      return zookeeper;
     }
   }
 }

@@ -78,13 +78,13 @@ public class ZookeeperTestContainerSupport {
     splitBrainconfig.setString("ref-database", "zookeeper", "connectString", connectString);
     splitBrainconfig.setString(
         "ref-database",
-        Configuration.Zookeeper.SUBSECTION,
-        Configuration.Zookeeper.KEY_CONNECT_STRING,
+        Configuration.ZookeeperConfig.SUBSECTION,
+        Configuration.ZookeeperConfig.KEY_CONNECT_STRING,
         connectString);
     splitBrainconfig.setBoolean(
         "ref-database",
-        Configuration.Zookeeper.SUBSECTION,
-        Configuration.Zookeeper.KEY_MIGRATE,
+        Configuration.ZookeeperConfig.SUBSECTION,
+        Configuration.ZookeeperConfig.KEY_MIGRATE,
         migrationMode);
 
     configuration = new Configuration(splitBrainconfig);
