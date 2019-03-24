@@ -17,7 +17,6 @@ package com.googlesource.gerrit.plugins.multisite;
 import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Cache.CACHE_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Cache.PATTERN_KEY;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.DEFAULT_SPLIT_BRAIN;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.DEFAULT_THREAD_POOL_SIZE;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.ENABLE_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Event.EVENT_SECTION;
@@ -33,8 +32,6 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.server.config.PluginConfigFactory;
-import com.googlesource.gerrit.plugins.multisite.Configuration.RefDatabaseConfig;
-import com.googlesource.gerrit.plugins.multisite.Configuration.Zookeeper;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
@@ -97,22 +94,6 @@ public class ConfigurationTest {
 
     globalPluginConfig.setString(CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, INVALID_INT);
     assertThat(getConfiguration().cache().threadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
-  }
-
-  @Test
-  public void testGetEnabledRefDatabaseConfig() throws Exception {
-    assertThat(getConfiguration().getRefDatabaseConfig().enabled()).isEqualTo(DEFAULT_SPLIT_BRAIN);
-
-    globalPluginConfig.setBoolean(
-        RefDatabaseConfig.SECTION, null, RefDatabaseConfig.ENABLED_KEY, SPLIT_BRAIN_ENABLED);
-    // If ref-database enabled, zookeeper 'connect' is required
-    globalPluginConfig.setString(
-        RefDatabaseConfig.SECTION,
-        Zookeeper.SUBSECTION,
-        Zookeeper.KEY_CONNECT_STRING,
-        Zookeeper.DEFAULT_ZK_CONNECT);
-
-    assertThat(getConfiguration().getRefDatabaseConfig().enabled()).isEqualTo(SPLIT_BRAIN_ENABLED);
   }
 
   @Test
