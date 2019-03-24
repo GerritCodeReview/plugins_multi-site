@@ -1010,6 +1010,30 @@
     },
     {
       "key": {
+        "uuid": "d7fd6493_c1d45033",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZKRefsSharedDatabaseTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-24T00:55:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "788f7502_1329fb58",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 64
+      },
+      "revId": "cc3fb0e098448b47253cd53128eac321049b5c86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "41190a03_fcb61e67",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZKRefsSharedDatabaseTest.java",
         "patchSetId": 3
