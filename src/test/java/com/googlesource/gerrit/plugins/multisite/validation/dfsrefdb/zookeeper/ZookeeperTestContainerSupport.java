@@ -74,21 +74,21 @@ public class ZookeeperTestContainerSupport {
     Integer zkHostPort = container.getMappedPort(2181);
     Config splitBrainconfig = new Config();
     String connectString = "localhost:" + zkHostPort;
-    splitBrainconfig.setBoolean("split-brain", null, "enabled", true);
-    splitBrainconfig.setString("split-brain", "zookeeper", "connectString", connectString);
+    splitBrainconfig.setBoolean("ref-database", null, "enabled", true);
+    splitBrainconfig.setString("ref-database", "zookeeper", "connectString", connectString);
     splitBrainconfig.setString(
-        "split-brain",
+        "ref-database",
         Configuration.Zookeeper.SUBSECTION,
         Configuration.Zookeeper.KEY_CONNECT_STRING,
         connectString);
     splitBrainconfig.setBoolean(
-        "split-brain",
+        "ref-database",
         Configuration.Zookeeper.SUBSECTION,
         Configuration.Zookeeper.KEY_MIGRATE,
         migrationMode);
 
     configuration = new Configuration(splitBrainconfig);
-    this.curator = configuration.getSplitBrain().getZookeeper().buildCurator();
+    this.curator = configuration.getRefDatabaseConfig().getZookeeper().buildCurator();
   }
 
   public void cleanup() {
