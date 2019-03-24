@@ -191,6 +191,30 @@
     },
     {
       "key": {
+        "uuid": "a2b317f7_97cdaea2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-24T00:56:26Z",
+      "side": 1,
+      "message": "Yes, we should because the code is not ours.",
+      "parentUuid": "0c7c0f13_fbf1b6e6",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "80bbd7da63ef38ed14c90c295604785fb7b1ffac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "95a672d0_f0ecc47a",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
         "patchSetId": 6
