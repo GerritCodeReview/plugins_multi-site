@@ -82,7 +82,7 @@ public class Module extends LifecycleModule {
       install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
 
-    if (config.getSplitBrain().enabled()) {
+    if (config.getRefDatabaseConfig().enabled()) {
       install(new ValidationModule(config));
     }
 

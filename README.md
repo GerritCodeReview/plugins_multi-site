@@ -85,10 +85,10 @@ following basic settings:
 [kafka "subscriber"]
   enabled = true
 
-[split-brain]
+[ref-database]
   enabled = true
 
-[split-brain "zookeeper"]
+[ref-database "zookeeper"]
   connectString = "localhost:2181"
 ```
 

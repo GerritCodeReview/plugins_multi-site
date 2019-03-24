@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.server.config.PluginConfigFactory;
-import com.googlesource.gerrit.plugins.multisite.Configuration.SplitBrain;
+import com.googlesource.gerrit.plugins.multisite.Configuration.RefDatabaseConfig;
 import com.googlesource.gerrit.plugins.multisite.Configuration.Zookeeper;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
@@ -100,19 +100,19 @@ public class ConfigurationTest {
   }
 
   @Test
-  public void testGetEnabledSplitBrain() throws Exception {
-    assertThat(getConfiguration().getSplitBrain().enabled()).isEqualTo(DEFAULT_SPLIT_BRAIN);
+  public void testGetEnabledRefDatabaseConfig() throws Exception {
+    assertThat(getConfiguration().getRefDatabaseConfig().enabled()).isEqualTo(DEFAULT_SPLIT_BRAIN);
 
     globalPluginConfig.setBoolean(
-        SplitBrain.SECTION, null, SplitBrain.ENABLED_KEY, SPLIT_BRAIN_ENABLED);
-    // If split-brain enabled, zookeeper 'connect' is required
+        RefDatabaseConfig.SECTION, null, RefDatabaseConfig.ENABLED_KEY, SPLIT_BRAIN_ENABLED);
+    // If ref-database enabled, zookeeper 'connect' is required
     globalPluginConfig.setString(
-        SplitBrain.SECTION,
+        RefDatabaseConfig.SECTION,
         Zookeeper.SUBSECTION,
         Zookeeper.KEY_CONNECT_STRING,
         Zookeeper.DEFAULT_ZK_CONNECT);
 
-    assertThat(getConfiguration().getSplitBrain().enabled()).isEqualTo(SPLIT_BRAIN_ENABLED);
+    assertThat(getConfiguration().getRefDatabaseConfig().enabled()).isEqualTo(SPLIT_BRAIN_ENABLED);
   }
 
   @Test
