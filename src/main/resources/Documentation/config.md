@@ -43,9 +43,6 @@ File '@PLUGIN@.config'
   projectListEventEnabled = true
   streamEventEnabled = true
 
-[ref-database]
-  enabled = true
-
 [ref-database "zookeeper"]
   connectString = "localhost:2181"
   rootNode = "/gerrit/multi-site"
@@ -126,10 +123,6 @@ File '@PLUGIN@.config'
 ```kafka.projectListEventTopic```
 :   Name of the Kafka topic to use for publishing cache eviction events
     Defaults to GERRIT.EVENT.PROJECT.LIST
-
-```kafka.publisher.enabled```
-:   Enable publishing events to Kafka
-    Defaults: false
 
 ```kafka.publisher.indexEventEnabled```
 :   Enable publication of index events, ignored when `kafka.publisher.enabled`

@@ -63,7 +63,6 @@ public class Configuration {
   static final boolean DEFAULT_ENABLE_PROCESSING = true;
   static final String KAFKA_SECTION = "kafka";
   public static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
-  public static final Boolean DEFAULT_SPLIT_BRAIN = false;
 
   private final KafkaPublisher publisher;
   private final Cache cache;
@@ -564,20 +563,13 @@ public class Configuration {
   }
 
   public static class RefDatabaseConfig {
-    private final boolean enabled;
+    static final String SECTION = "ref-database";
 
     private final Zookeeper zookeeper;
-    static final String SECTION = "ref-database";
-    static final String ENABLED_KEY = "enabled";
 
     private RefDatabaseConfig(Config cfg) {
 
-      this.enabled = getBoolean(cfg, SECTION, null, ENABLED_KEY, DEFAULT_SPLIT_BRAIN);
-      zookeeper = this.enabled ? new Zookeeper(cfg) : null;
-    }
-
-    public boolean enabled() {
-      return enabled;
+      zookeeper = new Zookeeper(cfg);
     }
 
     public Zookeeper getZookeeper() {
