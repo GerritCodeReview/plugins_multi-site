@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c8a72c87_743ea325",
+        "filename": "setup_local_env/configs/replication.config",
+        "patchSetId": 8
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-25T07:42:50Z",
+      "side": 1,
+      "message": "Is this related to the shared ref-database?",
+      "range": {
+        "startLine": 6,
+        "startChar": 23,
+        "endLine": 6,
+        "endChar": 45
+      },
+      "revId": "21a0413c51b17199cb2770c8b9c1c9a0ef8b5438",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "828578a4_a9a6e230",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-25T07:42:50Z",
+      "side": 1,
+      "message": "Empty line",
+      "range": {
+        "startLine": 97,
+        "startChar": 1,
+        "endLine": 97,
+        "endChar": 7
+      },
+      "revId": "21a0413c51b17199cb2770c8b9c1c9a0ef8b5438",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3fd7a18c_6be816d4",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-25T07:42:50Z",
+      "side": 1,
+      "message": "Not related",
+      "range": {
+        "startLine": 165,
+        "startChar": 0,
+        "endLine": 166,
+        "endChar": 6
+      },
+      "revId": "21a0413c51b17199cb2770c8b9c1c9a0ef8b5438",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1586b782_c5b12407",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-25T07:42:50Z",
+      "side": 1,
+      "message": "Not related",
+      "range": {
+        "startLine": 243,
+        "startChar": 0,
+        "endLine": 247,
+        "endChar": 4
+      },
+      "revId": "21a0413c51b17199cb2770c8b9c1c9a0ef8b5438",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
