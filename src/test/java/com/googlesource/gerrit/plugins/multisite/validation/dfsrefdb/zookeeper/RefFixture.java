@@ -42,6 +42,8 @@ public interface RefFixture {
   static final ObjectId AN_OBJECT_ID_1 = new ObjectId(1, 2, 3, 4, 5);
   static final ObjectId AN_OBJECT_ID_2 = new ObjectId(1, 2, 3, 4, 6);
   static final ObjectId AN_OBJECT_ID_3 = new ObjectId(1, 2, 3, 4, 7);
+  static final String A_TEST_REF_NAME = "refs/heads/master";
+
 
   default String aBranchRef() {
     return RefNames.REFS_HEADS + testBranch();
