@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4c7818c9_31977ae3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/MultiSiteRefUpdate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-27T18:05:39Z",
+      "side": 1,
+      "message": "This class looks good, why don\u0027t you just write a unit-test and finalise the change for review?",
+      "revId": "14f91d13b4aca65590b6a440606e309a45e4133f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3832f7c0_1ff5c2fe",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/MultiSiteRepository.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-27T18:05:39Z",
+      "side": 1,
+      "message": "Why extending InMemoryRepository?\nI believe we should instead implement a generic Repository and delegate to a real implementation.",
+      "range": {
+        "startLine": 7,
+        "startChar": 33,
+        "endLine": 7,
+        "endChar": 59
+      },
+      "revId": "14f91d13b4aca65590b6a440606e309a45e4133f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "677149fc_2d0d71be",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/MultiSiteRefUpdateTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-27T18:05:39Z",
+      "side": 1,
+      "message": "Why do you need to startup a Gerrit server? If this is a simple unit-test of the MultisiteRefUpdate, then you should be able to test is separately from the whole of Gerrit.",
+      "range": {
+        "startLine": 18,
+        "startChar": 36,
+        "endLine": 18,
+        "endChar": 62
+      },
+      "revId": "14f91d13b4aca65590b6a440606e309a45e4133f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4de9d2ce_497e0d84",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/MultiSiteRefUpdateTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-27T18:05:39Z",
+      "side": 1,
+      "message": "What is a commonRefUpdate? What is this test trying to achieve?",
+      "range": {
+        "startLine": 45,
+        "startChar": 14,
+        "endLine": 45,
+        "endChar": 39
+      },
+      "revId": "14f91d13b4aca65590b6a440606e309a45e4133f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
