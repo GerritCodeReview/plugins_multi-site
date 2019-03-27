@@ -19,6 +19,29 @@
     },
     {
       "key": {
+        "uuid": "9ebaef86_a590887b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/MultiSiteRefUpdate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-03-27T18:12:28Z",
+      "side": 1,
+      "message": "I believe you would need assisted injected members and the Guice Factory pattern\nSee https://github.com/google/guice/wiki/AssistedInject",
+      "range": {
+        "startLine": 20,
+        "startChar": 2,
+        "endLine": 20,
+        "endChar": 64
+      },
+      "revId": "14f91d13b4aca65590b6a440606e309a45e4133f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3832f7c0_1ff5c2fe",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/MultiSiteRepository.java",
         "patchSetId": 1
