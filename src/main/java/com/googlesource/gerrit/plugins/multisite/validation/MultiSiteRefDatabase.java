@@ -29,7 +29,6 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.MultiSiteRefUpdate;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
