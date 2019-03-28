@@ -90,8 +90,7 @@ public class MultiSiteRefDatabase extends RefDatabase {
 
   @Override
   public RefUpdate newUpdate(String name, boolean detach) throws IOException {
-    RefUpdate refUpdate = refDatabase.newUpdate(name, detach);
-    return refUpdateFactory.create(projectName, refUpdate);
+    return wrapRefUpdate(refDatabase.newUpdate(name, detach));
   }
 
   @Override
@@ -168,5 +167,9 @@ public class MultiSiteRefDatabase extends RefDatabase {
   @Override
   public void refresh() {
     refDatabase.refresh();
+  }
+
+  RefUpdate wrapRefUpdate(RefUpdate refUpdate) {
+    return refUpdateFactory.create(projectName, refUpdate);
   }
 }
