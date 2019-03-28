@@ -29,7 +29,6 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.MultiSiteRefUpdate;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
@@ -91,7 +90,10 @@ public class MultiSiteRefDatabase extends RefDatabase {
 
   @Override
   public RefUpdate newUpdate(String name, boolean detach) throws IOException {
-    RefUpdate refUpdate = refDatabase.newUpdate(name, detach);
+    return wrapRefUpdate(refDatabase.newUpdate(name, detach));
+  }
+
+  public RefUpdate wrapRefUpdate(RefUpdate refUpdate) {
     return refUpdateFactory.create(projectName, refUpdate);
   }
 
