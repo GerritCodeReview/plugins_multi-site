@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.cache;
 
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.events.NewProjectCreatedListener;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.events.ProjectEvent;
@@ -31,16 +30,12 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
 
   private final DynamicSet<ProjectListUpdateForwarder> forwarders;
   private final Executor executor;
-  private final String pluginName;
 
   @Inject
   public ProjectListUpdateHandler(
-      DynamicSet<ProjectListUpdateForwarder> forwarders,
-      @CacheExecutor Executor executor,
-      @PluginName String pluginName) {
+      DynamicSet<ProjectListUpdateForwarder> forwarders, @CacheExecutor Executor executor) {
     this.forwarders = forwarders;
     this.executor = executor;
-    this.pluginName = pluginName;
   }
 
   @Override
@@ -77,10 +72,8 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
     @Override
     public String toString() {
       return String.format(
-          "[%s] Update project list in target instance: %s '%s'",
-          pluginName,
-          projectListUpdateEvent.remove ? "remove" : "add",
-          projectListUpdateEvent.projectName);
+          "Update project list in target instance: %s '%s'",
+          projectListUpdateEvent.remove ? "remove" : "add", projectListUpdateEvent.projectName);
     }
   }
 }
