@@ -91,9 +91,8 @@ public class ValidationIT extends LightweightPluginDaemonTest {
 
   @Test
   public void inSyncChangeValidatorShouldAcceptNewChange() throws Exception {
-    final PushOneCommit.Result change =
-        createCommitAndPush(testRepo, "refs/heads/master", "msg", "file", "content");
-
+    final PushOneCommit.Result change = createChange();
     change.assertOkStatus();
+    //TODO: Should check the shared database...
   }
 }
