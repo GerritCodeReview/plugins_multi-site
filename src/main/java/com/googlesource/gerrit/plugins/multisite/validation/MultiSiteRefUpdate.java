@@ -43,6 +43,7 @@ public class MultiSiteRefUpdate extends RefUpdate {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   protected final RefUpdate refUpdateBase;
+
   private final SharedRefDatabase sharedDb;
   private final String projectName;
 
