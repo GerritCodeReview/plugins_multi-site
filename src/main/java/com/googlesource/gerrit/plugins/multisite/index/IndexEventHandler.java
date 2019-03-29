@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.plugins.multisite.index;
 
 import com.google.common.base.Objects;
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.events.AccountIndexedListener;
 import com.google.gerrit.extensions.events.ChangeIndexedListener;
 import com.google.gerrit.extensions.events.GroupIndexedListener;
@@ -43,19 +42,16 @@ class IndexEventHandler
   private static final Logger log = LoggerFactory.getLogger(IndexEventHandler.class);
   private final Executor executor;
   private final DynamicSet<IndexEventForwarder> forwarders;
-  private final String pluginName;
   private final Set<IndexTask> queuedTasks = Collections.newSetFromMap(new ConcurrentHashMap<>());
   private final ChangeCheckerImpl.Factory changeChecker;
 
   @Inject
   IndexEventHandler(
       @IndexExecutor Executor executor,
-      @PluginName String pluginName,
       DynamicSet<IndexEventForwarder> forwarders,
       ChangeCheckerImpl.Factory changeChecker) {
     this.forwarders = forwarders;
     this.executor = executor;
-    this.pluginName = pluginName;
     this.changeChecker = changeChecker;
   }
 
@@ -164,8 +160,7 @@ class IndexEventHandler
 
     @Override
     public String toString() {
-      return String.format(
-          "[%s] Index change %s in target instance", pluginName, changeIndexEvent.changeId);
+      return String.format("Index change %s in target instance", changeIndexEvent.changeId);
     }
   }
 
@@ -196,8 +191,7 @@ class IndexEventHandler
 
     @Override
     public String toString() {
-      return String.format(
-          "[%s] Index account %s in target instance", pluginName, accountIndexEvent.accountId);
+      return String.format("Index account %s in target instance", accountIndexEvent.accountId);
     }
   }
 
@@ -228,8 +222,7 @@ class IndexEventHandler
 
     @Override
     public String toString() {
-      return String.format(
-          "[%s] Index group %s in target instance", pluginName, groupIndexEvent.groupUUID);
+      return String.format("Index group %s in target instance", groupIndexEvent.groupUUID);
     }
   }
 
@@ -260,8 +253,7 @@ class IndexEventHandler
 
     @Override
     public String toString() {
-      return String.format(
-          "[%s] Index project %s in target instance", pluginName, projectIndexEvent.projectName);
+      return String.format("Index project %s in target instance", projectIndexEvent.projectName);
     }
   }
 }
