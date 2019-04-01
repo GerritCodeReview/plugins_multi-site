@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e0a3b606_a5f39ab1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/MultiSiteRefUpdate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-01T10:41:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4c7818c9_31977ae3",
+      "revId": "14f91d13b4aca65590b6a440606e309a45e4133f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9ebaef86_a590887b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/MultiSiteRefUpdate.java",
         "patchSetId": 1
@@ -39,6 +57,30 @@
       "revId": "14f91d13b4aca65590b6a440606e309a45e4133f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8164253b_6bc63c54",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/MultiSiteRefUpdate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-01T10:41:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ebaef86_a590887b",
+      "range": {
+        "startLine": 20,
+        "startChar": 2,
+        "endLine": 20,
+        "endChar": 64
+      },
+      "revId": "14f91d13b4aca65590b6a440606e309a45e4133f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "fe8c2298_a61b62d3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/MultiSiteRepository.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-01T10:41:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3832f7c0_1ff5c2fe",
+      "range": {
+        "startLine": 7,
+        "startChar": 33,
+        "endLine": 7,
+        "endChar": 59
+      },
+      "revId": "14f91d13b4aca65590b6a440606e309a45e4133f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "677149fc_2d0d71be",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/MultiSiteRefUpdateTest.java",
         "patchSetId": 1
@@ -88,6 +154,30 @@
     },
     {
       "key": {
+        "uuid": "2c1e06f4_6f0b61d1",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/MultiSiteRefUpdateTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-01T10:41:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "677149fc_2d0d71be",
+      "range": {
+        "startLine": 18,
+        "startChar": 36,
+        "endLine": 18,
+        "endChar": 62
+      },
+      "revId": "14f91d13b4aca65590b6a440606e309a45e4133f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4de9d2ce_497e0d84",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/MultiSiteRefUpdateTest.java",
         "patchSetId": 1
@@ -108,6 +198,30 @@
       "revId": "14f91d13b4aca65590b6a440606e309a45e4133f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d69b22d_05810f8e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/MultiSiteRefUpdateTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-01T10:41:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4de9d2ce_497e0d84",
+      "range": {
+        "startLine": 45,
+        "startChar": 14,
+        "endLine": 45,
+        "endChar": 39
+      },
+      "revId": "14f91d13b4aca65590b6a440606e309a45e4133f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
