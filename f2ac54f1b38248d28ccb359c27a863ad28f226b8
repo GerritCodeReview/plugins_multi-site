@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "83b39c7b_a24d9ed2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteGitRepositoryManager.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-01T07:02:07Z",
+      "side": 1,
+      "message": "Why is this injected also? You would risk a circular dependency with MultiSiteGitRepositoryManager. What is the expected implementation of it?",
+      "range": {
+        "startLine": 66,
+        "startChar": 56,
+        "endLine": 66,
+        "endChar": 97
+      },
+      "revId": "f2ac54f1b38248d28ccb359c27a863ad28f226b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
