@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "1e0cdedc_a49abc7d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteGitRepositoryManager.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-01T08:20:15Z",
+      "side": 1,
+      "message": "There\u0027s no need for it: we don\u0027t need to pass any repository builder. See the comments on the MultiSiteGitRepositoryManager change.",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 3
+      },
+      "revId": "f2ac54f1b38248d28ccb359c27a863ad28f226b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "83b39c7b_a24d9ed2",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteGitRepositoryManager.java",
         "patchSetId": 3
@@ -18,6 +41,52 @@
         "startChar": 56,
         "endLine": 66,
         "endChar": 97
+      },
+      "revId": "f2ac54f1b38248d28ccb359c27a863ad28f226b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "826f943c_4de4a80a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-01T08:20:15Z",
+      "side": 1,
+      "message": "This is not a DynamicSet but a simple Guice binding",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 38,
+        "endChar": 57
+      },
+      "revId": "f2ac54f1b38248d28ccb359c27a863ad28f226b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67726478_f0127709",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-01T08:20:15Z",
+      "side": 1,
+      "message": "This should be in a zookeeper-specific module",
+      "range": {
+        "startLine": 39,
+        "startChar": 4,
+        "endLine": 39,
+        "endChar": 85
       },
       "revId": "f2ac54f1b38248d28ccb359c27a863ad28f226b8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
