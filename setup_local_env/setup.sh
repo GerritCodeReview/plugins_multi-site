@@ -345,13 +345,13 @@ if [ $NEW_INSTALLATION = "true" ]; then
 
 	echo "Setting up directories"
 	mkdir -p $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $HA_PROXY_CERTIFICATES_DIR $FAKE_NFS
-	java -jar $DEPLOYMENT_LOCATION/gerrit.war init --batch --no-auto-start --install-all-plugins --dev -d $LOCATION_TEST_SITE_1
+	java -jar $DEPLOYMENT_LOCATION/gerrit.war init --batch --no-auto-start --install-plugin=codemirror-editor --install-plugin=download-commands --dev -d $LOCATION_TEST_SITE_1
 
 	# Deploying TLS certificates
 	if [ "$HTTPS_ENABLED" = "true" ];then deploy_tls_certificates;fi
 
 	echo "Copy multi-site plugin"
-	cp -f $DEPLOYMENT_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/plugins/multi-site.jar
+	cp -f $DEPLOYMENT_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/lib/multi-site.jar
 
 	echo "Copy websession-flatfile plugin"
 	cp -f $DEPLOYMENT_LOCATION/websession-flatfile.jar $LOCATION_TEST_SITE_1/plugins/websession-flatfile.jar
