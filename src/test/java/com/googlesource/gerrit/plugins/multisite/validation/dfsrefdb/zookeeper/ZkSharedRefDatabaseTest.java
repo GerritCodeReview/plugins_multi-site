@@ -29,7 +29,6 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import java.io.IOException;
 import org.apache.curator.retry.RetryNTimes;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
@@ -49,10 +48,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   public void setup() {
     zookeeperContainer = new ZookeeperTestContainerSupport(false);
     zkSharedRefDatabase =
-        new ZkSharedRefDatabase(
-            zookeeperContainer.getCurator(),
-            new RetryNTimes(5, 30),
-            ZkSharedRefDatabase.OperationMode.NORMAL);
+        new ZkSharedRefDatabase(zookeeperContainer.getCurator(), new RetryNTimes(5, 30));
   }
 
   @After
@@ -103,32 +99,6 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
 
     assertThat(zkSharedRefDatabase.compareAndPut(projectName, expectedRef, refOf(AN_OBJECT_ID_3)))
         .isFalse();
-  }
-
-  @Test
-  public void compareAndPutShouldFaiIfTheObjectionDoesNotExist() throws IOException {
-    Ref oldRef = refOf(AN_OBJECT_ID_1);
-    assertThat(
-            zkSharedRefDatabase.compareAndPut(A_TEST_PROJECT_NAME, oldRef, refOf(AN_OBJECT_ID_2)))
-        .isFalse();
-  }
-
-  @Test
-  public void compareAndPutShouldDoAnInsertIfTheObjectionDoesNotExistAndInMigrationMode()
-      throws Exception {
-    zkSharedRefDatabase =
-        new ZkSharedRefDatabase(
-            zookeeperContainer.getCurator(),
-            new RetryNTimes(5, 30),
-            ZkSharedRefDatabase.OperationMode.MIGRATION);
-
-    Ref oldRef = refOf(AN_OBJECT_ID_1);
-    assertThat(
-            zkSharedRefDatabase.compareAndPut(A_TEST_PROJECT_NAME, oldRef, refOf(AN_OBJECT_ID_2)))
-        .isTrue();
-
-    assertThat(zookeeperContainer.readRefValueFromZk(A_TEST_PROJECT_NAME, oldRef))
-        .isEqualTo(AN_OBJECT_ID_2);
   }
 
   @Test

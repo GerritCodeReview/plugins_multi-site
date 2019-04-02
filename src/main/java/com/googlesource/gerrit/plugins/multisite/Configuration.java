@@ -27,7 +27,6 @@ import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -142,11 +141,6 @@ public class Configuration {
           });
     }
     return ofInstance(config);
-  }
-
-  private static boolean getBoolean(
-      Supplier<Config> cfg, String section, String subsection, String name, boolean defaultValue) {
-    return cfg.get().getBoolean(section, subsection, name, defaultValue);
   }
 
   private static int getInt(
@@ -464,7 +458,6 @@ public class Configuration {
     private final int DEFAULT_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS = 100;
     private final int DEFAULT_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS = 300;
     private final int DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES = 3;
-    private final boolean DEFAULT_MIGRATE = false;
 
     static {
       CuratorFrameworkFactory.Builder b = CuratorFrameworkFactory.builder();
@@ -496,7 +489,6 @@ public class Configuration {
     private final int casBaseSleepTimeMs;
     private final int casMaxSleepTimeMs;
     private final int casMaxRetries;
-    private final boolean migrate;
 
     private CuratorFramework build;
 
@@ -557,8 +549,6 @@ public class Configuration {
               KEY_CAS_RETRY_POLICY_MAX_RETRIES,
               DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES);
 
-      migrate = getBoolean(cfg, SECTION, SUBSECTION, KEY_MIGRATE, DEFAULT_MIGRATE);
-
       checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
     }
 
@@ -582,12 +572,6 @@ public class Configuration {
     public RetryPolicy buildCasRetryPolicy() {
       return new BoundedExponentialBackoffRetry(
           casBaseSleepTimeMs, casMaxSleepTimeMs, casMaxRetries);
-    }
-
-    public ZkSharedRefDatabase.OperationMode getOperationMode() {
-      return migrate
-          ? ZkSharedRefDatabase.OperationMode.MIGRATION
-          : ZkSharedRefDatabase.OperationMode.NORMAL;
     }
   }
 }
