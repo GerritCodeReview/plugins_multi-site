@@ -41,6 +41,7 @@ import org.eclipse.jgit.lib.RefUpdate;
 
 public class MultiSiteRefDatabase extends RefDatabase {
   private final MultiSiteRefUpdate.Factory refUpdateFactory;
+  private final MultiSiteBatchRefUpdate.Factory batchRefUpdateFactory;
   private final String projectName;
   private final RefDatabase refDatabase;
 
@@ -51,9 +52,11 @@ public class MultiSiteRefDatabase extends RefDatabase {
   @Inject
   public MultiSiteRefDatabase(
       MultiSiteRefUpdate.Factory refUpdateFactory,
+      MultiSiteBatchRefUpdate.Factory batchRefUpdateFactory,
       @Assisted String projectName,
       @Assisted RefDatabase refDatabase) {
     this.refUpdateFactory = refUpdateFactory;
+    this.batchRefUpdateFactory = batchRefUpdateFactory;
     this.projectName = projectName;
     this.refDatabase = refDatabase;
   }
@@ -104,7 +107,7 @@ public class MultiSiteRefDatabase extends RefDatabase {
 
   @Override
   public BatchRefUpdate newBatchUpdate() {
-    return refDatabase.newBatchUpdate();
+    return batchRefUpdateFactory.create(projectName, this, refDatabase.newBatchUpdate());
   }
 
   @Override
