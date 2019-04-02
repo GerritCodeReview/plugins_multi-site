@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e1e60c3e_266e0130",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefUpdate.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-02T10:23:20Z",
+      "side": 1,
+      "message": "You are missing the delegation of *a lot* of refupdate methods. Without them, this refupdate won\u0027t work.\n\nLet me add a PS on top of it.",
+      "revId": "1c44e129f020186475381df9fa41bf410be6ed76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
