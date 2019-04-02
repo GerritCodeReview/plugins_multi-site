@@ -32,6 +32,10 @@ import org.eclipse.jgit.lib.Ref;
 public class ZkSharedRefDatabase implements SharedRefDatabase {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
+  private static final byte[] ZEROS_OBJECT_ID = {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+  };
+
   private final CuratorFramework client;
   private final RetryPolicy retryPolicy;
 
@@ -109,6 +113,10 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   }
 
   static byte[] writeObjectId(ObjectId value) throws IOException {
+    if (value == null) {
+      return ZEROS_OBJECT_ID;
+    }
+
     final ByteArrayOutputStream out = new ByteArrayOutputStream();
     final DataOutputStream stream = new DataOutputStream(out);
     value.copyRawTo(stream);
