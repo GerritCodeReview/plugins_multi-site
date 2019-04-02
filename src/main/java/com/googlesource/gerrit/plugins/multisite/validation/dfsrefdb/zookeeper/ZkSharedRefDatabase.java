@@ -39,21 +39,11 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   private final CuratorFramework client;
   private final RetryPolicy retryPolicy;
 
-  private final OperationMode operationMode;
-
-  public enum OperationMode {
-    NORMAL,
-    MIGRATION;
-  }
-
   @Inject
   public ZkSharedRefDatabase(
-      CuratorFramework client,
-      @Named("ZkLockRetryPolicy") RetryPolicy retryPolicy,
-      OperationMode operationMode) {
+      CuratorFramework client, @Named("ZkLockRetryPolicy") RetryPolicy retryPolicy) {
     this.client = client;
     this.retryPolicy = retryPolicy;
-    this.operationMode = operationMode;
   }
 
   @Override
@@ -76,13 +66,7 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
           distributedRefValue.compareAndSet(
               writeObjectId(oldRef.getObjectId()), writeObjectId(newValue));
 
-      if (!newDistributedValue.succeeded()
-          && operationMode == OperationMode.MIGRATION
-          && refNotInZk(projectName, oldRef, newRef)) {
-        logger.atInfo().log(
-            "Missing entry in ZK for ref at path '%'. Assuming this is because we are in migration mode and creating it",
-            pathFor(projectName, oldRef, newRef));
-
+      if (!newDistributedValue.succeeded() && refNotInZk(projectName, oldRef, newRef)) {
         return distributedRefValue.initialize(writeObjectId(newRef.getObjectId()));
       }
       return newDistributedValue.succeeded();
