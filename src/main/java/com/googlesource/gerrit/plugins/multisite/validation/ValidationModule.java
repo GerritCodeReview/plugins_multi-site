@@ -16,11 +16,11 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.git.validators.RefOperationValidationListener;
-import com.google.inject.AbstractModule;
+import com.google.inject.FactoryModule;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 
-public class ValidationModule extends AbstractModule {
+public class ValidationModule extends FactoryModule {
 
   private Configuration cfg;
 
@@ -30,7 +30,11 @@ public class ValidationModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    DynamicSet.bind(binder(), RefOperationValidationListener.class).to(InSyncChangeValidator.class);
+    factory(MultiSiteRepository.Factory.class);
+    factory(MultiSiteRefDatabase.Factory.class);
+    factory(MultiSiteRefUpdate.Factory.class);
+    factory(MultiSiteBatchRefUpdate.Factory.class);
+    bind(GitRepositoryManager.class).to(MultiSiteGitRepositoryManager.class);
 
     install(new ZkValidationModule(cfg));
   }
