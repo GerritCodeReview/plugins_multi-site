@@ -82,6 +82,17 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   }
 
   @Test
+  public void shouldCompareAndPutWithNullOldRefSuccessfully() throws Exception {
+    Ref oldRef = refOf(null);
+    Ref newRef = refOf(AN_OBJECT_ID_2);
+    String projectName = A_TEST_PROJECT_NAME;
+
+    zookeeperContainer.createRefInZk(projectName, oldRef);
+
+    assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRef, newRef)).isTrue();
+  }
+
+  @Test
   public void compareAndPutShouldFailIfTheObjectionHasNotTheExpectedValue() throws Exception {
     String projectName = A_TEST_PROJECT_NAME;
 
