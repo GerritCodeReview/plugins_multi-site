@@ -32,6 +32,7 @@ public class ValidationModule extends FactoryModule {
     factory(MultiSiteRepository.Factory.class);
     factory(MultiSiteRefDatabase.Factory.class);
     factory(MultiSiteRefUpdate.Factory.class);
+    factory(MultiSiteBatchRefUpdate.Factory.class);
     bind(GitRepositoryManager.class).to(MultiSiteGitRepositoryManager.class);
 
     install(new ZkValidationModule(cfg));
