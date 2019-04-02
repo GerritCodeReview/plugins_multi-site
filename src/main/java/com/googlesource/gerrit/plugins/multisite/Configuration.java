@@ -24,7 +24,6 @@ import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -545,12 +544,6 @@ public class Configuration {
     public RetryPolicy buildCasRetryPolicy() {
       return new BoundedExponentialBackoffRetry(
           casBaseSleepTimeMs, casMaxSleepTimeMs, casMaxRetries);
-    }
-
-    public ZkSharedRefDatabase.OperationMode getOperationMode() {
-      return migrate
-          ? ZkSharedRefDatabase.OperationMode.MIGRATION
-          : ZkSharedRefDatabase.OperationMode.NORMAL;
     }
   }
 }
