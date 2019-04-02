@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a0fb020_c6ad2cff",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefDatabase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-02T22:16:49Z",
+      "side": 1,
+      "message": "refDatabase",
+      "range": {
+        "startLine": 110,
+        "startChar": 53,
+        "endLine": 110,
+        "endChar": 57
+      },
+      "revId": "b90f6c5c4dacc5fa74f810d19fe2e5ad212420ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2dedc41_2d711201",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefDatabase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-02T22:16:49Z",
+      "side": 1,
+      "message": "Not needed, as we already pass the refDatabase",
+      "range": {
+        "startLine": 110,
+        "startChar": 59,
+        "endLine": 110,
+        "endChar": 87
+      },
+      "revId": "b90f6c5c4dacc5fa74f810d19fe2e5ad212420ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
