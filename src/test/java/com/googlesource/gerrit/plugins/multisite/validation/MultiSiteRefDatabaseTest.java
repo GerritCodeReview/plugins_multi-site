@@ -46,6 +46,7 @@ public class MultiSiteRefDatabaseTest implements RefFixture {
   @Rule public TestName nameRule = new TestName();
 
   @Mock MultiSiteRefUpdate.Factory refUpdateFactoryMock;
+  @Mock MultiSiteBatchRefUpdate.Factory refBatchUpdateFactoryMock;
 
   @Mock RefDatabase refDatabaseMock;
 
@@ -60,7 +61,8 @@ public class MultiSiteRefDatabaseTest implements RefFixture {
   public void newUpdateShouldCreateMultiSiteRefUpdate() throws Exception {
     String refName = aBranchRef();
     MultiSiteRefDatabase multiSiteRefDb =
-        new MultiSiteRefDatabase(refUpdateFactoryMock, A_TEST_PROJECT_NAME, refDatabaseMock);
+        new MultiSiteRefDatabase(
+            refUpdateFactoryMock, refBatchUpdateFactoryMock, A_TEST_PROJECT_NAME, refDatabaseMock);
     doReturn(refUpdateMock).when(refDatabaseMock).newUpdate(refName, false);
 
     multiSiteRefDb.newUpdate(refName, false);
