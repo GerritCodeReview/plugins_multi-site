@@ -29,6 +29,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import static java.util.Comparator.comparing;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
@@ -236,7 +237,14 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     }
 
     for (RefPair refPair : refsToUpdate) {
-      sharedRefDb.compareAndPut(projectName, refPair.oldRef, refPair.newRef);
+      boolean compareAndPutResult =
+          sharedRefDb.compareAndPut(projectName, refPair.oldRef, refPair.newRef);
+      if (!compareAndPutResult) {
+        throw new IOException(
+            String.format(
+                "This repos is out of sync for project %s. old_ref=%s, new_ref=%s",
+                projectName, refPair.oldRef, refPair.newRef));
+      }
     }
   }
 
@@ -244,11 +252,33 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     return receiveCommands.stream().map(this::getRefPairForCommand);
   }
 
+  @VisibleForTesting
+  private Ref returnOldChangeRefForNewChangeRef(Ref newRef) throws IOException {
+    String refName = newRef.getName();
+    if (refName.contains("change")) {
+      if (!refName.contains("meta")) {
+        String[] refNameSplit = refName.split("/");
+        Integer patchsetNumber = new Integer(refNameSplit[refNameSplit.length - 1]);
+        if (patchsetNumber > 1) {
+          String patchsetRelativePathRegex = "/" + patchsetNumber + "$";
+          String prevPatchsetRelativePath = "/" + (patchsetNumber - 1);
+          String previousPatchSetPath =
+              refName.replaceAll(patchsetRelativePathRegex, prevPatchsetRelativePath);
+
+          return refDb.getRef(previousPatchSetPath);
+        }
+      }
+    }
+    return SharedRefDatabase.NULL_REF;
+  }
+
   private RefPair getRefPairForCommand(ReceiveCommand command) {
     try {
       switch (command.getType()) {
         case CREATE:
-          return new RefPair(SharedRefDatabase.NULL_REF, getNewRef(command));
+          Ref newRef = getNewRef(command);
+          Ref oldRef = returnOldChangeRefForNewChangeRef(newRef);
+          return new RefPair(oldRef, newRef);
 
         case UPDATE:
         case UPDATE_NONFASTFORWARD:
