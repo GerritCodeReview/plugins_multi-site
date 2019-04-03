@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5ecdfee3_addd9305",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-04-03T06:05:59Z",
+      "side": 1,
+      "message": "This is now needed, because to take effect and replace the classes in gerrit core, that thus series is wrapping, this plugin is migrated to gerrit library. Gerrit library is not aware of plugin name and other plugin specific wiring. Would it make sense to extract these changes in its own change with a proper commit message? It would also help to explain why it\u0027s needed to move from plugin to gerrit library.",
+      "range": {
+        "startLine": 51,
+        "startChar": 2,
+        "endLine": 51,
+        "endChar": 56
+      },
+      "revId": "36ea569969d8ed25e85b7d0a81e44b7830696922",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
