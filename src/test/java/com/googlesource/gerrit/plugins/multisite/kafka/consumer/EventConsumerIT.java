@@ -17,10 +17,11 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.stream.Collectors.toSet;
 
-import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.AbstractDaemonTest;
+import com.google.gerrit.acceptance.GerritConfig;
 import com.google.gerrit.acceptance.LogThreshold;
 import com.google.gerrit.acceptance.NoHttpd;
-import com.google.gerrit.acceptance.TestPlugin;
+import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
@@ -54,17 +55,16 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.eclipse.jgit.util.FS;
-import org.junit.Before;
 import org.junit.Test;
 import org.testcontainers.containers.KafkaContainer;
 
 @NoHttpd
 @LogThreshold(level = "INFO")
-@TestPlugin(
-    name = "multi-site",
-    sysModule =
-        "com.googlesource.gerrit.plugins.multisite.kafka.consumer.EventConsumerIT$KafkaTestContainerModule")
-public class EventConsumerIT extends LightweightPluginDaemonTest {
+@UseLocalDisk
+public class EventConsumerIT extends AbstractDaemonTest {
+  public static final String GERRIT_CONFIG_KEY = "gerrit.installModule";
+  public static final String GERRIT_CONFIG_VALUE =
+      "com.googlesource.gerrit.plugins.multisite.kafka.consumer.EventConsumerIT$KafkaTestContainerModule";
   private static final int QUEUE_POLL_TIMEOUT_MSECS = 10000;
 
   static {
@@ -130,17 +130,8 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
     }
   }
 
-  @Override
-  @Before
-  public void setUpTestPlugin() throws Exception {
-    super.setUpTestPlugin();
-
-    if (!notesMigration.commitChangeWrites()) {
-      throw new IllegalStateException("NoteDb is mandatory for running the multi-site plugin");
-    }
-  }
-
   @Test
+  @GerritConfig(name = GERRIT_CONFIG_KEY, value = GERRIT_CONFIG_VALUE)
   public void createChangeShouldPropagateChangeIndexAndRefUpdateStreamEvent() throws Exception {
     LinkedBlockingQueue<SourceAwareEventWrapper> droppedEventsQueue = captureDroppedEvents();
     drainQueue(droppedEventsQueue);
@@ -188,6 +179,7 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @GerritConfig(name = GERRIT_CONFIG_KEY, value = GERRIT_CONFIG_VALUE)
   public void reviewChangeShouldPropagateChangeIndexAndCommentAdded() throws Exception {
     LinkedBlockingQueue<SourceAwareEventWrapper> droppedEventsQueue = captureDroppedEvents();
     ChangeData change = createChange().getChange();
@@ -235,8 +227,8 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
 
     TypeLiteral<DynamicSet<DroppedEventListener>> type =
         new TypeLiteral<DynamicSet<DroppedEventListener>>() {};
-    plugin
-        .getSysInjector()
+    server
+        .getTestInjector()
         .getInstance(Key.get(type))
         .add(
             "multi-site",
@@ -258,7 +250,7 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
 
   private List<Event> drainQueue(LinkedBlockingQueue<SourceAwareEventWrapper> queue)
       throws InterruptedException {
-    GsonProvider gsonProvider = plugin.getSysInjector().getInstance(Key.get(GsonProvider.class));
+    GsonProvider gsonProvider = server.getTestInjector().getInstance(Key.get(GsonProvider.class));
     SourceAwareEventWrapper event;
     List<Event> eventsList = new ArrayList<>();
     while ((event = queue.poll(QUEUE_POLL_TIMEOUT_MSECS, TimeUnit.MILLISECONDS)) != null) {
