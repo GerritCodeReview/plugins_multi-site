@@ -137,6 +137,39 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
     return zkSharedRefDatabase.newRef(aBranchRef(), objectId);
   }
 
+  @Test
+  public void shouldCleanAChangeRef() {
+
+    Ref changeRef = newRef("refs/changes/01/1/1", AN_OBJECT_ID_1);
+    Ref expectedCleanChangeRef = newRef("refs/changes/01/changeObjectId", AN_OBJECT_ID_1);
+
+    Ref resultChangeRef = zkSharedRefDatabase.cleansedChangeRefFor(changeRef);
+
+    assertThat(resultChangeRef.getName()).isEqualTo(expectedCleanChangeRef.getName());
+  }
+
+  @Test
+  public void shouldNotCleanAMetaChangeRef() {
+
+    Ref changeRef = newRef("refs/changes/01/1/meta", AN_OBJECT_ID_1);
+    Ref expectedNonCleanChangeRef = changeRef;
+
+    Ref resultChangeRef = zkSharedRefDatabase.cleansedChangeRefFor(changeRef);
+
+    assertThat(resultChangeRef.getName()).isEqualTo(expectedNonCleanChangeRef.getName());
+  }
+
+  @Test
+  public void shouldNotCleanRegularRefs() {
+
+    Ref changeRef = newRef("refs/heads/master", AN_OBJECT_ID_1);
+    Ref expectedNonCleanChangeRef = changeRef;
+
+    Ref resultChangeRef = zkSharedRefDatabase.cleansedChangeRefFor(changeRef);
+
+    assertThat(resultChangeRef.getName()).isEqualTo(expectedNonCleanChangeRef.getName());
+  }
+
   @Override
   public String testBranch() {
     return "branch_" + nameRule.getMethodName();

@@ -116,4 +116,21 @@ public interface SharedRefDatabase {
    * @throws java.io.IOException the reference could not be removed due to a system error.
    */
   boolean compareAndRemove(String project, Ref oldRef) throws IOException;
+
+  default Ref cleansedChangeRefFor(Ref ref) {
+    if (ref.getName().contains("refs/changes")) {
+      if (!ref.getName().contains("meta")) {
+        String[] splitRefName = ref.getName().split("/");
+        String cleanRefPath = splitRefName[0];
+        int i = 1;
+        for (; i < (splitRefName.length - 2); ++i) {
+          cleanRefPath += "/" + splitRefName[i];
+        }
+        cleanRefPath += "/changeObjectId";
+
+        return newRef(cleanRefPath, ref.getObjectId());
+      }
+    }
+    return ref;
+  }
 }
