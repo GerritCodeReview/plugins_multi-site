@@ -25,6 +25,7 @@ import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.data.PatchSetAttribute;
 import com.google.gerrit.server.events.CommentAddedEvent;
 import com.google.gerrit.server.events.Event;
@@ -36,9 +37,10 @@ import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Module;
-import com.googlesource.gerrit.plugins.multisite.NoteDbStatus;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -46,11 +48,12 @@ import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.storage.file.FileBasedConfig;
+import org.eclipse.jgit.util.FS;
 import org.junit.Before;
 import org.junit.Test;
 import org.testcontainers.containers.KafkaContainer;
@@ -88,28 +91,42 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
       }
     }
 
-    private final NoteDbStatus noteDb;
+    private final File multiSiteConfigFile;
+    private final Module multiSiteModule;
 
     @Inject
-    public KafkaTestContainerModule(NoteDbStatus noteDb) {
-      this.noteDb = noteDb;
+    public KafkaTestContainerModule(SitePaths sitePaths, Module multiSiteModule) {
+      this.multiSiteConfigFile =
+          sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile();
+      this.multiSiteModule = multiSiteModule;
     }
 
     @Override
     protected void configure() {
-      final KafkaContainer kafka = new KafkaContainer();
-      kafka.start();
+      try {
+        final KafkaContainer kafka = startAndConfigureKafkaConnection();
 
-      Config config = new Config();
-      config.setString("kafka", null, "bootstrapServers", kafka.getBootstrapServers());
+        listener().toInstance(new KafkaStopAtShutdown(kafka));
+
+        install(multiSiteModule);
+
+      } catch (IOException e) {
+        throw new IllegalStateException(e);
+      }
+    }
+
+    private KafkaContainer startAndConfigureKafkaConnection() throws IOException {
+      KafkaContainer kafkaContainer = new KafkaContainer();
+      kafkaContainer.start();
+
+      FileBasedConfig config = new FileBasedConfig(multiSiteConfigFile, FS.DETECTED);
+      config.setString("kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
       config.setBoolean("kafka", "publisher", "enabled", true);
       config.setBoolean("kafka", "subscriber", "enabled", true);
       config.setBoolean("ref-database", null, "enabled", false);
-      Configuration multiSiteConfig = new Configuration(config);
-      bind(Configuration.class).toInstance(multiSiteConfig);
-      install(new Module(multiSiteConfig, noteDb));
+      config.save();
 
-      listener().toInstance(new KafkaStopAtShutdown(kafka));
+      return kafkaContainer;
     }
   }
 
@@ -137,6 +154,8 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
     String patchsetRef = change.currentPatchSet().getRefName();
 
     Map<String, List<Event>> eventsByType = receiveEventsByType(droppedEventsQueue);
+    assertThat(eventsByType).isNotEmpty();
+
     assertThat(eventsByType.get("change-index"))
         .containsExactly(createChangeIndexEvent(project, changeNum, getParentCommit(change)));
 
@@ -144,9 +163,9 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
             eventsByType.get("ref-updated").stream()
                 .map(e -> ((RefUpdatedEvent) e).getRefName())
                 .collect(toSet()))
-        .containsAllOf(
-            changeNotesRef,
-            patchsetRef); // 'refs/sequences/changes' not always updated thus not checked
+        .containsAllOf(changeNotesRef, patchsetRef); // 'refs/sequences/changes'
+    // not always updated thus
+    // not checked
 
     List<Event> patchSetCreatedEvents = eventsByType.get("patchset-created");
     assertThat(patchSetCreatedEvents).hasSize(1);
@@ -181,6 +200,8 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
     gApi.changes().id(changeNum).revision("current").review(in);
 
     Map<String, List<Event>> eventsByType = receiveEventsByType(droppedEventsQueue);
+
+    assertThat(eventsByType).isNotEmpty();
 
     assertThat(eventsByType.get("change-index"))
         .containsExactly(createChangeIndexEvent(project, changeNum, getParentCommit(change)));
