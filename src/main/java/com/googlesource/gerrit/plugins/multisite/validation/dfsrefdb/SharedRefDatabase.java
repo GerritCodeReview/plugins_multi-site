@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
+import com.google.common.collect.ImmutableList;
 import java.io.IOException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
@@ -63,6 +64,9 @@ public interface SharedRefDatabase {
           return Storage.NEW;
         }
       };
+
+  ImmutableList<String> refsToIgnoreInSharedDb =
+      ImmutableList.of("refs/draft-comments/.*", "refs/changes/.*/[0-9]+");
 
   /**
    * Create a new in-memory Ref name associated with an objectId.
@@ -116,4 +120,19 @@ public interface SharedRefDatabase {
    * @throws java.io.IOException the reference could not be removed due to a system error.
    */
   boolean compareAndRemove(String project, Ref oldRef) throws IOException;
+
+  /**
+   * Some references should not be stored in the SharedRefDatabase.
+   *
+   * @param ref
+   * @return true if it's to be ignore; false otherwise
+   */
+  default boolean ignoreRefInSharedDb(Ref ref) {
+    for (String ignoreRefRegex : refsToIgnoreInSharedDb) {
+      if (ref.getName().matches(ignoreRefRegex)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
