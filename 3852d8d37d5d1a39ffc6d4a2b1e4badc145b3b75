@@ -16,6 +16,23 @@
       "revId": "3852d8d37d5d1a39ffc6d4a2b1e4badc145b3b75",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad71a736_ebf1f52f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-03T15:35:35Z",
+      "side": 1,
+      "message": "compareAndPut returns a boolean, we need to throw IOException if false.\nWe should also not allow partial successful compareAndPut within a batch because it will render zookeeper in an inconsistent state.",
+      "revId": "3852d8d37d5d1a39ffc6d4a2b1e4badc145b3b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
