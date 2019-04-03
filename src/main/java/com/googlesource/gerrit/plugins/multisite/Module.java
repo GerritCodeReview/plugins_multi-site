@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gson.Gson;
@@ -43,11 +44,26 @@ import org.slf4j.LoggerFactory;
 
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
-  private final Configuration config;
-  private final NoteDbStatus noteDb;
+  private Configuration config;
+  private NoteDbStatus noteDb;
+  private final boolean disableGitRepositoryValidation;
 
   @Inject
   public Module(Configuration config, NoteDbStatus noteDb) {
+    this(config, noteDb, false);
+  }
+
+  // TODO: It is not possible to properly test the libModules in Gerrit.
+  // Disable the Git repository validation during integration test and then build the necessary
+  // support
+  // in Gerrit for it.
+  @VisibleForTesting
+  public Module(Configuration config, NoteDbStatus noteDb, boolean disableGitRepositoryValidation) {
+    init(config, noteDb);
+    this.disableGitRepositoryValidation = disableGitRepositoryValidation;
+  }
+
+  private void init(Configuration config, NoteDbStatus noteDb) {
     this.config = config;
     this.noteDb = noteDb;
   }
@@ -83,8 +99,7 @@ public class Module extends LifecycleModule {
       install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
 
-    install(new ValidationModule(config));
-
+    install(new ValidationModule(config, disableGitRepositoryValidation));
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
   }
 
