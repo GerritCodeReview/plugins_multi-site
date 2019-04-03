@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d503e021_c0c49304",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-04-03T19:19:07Z",
+      "side": 1,
+      "message": "Is this change, reducing the plugins list to only a few plugin related to this change, or is this a bad rebase?",
+      "revId": "6d3be27f2bbd97c190afc807efb13842b9bcbf8f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
