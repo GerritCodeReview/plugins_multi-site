@@ -14,8 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.google.gerrit.extensions.annotations.PluginData;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.gerrit.server.config.SitePaths;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
@@ -35,6 +35,7 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -90,8 +91,12 @@ public class Module extends LifecycleModule {
   @Provides
   @Singleton
   @InstanceId
-  UUID getInstanceId(@PluginData java.nio.file.Path dataDir) throws IOException {
+  UUID getInstanceId(SitePaths sitePaths) throws IOException {
     UUID instanceId = null;
+    Path dataDir = sitePaths.data_dir.resolve(Configuration.PLUGIN_NAME);
+    if (!dataDir.toFile().exists()) {
+      dataDir.toFile().mkdirs();
+    }
     String serverIdFile =
         dataDir.toAbsolutePath().toString() + "/" + Configuration.INSTANCE_ID_FILE;
 
