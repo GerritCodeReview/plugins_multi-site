@@ -22,6 +22,30 @@
       "revId": "36ea569969d8ed25e85b7d0a81e44b7830696922",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a61a508_d5da3546",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-03T06:26:31Z",
+      "side": 1,
+      "message": "Correct. Yes, makes sense to break the change into two: the introduction of the libModule (bye bye plugin) and the GitRepositoryManager.",
+      "parentUuid": "5ecdfee3_addd9305",
+      "range": {
+        "startLine": 51,
+        "startChar": 2,
+        "endLine": 51,
+        "endChar": 56
+      },
+      "revId": "36ea569969d8ed25e85b7d0a81e44b7830696922",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
