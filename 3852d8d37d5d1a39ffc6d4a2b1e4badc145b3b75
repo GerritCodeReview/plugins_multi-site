@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "61b02a2a_aa8e6b7c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-03T08:57:13Z",
+      "side": 1,
+      "message": "Do we need to build this here? We could just use the batchRefUpdate.getCommands() to get the latest list of ReceiveCommand.\nThis would remove the extra logic in addCommand",
+      "revId": "3852d8d37d5d1a39ffc6d4a2b1e4badc145b3b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
