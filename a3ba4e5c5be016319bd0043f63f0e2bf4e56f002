@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b825edc7_4605514f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-03T14:30:12Z",
+      "side": 1,
+      "message": "This will not work until you evoke load(), therefore content of the multi-site.config file is not being read.",
+      "revId": "a3ba4e5c5be016319bd0043f63f0e2bf4e56f002",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
