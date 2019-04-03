@@ -29,6 +29,7 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import java.io.IOException;
 import org.apache.curator.retry.RetryNTimes;
 import org.eclipse.jgit.lib.ObjectId;
@@ -92,11 +93,11 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   }
 
   @Test
-  public void compareAndPutShouldFaiIfTheObjectionDoesNotExist() throws IOException {
+  public void compareAndPutShouldNotFaiIfTheObjectionDoesNotExist() throws IOException {
     Ref oldRef = refOf(AN_OBJECT_ID_1);
     assertThat(
             zkSharedRefDatabase.compareAndPut(A_TEST_PROJECT_NAME, oldRef, refOf(AN_OBJECT_ID_2)))
-        .isFalse();
+        .isTrue();
   }
 
   @Test
@@ -135,6 +136,54 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
 
   private Ref refOf(ObjectId objectId) {
     return zkSharedRefDatabase.newRef(aBranchRef(), objectId);
+  }
+
+  @Test
+  public void immutableChangeShouldReturnTrue() throws Exception {
+    Ref changeRef = newRef("refs/changes/01/1/1", AN_OBJECT_ID_1);
+
+    boolean shouldReturnTrue =
+        zkSharedRefDatabase.compareAndPut(
+            A_TEST_PROJECT_NAME, SharedRefDatabase.NULL_REF, changeRef);
+
+    assertThat(shouldReturnTrue).isTrue();
+  }
+
+  @Test(expected = Exception.class)
+  public void immutableChangeShouldNotBeStored() throws Exception {
+    Ref changeRef = newRef("refs/changes/01/1/1", AN_OBJECT_ID_1);
+    zkSharedRefDatabase.compareAndPut(A_TEST_PROJECT_NAME, SharedRefDatabase.NULL_REF, changeRef);
+    zookeeperContainer.readRefValueFromZk(A_TEST_PROJECT_NAME, changeRef);
+  }
+
+  @Test
+  public void anImmutableChangeShouldBeIgnored() {
+    Ref immutableChangeRef = newRef("refs/changes/01/1/1", AN_OBJECT_ID_1);
+    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef)).isTrue();
+  }
+
+  @Test
+  public void aChangeMetaShouldNotBeIgnored() {
+    Ref immutableChangeRef = newRef("refs/changes/01/1/meta", AN_OBJECT_ID_1);
+    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef)).isFalse();
+  }
+
+  @Test
+  public void aDraftCommentsShouldBeIgnored() {
+    Ref immutableChangeRef = newRef("refs/draft-comments/01/1/1000000", AN_OBJECT_ID_1);
+    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef)).isTrue();
+  }
+
+  @Test
+  public void regularRefHeadsMasterShouldNotBeIgnored() {
+    Ref immutableChangeRef = newRef("refs/heads/master", AN_OBJECT_ID_1);
+    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef)).isFalse();
+  }
+
+  @Test
+  public void regularCommitShouldNotBeIgnored() {
+    Ref immutableChangeRef = newRef("refs/heads/stable-2.16", AN_OBJECT_ID_1);
+    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef)).isFalse();
   }
 
   @Override
