@@ -57,7 +57,7 @@ public class ConfigurationTest {
   }
 
   private Configuration getConfiguration() {
-    return new Configuration(pluginConfigFactoryMock, PLUGIN_NAME);
+    return new Configuration(globalPluginConfig);
   }
 
   @Test
