@@ -116,4 +116,16 @@ public interface SharedRefDatabase {
    * @throws java.io.IOException the reference could not be removed due to a system error.
    */
   boolean compareAndRemove(String project, Ref oldRef) throws IOException;
+
+  /**
+   * Some references should not be stored in the SharedRefDatabase.
+   *
+   * @param ref
+   * @return true if it's to be ignore; false otherwise
+   */
+  default boolean ignoreRefInSharedDb(Ref ref) {
+    String refName = ref.getName();
+    return refName.startsWith("refs/draft-comments")
+        || (refName.startsWith("refs/changes") && !refName.endsWith("/meta"));
+  }
 }
