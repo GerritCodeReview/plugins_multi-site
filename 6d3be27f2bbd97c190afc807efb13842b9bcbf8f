@@ -16,6 +16,24 @@
       "revId": "6d3be27f2bbd97c190afc807efb13842b9bcbf8f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "323cc279_8a1a3ca1",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-03T21:45:02Z",
+      "side": 1,
+      "message": "I\u0027ve made this change because it was failing locally.\n\nI\u0027ve noticed the release.war can contain the multi-site plugin as part of the \u0027--install-all-plugins\u0027 if I build the release.war after building the multi-site plugin.",
+      "parentUuid": "d503e021_c0c49304",
+      "revId": "6d3be27f2bbd97c190afc807efb13842b9bcbf8f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
