@@ -35,7 +35,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventHandlerTest {
-  private static final String PLUGIN_NAME = "multi-site";
 
   private EventHandler eventHandler;
 
@@ -43,8 +42,7 @@ public class EventHandlerTest {
 
   @Before
   public void setUp() {
-    eventHandler =
-        new EventHandler(asDynamicSet(forwarder), MoreExecutors.directExecutor(), PLUGIN_NAME);
+    eventHandler = new EventHandler(asDynamicSet(forwarder), MoreExecutors.directExecutor());
   }
 
   private DynamicSet<StreamEventForwarder> asDynamicSet(StreamEventForwarder forwarder) {
@@ -79,7 +77,6 @@ public class EventHandlerTest {
     Event event = new RefUpdatedEvent();
     EventTask task = eventHandler.new EventTask(event);
     assertThat(task.toString())
-        .isEqualTo(
-            String.format("[%s] Send event '%s' to target instance", PLUGIN_NAME, event.type));
+        .isEqualTo(String.format("Send event '%s' to target instance", event.type));
   }
 }
