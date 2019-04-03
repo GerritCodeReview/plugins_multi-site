@@ -141,9 +141,7 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
         .containsExactly(createChangeIndexEvent(project, changeNum, getParentCommit(change)));
 
     assertThat(
-            eventsByType
-                .get("ref-updated")
-                .stream()
+            eventsByType.get("ref-updated").stream()
                 .map(e -> ((RefUpdatedEvent) e).getRefName())
                 .collect(toSet()))
         .containsAllOf(
@@ -232,8 +230,7 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
 
   private Map<String, List<Event>> receiveEventsByType(
       LinkedBlockingQueue<SourceAwareEventWrapper> queue) throws InterruptedException {
-    return drainQueue(queue)
-        .stream()
+    return drainQueue(queue).stream()
         .sorted(Comparator.comparing(e -> e.type))
         .collect(Collectors.groupingBy(e -> e.type));
   }
