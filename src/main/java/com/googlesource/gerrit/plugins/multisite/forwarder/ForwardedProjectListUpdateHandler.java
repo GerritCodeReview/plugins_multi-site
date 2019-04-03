@@ -48,17 +48,12 @@ public class ForwardedProjectListUpdateHandler {
    */
   public void update(ProjectListUpdateEvent event) throws IOException {
     Project.NameKey projectKey = new Project.NameKey(event.projectName);
-    try {
-      Context.setForwardedEvent(true);
-      if (event.remove) {
-        projectCache.remove(projectKey);
-        log.debug("Removed {} from project list", event.projectName);
-      } else {
-        projectCache.onCreateProject(projectKey);
-        log.debug("Added {} to project list", event.projectName);
-      }
-    } finally {
-      Context.unsetForwardedEvent();
+    if (event.remove) {
+      projectCache.remove(projectKey);
+      log.debug("Removed {} from project list", event.projectName);
+    } else {
+      projectCache.onCreateProject(projectKey);
+      log.debug("Added {} to project list", event.projectName);
     }
   }
 }

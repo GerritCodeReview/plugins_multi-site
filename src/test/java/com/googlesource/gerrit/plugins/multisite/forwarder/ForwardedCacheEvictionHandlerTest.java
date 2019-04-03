@@ -14,8 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
-import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -30,7 +28,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ForwardedCacheEvictionHandlerTest {
@@ -71,52 +68,5 @@ public class ForwardedCacheEvictionHandlerTest {
 
     handler.evict(entry);
     verify(cacheMock).invalidateAll();
-  }
-
-  @Test
-  public void shouldSetAndUnsetForwardedContext() throws Exception {
-    CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, new Account.Id(456));
-    doReturn(cacheMock).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
-
-    // this doAnswer is to allow to assert that context is set to forwarded
-    // while cache eviction is called.
-    doAnswer(
-            (Answer<Void>)
-                invocation -> {
-                  assertThat(Context.isForwardedEvent()).isTrue();
-                  return null;
-                })
-        .when(cacheMock)
-        .invalidate(entry.getKey());
-
-    assertThat(Context.isForwardedEvent()).isFalse();
-    handler.evict(entry);
-    assertThat(Context.isForwardedEvent()).isFalse();
-
-    verify(cacheMock).invalidate(entry.getKey());
-  }
-
-  @Test
-  public void shouldSetAndUnsetForwardedContextEvenIfExceptionIsThrown() throws Exception {
-    CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, new Account.Id(789));
-    doReturn(cacheMock).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
-
-    doAnswer(
-            (Answer<Void>)
-                invocation -> {
-                  assertThat(Context.isForwardedEvent()).isTrue();
-                  throw new RuntimeException();
-                })
-        .when(cacheMock)
-        .invalidate(entry.getKey());
-
-    assertThat(Context.isForwardedEvent()).isFalse();
-    try {
-      handler.evict(entry);
-    } catch (RuntimeException e) {
-    }
-    assertThat(Context.isForwardedEvent()).isFalse();
-
-    verify(cacheMock).invalidate(entry.getKey());
   }
 }

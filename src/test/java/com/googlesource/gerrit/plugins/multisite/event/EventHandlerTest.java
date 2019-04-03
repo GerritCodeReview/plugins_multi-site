@@ -25,7 +25,6 @@ import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.googlesource.gerrit.plugins.multisite.event.EventHandler.EventTask;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,14 +60,6 @@ public class EventHandlerTest {
   @Test
   public void shouldNotForwardNonProjectEvent() throws Exception {
     eventHandler.onEvent(mock(Event.class));
-    verifyZeroInteractions(forwarder);
-  }
-
-  @Test
-  public void shouldNotForwardIfAlreadyForwardedEvent() throws Exception {
-    Context.setForwardedEvent(true);
-    eventHandler.onEvent(mock(ProjectEvent.class));
-    Context.unsetForwardedEvent();
     verifyZeroInteractions(forwarder);
   }
 

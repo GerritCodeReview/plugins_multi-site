@@ -20,7 +20,6 @@ import com.google.gerrit.extensions.events.ProjectEvent;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import java.util.concurrent.Executor;
@@ -51,10 +50,8 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
   }
 
   private void process(ProjectEvent event, boolean delete) {
-    if (!Context.isForwardedEvent()) {
-      executor.execute(
-          new ProjectListUpdateTask(new ProjectListUpdateEvent(event.getProjectName(), delete)));
-    }
+    executor.execute(
+        new ProjectListUpdateTask(new ProjectListUpdateEvent(event.getProjectName(), delete)));
   }
 
   class ProjectListUpdateTask implements Runnable {

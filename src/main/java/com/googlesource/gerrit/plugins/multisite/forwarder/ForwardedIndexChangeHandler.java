@@ -157,7 +157,6 @@ public class ForwardedIndexChangeHandler
     indexExecutor.schedule(
         () -> {
           try (ManualRequestContext ctx = oneOffCtx.open()) {
-            Context.setForwardedEvent(true);
             doIndex(id, indexEvent, retryCount);
           } catch (Exception e) {
             log.warn("Change {} could not be indexed", id, e);

@@ -62,27 +62,22 @@ public abstract class ForwardedIndexingHandler<T, E> {
    */
   public void index(T id, Operation operation, Optional<E> event) throws IOException, OrmException {
     log.debug("{} {} {}", operation, id, event);
+    Lock idLock = idLocks.get(id);
+    idLock.lock();
     try {
-      Context.setForwardedEvent(true);
-      Lock idLock = idLocks.get(id);
-      idLock.lock();
-      try {
-        switch (operation) {
-          case INDEX:
-            doIndex(id, event);
-            break;
-          case DELETE:
-            doDelete(id, event);
-            break;
-          default:
-            log.error("unexpected operation: {}", operation);
-            break;
-        }
-      } finally {
-        idLock.unlock();
+      switch (operation) {
+        case INDEX:
+          doIndex(id, event);
+          break;
+        case DELETE:
+          doDelete(id, event);
+          break;
+        default:
+          log.error("unexpected operation: {}", operation);
+          break;
       }
     } finally {
-      Context.unsetForwardedEvent();
+      idLock.unlock();
     }
   }
 }
