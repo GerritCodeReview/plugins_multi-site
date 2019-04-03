@@ -20,8 +20,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
-import com.google.gerrit.extensions.annotations.PluginName;
-import com.google.gerrit.server.config.PluginConfigFactory;
+import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
@@ -40,12 +39,16 @@ import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.BoundedExponentialBackoffRetry;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.jgit.lib.Config;
+import org.eclipse.jgit.storage.file.FileBasedConfig;
+import org.eclipse.jgit.util.FS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
 public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
+
+  public static final String PLUGIN_NAME = "multi-site";
 
   static final String INSTANCE_ID_FILE = "instanceId.data";
 
@@ -73,8 +76,10 @@ public class Configuration {
   private final ZookeeperConfig zookeeperConfig;
 
   @Inject
-  Configuration(PluginConfigFactory pluginConfigFactory, @PluginName String pluginName) {
-    this(pluginConfigFactory.getGlobalPluginConfig(pluginName));
+  Configuration(SitePaths sitePaths) {
+    this(
+        new FileBasedConfig(
+            sitePaths.etc_dir.resolve(PLUGIN_NAME + ".config").toFile(), FS.DETECTED));
   }
 
   @VisibleForTesting
