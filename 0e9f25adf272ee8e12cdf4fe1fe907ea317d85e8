@@ -26,6 +26,30 @@
     },
     {
       "key": {
+        "uuid": "a7a99d26_77b31933",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteGitRepositoryManager.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-03T22:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4047783_0cc12576",
+      "range": {
+        "startLine": 46,
+        "startChar": 2,
+        "endLine": 46,
+        "endChar": 59
+      },
+      "revId": "0e9f25adf272ee8e12cdf4fe1fe907ea317d85e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "79282379_75a4f352",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteGitRepositoryManager.java",
         "patchSetId": 15
@@ -47,6 +71,30 @@
       "revId": "0e9f25adf272ee8e12cdf4fe1fe907ea317d85e8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff2b090b_76ef9eb7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteGitRepositoryManager.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-03T22:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79282379_75a4f352",
+      "range": {
+        "startLine": 53,
+        "startChar": 9,
+        "endLine": 53,
+        "endChar": 38
+      },
+      "revId": "0e9f25adf272ee8e12cdf4fe1fe907ea317d85e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -74,6 +122,30 @@
     },
     {
       "key": {
+        "uuid": "cd1de442_08074c8b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteGitRepositoryManager.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-03T22:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d4141f0_3211c94b",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 74
+      },
+      "revId": "0e9f25adf272ee8e12cdf4fe1fe907ea317d85e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d994a3d5_ac464e99",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteGitRepositoryManager.java",
         "patchSetId": 15
@@ -95,6 +167,30 @@
       "revId": "0e9f25adf272ee8e12cdf4fe1fe907ea317d85e8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df114654_2aa15eef",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteGitRepositoryManager.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-03T22:52:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d994a3d5_ac464e99",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 79
+      },
+      "revId": "0e9f25adf272ee8e12cdf4fe1fe907ea317d85e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
