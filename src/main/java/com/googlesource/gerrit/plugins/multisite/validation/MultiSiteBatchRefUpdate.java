@@ -236,7 +236,14 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     }
 
     for (RefPair refPair : refsToUpdate) {
-      sharedRefDb.compareAndPut(projectName, refPair.oldRef, refPair.newRef);
+      boolean compareAndPutResult =
+          sharedRefDb.compareAndPut(projectName, refPair.oldRef, refPair.newRef);
+      if (!compareAndPutResult) {
+        throw new IOException(
+            String.format(
+                "This repos is out of sync for project %s. old_ref=%s, new_ref=%s",
+                projectName, refPair.oldRef, refPair.newRef));
+      }
     }
   }
 
@@ -244,11 +251,33 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     return receiveCommands.stream().map(this::getRefPairForCommand);
   }
 
+  public RefPair getRefPairForNewRef(Ref newRef) throws IOException {
+    String refName = newRef.getName();
+    Ref newRefToBeInSharedDb = sharedRefDb.cleansedChangeRefFor(newRef);
+    Ref oldRefInSharedDb;
+    if (newRefToBeInSharedDb.getName() != refName) {
+      Integer patchsetNumber = new Integer(refName.substring(refName.length() - 1));
+      if (patchsetNumber > 1) {
+        String patchsetRelativePathRegex = "/" + patchsetNumber + "$";
+        String prevPatchsetRelativePath = "/" + (patchsetNumber - 1);
+        String previousPatchSetPath =
+            refName.replaceAll(patchsetRelativePathRegex, prevPatchsetRelativePath);
+        Ref oldLocalReference = refDb.getRef(previousPatchSetPath);
+        oldRefInSharedDb = sharedRefDb.cleansedChangeRefFor(oldLocalReference);
+      } else {
+        oldRefInSharedDb = SharedRefDatabase.NULL_REF;
+      }
+    } else {
+      oldRefInSharedDb = SharedRefDatabase.NULL_REF;
+    }
+    return new RefPair(oldRefInSharedDb, newRefToBeInSharedDb);
+  }
+
   private RefPair getRefPairForCommand(ReceiveCommand command) {
     try {
       switch (command.getType()) {
         case CREATE:
-          return new RefPair(SharedRefDatabase.NULL_REF, getNewRef(command));
+          return getRefPairForNewRef(getNewRef(command));
 
         case UPDATE:
         case UPDATE_NONFASTFORWARD:
