@@ -34,6 +34,24 @@
       "revId": "6d3be27f2bbd97c190afc807efb13842b9bcbf8f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69d9eb0e_53f95f22",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-04-04T04:29:49Z",
+      "side": 1,
+      "message": "\u003e I\u0027ve noticed the release.war can contain the multi-site plugin as part of the \u0027--install-all-plugins\u0027 if I build the release.war after building the multi-site plugin.\n\nIt can only be the case, when you extend CUSTOM_PLUGINS set in tools/bzl/plugins.bzl. And this is only needed for two reasons:\n\n* 1. Build .classpath for Eclipse IDE\n* 2. Include the plugin to release.war\n\nSo, just remove multi-site from CUSTOM_PLUGINS set and this change part can be reverted.",
+      "parentUuid": "323cc279_8a1a3ca1",
+      "revId": "6d3be27f2bbd97c190afc807efb13842b9bcbf8f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
