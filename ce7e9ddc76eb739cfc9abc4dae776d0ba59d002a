@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1523cd38_f7fc5755",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-05T23:39:12Z",
+      "side": 1,
+      "message": "This fix belongs to Change-Id: I2758373181",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 246,
+        "endChar": 7
+      },
+      "revId": "ce7e9ddc76eb739cfc9abc4dae776d0ba59d002a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "91a4b595_ce8c4383",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-05T23:39:12Z",
+      "side": 1,
+      "message": "this should be instead [0-9][0-9]",
+      "range": {
+        "startLine": 69,
+        "startChar": 63,
+        "endLine": 69,
+        "endChar": 65
+      },
+      "revId": "ce7e9ddc76eb739cfc9abc4dae776d0ba59d002a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
