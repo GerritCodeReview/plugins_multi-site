@@ -38,6 +38,7 @@ import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Module;
+import com.googlesource.gerrit.plugins.multisite.NoteDbStatus;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.File;
@@ -49,6 +50,7 @@ import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -91,14 +93,15 @@ public class EventConsumerIT extends AbstractDaemonTest {
       }
     }
 
-    private final File multiSiteConfigFile;
+    private final FileBasedConfig config;
     private final Module multiSiteModule;
 
     @Inject
-    public KafkaTestContainerModule(SitePaths sitePaths, Module multiSiteModule) {
-      this.multiSiteConfigFile =
-          sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile();
-      this.multiSiteModule = multiSiteModule;
+    public KafkaTestContainerModule(SitePaths sitePaths, NoteDbStatus noteDb) {
+      this.config =
+          new FileBasedConfig(
+              sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile(), FS.DETECTED);
+      this.multiSiteModule = new Module(new Configuration(config), noteDb, true);
     }
 
     @Override
@@ -119,7 +122,6 @@ public class EventConsumerIT extends AbstractDaemonTest {
       KafkaContainer kafkaContainer = new KafkaContainer();
       kafkaContainer.start();
 
-      FileBasedConfig config = new FileBasedConfig(multiSiteConfigFile, FS.DETECTED);
       config.setString("kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
       config.setBoolean("kafka", "publisher", "enabled", true);
       config.setBoolean("kafka", "subscriber", "enabled", true);

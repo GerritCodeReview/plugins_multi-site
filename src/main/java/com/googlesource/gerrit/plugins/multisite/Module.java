@@ -30,6 +30,7 @@ import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -43,11 +44,22 @@ import org.slf4j.LoggerFactory;
 
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
-  private final Configuration config;
-  private final NoteDbStatus noteDb;
+  private Configuration config;
+  private NoteDbStatus noteDb;
+  private final boolean runningAsATest;
 
   @Inject
   public Module(Configuration config, NoteDbStatus noteDb) {
+    init(config, noteDb);
+    this.runningAsATest = false;
+  }
+
+  public Module(Configuration config, NoteDbStatus noteDb, boolean runningAsATest) {
+    init(config, noteDb);
+    this.runningAsATest = runningAsATest;
+  }
+
+  private void init(Configuration config, NoteDbStatus noteDb) {
     this.config = config;
     this.noteDb = noteDb;
   }
@@ -83,8 +95,11 @@ public class Module extends LifecycleModule {
       install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
 
-    install(new ValidationModule(config));
-
+    if (runningAsATest) {
+      install(new ZkValidationModule(config));
+    } else {
+      install(new ValidationModule(config));
+    }
     bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
   }
 

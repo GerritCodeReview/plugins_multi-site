@@ -44,7 +44,7 @@ public class ModuleTest {
 
   @Before
   public void setUp() {
-    module = new Module(configMock, noteDb);
+    module = new Module(configMock, noteDb, true);
   }
 
   @Test
