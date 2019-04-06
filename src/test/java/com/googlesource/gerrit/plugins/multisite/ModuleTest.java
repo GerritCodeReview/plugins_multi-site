@@ -16,7 +16,6 @@ package com.googlesource.gerrit.plugins.multisite;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.gerrit.server.config.SitePaths;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,19 +48,15 @@ public class ModuleTest {
 
   @Test
   public void shouldGetInstanceId() throws Exception {
-    File tmpSitePath = tempFolder.newFolder();
-    File tmpPluginDataPath =
-        Paths.get(tmpSitePath.getPath(), "data", Configuration.PLUGIN_NAME).toFile();
-    tmpPluginDataPath.mkdirs();
-    Path path = Paths.get(tmpPluginDataPath.getPath(), Configuration.INSTANCE_ID_FILE);
-    SitePaths sitePaths = new SitePaths(Paths.get(tmpSitePath.getPath()));
+    File tmpConfigDirectory = tempFolder.newFolder();
+    Path path = Paths.get(tmpConfigDirectory.getPath(), Configuration.INSTANCE_ID_FILE);
     assertThat(path.toFile().exists()).isFalse();
 
-    UUID gotUUID1 = module.getInstanceId(sitePaths);
+    UUID gotUUID1 = module.getInstanceId(Paths.get(tmpConfigDirectory.getPath()));
     assertThat(gotUUID1).isNotNull();
     assertThat(path.toFile().exists()).isTrue();
 
-    UUID gotUUID2 = module.getInstanceId(sitePaths);
+    UUID gotUUID2 = module.getInstanceId(Paths.get(tmpConfigDirectory.getPath()));
     assertThat(gotUUID1).isEqualTo(gotUUID2);
   }
 }

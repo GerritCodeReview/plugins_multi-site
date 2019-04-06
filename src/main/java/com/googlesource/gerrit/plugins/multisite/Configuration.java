@@ -15,20 +15,17 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Suppliers.memoize;
-import static com.google.common.base.Suppliers.ofInstance;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
-import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.google.gerrit.server.config.SitePaths;
+import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,19 +39,13 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.BoundedExponentialBackoffRetry;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
-import org.eclipse.jgit.storage.file.FileBasedConfig;
-import org.eclipse.jgit.util.FS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
 public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
-
-  public static final String PLUGIN_NAME = "multi-site";
-  public static final String MULTI_SITE_CONFIG = PLUGIN_NAME + ".config";
 
   static final String INSTANCE_ID_FILE = "instanceId.data";
 
@@ -73,86 +64,67 @@ public class Configuration {
   static final String KAFKA_SECTION = "kafka";
   public static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
 
-  private final Supplier<KafkaPublisher> publisher;
-  private final Supplier<Cache> cache;
-  private final Supplier<Event> event;
-  private final Supplier<Index> index;
-  private final Supplier<KafkaSubscriber> subscriber;
-  private final Supplier<Kafka> kafka;
-  private final Supplier<ZookeeperConfig> zookeeperConfig;
+  private final KafkaPublisher publisher;
+  private final Cache cache;
+  private final Event event;
+  private final Index index;
+  private final KafkaSubscriber subscriber;
+  private final Kafka kafka;
+  private final ZookeeperConfig zookeeperConfig;
 
   @Inject
-  Configuration(SitePaths sitePaths) {
-    this(new FileBasedConfig(sitePaths.etc_dir.resolve(MULTI_SITE_CONFIG).toFile(), FS.DETECTED));
+  Configuration(PluginConfigFactory pluginConfigFactory, @PluginName String pluginName) {
+    this(pluginConfigFactory.getGlobalPluginConfig(pluginName));
   }
 
   @VisibleForTesting
-  public Configuration(final Config cfg) {
-    Supplier<Config> lazyCfg = lazyLoad(cfg);
-    kafka = memoize(() -> new Kafka(lazyCfg));
-    publisher = memoize(() -> new KafkaPublisher(lazyCfg));
-    subscriber = memoize(() -> new KafkaSubscriber(lazyCfg));
-    cache = memoize(() -> new Cache(lazyCfg));
-    event = memoize(() -> new Event(lazyCfg));
-    index = memoize(() -> new Index(lazyCfg));
-    zookeeperConfig = memoize(() -> new ZookeeperConfig(lazyCfg));
+  public Configuration(Config cfg) {
+    kafka = new Kafka(cfg);
+    publisher = new KafkaPublisher(cfg);
+    subscriber = new KafkaSubscriber(cfg);
+    cache = new Cache(cfg);
+    event = new Event(cfg);
+    index = new Index(cfg);
+    zookeeperConfig = new ZookeeperConfig(cfg);
   }
 
   public ZookeeperConfig getZookeeperConfig() {
-    return zookeeperConfig.get();
+    return zookeeperConfig;
   }
 
   public Kafka getKafka() {
-    return kafka.get();
+    return kafka;
   }
 
   public KafkaPublisher kafkaPublisher() {
-    return publisher.get();
+    return publisher;
   }
 
   public Cache cache() {
-    return cache.get();
+    return cache;
   }
 
   public Event event() {
-    return event.get();
+    return event;
   }
 
   public Index index() {
-    return index.get();
+    return index;
   }
 
   public KafkaSubscriber kafkaSubscriber() {
-    return subscriber.get();
-  }
-
-  private Supplier<Config> lazyLoad(Config config) {
-    if (config instanceof FileBasedConfig) {
-      return memoize(
-          () -> {
-            FileBasedConfig fileConfig = (FileBasedConfig) config;
-            String fileConfigFileName = fileConfig.getFile().getPath();
-            try {
-              log.info("Loading configuration from {}", fileConfigFileName);
-              fileConfig.load();
-            } catch (IOException | ConfigInvalidException e) {
-              log.error("Unable to load configuration from " + fileConfigFileName, e);
-            }
-            return fileConfig;
-          });
-    }
-    return ofInstance(config);
+    return subscriber;
   }
 
   private static boolean getBoolean(
-      Supplier<Config> cfg, String section, String subsection, String name, boolean defaultValue) {
-    return cfg.get().getBoolean(section, subsection, name, defaultValue);
+      Config cfg, String section, String subsection, String name, boolean defaultValue) {
+    return cfg.getBoolean(section, subsection, name, defaultValue);
   }
 
   private static int getInt(
-      Supplier<Config> cfg, String section, String subSection, String name, int defaultValue) {
+      Config cfg, String section, String subSection, String name, int defaultValue) {
     try {
-      return cfg.get().getInt(section, subSection, name, defaultValue);
+      return cfg.getInt(section, subSection, name, defaultValue);
     } catch (IllegalArgumentException e) {
       log.error("invalid value for {}; using default value {}", name, defaultValue);
       log.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
@@ -161,32 +133,28 @@ public class Configuration {
   }
 
   private static String getString(
-      Supplier<Config> cfg, String section, String subsection, String name, String defaultValue) {
-    String value = cfg.get().getString(section, subsection, name);
+      Config cfg, String section, String subsection, String name, String defaultValue) {
+    String value = cfg.getString(section, subsection, name);
     if (!Strings.isNullOrEmpty(value)) {
       return value;
     }
     return defaultValue;
   }
 
-  private static Map<EventFamily, Boolean> eventsEnabled(
-      Supplier<Config> config, String subsection) {
+  private static Map<EventFamily, Boolean> eventsEnabled(Config config, String subsection) {
     Map<EventFamily, Boolean> eventsEnabled = new HashMap<>();
     for (EventFamily eventFamily : EventFamily.values()) {
       String enabledConfigKey = eventFamily.lowerCamelName() + "Enabled";
 
       eventsEnabled.put(
           eventFamily,
-          config
-              .get()
-              .getBoolean(KAFKA_SECTION, subsection, enabledConfigKey, DEFAULT_ENABLE_PROCESSING));
+          config.getBoolean(
+              KAFKA_SECTION, subsection, enabledConfigKey, DEFAULT_ENABLE_PROCESSING));
     }
     return eventsEnabled;
   }
 
-  private static void applyKafkaConfig(
-      Supplier<Config> configSupplier, String subsectionName, Properties target) {
-    Config config = configSupplier.get();
+  private static void applyKafkaConfig(Config config, String subsectionName, Properties target) {
     for (String section : config.getSubsections(KAFKA_SECTION)) {
       if (section.equals(subsectionName)) {
         for (String name : config.getNames(KAFKA_SECTION, section, true)) {
@@ -206,11 +174,7 @@ public class Configuration {
     target.put(
         "bootstrap.servers",
         getString(
-            configSupplier,
-            KAFKA_SECTION,
-            null,
-            "bootstrapServers",
-            DEFAULT_KAFKA_BOOTSTRAP_SERVERS));
+            config, KAFKA_SECTION, null, "bootstrapServers", DEFAULT_KAFKA_BOOTSTRAP_SERVERS));
   }
 
   public static class Kafka {
@@ -219,16 +183,12 @@ public class Configuration {
 
     private static final Map<EventFamily, String> EVENT_TOPICS =
         ImmutableMap.of(
-            EventFamily.INDEX_EVENT,
-            "GERRIT.EVENT.INDEX",
-            EventFamily.STREAM_EVENT,
-            "GERRIT.EVENT.STREAM",
-            EventFamily.CACHE_EVENT,
-            "GERRIT.EVENT.CACHE",
-            EventFamily.PROJECT_LIST_EVENT,
-            "GERRIT.EVENT.PROJECT.LIST");
+            EventFamily.INDEX_EVENT, "GERRIT.EVENT.INDEX",
+            EventFamily.STREAM_EVENT, "GERRIT.EVENT.STREAM",
+            EventFamily.CACHE_EVENT, "GERRIT.EVENT.CACHE",
+            EventFamily.PROJECT_LIST_EVENT, "GERRIT.EVENT.PROJECT.LIST");
 
-    Kafka(Supplier<Config> config) {
+    Kafka(Config config) {
       this.bootstrapServers =
           getString(
               config, KAFKA_SECTION, null, "bootstrapServers", DEFAULT_KAFKA_BOOTSTRAP_SERVERS);
@@ -262,11 +222,10 @@ public class Configuration {
     private final boolean enabled;
     private final Map<EventFamily, Boolean> eventsEnabled;
 
-    private KafkaPublisher(Supplier<Config> cfg) {
+    private KafkaPublisher(Config cfg) {
       enabled =
-          cfg.get()
-              .getBoolean(
-                  KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
+          cfg.getBoolean(
+              KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
 
       eventsEnabled = eventsEnabled(cfg, KAFKA_PUBLISHER_SUBSECTION);
 
@@ -306,22 +265,21 @@ public class Configuration {
     private Map<EventFamily, Boolean> eventsEnabled;
     private final Config cfg;
 
-    public KafkaSubscriber(Supplier<Config> configSupplier) {
-      this.cfg = configSupplier.get();
-
+    public KafkaSubscriber(Config cfg) {
       this.pollingInterval =
           cfg.getInt(
               KAFKA_SECTION,
               KAFKA_SUBSCRIBER_SUBSECTION,
               "pollingIntervalMs",
               DEFAULT_POLLING_INTERVAL_MS);
+      this.cfg = cfg;
 
       enabled = cfg.getBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
 
-      eventsEnabled = eventsEnabled(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION);
+      eventsEnabled = eventsEnabled(cfg, KAFKA_SUBSCRIBER_SUBSECTION);
 
       if (enabled) {
-        applyKafkaConfig(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION, this);
+        applyKafkaConfig(cfg, KAFKA_SUBSCRIBER_SUBSECTION, this);
       }
     }
 
@@ -363,14 +321,14 @@ public class Configuration {
 
     private final boolean synchronize;
 
-    private Forwarding(Supplier<Config> cfg, String section) {
+    private Forwarding(Config cfg, String section) {
       synchronize = getBoolean(cfg, section, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE);
     }
 
     private static boolean getBoolean(
-        Supplier<Config> cfg, String section, String name, boolean defaultValue) {
+        Config cfg, String section, String name, boolean defaultValue) {
       try {
-        return cfg.get().getBoolean(section, name, defaultValue);
+        return cfg.getBoolean(section, name, defaultValue);
       } catch (IllegalArgumentException e) {
         log.error("invalid value for {}; using default value {}", name, defaultValue);
         log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
@@ -390,11 +348,11 @@ public class Configuration {
     private final int threadPoolSize;
     private final List<String> patterns;
 
-    private Cache(Supplier<Config> cfg) {
+    private Cache(Config cfg) {
       super(cfg, CACHE_SECTION);
       threadPoolSize =
           getInt(cfg, CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
-      patterns = Arrays.asList(cfg.get().getStringList(CACHE_SECTION, null, PATTERN_KEY));
+      patterns = Arrays.asList(cfg.getStringList(CACHE_SECTION, null, PATTERN_KEY));
     }
 
     public int threadPoolSize() {
@@ -409,7 +367,7 @@ public class Configuration {
   public static class Event extends Forwarding {
     static final String EVENT_SECTION = "event";
 
-    private Event(Supplier<Config> cfg) {
+    private Event(Config cfg) {
       super(cfg, EVENT_SECTION);
     }
   }
@@ -425,7 +383,7 @@ public class Configuration {
 
     private final int numStripedLocks;
 
-    private Index(Supplier<Config> cfg) {
+    private Index(Config cfg) {
       super(cfg, INDEX_SECTION);
       threadPoolSize =
           getInt(cfg, INDEX_SECTION, null, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
@@ -500,7 +458,7 @@ public class Configuration {
 
     private CuratorFramework build;
 
-    private ZookeeperConfig(Supplier<Config> cfg) {
+    private ZookeeperConfig(Config cfg) {
       connectionString =
           getString(cfg, SECTION, SUBSECTION, KEY_CONNECT_STRING, DEFAULT_ZK_CONNECT);
       root = getString(cfg, SECTION, SUBSECTION, KEY_ROOT_NODE, "gerrit/multi-site");
