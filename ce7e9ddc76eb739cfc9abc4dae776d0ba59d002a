@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "68ae2784_25f25b25",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-07T15:36:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1523cd38_f7fc5755",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 246,
+        "endChar": 7
+      },
+      "revId": "ce7e9ddc76eb739cfc9abc4dae776d0ba59d002a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "91a4b595_ce8c4383",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
         "patchSetId": 7
@@ -45,6 +69,30 @@
       "revId": "ce7e9ddc76eb739cfc9abc4dae776d0ba59d002a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5bccb0c3_774f1493",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-07T15:36:23Z",
+      "side": 1,
+      "message": "This needs to accommodate more than 2 digits. I\u0027ve replaced for \u0027refs/changes/[0-9]+/[0-9]+/[0-9]+\u0027 to narrow the possibilities",
+      "parentUuid": "91a4b595_ce8c4383",
+      "range": {
+        "startLine": 69,
+        "startChar": 63,
+        "endLine": 69,
+        "endChar": 65
+      },
+      "revId": "ce7e9ddc76eb739cfc9abc4dae776d0ba59d002a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
