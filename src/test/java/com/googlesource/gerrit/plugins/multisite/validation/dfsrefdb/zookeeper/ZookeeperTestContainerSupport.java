@@ -73,7 +73,7 @@ public class ZookeeperTestContainerSupport {
     container.start();
     Integer zkHostPort = container.getMappedPort(2181);
     Config splitBrainconfig = new Config();
-    String connectString = "localhost:" + zkHostPort;
+    String connectString = container.getContainerIpAddress() + ":" + zkHostPort;
     splitBrainconfig.setBoolean("ref-database", null, "enabled", true);
     splitBrainconfig.setString("ref-database", "zookeeper", "connectString", connectString);
     splitBrainconfig.setString(
