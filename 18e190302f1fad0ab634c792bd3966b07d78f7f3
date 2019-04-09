@@ -94,6 +94,30 @@
       "revId": "18e190302f1fad0ab634c792bd3966b07d78f7f3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bf7bcf8a_1a3bec61",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerPublisher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-09T22:32:49Z",
+      "side": 1,
+      "message": "If we introduce the InstanceId inside the execution context in Gerrit, then it gets propagate everywhere and we can inject the info as well into the stream events.\n\nThen when we consume events, we can simply check if was an event forwarded from somewhere else, and avoid re-processing it again.\n\nAs soon as Gerrit becomes more a series of multi-site microservices, we will need to track where things are getting created and consumed across the network. I\u0027m sure the Google guys have something similar.",
+      "parentUuid": "78a9f6bd_c33ef91c",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 37
+      },
+      "revId": "18e190302f1fad0ab634c792bd3966b07d78f7f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
