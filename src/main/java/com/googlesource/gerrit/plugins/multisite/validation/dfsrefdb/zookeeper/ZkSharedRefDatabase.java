@@ -18,9 +18,8 @@ import com.google.common.base.MoreObjects;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.inject.Named;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
@@ -31,10 +30,6 @@ import org.eclipse.jgit.lib.Ref;
 
 public class ZkSharedRefDatabase implements SharedRefDatabase {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-
-  private static final byte[] ZEROS_OBJECT_ID = {
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-  };
 
   private final CuratorFramework client;
   private final RetryPolicy retryPolicy;
@@ -97,17 +92,10 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   }
 
   static ObjectId readObjectId(byte[] value) {
-    return ObjectId.fromRaw(value);
+    return ObjectId.fromString(value, 0);
   }
 
-  static byte[] writeObjectId(ObjectId value) throws IOException {
-    if (value == null) {
-      return ZEROS_OBJECT_ID;
-    }
-
-    final ByteArrayOutputStream out = new ByteArrayOutputStream();
-    final DataOutputStream stream = new DataOutputStream(out);
-    value.copyRawTo(stream);
-    return out.toByteArray();
+  static byte[] writeObjectId(ObjectId value) {
+    return ObjectId.toString(value).getBytes(StandardCharsets.US_ASCII);
   }
 }
