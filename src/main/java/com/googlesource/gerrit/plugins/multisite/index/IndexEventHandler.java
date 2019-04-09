@@ -21,6 +21,7 @@ import com.google.gerrit.extensions.events.GroupIndexedListener;
 import com.google.gerrit.extensions.events.ProjectIndexedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
@@ -56,9 +57,11 @@ class IndexEventHandler
 
   @Override
   public void onAccountIndexed(int id) {
-    IndexAccountTask task = new IndexAccountTask(new AccountIndexEvent(id));
-    if (queuedTasks.add(task)) {
-      executor.execute(task);
+    if (!Context.isForwardedEvent()) {
+      IndexAccountTask task = new IndexAccountTask(new AccountIndexEvent(id));
+      if (queuedTasks.add(task)) {
+        executor.execute(task);
+      }
     }
   }
 
@@ -74,41 +77,49 @@ class IndexEventHandler
 
   @Override
   public void onGroupIndexed(String groupUUID) {
-    IndexGroupTask task = new IndexGroupTask(new GroupIndexEvent(groupUUID));
-    if (queuedTasks.add(task)) {
-      executor.execute(task);
+    if (!Context.isForwardedEvent()) {
+      IndexGroupTask task = new IndexGroupTask(new GroupIndexEvent(groupUUID));
+      if (queuedTasks.add(task)) {
+        executor.execute(task);
+      }
     }
   }
 
   @Override
   public void onProjectIndexed(String projectName) {
-    IndexProjectTask task = new IndexProjectTask(new ProjectIndexEvent(projectName));
-    if (queuedTasks.add(task)) {
-      executor.execute(task);
+    if (!Context.isForwardedEvent()) {
+      IndexProjectTask task = new IndexProjectTask(new ProjectIndexEvent(projectName));
+      if (queuedTasks.add(task)) {
+        executor.execute(task);
+      }
     }
   }
 
   private void executeIndexChangeTask(String projectName, int id) {
-    ChangeChecker checker = changeChecker.create(projectName + "~" + id);
-    try {
-      checker
-          .newIndexEvent(projectName, id, false)
-          .map(event -> new IndexChangeTask(event))
-          .ifPresent(
-              task -> {
-                if (queuedTasks.add(task)) {
-                  executor.execute(task);
-                }
-              });
-    } catch (Exception e) {
-      log.warn("Unable to create task to handle change {}~{}", projectName, id, e);
+    if (!Context.isForwardedEvent()) {
+      ChangeChecker checker = changeChecker.create(projectName + "~" + id);
+      try {
+        checker
+            .newIndexEvent(projectName, id, false)
+            .map(event -> new IndexChangeTask(event))
+            .ifPresent(
+                task -> {
+                  if (queuedTasks.add(task)) {
+                    executor.execute(task);
+                  }
+                });
+      } catch (Exception e) {
+        log.warn("Unable to create task to handle change {}~{}", projectName, id, e);
+      }
     }
   }
 
   private void executeDeleteChangeTask(int id) {
-    IndexChangeTask task = new IndexChangeTask(new ChangeIndexEvent("", id, true));
-    if (queuedTasks.add(task)) {
-      executor.execute(task);
+    if (!Context.isForwardedEvent()) {
+      IndexChangeTask task = new IndexChangeTask(new ChangeIndexEvent("", id, true));
+      if (queuedTasks.add(task)) {
+        executor.execute(task);
+      }
     }
   }
 

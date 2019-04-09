@@ -96,6 +96,7 @@ public class ForwardedIndexProjectHandler
 
     indexExecutor.schedule(
         () -> {
+          Context.setForwardedEvent(true);
           try {
             if (!attemptIndex(projectName, event)) {
               log.warn(
