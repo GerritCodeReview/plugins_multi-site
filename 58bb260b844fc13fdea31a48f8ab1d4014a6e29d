@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9efd616b_13a1d4c5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-09T19:14:19Z",
+      "side": 1,
+      "message": "fixing this",
+      "revId": "58bb260b844fc13fdea31a48f8ab1d4014a6e29d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
