@@ -14,7 +14,10 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -47,6 +50,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ForwardedIndexChangeHandlerTest {
@@ -138,6 +142,51 @@ public class ForwardedIndexChangeHandlerTest {
         CHANGE_EXISTS, DO_NOT_THROW_ORM_EXCEPTION, THROW_IO_EXCEPTION, CHANGE_UP_TO_DATE);
     exception.expect(IOException.class);
     handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
+  }
+
+  @Test
+  public void shouldSetAndUnsetForwardedContext() throws Exception {
+    setupChangeAccessRelatedMocks(CHANGE_EXISTS, CHANGE_UP_TO_DATE);
+    // this doAnswer is to allow to assert that context is set to forwarded
+    // while cache eviction is called.
+    doAnswer(
+            (Answer<Void>)
+                invocation -> {
+                  assertThat(Context.isForwardedEvent()).isTrue();
+                  return null;
+                })
+        .when(indexerMock)
+        .index(any(ReviewDb.class), any(Change.class));
+
+    assertThat(Context.isForwardedEvent()).isFalse();
+    handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
+    assertThat(Context.isForwardedEvent()).isFalse();
+
+    verify(indexerMock, times(1)).index(any(ReviewDb.class), any(Change.class));
+  }
+
+  @Test
+  public void shouldSetAndUnsetForwardedContextEvenIfExceptionIsThrown() throws Exception {
+    setupChangeAccessRelatedMocks(CHANGE_EXISTS, CHANGE_UP_TO_DATE);
+    doAnswer(
+            (Answer<Void>)
+                invocation -> {
+                  assertThat(Context.isForwardedEvent()).isTrue();
+                  throw new IOException("someMessage");
+                })
+        .when(indexerMock)
+        .index(any(ReviewDb.class), any(Change.class));
+
+    assertThat(Context.isForwardedEvent()).isFalse();
+    try {
+      handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
+      fail("should have thrown an IOException");
+    } catch (IOException e) {
+      assertThat(e.getMessage()).isEqualTo("someMessage");
+    }
+    assertThat(Context.isForwardedEvent()).isFalse();
+
+    verify(indexerMock, times(1)).index(any(ReviewDb.class), any(Change.class));
   }
 
   private void setupChangeAccessRelatedMocks(boolean changeExist, boolean changeUpToDate)

@@ -50,13 +50,18 @@ public class ForwardedCacheEvictionHandler {
     if (cache == null) {
       throw new CacheNotFoundException(entry.getPluginName(), entry.getCacheName());
     }
-    if (Constants.PROJECT_LIST.equals(entry.getCacheName())) {
-      // One key is holding the list of projects
-      cache.invalidateAll();
-      log.debug("Invalidated cache {}", entry.getCacheName());
-    } else {
-      cache.invalidate(entry.getKey());
-      log.debug("Invalidated cache {}[{}]", entry.getCacheName(), entry.getKey());
+    try {
+      Context.setForwardedEvent(true);
+      if (Constants.PROJECT_LIST.equals(entry.getCacheName())) {
+        // One key is holding the list of projects
+        cache.invalidateAll();
+        log.debug("Invalidated cache {}", entry.getCacheName());
+      } else {
+        cache.invalidate(entry.getKey());
+        log.debug("Invalidated cache {}[{}]", entry.getCacheName(), entry.getKey());
+      }
+    } finally {
+      Context.unsetForwardedEvent();
     }
   }
 }

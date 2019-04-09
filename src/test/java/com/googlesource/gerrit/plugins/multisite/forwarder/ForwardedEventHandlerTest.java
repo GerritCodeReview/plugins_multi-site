@@ -18,14 +18,12 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.server.index.account.AccountIndexer;
-import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
-import java.io.IOException;
-import java.util.Optional;
+import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.EventDispatcher;
+import com.google.gerrit.server.events.ProjectCreatedEvent;
+import com.google.gerrit.server.util.OneOffRequestContext;
+import com.google.gwtorm.server.OrmException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -36,38 +34,28 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ForwardedIndexAccountHandlerTest {
+public class ForwardedEventHandlerTest {
 
   @Rule public ExpectedException exception = ExpectedException.none();
-  @Mock private AccountIndexer indexerMock;
-  @Mock private Configuration config;
-  @Mock private Configuration.Index index;
-  private ForwardedIndexAccountHandler handler;
-  private Account.Id id;
+  @Mock private EventDispatcher dispatcherMock;
+  @Mock OneOffRequestContext oneOffCtxMock;
+  private ForwardedEventHandler handler;
 
   @Before
   public void setUp() throws Exception {
-    when(config.index()).thenReturn(index);
-    when(index.numStripedLocks()).thenReturn(10);
-    handler = new ForwardedIndexAccountHandler(indexerMock, config);
-    id = new Account.Id(123);
+    handler = new ForwardedEventHandler(dispatcherMock, oneOffCtxMock);
   }
 
   @Test
-  public void testSuccessfulIndexing() throws Exception {
-    handler.index(id, Operation.INDEX, Optional.empty());
-    verify(indexerMock).index(id);
-  }
-
-  @Test
-  public void deleteIsNotSupported() throws Exception {
-    exception.expect(UnsupportedOperationException.class);
-    exception.expectMessage("Delete from account index not supported");
-    handler.index(id, Operation.DELETE, Optional.empty());
+  public void testSuccessfulDispatching() throws Exception {
+    Event event = new ProjectCreatedEvent();
+    handler.dispatch(event);
+    verify(dispatcherMock).postEvent(event);
   }
 
   @Test
   public void shouldSetAndUnsetForwardedContext() throws Exception {
+    Event event = new ProjectCreatedEvent();
     // this doAnswer is to allow to assert that context is set to forwarded
     // while cache eviction is called.
     doAnswer(
@@ -76,36 +64,37 @@ public class ForwardedIndexAccountHandlerTest {
                   assertThat(Context.isForwardedEvent()).isTrue();
                   return null;
                 })
-        .when(indexerMock)
-        .index(id);
+        .when(dispatcherMock)
+        .postEvent(event);
 
     assertThat(Context.isForwardedEvent()).isFalse();
-    handler.index(id, Operation.INDEX, Optional.empty());
+    handler.dispatch(event);
     assertThat(Context.isForwardedEvent()).isFalse();
 
-    verify(indexerMock).index(id);
+    verify(dispatcherMock).postEvent(event);
   }
 
   @Test
   public void shouldSetAndUnsetForwardedContextEvenIfExceptionIsThrown() throws Exception {
+    Event event = new ProjectCreatedEvent();
     doAnswer(
             (Answer<Void>)
                 invocation -> {
                   assertThat(Context.isForwardedEvent()).isTrue();
-                  throw new IOException("someMessage");
+                  throw new OrmException("someMessage");
                 })
-        .when(indexerMock)
-        .index(id);
+        .when(dispatcherMock)
+        .postEvent(event);
 
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
-      handler.index(id, Operation.INDEX, Optional.empty());
-      fail("should have thrown an IOException");
-    } catch (IOException e) {
+      handler.dispatch(event);
+      fail("should have throw an OrmException");
+    } catch (OrmException e) {
       assertThat(e.getMessage()).isEqualTo("someMessage");
     }
     assertThat(Context.isForwardedEvent()).isFalse();
 
-    verify(indexerMock).index(id);
+    verify(dispatcherMock).postEvent(event);
   }
 }
