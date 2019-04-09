@@ -16,8 +16,8 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import com.google.gson.Gson;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import java.util.Map;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -26,29 +26,24 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 public class KafkaEventDeserializer implements Deserializer<SourceAwareEventWrapper> {
 
   private final StringDeserializer stringDeserializer = new StringDeserializer();
-  private Provider<Gson> gsonProvider;
+  private Gson gson;
 
   // To be used when providing this deserializer with class name (then need to add a configuration
   // entry to set the gson.provider
   public KafkaEventDeserializer() {}
 
   @Inject
-  public KafkaEventDeserializer(Provider<Gson> gsonProvider) {
-    this.gsonProvider = gsonProvider;
+  public KafkaEventDeserializer(@BrokerGson Gson gson) {
+    this.gson = gson;
   }
 
-  @SuppressWarnings("unchecked")
   @Override
-  public void configure(Map<String, ?> configs, boolean isKey) {
-    gsonProvider = (Provider<Gson>) configs.get("gson.provider");
-  }
+  public void configure(Map<String, ?> configs, boolean isKey) {}
 
   @Override
   public SourceAwareEventWrapper deserialize(String topic, byte[] data) {
     final SourceAwareEventWrapper result =
-        gsonProvider
-            .get()
-            .fromJson(stringDeserializer.deserialize(topic, data), SourceAwareEventWrapper.class);
+        gson.fromJson(stringDeserializer.deserialize(topic, data), SourceAwareEventWrapper.class);
 
     result.validate();
 

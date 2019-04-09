@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
@@ -100,7 +101,10 @@ public class Module extends LifecycleModule {
     }
 
     install(new ValidationModule(config, disableGitRepositoryValidation));
-    bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
+    bind(Gson.class)
+        .annotatedWith(BrokerGson.class)
+        .toProvider(GsonProvider.class)
+        .in(Singleton.class);
   }
 
   @Provides

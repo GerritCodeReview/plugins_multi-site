@@ -33,13 +33,14 @@ import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.PatchSetCreatedEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.query.change.ChangeData;
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Module;
 import com.googlesource.gerrit.plugins.multisite.NoteDbStatus;
-import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -250,11 +251,11 @@ public class EventConsumerIT extends AbstractDaemonTest {
 
   private List<Event> drainQueue(LinkedBlockingQueue<SourceAwareEventWrapper> queue)
       throws InterruptedException {
-    GsonProvider gsonProvider = server.getTestInjector().getInstance(Key.get(GsonProvider.class));
+    Gson gson = server.getTestInjector().getInstance(Key.get(Gson.class, BrokerGson.class));
     SourceAwareEventWrapper event;
     List<Event> eventsList = new ArrayList<>();
     while ((event = queue.poll(QUEUE_POLL_TIMEOUT_MSECS, TimeUnit.MILLISECONDS)) != null) {
-      eventsList.add(event.getEventBody(gsonProvider));
+      eventsList.add(event.getEventBody(gson));
     }
     return eventsList;
   }
