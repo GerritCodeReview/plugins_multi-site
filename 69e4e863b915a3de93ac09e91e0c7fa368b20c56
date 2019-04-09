@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b3df7f8d_fb49477c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-09T13:52:31Z",
+      "side": 1,
+      "message": "We can add in the return refName \u003d\u003d null || ...",
+      "range": {
+        "startLine": 127,
+        "startChar": 11,
+        "endLine": 127,
+        "endChar": 34
+      },
+      "revId": "69e4e863b915a3de93ac09e91e0c7fa368b20c56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7da27c04_b51cd282",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-09T13:52:31Z",
+      "side": 1,
+      "message": "This is all a boolean expression with short-circuit:\n\n  return  ignoreRefInSharedDb(oldRef) || compareAndPut(project, oldRef, NULL_REF);",
+      "range": {
+        "startLine": 51,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 5
+      },
+      "revId": "69e4e863b915a3de93ac09e91e0c7fa368b20c56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c298e96_af664b71",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-09T13:52:31Z",
+      "side": 1,
+      "message": "extract into a constant that says A_REF_NAME_OF_A_PATCHSET, then reuse it all across the tests.",
+      "range": {
+        "startLine": 145,
+        "startChar": 47,
+        "endLine": 145,
+        "endChar": 68
+      },
+      "revId": "69e4e863b915a3de93ac09e91e0c7fa368b20c56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8068aa7_82c7670a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-09T13:52:31Z",
+      "side": 1,
+      "message": "This test is redundant, as we don\u0027t care about the change number, therefore is not adding any extra coverage",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 3
+      },
+      "revId": "69e4e863b915a3de93ac09e91e0c7fa368b20c56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
