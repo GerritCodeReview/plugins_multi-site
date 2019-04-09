@@ -16,7 +16,6 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.server.git.GitRepositoryManager;
-import com.google.inject.FactoryModule;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 

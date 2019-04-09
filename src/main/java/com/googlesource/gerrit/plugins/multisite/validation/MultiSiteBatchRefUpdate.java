@@ -236,7 +236,14 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     }
 
     for (RefPair refPair : refsToUpdate) {
-      sharedRefDb.compareAndPut(projectName, refPair.oldRef, refPair.newRef);
+      boolean compareAndPutResult =
+          sharedRefDb.compareAndPut(projectName, refPair.oldRef, refPair.newRef);
+      if (!compareAndPutResult) {
+        throw new IOException(
+            String.format(
+                "This repos is out of sync for project %s. old_ref=%s, new_ref=%s",
+                projectName, refPair.oldRef, refPair.newRef));
+      }
     }
   }
 
