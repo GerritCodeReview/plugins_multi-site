@@ -42,7 +42,10 @@ public class BrokerPublisher implements LifecycleListener {
 
   @Inject
   public BrokerPublisher(
-      BrokerSession session, Gson gson, @InstanceId UUID instanceId, MessageLogger msgLog) {
+      BrokerSession session,
+      @BrokerGson Gson gson,
+      @InstanceId UUID instanceId,
+      MessageLogger msgLog) {
     this.session = session;
     this.gson = gson;
     this.instanceId = instanceId;

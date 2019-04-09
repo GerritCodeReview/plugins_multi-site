@@ -17,7 +17,6 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 import com.google.gerrit.server.events.Event;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.inject.Provider;
 import java.util.UUID;
 import org.apache.commons.lang3.Validate;
 
@@ -34,8 +33,8 @@ public class SourceAwareEventWrapper {
     return body;
   }
 
-  public Event getEventBody(Provider<Gson> gsonProvider) {
-    return gsonProvider.get().fromJson(this.body, Event.class);
+  public Event getEventBody(Gson gson) {
+    return gson.fromJson(this.body, Event.class);
   }
 
   public static class EventHeader {
