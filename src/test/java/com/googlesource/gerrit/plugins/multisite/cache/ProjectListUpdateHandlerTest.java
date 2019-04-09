@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.cache;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.util.concurrent.MoreExecutors;
@@ -24,6 +25,7 @@ import com.google.gerrit.extensions.events.NewProjectCreatedListener;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.googlesource.gerrit.plugins.multisite.cache.ProjectListUpdateHandler.ProjectListUpdateTask;
+import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import org.junit.Before;
@@ -67,6 +69,15 @@ public class ProjectListUpdateHandlerTest {
     when(event.getProjectName()).thenReturn(projectName);
     handler.onProjectDeleted(event);
     verify(forwarder).updateProjectList(new ProjectListUpdateEvent(projectName, true));
+  }
+
+  @Test
+  public void shouldNotForwardIfAlreadyForwardedEvent() throws Exception {
+    Context.setForwardedEvent(true);
+    handler.onNewProjectCreated(mock(NewProjectCreatedListener.Event.class));
+    handler.onProjectDeleted(mock(ProjectDeletedListener.Event.class));
+    Context.unsetForwardedEvent();
+    verifyZeroInteractions(forwarder);
   }
 
   @Test

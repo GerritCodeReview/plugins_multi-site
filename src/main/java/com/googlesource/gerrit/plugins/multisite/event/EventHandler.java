@@ -19,6 +19,7 @@ import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 import java.util.concurrent.Executor;
 
@@ -34,7 +35,7 @@ class EventHandler implements EventListener {
 
   @Override
   public void onEvent(Event event) {
-    if (event instanceof ProjectEvent) {
+    if (!Context.isForwardedEvent() && event instanceof ProjectEvent) {
       executor.execute(new EventTask(event));
     }
   }
