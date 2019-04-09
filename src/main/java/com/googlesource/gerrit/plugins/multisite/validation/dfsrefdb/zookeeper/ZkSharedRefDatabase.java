@@ -18,9 +18,8 @@ import com.google.common.base.MoreObjects;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import javax.inject.Named;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
@@ -97,17 +96,13 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   }
 
   static ObjectId readObjectId(byte[] value) {
-    return ObjectId.fromRaw(value);
+    return ObjectId.fromString(new String(value, 0, value.length));
   }
 
-  static byte[] writeObjectId(ObjectId value) throws IOException {
+  static byte[] writeObjectId(ObjectId value) {
     if (value == null) {
       return ZEROS_OBJECT_ID;
     }
-
-    final ByteArrayOutputStream out = new ByteArrayOutputStream();
-    final DataOutputStream stream = new DataOutputStream(out);
-    value.copyRawTo(stream);
-    return out.toByteArray();
+    return ObjectId.toString(value).getBytes(StandardCharsets.UTF_8);
   }
 }
