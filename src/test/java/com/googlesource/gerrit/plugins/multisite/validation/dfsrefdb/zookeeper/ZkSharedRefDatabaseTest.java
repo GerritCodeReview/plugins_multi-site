@@ -63,8 +63,8 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
 
     assertThat(zkSharedRefDatabase.compareAndCreate(A_TEST_PROJECT_NAME, ref)).isTrue();
 
-    assertThat(zookeeperContainer.readRefValueFromZk(A_TEST_PROJECT_NAME, ref))
-        .isEqualTo(ref.getObjectId());
+    String data = zookeeperContainer.readRefValueFromZk(A_TEST_PROJECT_NAME, ref).getName();
+    assertThat(data).isEqualTo(ref.getObjectId().getName());
   }
 
   @Test
