@@ -46,6 +46,30 @@
       "revId": "18e190302f1fad0ab634c792bd3966b07d78f7f3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bbf425f5_97cc13c9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerPublisher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-04-09T22:20:12Z",
+      "side": 1,
+      "message": "Ok, so, once instance-id is a core gerrit feature we should be able to improve the situation.",
+      "parentUuid": "8aa49c45_e6a7f170",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 37
+      },
+      "revId": "18e190302f1fad0ab634c792bd3966b07d78f7f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
