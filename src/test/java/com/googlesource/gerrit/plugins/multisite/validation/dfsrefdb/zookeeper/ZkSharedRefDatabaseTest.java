@@ -161,32 +161,51 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   @Test
   public void anImmutableChangeShouldBeIgnored() {
     Ref immutableChangeRef = zkSharedRefDatabase.newRef(A_REF_NAME_OF_A_PATCHSET, AN_OBJECT_ID_1);
-    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef)).isTrue();
+    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef.getName())).isTrue();
   }
 
   @Test
   public void aChangeMetaShouldNotBeIgnored() {
     Ref immutableChangeRef = zkSharedRefDatabase.newRef("refs/changes/01/1/meta", AN_OBJECT_ID_1);
-    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef)).isFalse();
+    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef.getName())).isFalse();
   }
 
   @Test
   public void aDraftCommentsShouldBeIgnored() {
     Ref immutableChangeRef =
         zkSharedRefDatabase.newRef("refs/draft-comments/01/1/1000000", AN_OBJECT_ID_1);
-    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef)).isTrue();
+    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef.getName())).isTrue();
   }
 
   @Test
   public void regularRefHeadsMasterShouldNotBeIgnored() {
     Ref immutableChangeRef = zkSharedRefDatabase.newRef("refs/heads/master", AN_OBJECT_ID_1);
-    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef)).isFalse();
+    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef.getName())).isFalse();
   }
 
   @Test
   public void regularCommitShouldNotBeIgnored() {
     Ref immutableChangeRef = zkSharedRefDatabase.newRef("refs/heads/stable-2.16", AN_OBJECT_ID_1);
-    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef)).isFalse();
+    assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef.getName())).isFalse();
+  }
+
+  @Test
+  public void compareAndPutShouldAlwaysIngoreAlwaysDraftCommentsEvenOutOfOrder() throws Exception {
+    // Test to reproduce a production bug where ignored refs were persisted in ZK because
+    // newRef == NULL
+    Ref existingRef =
+        zkSharedRefDatabase.newRef("refs/draft-comments/56/450756/1013728", AN_OBJECT_ID_1);
+    Ref oldRefToIgnore =
+        zkSharedRefDatabase.newRef("refs/draft-comments/56/450756/1013728", AN_OBJECT_ID_2);
+    Ref nullRef = SharedRefDatabase.NULL_REF;
+    String projectName = A_TEST_PROJECT_NAME;
+
+    // This ref should be ignored even if newRef is null
+    assertThat(zkSharedRefDatabase.compareAndPut(A_TEST_PROJECT_NAME, existingRef, nullRef))
+        .isTrue();
+
+    // This ignored ref should also be ignored
+    assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRefToIgnore, nullRef)).isTrue();
   }
 
   @Override

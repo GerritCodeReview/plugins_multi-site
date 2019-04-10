@@ -120,11 +120,10 @@ public interface SharedRefDatabase {
   /**
    * Some references should not be stored in the SharedRefDatabase.
    *
-   * @param ref
+   * @param refName
    * @return true if it's to be ignore; false otherwise
    */
-  default boolean ignoreRefInSharedDb(Ref ref) {
-    String refName = ref.getName();
+  default boolean ignoreRefInSharedDb(String refName) {
     return refName == null
         || refName.startsWith("refs/draft-comments")
         || (refName.startsWith("refs/changes") && !refName.endsWith("/meta"));
