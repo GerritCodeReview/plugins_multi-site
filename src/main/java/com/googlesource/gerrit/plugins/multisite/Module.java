@@ -18,6 +18,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gson.Gson;
+import com.google.inject.CreationException;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.ProvisionException;
@@ -39,7 +40,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
+import com.google.inject.spi.Message;
+
+import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,6 +83,11 @@ public class Module extends LifecycleModule {
       throw new ProvisionException(
           "Gerrit is still running on ReviewDb: please migrate to NoteDb "
               + "and then reload the multi-site plugin.");
+    }
+    
+    Collection<Message> validationErrors = config.validate();
+    if(!validationErrors.isEmpty()) {
+      throw new CreationException(validationErrors);
     }
 
     listener().to(Log4jMessageLogger.class);

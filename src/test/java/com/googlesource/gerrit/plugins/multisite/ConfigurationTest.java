@@ -30,6 +30,7 @@ import static com.googlesource.gerrit.plugins.multisite.Configuration.KafkaSubsc
 import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
 
 import com.google.common.collect.ImmutableList;
+
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,14 +44,16 @@ public class ConfigurationTest {
   private static final int THREAD_POOL_SIZE = 1;
 
   private Config globalPluginConfig;
+  private Config replicationConfig;
 
   @Before
   public void setUp() {
     globalPluginConfig = new Config();
+    replicationConfig = new Config();
   }
 
   private Configuration getConfiguration() {
-    return new Configuration(globalPluginConfig);
+    return new Configuration(globalPluginConfig, replicationConfig);
   }
 
   @Test
@@ -202,5 +205,12 @@ public class ConfigurationTest {
     final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
 
     assertThat(property).isNull();
+  }
+  
+  @Test
+  public void shouldReturnValidationErrorsWhenReplicationOnStartupIsEnabled() throws Exception {
+    Config replicationConfig = new Config();
+    replicationConfig.setBoolean("gerrit", null, "replicateOnStartup", true);
+    assertThat(new Configuration(globalPluginConfig, replicationConfig).validate()).isNotEmpty();
   }
 }

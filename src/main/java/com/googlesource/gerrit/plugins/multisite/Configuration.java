@@ -18,23 +18,16 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Suppliers.ofInstance;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.CaseFormat;
-import com.google.common.base.Strings;
-import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableMap;
-import com.google.gerrit.server.config.SitePaths;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
@@ -48,12 +41,24 @@ import org.eclipse.jgit.util.FS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.CaseFormat;
+import com.google.common.base.Strings;
+import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableMap;
+import com.google.gerrit.server.config.SitePaths;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.spi.Message;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+
 @Singleton
 public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
   public static final String PLUGIN_NAME = "multi-site";
   public static final String MULTI_SITE_CONFIG = PLUGIN_NAME + ".config";
+  public static final String REPLICATION_CONFIG = "replication.config";
 
   static final String INSTANCE_ID_FILE = "instanceId.data";
 
@@ -79,15 +84,17 @@ public class Configuration {
   private final Supplier<KafkaSubscriber> subscriber;
   private final Supplier<Kafka> kafka;
   private final Supplier<ZookeeperConfig> zookeeperConfig;
+  private final Supplier<Collection<Message>> replicationConfigValidation;
 
   @Inject
   Configuration(SitePaths sitePaths) {
-    this(new FileBasedConfig(sitePaths.etc_dir.resolve(MULTI_SITE_CONFIG).toFile(), FS.DETECTED));
+    this(getConfigFile(sitePaths, MULTI_SITE_CONFIG), getConfigFile(sitePaths, REPLICATION_CONFIG));
   }
 
   @VisibleForTesting
-  public Configuration(final Config cfg) {
-    Supplier<Config> lazyCfg = lazyLoad(cfg);
+  public Configuration(Config multiSiteConfig, Config replicationConfig) {
+    Supplier<Config> lazyCfg = lazyLoad(multiSiteConfig);
+    replicationConfigValidation = lazyValidateReplicatioConfig(replicationConfig);
     kafka = memoize(() -> new Kafka(lazyCfg));
     publisher = memoize(() -> new KafkaPublisher(lazyCfg));
     subscriber = memoize(() -> new KafkaSubscriber(lazyCfg));
@@ -124,6 +131,14 @@ public class Configuration {
   public KafkaSubscriber kafkaSubscriber() {
     return subscriber.get();
   }
+  
+  public Collection<Message> validate() {
+    return replicationConfigValidation.get();
+  }
+  
+  private static FileBasedConfig getConfigFile(SitePaths sitePaths, String configFileName) {
+    return new FileBasedConfig(sitePaths.etc_dir.resolve(configFileName).toFile(), FS.DETECTED);
+  }
 
   private Supplier<Config> lazyLoad(Config config) {
     if (config instanceof FileBasedConfig) {
@@ -141,6 +156,26 @@ public class Configuration {
           });
     }
     return ofInstance(config);
+  }
+  
+  private Supplier<Collection<Message>> lazyValidateReplicatioConfig(Config replicationConfig) {
+    if (replicationConfig instanceof FileBasedConfig) {
+      FileBasedConfig fileConfig = (FileBasedConfig) replicationConfig;
+      try {
+        fileConfig.load();
+        return memoize( () -> validateReplicationConfig(replicationConfig) );
+      } catch (IOException | ConfigInvalidException e) {
+        return ofInstance(Arrays.asList(new Message("Unable to load replicatio.config", e)));
+      }
+    }
+    return ofInstance(validateReplicationConfig(replicationConfig));
+  }
+
+  private Collection<Message> validateReplicationConfig(Config replicationConfig) {
+    if(replicationConfig.getBoolean("gerrit", "replicateOnStartup", false)) {
+      return Arrays.asList(new Message("Invalid replication.config: gerrit.replicateOnStartup has to be set to 'false' for multi-site setups"));
+    }
+    return Collections.emptyList();
   }
 
   private static int getInt(

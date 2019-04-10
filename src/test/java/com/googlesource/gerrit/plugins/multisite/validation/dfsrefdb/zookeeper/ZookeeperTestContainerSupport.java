@@ -87,7 +87,7 @@ public class ZookeeperTestContainerSupport {
         Configuration.ZookeeperConfig.KEY_MIGRATE,
         migrationMode);
 
-    configuration = new Configuration(splitBrainconfig);
+    configuration = new Configuration(splitBrainconfig, new Config());
     this.curator = configuration.getZookeeperConfig().buildCurator();
   }
 
