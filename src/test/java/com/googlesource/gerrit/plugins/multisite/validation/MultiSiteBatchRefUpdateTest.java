@@ -99,4 +99,14 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
     doReturn(false).when(sharedRefDb).compareAndPut(A_TEST_PROJECT_NAME, oldRef, newRef);
     multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
   }
+
+  @Test
+  public void executeSuccessfullyWithNoExceptionsWhenEmptyList() throws IOException {
+    doReturn(batchRefUpdate).when(refDatabase).newBatchUpdate();
+    doReturn(Collections.emptyList()).when(batchRefUpdate).getCommands();
+
+    multiSiteRefUpdate = new MultiSiteBatchRefUpdate(sharedRefDb, A_TEST_PROJECT_NAME, refDatabase);
+
+    multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
+  }
 }

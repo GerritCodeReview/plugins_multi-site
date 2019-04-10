@@ -221,6 +221,10 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
   private void updateSharedRefDb(Stream<RefPair> oldRefs) throws IOException {
     List<RefPair> refsToUpdate =
         oldRefs.sorted(comparing(RefPair::hasFailed).reversed()).collect(Collectors.toList());
+    if (refsToUpdate.isEmpty()) {
+      return;
+    }
+
     if (refsToUpdate.get(0).hasFailed()) {
       RefPair failedRef = refsToUpdate.get(0);
       throw new IOException(
