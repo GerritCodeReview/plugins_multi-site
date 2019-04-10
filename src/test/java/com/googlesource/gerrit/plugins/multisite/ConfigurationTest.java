@@ -43,14 +43,16 @@ public class ConfigurationTest {
   private static final int THREAD_POOL_SIZE = 1;
 
   private Config globalPluginConfig;
+  private Config replicationConfig;
 
   @Before
   public void setUp() {
     globalPluginConfig = new Config();
+    replicationConfig = new Config();
   }
 
   private Configuration getConfiguration() {
-    return new Configuration(globalPluginConfig);
+    return new Configuration(globalPluginConfig, replicationConfig);
   }
 
   @Test
@@ -202,5 +204,12 @@ public class ConfigurationTest {
     final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
 
     assertThat(property).isNull();
+  }
+
+  @Test
+  public void shouldReturnValidationErrorsWhenReplicationOnStartupIsEnabled() throws Exception {
+    Config replicationConfig = new Config();
+    replicationConfig.setBoolean("gerrit", null, "replicateOnStartup", true);
+    assertThat(new Configuration(globalPluginConfig, replicationConfig).validate()).isNotEmpty();
   }
 }
