@@ -22,6 +22,30 @@
       "revId": "93e601f101628895f12f12be8979558e6c4056e4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3bc54152_e7be1692",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-10T15:51:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5fe01798_68be8900",
+      "range": {
+        "startLine": 46,
+        "startChar": 11,
+        "endLine": 46,
+        "endChar": 52
+      },
+      "revId": "93e601f101628895f12f12be8979558e6c4056e4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
