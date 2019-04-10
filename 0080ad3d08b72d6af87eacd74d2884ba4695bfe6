@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "9b576613_006cfff4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-10T15:09:50Z",
+      "side": 1,
+      "message": "tags?",
+      "range": {
+        "startLine": 7,
+        "startChar": 42,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "0080ad3d08b72d6af87eacd74d2884ba4695bfe6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2c40f57c_aaf83ed5",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
         "patchSetId": 1
