@@ -48,7 +48,8 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
 
   @Override
   public boolean compareAndPut(String projectName, Ref oldRef, Ref newRef) throws IOException {
-    if (newRef != NULL_REF && ignoreRefInSharedDb(newRef)) {
+    if ((newRef != NULL_REF && ignoreRefInSharedDb(newRef))
+        || newRef == NULL_REF && ignoreRefInSharedDb(oldRef)) {
       return true;
     }
 

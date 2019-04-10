@@ -189,6 +189,23 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
     assertThat(zkSharedRefDatabase.ignoreRefInSharedDb(immutableChangeRef)).isFalse();
   }
 
+  @Test
+  public void compareAndPutShouldAlwaysIngoreIgnoredRefs() throws Exception {
+    Ref existingRef =
+        zkSharedRefDatabase.newRef("refs/draft-comments/56/450756/1013728", AN_OBJECT_ID_1);
+    Ref oldRefToIgnore =
+        zkSharedRefDatabase.newRef("refs/draft-comments/56/450756/1013728", AN_OBJECT_ID_2);
+    Ref newRef = SharedRefDatabase.NULL_REF;
+    String projectName = A_TEST_PROJECT_NAME;
+
+    assertThat(
+            zkSharedRefDatabase.compareAndPut(
+                A_TEST_PROJECT_NAME, existingRef, SharedRefDatabase.NULL_REF))
+        .isTrue();
+
+    assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRefToIgnore, newRef)).isTrue();
+  }
+
   @Override
   public String testBranch() {
     return "branch_" + nameRule.getMethodName();
