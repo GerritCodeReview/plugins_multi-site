@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fa22d00f_90cfd820",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-10T15:43:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b576613_006cfff4",
+      "range": {
+        "startLine": 7,
+        "startChar": 42,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "0080ad3d08b72d6af87eacd74d2884ba4695bfe6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2c40f57c_aaf83ed5",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "0080ad3d08b72d6af87eacd74d2884ba4695bfe6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6a8761a_e9021048",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-10T15:43:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c40f57c_aaf83ed5",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 61
+      },
+      "revId": "0080ad3d08b72d6af87eacd74d2884ba4695bfe6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "151d591f_6892113b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-10T15:43:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a87bfb91_d88bd970",
+      "range": {
+        "startLine": 198,
+        "startChar": 8,
+        "endLine": 198,
+        "endChar": 14
+      },
+      "revId": "0080ad3d08b72d6af87eacd74d2884ba4695bfe6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "138a93d7_e3b06815",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
         "patchSetId": 1
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "cdc2cc5c_69a1ee0b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-10T15:43:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "138a93d7_e3b06815",
+      "range": {
+        "startLine": 203,
+        "startChar": 50,
+        "endLine": 203,
+        "endChar": 76
+      },
+      "revId": "0080ad3d08b72d6af87eacd74d2884ba4695bfe6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2385f7c1_a4d1b9e1",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
         "patchSetId": 1
@@ -114,6 +210,30 @@
       "revId": "0080ad3d08b72d6af87eacd74d2884ba4695bfe6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "136df5f4_70815228",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-10T15:43:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2385f7c1_a4d1b9e1",
+      "range": {
+        "startLine": 205,
+        "startChar": 0,
+        "endLine": 206,
+        "endChar": 96
+      },
+      "revId": "0080ad3d08b72d6af87eacd74d2884ba4695bfe6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
