@@ -57,6 +57,7 @@ public class MultiSiteRepository extends Repository {
   private final Repository repository;
   private final RefDatabase refDatabase;
   private final MultiSiteRefDatabase multiSiteRefDatabase;
+  private final String projectName;
 
   public interface Factory {
     public MultiSiteRepository create(String projectName, Repository repository);
@@ -72,6 +73,11 @@ public class MultiSiteRepository extends Repository {
     this.repository = repository;
     this.refDatabase = repository.getRefDatabase();
     this.multiSiteRefDatabase = multiSiteRefDbFactory.create(projectName, refDatabase);
+    this.projectName = projectName;
+  }
+
+  public String getProjectName() {
+    return this.projectName;
   }
 
   @Override
