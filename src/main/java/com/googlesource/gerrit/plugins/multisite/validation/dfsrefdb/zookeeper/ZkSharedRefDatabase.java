@@ -48,6 +48,17 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   }
 
   @Override
+  public boolean isMostRecentVersion(String project, Ref ref) throws Exception {
+    final byte[] valueInZk = client.getData().forPath(pathFor(project, ref.getName()));
+
+    if (valueInZk == null) return false;
+
+    final ObjectId objectIdInZk = readObjectId(valueInZk);
+
+    return objectIdInZk.equals(ref.getObjectId());
+  }
+
+  @Override
   public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
     return compareAndPut(project, oldRef, NULL_REF);
   }
