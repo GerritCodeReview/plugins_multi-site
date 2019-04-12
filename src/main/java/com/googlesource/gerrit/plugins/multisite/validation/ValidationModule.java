@@ -39,6 +39,8 @@ public class ValidationModule extends FactoryModule {
     factory(MultiSiteBatchRefUpdate.Factory.class);
     factory(RefUpdateValidator.Factory.class);
     factory(BatchRefUpdateValidator.Factory.class);
+    factory(MultiSitePushConnection.Factory.class);
+    factory(MultiSiteTransport.Factory.class);
 
     if (!disableGitRepositoryValidation) {
       bind(GitRepositoryManager.class).to(MultiSiteGitRepositoryManager.class);
