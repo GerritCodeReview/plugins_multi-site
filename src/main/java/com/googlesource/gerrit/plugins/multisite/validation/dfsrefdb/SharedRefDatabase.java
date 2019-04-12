@@ -102,7 +102,7 @@ public interface SharedRefDatabase {
    *
    * @param project project name of the ref
    * @param ref to be checked against shared-ref db
-   * @return true if it is; false otherwise
+   * @return true if it is or if ref does not exist in shared ref-db; false otherwise
    * @throws SharedLockException if there was a problem locking the resource
    */
   boolean isUpToDate(String project, Ref ref) throws SharedLockException;
