@@ -18,6 +18,7 @@ import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
+import org.eclipse.jgit.transport.TransportProtocol;
 
 public class ValidationModule extends FactoryModule {
   private final Configuration cfg;
@@ -34,9 +35,12 @@ public class ValidationModule extends FactoryModule {
     factory(MultiSiteRefDatabase.Factory.class);
     factory(MultiSiteRefUpdate.Factory.class);
     factory(MultiSiteBatchRefUpdate.Factory.class);
+    factory(MultiSitePushConnection.Factory.class);
+    factory(MultiSiteTransport.Factory.class);
 
     if (!disableGitRepositoryValidation) {
       bind(GitRepositoryManager.class).to(MultiSiteGitRepositoryManager.class);
+      bind(TransportProtocol.class).to(MultiSiteTransportProtocol.class);
     }
 
     install(new ZkValidationModule(cfg));
