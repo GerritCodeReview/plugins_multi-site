@@ -22,26 +22,41 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
 import java.util.SortedSet;
+import org.eclipse.jgit.errors.NotSupportedException;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
+import org.eclipse.jgit.errors.TransportException;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.transport.Transport;
+import org.eclipse.jgit.transport.URIish;
 
 @Singleton
 public class MultiSiteGitRepositoryManager implements GitRepositoryManager {
   private final GitRepositoryManager gitRepositoryManager;
   private final MultiSiteRepository.Factory multiSiteRepoFactory;
+  private final MultiSiteTransport.Factory multiSiteTransportFactory;
 
   @Inject
   public MultiSiteGitRepositoryManager(
       MultiSiteRepository.Factory multiSiteRepoFactory,
+      MultiSiteTransport.Factory multiSiteTransportFactory,
       LocalDiskRepositoryManager localDiskRepositoryManager) {
     this.multiSiteRepoFactory = multiSiteRepoFactory;
     this.gitRepositoryManager = localDiskRepositoryManager;
+    this.multiSiteTransportFactory = multiSiteTransportFactory;
   }
 
   @Override
   public Repository openRepository(Project.NameKey name)
       throws RepositoryNotFoundException, IOException {
     return wrap(name, gitRepositoryManager.openRepository(name));
+  }
+
+  @Override
+  public Transport openTransport(Repository git, URIish uri)
+      throws TransportException, NotSupportedException {
+    Transport transport = gitRepositoryManager.openTransport(git, uri);
+    // We are expecting to be called with a repo that has been opened using this instance
+    return multiSiteTransportFactory.create((MultiSiteRepository) git, uri, transport);
   }
 
   @Override
