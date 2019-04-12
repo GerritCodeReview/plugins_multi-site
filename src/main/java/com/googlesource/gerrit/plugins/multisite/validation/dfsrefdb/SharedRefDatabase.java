@@ -87,6 +87,14 @@ public interface SharedRefDatabase {
   }
 
   /**
+   * Verifying in shared db if Ref is the most recent
+   * @param project project name of the ref
+   * @param ref to be checked against shared-ref db
+   * @return true if it is; false otherwise
+   */
+  boolean isMostRecentVersion(String project, Ref ref) throws Exception;
+
+  /**
    * Compare a reference, and put if it matches.
    *
    * <p>Two reference match if and only if they satisfy the following:
