@@ -93,6 +93,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   @Test
   public void shouldFetchLatestObjectIdInZk() throws Exception {
     Ref oldRef = refOf(AN_OBJECT_ID_1);
+
     Ref newRef = refOf(AN_OBJECT_ID_2);
     String projectName = A_TEST_PROJECT_NAME;
 

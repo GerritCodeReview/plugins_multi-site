@@ -62,6 +62,7 @@ public class RefSharedDatabaseTest implements RefFixture {
 
           @Override
           public boolean isMostRecentRefVersion(String project, Ref ref) throws IOException {
+
             return false;
           }
 
