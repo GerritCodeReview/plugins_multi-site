@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f70299c0_cc5644ea",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-13T10:20:46Z",
+      "side": 1,
+      "message": "At the moment we filter out refs to be pushed if they are not present in the zookeeper, however this could be an issue with the fact that we ignore some references when storing in ZK, an example are the immutable change refs.",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 40
+      },
+      "revId": "5b57d6112406695c311c202ddf58eb404640dfbf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
