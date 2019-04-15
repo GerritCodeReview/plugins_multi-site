@@ -95,6 +95,9 @@ function deploy_config_files {
 	# KAFKA configuration
 	export KAFKA_PORT=9092
 
+	# ZK configuration
+	export ZK_PORT=2181
+
 	# SITE 1
 	GERRIT_SITE1_HOSTNAME=$1
 	GERRIT_SITE1_HTTPD_PORT=$2
@@ -140,7 +143,7 @@ case "$1" in
 		echo "Usage: sh $0 [--option $value]"
 		echo
 		echo "[--release-war-file]            Location to release.war file"
-		echo "[--multisite-plugin-file]       Location to plugin multi-site.jar file"
+		echo "[--multisite-lib-file]          Location to lib multi-site.jar file"
 		echo
 		echo "[--new-deployment]              Cleans up previous gerrit deployment and re-installs it. default true"
 		echo "[--get-websession-plugin]       Download websession-flatfile plugin from CI lastSuccessfulBuild; default true"
@@ -159,6 +162,8 @@ case "$1" in
 		echo
 		echo "[--replication-type]            Options [file,ssh]; default ssh"
 		echo "[--replication-ssh-user]        SSH user for the replication plugin; default $(whoami)"
+		echo "[--replication-delay]           Replication delay across the two instances in seconds"
+		echo
 		echo "[--just-cleanup-env]            Cleans up previous deployment; default false"
 		echo
 		echo "[--enabled-https]               Enabled https; default true"
@@ -185,8 +190,8 @@ case "$1" in
 		shift
 		shift
   ;;
-  "--multisite-plugin-file" )
-		MULTISITE_PLUGIN_LOCATION=$2
+  "--multisite-lib-file" )
+		MULTISITE_LIB_LOCATION=$2
 		shift
 		shift
   ;;
@@ -235,6 +240,11 @@ case "$1" in
 		shift
 		shift
   ;;
+  "--replication-delay")
+		export REPLICATION_DELAY_SEC=$2
+		shift
+		shift
+  ;;
   "--just-cleanup-env" )
        	JUST_CLEANUP_ENV=$2
 		shift
@@ -270,6 +280,7 @@ GERRIT_1_SSHD_PORT=${GERRIT_1_SSHD_PORT:-"39418"}
 GERRIT_2_SSHD_PORT=${GERRIT_2_SSHD_PORT:-"49418"}
 REPLICATION_TYPE=${REPLICATION_TYPE:-"ssh"}
 REPLICATION_SSH_USER=${REPLICATION_SSH_USER:-$(whoami)}
+export REPLICATION_DELAY_SEC=${REPLICATION_DELAY_SEC:-"5"}
 export SSH_ADVERTISED_PORT=${SSH_ADVERTISED_PORT:-"29418"}
 HTTPS_ENABLED=${HTTPS_ENABLED:-"true"}
 
@@ -280,7 +291,7 @@ HA_PROXY_CONFIG_DIR=$COMMON_LOCATION/ha-proxy-config
 HA_PROXY_CERTIFICATES_DIR="$HA_PROXY_CONFIG_DIR/certificates"
 
 RELEASE_WAR_FILE_LOCATION=${RELEASE_WAR_FILE_LOCATION:-bazel-bin/release.war}
-MULTISITE_PLUGIN_LOCATION=${MULTISITE_PLUGIN_LOCATION:-bazel-genfiles/plugins/multi-site/multi-site.jar}
+MULTISITE_LIB_LOCATION=${MULTISITE_LIB_LOCATION:-bazel-genfiles/plugins/multi-site/multi-site.jar}
 
 
 export FAKE_NFS=$COMMON_LOCATION/fake_nfs
@@ -296,18 +307,20 @@ if [ -z $RELEASE_WAR_FILE_LOCATION ];then
 else
 	cp -f $RELEASE_WAR_FILE_LOCATION $DEPLOYMENT_LOCATION/gerrit.war >/dev/null 2>&1 || { echo >&2 "$RELEASE_WAR_FILE_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 fi
-if [ -z $MULTISITE_PLUGIN_LOCATION ];then
-	echo "The multi-site plugin is required. Usage: sh $0 --multisite-plugin-file /path/to/multi-site.jar"
+if [ -z $MULTISITE_LIB_LOCATION ];then
+	echo "The multi-site library is required. Usage: sh $0 --multisite-lib-file /path/to/multi-site.jar"
 	exit 1
 else
-	cp -f $MULTISITE_PLUGIN_LOCATION $DEPLOYMENT_LOCATION/multi-site.jar  >/dev/null 2>&1 || { echo >&2 "$MULTISITE_PLUGIN_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+	cp -f $MULTISITE_LIB_LOCATION $DEPLOYMENT_LOCATION/multi-site.jar  >/dev/null 2>&1 || { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 fi
 if [ $DOWNLOAD_WEBSESSION_FLATFILE = "true" ];then
 	echo "Downloading websession-flatfile plugin stable 2.16"
 	wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-2.16/job/plugin-websession-flatfile-bazel-master-stable-2.16/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/websession-flatfile/websession-flatfile.jar \
-	-O $DEPLOYMENT_LOCATION/websession-flatfile.jar
+	-O $DEPLOYMENT_LOCATION/websession-flatfile.jar || { echo >&2 "Cannot download websession-flatfile plugin: Check internet connection. Abort\
+ing"; exit 1; }
 	wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-2.16/job/plugin-healthcheck-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/healthcheck/healthcheck.jar \
-	-O $DEPLOYMENT_LOCATION/healthcheck.jar
+	-O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
+ing"; exit 1; }
 else
 	echo "Without the websession-flatfile; user login via haproxy will fail."
 fi
@@ -339,8 +352,8 @@ if [ $NEW_INSTALLATION = "true" ]; then
 	# Deploying TLS certificates
 	if [ "$HTTPS_ENABLED" = "true" ];then deploy_tls_certificates;fi
 
-	echo "Copy multi-site plugin"
-	cp -f $DEPLOYMENT_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/plugins/multi-site.jar
+	echo "Copy multi-site library"
+	cp -f $DEPLOYMENT_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/lib/multi-site.jar
 
 	echo "Copy websession-flatfile plugin"
 	cp -f $DEPLOYMENT_LOCATION/websession-flatfile.jar $LOCATION_TEST_SITE_1/plugins/websession-flatfile.jar
@@ -385,6 +398,7 @@ echo "The admin password is 'secret'"
 echo "deployment-location=$DEPLOYMENT_LOCATION"
 echo "replication-type=$REPLICATION_TYPE"
 echo "replication-ssh-user=$REPLICATION_SSH_USER"
+echo "replication-delay=$REPLICATION_DELAY_SEC"
 echo "enable-https=$HTTPS_ENABLED"
 echo
 echo "GERRIT HA-PROXY: $GERRIT_CANONICAL_WEB_URL"

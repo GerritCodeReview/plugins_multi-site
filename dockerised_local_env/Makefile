@@ -11,37 +11,39 @@ CI_URL=https://gerrit-ci.gerritforge.com/job
 MYDIR=$(shell basename $(shell pwd))
 WGET=wget -N -q
 
-all: download build
+all: prepare download build
+
+prepare:
+	-mkdir -p $(GERRIT_1_PLUGINS_DIRECTORY) $(GERRIT_2_PLUGINS_DIRECTORY) $(GERRIT_1_BIN_DIRECTORY) $(GERRIT_2_BIN_DIRECTORY)
 
 download: gerrit plugin_websession_flatfile \
 	plugin_healthcheck \
 	plugin_multi_site
 
 
-gerrit:
-	-mkdir -p $(GERRIT_1_PLUGINS_DIRECTORY)
-	-mkdir -p $(GERRIT_2_PLUGINS_DIRECTORY)
+gerrit: prepare
 	$(WGET) $(CI_URL)/$(GERRIT_JOB)/lastSuccessfulBuild/artifact/gerrit/bazel-bin/release.war -P $(GERRIT_1_BIN_DIRECTORY)
 	cp $(GERRIT_1_BIN_DIRECTORY)/*.war $(GERRIT_2_BIN_DIRECTORY)
 	for plugin in $(CORE_PLUGINS); do $(WGET) $(CI_URL)/$(GERRIT_JOB)/$(BUILD_NUM)/artifact/gerrit/bazel-genfiles/plugins/$$plugin/$$plugin.jar -P $(GERRIT_1_PLUGINS_DIRECTORY); done
 	cp $(GERRIT_1_PLUGINS_DIRECTORY)/*.jar $(GERRIT_2_PLUGINS_DIRECTORY)
 
-plugin_websession_flatfile:
+plugin_websession_flatfile: prepare
 	$(WGET) $(CI_URL)/plugin-websession-flatfile-bazel-master-stable-2.16/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/websession-flatfile/websession-flatfile.jar -P $(GERRIT_1_PLUGINS_DIRECTORY)
 	cp $(GERRIT_1_PLUGINS_DIRECTORY)/websession-flatfile.jar $(GERRIT_2_PLUGINS_DIRECTORY)/websession-flatfile.jar
 
-plugin_multi_site:
+plugin_multi_site: prepare
 	$(WGET) $(CI_URL)/plugin-multi-site-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/multi-site/multi-site.jar -P $(GERRIT_1_PLUGINS_DIRECTORY)
 	cp $(GERRIT_1_PLUGINS_DIRECTORY)/multi-site.jar $(GERRIT_2_PLUGINS_DIRECTORY)/multi-site.jar
 
-plugin_healthcheck:
+plugin_healthcheck: prepare
 	$(WGET) $(CI_URL)/plugin-healthcheck-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/healthcheck/healthcheck.jar -P $(GERRIT_1_PLUGINS_DIRECTORY)
 	cp $(GERRIT_1_PLUGINS_DIRECTORY)/healthcheck.jar $(GERRIT_2_PLUGINS_DIRECTORY)/healthcheck.jar
 
 build:
 	docker build -t $(MYDIR) ./gerrit-1
 	docker build -t $(MYDIR) ./gerrit-2
-clean_gerrit:
+
+clean_gerrit: prepare
 	rm -fr gerrit-1/db/ gerrit-1/data/ gerrit-1/cache/ gerrit-1/db/ gerrit-1/git/ gerrit-1/indexes/ gerrit-1/etc/
 	rm -fr gerrit-2/db/ gerrit-2/data/ gerrit-2/cache/ gerrit-2/db/ gerrit-2/git/ gerrit-2/indexes/ gerrit-1/etc/
 	-mkdir -p gerrit-{1,2}/etc/

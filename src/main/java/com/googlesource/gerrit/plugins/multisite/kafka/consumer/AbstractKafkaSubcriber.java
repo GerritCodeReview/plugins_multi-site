@@ -21,11 +21,11 @@ import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gson.Gson;
 import com.google.gwtorm.server.OrmException;
-import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouter;
 import java.io.IOException;
@@ -46,7 +46,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
   private final KafkaConsumer<byte[], byte[]> consumer;
   private final ForwardedEventRouter eventRouter;
   private final DynamicSet<DroppedEventListener> droppedEventListeners;
-  private final Provider<Gson> gsonProvider;
+  private final Gson gson;
   private final UUID instanceId;
   private final AtomicBoolean closed = new AtomicBoolean(false);
   private final Deserializer<SourceAwareEventWrapper> valueDeserializer;
@@ -60,14 +60,14 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
       ForwardedEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
-      Provider<Gson> gsonProvider,
+      @BrokerGson Gson gson,
       @InstanceId UUID instanceId,
       OneOffRequestContext oneOffCtx,
       MessageLogger msgLog) {
     this.configuration = configuration;
     this.eventRouter = eventRouter;
     this.droppedEventListeners = droppedEventListeners;
-    this.gsonProvider = gsonProvider;
+    this.gson = gson;
     this.instanceId = instanceId;
     this.oneOffCtx = oneOffCtx;
     this.msgLog = msgLog;
@@ -122,7 +122,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
       } else {
         try {
           msgLog.log(Direction.CONSUME, event);
-          eventRouter.route(event.getEventBody(gsonProvider));
+          eventRouter.route(event.getEventBody(gson));
         } catch (IOException e) {
           logger.atSevere().withCause(e).log(
               "Malformed event '%s': [Exception: %s]", event.getHeader().getEventType());

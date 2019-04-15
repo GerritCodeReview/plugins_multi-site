@@ -14,16 +14,13 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
-import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.gerrit.server.events.EventDispatcher;
 import com.google.inject.AbstractModule;
 
 public class ForwarderModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    DynamicItem.bind(binder(), EventDispatcher.class).to(ForwardedAwareEventBroker.class);
     DynamicSet.setOf(binder(), CacheEvictionForwarder.class);
     DynamicSet.setOf(binder(), IndexEventForwarder.class);
     DynamicSet.setOf(binder(), ProjectListUpdateForwarder.class);

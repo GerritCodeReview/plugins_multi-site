@@ -69,8 +69,15 @@ a Docker server.
 
 ## How to configure
 
-Install the multi-site plugin into the `$GERRIT_SITE/plugins` directory of all
+Install the multi-site plugin into the `$GERRIT_SITE/lib` directory of all
 the Gerrit servers that are part of the multi-site cluster.
+
+Add the multi-site module to `$GERRIT_SITE/etc/gerrit.config` as follows:
+
+```
+[gerrit]
+  installModule = com.googlesource.gerrit.plugins.multisite.Module
+```
 
 Create the `$GERRIT_SITE/etc/multi-site.config` on all Gerrit servers with the
 following basic settings:
@@ -84,6 +91,12 @@ following basic settings:
 
 [kafka "subscriber"]
   enabled = true
+
+[ref-database]
+  enabled = true
+
+[ref-database "zookeeper"]
+  connectString = "localhost:2181"
 ```
 
 For more details on the configuration settings, please refer to the
