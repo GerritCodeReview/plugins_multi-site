@@ -28,35 +28,31 @@ import static com.googlesource.gerrit.plugins.multisite.Configuration.KAFKA_SECT
 import static com.googlesource.gerrit.plugins.multisite.Configuration.KafkaPublisher.KAFKA_PUBLISHER_SUBSECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.KafkaSubscriber.KAFKA_SUBSCRIBER_SUBSECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
-import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
-import com.google.gerrit.server.config.PluginConfigFactory;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConfigurationTest {
   private static final String INVALID_BOOLEAN = "invalidBoolean";
   private static final String INVALID_INT = "invalidInt";
-  private static final String PLUGIN_NAME = "multi-site";
   private static final int THREAD_POOL_SIZE = 1;
 
-  @Mock private PluginConfigFactory pluginConfigFactoryMock;
   private Config globalPluginConfig;
+  private Config replicationConfig;
 
   @Before
   public void setUp() {
     globalPluginConfig = new Config();
-    when(pluginConfigFactoryMock.getGlobalPluginConfig(PLUGIN_NAME)).thenReturn(globalPluginConfig);
+    replicationConfig = new Config();
   }
 
   private Configuration getConfiguration() {
-    return new Configuration(pluginConfigFactoryMock, PLUGIN_NAME);
+    return new Configuration(globalPluginConfig, replicationConfig);
   }
 
   @Test
@@ -208,5 +204,12 @@ public class ConfigurationTest {
     final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
 
     assertThat(property).isNull();
+  }
+
+  @Test
+  public void shouldReturnValidationErrorsWhenReplicationOnStartupIsEnabled() throws Exception {
+    Config replicationConfig = new Config();
+    replicationConfig.setBoolean("gerrit", null, "replicateOnStartup", true);
+    assertThat(new Configuration(globalPluginConfig, replicationConfig).validate()).isNotEmpty();
   }
 }

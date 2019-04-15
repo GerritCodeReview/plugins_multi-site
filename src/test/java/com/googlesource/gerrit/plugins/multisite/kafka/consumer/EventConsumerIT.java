@@ -17,26 +17,31 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.stream.Collectors.toSet;
 
-import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.AbstractDaemonTest;
+import com.google.gerrit.acceptance.GerritConfig;
 import com.google.gerrit.acceptance.LogThreshold;
 import com.google.gerrit.acceptance.NoHttpd;
-import com.google.gerrit.acceptance.TestPlugin;
+import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.data.PatchSetAttribute;
 import com.google.gerrit.server.events.CommentAddedEvent;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.PatchSetCreatedEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.query.change.ChangeData;
+import com.google.gson.Gson;
+import com.google.inject.Inject;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Module;
-import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -49,16 +54,18 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.storage.file.FileBasedConfig;
+import org.eclipse.jgit.util.FS;
 import org.junit.Test;
 import org.testcontainers.containers.KafkaContainer;
 
 @NoHttpd
 @LogThreshold(level = "INFO")
-@TestPlugin(
-    name = "multi-site",
-    sysModule =
-        "com.googlesource.gerrit.plugins.multisite.kafka.consumer.EventConsumerIT$KafkaTestContainerModule")
-public class EventConsumerIT extends LightweightPluginDaemonTest {
+@UseLocalDisk
+public class EventConsumerIT extends AbstractDaemonTest {
+  public static final String GERRIT_CONFIG_KEY = "gerrit.installModule";
+  public static final String GERRIT_CONFIG_VALUE =
+      "com.googlesource.gerrit.plugins.multisite.kafka.consumer.EventConsumerIT$KafkaTestContainerModule";
   private static final int QUEUE_POLL_TIMEOUT_MSECS = 10000;
 
   public static class KafkaTestContainerModule extends LifecycleModule {
@@ -81,24 +88,51 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
       }
     }
 
+    private final FileBasedConfig config;
+    private final Module multiSiteModule;
+
+    @Inject
+    public KafkaTestContainerModule(SitePaths sitePaths) {
+      this.config =
+          new FileBasedConfig(
+              sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile(), FS.DETECTED);
+      this.multiSiteModule = new Module(new Configuration(config, new Config()), true);
+    }
+
     @Override
     protected void configure() {
-      final KafkaContainer kafka = new KafkaContainer();
-      kafka.start();
+      try {
+        final KafkaContainer kafka = startAndConfigureKafkaConnection();
 
-      Config config = new Config();
-      config.setString("kafka", null, "bootstrapServers", kafka.getBootstrapServers());
+        listener().toInstance(new KafkaStopAtShutdown(kafka));
+
+        install(multiSiteModule);
+
+      } catch (IOException e) {
+        throw new IllegalStateException(e);
+      }
+    }
+
+    private KafkaContainer startAndConfigureKafkaConnection() throws IOException {
+      KafkaContainer kafkaContainer = new KafkaContainer();
+      kafkaContainer.start();
+
+      config.setString("kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
       config.setBoolean("kafka", "publisher", "enabled", true);
       config.setBoolean("kafka", "subscriber", "enabled", true);
-      Configuration multiSiteConfig = new Configuration(config);
+      config.setBoolean("ref-database", null, "enabled", false);
+      config.save();
+      Configuration multiSiteConfig = new Configuration(config, new Config());
       bind(Configuration.class).toInstance(multiSiteConfig);
-      install(new Module(multiSiteConfig));
 
-      listener().toInstance(new KafkaStopAtShutdown(kafka));
+      listener().toInstance(new KafkaStopAtShutdown(kafkaContainer));
+
+      return kafkaContainer;
     }
   }
 
   @Test
+  @GerritConfig(name = GERRIT_CONFIG_KEY, value = GERRIT_CONFIG_VALUE)
   public void createChangeShouldPropagateChangeIndexAndRefUpdateStreamEvent() throws Exception {
     LinkedBlockingQueue<SourceAwareEventWrapper> droppedEventsQueue = captureDroppedEvents();
     drainQueue(droppedEventsQueue);
@@ -112,18 +146,18 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
     String patchsetRef = change.currentPatchSet().getRefName();
 
     Map<String, List<Event>> eventsByType = receiveEventsByType(droppedEventsQueue);
+    assertThat(eventsByType).isNotEmpty();
+
     assertThat(eventsByType.get("change-index"))
         .containsExactly(createChangeIndexEvent(project, changeNum, getParentCommit(change)));
 
     assertThat(
-            eventsByType
-                .get("ref-updated")
-                .stream()
+            eventsByType.get("ref-updated").stream()
                 .map(e -> ((RefUpdatedEvent) e).getRefName())
                 .collect(toSet()))
-        .containsAllOf(
-            changeNotesRef,
-            patchsetRef); // 'refs/sequences/changes' not always updated thus not checked
+        .containsAllOf(changeNotesRef, patchsetRef); // 'refs/sequences/changes'
+    // not always updated thus
+    // not checked
 
     List<Event> patchSetCreatedEvents = eventsByType.get("patchset-created");
     assertThat(patchSetCreatedEvents).hasSize(1);
@@ -146,6 +180,7 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @GerritConfig(name = GERRIT_CONFIG_KEY, value = GERRIT_CONFIG_VALUE)
   public void reviewChangeShouldPropagateChangeIndexAndCommentAdded() throws Exception {
     LinkedBlockingQueue<SourceAwareEventWrapper> droppedEventsQueue = captureDroppedEvents();
     ChangeData change = createChange().getChange();
@@ -158,6 +193,8 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
     gApi.changes().id(changeNum).revision("current").review(in);
 
     Map<String, List<Event>> eventsByType = receiveEventsByType(droppedEventsQueue);
+
+    assertThat(eventsByType).isNotEmpty();
 
     assertThat(eventsByType.get("change-index"))
         .containsExactly(createChangeIndexEvent(project, changeNum, getParentCommit(change)));
@@ -191,8 +228,8 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
 
     TypeLiteral<DynamicSet<DroppedEventListener>> type =
         new TypeLiteral<DynamicSet<DroppedEventListener>>() {};
-    plugin
-        .getSysInjector()
+    server
+        .getTestInjector()
         .getInstance(Key.get(type))
         .add(
             "multi-site",
@@ -207,19 +244,18 @@ public class EventConsumerIT extends LightweightPluginDaemonTest {
 
   private Map<String, List<Event>> receiveEventsByType(
       LinkedBlockingQueue<SourceAwareEventWrapper> queue) throws InterruptedException {
-    return drainQueue(queue)
-        .stream()
+    return drainQueue(queue).stream()
         .sorted(Comparator.comparing(e -> e.type))
         .collect(Collectors.groupingBy(e -> e.type));
   }
 
   private List<Event> drainQueue(LinkedBlockingQueue<SourceAwareEventWrapper> queue)
       throws InterruptedException {
-    GsonProvider gsonProvider = plugin.getSysInjector().getInstance(Key.get(GsonProvider.class));
+    Gson gson = server.getTestInjector().getInstance(Key.get(Gson.class, BrokerGson.class));
     SourceAwareEventWrapper event;
     List<Event> eventsList = new ArrayList<>();
     while ((event = queue.poll(QUEUE_POLL_TIMEOUT_MSECS, TimeUnit.MILLISECONDS)) != null) {
-      eventsList.add(event.getEventBody(gsonProvider));
+      eventsList.add(event.getEventBody(gson));
     }
     return eventsList;
   }

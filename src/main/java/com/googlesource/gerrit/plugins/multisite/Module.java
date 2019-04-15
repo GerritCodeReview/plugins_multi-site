@@ -14,12 +14,16 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.google.gerrit.extensions.annotations.PluginData;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.gerrit.server.config.SitePaths;
 import com.google.gson.Gson;
+import com.google.inject.CreationException;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.google.inject.spi.Message;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
@@ -34,7 +38,9 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,14 +48,31 @@ import org.slf4j.LoggerFactory;
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private final Configuration config;
+  private final boolean disableGitRepositoryValidation;
 
   @Inject
   public Module(Configuration config) {
+    this(config, false);
+  }
+
+  // TODO: It is not possible to properly test the libModules in Gerrit.
+  // Disable the Git repository validation during integration test and then build the necessary
+  // support
+  // in Gerrit for it.
+  @VisibleForTesting
+  public Module(Configuration config, boolean disableGitRepositoryValidation) {
     this.config = config;
+    this.disableGitRepositoryValidation = disableGitRepositoryValidation;
   }
 
   @Override
   protected void configure() {
+
+    Collection<Message> validationErrors = config.validate();
+    if (!validationErrors.isEmpty()) {
+      throw new CreationException(validationErrors);
+    }
+
     listener().to(Log4jMessageLogger.class);
     bind(MessageLogger.class).to(Log4jMessageLogger.class);
 
@@ -73,16 +96,22 @@ public class Module extends LifecycleModule {
       install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
 
-    install(new ValidationModule());
-
-    bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
+    install(new ValidationModule(config, disableGitRepositoryValidation));
+    bind(Gson.class)
+        .annotatedWith(BrokerGson.class)
+        .toProvider(GsonProvider.class)
+        .in(Singleton.class);
   }
 
   @Provides
   @Singleton
   @InstanceId
-  UUID getInstanceId(@PluginData java.nio.file.Path dataDir) throws IOException {
+  UUID getInstanceId(SitePaths sitePaths) throws IOException {
     UUID instanceId = null;
+    Path dataDir = sitePaths.data_dir.resolve(Configuration.PLUGIN_NAME);
+    if (!dataDir.toFile().exists()) {
+      dataDir.toFile().mkdirs();
+    }
     String serverIdFile =
         dataDir.toAbsolutePath().toString() + "/" + Configuration.INSTANCE_ID_FILE;
 

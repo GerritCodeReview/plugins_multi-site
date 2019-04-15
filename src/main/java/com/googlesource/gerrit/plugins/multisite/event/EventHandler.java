@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.event;
 
-import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
@@ -27,16 +26,11 @@ import java.util.concurrent.Executor;
 class EventHandler implements EventListener {
   private final Executor executor;
   private final DynamicSet<StreamEventForwarder> forwarders;
-  private final String pluginName;
 
   @Inject
-  EventHandler(
-      DynamicSet<StreamEventForwarder> forwarders,
-      @EventExecutor Executor executor,
-      @PluginName String pluginName) {
+  EventHandler(DynamicSet<StreamEventForwarder> forwarders, @EventExecutor Executor executor) {
     this.forwarders = forwarders;
     this.executor = executor;
-    this.pluginName = pluginName;
   }
 
   @Override
@@ -60,7 +54,7 @@ class EventHandler implements EventListener {
 
     @Override
     public String toString() {
-      return String.format("[%s] Send event '%s' to target instance", pluginName, event.type);
+      return String.format("Send event '%s' to target instance", event.type);
     }
   }
 }

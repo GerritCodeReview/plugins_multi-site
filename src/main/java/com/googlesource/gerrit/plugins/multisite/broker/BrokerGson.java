@@ -12,20 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
+package com.googlesource.gerrit.plugins.multisite.broker;
 
-import java.io.IOException;
-import org.eclipse.jgit.lib.Ref;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-public class NoOpDfsRefDatabase implements SharedRefDatabase {
+import com.google.inject.BindingAnnotation;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
-  @Override
-  public boolean compareAndPut(String project, Ref oldRef, Ref newRef) throws IOException {
-    return true;
-  }
-
-  @Override
-  public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
-    return true;
-  }
-}
+@Retention(RUNTIME)
+@Target(PARAMETER)
+@BindingAnnotation
+public @interface BrokerGson {}

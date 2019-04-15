@@ -16,12 +16,9 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
-import com.google.gson.Gson;
-import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration.KafkaPublisher;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
-import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaSession;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
@@ -38,7 +35,6 @@ public class BrokerForwarderModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-    bind(Gson.class).toProvider(GsonProvider.class).in(Singleton.class);
     listener().to(BrokerPublisher.class);
     bind(BrokerSession.class).to(KafkaSession.class);
 

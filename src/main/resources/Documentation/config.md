@@ -2,8 +2,8 @@
 @PLUGIN@ Configuration
 =========================
 
-The @PLUGIN@ plugin must be installed on all the instances and the following fields
-should be specified in `$site_path/etc/@PLUGIN@.config` file:
+The @PLUGIN@ plugin must be installed on all the instances and the following
+fields should be specified in `$site_path/etc/@PLUGIN@.config` file:
 
 File '@PLUGIN@.config'
 --------------------
@@ -42,6 +42,18 @@ File '@PLUGIN@.config'
   cacheEventEnabled = true
   projectListEventEnabled = true
   streamEventEnabled = true
+
+[ref-database "zookeeper"]
+  connectString = "localhost:2181"
+  rootNode = "/gerrit/multi-site"
+  sessionTimeoutMs = 1000
+  connectionTimeoutMs = 1000
+  retryPolicyBaseSleepTimeMs = 1000
+  retryPolicyMaxSleepTimeMs = 3000
+  retryPolicyMaxRetries = 3
+  casRetryPolicyBaseSleepTimeMs = 100
+  casRetryPolicyMaxSleepTimeMs = 100
+  casRetryPolicyMaxRetries = 3
 ```
 
 ## Configuration parameters
@@ -51,13 +63,16 @@ File '@PLUGIN@.config'
     Defaults to true.
 
 ```cache.threadPoolSize```
-:   Maximum number of threads used to send cache evictions to the target instance.
+:   Maximum number of threads used to send cache evictions to the target
+    instance.
+
     Defaults to 4.
 
 ```cache.pattern```
 :   Pattern to match names of custom caches for which evictions should be
     forwarded (in addition to the core caches that are always forwarded). May be
     specified more than once to add multiple patterns.
+
     Defaults to an empty list, meaning only evictions of the core caches are
     forwarded.
 
@@ -79,9 +94,10 @@ File '@PLUGIN@.config'
 
 ```index.maxTries```
 :   Maximum number of times the plugin should attempt to reindex changes.
-    Setting this value to 0 will disable retries. After this number of failed tries,
-    an error is logged and the local index should be considered stale and needs
-    to be investigated and manually reindexed.
+    Setting this value to 0 will disable retries. After this number of failed
+    tries, an error is logged and the local index should be considered stale and
+    needs to be investigated and manually reindexed.
+
     Defaults to 2.
 
 ```index.retryInterval```
@@ -89,7 +105,8 @@ File '@PLUGIN@.config'
     Defaults to 30000 (30 seconds).
 
 ```kafka.bootstrapServers```
-:	List of Kafka broker hosts:port to use for publishing events to the message broker
+:	  List of Kafka broker hosts:port to use for publishing events to the message
+    broker
 
 ```kafka.indexEventTopic```
 :   Name of the Kafka topic to use for publishing indexing events
@@ -107,24 +124,28 @@ File '@PLUGIN@.config'
 :   Name of the Kafka topic to use for publishing cache eviction events
     Defaults to GERRIT.EVENT.PROJECT.LIST
 
-```kafka.publisher.enabled```
-:   Enable publishing events to Kafka
-    Defaults: false
-
 ```kafka.publisher.indexEventEnabled```
-:   Enable publication of index events, ignored when `kafka.publisher.enabled` is false
+:   Enable publication of index events, ignored when `kafka.publisher.enabled`
+    is false
+
     Defaults: true
 
 ```kafka.publisher.cacheEventEnabled```
-:   Enable publication of cache events, ignored when `kafka.publisher.enabled` is false
+:   Enable publication of cache events, ignored when `kafka.publisher.enabled`
+    is false
+
     Defaults: true
 
 ```kafka.publisher.projectListEventEnabled```
-:   Enable publication of project list events, ignored when `kafka.publisher.enabled` is false
+:   Enable publication of project list events, ignored when `kafka.publisher.enabled`
+    is false
+
     Defaults: true
 
-```kafka.publisher.streamEventEnabled```    
-:   Enable publication of stream events, ignored when `kafka.publisher.enabled` is false
+```kafka.publisher.streamEventEnabled```
+:   Enable publication of stream events, ignored when `kafka.publisher.enabled`
+    is false
+
     Defaults: true
 
 ```kafka.subscriber.enabled```
@@ -132,36 +153,113 @@ File '@PLUGIN@.config'
     Defaults: false
 
 ```kafka.subscriber.indexEventEnabled```
-:   Enable consumption of index events, ignored when `kafka.subscriber.enabled` is false
+:   Enable consumption of index events, ignored when `kafka.subscriber.enabled`
+    is false
+
     Defaults: true
 
 ```kafka.subscriber.cacheEventEnabled```
-:   Enable consumption of cache events, ignored when `kafka.subscriber.enabled` is false
+:   Enable consumption of cache events, ignored when `kafka.subscriber.enabled`
+    is false
+
     Defaults: true
 
 ```kafka.subscriber.projectListEventEnabled```
-:   Enable consumption of project list events, ignored when `kafka.subscriber.enabled` is false
+:   Enable consumption of project list events, ignored when `kafka.subscriber.enabled`
+    is false
+
     Defaults: true
 
-```kafka.subscriber.streamEventEnabled```    
-:   Enable consumption of stream events, ignored when `kafka.subscriber.enabled` is false
+```kafka.subscriber.streamEventEnabled```
+:   Enable consumption of stream events, ignored when `kafka.subscriber.enabled`
+    is false
+
     Defaults: true
 
 ```kafka.subscriber.pollingIntervalMs```
 :   Polling interval for checking incoming events
+
     Defaults: 1000
+
+```ref-database.zookeeper.connectString```
+:   Connection string to  zookeeper
+
+```ref-database.zookeeper.rootNode```
+:   Root node to use under Zookeeper to store/retrieve information
+
+    Defaults: "/gerrit/multi-site"
+
+
+```ref-database.zookeeper.sessionTimeoutMs```
+:   Root node to use under Zookeeper to store/retrieve information
+
+    Defaults: 1000
+
+```ref-database.zookeeper.connectionTimeoutMs```
+:   Root node to use under Zookeeper to store/retrieve information
+
+    Defaults: 1000
+
+```ref-database.zookeeper.retryPolicyBaseSleepTimeMs```
+:   Configuration for the base sleep timeout (iun ms) to use to create the
+    BoundedExponentialBackoffRetry policy used for the Zookeeper connection
+
+    Defaults: 1000
+
+```ref-database.zookeeper.retryPolicyMaxSleepTimeMs```
+:   Configuration for the max sleep timeout (iun ms) to use to create the
+    BoundedExponentialBackoffRetry policy used for the Zookeeper connection
+
+    Defaults: 3000
+
+```ref-database.zookeeper.retryPolicyMaxRetries```
+:   Configuration for the max number of retries to use to create the
+    BoundedExponentialBackoffRetry policy used for the Zookeeper connection
+
+    Defaults: 3
+
+```ref-database.zookeeper.casRetryPolicyBaseSleepTimeMs```
+:   Configuration for the base sleep timeout (iun ms) to use to create the
+    BoundedExponentialBackoffRetry policy used for the Compare and Swap
+    operations on Zookeeper
+
+    Defaults: 1000
+    
+```ref-database.zookeeper.casRetryPolicyMaxSleepTimeMs```
+:   Configuration for the max sleep timeout (iun ms) to use to create the
+    BoundedExponentialBackoffRetry policy used for the Compare and Swap
+    operations on Zookeeper
+
+    Defaults: 3000
+    
+```ref-database.zookeeper.casRetryPolicyMaxRetries```
+:   Configuration for the max number of retries to use to create the
+    BoundedExponentialBackoffRetry policy used for the Compare and Swap
+    operations on Zookeeper
+
+    Defaults: 3
+
+```ref-database.zookeeper.migrate```
+:   Set to true when the plugin has been applied to an already existing module
+    and there are no entries in Zookeeper for the existing refs. It will handle
+    update failures caused by the old refs not existing forcing the creation of
+    the new one
+
+    Defaults: false
 
 #### Custom kafka properties:
 
-In addition to the above settings, custom Kafka properties can be explicitly set for `publisher` and `subscriber`.
-In order to be acknowledged, these properties need to be prefixed with the `KafkaProp-` prefix and then camelCased,
-as follows: `KafkaProp-yourPropertyValue`
+In addition to the above settings, custom Kafka properties can be explicitly set
+for `publisher` and `subscriber`.
+In order to be acknowledged, these properties need to be prefixed with the
+`KafkaProp-` prefix and then camelCased, as follows: `KafkaProp-yourPropertyValue`
 
-For example, if you want to set the `auto.commit.interval.ms` property for your consumers, you will need to configure
-this property as `KafkaProp-autoCommitIntervalMs`.
+For example, if you want to set the `auto.commit.interval.ms` property for your
+consumers, you will need to configure this property as `KafkaProp-autoCommitIntervalMs`.
 
-**NOTE**: custom kafka properties will be ignored when the relevant subsection is disabled (i.e. `kafka.subscriber.enabled`
-and/or `kafka.publisher.enabled` are set to `false`).
+**NOTE**: custom kafka properties will be ignored when the relevant subsection is
+disabled (i.e. `kafka.subscriber.enabled` and/or `kafka.publisher.enabled` are
+set to `false`).
 
 The complete list of available settings can be found directly in the kafka website:
 
