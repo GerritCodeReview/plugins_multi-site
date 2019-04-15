@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fd6f0978_50435a60",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-15T17:28:15Z",
+      "side": 1,
+      "message": "Change for\nhttps://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-websession-flatfile-bazel-master-master",
+      "range": {
+        "startLine": 318,
+        "startChar": 6,
+        "endLine": 318,
+        "endChar": 120
+      },
+      "revId": "43a68c765857ca929f6b9bde527ad47b6d431ce2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e0b27361_89801b5e",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-15T17:28:15Z",
+      "side": 1,
+      "message": "This change needs to be merged in order to fix the issues of the environment.\nhttps://gerrit-review.googlesource.com/c/plugins/healthcheck/+/215697",
+      "range": {
+        "startLine": 321,
+        "startChar": 1,
+        "endLine": 321,
+        "endChar": 185
+      },
+      "revId": "43a68c765857ca929f6b9bde527ad47b6d431ce2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd5f4a15_1c687540",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-15T17:28:15Z",
+      "side": 1,
+      "message": "Change for\nhttps://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-healthcheck-bazel-master",
+      "range": {
+        "startLine": 321,
+        "startChar": 6,
+        "endLine": 321,
+        "endChar": 105
+      },
+      "revId": "43a68c765857ca929f6b9bde527ad47b6d431ce2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
