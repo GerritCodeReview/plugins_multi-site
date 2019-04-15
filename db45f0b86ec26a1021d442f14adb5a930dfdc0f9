@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "426f6c24_c7e86a4d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefEnforcement.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-04-15T20:52:24Z",
+      "side": 1,
+      "message": "I would prefer to inject this logic via dependency injection rather than using inheritance",
+      "revId": "db45f0b86ec26a1021d442f14adb5a930dfdc0f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
