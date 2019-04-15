@@ -18,6 +18,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import javax.inject.Named;
@@ -28,7 +29,7 @@ import org.apache.curator.framework.recipes.atomic.DistributedAtomicValue;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 
-public class ZkSharedRefDatabase implements SharedRefDatabase {
+public class ZkSharedRefDatabase implements SharedRefDatabase, SharedRefEnforcement {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final CuratorFramework client;
