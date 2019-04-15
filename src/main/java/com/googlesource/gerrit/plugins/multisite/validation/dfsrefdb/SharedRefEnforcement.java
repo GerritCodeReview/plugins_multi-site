@@ -16,16 +16,18 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
 /** Type of enforcement to implement between the local and shared RefDb. */
 public interface SharedRefEnforcement {
+  public enum EnforcePolicy {
+    IGNORED,
+    DESIRED,
+    REQUIRED;
+  }
 
   /**
-   * Some references should not be stored in the SharedRefDatabase.
+   * Get the enforcement policy for a project/refName.
    *
-   * @param refName
-   * @return true if it's to be ignore; false otherwise
+   * @param projectName project to be enforced
+   * @param refName ref name to be enforced
+   * @return the {@link EnforcePolicy} value
    */
-  default boolean ignoreRefInSharedDb(String refName) {
-    return refName == null
-        || refName.startsWith("refs/draft-comments")
-        || (refName.startsWith("refs/changes") && !refName.endsWith("/meta"));
-  }
+  public EnforcePolicy getPolicy(String projectName, String refName);
 }
