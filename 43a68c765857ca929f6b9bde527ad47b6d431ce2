@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6ee44419_046bc049",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-15T17:35:33Z",
+      "side": 1,
+      "message": "Ack, but makes sense to address with a separate commit, because it is not part of the merge.",
+      "parentUuid": "fd6f0978_50435a60",
+      "range": {
+        "startLine": 318,
+        "startChar": 6,
+        "endLine": 318,
+        "endChar": 120
+      },
+      "revId": "43a68c765857ca929f6b9bde527ad47b6d431ce2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e0b27361_89801b5e",
         "filename": "setup_local_env/setup.sh",
         "patchSetId": 2
@@ -64,6 +88,54 @@
         "startChar": 6,
         "endLine": 321,
         "endChar": 105
+      },
+      "revId": "43a68c765857ca929f6b9bde527ad47b6d431ce2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86f4d428_2b9610dc",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-15T17:35:33Z",
+      "side": 1,
+      "message": "Same as above.",
+      "parentUuid": "cd5f4a15_1c687540",
+      "range": {
+        "startLine": 321,
+        "startChar": 6,
+        "endLine": 321,
+        "endChar": 105
+      },
+      "revId": "43a68c765857ca929f6b9bde527ad47b6d431ce2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "705bd57d_417ac07c",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-15T17:35:33Z",
+      "side": 1,
+      "message": "Not part of this merge, but yes, it needs to be done.",
+      "parentUuid": "e0b27361_89801b5e",
+      "range": {
+        "startLine": 321,
+        "startChar": 1,
+        "endLine": 321,
+        "endChar": 185
       },
       "revId": "43a68c765857ca929f6b9bde527ad47b6d431ce2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
