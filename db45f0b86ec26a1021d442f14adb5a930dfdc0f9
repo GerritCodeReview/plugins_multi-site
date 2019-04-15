@@ -16,6 +16,24 @@
       "revId": "db45f0b86ec26a1021d442f14adb5a930dfdc0f9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "26b70666_9c015a09",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefEnforcement.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-15T20:53:56Z",
+      "side": 1,
+      "message": "Yes, that is the second follow-up change.\nJust to minimize the impact, I did small steps to make sure of not breaking anything",
+      "parentUuid": "426f6c24_c7e86a4d",
+      "revId": "db45f0b86ec26a1021d442f14adb5a930dfdc0f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
