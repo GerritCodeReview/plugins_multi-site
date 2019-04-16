@@ -25,6 +25,11 @@ public class NoOpDfsRefDatabase implements SharedRefDatabase {
   }
 
   @Override
+  public boolean compareForPut(String projectName, Ref oldRef) throws Exception {
+    return false;
+  }
+
+  @Override
   public boolean compareAndPut(String project, Ref oldRef, Ref newRef) throws IOException {
     return true;
   }

@@ -127,6 +127,16 @@ public interface SharedRefDatabase {
   boolean compareAndRemove(String project, Ref oldRef) throws IOException;
 
   /**
+   * Check database before trying to insert
+   *
+   * @param projectName project name of the ref
+   * @param oldRef the old reference information that was previously read.
+   * @return true if comparison matches with oldRef; false otherwise
+   * @throws Exception
+   */
+  boolean compareForPut(String projectName, Ref oldRef) throws Exception;
+
+  /**
    * Some references should not be stored in the SharedRefDatabase.
    *
    * @param refName
