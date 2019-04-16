@@ -15,10 +15,9 @@
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.name.Names;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
+import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
-import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 
 public class ZkValidationModule extends AbstractModule {
@@ -33,8 +32,11 @@ public class ZkValidationModule extends AbstractModule {
   protected void configure() {
     bind(SharedRefDatabase.class).to(ZkSharedRefDatabase.class);
     bind(CuratorFramework.class).toInstance(cfg.getZookeeperConfig().buildCurator());
-    bind(RetryPolicy.class)
-        .annotatedWith(Names.named("ZkLockRetryPolicy"))
-        .toInstance(cfg.getZookeeperConfig().buildCasRetryPolicy());
+
+    bind(ZkConnectionConfig.class)
+        .toInstance(
+            new ZkConnectionConfig(
+                cfg.getZookeeperConfig().buildCasRetryPolicy(),
+                cfg.getZookeeperConfig().getZkInterProcessLockTimeOut()));
   }
 }
