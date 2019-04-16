@@ -51,5 +51,7 @@ public interface RefFixture {
     return RefNames.REFS_HEADS + testBranch();
   }
 
-  String testBranch();
+  default String testBranch() {
+    return "aTestBranch";
+  }
 }

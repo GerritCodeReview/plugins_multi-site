@@ -15,17 +15,12 @@
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
 import java.io.IOException;
-import org.eclipse.jgit.lib.Ref;
 
-public class NoOpDfsRefDatabase implements SharedRefDatabase {
+/** Unable to lock a project/ref resource. */
+public class SharedLockException extends IOException {
+  private static final long serialVersionUID = 1L;
 
-  @Override
-  public boolean compareAndPut(String project, Ref oldRef, Ref newRef) throws IOException {
-    return true;
-  }
-
-  @Override
-  public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
-    return true;
+  public SharedLockException(String project, String refName, Exception cause) {
+    super(String.format("Unable to lock project %s on ref %s", project, refName), cause);
   }
 }
