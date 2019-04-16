@@ -173,6 +173,6 @@ public class MultiSiteRefDatabase extends RefDatabase {
   }
 
   RefUpdate wrapRefUpdate(RefUpdate refUpdate) {
-    return refUpdateFactory.create(projectName, refUpdate);
+    return refUpdateFactory.create(projectName, refUpdate, refDatabase);
   }
 }

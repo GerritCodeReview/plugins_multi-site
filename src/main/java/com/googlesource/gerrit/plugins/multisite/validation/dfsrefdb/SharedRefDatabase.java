@@ -20,49 +20,60 @@ import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
 
 public interface SharedRefDatabase {
-  Ref NULL_REF =
-      new Ref() {
 
-        @Override
-        public String getName() {
-          return null;
-        }
+  /** A null ref that isn't associated to any name. */
+  Ref NULL_REF = nullRef(null);
 
-        @Override
-        public boolean isSymbolic() {
-          return false;
-        }
+  /**
+   * Create a new in-memory ref name associated with an NULL object id.
+   *
+   * @param refName ref name
+   * @return the new NULL ref object
+   */
+  static Ref nullRef(String refName) {
+    return new Ref() {
 
-        @Override
-        public Ref getLeaf() {
-          return null;
-        }
+      @Override
+      public String getName() {
+        return refName;
+      }
 
-        @Override
-        public Ref getTarget() {
-          return null;
-        }
+      @Override
+      public boolean isSymbolic() {
+        return false;
+      }
 
-        @Override
-        public ObjectId getObjectId() {
-          return null;
-        }
+      @Override
+      public Ref getLeaf() {
+        return null;
+      }
 
-        @Override
-        public ObjectId getPeeledObjectId() {
-          return null;
-        }
+      @Override
+      public Ref getTarget() {
+        return null;
+      }
 
-        @Override
-        public boolean isPeeled() {
-          return false;
-        }
+      @Override
+      public ObjectId getObjectId() {
+        return ObjectId.zeroId();
+      }
 
-        @Override
-        public Storage getStorage() {
-          return Storage.NEW;
-        }
-      };
+      @Override
+      public ObjectId getPeeledObjectId() {
+        return ObjectId.zeroId();
+      }
+
+      @Override
+      public boolean isPeeled() {
+        return false;
+      }
+
+      @Override
+      public Storage getStorage() {
+        return Storage.NEW;
+      }
+    };
+  }
 
   /**
    * Create a new in-memory Ref name associated with an objectId.
@@ -70,7 +81,7 @@ public interface SharedRefDatabase {
    * @param refName ref name
    * @param objectId object id
    */
-  default Ref newRef(String refName, ObjectId objectId) {
+  static Ref newRef(String refName, ObjectId objectId) {
     return new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, refName, objectId);
   }
 
@@ -83,8 +94,18 @@ public interface SharedRefDatabase {
    * @throws IOException
    */
   default boolean compareAndCreate(String project, Ref newRef) throws IOException {
-    return compareAndPut(project, NULL_REF, newRef);
+    return compareAndPut(project, nullRef(newRef.getName()), newRef.getObjectId());
   }
+
+  /**
+   * Verify in shared db if Ref is the most recent
+   *
+   * @param project project name of the ref
+   * @param ref to be checked against shared-ref db
+   * @return true if it is; false otherwise
+   * @throws SharedLockException if there was a problem locking the resource
+   */
+  boolean isUpToDate(String project, Ref ref) throws SharedLockException;
 
   /**
    * Compare a reference, and put if it matches.
@@ -98,14 +119,14 @@ public interface SharedRefDatabase {
    * </ul>
    *
    * @param project project name of the ref
-   * @param oldRef old value to compare to. If the reference is expected to not exist the old value
+   * @param currRef old value to compare to. If the reference is expected to not exist the old value
    *     has a storage of {@link org.eclipse.jgit.lib.Ref.Storage#NEW} and an ObjectId value of
    *     {@code null}.
-   * @param newRef new reference to store.
+   * @param newRefValue new reference to store.
    * @return true if the put was successful; false otherwise.
    * @throws java.io.IOException the reference cannot be put due to a system error.
    */
-  boolean compareAndPut(String project, Ref oldRef, Ref newRef) throws IOException;
+  boolean compareAndPut(String project, Ref currRef, ObjectId newRefValue) throws IOException;
 
   /**
    * Compare a reference, and delete if it matches.
@@ -116,4 +137,23 @@ public interface SharedRefDatabase {
    * @throws java.io.IOException the reference could not be removed due to a system error.
    */
   boolean compareAndRemove(String project, Ref oldRef) throws IOException;
+
+  /**
+   * Lock a reference for writing.
+   *
+   * @param project project name
+   * @param refName ref to lock
+   * @return lock object
+   * @throws SharedLockException if the lock cannot be obtained
+   */
+  AutoCloseable lockRef(String project, String refName) throws SharedLockException;
+
+  /**
+   * Verify if the DB contains a value for the specific project and ref name
+   *
+   * @param project
+   * @param refName
+   * @return true if the ref exists on the project
+   */
+  boolean exists(String project, String refName);
 }
