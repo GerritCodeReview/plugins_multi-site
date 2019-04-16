@@ -18,10 +18,12 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 
-public class DefaultSharedRefEnforcement implements SharedRefEnforcement {
+public class DryRunSharedRefEnforcement implements SharedRefEnforcement {
 
   private static final Map<String, EnforcePolicy> PREDEF_ENFORCEMENTS =
       ImmutableMap.of("All-Users:refs/meta/external-ids", EnforcePolicy.DESIRED);
+
+  public DryRunSharedRefEnforcement() {}
 
   @Override
   public EnforcePolicy getPolicy(String projectName, String refName) {
@@ -30,11 +32,11 @@ public class DefaultSharedRefEnforcement implements SharedRefEnforcement {
     }
 
     return MoreObjects.firstNonNull(
-        PREDEF_ENFORCEMENTS.get(projectName + ":" + refName), EnforcePolicy.REQUIRED);
+        PREDEF_ENFORCEMENTS.get(projectName + ":" + refName), EnforcePolicy.DESIRED);
   }
 
   @Override
   public EnforcePolicy getPolicy(String projectName) {
-    return EnforcePolicy.REQUIRED;
+    return EnforcePolicy.DESIRED;
   }
 }

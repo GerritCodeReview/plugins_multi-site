@@ -30,6 +30,7 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedLockException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
@@ -45,6 +46,21 @@ public class DefaultSharedRefEnforcementTest implements RefFixture {
         @Override
         public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
           return true;
+        }
+
+        @Override
+        public AutoCloseable lockRef(String project, String refName) throws SharedLockException {
+          return null;
+        }
+
+        @Override
+        public boolean exists(String project, String refName) {
+          return false;
+        }
+
+        @Override
+        public boolean isUpToDate(String project, Ref ref) throws SharedLockException {
+          return false;
         }
 
         @Override
