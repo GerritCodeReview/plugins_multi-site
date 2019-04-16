@@ -47,6 +47,9 @@ import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MultiSiteBatchRefUpdateTest implements RefFixture {
@@ -56,6 +59,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
   @Mock RefDatabase refDatabase;
   @Mock RevWalk revWalk;
   @Mock ProgressMonitor progressMonitor;
+  @Mock ValidationMetrics validationMetrics;
 
   private final Ref oldRef =
       new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, A_TEST_REF_NAME, AN_OBJECT_ID_1);
@@ -79,7 +83,9 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
     doReturn(oldRef).when(refDatabase).getRef(A_TEST_REF_NAME);
     doReturn(newRef).when(sharedRefDb).newRef(A_TEST_REF_NAME, AN_OBJECT_ID_2);
 
-    multiSiteRefUpdate = new MultiSiteBatchRefUpdate(sharedRefDb, A_TEST_PROJECT_NAME, refDatabase);
+    multiSiteRefUpdate = new MultiSiteBatchRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refDatabase);
+
+    verifyZeroInteractions(validationMetrics);
   }
 
   @Test
@@ -91,13 +97,18 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
     multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
   }
 
-  @Test(expected = IOException.class)
+  @Test
   public void executeAndFailsWithExceptions() throws IOException {
     setMockRequiredReturnValues();
 
     // When compareAndPut against sharedDb fails
     doReturn(false).when(sharedRefDb).compareAndPut(A_TEST_PROJECT_NAME, oldRef, newRef);
-    multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
+    try {
+      multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
+      fail("Expecting an IOException to be thrown");
+    } catch (IOException e) {
+      verify(validationMetrics).incrementSplitBrainRefUpdates();
+    }
   }
 
   @Test
@@ -105,7 +116,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
     doReturn(batchRefUpdate).when(refDatabase).newBatchUpdate();
     doReturn(Collections.emptyList()).when(batchRefUpdate).getCommands();
 
-    multiSiteRefUpdate = new MultiSiteBatchRefUpdate(sharedRefDb, A_TEST_PROJECT_NAME, refDatabase);
+    multiSiteRefUpdate = new MultiSiteBatchRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refDatabase);
 
     multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
   }

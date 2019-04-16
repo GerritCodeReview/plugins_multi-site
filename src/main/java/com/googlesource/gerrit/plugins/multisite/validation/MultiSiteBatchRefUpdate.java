@@ -52,6 +52,7 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
   private final RefDatabase refDb;
   private final SharedRefDatabase sharedRefDb;
   private final String projectName;
+  private final ValidationMetrics validationMetrics;
 
   public static class RefPair {
     final Ref oldRef;
@@ -81,13 +82,17 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
 
   @Inject
   public MultiSiteBatchRefUpdate(
-      SharedRefDatabase sharedRefDb, @Assisted String projectName, @Assisted RefDatabase refDb) {
+      SharedRefDatabase sharedRefDb,
+      ValidationMetrics validationMetrics,
+      @Assisted String projectName,
+      @Assisted RefDatabase refDb) {
     super(refDb);
 
     this.sharedRefDb = sharedRefDb;
     this.projectName = projectName;
     this.refDb = refDb;
     this.batchRefUpdate = refDb.newBatchUpdate();
+    this.validationMetrics = validationMetrics;
   }
 
   @Override
@@ -235,6 +240,8 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
       boolean compareAndPutResult =
           sharedRefDb.compareAndPut(projectName, refPair.oldRef, refPair.newRef);
       if (!compareAndPutResult) {
+        validationMetrics.incrementSplitBrainRefUpdates();
+
         throw new IOException(
             String.format(
                 "This repos is out of sync for project %s. old_ref=%s, new_ref=%s",
