@@ -27,10 +27,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import java.io.IOException;
 import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.ObjectId;
@@ -44,12 +42,10 @@ import org.eclipse.jgit.transport.PushCertificate;
 
 public class MultiSiteRefUpdate extends RefUpdate {
 
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-
   protected final RefUpdate refUpdateBase;
-  private final ValidationMetrics validationMetrics;
-  private final SharedRefDatabase sharedDb;
   private final String projectName;
+  private final RefUpdateValidator.Factory refValidatorFactory;
+  private final RefUpdateValidator refUpdateValidator;
 
   public interface Factory {
     MultiSiteRefUpdate create(String projectName, RefUpdate refUpdate);
@@ -57,68 +53,14 @@ public class MultiSiteRefUpdate extends RefUpdate {
 
   @Inject
   public MultiSiteRefUpdate(
-      SharedRefDatabase db,
-      ValidationMetrics validationMetrics,
+      RefUpdateValidator.Factory refValidatorFactory,
       @Assisted String projectName,
       @Assisted RefUpdate refUpdate) {
     super(refUpdate.getRef());
     refUpdateBase = refUpdate;
-    this.validationMetrics = validationMetrics;
-    this.sharedDb = db;
     this.projectName = projectName;
-  }
-
-  private void checkSharedDBForRefUpdate() throws IOException {
-    try {
-      Ref newRef = sharedDb.newRef(refUpdateBase.getName(), refUpdateBase.getNewObjectId());
-
-      if (!sharedDb.compareAndPut(projectName, refUpdateBase.getRef(), newRef)) {
-        throw new IOException(
-            String.format(
-                "Unable to update ref '%s', the local objectId '%s' is not equal to the one "
-                    + "in the shared ref datasuper",
-                newRef.getName(), refUpdateBase.getName()));
-      }
-    } catch (IOException ioe) {
-      logger.atSevere().withCause(ioe).log(
-          "Local status inconsistent with shared ref datasuper for ref %s. "
-              + "Trying to update it cannot extract the existing one on DB",
-          refUpdateBase.getName());
-
-      validationMetrics.incrementSplitBrainRefUpdates();
-
-      throw new IOException(
-          String.format(
-              "Unable to update ref '%s', cannot open the local ref on the local DB",
-              refUpdateBase.getName()),
-          ioe);
-    }
-  }
-
-  private void checkSharedDbForRefDelete() throws IOException {
-    Ref oldRef = this.getRef();
-    try {
-      if (!sharedDb.compareAndRemove(projectName, oldRef)) {
-        throw new IOException(
-            String.format(
-                "Unable to delete ref '%s', the local ObjectId '%s' is not equal to the one "
-                    + "in the shared ref database",
-                oldRef.getName(), oldRef.getName()));
-      }
-    } catch (IOException ioe) {
-      logger.atSevere().withCause(ioe).log(
-          "Local status inconsistent with shared ref database for ref %s. "
-              + "Trying to delete it but it is not in the DB",
-          oldRef.getName());
-
-      validationMetrics.incrementSplitBrainRefUpdates();
-
-      throw new IOException(
-          String.format(
-              "Unable to delete ref '%s', cannot find it in the shared ref database",
-              oldRef.getName()),
-          ioe);
-    }
+    this.refValidatorFactory = refValidatorFactory;
+    refUpdateValidator = this.refValidatorFactory.create(this.projectName, null);
   }
 
   @Override
@@ -162,26 +104,24 @@ public class MultiSiteRefUpdate extends RefUpdate {
 
   @Override
   public Result update() throws IOException {
-    checkSharedDBForRefUpdate();
-    return refUpdateBase.update();
+    return refUpdateValidator.executeRefUpdateWithValidation(refUpdateBase::update, refUpdateBase);
   }
 
   @Override
   public Result update(RevWalk rev) throws IOException {
-    checkSharedDBForRefUpdate();
-    return refUpdateBase.update(rev);
+    return refUpdateValidator.executeRefUpdateWithValidation(
+        () -> refUpdateBase.update(rev), refUpdateBase);
   }
 
   @Override
   public Result delete() throws IOException {
-    checkSharedDbForRefDelete();
-    return refUpdateBase.delete();
+    return refUpdateValidator.executeRefUpdateWithValidation(refUpdateBase::delete, refUpdateBase);
   }
 
   @Override
   public Result delete(RevWalk walk) throws IOException {
-    checkSharedDbForRefDelete();
-    return refUpdateBase.delete(walk);
+    return refUpdateValidator.executeRefUpdateWithValidation(
+        () -> refUpdateBase.delete(walk), refUpdateBase);
   }
 
   @Override
