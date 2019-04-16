@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "49903a75_6fe436a4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefUpdate.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-16T10:03:18Z",
+      "side": 1,
+      "message": "The same ValidationMentrics need to be injected in MultiSiteBatchRefUpdate because that\u0027s where most of the updates go through.\nDoes it make sense to move the ValidationMetrics to the ZKSharedRefDb?",
+      "range": {
+        "startLine": 59,
+        "startChar": 9,
+        "endLine": 59,
+        "endChar": 27
+      },
+      "revId": "1a0f9e85bd24e398bd071293cc32de1431a54675",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
