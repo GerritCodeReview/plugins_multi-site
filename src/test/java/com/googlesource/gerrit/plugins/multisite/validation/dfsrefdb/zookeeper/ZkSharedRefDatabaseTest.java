@@ -29,17 +29,27 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.gerrit.acceptance.AbstractDaemonTest;
+import com.googlesource.gerrit.plugins.multisite.validation.MultiSiteBatchRefUpdate;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
+import java.io.IOException;
 import org.apache.curator.retry.RetryNTimes;
+import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
+import org.eclipse.jgit.lib.NullProgressMonitor;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.transport.ReceiveCommand;
+import org.eclipse.jgit.transport.ReceiveCommand.Result;
+import org.eclipse.jgit.transport.ReceiveCommand.Type;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
-public class ZkSharedRefDatabaseTest implements RefFixture {
+public class ZkSharedRefDatabaseTest extends AbstractDaemonTest implements RefFixture {
   @Rule public TestName nameRule = new TestName();
 
   ZookeeperTestContainerSupport zookeeperContainer;
@@ -206,6 +216,54 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
 
     // This ignored ref should also be ignored
     assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRefToIgnore, nullRef)).isTrue();
+  }
+
+  @Test
+  public void sequenceOfGitUpdatesWithARejectionCausesZKCheckToFail() throws Exception {
+    ObjectId commitObjectIdOne = commitBuilder().add("file1.txt", "A").create().getId();
+    ObjectId commitObjectIdTwo = commitBuilder().add("file1.txt", "B").create().getId();
+    ObjectId commitObjectIdThree = commitBuilder().add("file1.txt", "A2").create().getId();
+
+    ReceiveCommand firstCommand =
+        new ReceiveCommand(ObjectId.zeroId(), commitObjectIdOne, A_TEST_REF_NAME);
+
+    ReceiveCommand aNonFastForwardUpdate =
+        new ReceiveCommand(
+            commitObjectIdOne, commitObjectIdTwo, A_TEST_REF_NAME, Type.UPDATE_NONFASTFORWARD);
+
+    ReceiveCommand secondNormalUpdateWillFail =
+        new ReceiveCommand(commitObjectIdOne, commitObjectIdThree, A_TEST_REF_NAME, Type.UPDATE);
+
+    InMemoryRepository repository = testRepo.getRepository();
+    try (RevWalk rw = new RevWalk(repository)) {
+      MultiSiteBatchRefUpdate batchOne = newBatchRefUpdate(repository);
+      batchOne.addCommand(firstCommand);
+      batchOne.execute(rw, NullProgressMonitor.INSTANCE);
+      assertThat(firstCommand.getResult()).isEqualTo(Result.OK);
+
+      MultiSiteBatchRefUpdate batchTwo = newBatchRefUpdate(repository);
+      batchTwo.addCommand(aNonFastForwardUpdate);
+      batchTwo.execute(rw, NullProgressMonitor.INSTANCE);
+      assertThat(aNonFastForwardUpdate.getResult()).isEqualTo(Result.REJECTED_NONFASTFORWARD);
+
+      MultiSiteBatchRefUpdate batchThree = newBatchRefUpdate(repository);
+      batchThree.addCommand(secondNormalUpdateWillFail);
+
+      try {
+        batchThree.execute(rw, NullProgressMonitor.INSTANCE);
+      } catch (IOException e) {
+        // do nothing
+      }
+      assertThat(secondNormalUpdateWillFail.getResult()).isEqualTo(Result.NOT_ATTEMPTED);
+    }
+  }
+
+  private MultiSiteBatchRefUpdate newBatchRefUpdate(Repository localGitRepo) {
+    MultiSiteBatchRefUpdate multiSiteBatchRefUpdate =
+        new MultiSiteBatchRefUpdate(
+            zkSharedRefDatabase, A_TEST_PROJECT_NAME, localGitRepo.getRefDatabase());
+    multiSiteBatchRefUpdate.setAllowNonFastForwards(false);
+    return multiSiteBatchRefUpdate;
   }
 
   @Override
