@@ -48,6 +48,21 @@ public class DefaultSharedRefEnforcementTest implements RefFixture {
         }
 
         @Override
+        public AutoCloseable lockRef(String project, Ref ref) throws IOException {
+          return null;
+        }
+
+        @Override
+        public boolean exists(String project, String refName) throws IOException {
+          return false;
+        }
+
+        @Override
+        public boolean isUpToDate(String project, Ref ref) throws IOException {
+          return false;
+        }
+
+        @Override
         public boolean compareAndPut(String project, Ref oldRef, Ref newRef) throws IOException {
           return true;
         }

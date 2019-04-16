@@ -87,6 +87,15 @@ public interface SharedRefDatabase {
   }
 
   /**
+   * Verify in shared db if Ref is the most recent
+   *
+   * @param project project name of the ref
+   * @param ref to be checked against shared-ref db
+   * @return true if it is; false otherwise
+   */
+  boolean isUpToDate(String project, Ref ref) throws IOException;
+
+  /**
    * Compare a reference, and put if it matches.
    *
    * <p>Two reference match if and only if they satisfy the following:
@@ -116,4 +125,23 @@ public interface SharedRefDatabase {
    * @throws java.io.IOException the reference could not be removed due to a system error.
    */
   boolean compareAndRemove(String project, Ref oldRef) throws IOException;
+
+  /**
+   * Lock a reference for writing.
+   *
+   * @param project project name
+   * @param ref ref to lock
+   * @return lock object
+   * @throws IOException if the lock cannot be obtained
+   */
+  AutoCloseable lockRef(String project, Ref ref) throws IOException;
+
+  /**
+   * Verify if the DB contains a value for the specific project and ref name
+   *
+   * @param project
+   * @param refName
+   * @return
+   */
+  boolean exists(String project, String refName) throws IOException;
 }
