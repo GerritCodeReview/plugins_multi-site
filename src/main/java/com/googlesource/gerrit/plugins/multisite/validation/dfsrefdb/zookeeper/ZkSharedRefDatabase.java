@@ -57,6 +57,13 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
     return compareAndPut(project, oldRef, NULL_REF);
   }
 
+  public boolean compareForPut(String projectName, Ref oldRef) throws Exception {
+    if (ignoreRefInSharedDb(oldRef.getName())) {
+      return true;
+    }
+    return isMostRecentVersion(projectName, oldRef);
+  }
+
   @Override
   public boolean compareAndPut(String projectName, Ref oldRef, Ref newRef) throws IOException {
     if (ignoreRefInSharedDb(MoreObjects.firstNonNull(oldRef.getName(), newRef.getName()))) {

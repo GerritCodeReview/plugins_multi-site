@@ -126,6 +126,8 @@ public interface SharedRefDatabase {
    */
   boolean compareAndRemove(String project, Ref oldRef) throws IOException;
 
+  boolean compareForPut(String projectName, Ref oldRef) throws Exception;
+
   /**
    * Some references should not be stored in the SharedRefDatabase.
    *

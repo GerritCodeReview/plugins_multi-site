@@ -66,6 +66,11 @@ public class RefSharedDatabaseTest implements RefFixture {
           }
 
           @Override
+          public boolean compareForPut(String projectName, Ref oldRef) throws Exception {
+            return false;
+          }
+
+          @Override
           public boolean compareAndPut(String project, Ref oldRef, Ref newRef) throws IOException {
             return false;
           }
