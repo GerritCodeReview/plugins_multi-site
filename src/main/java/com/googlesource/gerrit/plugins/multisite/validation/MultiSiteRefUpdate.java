@@ -64,29 +64,26 @@ public class MultiSiteRefUpdate extends RefUpdate {
     this.projectName = projectName;
   }
 
-  private void checkSharedDBForRefUpdate() throws IOException {
-    try {
-      Ref newRef = sharedDb.newRef(refUpdateBase.getName(), refUpdateBase.getNewObjectId());
-
-      if (!sharedDb.compareAndPut(projectName, refUpdateBase.getRef(), newRef)) {
+  private void checkSharedDBForRefUpdate() throws Exception {
+    if (isANewRef()) {
+      if (sharedDb.exists(projectName, refUpdateBase.getName()))
         throw new IOException(
             String.format(
-                "Unable to update ref '%s', the local objectId '%s' is not equal to the one "
-                    + "in the shared ref datasuper",
-                newRef.getName(), refUpdateBase.getName()));
-      }
-    } catch (IOException ioe) {
-      logger.atSevere().withCause(ioe).log(
-          "Local status inconsistent with shared ref datasuper for ref %s. "
-              + "Trying to update it cannot extract the existing one on DB",
-          refUpdateBase.getName());
-
+                "Unable to create ref '%s', trying to create a new ref but there is a value "
+                    + "already in the shared ref db",
+                refUpdateBase.getName()));
+    }
+    if (!sharedDb.isMostRecentRefVersion(projectName, refUpdateBase.getRef()))
       throw new IOException(
           String.format(
-              "Unable to update ref '%s', cannot open the local ref on the local DB",
-              refUpdateBase.getName()),
-          ioe);
-    }
+              "Unable to update ref '%s', the local objectId '%s' is not equal to the one "
+                  + "in the shared ref datasuper",
+              refUpdateBase.getName(), refUpdateBase.getOldObjectId()));
+  }
+
+  private boolean isANewRef() {
+    return refUpdateBase.getRef().getObjectId() == null
+        || refUpdateBase.getRef().getObjectId().equals(ObjectId.zeroId());
   }
 
   private void checkSharedDbForRefDelete() throws IOException {
@@ -154,26 +151,81 @@ public class MultiSiteRefUpdate extends RefUpdate {
 
   @Override
   public Result update() throws IOException {
-    checkSharedDBForRefUpdate();
-    return refUpdateBase.update();
+    return updateIfInSyncWithRefDb(
+        () -> refUpdateBase.update(),
+        () -> {
+          Ref newRef = sharedDb.newRef(refUpdateBase.getName(), refUpdateBase.getNewObjectId());
+          return sharedDb.compareAndPut(projectName, refUpdateBase.getRef(), newRef);
+        });
+  }
+
+  private boolean isSuccessful(Result result) {
+    switch (result) {
+      case NEW:
+      case FORCED:
+      case FAST_FORWARD:
+      case NO_CHANGE:
+        return true;
+
+      default:
+        return false;
+    }
   }
 
   @Override
   public Result update(RevWalk rev) throws IOException {
-    checkSharedDBForRefUpdate();
-    return refUpdateBase.update(rev);
+    return updateIfInSyncWithRefDb(
+        () -> refUpdateBase.update(rev),
+        () -> {
+          Ref newRef = sharedDb.newRef(refUpdateBase.getName(), refUpdateBase.getNewObjectId());
+          return sharedDb.compareAndPut(projectName, refUpdateBase.getRef(), newRef);
+        });
+  }
+
+  private Result updateIfInSyncWithRefDb(
+      NoParameterFunction<Result> delegateUpdate, NoParameterFunction<Boolean> postUpdateSharedDb)
+      throws IOException {
+    try (AutoCloseable lock = sharedDb.lockRef(projectName, refUpdateBase.getRef())) {
+      checkSharedDBForRefUpdate();
+      Result result = delegateUpdate.apply();
+      if (isSuccessful(result)) {
+
+        boolean compareAndPutSuccess = postUpdateSharedDb.apply();
+        if (!compareAndPutSuccess) {
+          String errorMessage =
+              String.format(
+                  "Not able to update the database, trying to update Ref %s with new objectId %s"
+                      + "Local Git repository was updated but not able to update zookeeper."
+                      + "Gerrit instance in a split-brain.",
+                  refUpdateBase.getName(), refUpdateBase.getNewObjectId());
+
+          logger.atWarning().log(errorMessage);
+          throw new IOException(errorMessage);
+        }
+      }
+      return result;
+    } catch (Exception e) {
+      logger.atWarning().withCause(e).log("Unable to lock shared DB");
+      throw new IOException("Unable to lock shared DB", e);
+    }
   }
 
   @Override
   public Result delete() throws IOException {
-    checkSharedDbForRefDelete();
-    return refUpdateBase.delete();
+    return updateIfInSyncWithRefDb(
+        () -> refUpdateBase.delete(),
+        () -> {
+          return sharedDb.compareAndRemove(projectName, refUpdateBase.getRef());
+        });
   }
 
   @Override
   public Result delete(RevWalk walk) throws IOException {
-    checkSharedDbForRefDelete();
-    return refUpdateBase.delete(walk);
+    return updateIfInSyncWithRefDb(
+        () -> refUpdateBase.delete(walk),
+        () -> {
+          return sharedDb.compareAndRemove(projectName, refUpdateBase.getRef());
+        });
   }
 
   @Override
@@ -299,5 +351,9 @@ public class MultiSiteRefUpdate extends RefUpdate {
   @Override
   public void setCheckConflicting(boolean check) {
     refUpdateBase.setCheckConflicting(check);
+  }
+
+  interface NoParameterFunction<T> {
+    T apply() throws IOException;
   }
 }

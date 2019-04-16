@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
@@ -25,6 +27,8 @@ import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.atomic.AtomicValue;
 import org.apache.curator.framework.recipes.atomic.DistributedAtomicValue;
+import org.apache.curator.framework.recipes.locks.InterProcessMutex;
+import org.apache.curator.framework.recipes.locks.Locker;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 
@@ -33,18 +37,31 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
 
   private final CuratorFramework client;
   private final RetryPolicy retryPolicy;
+  private final Long interProcessLockTimeOut;
 
   @Inject
   public ZkSharedRefDatabase(
-      CuratorFramework client, @Named("ZkLockRetryPolicy") RetryPolicy retryPolicy) {
+      CuratorFramework client,
+      @Named("ZkLockRetryPolicy") RetryPolicy retryPolicy,
+      @Named("ZkInterProcessLockTimeOut") Long interProcessLockTimeOut) {
     this.client = client;
     this.retryPolicy = retryPolicy;
+    this.interProcessLockTimeOut = interProcessLockTimeOut;
   }
 
   @Override
-  public boolean isMostRecentVersion(String project, Ref ref) throws Exception {
+  public boolean isMostRecentRefVersion(String project, Ref ref) throws Exception {
+    if (!exists(project, ref.getName())) {
+      logger.atWarning().log(
+          "Checking if this ref %s is the most recent, but not present in sharedDb, assuming "
+              + "in migration mode. Returning true",
+          ref.getName());
+      return true;
+    }
+
     final byte[] valueInZk = client.getData().forPath(pathFor(project, ref.getName()));
 
+    // Assuming this is a delete node NULL_REF
     if (valueInZk == null) return false;
 
     final ObjectId objectIdInZk = readObjectId(valueInZk);
@@ -55,6 +72,17 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   @Override
   public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
     return compareAndPut(project, oldRef, NULL_REF);
+  }
+
+  @Override
+  public boolean exists(String projectName, String refName) throws Exception {
+    return client.checkExists().forPath(pathFor(projectName, refName)) != null;
+  }
+
+  public Locker lockRef(String projectName, Ref ref) throws Exception {
+    InterProcessMutex refPathMutex =
+        new InterProcessMutex(client, "/locks" + pathFor(projectName, ref.getName()));
+    return new Locker(refPathMutex, interProcessLockTimeOut, MILLISECONDS);
   }
 
   @Override
