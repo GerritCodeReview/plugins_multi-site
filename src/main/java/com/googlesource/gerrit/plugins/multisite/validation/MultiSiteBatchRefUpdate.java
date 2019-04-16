@@ -34,6 +34,7 @@ import com.google.inject.assistedinject.Assisted;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,6 +46,7 @@ import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.PushCertificate;
 import org.eclipse.jgit.transport.ReceiveCommand;
+import org.eclipse.jgit.transport.ReceiveCommand.Result;
 import org.eclipse.jgit.util.time.ProposedTimestamp;
 
 public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
@@ -203,14 +205,12 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
   @Override
   public void execute(RevWalk walk, ProgressMonitor monitor, List<String> options)
       throws IOException {
-    updateSharedRefDb(getRefsPairs());
-    batchRefUpdate.execute(walk, monitor, options);
+    executeWrapper(walk, monitor, options);
   }
 
   @Override
   public void execute(RevWalk walk, ProgressMonitor monitor) throws IOException {
-    updateSharedRefDb(getRefsPairs());
-    batchRefUpdate.execute(walk, monitor);
+    executeWrapper(walk, monitor, Collections.EMPTY_LIST);
   }
 
   @Override
@@ -218,12 +218,41 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     return batchRefUpdate.toString();
   }
 
-  private void updateSharedRefDb(Stream<RefPair> oldRefs) throws IOException {
+  private void verifySharedRefDb(Stream<RefPair> oldRefs) throws Exception {
     List<RefPair> refsToUpdate =
         oldRefs.sorted(comparing(RefPair::hasFailed).reversed()).collect(Collectors.toList());
     if (refsToUpdate.isEmpty()) {
       return;
     }
+
+    if (refsToUpdate.get(0).hasFailed()) {
+      RefPair failedRef = refsToUpdate.get(0);
+      throw new IOException(
+          "Failed to fetch ref entries" + failedRef.newRef.getName(), failedRef.exception);
+    }
+
+    for (RefPair refPair : refsToUpdate) {
+      boolean compareAndPutResult = sharedRefDb.compareForPut(projectName, refPair.oldRef);
+      if (!compareAndPutResult) {
+        throw new Exception(
+            String.format(
+                "This repos is out of sync for project %s. old_ref=%s, new_ref=%s",
+                projectName, refPair.oldRef, refPair.newRef));
+      }
+    }
+  }
+
+  private void updateSharedRefDb(Stream<RefPair> oldRefs) throws IOException {
+    List<RefPair> refsToUpdate =
+        oldRefs.sorted(comparing(RefPair::hasFailed).reversed()).collect(Collectors.toList());
+
+    if (refsToUpdate.isEmpty()) {
+      return;
+    }
+    System.out.println(
+        String.format(
+            "Updating shared ref db with refs >> pre %s and post %s",
+            refsToUpdate.get(0).oldRef.toString(), refsToUpdate.get(0).newRef.toString()));
 
     if (refsToUpdate.get(0).hasFailed()) {
       RefPair failedRef = refsToUpdate.get(0);
@@ -243,8 +272,8 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     }
   }
 
-  private Stream<RefPair> getRefsPairs() {
-    return batchRefUpdate.getCommands().stream().map(this::getRefPairForCommand);
+  private Stream<RefPair> getRefsPairs(List<ReceiveCommand> receivedCommands) {
+    return receivedCommands.stream().map(this::getRefPairForCommand);
   }
 
   private RefPair getRefPairForCommand(ReceiveCommand command) {
@@ -268,6 +297,39 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     } catch (IOException e) {
       return new RefPair(command.getRef(), e);
     }
+  }
+
+  private void executeWrapper(RevWalk walk, ProgressMonitor monitor, List<String> options)
+      throws IOException {
+
+    Stream<RefPair> refsPairs = getRefsPairs(batchRefUpdate.getCommands());
+
+    try {
+      verifySharedRefDb(refsPairs);
+      System.out.println(
+          String.format(
+              "Value of master before batch execute %s", refDb.getRef("refs/heads/master")));
+      if (options.isEmpty()) {
+        batchRefUpdate.execute(walk, monitor);
+      } else {
+        batchRefUpdate.execute(walk, monitor, options);
+      }
+      System.out.println(
+          String.format(
+              "Value of master after batch execute %s", refDb.getRef("refs/heads/master")));
+      updateSharedRefDbWithSuccessfulResults();
+    } catch (Exception e) {
+      throw new IOException(
+          String.format("Failed while verifying shared Ref database %s", e.getMessage()));
+    }
+  }
+
+  private void updateSharedRefDbWithSuccessfulResults() throws IOException {
+    updateSharedRefDb(
+        getRefsPairs(
+            batchRefUpdate.getCommands().stream()
+                .filter(cmd -> cmd.getResult() == Result.OK)
+                .collect(Collectors.toList())));
   }
 
   private Ref getNewRef(ReceiveCommand command) {
