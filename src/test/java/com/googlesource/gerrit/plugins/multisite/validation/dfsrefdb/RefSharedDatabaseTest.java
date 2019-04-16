@@ -61,8 +61,18 @@ public class RefSharedDatabaseTest implements RefFixture {
           }
 
           @Override
-          public boolean isMostRecentVersion(String project, Ref ref) throws Exception {
+          public boolean isMostRecentRefVersion(String project, Ref ref) throws IOException {
             return false;
+          }
+
+          @Override
+          public boolean exists(String projectName, String refName) {
+            return false;
+          }
+
+          @Override
+          public AutoCloseable lockRef(String projectName, Ref ref) throws IOException {
+            return null;
           }
 
           @Override

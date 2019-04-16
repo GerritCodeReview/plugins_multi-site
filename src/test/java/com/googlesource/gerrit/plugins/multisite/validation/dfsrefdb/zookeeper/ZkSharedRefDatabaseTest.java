@@ -29,6 +29,7 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
@@ -52,9 +53,17 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   public void setup() {
     refEnforcement = new DefaultSharedRefEnforcement();
     zookeeperContainer = new ZookeeperTestContainerSupport(false);
+    int SLEEP_BETWEEN_RETRIES_MS = 30;
+    long INTER_PROCESS_LOCK_TIMEOUT = 1000l;
+    int NUMBER_OF_RETRIES = 5;
+
     zkSharedRefDatabase =
         new ZkSharedRefDatabase(
-            zookeeperContainer.getCurator(), new RetryNTimes(5, 30), refEnforcement);
+            zookeeperContainer.getCurator(),
+            new ZkConnectionConfig(
+                new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
+                INTER_PROCESS_LOCK_TIMEOUT),
+            refEnforcement);
   }
 
   @After
@@ -93,8 +102,8 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
 
     assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRef, newRef)).isTrue();
 
-    assertThat(zkSharedRefDatabase.isMostRecentVersion(projectName, newRef)).isTrue();
-    assertThat(zkSharedRefDatabase.isMostRecentVersion(projectName, oldRef)).isFalse();
+    assertThat(zkSharedRefDatabase.isMostRecentRefVersion(projectName, newRef)).isTrue();
+    assertThat(zkSharedRefDatabase.isMostRecentRefVersion(projectName, oldRef)).isFalse();
   }
 
   @Test

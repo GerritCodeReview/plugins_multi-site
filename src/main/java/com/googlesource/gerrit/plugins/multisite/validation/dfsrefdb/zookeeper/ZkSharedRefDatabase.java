@@ -14,19 +14,23 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import javax.inject.Named;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.atomic.AtomicValue;
 import org.apache.curator.framework.recipes.atomic.DistributedAtomicValue;
+import org.apache.curator.framework.recipes.locks.InterProcessMutex;
+import org.apache.curator.framework.recipes.locks.Locker;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 
@@ -35,32 +39,67 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
 
   private final CuratorFramework client;
   private final RetryPolicy retryPolicy;
+
   private final SharedRefEnforcement refEnforcement;
+  private final Long interProcessLockTimeOut;
 
   @Inject
   public ZkSharedRefDatabase(
-      CuratorFramework client,
-      @Named("ZkLockRetryPolicy") RetryPolicy retryPolicy,
-      SharedRefEnforcement refEnforcement) {
+      CuratorFramework client, ZkConnectionConfig connConfig, SharedRefEnforcement refEnforcement) {
     this.client = client;
-    this.retryPolicy = retryPolicy;
+    this.retryPolicy = connConfig.curatorRetryPolicy;
+    this.interProcessLockTimeOut = connConfig.transactionLockTimeout;
     this.refEnforcement = refEnforcement;
   }
 
   @Override
-  public boolean isMostRecentVersion(String project, Ref ref) throws Exception {
-    final byte[] valueInZk = client.getData().forPath(pathFor(project, ref.getName()));
+  public boolean isMostRecentRefVersion(String project, Ref ref) throws IOException {
+    if (!exists(project, ref.getName())) {
+      logger.atWarning().log(
+          "Checking if this ref %s is the most recent, but not present in sharedDb, assuming "
+              + "this is an old reference in Gerrit. Returning true",
+          ref.getName());
+      return true;
+    }
 
-    if (valueInZk == null) return false;
+    try {
+      final byte[] valueInZk = client.getData().forPath(pathFor(project, ref.getName()));
 
-    final ObjectId objectIdInZk = readObjectId(valueInZk);
+      // Assuming this is a delete node NULL_REF
+      if (valueInZk == null) return false;
 
-    return objectIdInZk.equals(ref.getObjectId());
+      final ObjectId objectIdInZk = readObjectId(valueInZk);
+
+      return objectIdInZk.equals(ref.getObjectId());
+    } catch (Exception e) {
+      throw new IOException(
+          String.format("Unable to read data for path %s", pathFor(project, ref.getName())), e);
+    }
   }
 
   @Override
   public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
     return compareAndPut(project, oldRef, NULL_REF);
+  }
+
+  @Override
+  public boolean exists(String projectName, String refName) throws IOException {
+
+    try {
+      return client.checkExists().forPath(pathFor(projectName, refName)) != null;
+    } catch (Exception e) {
+      throw new IOException("Failed to check if path exists in Zookeeper", e);
+    }
+  }
+
+  public Locker lockRef(String projectName, Ref ref) throws IOException {
+    InterProcessMutex refPathMutex =
+        new InterProcessMutex(client, "/locks" + pathFor(projectName, ref.getName()));
+    try {
+      return new Locker(refPathMutex, interProcessLockTimeOut, MILLISECONDS);
+    } catch (Exception e) {
+      throw new IOException("Failed to create lock in ZK", e);
+    }
   }
 
   @Override
