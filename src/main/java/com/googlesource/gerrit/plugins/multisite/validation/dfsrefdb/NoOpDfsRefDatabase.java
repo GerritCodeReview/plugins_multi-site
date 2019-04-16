@@ -20,6 +20,21 @@ import org.eclipse.jgit.lib.Ref;
 public class NoOpDfsRefDatabase implements SharedRefDatabase {
 
   @Override
+  public boolean isMostRecentRefVersion(String project, Ref ref) throws IOException {
+    return false;
+  }
+
+  @Override
+  public boolean exists(String projectName, String refName) {
+    return false;
+  }
+
+  @Override
+  public AutoCloseable lockRef(String projectName, Ref ref) throws IOException {
+    return null;
+  }
+
+  @Override
   public boolean compareAndPut(String project, Ref oldRef, Ref newRef) throws IOException {
     return true;
   }
