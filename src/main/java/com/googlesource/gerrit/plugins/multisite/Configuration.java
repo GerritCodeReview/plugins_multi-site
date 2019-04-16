@@ -189,6 +189,17 @@ public class Configuration {
     }
   }
 
+  private static long getLong(
+      Supplier<Config> cfg, String section, String subSection, String name, long defaultValue) {
+    try {
+      return cfg.get().getLong(section, subSection, name, defaultValue);
+    } catch (IllegalArgumentException e) {
+      log.error("invalid value for {}; using default value {}", name, defaultValue);
+      log.debug("Failed to retrieve long value: {}", e.getMessage(), e);
+      return defaultValue;
+    }
+  }
+
   private static String getString(
       Supplier<Config> cfg, String section, String subsection, String name, String defaultValue) {
     String value = cfg.get().getString(section, subsection, name);
@@ -493,6 +504,7 @@ public class Configuration {
     private final int DEFAULT_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS = 100;
     private final int DEFAULT_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS = 300;
     private final int DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES = 3;
+    private final int DEFAULT_INTERPROCESS_LOCK_TIMEOUT = 1000;
 
     static {
       CuratorFrameworkFactory.Builder b = CuratorFrameworkFactory.builder();
@@ -513,6 +525,7 @@ public class Configuration {
     public final String KEY_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS = "casRetryPolicyMaxSleepTimeMs";
     public final String KEY_CAS_RETRY_POLICY_MAX_RETRIES = "casRetryPolicyMaxRetries";
     public static final String KEY_MIGRATE = "migrate";
+    public final String INTER_PROCESS_LOCK_TIME_OUT_KEY = "interProcessLockTimeOut";
 
     private final String connectionString;
     private final String root;
@@ -524,6 +537,7 @@ public class Configuration {
     private final int casBaseSleepTimeMs;
     private final int casMaxSleepTimeMs;
     private final int casMaxRetries;
+    private final Long interProcessLockTimeOut;
 
     private CuratorFramework build;
 
@@ -584,6 +598,14 @@ public class Configuration {
               KEY_CAS_RETRY_POLICY_MAX_RETRIES,
               DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES);
 
+      interProcessLockTimeOut =
+          getLong(
+              cfg,
+              SECTION,
+              SUBSECTION,
+              INTER_PROCESS_LOCK_TIME_OUT_KEY,
+              DEFAULT_INTERPROCESS_LOCK_TIMEOUT);
+
       checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
     }
 
@@ -602,6 +624,10 @@ public class Configuration {
       }
 
       return this.build;
+    }
+
+    public Long getZkInterProcessLockTimeOut(){
+      return interProcessLockTimeOut;
     }
 
     public RetryPolicy buildCasRetryPolicy() {
