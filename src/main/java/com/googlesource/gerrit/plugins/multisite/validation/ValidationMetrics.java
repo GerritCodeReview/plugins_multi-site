@@ -36,21 +36,36 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class ValidationMetrics {
-  private static final String REF_UPDATES = "ref_updates";
+  private static final String GIT_UPDATE_SPLIT_BRAIN_PREVENTED = "git_update_split_brain_prevented";
+  private static final String GIT_UPDATE_SPLIT_BRAIN = "git_update_split_brain";
 
-  private final Counter1<String> splitBrain;
+  private final Counter1<String> splitBrainPreventionCounter;
+  private final Counter1<String> splitBrainCounter;
 
   @Inject
   public ValidationMetrics(MetricMaker metricMaker) {
-    this.splitBrain =
+    this.splitBrainPreventionCounter =
         metricMaker.newCounter(
-            "multi_site/validation/split_brain",
+            "multi_site/validation/git_update_split_brain_prevented",
             new Description("Rate of REST API error responses").setRate().setUnit("errors"),
             Field.ofString(
-                REF_UPDATES, "Ref-update operations detected as leading to split-brain"));
+                GIT_UPDATE_SPLIT_BRAIN_PREVENTED,
+                "Ref-update operations, split-brain detected and prevented"));
+
+    this.splitBrainCounter =
+        metricMaker.newCounter(
+            "multi_site/validation/git_update_split_brain",
+            new Description("Rate of REST API error responses").setRate().setUnit("errors"),
+            Field.ofString(
+                GIT_UPDATE_SPLIT_BRAIN,
+                "Ref-update operation left node in a split-brain scenario"));
   }
 
-  public void incrementSplitBrainRefUpdates() {
-    splitBrain.increment(REF_UPDATES);
+  public void incrementSplitBrainPrevention() {
+    splitBrainPreventionCounter.increment(GIT_UPDATE_SPLIT_BRAIN_PREVENTED);
+  }
+
+  public void incrementSplitBrain() {
+    splitBrainCounter.increment(GIT_UPDATE_SPLIT_BRAIN);
   }
 }

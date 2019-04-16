@@ -61,6 +61,21 @@ public class RefSharedDatabaseTest implements RefFixture {
           }
 
           @Override
+          public boolean isUpToDate(String project, Ref ref) throws SharedLockException {
+            return false;
+          }
+
+          @Override
+          public boolean exists(String project, String refName) {
+            return false;
+          }
+
+          @Override
+          public AutoCloseable lockRef(String project, String refName) throws SharedLockException {
+            return null;
+          }
+
+          @Override
           public boolean compareAndPut(String project, Ref oldRef, Ref newRef) throws IOException {
             return false;
           }
