@@ -27,27 +27,36 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import org.eclipse.jgit.lib.BatchRefUpdate;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.ProgressMonitor;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.ReceiveCommand;
+import org.eclipse.jgit.transport.ReceiveCommand.Result;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -65,8 +74,26 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
       new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, A_TEST_REF_NAME, AN_OBJECT_ID_1);
   private final Ref newRef =
       new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, A_TEST_REF_NAME, AN_OBJECT_ID_2);
-  ReceiveCommand receiveCommand =
-      new ReceiveCommand(oldRef.getObjectId(), newRef.getObjectId(), oldRef.getName());
+  ReceiveCommand receiveCommandBeforeExecution =
+      createReceiveCommand(
+          oldRef.getObjectId(), newRef.getObjectId(), oldRef.getName(), Result.NOT_ATTEMPTED);
+
+  ReceiveCommand successReceiveCommandAfterExecution =
+      createReceiveCommand(oldRef.getObjectId(), newRef.getObjectId(), oldRef.getName(), Result.OK);
+
+  ReceiveCommand rejectReceiveCommandAfterExecution =
+      createReceiveCommand(
+          oldRef.getObjectId(),
+          newRef.getObjectId(),
+          oldRef.getName(),
+          Result.REJECTED_NONFASTFORWARD);
+
+  private ReceiveCommand createReceiveCommand(
+      ObjectId oldRefObjectId, ObjectId newRefObjectId, String refName, Result result) {
+    ReceiveCommand receiveCommand = new ReceiveCommand(oldRefObjectId, newRefObjectId, refName);
+    receiveCommand.setResult(result);
+    return receiveCommand;
+  }
 
   private MultiSiteBatchRefUpdate multiSiteRefUpdate;
 
@@ -78,10 +105,15 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
   }
 
   private void setMockRequiredReturnValues() throws IOException {
+
     doReturn(batchRefUpdate).when(refDatabase).newBatchUpdate();
-    doReturn(Arrays.asList(receiveCommand)).when(batchRefUpdate).getCommands();
+
+    when(batchRefUpdate.getCommands())
+        .thenReturn(asList(receiveCommandBeforeExecution))
+        .thenReturn(asList(successReceiveCommandAfterExecution));
+
     doReturn(oldRef).when(refDatabase).getRef(A_TEST_REF_NAME);
-    doReturn(newRef).when(sharedRefDb).newRef(A_TEST_REF_NAME, AN_OBJECT_ID_2);
+    doCallRealMethod().when(sharedRefDb).newRef(anyString(), any(ObjectId.class));
 
     multiSiteRefUpdate =
         new MultiSiteBatchRefUpdate(
@@ -91,20 +123,28 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
   }
 
   @Test
-  public void executeAndDelegateSuccessfullyWithNoExceptions() throws IOException {
+  public void executeAndDelegateSuccessfullyWithNoExceptions() throws Exception {
     setMockRequiredReturnValues();
 
     // When compareAndPut against sharedDb succeeds
-    doReturn(true).when(sharedRefDb).compareAndPut(A_TEST_PROJECT_NAME, oldRef, newRef);
+    doReturn(true).when(sharedRefDb).isMostRecentRefVersion(A_TEST_PROJECT_NAME, oldRef);
+    doReturn(true)
+        .when(sharedRefDb)
+        .compareAndPut(eq(A_TEST_PROJECT_NAME), refEquals(oldRef), refEquals(newRef));
     multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
+    verify(sharedRefDb)
+        .compareAndPut(eq(A_TEST_PROJECT_NAME), refEquals(oldRef), refEquals(newRef));
+  }
+
+  private Ref refEquals(Ref oldRef) {
+    return argThat(new RefMatcher(oldRef));
   }
 
   @Test
   public void executeAndFailsWithExceptions() throws IOException {
     setMockRequiredReturnValues();
 
-    // When compareAndPut against sharedDb fails
-    doReturn(false).when(sharedRefDb).compareAndPut(A_TEST_PROJECT_NAME, oldRef, newRef);
+    doReturn(false).when(sharedRefDb).isMostRecentRefVersion(A_TEST_PROJECT_NAME, oldRef);
     try {
       multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
       fail("Expecting an IOException to be thrown");
@@ -123,5 +163,19 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
             sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refDatabase);
 
     multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
+  }
+
+  protected static class RefMatcher implements ArgumentMatcher<Ref> {
+    private Ref left;
+
+    public RefMatcher(Ref ref) {
+      this.left = ref;
+    }
+
+    @Override
+    public boolean matches(Ref right) {
+      return left.getName().equals(right.getName())
+          && left.getObjectId().equals(right.getObjectId());
+    }
   }
 }
