@@ -48,8 +48,8 @@ public class SharedRefDbValidationTest implements RefFixture {
     initCommonMocks();
 
     // Refs to push are the most up to date
-    doReturn(true).when(sharedRefDb).isMostRecentVersion(A_TEST_PROJECT_NAME, refOne);
-    doReturn(true).when(sharedRefDb).isMostRecentVersion(A_TEST_PROJECT_NAME, refTwo);
+    doReturn(true).when(sharedRefDb).isMostRecentRefVersion(A_TEST_PROJECT_NAME, refOne);
+    doReturn(true).when(sharedRefDb).isMostRecentRefVersion(A_TEST_PROJECT_NAME, refTwo);
 
     RemoteRefUpdate remoteRefUpdateOne =
         new RemoteRefUpdate(
@@ -81,8 +81,8 @@ public class SharedRefDbValidationTest implements RefFixture {
     initCommonMocks();
 
     // Refs to push are not the most up to date
-    doReturn(false).when(sharedRefDb).isMostRecentVersion(A_TEST_PROJECT_NAME, refOne);
-    doReturn(false).when(sharedRefDb).isMostRecentVersion(A_TEST_PROJECT_NAME, refTwo);
+    doReturn(false).when(sharedRefDb).isMostRecentRefVersion(A_TEST_PROJECT_NAME, refOne);
+    doReturn(false).when(sharedRefDb).isMostRecentRefVersion(A_TEST_PROJECT_NAME, refTwo);
 
     RemoteRefUpdate remoteRefUpdateOne =
         new RemoteRefUpdate(
