@@ -31,6 +31,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
 import java.io.IOException;
+import org.apache.curator.framework.recipes.locks.Locker;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Ref.Storage;
@@ -63,6 +64,16 @@ public class RefSharedDatabaseTest implements RefFixture {
           @Override
           public boolean isMostRecentVersion(String project, Ref ref) throws Exception {
             return false;
+          }
+
+          @Override
+          public boolean compareForPut(String projectName, Ref oldRef) throws Exception {
+            return false;
+          }
+
+          @Override
+          public Locker lockRef(String projectName, Ref oldRef) throws Exception {
+            return null;
           }
 
           @Override
