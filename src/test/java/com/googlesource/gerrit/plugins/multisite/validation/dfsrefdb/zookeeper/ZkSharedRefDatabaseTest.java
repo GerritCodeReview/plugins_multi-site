@@ -29,6 +29,7 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
@@ -52,9 +53,17 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   public void setup() {
     refEnforcement = new DefaultSharedRefEnforcement();
     zookeeperContainer = new ZookeeperTestContainerSupport(false);
+    int SLEEP_BETWEEN_RETRIES_MS = 30;
+    long TRANSACTION_LOCK_TIMEOUT = 1000l;
+    int NUMBER_OF_RETRIES = 5;
+
     zkSharedRefDatabase =
         new ZkSharedRefDatabase(
-            zookeeperContainer.getCurator(), new RetryNTimes(5, 30), refEnforcement);
+            zookeeperContainer.getCurator(),
+            new ZkConnectionConfig(
+                new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
+                TRANSACTION_LOCK_TIMEOUT),
+            refEnforcement);
   }
 
   @After
@@ -81,6 +90,20 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
     zookeeperContainer.createRefInZk(projectName, oldRef);
 
     assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRef, newRef)).isTrue();
+  }
+
+  @Test
+  public void shouldFetchLatestObjectIdInZk() throws Exception {
+    Ref oldRef = refOf(AN_OBJECT_ID_1);
+    Ref newRef = refOf(AN_OBJECT_ID_2);
+    String projectName = A_TEST_PROJECT_NAME;
+
+    zookeeperContainer.createRefInZk(projectName, oldRef);
+
+    assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRef, newRef)).isTrue();
+
+    assertThat(zkSharedRefDatabase.isMostRecentRefVersion(projectName, newRef)).isTrue();
+    assertThat(zkSharedRefDatabase.isMostRecentRefVersion(projectName, oldRef)).isFalse();
   }
 
   @Test

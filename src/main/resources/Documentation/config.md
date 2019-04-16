@@ -54,6 +54,7 @@ File '@PLUGIN@.config'
   casRetryPolicyBaseSleepTimeMs = 100
   casRetryPolicyMaxSleepTimeMs = 100
   casRetryPolicyMaxRetries = 3
+  transactionLockTimeoutMs = 1000
 ```
 
 ## Configuration parameters
@@ -243,13 +244,12 @@ File '@PLUGIN@.config'
 
     Defaults: 3
 
-```ref-database.zookeeper.migrate```
-:   Set to true when the plugin has been applied to an already existing module
-    and there are no entries in Zookeeper for the existing refs. It will handle
-    update failures caused by the old refs not existing forcing the creation of
-    the new one
+```ref-database.zookeeper.transactionLockTimeoutMs```
+:   Configuration for the Zookeeper Lock timeout used when reading data
+    from Zookeeper, applying the git local changes and writing the new objectId
+    into Zookeeper
 
-    Defaults: false
+    Defaults: 1000
 
 #### Custom kafka properties:
 
