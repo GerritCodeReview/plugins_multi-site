@@ -15,11 +15,12 @@
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
 import java.io.IOException;
+import java.util.function.Supplier;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
 
-public interface SharedRefDatabase {
+public interface SharedRefDatabase<SharedDbLock extends AutoCloseable> {
   Ref NULL_REF =
       new Ref() {
 
@@ -93,7 +94,7 @@ public interface SharedRefDatabase {
    * @param ref to be checked against shared-ref db
    * @return true if it is; false otherwise
    */
-  boolean isMostRecentVersion(String project, Ref ref) throws Exception;
+  boolean isMostRecentRefVersion(String project, Ref ref) throws Exception;
 
   /**
    * Compare a reference, and put if it matches.
@@ -126,6 +127,8 @@ public interface SharedRefDatabase {
    */
   boolean compareAndRemove(String project, Ref oldRef) throws IOException;
 
+  SharedDbLock lockRef(String projectName, Ref ref) throws Exception;
+
   /**
    * Some references should not be stored in the SharedRefDatabase.
    *
@@ -137,4 +140,13 @@ public interface SharedRefDatabase {
         || refName.startsWith("refs/draft-comments")
         || (refName.startsWith("refs/changes") && !refName.endsWith("/meta"));
   }
+
+  /**
+   * Verify if the DB contains a value for the specific project and ref name
+   *
+   * @param projectName
+   * @param refName
+   * @return
+   */
+  boolean isPresent(String projectName, String refName) throws Exception;
 }
