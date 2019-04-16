@@ -15,17 +15,15 @@
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
 import java.io.IOException;
-import org.eclipse.jgit.lib.Ref;
 
-public class NoOpDfsRefDatabase implements SharedRefDatabase {
+public class SharedDbSplitBrainException extends IOException {
+  private static final long serialVersionUID = 1L;
 
-  @Override
-  public boolean compareAndPut(String project, Ref oldRef, Ref newRef) throws IOException {
-    return true;
+  public SharedDbSplitBrainException(String message) {
+    super(message);
   }
 
-  @Override
-  public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
-    return true;
+  public SharedDbSplitBrainException(String message, Throwable cause) {
+    super(message, cause);
   }
 }
