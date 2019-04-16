@@ -17,15 +17,18 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 import java.io.IOException;
 import org.eclipse.jgit.lib.Ref;
 
-public class NoOpDfsRefDatabase implements SharedRefDatabase {
+/** Local project/ref is out of sync with the shared refdb */
+public class OutOfSyncException extends IOException {
+  private static final long serialVersionUID = 1L;
 
-  @Override
-  public boolean compareAndPut(String project, Ref oldRef, Ref newRef) throws IOException {
-    return true;
-  }
-
-  @Override
-  public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
-    return true;
+  public OutOfSyncException(String project, Ref localRef) {
+    super(
+        localRef == null
+            ? String.format(
+                "Local ref does exists locally for project %s but exists in the shared ref-db",
+                project)
+            : String.format(
+                "Local ref %s (ObjectId=%s) on project %s is out of sync with the shared ref-db",
+                localRef.getName(), localRef.getObjectId().getName(), project));
   }
 }

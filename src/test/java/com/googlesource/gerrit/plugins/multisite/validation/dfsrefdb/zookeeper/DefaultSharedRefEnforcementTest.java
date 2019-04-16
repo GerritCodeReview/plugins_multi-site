@@ -28,64 +28,49 @@
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase.newRef;
 
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
-import java.io.IOException;
 import org.eclipse.jgit.lib.Ref;
 import org.junit.Test;
 
 public class DefaultSharedRefEnforcementTest implements RefFixture {
 
-  SharedRefDatabase refDb =
-      new SharedRefDatabase() {
-
-        @Override
-        public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
-          return true;
-        }
-
-        @Override
-        public boolean compareAndPut(String project, Ref oldRef, Ref newRef) throws IOException {
-          return true;
-        }
-      };
-
   SharedRefEnforcement refEnforcement = new DefaultSharedRefEnforcement();
 
   @Test
   public void anImmutableChangeShouldBeIgnored() {
-    Ref immutableChangeRef = refDb.newRef(A_REF_NAME_OF_A_PATCHSET, AN_OBJECT_ID_1);
+    Ref immutableChangeRef = newRef(A_REF_NAME_OF_A_PATCHSET, AN_OBJECT_ID_1);
     assertThat(refEnforcement.getPolicy(A_TEST_PROJECT_NAME, immutableChangeRef.getName()))
         .isEqualTo(EnforcePolicy.IGNORED);
   }
 
   @Test
   public void aChangeMetaShouldNotBeIgnored() {
-    Ref immutableChangeRef = refDb.newRef("refs/changes/01/1/meta", AN_OBJECT_ID_1);
+    Ref immutableChangeRef = newRef("refs/changes/01/1/meta", AN_OBJECT_ID_1);
     assertThat(refEnforcement.getPolicy(A_TEST_PROJECT_NAME, immutableChangeRef.getName()))
         .isEqualTo(EnforcePolicy.REQUIRED);
   }
 
   @Test
   public void aDraftCommentsShouldBeIgnored() {
-    Ref immutableChangeRef = refDb.newRef("refs/draft-comments/01/1/1000000", AN_OBJECT_ID_1);
+    Ref immutableChangeRef = newRef("refs/draft-comments/01/1/1000000", AN_OBJECT_ID_1);
     assertThat(refEnforcement.getPolicy(A_TEST_PROJECT_NAME, immutableChangeRef.getName()))
         .isEqualTo(EnforcePolicy.IGNORED);
   }
 
   @Test
   public void regularRefHeadsMasterShouldNotBeIgnored() {
-    Ref immutableChangeRef = refDb.newRef("refs/heads/master", AN_OBJECT_ID_1);
+    Ref immutableChangeRef = newRef("refs/heads/master", AN_OBJECT_ID_1);
     assertThat(refEnforcement.getPolicy(A_TEST_PROJECT_NAME, immutableChangeRef.getName()))
         .isEqualTo(EnforcePolicy.REQUIRED);
   }
 
   @Test
   public void regularCommitShouldNotBeIgnored() {
-    Ref immutableChangeRef = refDb.newRef("refs/heads/stable-2.16", AN_OBJECT_ID_1);
+    Ref immutableChangeRef = newRef("refs/heads/stable-2.16", AN_OBJECT_ID_1);
     assertThat(refEnforcement.getPolicy(A_TEST_PROJECT_NAME, immutableChangeRef.getName()))
         .isEqualTo(EnforcePolicy.REQUIRED);
   }
