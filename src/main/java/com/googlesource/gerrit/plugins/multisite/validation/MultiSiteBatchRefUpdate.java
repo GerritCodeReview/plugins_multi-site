@@ -27,20 +27,14 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import static java.util.Comparator.comparing;
-
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.eclipse.jgit.lib.BatchRefUpdate;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.ProgressMonitor;
-import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.PushCertificate;
@@ -48,51 +42,26 @@ import org.eclipse.jgit.transport.ReceiveCommand;
 import org.eclipse.jgit.util.time.ProposedTimestamp;
 
 public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
+
   private final BatchRefUpdate batchRefUpdate;
+  private final String project;
+  private final BatchRefUpdateValidator.Factory batchRefValidatorFactory;
   private final RefDatabase refDb;
-  private final SharedRefDatabase sharedRefDb;
-  private final String projectName;
-  private final ValidationMetrics validationMetrics;
-
-  public static class RefPair {
-    final Ref oldRef;
-    final Ref newRef;
-    final Exception exception;
-
-    RefPair(Ref oldRef, Ref newRef) {
-      this.oldRef = oldRef;
-      this.newRef = newRef;
-      this.exception = null;
-    }
-
-    RefPair(Ref newRef, Exception e) {
-      this.newRef = newRef;
-      this.oldRef = SharedRefDatabase.NULL_REF;
-      this.exception = e;
-    }
-
-    public boolean hasFailed() {
-      return exception != null;
-    }
-  }
 
   public static interface Factory {
-    MultiSiteBatchRefUpdate create(String projectName, RefDatabase refDb);
+    MultiSiteBatchRefUpdate create(String project, RefDatabase refDb);
   }
 
   @Inject
   public MultiSiteBatchRefUpdate(
-      SharedRefDatabase sharedRefDb,
-      ValidationMetrics validationMetrics,
-      @Assisted String projectName,
+      BatchRefUpdateValidator.Factory batchRefValidatorFactory,
+      @Assisted String project,
       @Assisted RefDatabase refDb) {
     super(refDb);
-
-    this.sharedRefDb = sharedRefDb;
-    this.projectName = projectName;
     this.refDb = refDb;
+    this.project = project;
     this.batchRefUpdate = refDb.newBatchUpdate();
-    this.validationMetrics = validationMetrics;
+    this.batchRefValidatorFactory = batchRefValidatorFactory;
   }
 
   @Override
@@ -208,76 +177,22 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
   @Override
   public void execute(RevWalk walk, ProgressMonitor monitor, List<String> options)
       throws IOException {
-    updateSharedRefDb(getRefsPairs());
-    batchRefUpdate.execute(walk, monitor, options);
+    batchRefValidatorFactory
+        .create(project, refDb)
+        .executeBatchUpdateWithValidation(
+            batchRefUpdate, () -> batchRefUpdate.execute(walk, monitor, options));
   }
 
   @Override
   public void execute(RevWalk walk, ProgressMonitor monitor) throws IOException {
-    updateSharedRefDb(getRefsPairs());
-    batchRefUpdate.execute(walk, monitor);
+    batchRefValidatorFactory
+        .create(project, refDb)
+        .executeBatchUpdateWithValidation(
+            batchRefUpdate, () -> batchRefUpdate.execute(walk, monitor));
   }
 
   @Override
   public String toString() {
     return batchRefUpdate.toString();
-  }
-
-  private void updateSharedRefDb(Stream<RefPair> oldRefs) throws IOException {
-    List<RefPair> refsToUpdate =
-        oldRefs.sorted(comparing(RefPair::hasFailed).reversed()).collect(Collectors.toList());
-    if (refsToUpdate.isEmpty()) {
-      return;
-    }
-
-    if (refsToUpdate.get(0).hasFailed()) {
-      RefPair failedRef = refsToUpdate.get(0);
-      throw new IOException(
-          "Failed to fetch ref entries" + failedRef.newRef.getName(), failedRef.exception);
-    }
-
-    for (RefPair refPair : refsToUpdate) {
-      boolean compareAndPutResult =
-          sharedRefDb.compareAndPut(projectName, refPair.oldRef, refPair.newRef);
-      if (!compareAndPutResult) {
-        validationMetrics.incrementSplitBrainRefUpdates();
-
-        throw new IOException(
-            String.format(
-                "This repos is out of sync for project %s. old_ref=%s, new_ref=%s",
-                projectName, refPair.oldRef, refPair.newRef));
-      }
-    }
-  }
-
-  private Stream<RefPair> getRefsPairs() {
-    return batchRefUpdate.getCommands().stream().map(this::getRefPairForCommand);
-  }
-
-  private RefPair getRefPairForCommand(ReceiveCommand command) {
-    try {
-      switch (command.getType()) {
-        case CREATE:
-          return new RefPair(SharedRefDatabase.NULL_REF, getNewRef(command));
-
-        case UPDATE:
-        case UPDATE_NONFASTFORWARD:
-          return new RefPair(refDb.getRef(command.getRefName()), getNewRef(command));
-
-        case DELETE:
-          return new RefPair(refDb.getRef(command.getRefName()), SharedRefDatabase.NULL_REF);
-
-        default:
-          return new RefPair(
-              getNewRef(command),
-              new IllegalArgumentException("Unsupported command type " + command.getType()));
-      }
-    } catch (IOException e) {
-      return new RefPair(command.getRef(), e);
-    }
-  }
-
-  private Ref getNewRef(ReceiveCommand command) {
-    return sharedRefDb.newRef(command.getRefName(), command.getNewId());
   }
 }
