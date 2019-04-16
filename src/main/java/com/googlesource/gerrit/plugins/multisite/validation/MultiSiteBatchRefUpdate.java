@@ -29,11 +29,15 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import static java.util.Comparator.comparing;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,18 +49,21 @@ import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.PushCertificate;
 import org.eclipse.jgit.transport.ReceiveCommand;
+import org.eclipse.jgit.transport.ReceiveCommand.Result;
 import org.eclipse.jgit.util.time.ProposedTimestamp;
 
 public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
+
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private final BatchRefUpdate batchRefUpdate;
   private final RefDatabase refDb;
-  private final SharedRefDatabase sharedRefDb;
+  private final SharedRefDatabase<? extends AutoCloseable> sharedRefDb;
   private final String projectName;
 
   public static class RefPair {
-    final Ref oldRef;
-    final Ref newRef;
-    final Exception exception;
+    public final Ref oldRef;
+    public final Ref newRef;
+    public final Exception exception;
 
     RefPair(Ref oldRef, Ref newRef) {
       this.oldRef = oldRef;
@@ -70,6 +77,11 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
       this.exception = e;
     }
 
+    public String getName() {
+      return MoreObjects.firstNonNull(
+          oldRef == null ? null : oldRef.getName(), newRef == null ? null : newRef.getName());
+    }
+
     public boolean hasFailed() {
       return exception != null;
     }
@@ -81,7 +93,9 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
 
   @Inject
   public MultiSiteBatchRefUpdate(
-      SharedRefDatabase sharedRefDb, @Assisted String projectName, @Assisted RefDatabase refDb) {
+      SharedRefDatabase<? extends AutoCloseable> sharedRefDb,
+      @Assisted String projectName,
+      @Assisted RefDatabase refDb) {
     super(refDb);
 
     this.sharedRefDb = sharedRefDb;
@@ -203,14 +217,12 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
   @Override
   public void execute(RevWalk walk, ProgressMonitor monitor, List<String> options)
       throws IOException {
-    updateSharedRefDb(getRefsPairs());
-    batchRefUpdate.execute(walk, monitor, options);
+    executeWrapper(walk, monitor, options);
   }
 
   @Override
   public void execute(RevWalk walk, ProgressMonitor monitor) throws IOException {
-    updateSharedRefDb(getRefsPairs());
-    batchRefUpdate.execute(walk, monitor);
+    executeWrapper(walk, monitor, Collections.EMPTY_LIST);
   }
 
   @Override
@@ -218,9 +230,12 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     return batchRefUpdate.toString();
   }
 
-  private void updateSharedRefDb(Stream<RefPair> oldRefs) throws IOException {
+  private void updateSharedRefDb(
+      Stream<RefPair> oldRefs, RevWalk walk, ProgressMonitor monitor, List<String> options)
+      throws Exception {
     List<RefPair> refsToUpdate =
         oldRefs.sorted(comparing(RefPair::hasFailed).reversed()).collect(Collectors.toList());
+
     if (refsToUpdate.isEmpty()) {
       return;
     }
@@ -231,20 +246,76 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
           "Failed to fetch ref entries" + failedRef.newRef.getName(), failedRef.exception);
     }
 
+    try (CloseableSet<AutoCloseable> locks = new CloseableSet()) {
+      assertBatchCommandsAreInSync(refsToUpdate, locks);
+
+      if (options.isEmpty()) {
+        batchRefUpdate.execute(walk, monitor);
+      } else {
+        batchRefUpdate.execute(walk, monitor, options);
+      }
+
+      updateSharedDBForSuccessfulCommands(batchRefUpdate.getCommands().stream());
+    } catch (Exception e) {
+      logger.atWarning().log("Failed to apply full batch %s", e.getMessage());
+      throw e;
+    }
+  }
+
+  private void updateSharedDBForSuccessfulCommands(Stream<ReceiveCommand> commandStream)
+      throws IOException {
+    List<RefPair> successfulRefPairs =
+        commandStream
+            .filter(cmd -> cmd.getResult() == Result.OK)
+            .map(
+                cmd ->
+                    new RefPair(
+                        cmd.getOldId() == null
+                            ? sharedRefDb.NULL_REF
+                            : sharedRefDb.newRef(cmd.getRefName(), cmd.getOldId()),
+                        sharedRefDb.newRef(cmd.getRefName(), cmd.getNewId())))
+            .collect(Collectors.toList());
+
+    for (RefPair successfulRefPair : successfulRefPairs) {
+      sharedRefDb.compareAndPut(projectName, successfulRefPair.oldRef, successfulRefPair.newRef);
+    }
+  }
+
+  private void assertBatchCommandsAreInSync(
+      List<RefPair> refsToUpdate, CloseableSet<AutoCloseable> locks) throws Exception {
     for (RefPair refPair : refsToUpdate) {
-      boolean compareAndPutResult =
-          sharedRefDb.compareAndPut(projectName, refPair.oldRef, refPair.newRef);
-      if (!compareAndPutResult) {
-        throw new IOException(
+
+      Ref nonNullRef =
+          refPair.oldRef == sharedRefDb.NULL_REF || refPair.oldRef == null
+              ? refPair.newRef
+              : refPair.oldRef;
+
+      // Doesn't have to be the actual Path we lock but just a unique identifier of the ref
+      String resourceLockKey = String.format("%s-%s", projectName, nonNullRef.getName());
+
+      locks.addResourceIfNotExist(
+          resourceLockKey, () -> sharedRefDb.lockRef(projectName, nonNullRef));
+
+      boolean isInnSync;
+      if (refPair.oldRef != sharedRefDb.NULL_REF && refPair.oldRef != null) {
+        isInnSync = sharedRefDb.isMostRecentRefVersion(projectName, refPair.oldRef);
+      } else {
+        isInnSync = !sharedRefDb.isPresent(projectName, refPair.getName());
+      }
+
+      if (!isInnSync) {
+        String errorMessage =
             String.format(
-                "This repos is out of sync for project %s. old_ref=%s, new_ref=%s",
-                projectName, refPair.oldRef, refPair.newRef));
+                "Ref %s not in sync with sharedDb, aborting batch", refPair.oldRef.getName());
+
+        logger.atWarning().log(errorMessage);
+        throw new Exception(errorMessage);
       }
     }
   }
 
-  private Stream<RefPair> getRefsPairs() {
-    return batchRefUpdate.getCommands().stream().map(this::getRefPairForCommand);
+  private Stream<RefPair> getRefsPairs(List<ReceiveCommand> receivedCommands) {
+    return receivedCommands.stream().map(this::getRefPairForCommand);
   }
 
   private RefPair getRefPairForCommand(ReceiveCommand command) {
@@ -270,7 +341,58 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     }
   }
 
+  private void executeWrapper(RevWalk walk, ProgressMonitor monitor, List<String> options)
+      throws IOException {
+    try {
+      updateSharedRefDb(getRefsPairs(batchRefUpdate.getCommands()), walk, monitor, options);
+    } catch (Exception e) {
+      String errorMessage =
+          String.format(
+              "Failing batch executeWrapper in MultiSiteBatchRefUpdate with exception %s",
+              e.getMessage());
+      logger.atWarning().log(errorMessage);
+      throw new IOException(errorMessage);
+    }
+  }
+
   private Ref getNewRef(ReceiveCommand command) {
     return sharedRefDb.newRef(command.getRefName(), command.getNewId());
+  }
+
+  public static class CloseableSet<T extends AutoCloseable> implements AutoCloseable {
+    private final HashMap<String, AutoCloseable> elements;
+
+    public CloseableSet() {
+      this(new HashMap<String, AutoCloseable>());
+    }
+
+    public CloseableSet(HashMap<String, AutoCloseable> elements) {
+      this.elements = elements;
+    }
+
+    public void addResourceIfNotExist(
+        String key, ExceptionThrowingSupplier<T, Exception> resourceFactory) throws Exception {
+      if (!elements.containsKey(key)) {
+        elements.put(key, resourceFactory.create());
+      }
+    }
+
+    @Override
+    public void close() {
+      elements.values().stream()
+          .forEach(
+              closeable -> {
+                try {
+                  closeable.close();
+                } catch (Exception closingException) {
+                  logger.atWarning().withCause(closingException).log(
+                      "Exception trying to release resource %s", closeable);
+                }
+              });
+    }
+  }
+
+  public interface ExceptionThrowingSupplier<T, E extends Exception> {
+    T create() throws E;
   }
 }
