@@ -49,7 +49,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   public void setup() {
     zookeeperContainer = new ZookeeperTestContainerSupport(false);
     zkSharedRefDatabase =
-        new ZkSharedRefDatabase(zookeeperContainer.getCurator(), new RetryNTimes(5, 30));
+        new ZkSharedRefDatabase(zookeeperContainer.getCurator(), new RetryNTimes(5, 30), 1000l);
   }
 
   @After
@@ -88,8 +88,8 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
 
     assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRef, newRef)).isTrue();
 
-    assertThat(zkSharedRefDatabase.isMostRecentVersion(projectName, newRef)).isTrue();
-    assertThat(zkSharedRefDatabase.isMostRecentVersion(projectName, oldRef)).isFalse();
+    assertThat(zkSharedRefDatabase.isMostRecentRefVersion(projectName, newRef)).isTrue();
+    assertThat(zkSharedRefDatabase.isMostRecentRefVersion(projectName, oldRef)).isFalse();
   }
 
   @Test
