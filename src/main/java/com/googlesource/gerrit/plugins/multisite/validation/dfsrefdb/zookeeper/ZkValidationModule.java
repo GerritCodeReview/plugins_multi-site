@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
@@ -31,10 +32,18 @@ public class ZkValidationModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    // The non generic binding will be removed when MultiSiteRefUpdate will use the
+    // new version of the SharedRefDatabase
     bind(SharedRefDatabase.class).to(ZkSharedRefDatabase.class);
+    bind(new TypeLiteral<SharedRefDatabase<? extends AutoCloseable>>() {})
+        .to(ZkSharedRefDatabase.class);
     bind(CuratorFramework.class).toInstance(cfg.getZookeeperConfig().buildCurator());
     bind(RetryPolicy.class)
         .annotatedWith(Names.named("ZkLockRetryPolicy"))
         .toInstance(cfg.getZookeeperConfig().buildCasRetryPolicy());
+
+    bind(Long.class)
+        .annotatedWith(Names.named("ZkInterProcessLockTimeOut"))
+        .toInstance(cfg.getZookeeperConfig().getZkInterProcessLockTimeOut());
   }
 }
