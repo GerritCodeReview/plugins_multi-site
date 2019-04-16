@@ -47,7 +47,7 @@ public class MultiSiteRefUpdate extends RefUpdate {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   protected final RefUpdate refUpdateBase;
-
+  private final ValidationMetrics validationMetrics;
   private final SharedRefDatabase sharedDb;
   private final String projectName;
 
@@ -57,9 +57,13 @@ public class MultiSiteRefUpdate extends RefUpdate {
 
   @Inject
   public MultiSiteRefUpdate(
-      SharedRefDatabase db, @Assisted String projectName, @Assisted RefUpdate refUpdate) {
+      SharedRefDatabase db,
+      ValidationMetrics validationMetrics,
+      @Assisted String projectName,
+      @Assisted RefUpdate refUpdate) {
     super(refUpdate.getRef());
     refUpdateBase = refUpdate;
+    this.validationMetrics = validationMetrics;
     this.sharedDb = db;
     this.projectName = projectName;
   }
@@ -80,6 +84,8 @@ public class MultiSiteRefUpdate extends RefUpdate {
           "Local status inconsistent with shared ref datasuper for ref %s. "
               + "Trying to update it cannot extract the existing one on DB",
           refUpdateBase.getName());
+
+      validationMetrics.incrementSplitBrainRefUpdates();
 
       throw new IOException(
           String.format(
@@ -104,6 +110,8 @@ public class MultiSiteRefUpdate extends RefUpdate {
           "Local status inconsistent with shared ref database for ref %s. "
               + "Trying to delete it but it is not in the DB",
           oldRef.getName());
+
+      validationMetrics.incrementSplitBrainRefUpdates();
 
       throw new IOException(
           String.format(
