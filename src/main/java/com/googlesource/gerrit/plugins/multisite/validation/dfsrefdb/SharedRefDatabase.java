@@ -93,7 +93,7 @@ public interface SharedRefDatabase {
    * @param ref to be checked against shared-ref db
    * @return true if it is; false otherwise
    */
-  boolean isMostRecentVersion(String project, Ref ref) throws Exception;
+  boolean isMostRecentRefVersion(String project, Ref ref) throws IOException;
 
   /**
    * Compare a reference, and put if it matches.
@@ -126,6 +126,8 @@ public interface SharedRefDatabase {
    */
   boolean compareAndRemove(String project, Ref oldRef) throws IOException;
 
+  AutoCloseable lockRef(String projectName, Ref ref) throws IOException;
+
   /**
    * Some references should not be stored in the SharedRefDatabase.
    *
@@ -137,4 +139,13 @@ public interface SharedRefDatabase {
         || refName.startsWith("refs/draft-comments")
         || (refName.startsWith("refs/changes") && !refName.endsWith("/meta"));
   }
+
+  /**
+   * Verify if the DB contains a value for the specific project and ref name
+   *
+   * @param projectName
+   * @param refName
+   * @return
+   */
+  boolean exists(String projectName, String refName) throws IOException;
 }
