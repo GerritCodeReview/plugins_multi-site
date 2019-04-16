@@ -28,7 +28,10 @@
 package com.googlesource.gerrit.plugins.multisite.validation;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
@@ -49,6 +52,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
 
   @Mock SharedRefDatabase sharedRefDb;
   @Mock RefUpdate refUpdate;
+  @Mock ValidationMetrics validationMetrics;
   private final Ref oldRef =
       new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, A_TEST_REF_NAME, AN_OBJECT_ID_1);
   private final Ref newRef =
@@ -77,9 +81,11 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     doReturn(Result.NEW).when(refUpdate).update();
 
     MultiSiteRefUpdate multiSiteRefUpdate =
-        new MultiSiteRefUpdate(sharedRefDb, A_TEST_PROJECT_NAME, refUpdate);
+        new MultiSiteRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refUpdate);
 
     assertThat(multiSiteRefUpdate.update()).isEqualTo(Result.NEW);
+
+    verifyZeroInteractions(validationMetrics);
   }
 
   @Test(expected = IOException.class)
@@ -90,8 +96,26 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     doReturn(false).when(sharedRefDb).compareAndPut(A_TEST_PROJECT_NAME, oldRef, newRef);
 
     MultiSiteRefUpdate multiSiteRefUpdate =
-        new MultiSiteRefUpdate(sharedRefDb, A_TEST_PROJECT_NAME, refUpdate);
+        new MultiSiteRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refUpdate);
     multiSiteRefUpdate.update();
+  }
+
+  @Test
+  public void newUpdateShouldIncreaseRefUpdateFailureCountWhenFailing() throws IOException {
+    setMockRequiredReturnValues();
+
+    // When compareAndPut fails
+    doReturn(false).when(sharedRefDb).compareAndPut(A_TEST_PROJECT_NAME, oldRef, newRef);
+
+    MultiSiteRefUpdate multiSiteRefUpdate =
+        new MultiSiteRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refUpdate);
+
+    try {
+      multiSiteRefUpdate.update();
+      fail("Expecting an IOException to be thrown");
+    } catch (IOException e) {
+      verify(validationMetrics).incrementSplitBrainRefUpdates();
+    }
   }
 
   @Test
@@ -103,9 +127,10 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     doReturn(Result.FORCED).when(refUpdate).delete();
 
     MultiSiteRefUpdate multiSiteRefUpdate =
-        new MultiSiteRefUpdate(sharedRefDb, A_TEST_PROJECT_NAME, refUpdate);
+        new MultiSiteRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refUpdate);
 
     assertThat(multiSiteRefUpdate.delete()).isEqualTo(Result.FORCED);
+    verifyZeroInteractions(validationMetrics);
   }
 
   @Test(expected = IOException.class)
@@ -116,7 +141,24 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     doReturn(false).when(sharedRefDb).compareAndRemove(A_TEST_PROJECT_NAME, oldRef);
 
     MultiSiteRefUpdate multiSiteRefUpdate =
-        new MultiSiteRefUpdate(sharedRefDb, A_TEST_PROJECT_NAME, refUpdate);
+        new MultiSiteRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refUpdate);
     multiSiteRefUpdate.delete();
+  }
+
+  @Test
+  public void deleteShouldIncreaseRefUpdateFailureCountWhenFailing() throws IOException {
+    setMockRequiredReturnValues();
+
+    // When compareAndPut fails
+    doReturn(false).when(sharedRefDb).compareAndRemove(A_TEST_PROJECT_NAME, oldRef);
+
+    MultiSiteRefUpdate multiSiteRefUpdate =
+        new MultiSiteRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refUpdate);
+    try {
+      multiSiteRefUpdate.delete();
+      fail("Expecting an IOException to be thrown");
+    } catch (IOException e) {
+      verify(validationMetrics).incrementSplitBrainRefUpdates();
+    }
   }
 }
