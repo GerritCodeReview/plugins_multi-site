@@ -36,5 +36,9 @@ public class ZkValidationModule extends AbstractModule {
     bind(RetryPolicy.class)
         .annotatedWith(Names.named("ZkLockRetryPolicy"))
         .toInstance(cfg.getZookeeperConfig().buildCasRetryPolicy());
+
+    bind(Long.class)
+        .annotatedWith(Names.named("ZkInterProcessLockTimeOut"))
+        .toInstance(cfg.getZookeeperConfig().getZkInterProcessLockTimeOut());
   }
 }
