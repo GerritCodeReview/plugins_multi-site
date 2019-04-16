@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
 import java.io.IOException;
+import org.apache.curator.framework.recipes.locks.Locker;
 import org.eclipse.jgit.lib.Ref;
 
 public class NoOpDfsRefDatabase implements SharedRefDatabase {
@@ -22,6 +23,16 @@ public class NoOpDfsRefDatabase implements SharedRefDatabase {
   @Override
   public boolean isMostRecentVersion(String project, Ref ref) throws Exception {
     return false;
+  }
+
+  @Override
+  public boolean compareForPut(String projectName, Ref oldRef) throws Exception {
+    return false;
+  }
+
+  @Override
+  public Locker lockRef(String projectName, Ref oldRef) throws Exception {
+    return null;
   }
 
   @Override

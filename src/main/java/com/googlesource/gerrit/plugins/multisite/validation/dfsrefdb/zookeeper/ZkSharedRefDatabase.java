@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
@@ -25,10 +27,12 @@ import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.atomic.AtomicValue;
 import org.apache.curator.framework.recipes.atomic.DistributedAtomicValue;
+import org.apache.curator.framework.recipes.locks.InterProcessMutex;
+import org.apache.curator.framework.recipes.locks.Locker;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 
-public class ZkSharedRefDatabase implements SharedRefDatabase {
+public class ZkSharedRefDatabase implements SharedRefDatabase<Locker> {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final CuratorFramework client;
@@ -45,7 +49,9 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   public boolean isMostRecentVersion(String project, Ref ref) throws Exception {
     final byte[] valueInZk = client.getData().forPath(pathFor(project, ref.getName()));
 
-    if (valueInZk == null) return false;
+    // We are assuming this is not a resource checked by the multi-site plugin
+    // or that it has to be initialised because dof a create
+    if (valueInZk == null) return true;
 
     final ObjectId objectIdInZk = readObjectId(valueInZk);
 
@@ -55,6 +61,19 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   @Override
   public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
     return compareAndPut(project, oldRef, NULL_REF);
+  }
+
+  public boolean compareForPut(String projectName, Ref oldRef) throws Exception {
+    if (ignoreRefInSharedDb(oldRef.getName())) {
+      return true;
+    }
+    return isMostRecentVersion(projectName, oldRef);
+  }
+
+  public Locker lockRef(String projectName, Ref oldRef) throws Exception {
+    InterProcessMutex refPathMutex = new InterProcessMutex(client,
+        "/locks" + pathFor(projectName, oldRef.getName()));
+    return new Locker(refPathMutex, 1000, MILLISECONDS);
   }
 
   @Override

@@ -15,11 +15,12 @@
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
 import java.io.IOException;
+import org.apache.curator.framework.recipes.locks.Locker;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
 
-public interface SharedRefDatabase {
+public interface SharedRefDatabase<SharedDbLock extends AutoCloseable> {
   Ref NULL_REF =
       new Ref() {
 
@@ -125,6 +126,8 @@ public interface SharedRefDatabase {
    * @throws java.io.IOException the reference could not be removed due to a system error.
    */
   boolean compareAndRemove(String project, Ref oldRef) throws IOException;
+
+  SharedDbLock lockRef(String projectName, Ref oldRef) throws Exception;
 
   /**
    * Some references should not be stored in the SharedRefDatabase.

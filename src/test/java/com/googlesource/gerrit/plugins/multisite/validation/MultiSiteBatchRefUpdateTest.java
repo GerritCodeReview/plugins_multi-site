@@ -83,19 +83,21 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
   }
 
   @Test
-  public void executeAndDelegateSuccessfullyWithNoExceptions() throws IOException {
+  public void executeAndDelegateSuccessfullyWithNoExceptions() throws Exception {
     setMockRequiredReturnValues();
 
     // When compareAndPut against sharedDb succeeds
+    doReturn(true).when(sharedRefDb).isMostRecentVersion(A_TEST_PROJECT_NAME, oldRef);
     doReturn(true).when(sharedRefDb).compareAndPut(A_TEST_PROJECT_NAME, oldRef, newRef);
     multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
   }
 
   @Test(expected = IOException.class)
-  public void executeAndFailsWithExceptions() throws IOException {
+  public void executeAndFailsWithExceptions() throws Exception {
     setMockRequiredReturnValues();
 
     // When compareAndPut against sharedDb fails
+    doReturn(false).when(sharedRefDb).isMostRecentVersion(A_TEST_PROJECT_NAME, oldRef);
     doReturn(false).when(sharedRefDb).compareAndPut(A_TEST_PROJECT_NAME, oldRef, newRef);
     multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
   }
