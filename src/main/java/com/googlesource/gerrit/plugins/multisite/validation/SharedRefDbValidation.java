@@ -41,7 +41,7 @@ public class SharedRefDbValidation {
           try {
             final RemoteRefUpdate refUpdate = extractor.apply(toExtract);
             final boolean mostRecentVersion =
-                sharedRefDb.isMostRecentVersion(
+                sharedRefDb.isMostRecentRefVersion(
                     projectName,
                     sharedRefDb.newRef(refUpdate.getSrcRef(), refUpdate.getNewObjectId()));
             if (mostRecentVersion) {
