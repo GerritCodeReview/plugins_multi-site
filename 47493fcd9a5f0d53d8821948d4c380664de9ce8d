@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f28503ba_0598d3d2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationMetrics.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-17T08:59:52Z",
+      "side": 1,
+      "message": "Copyright and license header is missing",
+      "revId": "47493fcd9a5f0d53d8821948d4c380664de9ce8d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
