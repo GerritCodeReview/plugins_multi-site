@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1eb693a4_2ec30ef8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-17T21:44:57Z",
+      "side": 1,
+      "message": "The method name is wrong: we do not update all the refs, but only the ones that have been successful.",
+      "range": {
+        "startLine": 317,
+        "startChar": 15,
+        "endLine": 317,
+        "endChar": 53
+      },
+      "revId": "e5286c718fcebc72605be0ec1119fd59b6cbf096",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5415e06_75f30c46",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-17T21:44:57Z",
+      "side": 1,
+      "message": "Are we sure that in a batchRefUpdate some of the commands can be successful and other not?",
+      "range": {
+        "startLine": 320,
+        "startChar": 12,
+        "endLine": 320,
+        "endChar": 56
+      },
+      "revId": "e5286c718fcebc72605be0ec1119fd59b6cbf096",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
