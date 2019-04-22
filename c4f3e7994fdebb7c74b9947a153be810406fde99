@@ -1,0 +1,257 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e115aa8c_9a40aa7d",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-22T06:01:52Z",
+      "side": 1,
+      "message": "nit: use one space",
+      "range": {
+        "startLine": 39,
+        "startChar": 5,
+        "endLine": 39,
+        "endChar": 7
+      },
+      "revId": "c4f3e7994fdebb7c74b9947a153be810406fde99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f556a5c_e257c166",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-22T06:01:52Z",
+      "side": 1,
+      "message": "trailing whitespace",
+      "range": {
+        "startLine": 45,
+        "startChar": 67,
+        "endLine": 45,
+        "endChar": 68
+      },
+      "revId": "c4f3e7994fdebb7c74b9947a153be810406fde99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c9a21d3_007768fa",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-22T06:01:52Z",
+      "side": 1,
+      "message": "trailing whitespace here, although it\u0027s not highlighted here for some reason",
+      "range": {
+        "startLine": 51,
+        "startChar": 86,
+        "endLine": 51,
+        "endChar": 87
+      },
+      "revId": "c4f3e7994fdebb7c74b9947a153be810406fde99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8698ec5e_2b9650a5",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-22T06:01:52Z",
+      "side": 1,
+      "message": "trailing whitespace",
+      "range": {
+        "startLine": 75,
+        "startChar": 73,
+        "endLine": 75,
+        "endChar": 74
+      },
+      "revId": "c4f3e7994fdebb7c74b9947a153be810406fde99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18e8fdd8_fceb31a9",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-22T06:01:52Z",
+      "side": 1,
+      "message": "tws",
+      "range": {
+        "startLine": 103,
+        "startChar": 82,
+        "endLine": 103,
+        "endChar": 83
+      },
+      "revId": "c4f3e7994fdebb7c74b9947a153be810406fde99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "948001ae_e315b7d6",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-22T06:01:52Z",
+      "side": 1,
+      "message": "tws",
+      "range": {
+        "startLine": 155,
+        "startChar": 78,
+        "endLine": 155,
+        "endChar": 79
+      },
+      "revId": "c4f3e7994fdebb7c74b9947a153be810406fde99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f57bf8f_8e310d6d",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-22T06:01:52Z",
+      "side": 1,
+      "message": "tws",
+      "range": {
+        "startLine": 172,
+        "startChar": 75,
+        "endLine": 172,
+        "endChar": 76
+      },
+      "revId": "c4f3e7994fdebb7c74b9947a153be810406fde99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98636593_4f3e08d4",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-22T06:01:52Z",
+      "side": 1,
+      "message": "tws",
+      "range": {
+        "startLine": 370,
+        "startChar": 104,
+        "endLine": 370,
+        "endChar": 105
+      },
+      "revId": "c4f3e7994fdebb7c74b9947a153be810406fde99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "965e9bf6_2d91f39f",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-22T06:01:52Z",
+      "side": 1,
+      "message": "tws",
+      "range": {
+        "startLine": 404,
+        "startChar": 103,
+        "endLine": 404,
+        "endChar": 104
+      },
+      "revId": "c4f3e7994fdebb7c74b9947a153be810406fde99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a80ddcd5_289331ee",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-22T06:01:52Z",
+      "side": 1,
+      "message": "tws",
+      "range": {
+        "startLine": 441,
+        "startChar": 86,
+        "endLine": 441,
+        "endChar": 88
+      },
+      "revId": "c4f3e7994fdebb7c74b9947a153be810406fde99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b1d6969_c78a4601",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-22T06:01:52Z",
+      "side": 1,
+      "message": "tws",
+      "range": {
+        "startLine": 459,
+        "startChar": 76,
+        "endLine": 459,
+        "endChar": 77
+      },
+      "revId": "c4f3e7994fdebb7c74b9947a153be810406fde99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
