@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "d7b87725_a943b093",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T20:30:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8a61823_1f2823a6",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 32
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "27905b6b_5aeab388",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 13
@@ -997,6 +1021,30 @@
     },
     {
       "key": {
+        "uuid": "67eef4af_d55a0223",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T20:30:30Z",
+      "side": 1,
+      "message": "The warning is just saying that it would expect to see that ref in ZK but it\u0027s not there yet because ZK is in a migration phase and being aligned with existing Gerrit Refs.\nI think the normal situation is when ZK refs are aligned with old Gerrit Refs. \n\nMaybe instead of \u0027migration mode\u0027, I can instead call it \u0027startup phase\u0027, what do you think?",
+      "parentUuid": "1248788b_f3f2c724",
+      "range": {
+        "startLine": 57,
+        "startChar": 17,
+        "endLine": 57,
+        "endChar": 34
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "959333b4_a9075834",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkValidationModule.java",
         "patchSetId": 13
@@ -1198,6 +1246,30 @@
     },
     {
       "key": {
+        "uuid": "a1895b23_a3fcce6d",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T20:30:30Z",
+      "side": 1,
+      "message": "This test was initially created to reproduce the ZK rollback problem.\n\nThe change in the middle called \"batchTwo\" is rejected by GIT with a Result \u0027REJECTED_NONFASTFORWARD\u0027 and the third batch is supposed to succeed and not fail because batchTwo left the wrong reference in ZK.",
+      "parentUuid": "40195066_cc1851a6",
+      "range": {
+        "startLine": 252,
+        "startChar": 0,
+        "endLine": 265,
+        "endChar": 91
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bf7c51a1_f44bbf40",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
         "patchSetId": 13
@@ -1218,6 +1290,30 @@
       "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c167184d_39250dc8",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T20:30:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf7c51a1_f44bbf40",
+      "range": {
+        "startLine": 305,
+        "startChar": 0,
+        "endLine": 308,
+        "endChar": 25
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

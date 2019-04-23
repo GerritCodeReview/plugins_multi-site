@@ -93,6 +93,30 @@
       "revId": "e5286c718fcebc72605be0ec1119fd59b6cbf096",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16045aef_3073e02e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T20:30:30Z",
+      "side": 1,
+      "message": "Added a unit test for this and you\u0027re right. If one command fails, all the other commands will be rejected with status REJECTED_OTHER_REASON",
+      "parentUuid": "20d7816a_9104e92e",
+      "range": {
+        "startLine": 320,
+        "startChar": 12,
+        "endLine": 320,
+        "endChar": 56
+      },
+      "revId": "e5286c718fcebc72605be0ec1119fd59b6cbf096",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
