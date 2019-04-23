@@ -96,6 +96,506 @@
     },
     {
       "key": {
+        "uuid": "0db01c42_5a7ca7f7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "nit: empty line",
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61880ca7_457e0b13",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "Can we really have a null ref? Or just a NULL_REF?",
+      "range": {
+        "startLine": 82,
+        "startChar": 10,
+        "endLine": 82,
+        "endChar": 24
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89becf2a_aa37ca73",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "This method name is incorrect: this does actually three things:\n1. Check for local vs. shared ref-db alignment\n2. Execution of the batch-update\n3. Update of the shared ref-db",
+      "range": {
+        "startLine": 233,
+        "startChar": 15,
+        "endLine": 233,
+        "endChar": 32
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b327e39e_4c3783e6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "This isn\u0027t necessarily true: you may have succeded with the batchUpdate and failed with the updateSharedDBForSuccessfulCommands.",
+      "range": {
+        "startLine": 260,
+        "startChar": 6,
+        "endLine": 260,
+        "endChar": 77
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fd1be8e_fa9e6199",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "This is wrong: we should not get the oldRef from the command but rather from the local refdb.\n\nExample: I am doing a forced-update, then the oldRef *is not* the one I have locally but I should process it anyway. It should be blocked *ONLY* if the local ref doesn\u0027t correspond to the shared ref.",
+      "range": {
+        "startLine": 275,
+        "startChar": 30,
+        "endLine": 275,
+        "endChar": 82
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c499add_299222ee",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "In a batchUpdate should all be successful or all failed, isn\u0027t it? What is the condition where we do half/half?\n\nThe oldRef also is wrong: it should be the value of the ref in the local ref-db and NOT the one in the command.",
+      "range": {
+        "startLine": 279,
+        "startChar": 0,
+        "endLine": 281,
+        "endChar": 5
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e4c3362_f632b8f3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "The RefPair has already a method to get the name of the not-null ref: why don\u0027t you just get that one?",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 291,
+        "endChar": 31
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1fd13d4b_da826722",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "Is this relevant? If yes, why don\u0027t we use the same path of the project/ref? If not, why do we bother talking about it?",
+      "range": {
+        "startLine": 293,
+        "startChar": 6,
+        "endLine": 293,
+        "endChar": 91
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e39fa1a_32f15ed6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "isInSync",
+      "range": {
+        "startLine": 299,
+        "startChar": 14,
+        "endLine": 299,
+        "endChar": 23
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "55555271_3c35955d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "Can we make it more specific as an exception?\nWhat about the locks? Should we release them?",
+      "range": {
+        "startLine": 312,
+        "startChar": 18,
+        "endLine": 312,
+        "endChar": 27
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d0b1400_e88d562b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "This is an incorrect use of the exception logging: you should use the flogger withCause(e)",
+      "range": {
+        "startLine": 352,
+        "startChar": 14,
+        "endLine": 352,
+        "endChar": 28
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02dc8d13_09f00889",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "Do we really to use a supplier and then calling directly? Why don\u0027t you just get the result T?",
+      "range": {
+        "startLine": 374,
+        "startChar": 20,
+        "endLine": 374,
+        "endChar": 75
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "634ddd1f_867d6b25",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "Why do we need this?",
+      "range": {
+        "startLine": 395,
+        "startChar": 0,
+        "endLine": 397,
+        "endChar": 3
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ee69b99_2fb6eeff",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "extract to a self-explaining method, so that you don\u0027t have to spend a lot of time commenting below.",
+      "range": {
+        "startLine": 68,
+        "startChar": 8,
+        "endLine": 69,
+        "endChar": 74
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0526e54_f64c1007",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "Create",
+      "range": {
+        "startLine": 75,
+        "startChar": 27,
+        "endLine": 75,
+        "endChar": 34
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ef30f87_f2b6348a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "else isn\u0027t needed.",
+      "range": {
+        "startLine": 78,
+        "startChar": 6,
+        "endLine": 78,
+        "endChar": 12
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "09a35cff_53f59da7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "This block is 90% identical to the one at L176: is there a way for reducing it to a common factor?",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 159,
+        "endChar": 3
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccdc528a_1a9a1cf5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "Can this be shared with the BatchRefUpdate use-case?",
+      "range": {
+        "startLine": 161,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 5
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33d5bc79_2ad4b7fd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "This is wrong: we can end up here for four reasons:\n1. We to check the shared ref-db\n2. We failed to lock\n3. We failed to execute the ref-update\n4. We failed to update the shared ref-db\n\nWhat about if we failed at point 4. ? We have a local ref-db not aligned with the shared ref-db. What\u0027s the strategy then?",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 59
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a461422e_06fababa",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "Are we really looking for a RefDatabase of locks? The usage of generics looks odd here.",
+      "range": {
+        "startLine": 22,
+        "startChar": 34,
+        "endLine": 22,
+        "endChar": 70
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e87be65_8f9c26f9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "Just return an auto-closeable here instead of a SharedDbLock",
+      "range": {
+        "startLine": 129,
+        "startChar": 2,
+        "endLine": 129,
+        "endChar": 69
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1ae78cd_b350c46f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "exists?",
+      "range": {
+        "startLine": 150,
+        "startChar": 10,
+        "endLine": 150,
+        "endChar": 19
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1248788b_f3f2c724",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
         "patchSetId": 13
@@ -112,6 +612,230 @@
         "startChar": 17,
         "endLine": 57,
         "endChar": 34
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "959333b4_a9075834",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkValidationModule.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "Just get rid of the odd use of generics, and this will be highly simplified to a regular binding.",
+      "range": {
+        "startLine": 38,
+        "startChar": 9,
+        "endLine": 38,
+        "endChar": 73
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e35d42a_58a12404",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkValidationModule.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "Do we really want to have an annotated binding for every configuration parameter? What\u0027s the benefit?",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 47,
+        "endChar": 76
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7507aa4c_d2a1fe57",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefUpdateTest.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "Do we really need those comments? the Mockito doReturn(true/false) already tell if the validation was successful or not.",
+      "range": {
+        "startLine": 101,
+        "startChar": 4,
+        "endLine": 101,
+        "endChar": 31
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acd1d5a4_98c3ff07",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/RefSharedDatabaseTest.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "We are not really using any curator-specific features in this test. Why is this needed?",
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01ab3846_5c97248a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/RefFixture.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "This interface is a collection of test data: what this RefUpdateStub has to do here?",
+      "range": {
+        "startLine": 63,
+        "startChar": 2,
+        "endLine": 63,
+        "endChar": 53
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c5f9355_6a0e4f7b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "This is a unit-test, not end-to-end. Why do you need a full Gerrit daemon for that?",
+      "range": {
+        "startLine": 51,
+        "startChar": 37,
+        "endLine": 51,
+        "endChar": 63
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6555e633_cc3c7e6e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "Avoid hardcoded values in tests: use constants with meaningful names.",
+      "range": {
+        "startLine": 61,
+        "startChar": 65,
+        "endLine": 61,
+        "endChar": 94
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "daf3c179_23c039b3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "If this is a full end-to-end test, then it should be in a separate IT class.\nThose are not unit-test of the ZkSharedRefDatabase and thus do not even belong to this class.",
+      "range": {
+        "startLine": 235,
+        "startChar": 14,
+        "endLine": 235,
+        "endChar": 67
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40195066_cc1851a6",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "You are testing three separate use-cases: do three tests. One test should validate a single use-case.",
+      "range": {
+        "startLine": 252,
+        "startChar": 0,
+        "endLine": 265,
+        "endChar": 91
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf7c51a1_f44bbf40",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseTest.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T15:36:43Z",
+      "side": 1,
+      "message": "This is repeated multiple times in the test: can you DRY it out?",
+      "range": {
+        "startLine": 305,
+        "startChar": 0,
+        "endLine": 308,
+        "endChar": 25
       },
       "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
