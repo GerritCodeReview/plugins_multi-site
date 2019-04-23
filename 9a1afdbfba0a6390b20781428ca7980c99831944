@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2656b038_ba7ff16f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T14:14:33Z",
+      "side": 1,
+      "message": "This seems to contradict the headline: are we performing the update on the shared refdb and then rolling it back, or we just wait to see the final result of the ref-update before storing the ref to the shared refdb?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 32
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27905b6b_5aeab388",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-23T14:14:33Z",
+      "side": 1,
+      "message": "It\u0027s fine for this change, however, the overall logic of using default values when the configuration is syntactically wrong is massively flawed :-(\n\nWe *should not* work if the configuration file is incorrect syntactically.\n\nThis needs to be addressed in a follow-up change.",
+      "range": {
+        "startLine": 194,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 5
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
