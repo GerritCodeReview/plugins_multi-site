@@ -113,6 +113,24 @@
     },
     {
       "key": {
+        "uuid": "ba811c6b_b8c91e97",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0db01c42_5a7ca7f7",
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "61880ca7_457e0b13",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
         "patchSetId": 13
@@ -124,6 +142,30 @@
       "writtenOn": "2019-04-23T15:36:43Z",
       "side": 1,
       "message": "Can we really have a null ref? Or just a NULL_REF?",
+      "range": {
+        "startLine": 82,
+        "startChar": 10,
+        "endLine": 82,
+        "endChar": 24
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c42c2986_1ecebad7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "Yes, some of the unit tests generate null oldRef and for that reason were failing. \nThis caters for all the  scenarios",
+      "parentUuid": "61880ca7_457e0b13",
       "range": {
         "startLine": 82,
         "startChar": 10,
@@ -159,6 +201,30 @@
     },
     {
       "key": {
+        "uuid": "9df9a344_e5f758df",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "Agree. validateBatchRefUpdateAndApply?",
+      "parentUuid": "89becf2a_aa37ca73",
+      "range": {
+        "startLine": 233,
+        "startChar": 15,
+        "endLine": 233,
+        "endChar": 32
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b327e39e_4c3783e6",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
         "patchSetId": 13
@@ -179,6 +245,30 @@
       "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5bcadbca_100929f3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b327e39e_4c3783e6",
+      "range": {
+        "startLine": 260,
+        "startChar": 6,
+        "endLine": 260,
+        "endChar": 77
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -205,6 +295,30 @@
     },
     {
       "key": {
+        "uuid": "81439562_ee473945",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "I don\u0027t think we can rely on the local refdb at this point because it\u0027s after the batchUpdate.execute(). \nIf the batch is successful, the refDb.getRef(...) has moved on to the new objectId. Will try to reproduce your scenario",
+      "parentUuid": "6fd1be8e_fa9e6199",
+      "range": {
+        "startLine": 275,
+        "startChar": 30,
+        "endLine": 275,
+        "endChar": 82
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4c499add_299222ee",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
         "patchSetId": 13
@@ -216,6 +330,30 @@
       "writtenOn": "2019-04-23T15:36:43Z",
       "side": 1,
       "message": "In a batchUpdate should all be successful or all failed, isn\u0027t it? What is the condition where we do half/half?\n\nThe oldRef also is wrong: it should be the value of the ref in the local ref-db and NOT the one in the command.",
+      "range": {
+        "startLine": 279,
+        "startChar": 0,
+        "endLine": 281,
+        "endChar": 5
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b5bfdba9_07593ecb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "The batchUpdate it either fails or succeeds all the commands (this is shown in one of the tests in this change). \nThis part just makes sure that we filter out all the commands if the batch fails",
+      "parentUuid": "4c499add_299222ee",
       "range": {
         "startLine": 279,
         "startChar": 0,
@@ -251,6 +389,30 @@
     },
     {
       "key": {
+        "uuid": "f7b98972_07113ca6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "That\u0027s because we need a nonNullRef, not just the name",
+      "parentUuid": "9e4c3362_f632b8f3",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 291,
+        "endChar": 31
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1fd13d4b_da826722",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
         "patchSetId": 13
@@ -271,6 +433,30 @@
       "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "525122b7_ca2cf08c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fd13d4b_da826722",
+      "range": {
+        "startLine": 293,
+        "startChar": 6,
+        "endLine": 293,
+        "endChar": 91
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -297,6 +483,30 @@
     },
     {
       "key": {
+        "uuid": "92367c02_b19377a3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e39fa1a_32f15ed6",
+      "range": {
+        "startLine": 299,
+        "startChar": 14,
+        "endLine": 299,
+        "endChar": 23
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "55555271_3c35955d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
         "patchSetId": 13
@@ -308,6 +518,30 @@
       "writtenOn": "2019-04-23T15:36:43Z",
       "side": 1,
       "message": "Can we make it more specific as an exception?\nWhat about the locks? Should we release them?",
+      "range": {
+        "startLine": 312,
+        "startChar": 18,
+        "endLine": 312,
+        "endChar": 27
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6101d1de_5222fa7b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "We are releasing them in the \u0027try (CloseableSet\u003cAutoCloseable\u003e locks \u003d new CloseableSet())\u0027 that wraps _assertBatchCommandsAreInSync_\n\nSince the main logic here is that we\u0027re looking up for a reference in the sharedRefDb, I\u0027m changing it to `NoSuchElementException` when we cannot find it",
+      "parentUuid": "55555271_3c35955d",
       "range": {
         "startLine": 312,
         "startChar": 18,
@@ -343,6 +577,30 @@
     },
     {
       "key": {
+        "uuid": "56a73ec9_2c75f242",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d0b1400_e88d562b",
+      "range": {
+        "startLine": 352,
+        "startChar": 14,
+        "endLine": 352,
+        "endChar": 28
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "02dc8d13_09f00889",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
         "patchSetId": 13
@@ -366,6 +624,30 @@
     },
     {
       "key": {
+        "uuid": "42f8bad8_2ed4d45f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "Not sure I understood. \nThe resourceFactory is lazy evaluated, just creates the lock in case the key is not present.",
+      "parentUuid": "02dc8d13_09f00889",
+      "range": {
+        "startLine": 374,
+        "startChar": 20,
+        "endLine": 374,
+        "endChar": 75
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "634ddd1f_867d6b25",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
         "patchSetId": 13
@@ -377,6 +659,30 @@
       "writtenOn": "2019-04-23T15:36:43Z",
       "side": 1,
       "message": "Why do we need this?",
+      "range": {
+        "startLine": 395,
+        "startChar": 0,
+        "endLine": 397,
+        "endChar": 3
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6865186e_7cdfed1a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 397,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "Mainly to handle the Exception that the function sharedRefDb.lockRef() throws when we pass it in addResourceIfNotExist()",
+      "parentUuid": "634ddd1f_867d6b25",
       "range": {
         "startLine": 395,
         "startChar": 0,
@@ -550,6 +856,30 @@
     },
     {
       "key": {
+        "uuid": "8f87241e_50b419a9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a461422e_06fababa",
+      "range": {
+        "startLine": 22,
+        "startChar": 34,
+        "endLine": 22,
+        "endChar": 70
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6e87be65_8f9c26f9",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
         "patchSetId": 13
@@ -573,6 +903,30 @@
     },
     {
       "key": {
+        "uuid": "c38c522b_1971fc23",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6e87be65_8f9c26f9",
+      "range": {
+        "startLine": 129,
+        "startChar": 2,
+        "endLine": 129,
+        "endChar": 69
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a1ae78cd_b350c46f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
         "patchSetId": 13
@@ -593,6 +947,30 @@
       "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c290ff99_a0c59fd5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-23T19:59:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1ae78cd_b350c46f",
+      "range": {
+        "startLine": 150,
+        "startChar": 10,
+        "endLine": 150,
+        "endChar": 19
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
