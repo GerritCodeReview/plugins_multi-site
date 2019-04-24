@@ -47,7 +47,6 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@ModuleImpl(name = GitRepositoryManager.LOCAL_REPOSITORY_MODULE)
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private final Configuration config;
