@@ -22,7 +22,6 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.ForwardedIndexExecutor;
 import com.googlesource.gerrit.plugins.multisite.index.ProjectChecker;
-import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -58,15 +57,14 @@ public class ForwardedIndexProjectHandler
   }
 
   @Override
-  protected void doIndex(String projectName, Optional<ProjectIndexEvent> event) throws IOException {
+  protected void doIndex(String projectName, Optional<ProjectIndexEvent> event) {
     if (!attemptIndex(projectName, event)) {
       log.warn("First Attempt failed, scheduling again after {} msecs", retryInterval);
       rescheduleIndex(projectName, event, 1);
     }
   }
 
-  public boolean attemptIndex(String projectName, Optional<ProjectIndexEvent> event)
-      throws IOException {
+  public boolean attemptIndex(String projectName, Optional<ProjectIndexEvent> event) {
     log.debug("Attempt to index project {}, event: [{}]", projectName, event);
     final Project.NameKey projectNameKey = new Project.NameKey(projectName);
     if (projectChecker.isProjectUpToDate(projectNameKey)) {
@@ -97,17 +95,13 @@ public class ForwardedIndexProjectHandler
     indexExecutor.schedule(
         () -> {
           Context.setForwardedEvent(true);
-          try {
-            if (!attemptIndex(projectName, event)) {
-              log.warn(
-                  "Attempt {} to index project {} failed, scheduling again after {} msecs",
-                  retryCount,
-                  projectName,
-                  retryInterval);
-              rescheduleIndex(projectName, event, retryCount + 1);
-            }
-          } catch (IOException e) {
-            log.warn("Project {} could not be indexed", projectName, e);
+          if (!attemptIndex(projectName, event)) {
+            log.warn(
+                "Attempt {} to index project {} failed, scheduling again after {} msecs",
+                retryCount,
+                projectName,
+                retryInterval);
+            rescheduleIndex(projectName, event, retryCount + 1);
           }
         },
         retryInterval,

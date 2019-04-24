@@ -16,12 +16,10 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.server.index.group.GroupIndexer;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
-import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -41,8 +39,7 @@ public class ForwardedIndexGroupHandler extends ForwardedIndexingHandler<String,
   }
 
   @Override
-  protected void doIndex(String uuid, Optional<GroupIndexEvent> event)
-      throws IOException, OrmException {
+  protected void doIndex(String uuid, Optional<GroupIndexEvent> event) {
     indexer.index(new AccountGroup.UUID(uuid));
     log.debug("Group {} successfully indexed", uuid);
   }

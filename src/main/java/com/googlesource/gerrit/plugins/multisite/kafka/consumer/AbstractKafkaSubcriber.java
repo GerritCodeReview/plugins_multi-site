@@ -15,12 +15,12 @@
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gson.Gson;
-import com.google.gwtorm.server.OrmException;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
@@ -126,7 +126,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
         } catch (IOException e) {
           logger.atSevere().withCause(e).log(
               "Malformed event '%s': [Exception: %s]", event.getHeader().getEventType());
-        } catch (PermissionBackendException | OrmException e) {
+        } catch (PermissionBackendException | StorageException e) {
           logger.atSevere().withCause(e).log(
               "Cannot handle message %s: [Exception: %s]", event.getHeader().getEventType());
         }

@@ -20,7 +20,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
-import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -41,7 +40,7 @@ public class ForwardedIndexAccountHandler
   }
 
   @Override
-  protected void doIndex(Account.Id id, Optional<AccountIndexEvent> event) throws IOException {
+  protected void doIndex(Account.Id id, Optional<AccountIndexEvent> event) {
     indexer.index(id);
     log.debug("Account {} successfully indexed", id);
   }

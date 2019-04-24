@@ -18,7 +18,6 @@ import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndex
 import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.INDEX;
 
 import com.google.gerrit.reviewdb.client.Account;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
@@ -54,7 +53,7 @@ public class IndexEventRouter implements ForwardedIndexEventRouter {
   }
 
   @Override
-  public void route(IndexEvent sourceEvent) throws IOException, OrmException {
+  public void route(IndexEvent sourceEvent) throws IOException {
     if (sourceEvent instanceof ChangeIndexEvent) {
       ChangeIndexEvent changeIndexEvent = (ChangeIndexEvent) sourceEvent;
       ForwardedIndexingHandler.Operation operation = changeIndexEvent.deleted ? DELETE : INDEX;

@@ -24,6 +24,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.git.GitRepositoryManager;
@@ -32,7 +33,6 @@ import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gerrit.server.util.time.TimeUtil;
-import com.google.gwtorm.server.OrmException;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
@@ -58,8 +58,8 @@ public class ForwardedIndexChangeHandlerTest {
   private static String TEST_CHANGE_ID = TEST_PROJECT + "~" + TEST_CHANGE_NUMBER;
   private static final boolean CHANGE_EXISTS = true;
   private static final boolean CHANGE_DOES_NOT_EXIST = false;
-  private static final boolean DO_NOT_THROW_IO_EXCEPTION = false;
-  private static final boolean THROW_IO_EXCEPTION = true;
+  private static final boolean DO_NOT_THROW_STORAGE_EXCEPTION = false;
+  private static final boolean THROW_STORAGE_EXCEPTION = true;
   private static final boolean CHANGE_UP_TO_DATE = true;
   private static final boolean CHANGE_OUTDATED = false;
 
@@ -123,9 +123,9 @@ public class ForwardedIndexChangeHandlerTest {
   }
 
   @Test
-  public void indexerThrowsIOExceptionTryingToIndexChange() throws Exception {
-    setupChangeAccessRelatedMocks(CHANGE_EXISTS, THROW_IO_EXCEPTION, CHANGE_UP_TO_DATE);
-    exception.expect(IOException.class);
+  public void indexerThrowsStorageExceptionTryingToIndexChange() throws Exception {
+    setupChangeAccessRelatedMocks(CHANGE_EXISTS, THROW_STORAGE_EXCEPTION, CHANGE_UP_TO_DATE);
+    exception.expect(StorageException.class);
     handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
   }
 
@@ -176,17 +176,17 @@ public class ForwardedIndexChangeHandlerTest {
 
   private void setupChangeAccessRelatedMocks(boolean changeExist, boolean changeUpToDate)
       throws Exception {
-    setupChangeAccessRelatedMocks(changeExist, DO_NOT_THROW_IO_EXCEPTION, changeUpToDate);
+    setupChangeAccessRelatedMocks(changeExist, DO_NOT_THROW_STORAGE_EXCEPTION, changeUpToDate);
   }
 
   private void setupChangeAccessRelatedMocks(
-      boolean changeExists, boolean ioException, boolean changeIsUpToDate)
-      throws IOException, OrmException {
+      boolean changeExists, boolean storageException, boolean changeIsUpToDate)
+      throws StorageException {
     if (changeExists) {
       when(changeCheckerFactoryMock.create(TEST_CHANGE_ID)).thenReturn(changeCheckerPresentMock);
       when(changeCheckerPresentMock.getChangeNotes()).thenReturn(Optional.of(changeNotes));
-      if (ioException) {
-        doThrow(new IOException("io-error")).when(indexerMock).index(any(Change.class));
+      if (storageException) {
+        doThrow(new StorageException("io-error")).when(indexerMock).index(any(Change.class));
       }
     }
 

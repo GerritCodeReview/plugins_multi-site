@@ -19,11 +19,11 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 
+import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventDispatcher;
 import com.google.gerrit.server.events.ProjectCreatedEvent;
 import com.google.gerrit.server.util.OneOffRequestContext;
-import com.google.gwtorm.server.OrmException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -81,7 +81,7 @@ public class ForwardedEventHandlerTest {
             (Answer<Void>)
                 invocation -> {
                   assertThat(Context.isForwardedEvent()).isTrue();
-                  throw new OrmException("someMessage");
+                  throw new StorageException("someMessage");
                 })
         .when(dispatcherMock)
         .postEvent(event);
@@ -89,8 +89,8 @@ public class ForwardedEventHandlerTest {
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
       handler.dispatch(event);
-      fail("should have throw an OrmException");
-    } catch (OrmException e) {
+      fail("should have throw an StorageException");
+    } catch (StorageException e) {
       assertThat(e.getMessage()).isEqualTo("someMessage");
     }
     assertThat(Context.isForwardedEvent()).isFalse();

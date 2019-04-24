@@ -16,7 +16,6 @@ package com.googlesource.gerrit.plugins.multisite.kafka.router;
 
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.permissions.PermissionBackendException;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;
@@ -31,7 +30,7 @@ public class StreamEventRouter implements ForwardedStreamEventRouter {
   }
 
   @Override
-  public void route(Event sourceEvent) throws OrmException, PermissionBackendException {
+  public void route(Event sourceEvent) throws PermissionBackendException {
     streamEventHandler.dispatch(sourceEvent);
   }
 }

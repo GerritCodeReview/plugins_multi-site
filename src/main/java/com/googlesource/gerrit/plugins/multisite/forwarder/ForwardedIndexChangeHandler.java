@@ -18,10 +18,8 @@ import com.google.common.base.Splitter;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.google.gerrit.server.notedb.ChangeNotes;
-import com.google.gerrit.server.project.NoSuchChangeException;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -30,7 +28,6 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEve
 import com.googlesource.gerrit.plugins.multisite.index.ChangeChecker;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeCheckerImpl;
 import com.googlesource.gerrit.plugins.multisite.index.ForwardedIndexExecutor;
-import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -70,69 +67,45 @@ public class ForwardedIndexChangeHandler
   }
 
   @Override
-  protected void doIndex(String id, Optional<ChangeIndexEvent> indexEvent)
-      throws IOException, OrmException {
+  protected void doIndex(String id, Optional<ChangeIndexEvent> indexEvent) {
     doIndex(id, indexEvent, 0);
   }
 
-  private void doIndex(String id, Optional<ChangeIndexEvent> indexEvent, int retryCount)
-      throws IOException, OrmException {
-    try {
-      ChangeChecker checker = changeCheckerFactory.create(id);
-      Optional<ChangeNotes> changeNotes = checker.getChangeNotes();
-      if (changeNotes.isPresent()) {
-        ChangeNotes notes = changeNotes.get();
-        reindex(notes);
+  private void doIndex(String id, Optional<ChangeIndexEvent> indexEvent, int retryCount) {
+    ChangeChecker checker = changeCheckerFactory.create(id);
+    Optional<ChangeNotes> changeNotes = checker.getChangeNotes();
+    if (changeNotes.isPresent()) {
+      ChangeNotes notes = changeNotes.get();
+      reindex(notes);
 
-        if (checker.isChangeUpToDate(indexEvent)) {
-          if (retryCount > 0) {
-            log.warn("Change {} has been eventually indexed after {} attempt(s)", id, retryCount);
-          } else {
-            log.debug("Change {} successfully indexed", id);
-          }
+      if (checker.isChangeUpToDate(indexEvent)) {
+        if (retryCount > 0) {
+          log.warn("Change {} has been eventually indexed after {} attempt(s)", id, retryCount);
         } else {
-          log.warn(
-              "Change {} seems too old compared to the event timestamp (event={} >> change-Ts={})",
-              id,
-              indexEvent,
-              checker);
-          rescheduleIndex(id, indexEvent, retryCount + 1);
+          log.debug("Change {} successfully indexed", id);
         }
       } else {
         log.warn(
-            "Change {} not present yet in local Git repository (event={}) after {} attempt(s)",
+            "Change {} seems too old compared to the event timestamp (event={} >> change-Ts={})",
             id,
             indexEvent,
-            retryCount);
-        if (!rescheduleIndex(id, indexEvent, retryCount + 1)) {
-          log.error(
-              "Change {} could not be found in the local Git repository (event={})",
-              id,
-              indexEvent);
-        }
+            checker);
+        rescheduleIndex(id, indexEvent, retryCount + 1);
       }
-    } catch (Exception e) {
-      if (isCausedByNoSuchChangeException(e)) {
-        indexer.delete(parseChangeId(id));
-        log.warn("Error trying to index Change {}. Deleted from index", id, e);
-        return;
+    } else {
+      log.warn(
+          "Change {} not present yet in local Git repository (event={}) after {} attempt(s)",
+          id,
+          indexEvent,
+          retryCount);
+      if (!rescheduleIndex(id, indexEvent, retryCount + 1)) {
+        log.error(
+            "Change {} could not be found in the local Git repository (event={})", id, indexEvent);
       }
-
-      throw e;
     }
   }
 
-  private static boolean isCausedByNoSuchChangeException(Throwable throwable) {
-    while (throwable != null) {
-      if (throwable instanceof NoSuchChangeException) {
-        return true;
-      }
-      throwable = throwable.getCause();
-    }
-    return false;
-  }
-
-  private void reindex(ChangeNotes notes) throws IOException, OrmException {
+  private void reindex(ChangeNotes notes) {
     try (ManualRequestContext ctx = oneOffCtx.open()) {
       notes.reload();
       indexer.index(notes.getChange());
@@ -169,7 +142,7 @@ public class ForwardedIndexChangeHandler
   }
 
   @Override
-  protected void doDelete(String id, Optional<ChangeIndexEvent> indexEvent) throws IOException {
+  protected void doDelete(String id, Optional<ChangeIndexEvent> indexEvent) {
     indexer.delete(parseChangeId(id));
     log.debug("Change {} successfully deleted from index", id);
   }
