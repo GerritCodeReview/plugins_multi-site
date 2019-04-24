@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.plugins.multisite.index;
 
 import com.google.gerrit.server.notedb.ChangeNotes;
-import com.google.gwtorm.server.OrmException;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
 import java.util.Optional;
@@ -27,9 +26,8 @@ public interface ChangeChecker {
    * Return the Change nodes read from ReviewDb or NoteDb.
    *
    * @return notes of the Change
-   * @throws OrmException if ReviewDb or NoteDb cannot be opened
    */
-  public Optional<ChangeNotes> getChangeNotes() throws OrmException;
+  public Optional<ChangeNotes> getChangeNotes();
 
   /**
    * Create a new index event POJO associated with the current Change.
@@ -40,10 +38,9 @@ public interface ChangeChecker {
    *     index
    * @return new IndexEvent
    * @throws IOException if the current Change cannot read
-   * @throws OrmException if ReviewDb cannot be opened
    */
   public Optional<ChangeIndexEvent> newIndexEvent(String projectName, int changeId, boolean deleted)
-      throws IOException, OrmException;
+      throws IOException;
 
   /**
    * Check if the local Change is aligned with the indexEvent received.
@@ -51,10 +48,8 @@ public interface ChangeChecker {
    * @param indexEvent indexing event
    * @return true if the local Change is up-to-date, false otherwise.
    * @throws IOException if an I/O error occurred while reading the local Change
-   * @throws OrmException if the local ReviewDb cannot be opened
    */
-  public boolean isChangeUpToDate(Optional<ChangeIndexEvent> indexEvent)
-      throws IOException, OrmException;
+  public boolean isChangeUpToDate(Optional<ChangeIndexEvent> indexEvent) throws IOException;
 
   /**
    * Return the last computed up-to-date Change time-stamp.
@@ -63,7 +58,6 @@ public interface ChangeChecker {
    *
    * @return the Change timestamp epoch in seconds
    * @throws IOException if an I/O error occurred while reading the local Change
-   * @throws OrmException if the local ReviewDb cannot be opened
    */
-  public Optional<Long> getComputedChangeTs() throws IOException, OrmException;
+  public Optional<Long> getComputedChangeTs() throws IOException;
 }

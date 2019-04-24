@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
+import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Comment;
 import com.google.gerrit.server.CommentsUtil;
@@ -22,7 +23,6 @@ import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
@@ -65,7 +65,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
 
   @Override
   public Optional<ChangeIndexEvent> newIndexEvent(String projectName, int changeId, boolean deleted)
-      throws IOException, OrmException {
+      throws IOException {
     return getComputedChangeTs()
         .map(
             ts -> {
@@ -77,7 +77,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
   }
 
   @Override
-  public Optional<ChangeNotes> getChangeNotes() throws OrmException {
+  public Optional<ChangeNotes> getChangeNotes() {
     try (ManualRequestContext ctx = oneOffReqCtx.open()) {
       this.changeNotes = Optional.ofNullable(changeFinder.findOne(changeId));
       return changeNotes;
@@ -85,8 +85,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
   }
 
   @Override
-  public boolean isChangeUpToDate(Optional<ChangeIndexEvent> indexEvent)
-      throws IOException, OrmException {
+  public boolean isChangeUpToDate(Optional<ChangeIndexEvent> indexEvent) throws IOException {
     getComputedChangeTs();
     if (!computedChangeTs.isPresent()) {
       log.warn("Unable to compute last updated ts for change {}", changeId);
@@ -107,7 +106,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
   }
 
   @Override
-  public Optional<Long> getComputedChangeTs() throws IOException, OrmException {
+  public Optional<Long> getComputedChangeTs() throws IOException {
     if (!computedChangeTs.isPresent()) {
       computedChangeTs = computeLastChangeTs();
     }
@@ -123,7 +122,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
           + getComputedChangeTs().map(ChangeIndexEvent::format)
           + "/"
           + getBranchTargetSha();
-    } catch (IOException | OrmException e) {
+    } catch (IOException e) {
       log.error("Unable to render change {}", changeId, e);
       return "change-id=" + changeId;
     }
@@ -146,7 +145,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
     }
   }
 
-  private Optional<Long> computeLastChangeTs() throws OrmException {
+  private Optional<Long> computeLastChangeTs() {
     return getChangeNotes().map(notes -> getTsFromChangeAndDraftComments(notes));
   }
 
@@ -158,7 +157,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
         Timestamp commentTs = comment.writtenOn;
         changeTs = commentTs.after(changeTs) ? commentTs : changeTs;
       }
-    } catch (OrmException e) {
+    } catch (StorageException e) {
       log.warn("Unable to access draft comments for change {}", change, e);
     }
     return changeTs.getTime() / 1000;
