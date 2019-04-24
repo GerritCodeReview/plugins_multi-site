@@ -99,7 +99,9 @@ public class Module extends LifecycleModule {
       install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
 
-    install(new ValidationModule(config, disableGitRepositoryValidation));
+    install(
+        new ValidationModule(
+            config, disableGitRepositoryValidation || !config.getZookeeperConfig().isEnabled()));
     bind(Gson.class)
         .annotatedWith(BrokerGson.class)
         .toProvider(GsonProvider.class)

@@ -181,6 +181,10 @@ File '@PLUGIN@.config'
 
     Defaults: 1000
 
+```ref-database.enabled```
+:   Enable the use of a shared ref-database
+    Defaults: true
+
 ```ref-database.zookeeper.connectString```
 :   Connection string to  zookeeper
 
