@@ -393,18 +393,8 @@ public class Configuration {
     private final boolean synchronize;
 
     private Forwarding(Supplier<Config> cfg, String section) {
-      synchronize = getBoolean(cfg, section, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE);
-    }
-
-    private static boolean getBoolean(
-        Supplier<Config> cfg, String section, String name, boolean defaultValue) {
-      try {
-        return cfg.get().getBoolean(section, name, defaultValue);
-      } catch (IllegalArgumentException e) {
-        log.error("invalid value for {}; using default value {}", name, defaultValue);
-        log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
-        return defaultValue;
-      }
+      synchronize =
+          Configuration.getBoolean(cfg, section, null, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE);
     }
 
     public boolean synchronize() {
@@ -524,6 +514,7 @@ public class Configuration {
     private final int casBaseSleepTimeMs;
     private final int casMaxSleepTimeMs;
     private final int casMaxRetries;
+    private final boolean enabled;
 
     private CuratorFramework build;
 
@@ -585,6 +576,8 @@ public class Configuration {
               DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES);
 
       checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
+
+      enabled = Configuration.getBoolean(cfg, SECTION, SUBSECTION, ENABLE_KEY, true);
     }
 
     public CuratorFramework buildCurator() {
@@ -607,6 +600,21 @@ public class Configuration {
     public RetryPolicy buildCasRetryPolicy() {
       return new BoundedExponentialBackoffRetry(
           casBaseSleepTimeMs, casMaxSleepTimeMs, casMaxRetries);
+    }
+
+    public boolean isEnabled() {
+      return enabled;
+    }
+  }
+
+  static boolean getBoolean(
+      Supplier<Config> cfg, String section, String subsection, String name, boolean defaultValue) {
+    try {
+      return cfg.get().getBoolean(section, subsection, name, defaultValue);
+    } catch (IllegalArgumentException e) {
+      log.error("invalid value for {}; using default value {}", name, defaultValue);
+      log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
+      return defaultValue;
     }
   }
 }
