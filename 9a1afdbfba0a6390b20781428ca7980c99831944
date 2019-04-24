@@ -953,6 +953,30 @@
     },
     {
       "key": {
+        "uuid": "be86616e_05781471",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefUpdate.java",
+        "patchSetId": 13
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-24T09:25:06Z",
+      "side": 1,
+      "message": "We have split the code, but we should then add in a different Change extra logging to be able to monitor the split-brain.",
+      "parentUuid": "33d5bc79_2ad4b7fd",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 59
+      },
+      "revId": "9a1afdbfba0a6390b20781428ca7980c99831944",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a461422e_06fababa",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
         "patchSetId": 13
