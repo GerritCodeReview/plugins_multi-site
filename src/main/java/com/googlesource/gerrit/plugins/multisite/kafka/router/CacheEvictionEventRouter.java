@@ -25,16 +25,19 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionE
 @Singleton
 public class CacheEvictionEventRouter implements ForwardedCacheEvictionEventRouter {
   private final ForwardedCacheEvictionHandler cacheEvictionHanlder;
+  private final GsonParser gsonParser;
 
   @Inject
-  public CacheEvictionEventRouter(ForwardedCacheEvictionHandler cacheEvictionHanlder) {
+  public CacheEvictionEventRouter(
+      ForwardedCacheEvictionHandler cacheEvictionHanlder, GsonParser gsonParser) {
     this.cacheEvictionHanlder = cacheEvictionHanlder;
+    this.gsonParser = gsonParser;
   }
 
   @Override
   public void route(CacheEvictionEvent cacheEvictionEvent) throws CacheNotFoundException {
     Object parsedKey =
-        GsonParser.fromJson(cacheEvictionEvent.cacheName, cacheEvictionEvent.key.toString());
+        gsonParser.fromJson(cacheEvictionEvent.cacheName, cacheEvictionEvent.key.toString());
     cacheEvictionHanlder.evict(CacheEntry.from(cacheEvictionEvent.cacheName, parsedKey));
   }
 }

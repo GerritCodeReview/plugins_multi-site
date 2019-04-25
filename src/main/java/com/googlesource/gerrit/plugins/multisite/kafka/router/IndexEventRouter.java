@@ -64,7 +64,7 @@ public class IndexEventRouter implements ForwardedIndexEventRouter {
     } else if (sourceEvent instanceof AccountIndexEvent) {
       AccountIndexEvent accountIndexEvent = (AccountIndexEvent) sourceEvent;
       indexAccountHandler.index(
-          new Account.Id(accountIndexEvent.accountId), INDEX, Optional.of(accountIndexEvent));
+          Account.id(accountIndexEvent.accountId), INDEX, Optional.of(accountIndexEvent));
     } else if (sourceEvent instanceof GroupIndexEvent) {
       GroupIndexEvent groupIndexEvent = (GroupIndexEvent) sourceEvent;
       indexGroupHandler.index(groupIndexEvent.groupUUID, INDEX, Optional.of(groupIndexEvent));
