@@ -60,7 +60,7 @@ public class IndexEventRouterTest {
 
     verify(indexAccountHandler)
         .index(
-            new Account.Id(event.accountId),
+            Account.id(event.accountId),
             ForwardedIndexingHandler.Operation.INDEX,
             Optional.of(event));
 
