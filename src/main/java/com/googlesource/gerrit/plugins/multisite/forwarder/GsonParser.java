@@ -17,61 +17,45 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 import com.google.common.base.Strings;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
+import com.google.gerrit.server.events.EventGson;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 
 public final class GsonParser {
+  private final Gson gson;
 
-  private GsonParser() {}
+  @Inject
+  public GsonParser(@EventGson Gson gson) {
+    this.gson = gson;
+  }
 
-  public static Object fromJson(String cacheName, String json) {
-    Gson gson = new GsonBuilder().create();
+  public Object fromJson(String cacheName, String jsonString) {
+    JsonElement json = gson.fromJson(Strings.nullToEmpty(jsonString), JsonElement.class);
     Object key;
     // Need to add a case for 'adv_bases'
     switch (cacheName) {
       case Constants.ACCOUNTS:
-        key = gson.fromJson(Strings.nullToEmpty(json).trim(), Account.Id.class);
+        key = Account.id(json.getAsJsonObject().get("id").getAsInt());
         break;
       case Constants.GROUPS:
-        key = gson.fromJson(Strings.nullToEmpty(json).trim(), AccountGroup.Id.class);
+        key = AccountGroup.id(json.getAsJsonObject().get("id").getAsInt());
         break;
       case Constants.GROUPS_BYINCLUDE:
       case Constants.GROUPS_MEMBERS:
-        key = gson.fromJson(Strings.nullToEmpty(json).trim(), AccountGroup.UUID.class);
+        key = AccountGroup.uuid(json.getAsJsonObject().get("uuid").getAsString());
         break;
       case Constants.PROJECT_LIST:
-        key = gson.fromJson(Strings.nullToEmpty(json), Object.class);
+        key = gson.fromJson(json, Object.class);
         break;
       default:
         try {
-          key = gson.fromJson(Strings.nullToEmpty(json).trim(), String.class);
+          key = gson.fromJson(json, String.class);
         } catch (Exception e) {
-          key = gson.fromJson(Strings.nullToEmpty(json), Object.class);
+          key = gson.fromJson(json, Object.class);
         }
     }
     return key;
-  }
-
-  public static String toJson(String cacheName, Object key) {
-    Gson gson = new GsonBuilder().create();
-    String json;
-    // Need to add a case for 'adv_bases'
-    switch (cacheName) {
-      case Constants.ACCOUNTS:
-        json = gson.toJson(key, Account.Id.class);
-        break;
-      case Constants.GROUPS:
-        json = gson.toJson(key, AccountGroup.Id.class);
-        break;
-      case Constants.GROUPS_BYINCLUDE:
-      case Constants.GROUPS_MEMBERS:
-        json = gson.toJson(key, AccountGroup.UUID.class);
-        break;
-      case Constants.PROJECT_LIST:
-      default:
-        json = gson.toJson(key);
-    }
-    return json;
   }
 }
