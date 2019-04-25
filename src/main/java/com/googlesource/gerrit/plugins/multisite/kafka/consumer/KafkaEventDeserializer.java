@@ -14,10 +14,10 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
+import com.google.gerrit.server.events.EventGson;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import java.util.Map;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -33,7 +33,7 @@ public class KafkaEventDeserializer implements Deserializer<SourceAwareEventWrap
   public KafkaEventDeserializer() {}
 
   @Inject
-  public KafkaEventDeserializer(@BrokerGson Gson gson) {
+  public KafkaEventDeserializer(@EventGson Gson gson) {
     this.gson = gson;
   }
 

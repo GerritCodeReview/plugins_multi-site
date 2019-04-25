@@ -57,7 +57,7 @@ public class ForwardedCacheEvictionHandlerTest {
 
   @Test
   public void testSuccessfulCacheEviction() throws Exception {
-    CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, new Account.Id(123));
+    CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, Account.id(123));
     doReturn(cacheMock).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
 
     handler.evict(entry);
@@ -75,7 +75,7 @@ public class ForwardedCacheEvictionHandlerTest {
 
   @Test
   public void shouldSetAndUnsetForwardedContext() throws Exception {
-    CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, new Account.Id(456));
+    CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, Account.id(456));
     doReturn(cacheMock).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
 
     // this doAnswer is to allow to assert that context is set to forwarded
@@ -98,7 +98,7 @@ public class ForwardedCacheEvictionHandlerTest {
 
   @Test
   public void shouldSetAndUnsetForwardedContextEvenIfExceptionIsThrown() throws Exception {
-    CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, new Account.Id(789));
+    CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, Account.id(789));
     doReturn(cacheMock).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
 
     doAnswer(

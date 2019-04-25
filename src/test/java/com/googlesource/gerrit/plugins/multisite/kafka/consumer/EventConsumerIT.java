@@ -30,6 +30,7 @@ import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.data.PatchSetAttribute;
 import com.google.gerrit.server.events.CommentAddedEvent;
 import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.EventGson;
 import com.google.gerrit.server.events.PatchSetCreatedEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.query.change.ChangeData;
@@ -39,7 +40,6 @@ import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Module;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,7 +50,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.Config;
-import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -142,7 +141,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
     int changeNum = change.getId().get();
     String changeNotesRef = change.notes().getRefName();
     int patchsetNum = change.currentPatchSet().getPatchSetId();
-    String patchsetRevision = change.currentPatchSet().getRevision().get();
+    String patchsetRevision = change.currentPatchSet().getCommitId().name();
     String patchsetRef = change.currentPatchSet().getRefName();
 
     Map<String, List<Event>> eventsByType = receiveEventsByType(droppedEventsQueue);
@@ -209,8 +208,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
     RevCommit parent;
     try (Repository repo = repoManager.openRepository(change.project());
         RevWalk walk = new RevWalk(repo)) {
-      RevCommit commit =
-          walk.parseCommit(ObjectId.fromString(change.currentPatchSet().getRevision().get()));
+      RevCommit commit = walk.parseCommit(change.currentPatchSet().getCommitId());
       parent = commit.getParent(0);
     }
     return parent.getId().name();
@@ -251,7 +249,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
 
   private List<Event> drainQueue(LinkedBlockingQueue<SourceAwareEventWrapper> queue)
       throws InterruptedException {
-    Gson gson = server.getTestInjector().getInstance(Key.get(Gson.class, BrokerGson.class));
+    Gson gson = server.getTestInjector().getInstance(Key.get(Gson.class, EventGson.class));
     SourceAwareEventWrapper event;
     List<Event> eventsList = new ArrayList<>();
     while ((event = queue.poll(QUEUE_POLL_TIMEOUT_MSECS, TimeUnit.MILLISECONDS)) != null) {

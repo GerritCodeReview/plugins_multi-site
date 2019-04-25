@@ -17,7 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 import static org.mockito.Mockito.verify;
 
 import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.Branch;
+import com.google.gerrit.reviewdb.client.BranchNameKey;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.server.events.CommentAddedEvent;
 import com.google.gerrit.server.util.time.TimeUtil;
@@ -49,10 +49,10 @@ public class StreamEventRouterTest {
 
   private Change aChange() {
     return new Change(
-        new Change.Key("Iabcd1234abcd1234abcd1234abcd1234abcd1234"),
-        new Change.Id(1),
-        new Account.Id(1),
-        new Branch.NameKey("proj", "refs/heads/master"),
+        Change.key("Iabcd1234abcd1234abcd1234abcd1234abcd1234"),
+        Change.id(1),
+        Account.id(1),
+        BranchNameKey.create("proj", "refs/heads/master"),
         TimeUtil.nowTs());
   }
 }
