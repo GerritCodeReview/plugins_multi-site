@@ -14,9 +14,12 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
+import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.AbstractModule;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
+import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import org.apache.curator.framework.CuratorFramework;
 
@@ -38,5 +41,7 @@ public class ZkValidationModule extends AbstractModule {
             new ZkConnectionConfig(
                 cfg.getZookeeperConfig().buildCasRetryPolicy(),
                 cfg.getZookeeperConfig().getZkInterProcessLockTimeOut()));
+
+    DynamicSet.bind(binder(), ProjectDeletedListener.class).to(ProjectDeletedSharedDbCleanup.class);
   }
 }
