@@ -16,17 +16,12 @@ package com.googlesource.gerrit.plugins.multisite;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.lifecycle.LifecycleModule;
-import com.google.gerrit.server.ModuleImpl;
 import com.google.gerrit.server.config.SitePaths;
-import com.google.gerrit.server.git.GitRepositoryManager;
-import com.google.gson.Gson;
 import com.google.inject.CreationException;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
-import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
@@ -101,10 +96,6 @@ public class Module extends LifecycleModule {
     install(
         new ValidationModule(
             config, disableGitRepositoryValidation || !config.getZookeeperConfig().isEnabled()));
-    bind(Gson.class)
-        .annotatedWith(BrokerGson.class)
-        .toProvider(GsonProvider.class)
-        .in(Singleton.class);
   }
 
   @Provides

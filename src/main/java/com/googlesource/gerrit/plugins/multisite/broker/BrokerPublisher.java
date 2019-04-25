@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.broker;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.EventGson;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.inject.Inject;
@@ -43,7 +44,7 @@ public class BrokerPublisher implements LifecycleListener {
   @Inject
   public BrokerPublisher(
       BrokerSession session,
-      @BrokerGson Gson gson,
+      @EventGson Gson gson,
       @InstanceId UUID instanceId,
       MessageLogger msgLog) {
     this.session = session;

@@ -18,44 +18,49 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
+import com.google.gerrit.server.events.EventGsonProvider;
+import com.google.gson.Gson;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 import org.junit.Test;
 
 public class GsonParserTest {
   private static final Object EMPTY_JSON = "{}";
 
+  private final Gson gson = new EventGsonProvider().get();
+  private final GsonParser gsonParser = new GsonParser(gson);
+
   @Test
   public void accountIDParse() {
-    Account.Id accountId = new Account.Id(1);
-    String json = GsonParser.toJson(Constants.ACCOUNTS, accountId);
-    assertThat(accountId).isEqualTo(GsonParser.fromJson(Constants.ACCOUNTS, json));
+    Account.Id accountId = Account.id(1);
+    String json = gson.toJson(accountId);
+    assertThat(accountId).isEqualTo(gsonParser.fromJson(Constants.ACCOUNTS, json));
   }
 
   @Test
   public void accountGroupIDParse() {
-    AccountGroup.Id accountGroupId = new AccountGroup.Id(1);
-    String json = GsonParser.toJson(Constants.GROUPS, accountGroupId);
-    assertThat(accountGroupId).isEqualTo(GsonParser.fromJson(Constants.GROUPS, json));
+    AccountGroup.Id accountGroupId = AccountGroup.id(1);
+    String json = gson.toJson(accountGroupId);
+    assertThat(accountGroupId).isEqualTo(gsonParser.fromJson(Constants.GROUPS, json));
   }
 
   @Test
   public void accountGroupUUIDParse() {
-    AccountGroup.UUID accountGroupUuid = new AccountGroup.UUID("abc123");
-    String json = GsonParser.toJson(Constants.GROUPS_BYINCLUDE, accountGroupUuid);
-    assertThat(accountGroupUuid).isEqualTo(GsonParser.fromJson(Constants.GROUPS_BYINCLUDE, json));
+    AccountGroup.UUID accountGroupUuid = AccountGroup.uuid("abc123");
+    String json = gson.toJson(accountGroupUuid);
+    assertThat(accountGroupUuid).isEqualTo(gsonParser.fromJson(Constants.GROUPS_BYINCLUDE, json));
   }
 
   @Test
   public void stringParse() {
     String key = "key";
-    String json = GsonParser.toJson(Constants.PROJECTS, key);
-    assertThat(key).isEqualTo(GsonParser.fromJson(Constants.PROJECTS, json));
+    String json = gson.toJson(key);
+    assertThat(key).isEqualTo(gsonParser.fromJson(Constants.PROJECTS, json));
   }
 
   @Test
   public void noKeyParse() {
     Object object = new Object();
-    String json = GsonParser.toJson(Constants.PROJECT_LIST, object);
+    String json = gson.toJson(object);
     assertThat(json).isEqualTo(EMPTY_JSON);
   }
 }

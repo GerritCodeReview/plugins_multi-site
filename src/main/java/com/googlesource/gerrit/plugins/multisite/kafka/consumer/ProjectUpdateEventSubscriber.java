@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.server.events.EventGson;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
@@ -22,7 +23,6 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ProjectListUpdateRouter;
 import java.util.UUID;
@@ -37,7 +37,7 @@ public class ProjectUpdateEventSubscriber extends AbstractKafkaSubcriber {
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
       ProjectListUpdateRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
-      @BrokerGson Gson gson,
+      @EventGson Gson gson,
       @InstanceId UUID instanceId,
       OneOffRequestContext oneOffCtx,
       MessageLogger msgLog) {
