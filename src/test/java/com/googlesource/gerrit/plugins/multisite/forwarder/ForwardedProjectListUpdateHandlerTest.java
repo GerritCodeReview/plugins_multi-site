@@ -36,7 +36,7 @@ public class ForwardedProjectListUpdateHandlerTest {
 
   private static final String PROJECT_NAME = "someProject";
   private static final String SOME_MESSAGE = "someMessage";
-  private static final Project.NameKey PROJECT_KEY = new Project.NameKey(PROJECT_NAME);
+  private static final Project.NameKey PROJECT_KEY = Project.nameKey(PROJECT_NAME);
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private ProjectCache projectCacheMock;
   private ForwardedProjectListUpdateHandler handler;

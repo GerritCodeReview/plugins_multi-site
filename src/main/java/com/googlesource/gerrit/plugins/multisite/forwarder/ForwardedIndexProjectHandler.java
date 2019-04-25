@@ -66,7 +66,7 @@ public class ForwardedIndexProjectHandler
 
   public boolean attemptIndex(String projectName, Optional<ProjectIndexEvent> event) {
     log.debug("Attempt to index project {}, event: [{}]", projectName, event);
-    final Project.NameKey projectNameKey = new Project.NameKey(projectName);
+    final Project.NameKey projectNameKey = Project.nameKey(projectName);
     if (projectChecker.isProjectUpToDate(projectNameKey)) {
       indexer.index(projectNameKey);
       log.debug("Project {} successfully indexed", projectName);
