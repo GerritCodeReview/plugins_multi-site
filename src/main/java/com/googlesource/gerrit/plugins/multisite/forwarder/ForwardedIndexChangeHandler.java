@@ -148,7 +148,7 @@ public class ForwardedIndexChangeHandler
   }
 
   private static Change.Id parseChangeId(String id) {
-    Change.Id changeId = new Change.Id(Integer.parseInt(Splitter.on("~").splitToList(id).get(1)));
+    Change.Id changeId = Change.id(Integer.parseInt(Splitter.on("~").splitToList(id).get(1)));
     return changeId;
   }
 }

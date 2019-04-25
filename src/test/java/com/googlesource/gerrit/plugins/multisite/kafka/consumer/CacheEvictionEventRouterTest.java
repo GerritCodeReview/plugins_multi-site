@@ -16,8 +16,10 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import static org.mockito.Mockito.verify;
 
+import com.google.gson.Gson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEntry;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedCacheEvictionHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.GsonParser;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.CacheEvictionEventRouter;
 import org.junit.Before;
@@ -34,7 +36,7 @@ public class CacheEvictionEventRouterTest {
 
   @Before
   public void setUp() {
-    router = new CacheEvictionEventRouter(cacheEvictionHandler);
+    router = new CacheEvictionEventRouter(cacheEvictionHandler, new GsonParser(new Gson()));
   }
 
   @Test

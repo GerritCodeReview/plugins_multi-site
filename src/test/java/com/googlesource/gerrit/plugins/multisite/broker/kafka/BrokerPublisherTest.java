@@ -18,11 +18,12 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.gerrit.extensions.client.ChangeKind;
 import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.Branch;
+import com.google.gerrit.reviewdb.client.BranchNameKey;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.server.data.AccountAttribute;
 import com.google.gerrit.server.data.ApprovalAttribute;
 import com.google.gerrit.server.events.CommentAddedEvent;
+import com.google.gerrit.server.events.EventGsonProvider;
 import com.google.gerrit.server.util.time.TimeUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -31,7 +32,6 @@ import com.googlesource.gerrit.plugins.multisite.DisabledMessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
-import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import java.util.UUID;
 import org.junit.Before;
@@ -40,7 +40,7 @@ import org.junit.Test;
 public class BrokerPublisherTest {
   private BrokerPublisher publisher;
   private MessageLogger NO_MSG_LOG = new DisabledMessageLogger();
-  private Gson gson = new GsonProvider().get();
+  private Gson gson = new EventGsonProvider().get();
 
   @Before
   public void setUp() {
@@ -67,10 +67,10 @@ public class BrokerPublisherTest {
 
     final Change change =
         new Change(
-            new Change.Key(changeId),
-            new Change.Id(1),
-            new Account.Id(1),
-            new Branch.NameKey(projectName, refName),
+            Change.key(changeId),
+            Change.id(1),
+            Account.id(1),
+            BranchNameKey.create(projectName, refName),
             TimeUtil.nowTs());
 
     CommentAddedEvent event = new CommentAddedEvent(change);
@@ -127,7 +127,7 @@ public class BrokerPublisherTest {
             + projectName
             + "\"},\"refName\": \""
             + refName
-            + "\",\"changeKey\": {\"id\": \""
+            + "\",\"changeKey\": {\"key\": \""
             + changeId
             + "\""
             + "  },\"type\": \"comment-added\",\"eventCreatedOn\": "
@@ -137,7 +137,7 @@ public class BrokerPublisherTest {
     JsonObject expectedCommentEventJsonObject =
         gson.fromJson(expectedSerializedCommentEvent, JsonElement.class).getAsJsonObject();
 
-    assertThat(publisher.eventToJson(event).equals(expectedCommentEventJsonObject)).isTrue();
+    assertThat(publisher.eventToJson(event)).isEqualTo(expectedCommentEventJsonObject);
   }
 
   private class TestBrokerSession implements BrokerSession {

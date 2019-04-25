@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.server.events.EventGson;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
@@ -25,7 +26,6 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouter;
 import java.io.IOException;
@@ -60,7 +60,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
       ForwardedEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
-      @BrokerGson Gson gson,
+      @EventGson Gson gson,
       @InstanceId UUID instanceId,
       OneOffRequestContext oneOffCtx,
       MessageLogger msgLog) {
