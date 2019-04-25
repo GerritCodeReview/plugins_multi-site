@@ -32,6 +32,7 @@ import static com.google.common.truth.Truth.assertThat;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
+import java.io.IOException;
 import org.apache.curator.retry.RetryNTimes;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
@@ -196,6 +197,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
     // This ignored ref should also be ignored
     assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRefToIgnore, nullRef)).isTrue();
   }
+  
 
   @Override
   public String testBranch() {
