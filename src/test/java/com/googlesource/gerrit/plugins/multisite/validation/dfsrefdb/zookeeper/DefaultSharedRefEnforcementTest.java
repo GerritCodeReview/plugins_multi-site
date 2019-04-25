@@ -43,6 +43,9 @@ public class DefaultSharedRefEnforcementTest implements RefFixture {
       new SharedRefDatabase() {
 
         @Override
+        public void removeProject(String project) throws IOException {}
+
+        @Override
         public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
           return true;
         }
