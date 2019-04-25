@@ -15,7 +15,12 @@
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.mock;
 
+import com.google.gerrit.extensions.api.changes.NotifyHandling;
+import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
+import com.googlesource.gerrit.plugins.multisite.validation.ValidationMetrics;
 import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
@@ -36,6 +41,8 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   ZkSharedRefDatabase zkSharedRefDatabase;
   SharedRefEnforcement refEnforcement;
 
+  ValidationMetrics mockValidationMetrics;
+
   @Before
   public void setup() {
     refEnforcement = new DefaultSharedRefEnforcement();
@@ -50,6 +57,8 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
             new ZkConnectionConfig(
                 new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
                 TRANSACTION_LOCK_TIMEOUT));
+
+    mockValidationMetrics = mock(ValidationMetrics.class);
   }
 
   @After
@@ -156,8 +165,62 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
     return SharedRefDatabase.newRef(aBranchRef(), objectId);
   }
 
+  @Test
+  public void removeProjectShouldRemoveTheWholePathInZk() throws Exception {
+    String projectName = A_TEST_PROJECT_NAME;
+    Ref someRef = refOf(AN_OBJECT_ID_1);
+
+    zookeeperContainer.createRefInZk(projectName, someRef);
+
+    assertThat(zookeeperContainer.readRefValueFromZk(projectName, someRef))
+        .isEqualTo(AN_OBJECT_ID_1);
+
+    assertThat(getNumChildrenForPath("/")).isEqualTo(1);
+
+    zkSharedRefDatabase.removeProject(projectName);
+
+    assertThat(getNumChildrenForPath("/")).isEqualTo(0);
+  }
+
+  @Test
+  public void aDeleteProjectEventShouldCleanupProjectFromZk() throws Exception {
+    String projectName = A_TEST_PROJECT_NAME;
+    Ref someRef = refOf(AN_OBJECT_ID_1);
+    ProjectDeletedSharedDbCleanup projectDeletedSharedDbCleanup =
+        new ProjectDeletedSharedDbCleanup(zkSharedRefDatabase, mockValidationMetrics);
+
+    ProjectDeletedListener.Event event =
+        new ProjectDeletedListener.Event() {
+          @Override
+          public String getProjectName() {
+            return projectName;
+          }
+
+          @Override
+          public NotifyHandling getNotify() {
+            return NotifyHandling.NONE;
+          }
+        };
+
+    zookeeperContainer.createRefInZk(projectName, someRef);
+
+    assertThat(getNumChildrenForPath("/")).isEqualTo(1);
+
+    projectDeletedSharedDbCleanup.onProjectDeleted(event);
+
+    assertThat(getNumChildrenForPath("/")).isEqualTo(0);
+  }
+
   @Override
   public String testBranch() {
     return "branch_" + nameRule.getMethodName();
+  }
+
+  private int getNumChildrenForPath(String path) throws Exception {
+    return zookeeperContainer
+        .getCurator()
+        .checkExists()
+        .forPath(String.format(path))
+        .getNumChildren();
   }
 }
