@@ -156,4 +156,12 @@ public interface SharedRefDatabase {
    * @return true if the ref exists on the project
    */
   boolean exists(String project, String refName);
+
+  /**
+   * Clean project path from SharedRefDatabase
+   *
+   * @param project project name
+   * @throws IOException
+   */
+  void removeProject(String project) throws IOException;
 }
