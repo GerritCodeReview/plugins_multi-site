@@ -40,7 +40,7 @@ public class ForwardedIndexGroupHandler extends ForwardedIndexingHandler<String,
 
   @Override
   protected void doIndex(String uuid, Optional<GroupIndexEvent> event) {
-    indexer.index(new AccountGroup.UUID(uuid));
+    indexer.index(AccountGroup.uuid(uuid));
     log.debug("Group {} successfully indexed", uuid);
   }
 

@@ -17,16 +17,20 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 import com.google.common.base.Strings;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
+import com.google.gerrit.server.events.GsonEventDeserializer;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 
 public final class GsonParser {
+  private final Gson gson;
 
-  private GsonParser() {}
+  @Inject
+  public GsonParser(@GsonEventDeserializer Gson gson) {
+    this.gson = gson;
+  }
 
-  public static Object fromJson(String cacheName, String json) {
-    Gson gson = new GsonBuilder().create();
+  public Object fromJson(String cacheName, String json) {
     Object key;
     // Need to add a case for 'adv_bases'
     switch (cacheName) {
@@ -53,8 +57,7 @@ public final class GsonParser {
     return key;
   }
 
-  public static String toJson(String cacheName, Object key) {
-    Gson gson = new GsonBuilder().create();
+  public String toJson(String cacheName, Object key) {
     String json;
     // Need to add a case for 'adv_bases'
     switch (cacheName) {
