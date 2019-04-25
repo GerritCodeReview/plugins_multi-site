@@ -49,10 +49,10 @@ public class StreamEventRouterTest {
 
   private Change aChange() {
     return new Change(
-        new Change.Key("Iabcd1234abcd1234abcd1234abcd1234abcd1234"),
-        new Change.Id(1),
-        new Account.Id(1),
-        new Branch.NameKey("proj", "refs/heads/master"),
+        Change.key("Iabcd1234abcd1234abcd1234abcd1234abcd1234"),
+        Change.id(1),
+        Account.id(1),
+        Branch.nameKey("proj", "refs/heads/master"),
         TimeUtil.nowTs());
   }
 }
