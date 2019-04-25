@@ -53,6 +53,16 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   }
 
   @Override
+  public boolean removeProject(String project) throws IOException {
+    try {
+      client.delete().deletingChildrenIfNeeded().forPath("/" + project);
+      return true;
+    } catch (Exception e) {
+      throw new IOException(String.format("Not able to delete project '%s'", project), e);
+    }
+  }
+
+  @Override
   public boolean compareAndPut(String projectName, Ref oldRef, Ref newRef) throws IOException {
     EnforcePolicy enforcementPolicy =
         refEnforcement.getPolicy(
