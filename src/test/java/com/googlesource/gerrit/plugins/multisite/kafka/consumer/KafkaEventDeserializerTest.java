@@ -16,8 +16,8 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.gerrit.server.events.GsonEventDeserializerProvider;
 import com.google.gson.Gson;
-import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class KafkaEventDeserializerTest {
 
   @Before
   public void setUp() {
-    final Gson gson = new GsonProvider().get();
+    final Gson gson = new GsonEventDeserializerProvider().get();
     deserializer = new KafkaEventDeserializer(gson);
   }
 
