@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bb32b4fa_3c991db6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandler.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-25T07:22:21Z",
+      "side": 1,
+      "message": "Are these throws still needed?  IIRC the index implementations in core were change to not throw IOException any more; they only throw the unchecked StorageException",
+      "range": {
+        "startLine": 72,
+        "startChar": 75,
+        "endLine": 72,
+        "endChar": 95
+      },
+      "revId": "3787bcfc9b52ddb34a694003b01dbd4ed3a78ff1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
