@@ -29,6 +29,9 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.gerrit.extensions.api.changes.NotifyHandling;
+import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
@@ -40,7 +43,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ZkSharedRefDatabaseTest implements RefFixture {
   @Rule public TestName nameRule = new TestName();
 
@@ -197,8 +203,62 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
     assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRefToIgnore, nullRef)).isTrue();
   }
 
+  @Test
+  public void removeProjectShouldRemoveTheWholePathInZk() throws Exception {
+    String projectName = A_TEST_PROJECT_NAME;
+    Ref someRef = refOf(AN_OBJECT_ID_1);
+
+    zookeeperContainer.createRefInZk(projectName, someRef);
+
+    assertThat(zookeeperContainer.readRefValueFromZk(projectName, someRef))
+        .isEqualTo(AN_OBJECT_ID_1);
+
+    assertThat(getNumChildrenForPath("/")).isEqualTo(1);
+
+    zkSharedRefDatabase.removeProject(projectName);
+
+    assertThat(getNumChildrenForPath("/")).isEqualTo(0);
+  }
+
+  @Test
+  public void aDeleteProjectEventShouldCleanupProjectFromZk() throws Exception {
+    String projectName = A_TEST_PROJECT_NAME;
+    Ref someRef = refOf(AN_OBJECT_ID_1);
+    ProjectDeletedSharedDbCleanup projectDeletedSharedDbCleanup =
+        new ProjectDeletedSharedDbCleanup(zkSharedRefDatabase);
+
+    ProjectDeletedListener.Event event =
+        new ProjectDeletedListener.Event() {
+          @Override
+          public String getProjectName() {
+            return projectName;
+          }
+
+          @Override
+          public NotifyHandling getNotify() {
+            return NotifyHandling.NONE;
+          }
+        };
+
+    zookeeperContainer.createRefInZk(projectName, someRef);
+
+    assertThat(getNumChildrenForPath("/")).isEqualTo(1);
+
+    projectDeletedSharedDbCleanup.onProjectDeleted(event);
+
+    assertThat(getNumChildrenForPath("/")).isEqualTo(0);
+  }
+
   @Override
   public String testBranch() {
     return "branch_" + nameRule.getMethodName();
+  }
+
+  private int getNumChildrenForPath(String path) throws Exception {
+    return zookeeperContainer
+        .getCurator()
+        .checkExists()
+        .forPath(String.format(path))
+        .getNumChildren();
   }
 }

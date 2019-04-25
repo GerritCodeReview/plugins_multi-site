@@ -116,4 +116,12 @@ public interface SharedRefDatabase {
    * @throws java.io.IOException the reference could not be removed due to a system error.
    */
   boolean compareAndRemove(String project, Ref oldRef) throws IOException;
+
+  /**
+   * Clean project path from SharedRefDatabase
+   *
+   * @param project project name
+   * @throws IOException
+   */
+  void removeProject(String project) throws IOException;
 }
