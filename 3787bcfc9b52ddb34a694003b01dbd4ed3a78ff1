@@ -22,6 +22,30 @@
       "revId": "3787bcfc9b52ddb34a694003b01dbd4ed3a78ff1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a592832_52ca6daf",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandler.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-25T15:35:43Z",
+      "side": 1,
+      "message": "Oh yes, very good catch. That would have a waterfall effect of massively simplifying the code :-)",
+      "parentUuid": "bb32b4fa_3c991db6",
+      "range": {
+        "startLine": 72,
+        "startChar": 75,
+        "endLine": 72,
+        "endChar": 95
+      },
+      "revId": "3787bcfc9b52ddb34a694003b01dbd4ed3a78ff1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
