@@ -50,7 +50,7 @@ public class ForwardedIndexAccountHandlerTest {
     when(config.index()).thenReturn(index);
     when(index.numStripedLocks()).thenReturn(10);
     handler = new ForwardedIndexAccountHandler(indexerMock, config);
-    id = new Account.Id(123);
+    id = Account.id(123);
   }
 
   @Test
