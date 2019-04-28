@@ -21,8 +21,6 @@ import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.apache.curator.RetryPolicy;
@@ -40,16 +38,13 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   private final CuratorFramework client;
   private final RetryPolicy retryPolicy;
 
-  private final SharedRefEnforcement refEnforcement;
   private final Long transactionLockTimeOut;
 
   @Inject
-  public ZkSharedRefDatabase(
-      CuratorFramework client, ZkConnectionConfig connConfig, SharedRefEnforcement refEnforcement) {
+  public ZkSharedRefDatabase(CuratorFramework client, ZkConnectionConfig connConfig) {
     this.client = client;
     this.retryPolicy = connConfig.curatorRetryPolicy;
     this.transactionLockTimeOut = connConfig.transactionLockTimeout;
-    this.refEnforcement = refEnforcement;
   }
 
   @Override
@@ -104,13 +99,6 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
 
   @Override
   public boolean compareAndPut(String projectName, Ref oldRef, Ref newRef) throws IOException {
-    EnforcePolicy enforcementPolicy =
-        refEnforcement.getPolicy(
-            projectName, MoreObjects.firstNonNull(oldRef.getName(), newRef.getName()));
-
-    if (enforcementPolicy == EnforcePolicy.IGNORED) {
-      return true;
-    }
 
     final DistributedAtomicValue distributedRefValue =
         new DistributedAtomicValue(client, pathFor(projectName, oldRef, newRef), retryPolicy);
@@ -129,15 +117,7 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
         return distributedRefValue.initialize(writeObjectId(newRef.getObjectId()));
       }
 
-      boolean succeeded = newDistributedValue.succeeded();
-
-      if (!succeeded && enforcementPolicy == EnforcePolicy.DESIRED) {
-        logger.atWarning().log(
-            "Unable to compareAndPut %s %s=>%s, local ref-db is out of synch with the shared-db");
-        return true;
-      }
-
-      return succeeded;
+      return newDistributedValue.succeeded();
     } catch (Exception e) {
       logger.atWarning().withCause(e).log(
           "Error trying to perform CAS at path %s", pathFor(projectName, oldRef, newRef));
