@@ -30,4 +30,18 @@ public interface SharedRefEnforcement {
    * @return the {@link EnforcePolicy} value
    */
   public EnforcePolicy getPolicy(String projectName, String refName);
+
+  /**
+   * Get the enforcement policy for a project
+   *
+   * @param projectName
+   * @return the {@link EnforcePolicy} value
+   */
+  public EnforcePolicy getPolicy(String projectName);
+
+  default boolean ignoreRefInSharedDb(String refName) {
+    return refName == null
+        || refName.startsWith("refs/draft-comments")
+        || (refName.startsWith("refs/changes") && !refName.endsWith("/meta"));
+  }
 }

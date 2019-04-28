@@ -31,7 +31,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import org.apache.curator.retry.RetryNTimes;
 import org.eclipse.jgit.lib.ObjectId;
@@ -62,8 +61,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
             zookeeperContainer.getCurator(),
             new ZkConnectionConfig(
                 new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
-                TRANSACTION_LOCK_TIMEOUT),
-            refEnforcement);
+                TRANSACTION_LOCK_TIMEOUT));
   }
 
   @After
@@ -131,21 +129,6 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   }
 
   @Test
-  public void compareAndPutShouldSucceedIfTheObjectionHasNotTheExpectedValueWithDesiredEnforcement()
-      throws Exception {
-    String projectName = "All-Users";
-    String externalIds = "refs/meta/external-ids";
-
-    Ref oldRef = zkSharedRefDatabase.newRef(externalIds, AN_OBJECT_ID_1);
-    Ref expectedRef = zkSharedRefDatabase.newRef(externalIds, AN_OBJECT_ID_2);
-
-    zookeeperContainer.createRefInZk(projectName, oldRef);
-
-    assertThat(zkSharedRefDatabase.compareAndPut(projectName, expectedRef, refOf(AN_OBJECT_ID_3)))
-        .isTrue();
-  }
-
-  @Test
   public void shouldCompareAndRemoveSuccessfully() throws Exception {
     Ref oldRef = refOf(AN_OBJECT_ID_1);
     String projectName = A_TEST_PROJECT_NAME;
@@ -181,43 +164,6 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
 
   private Ref refOf(ObjectId objectId) {
     return zkSharedRefDatabase.newRef(aBranchRef(), objectId);
-  }
-
-  @Test
-  public void immutableChangeShouldReturnTrue() throws Exception {
-    Ref changeRef = zkSharedRefDatabase.newRef("refs/changes/01/1/1", AN_OBJECT_ID_1);
-
-    boolean shouldReturnTrue =
-        zkSharedRefDatabase.compareAndPut(
-            A_TEST_PROJECT_NAME, SharedRefDatabase.NULL_REF, changeRef);
-
-    assertThat(shouldReturnTrue).isTrue();
-  }
-
-  @Test(expected = Exception.class)
-  public void immutableChangeShouldNotBeStored() throws Exception {
-    Ref changeRef = zkSharedRefDatabase.newRef(A_REF_NAME_OF_A_PATCHSET, AN_OBJECT_ID_1);
-    zkSharedRefDatabase.compareAndPut(A_TEST_PROJECT_NAME, SharedRefDatabase.NULL_REF, changeRef);
-    zookeeperContainer.readRefValueFromZk(A_TEST_PROJECT_NAME, changeRef);
-  }
-
-  @Test
-  public void compareAndPutShouldAlwaysIngoreAlwaysDraftCommentsEvenOutOfOrder() throws Exception {
-    // Test to reproduce a production bug where ignored refs were persisted in ZK because
-    // newRef == NULL
-    Ref existingRef =
-        zkSharedRefDatabase.newRef("refs/draft-comments/56/450756/1013728", AN_OBJECT_ID_1);
-    Ref oldRefToIgnore =
-        zkSharedRefDatabase.newRef("refs/draft-comments/56/450756/1013728", AN_OBJECT_ID_2);
-    Ref nullRef = SharedRefDatabase.NULL_REF;
-    String projectName = A_TEST_PROJECT_NAME;
-
-    // This ref should be ignored even if newRef is null
-    assertThat(zkSharedRefDatabase.compareAndPut(A_TEST_PROJECT_NAME, existingRef, nullRef))
-        .isTrue();
-
-    // This ignored ref should also be ignored
-    assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRefToIgnore, nullRef)).isTrue();
   }
 
   @Override
