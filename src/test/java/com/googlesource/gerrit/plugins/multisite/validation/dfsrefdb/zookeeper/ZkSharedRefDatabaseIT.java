@@ -33,14 +33,18 @@ import static org.junit.Assert.assertFalse;
 import com.google.gerrit.acceptance.AbstractDaemonTest;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.googlesource.gerrit.plugins.multisite.validation.MultiSiteBatchRefUpdate;
+import com.googlesource.gerrit.plugins.multisite.validation.RefUpdateValidator;
+import com.googlesource.gerrit.plugins.multisite.validation.RefUpdateValidator.Factory;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationMetrics;
 import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DryRunSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import org.apache.curator.retry.RetryNTimes;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.lib.NullProgressMonitor;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.ReceiveCommand;
@@ -72,8 +76,7 @@ public class ZkSharedRefDatabaseIT extends AbstractDaemonTest implements RefFixt
             zookeeperContainer.getCurator(),
             new ZkConnectionConfig(
                 new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
-                TRANSACTION_LOCK_TIMEOUT),
-            refEnforcement);
+                TRANSACTION_LOCK_TIMEOUT));
   }
 
   @After
@@ -156,12 +159,26 @@ public class ZkSharedRefDatabaseIT extends AbstractDaemonTest implements RefFixt
 
   private MultiSiteBatchRefUpdate newBatchRefUpdate(
       Repository localGitRepo, ReceiveCommand... commands) {
+
+    Factory batchRefValidatorFactory =
+        new Factory() {
+          @Override
+          public RefUpdateValidator create(String projectName, RefDatabase refDb) {
+            RefUpdateValidator RefUpdateValidator =
+                new RefUpdateValidator(
+                    zkSharedRefDatabase,
+                    new ValidationMetrics(new DisabledMetricMaker()),
+                    new DryRunSharedRefEnforcement(),
+                    projectName,
+                    refDb);
+            return RefUpdateValidator;
+          }
+        };
+
     MultiSiteBatchRefUpdate result =
         new MultiSiteBatchRefUpdate(
-            zkSharedRefDatabase,
-            new ValidationMetrics(new DisabledMetricMaker()),
-            A_TEST_PROJECT_NAME,
-            localGitRepo.getRefDatabase());
+            batchRefValidatorFactory, A_TEST_PROJECT_NAME, localGitRepo.getRefDatabase());
+
     result.setAllowNonFastForwards(false);
     for (ReceiveCommand command : commands) {
       result.addCommand(command);
