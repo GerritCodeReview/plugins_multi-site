@@ -39,6 +39,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.googlesource.gerrit.plugins.multisite.validation.RefUpdateValidator.Factory;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
 import java.io.IOException;
@@ -115,9 +117,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
     doReturn(oldRef).when(refDatabase).getRef(A_TEST_REF_NAME);
     doCallRealMethod().when(sharedRefDb).newRef(anyString(), any(ObjectId.class));
 
-    multiSiteRefUpdate =
-        new MultiSiteBatchRefUpdate(
-            sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refDatabase);
+    multiSiteRefUpdate = getMultiSiteRefUpdateWithDefaultPolicyEnforcement();
 
     verifyZeroInteractions(validationMetrics);
   }
@@ -158,11 +158,27 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
     doReturn(batchRefUpdate).when(refDatabase).newBatchUpdate();
     doReturn(Collections.emptyList()).when(batchRefUpdate).getCommands();
 
-    multiSiteRefUpdate =
-        new MultiSiteBatchRefUpdate(
-            sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refDatabase);
+    multiSiteRefUpdate = getMultiSiteRefUpdateWithDefaultPolicyEnforcement();
 
     multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
+  }
+
+  private MultiSiteBatchRefUpdate getMultiSiteRefUpdateWithDefaultPolicyEnforcement() {
+    Factory batchRefValidatorFactory =
+        new Factory() {
+          @Override
+          public RefUpdateValidator create(String projectName, RefDatabase refDb) {
+            RefUpdateValidator RefUpdateValidator =
+                new RefUpdateValidator(
+                    sharedRefDb,
+                    validationMetrics,
+                    new DefaultSharedRefEnforcement(),
+                    projectName,
+                    refDb);
+            return RefUpdateValidator;
+          }
+        };
+    return new MultiSiteBatchRefUpdate(batchRefValidatorFactory, A_TEST_PROJECT_NAME, refDatabase);
   }
 
   protected static class RefMatcher implements ArgumentMatcher<Ref> {
