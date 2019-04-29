@@ -118,6 +118,30 @@
       "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a783ff9_db0366cd",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/BrokerPublisherTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2019-04-29T18:21:45Z",
+      "side": 1,
+      "message": "Ok, so you\u0027re saying _this plugin_ doesn\u0027t care about the specific format, but in general we as a project should care. I agree, and that\u0027s the direction I\u0027m moving with https://gerrit-review.googlesource.com/q/topic:%22event-json-tests%22+(status:open%20OR%20status:merged)",
+      "parentUuid": "f9b8dddf_923c1269",
+      "range": {
+        "startLine": 130,
+        "startChar": 36,
+        "endLine": 130,
+        "endChar": 39
+      },
+      "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
