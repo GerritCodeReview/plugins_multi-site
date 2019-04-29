@@ -516,6 +516,7 @@ public class Configuration {
     public final String KEY_CAS_RETRY_POLICY_MAX_RETRIES = "casRetryPolicyMaxRetries";
     public static final String KEY_MIGRATE = "migrate";
     public final String TRANSACTION_LOCK_TIMEOUT_KEY = "transactionLockTimeoutMs";
+    public static final String KEY_DRY_RUN = "dryRun";
 
     private final String connectionString;
     private final String root;
@@ -528,6 +529,7 @@ public class Configuration {
     private final int casMaxSleepTimeMs;
     private final int casMaxRetries;
     private final boolean enabled;
+    private final boolean dryRun;
 
     private final Long transactionLockTimeOut;
 
@@ -601,6 +603,7 @@ public class Configuration {
       checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
 
       enabled = Configuration.getBoolean(cfg, SECTION, SUBSECTION, ENABLE_KEY, true);
+      dryRun = Configuration.getBoolean(cfg, SECTION, SUBSECTION, KEY_DRY_RUN, false);
     }
 
     public CuratorFramework buildCurator() {
@@ -631,6 +634,10 @@ public class Configuration {
 
     public boolean isEnabled() {
       return enabled;
+    }
+
+    public boolean isDryRun() {
+      return dryRun;
     }
   }
 

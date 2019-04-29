@@ -250,6 +250,13 @@ File '@PLUGIN@.config'
     into Zookeeper
 
     Defaults: 1000
+    
+```ref-database.zookeeper.dryRun```
+:   Configuration for activating dry run execution when running checks against
+    the shared-ref database. All the ref-db sync failures will log the exception
+    but not throw the exception.
+
+    Defaults: false
 
 #### Custom kafka properties:
 
