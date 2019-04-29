@@ -33,12 +33,15 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
+import com.googlesource.gerrit.plugins.multisite.validation.RefUpdateValidator.Factory;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefUpdateStub;
 import java.io.IOException;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.lib.RefUpdate.Result;
 import org.junit.Before;
@@ -81,7 +84,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     RefUpdate refUpdate = RefUpdateStub.forSuccessfulUpdate(oldRef, newRef.getObjectId());
 
     MultiSiteRefUpdate multiSiteRefUpdate =
-        new MultiSiteRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refUpdate);
+        getMultiSiteRefUpdateWithDefaultPolicyEnforcement(refUpdate);
 
     assertThat(multiSiteRefUpdate.update()).isEqualTo(Result.FAST_FORWARD);
     verifyZeroInteractions(validationMetrics);
@@ -95,7 +98,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     RefUpdate refUpdate = RefUpdateStub.forSuccessfulUpdate(oldRef, newRef.getObjectId());
 
     MultiSiteRefUpdate multiSiteRefUpdate =
-        new MultiSiteRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refUpdate);
+        getMultiSiteRefUpdateWithDefaultPolicyEnforcement(refUpdate);
     multiSiteRefUpdate.update();
   }
 
@@ -108,7 +111,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     RefUpdate refUpdate = RefUpdateStub.forSuccessfulUpdate(oldRef, newRef.getObjectId());
 
     MultiSiteRefUpdate multiSiteRefUpdate =
-        new MultiSiteRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refUpdate);
+        getMultiSiteRefUpdateWithDefaultPolicyEnforcement(refUpdate);
 
     try {
       multiSiteRefUpdate.update();
@@ -129,7 +132,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     RefUpdate refUpdate = RefUpdateStub.forSuccessfulUpdate(oldRef, newRef.getObjectId());
 
     MultiSiteRefUpdate multiSiteRefUpdate =
-        new MultiSiteRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refUpdate);
+        getMultiSiteRefUpdateWithDefaultPolicyEnforcement(refUpdate);
 
     try {
       multiSiteRefUpdate.update();
@@ -144,12 +147,14 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     setMockRequiredReturnValues();
     doReturn(true).when(sharedRefDb).isMostRecentRefVersion(A_TEST_PROJECT_NAME, oldRef);
 
-    doReturn(true).when(sharedRefDb).compareAndRemove(A_TEST_PROJECT_NAME, oldRef);
+    doReturn(true)
+        .when(sharedRefDb)
+        .compareAndPut(A_TEST_PROJECT_NAME, oldRef, sharedRefDb.NULL_REF);
 
     RefUpdate refUpdate = RefUpdateStub.forSuccessfulDelete(oldRef);
 
     MultiSiteRefUpdate multiSiteRefUpdate =
-        new MultiSiteRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refUpdate);
+        getMultiSiteRefUpdateWithDefaultPolicyEnforcement(refUpdate);
 
     assertThat(multiSiteRefUpdate.delete()).isEqualTo(Result.FORCED);
     verifyZeroInteractions(validationMetrics);
@@ -164,12 +169,32 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     RefUpdate refUpdate = RefUpdateStub.forSuccessfulDelete(oldRef);
 
     MultiSiteRefUpdate multiSiteRefUpdate =
-        new MultiSiteRefUpdate(sharedRefDb, validationMetrics, A_TEST_PROJECT_NAME, refUpdate);
+        getMultiSiteRefUpdateWithDefaultPolicyEnforcement(refUpdate);
+
     try {
       multiSiteRefUpdate.delete();
       fail("Expecting an IOException to be thrown");
     } catch (IOException e) {
       verify(validationMetrics).incrementSplitBrainRefUpdates();
     }
+  }
+
+  private MultiSiteRefUpdate getMultiSiteRefUpdateWithDefaultPolicyEnforcement(
+      RefUpdate refUpdate) {
+    Factory batchRefValidatorFactory =
+        new Factory() {
+          @Override
+          public RefUpdateValidator create(String projectName, RefDatabase refDb) {
+            RefUpdateValidator RefUpdateValidator =
+                new RefUpdateValidator(
+                    sharedRefDb,
+                    validationMetrics,
+                    new DefaultSharedRefEnforcement(),
+                    projectName,
+                    refDb);
+            return RefUpdateValidator;
+          }
+        };
+    return new MultiSiteRefUpdate(batchRefValidatorFactory, A_TEST_PROJECT_NAME, refUpdate);
   }
 }

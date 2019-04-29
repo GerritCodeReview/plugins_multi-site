@@ -27,7 +27,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import java.io.IOException;
@@ -44,7 +43,6 @@ import org.eclipse.jgit.util.time.ProposedTimestamp;
 
 public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
 
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private final BatchRefUpdate batchRefUpdate;
   private final String projectName;
   private final RefUpdateValidator.Factory batchRefValidatorFactory;
@@ -181,14 +179,24 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
       throws IOException {
     batchRefValidatorFactory
         .create(projectName, refDb)
-        .executeBatchUpdate(batchRefUpdate, () -> batchRefUpdate.execute(walk, monitor, options));
+        .executeBatchUpdate(
+            batchRefUpdate,
+            () -> {
+              batchRefUpdate.execute(walk, monitor, options);
+              return null;
+            });
   }
 
   @Override
   public void execute(RevWalk walk, ProgressMonitor monitor) throws IOException {
     batchRefValidatorFactory
         .create(projectName, refDb)
-        .executeBatchUpdate(batchRefUpdate, () -> batchRefUpdate.execute(walk, monitor));
+        .executeBatchUpdate(
+            batchRefUpdate,
+            () -> {
+              batchRefUpdate.execute(walk, monitor);
+              return null;
+            });
   }
 
   @Override

@@ -111,8 +111,7 @@ public class RefUpdateValidatorTest extends LocalDiskRepositoryTestCase implemen
     List<ReceiveCommand> cmds = Arrays.asList(new ReceiveCommand(A, B, externalIds, UPDATE));
 
     BatchRefUpdate batchRefUpdate = newBatchUpdate(cmds);
-    RefUpdateValidator RefUpdateValidator =
-        newDefaultValidator(projectName, batchRefUpdate);
+    RefUpdateValidator RefUpdateValidator = newDefaultValidator(projectName, batchRefUpdate);
 
     Ref zkExistingRef = zkSharedRefDatabase.newRef(externalIds, B);
     zookeeperContainer.createRefInZk(projectName, zkExistingRef);
@@ -160,10 +159,11 @@ public class RefUpdateValidatorTest extends LocalDiskRepositoryTestCase implemen
         diskRepo.getRefDatabase());
   }
 
-  private void execute(BatchRefUpdate u) throws IOException {
+  private Void execute(BatchRefUpdate u) throws IOException {
     try (RevWalk rw = new RevWalk(diskRepo)) {
       u.execute(rw, NullProgressMonitor.INSTANCE);
     }
+    return null;
   }
 
   private BatchRefUpdate newBatchUpdate(List<ReceiveCommand> cmds) {
