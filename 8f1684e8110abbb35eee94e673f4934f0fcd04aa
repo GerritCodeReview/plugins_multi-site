@@ -70,6 +70,30 @@
       "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10b7b5aa_ae90e56d",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/BrokerPublisherTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2019-04-29T15:12:20Z",
+      "side": 1,
+      "message": "Sorry, what is the thing you have no problem with?\n\nI\u0027m saying that it seems like plugins or other downstream tooling are depending on the exact JSON object format. What is checked into master now is a regression in that it changed the JSON object format. What I was proposing is keeping the JSON object format the same.\n\nBut the broader question is: do we have any stability guarantees about the JSON object format in stream-events?",
+      "parentUuid": "6e8475e8_05e38dc2",
+      "range": {
+        "startLine": 130,
+        "startChar": 36,
+        "endLine": 130,
+        "endChar": 39
+      },
+      "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
