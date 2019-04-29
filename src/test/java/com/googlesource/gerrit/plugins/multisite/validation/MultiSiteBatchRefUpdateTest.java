@@ -117,7 +117,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
     doReturn(oldRef).when(refDatabase).getRef(A_TEST_REF_NAME);
     doCallRealMethod().when(sharedRefDb).newRef(anyString(), any(ObjectId.class));
 
-    multiSiteRefUpdate = getMultiSiteRefUpdateWithDefaultPolicyEnforcement();
+    multiSiteRefUpdate = getMultiSiteBatchRefUpdateWithDefaultPolicyEnforcement();
 
     verifyZeroInteractions(validationMetrics);
   }
@@ -158,12 +158,12 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
     doReturn(batchRefUpdate).when(refDatabase).newBatchUpdate();
     doReturn(Collections.emptyList()).when(batchRefUpdate).getCommands();
 
-    multiSiteRefUpdate = getMultiSiteRefUpdateWithDefaultPolicyEnforcement();
+    multiSiteRefUpdate = getMultiSiteBatchRefUpdateWithDefaultPolicyEnforcement();
 
     multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
   }
 
-  private MultiSiteBatchRefUpdate getMultiSiteRefUpdateWithDefaultPolicyEnforcement() {
+  private MultiSiteBatchRefUpdate getMultiSiteBatchRefUpdateWithDefaultPolicyEnforcement() {
     Factory batchRefValidatorFactory =
         new Factory() {
           @Override

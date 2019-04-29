@@ -27,12 +27,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import java.io.IOException;
-import java.util.function.Supplier;
 import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.PersonIdent;
@@ -45,12 +42,10 @@ import org.eclipse.jgit.transport.PushCertificate;
 
 public class MultiSiteRefUpdate extends RefUpdate {
 
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-
   protected final RefUpdate refUpdateBase;
-  private final ValidationMetrics validationMetrics;
-  private final SharedRefDatabase sharedDb;
   private final String projectName;
+  private final RefUpdateValidator.Factory refValidatorFactory;
+  private final RefUpdateValidator refUpdateValidator;
 
   public interface Factory {
     MultiSiteRefUpdate create(String projectName, RefUpdate refUpdate);
@@ -58,15 +53,14 @@ public class MultiSiteRefUpdate extends RefUpdate {
 
   @Inject
   public MultiSiteRefUpdate(
-      SharedRefDatabase db,
-      ValidationMetrics validationMetrics,
+      RefUpdateValidator.Factory refValidatorFactory,
       @Assisted String projectName,
       @Assisted RefUpdate refUpdate) {
     super(refUpdate.getRef());
     refUpdateBase = refUpdate;
-    this.validationMetrics = validationMetrics;
-    this.sharedDb = db;
     this.projectName = projectName;
+    this.refValidatorFactory = refValidatorFactory;
+    refUpdateValidator = this.refValidatorFactory.create(this.projectName, null);
   }
 
   @Override
@@ -110,26 +104,24 @@ public class MultiSiteRefUpdate extends RefUpdate {
 
   @Override
   public Result update() throws IOException {
-    return updateIfInSyncWithRefDb(refUpdateBase::update, this::updateWithNewReference);
+    return refUpdateValidator.executeRefUpdateWithValidation(refUpdateBase::update, refUpdateBase);
   }
 
   @Override
   public Result update(RevWalk rev) throws IOException {
-    return updateIfInSyncWithRefDb(() -> refUpdateBase.update(rev), this::updateWithNewReference);
+    return refUpdateValidator.executeRefUpdateWithValidation(
+        () -> refUpdateBase.update(rev), refUpdateBase);
   }
 
   @Override
   public Result delete() throws IOException {
-    return updateIfInSyncWithRefDb(refUpdateBase::delete, this::removeReference);
+    return refUpdateValidator.executeRefUpdateWithValidation(refUpdateBase::delete, refUpdateBase);
   }
 
   @Override
   public Result delete(RevWalk walk) throws IOException {
-    return updateIfInSyncWithRefDb(() -> refUpdateBase.delete(walk), this::removeReference);
-  }
-
-  private Boolean removeReference() throws IOException {
-    return sharedDb.compareAndRemove(projectName, refUpdateBase.getRef());
+    return refUpdateValidator.executeRefUpdateWithValidation(
+        () -> refUpdateBase.delete(walk), refUpdateBase);
   }
 
   @Override
@@ -255,101 +247,5 @@ public class MultiSiteRefUpdate extends RefUpdate {
   @Override
   public void setCheckConflicting(boolean check) {
     refUpdateBase.setCheckConflicting(check);
-  }
-
-  interface NoParameterFunction<T> {
-    T apply() throws IOException;
-  }
-
-  private void checkSharedDBForRefUpdate() throws IOException {
-    if (isANewRef()) {
-      if (sharedDb.exists(projectName, refUpdateBase.getName())) {
-        validationMetrics.incrementSplitBrainRefUpdates();
-        throw new IOException(
-            String.format(
-                "Unable to create ref '%s' for project '%s', trying to create a new ref but"
-                    + " there is a value already in the shared Ref-Db",
-                refUpdateBase.getName(), projectName));
-      }
-    }
-    if (!sharedDb.isMostRecentRefVersion(projectName, refUpdateBase.getRef())) {
-      validationMetrics.incrementSplitBrainRefUpdates();
-      throw new IOException(
-          String.format(
-              "Unable to update ref '%s' for project '%s', the local objectId '%s' is not"
-                  + "equal to the one in the shared Ref-Db.",
-              refUpdateBase.getName(), projectName, refUpdateBase.getOldObjectId()));
-    }
-  }
-
-  private boolean isSuccessful(Result result) {
-    switch (result) {
-      case NEW:
-      case FORCED:
-      case FAST_FORWARD:
-      case NO_CHANGE:
-        return true;
-
-      default:
-        return false;
-    }
-  }
-
-  private boolean isANewRef() {
-    return refUpdateBase.getRef().getObjectId() == null
-        || refUpdateBase.getRef().getObjectId().equals(ObjectId.zeroId());
-  }
-
-  private Boolean updateWithNewReference() throws IOException {
-    Ref newRef = sharedDb.newRef(refUpdateBase.getName(), refUpdateBase.getNewObjectId());
-    return sharedDb.compareAndPut(projectName, refUpdateBase.getRef(), newRef);
-  }
-
-  private Result updateIfInSyncWithRefDb(
-      NoParameterFunction<Result> delegateUpdate, NoParameterFunction<Boolean> postUpdateSharedDb)
-      throws IOException {
-    try {
-      try (AutoCloseable lock = sharedDb.lockRef(projectName, refUpdateBase.getRef())) {
-        checkSharedDBForRefUpdate();
-        Result result = delegateUpdate.apply();
-        if (isSuccessful(result)) {
-          performPostUpdate(postUpdateSharedDb);
-        }
-        return result;
-      }
-    } catch (IOException toBeRethrown) {
-      throw toBeRethrown;
-    } catch (Exception autoCloseableException) {
-      logger.atWarning().withCause(autoCloseableException).log(
-          "Failure trying to close lock with shared DB");
-      throw new IOException("Failure trying to close lock with shared DB", autoCloseableException);
-    }
-  }
-
-  private void performPostUpdate(NoParameterFunction<Boolean> postUpdateSharedDb)
-      throws IOException {
-    final Supplier<String> errorMessage =
-        () ->
-            String.format(
-                "Not able to update the database, trying to update Ref '%s' with new objectId '%s'"
-                    + " for project '%s'"
-                    + "Local Git repository was updated but not able to update zookeeper."
-                    + "Gerrit instance in a split-brain.",
-                refUpdateBase.getName(), projectName, refUpdateBase.getNewObjectId());
-
-    boolean postUpdateSuccess;
-    try {
-      // If any failure happens here we are in a split-brain situation.
-      // We must update(RevWalk rev) add a failure counter to be monitored.
-      postUpdateSuccess = postUpdateSharedDb.apply();
-    } catch (IOException updateException) {
-      logger.atWarning().log(errorMessage.get());
-      throw new IOException(errorMessage.get(), updateException);
-    }
-
-    if (!postUpdateSuccess) {
-      logger.atWarning().log(errorMessage.get());
-      throw new IOException(errorMessage.get());
-    }
   }
 }
