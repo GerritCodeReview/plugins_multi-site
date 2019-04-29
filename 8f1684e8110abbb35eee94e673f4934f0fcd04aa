@@ -94,6 +94,30 @@
       "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9b8dddf_923c1269",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/BrokerPublisherTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-04-29T15:21:46Z",
+      "side": 1,
+      "message": "\u003e Sorry, what is the thing you have no problem with?\n\nWe have no issues in accepting a different JSON format. This test just detected the change, but we do not make any JSON specific processing with it: just de-serialize it and load it back into a Java object.\n\n\u003e I\u0027m saying that it seems like plugins or other downstream tooling are depending on the exact JSON object format. \n\nThat is for sure, specifically the integrations with CI systems, but it could be even more.\nThe stream events can be consumed in three ways:\n- SSH command gerrit stream-events\n- WebHooks that are pushing the individual JSON events to other services\n- Other channels (Kafka, RabbitMQ)\n\nThe Jenkins integration for sure will need to be aware of the change and manage different de-serializers depending to which Gerrit versions are they talking to.\n\n\u003e What is checked into master now is a regression in that it changed the JSON object format. What I was proposing is keeping the JSON object format the same.\n\nThat is fine also, even better because it will keep existing CI integrations working.\n\n\u003e But the broader question is: do we have any stability guarantees about the JSON object format in stream-events?\n\nAt the moment NO, because we don\u0027t have enough tests on it.\n\nWe should:\na) Document the format\nb) Put acceptance tests in place on the format",
+      "parentUuid": "10b7b5aa_ae90e56d",
+      "range": {
+        "startLine": 130,
+        "startChar": 36,
+        "endLine": 130,
+        "endChar": 39
+      },
+      "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
