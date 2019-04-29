@@ -97,7 +97,8 @@ public class RefUpdateValidatorTest extends LocalDiskRepositoryTestCase implemen
     RefUpdateValidator RefUpdateValidator =
         newDefaultValidator(A_TEST_PROJECT_NAME, batchRefUpdate);
 
-    RefUpdateValidator.executeBatchUpdate(batchRefUpdate, () -> execute(batchRefUpdate));
+    RefUpdateValidator.executeBatchUpdateWithValidation(
+        batchRefUpdate, () -> execute(batchRefUpdate));
 
     assertFalse(zkSharedRefDatabase.exists(A_TEST_PROJECT_NAME, AN_IMMUTABLE_REF));
   }
@@ -111,13 +112,13 @@ public class RefUpdateValidatorTest extends LocalDiskRepositoryTestCase implemen
     List<ReceiveCommand> cmds = Arrays.asList(new ReceiveCommand(A, B, externalIds, UPDATE));
 
     BatchRefUpdate batchRefUpdate = newBatchUpdate(cmds);
-    RefUpdateValidator RefUpdateValidator =
-        newDefaultValidator(projectName, batchRefUpdate);
+    RefUpdateValidator RefUpdateValidator = newDefaultValidator(projectName, batchRefUpdate);
 
     Ref zkExistingRef = zkSharedRefDatabase.newRef(externalIds, B);
     zookeeperContainer.createRefInZk(projectName, zkExistingRef);
 
-    RefUpdateValidator.executeBatchUpdate(batchRefUpdate, () -> execute(batchRefUpdate));
+    RefUpdateValidator.executeBatchUpdateWithValidation(
+        batchRefUpdate, () -> execute(batchRefUpdate));
 
     assertThat(zookeeperContainer.readRefValueFromZk(projectName, zkExistingRef)).isEqualTo(B);
   }
@@ -131,7 +132,8 @@ public class RefUpdateValidatorTest extends LocalDiskRepositoryTestCase implemen
     RefUpdateValidator RefUpdateValidator =
         newDefaultValidator(A_TEST_PROJECT_NAME, batchRefUpdate);
 
-    RefUpdateValidator.executeBatchUpdate(batchRefUpdate, () -> execute(batchRefUpdate));
+    RefUpdateValidator.executeBatchUpdateWithValidation(
+        batchRefUpdate, () -> execute(batchRefUpdate));
 
     assertFalse(zkSharedRefDatabase.exists(A_TEST_PROJECT_NAME, DRAFT_COMMENT));
   }
@@ -160,10 +162,11 @@ public class RefUpdateValidatorTest extends LocalDiskRepositoryTestCase implemen
         diskRepo.getRefDatabase());
   }
 
-  private void execute(BatchRefUpdate u) throws IOException {
+  private Void execute(BatchRefUpdate u) throws IOException {
     try (RevWalk rw = new RevWalk(diskRepo)) {
       u.execute(rw, NullProgressMonitor.INSTANCE);
     }
+    return null;
   }
 
   private BatchRefUpdate newBatchUpdate(List<ReceiveCommand> cmds) {
