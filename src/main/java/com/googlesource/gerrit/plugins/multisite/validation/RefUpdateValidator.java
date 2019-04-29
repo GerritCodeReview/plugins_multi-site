@@ -3,6 +3,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 import static java.util.Comparator.comparing;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -19,6 +20,7 @@ import org.eclipse.jgit.lib.BatchRefUpdate;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefDatabase;
+import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.transport.ReceiveCommand;
 import org.eclipse.jgit.transport.ReceiveCommand.Result;
 
@@ -81,11 +83,11 @@ public class RefUpdateValidator {
     }
   }
 
-  protected void handleExceptionWithPolicy(
+  protected void executeBatchUpdateWithPolicy(
       String errorMessage,
-      ValidationWrapper delegateValidation,
+      BatchValidationWrapper delegateValidation,
       BatchRefUpdate batchRefUpdate,
-      GitUpdateFunction gitUpdateFun)
+      NoParameterFunction gitUpdateFun)
       throws IOException {
     // If ignored we just do the GIT update
     if (refEnforcement.getPolicy(projectName) == EnforcePolicy.IGNORED) {
@@ -103,8 +105,34 @@ public class RefUpdateValidator {
     }
   }
 
-  protected void failWith(IOException e, EnforcePolicy policy) throws IOException {
-    validationMetrics.incrementSplitBrainRefUpdates();
+  protected RefUpdate.Result executeRefUpdateWithPolicy(
+      String errorMessage,
+      RefValidationWrapper delegateValidation,
+      RefUpdate refUpdate,
+      NoParameterFunction<RefUpdate.Result> gitUpdateFun)
+      throws IOException {
+    // If ignored we just do the GIT update
+    if (refEnforcement.getPolicy(projectName) == EnforcePolicy.IGNORED) {
+      return gitUpdateFun.apply();
+    }
+
+    try {
+      return delegateValidation.apply(gitUpdateFun, refUpdate);
+    } catch (IOException e) {
+      logger.atWarning().withCause(e).log(errorMessage);
+      if (refEnforcement.getPolicy(projectName) == EnforcePolicy.REQUIRED) {
+        throw e;
+      }
+    }
+    return null;
+  }
+
+  private void failWith(IOException e, EnforcePolicy policy, boolean failureAfterGitUpdate)
+      throws IOException {
+    // TODO: Add a different metric for failure after Git Update
+    if (!failureAfterGitUpdate) {
+      validationMetrics.incrementSplitBrainRefUpdates();
+    }
 
     FluentLogger.Api log = logger.atWarning();
     if (e.getCause() != null) {
@@ -116,14 +144,37 @@ public class RefUpdateValidator {
     }
   }
 
-  public void executeBatchUpdate(BatchRefUpdate batchRefUpdate, GitUpdateFunction gitUpdateFun)
+  public RefUpdate.Result executeRefUpdate(
+      NoParameterFunction<RefUpdate.Result> delegateUpdate, RefUpdate refUpdate)
       throws IOException {
-    handleExceptionWithPolicy(
+    return executeRefUpdateWithPolicy(
+        "Failed to execute Ref Update",
+        (delegateUp, refUpd) -> doExecuteRefUpdate(delegateUp, refUpd),
+        refUpdate,
+        delegateUpdate);
+  }
+
+  private RefUpdate.Result doExecuteRefUpdate(
+      NoParameterFunction<RefUpdate.Result> delegateUpdate, RefUpdate refUpdate)
+      throws IOException {
+    try (CloseableSet<AutoCloseable> locks = new CloseableSet()) {
+      assertRefPairsAreInSyncWithSharedDb(ImmutableList.of(newRefPairFrom(refUpdate)), locks);
+      RefUpdate.Result result = delegateUpdate.apply();
+      if (isSuccessful(result)) {
+        updateSharedDbOrThrowExceptionFor(newRefPairFrom(refUpdate));
+      }
+      return result;
+    }
+  }
+
+  public void executeBatchUpdate(
+      BatchRefUpdate batchRefUpdate, NoParameterFunction<Void> gitUpdateFun) throws IOException {
+    executeBatchUpdateWithPolicy(
         "Failed to execute Batch Update", this::doExecuteBatchUpdate, batchRefUpdate, gitUpdateFun);
   }
 
-  private void doExecuteBatchUpdate(BatchRefUpdate batchRefUpdate, GitUpdateFunction gitUpdateFun)
-      throws IOException {
+  private void doExecuteBatchUpdate(
+      BatchRefUpdate batchRefUpdate, NoParameterFunction<Void> delegateUpdate) throws IOException {
 
     List<ReceiveCommand> commands = batchRefUpdate.getCommands();
 
@@ -143,23 +194,20 @@ public class RefUpdateValidator {
       throw new IOException(
           "Failed to fetch ref entries" + failedRef.newRef.getName(), failedRef.exception);
     }
+    Map<ObjectId, Ref> oldRefsMap =
+        refsToUpdate.stream()
+            .collect(
+                Collectors.toMap(
+                    refPair -> refPair.newRef.getObjectId(), refPair -> refPair.oldRef));
 
     try (CloseableSet<AutoCloseable> locks = new CloseableSet()) {
-      assertBatchCommandsAreInSync(refsToUpdate, locks);
-
-      Map<ObjectId, Ref> oldRefsMap =
-          refsToUpdate.stream()
-              .collect(
-                  Collectors.toMap(
-                      refPair -> refPair.newRef.getObjectId(), refPair -> refPair.oldRef));
-
-      gitUpdateFun.apply();
-
-      updateSharedDBForSuccessfulCommands(batchRefUpdate.getCommands().stream(), oldRefsMap);
+      assertRefPairsAreInSyncWithSharedDb(refsToUpdate, locks);
+      delegateUpdate.apply();
+      updateSharedRefDbForSuccessfulCommands(batchRefUpdate.getCommands().stream(), oldRefsMap);
     }
   }
 
-  private void updateSharedDBForSuccessfulCommands(
+  private void updateSharedRefDbForSuccessfulCommands(
       Stream<ReceiveCommand> commandStream, Map<ObjectId, Ref> oldRefs) throws IOException {
     List<RefPair> successfulRefPairs =
         commandStream
@@ -172,30 +220,64 @@ public class RefUpdateValidator {
             .collect(Collectors.toList());
 
     for (RefPair successfulRefPair : successfulRefPairs) {
-      // We are not checking refs that should be ignored
-      final EnforcePolicy refEnforcementPolicy =
-          refEnforcement.getPolicy(projectName, successfulRefPair.getName());
-      if (refEnforcementPolicy == EnforcePolicy.IGNORED) continue;
-
-      boolean succeeded =
-          sharedRefDb.compareAndPut(
-              projectName, successfulRefPair.oldRef, successfulRefPair.newRef);
-
-      // We are not checking refs that should be ignored
-      if (!succeeded) {
-        String errorMessage =
-            String.format(
-                "Not able to persist the data in Zookeeper for project '%s' and ref '%s',"
-                    + "the cluster is now in Split Brain since the commit has been "
-                    + "persisted locally but not in SharedRef the value %s",
-                projectName, successfulRefPair.getName(), successfulRefPair.newRef.getObjectId());
-
-        failWith(new IOException(errorMessage), refEnforcementPolicy);
-      }
+      updateSharedDbOrThrowExceptionFor(successfulRefPair);
     }
   }
 
-  private void assertBatchCommandsAreInSync(
+  private void updateSharedDbOrThrowExceptionFor(RefPair successfulRefPair) throws IOException {
+    // We are not checking refs that should be ignored
+    final EnforcePolicy refEnforcementPolicy =
+        refEnforcement.getPolicy(projectName, successfulRefPair.getName());
+    if (refEnforcementPolicy == EnforcePolicy.IGNORED) return;
+
+    boolean succeeded =
+        sharedRefDb.compareAndPut(projectName, successfulRefPair.oldRef, successfulRefPair.newRef);
+
+    // We are not checking refs that should be ignored
+    if (!succeeded) {
+      String errorMessage =
+          String.format(
+              "Not able to persist the data in Zookeeper for project '%s' and ref '%s',"
+                  + "the cluster is now in Split Brain since the commit has been "
+                  + "persisted locally but not in SharedRef the value %s",
+              projectName, successfulRefPair.getName(), successfulRefPair.newRef.getObjectId());
+
+      failWith(new IOException(errorMessage), refEnforcementPolicy, true);
+    }
+  }
+
+  private Stream<RefPair> getRefsPairs(List<ReceiveCommand> receivedCommands) {
+    return receivedCommands.stream().map(this::getRefPairForCommand);
+  }
+
+  private RefPair getRefPairForCommand(ReceiveCommand command) {
+    try {
+      switch (command.getType()) {
+        case CREATE:
+          return new RefPair(SharedRefDatabase.NULL_REF, getNewRef(command));
+
+        case UPDATE:
+        case UPDATE_NONFASTFORWARD:
+          return new RefPair(refDb.getRef(command.getRefName()), getNewRef(command));
+
+        case DELETE:
+          return new RefPair(refDb.getRef(command.getRefName()), SharedRefDatabase.NULL_REF);
+
+        default:
+          return new RefPair(
+              getNewRef(command),
+              new IllegalArgumentException("Unsupported command type " + command.getType()));
+      }
+    } catch (IOException e) {
+      return new RefPair(command.getRef(), e);
+    }
+  }
+
+  private Ref getNewRef(ReceiveCommand command) {
+    return sharedRefDb.newRef(command.getRefName(), command.getNewId());
+  }
+
+  private void assertRefPairsAreInSyncWithSharedDb(
       List<RefPair> refsToUpdate, CloseableSet<AutoCloseable> locks) throws IOException {
     for (RefPair refPair : refsToUpdate) {
       Ref nonNullRef =
@@ -237,40 +319,28 @@ public class RefUpdateValidator {
                     projectName,
                     refPair.oldRef.getObjectId(),
                     refPair.newRef.getObjectId())),
-            refEnforcementPolicy);
+            refEnforcementPolicy,
+            false);
       }
     }
   }
 
-  private Stream<RefPair> getRefsPairs(List<ReceiveCommand> receivedCommands) {
-    return receivedCommands.stream().map(this::getRefPairForCommand);
-  }
+  private boolean isSuccessful(RefUpdate.Result result) {
+    switch (result) {
+      case NEW:
+      case FORCED:
+      case FAST_FORWARD:
+      case NO_CHANGE:
+        return true;
 
-  private RefPair getRefPairForCommand(ReceiveCommand command) {
-    try {
-      switch (command.getType()) {
-        case CREATE:
-          return new RefPair(SharedRefDatabase.NULL_REF, getNewRef(command));
-
-        case UPDATE:
-        case UPDATE_NONFASTFORWARD:
-          return new RefPair(refDb.getRef(command.getRefName()), getNewRef(command));
-
-        case DELETE:
-          return new RefPair(refDb.getRef(command.getRefName()), SharedRefDatabase.NULL_REF);
-
-        default:
-          return new RefPair(
-              getNewRef(command),
-              new IllegalArgumentException("Unsupported command type " + command.getType()));
-      }
-    } catch (IOException e) {
-      return new RefPair(command.getRef(), e);
+      default:
+        return false;
     }
   }
 
-  private Ref getNewRef(ReceiveCommand command) {
-    return sharedRefDb.newRef(command.getRefName(), command.getNewId());
+  private RefPair newRefPairFrom(RefUpdate refUpdate) {
+    return new RefPair(
+        refUpdate.getRef(), sharedRefDb.newRef(refUpdate.getName(), refUpdate.getNewObjectId()));
   }
 
   public static class CloseableSet<T extends AutoCloseable> implements AutoCloseable {
@@ -313,11 +383,16 @@ public class RefUpdateValidator {
     T create() throws E;
   }
 
-  public interface GitUpdateFunction {
-    void apply() throws IOException;
+  public interface BatchValidationWrapper {
+    void apply(BatchRefUpdate batchRefUpdate, NoParameterFunction arg) throws IOException;
   }
 
-  public interface ValidationWrapper {
-    void apply(BatchRefUpdate batchRefUpdate, GitUpdateFunction arg) throws IOException;
+  public interface RefValidationWrapper {
+    RefUpdate.Result apply(NoParameterFunction<RefUpdate.Result> arg, RefUpdate refUpdate)
+        throws IOException;
+  }
+
+  interface NoParameterFunction<T> {
+    T apply() throws IOException;
   }
 }
