@@ -181,14 +181,24 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
       throws IOException {
     batchRefValidatorFactory
         .create(projectName, refDb)
-        .executeBatchUpdate(batchRefUpdate, () -> batchRefUpdate.execute(walk, monitor, options));
+        .executeBatchUpdate(
+            batchRefUpdate,
+            () -> {
+              batchRefUpdate.execute(walk, monitor, options);
+              return null;
+            });
   }
 
   @Override
   public void execute(RevWalk walk, ProgressMonitor monitor) throws IOException {
     batchRefValidatorFactory
         .create(projectName, refDb)
-        .executeBatchUpdate(batchRefUpdate, () -> batchRefUpdate.execute(walk, monitor));
+        .executeBatchUpdate(
+            batchRefUpdate,
+            () -> {
+              batchRefUpdate.execute(walk, monitor);
+              return null;
+            });
   }
 
   @Override
