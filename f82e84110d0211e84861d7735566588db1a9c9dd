@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b0a8a9a4_dc2efd52",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-30T22:20:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da08fa87_453c3162",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "912616e8_d58ca9b5",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "8da53478_692107ee",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-30T22:20:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "912616e8_d58ca9b5",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "40c981a7_7764b9b5",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
         "patchSetId": 1
@@ -47,6 +83,24 @@
       "writtenOn": "2019-04-30T20:53:57Z",
       "side": 1,
       "message": "not sure this will work, aren\u0027t assertion disabled by default by the JVM?",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5906dde_5289645b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-30T22:20:27Z",
+      "side": 1,
+      "message": "Why would it be disabled? The unit test does work",
+      "parentUuid": "40c981a7_7764b9b5",
       "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "ba22efd9_732acc22",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-30T22:20:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "565643c8_e374541e",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1c021129_9eaa725d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
         "patchSetId": 1
@@ -84,6 +156,24 @@
       "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54ad5d4d_211871d5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-30T22:20:27Z",
+      "side": 1,
+      "message": "Well spotted. Not sure why I\u0027ve left this here",
+      "parentUuid": "1c021129_9eaa725d",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "58dd6252_a07b3846",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-30T22:20:27Z",
+      "side": 1,
+      "message": "If the projectName and refName are not in the map, it will default to _REQUIRED_ in the return",
+      "parentUuid": "4242ff3d_09180837",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "754cb273_a57818c0",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
         "patchSetId": 1
@@ -118,6 +226,24 @@
       "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f5fd1e0_1920aac7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-30T22:20:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "754cb273_a57818c0",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
