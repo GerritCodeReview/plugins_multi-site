@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "d03a2378_dde13b0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-30T10:15:54Z",
+      "side": 1,
+      "message": "logging",
+      "range": {
+        "startLine": 7,
+        "startChar": 27,
+        "endLine": 7,
+        "endChar": 33
+      },
+      "revId": "530c5d8da690c042d454ff6372704aa46ec5e6d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bb9ef7f9_00a7bb4f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefEnforcement.java",
         "patchSetId": 6
