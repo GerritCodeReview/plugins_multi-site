@@ -14,16 +14,14 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
+import com.google.common.flogger.FluentLogger;
 
 public class DryRunSharedRefEnforcement implements SharedRefEnforcement {
+  private final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private static final Map<String, EnforcePolicy> PREDEF_ENFORCEMENTS =
-      ImmutableMap.of("All-Users:refs/meta/external-ids", EnforcePolicy.DESIRED);
-
-  public DryRunSharedRefEnforcement() {}
+  public DryRunSharedRefEnforcement() {
+    logger.atInfo().log("Running with Shared Ref-Db DryRun Enforcement Policy");
+  }
 
   @Override
   public EnforcePolicy getPolicy(String projectName, String refName) {
@@ -31,8 +29,7 @@ public class DryRunSharedRefEnforcement implements SharedRefEnforcement {
       return EnforcePolicy.IGNORED;
     }
 
-    return MoreObjects.firstNonNull(
-        PREDEF_ENFORCEMENTS.get(projectName + ":" + refName), EnforcePolicy.DESIRED);
+    return EnforcePolicy.DESIRED;
   }
 
   @Override
