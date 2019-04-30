@@ -22,6 +22,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
@@ -517,6 +518,7 @@ public class Configuration {
     public static final String KEY_MIGRATE = "migrate";
     public final String TRANSACTION_LOCK_TIMEOUT_KEY = "transactionLockTimeoutMs";
     public static final String KEY_DRY_RUN = "dryRun";
+    public static final String KEY_ENFORCEMENT_RULES = "enforcementRules";
 
     private final String connectionString;
     private final String root;
@@ -530,6 +532,7 @@ public class Configuration {
     private final int casMaxRetries;
     private final boolean enabled;
     private final boolean dryRun;
+    private final List<String> enforcementRules;
 
     private final Long transactionLockTimeOut;
 
@@ -604,6 +607,9 @@ public class Configuration {
 
       enabled = Configuration.getBoolean(cfg, SECTION, SUBSECTION, ENABLE_KEY, true);
       dryRun = Configuration.getBoolean(cfg, SECTION, SUBSECTION, KEY_DRY_RUN, false);
+      enforcementRules =
+          Configuration.getList(
+              cfg, SECTION, SUBSECTION, KEY_ENFORCEMENT_RULES, Collections.EMPTY_LIST);
     }
 
     public CuratorFramework buildCurator() {
@@ -638,6 +644,25 @@ public class Configuration {
 
     public boolean isDryRun() {
       return dryRun;
+    }
+
+    public List<String> getEnforcementRules() {
+      return enforcementRules;
+    }
+  }
+
+  static List<String> getList(
+      Supplier<Config> cfg,
+      String section,
+      String subsection,
+      String name,
+      List<String> defaultValue) {
+    try {
+      return ImmutableList.copyOf(cfg.get().getStringList(section, subsection, name));
+    } catch (IllegalArgumentException e) {
+      log.error("invalid value for {}; using default value {}", name, defaultValue);
+      log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
+      return defaultValue;
     }
   }
 
