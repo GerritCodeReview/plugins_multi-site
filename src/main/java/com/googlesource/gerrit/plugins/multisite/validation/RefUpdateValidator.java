@@ -134,6 +134,10 @@ public class RefUpdateValidator {
     try {
       return delegateValidation.apply(gitUpdateFun, refUpdate);
     } catch (IOException e) {
+      if (e.getClass() == SharedDbSplitBrainException.class) {
+        validationMetrics.incrementSplitBrain();
+      }
+
       logger.atWarning().withCause(e).log(errorMessage);
       if (refEnforcement.getPolicy(projectName) == EnforcePolicy.REQUIRED) {
         throw e;
@@ -142,18 +146,18 @@ public class RefUpdateValidator {
     return null;
   }
 
-  private void failWith(IOException e, EnforcePolicy policy, boolean failureAfterGitUpdate)
-      throws IOException {
-    // TODO: Add a different metric for failure after Git Update
-    if (!failureAfterGitUpdate) {
-      validationMetrics.incrementSplitBrainRefUpdates();
-    }
-
+  private void failWith(IOException e, EnforcePolicy policy) throws IOException {
     FluentLogger.Api log = logger.atWarning();
+
+    validationMetrics.incrementSplitBrainPrevention();
+
     if (e.getCause() != null) {
       log = log.withCause(e);
     }
-    log.log(e.getMessage());
+    log.log(
+        String.format(
+            "Failure while running with policy enforcement %s. Error message: %s",
+            policy, e.getMessage()));
     if (policy == EnforcePolicy.REQUIRED) {
       throw e;
     }
@@ -245,19 +249,23 @@ public class RefUpdateValidator {
         refEnforcement.getPolicy(projectName, successfulRefPair.getName());
     if (refEnforcementPolicy == EnforcePolicy.IGNORED) return;
 
-    boolean succeeded =
-        sharedRefDb.compareAndPut(projectName, successfulRefPair.oldRef, successfulRefPair.newRef);
+    String errorMessage =
+        String.format(
+            "Not able to persist the data in Zookeeper for project '%s' and ref '%s',"
+                + "the cluster is now in Split Brain since the commit has been "
+                + "persisted locally but not in SharedRef the value %s",
+            projectName, successfulRefPair.getName(), successfulRefPair.newRef.getObjectId());
+    boolean succeeded;
+    try {
+      succeeded =
+          sharedRefDb.compareAndPut(
+              projectName, successfulRefPair.oldRef, successfulRefPair.newRef);
+    } catch (IOException e) {
+      throw new SharedDbSplitBrainException(errorMessage, e);
+    }
 
-    // We are not checking refs that should be ignored
     if (!succeeded) {
-      String errorMessage =
-          String.format(
-              "Not able to persist the data in Zookeeper for project '%s' and ref '%s',"
-                  + "the cluster is now in Split Brain since the commit has been "
-                  + "persisted locally but not in SharedRef the value %s",
-              projectName, successfulRefPair.getName(), successfulRefPair.newRef.getObjectId());
-
-      failWith(new IOException(errorMessage), refEnforcementPolicy, true);
+      throw new SharedDbSplitBrainException(errorMessage);
     }
   }
 
@@ -334,8 +342,7 @@ public class RefUpdateValidator {
                     projectName,
                     refPair.oldRef.getObjectId(),
                     refPair.newRef.getObjectId())),
-            refEnforcementPolicy,
-            false);
+            refEnforcementPolicy);
       }
     }
   }
@@ -405,6 +412,17 @@ public class RefUpdateValidator {
   public interface RefValidationWrapper {
     RefUpdate.Result apply(NoParameterFunction<RefUpdate.Result> arg, RefUpdate refUpdate)
         throws IOException;
+  }
+
+  public class SharedDbSplitBrainException extends IOException {
+
+    public SharedDbSplitBrainException(String message) {
+      super(message);
+    }
+
+    public SharedDbSplitBrainException(String message, Throwable cause) {
+      super(message, cause);
+    }
   }
 
   interface NoParameterFunction<T> {
