@@ -187,6 +187,41 @@ File '@PLUGIN@.config'
 :   Enable the use of a shared ref-database
     Defaults: true
 
+```ref-database.enforcementRules```
+:   List of project enforcement rules used when running validations against
+    the shared Reference Database (Ref-Db).
+    In a multi-site Gerrit cluster setup the shared Ref-Db solely responsibility is to guarantee
+    that a Gerrit cluster does not get into a split-brain scenario
+    (see *Avoid Split Brain* section in [Design](../../../../DESIGN.md) for more information).
+    When enabling the ref-database, all projects and references are automatically set to *REQUIRED*
+    (apart from draft-comments and immutable change Refs that are *IGNORED*) and those are the
+    recommended enforcement rules. However in some situations a user might prefer to have more
+    control over the enforcement rules. In that case each project rule must replicate the
+    configuration key _enforcementRules_ with it's specific rule.
+
+    Types of enforcement policies available:
+    1. REQUIRED - Will throw an out of sync exception every time the RefUpdate or BatchRefUpdate is
+    not in sync with shared Ref-Db. Throwing an Exception means that whatever the git operation the
+    user is trying to do, will be cancelled and the user will get an error
+    (User will see a '500 - Internal Server Error').
+
+    2. DESIRED - Will validate against the shared Ref-Db, will log errors in errors_log file but
+    will not throw exceptions. This means the git operation will be processed but the shared-ref db
+    will not be updated. This means the shared Ref-Db over time will diverge, resulting in more
+    OutOfSync exceptions.
+
+    3. IGNORED - Will skip any validation against the shared Ref-Db.
+
+*Examples:*
+* enforcementRules = "AProject:ARefPath,DESIRED" -> _ARefPath will have DESIRED policy enforcement,
+all other refs within the project will be REQUIRED_
+* enforcementRules = ":ARefPath,IGNORED" -> _ARefPath will be IGNORED for all the projects, unless
+specified otherwise within another project_
+* enforcementRules = "AProject:,IGNORED" -> _All refs within this project will be ignored_
+
+
+    Defaults: No rules = All projects and References are set to REQUIRED
+
 ```ref-database.zookeeper.connectString```
 :   Connection string to Zookeeper
 
@@ -230,14 +265,14 @@ File '@PLUGIN@.config'
     operations on Zookeeper
 
     Defaults: 1000
-    
+
 ```ref-database.zookeeper.casRetryPolicyMaxSleepTimeMs```
 :   Configuration for the maximum sleep timeout in milliseconds of the
     BoundedExponentialBackoffRetry policy used for the Compare and Swap
     operations on Zookeeper
 
     Defaults: 3000
-    
+
 ```ref-database.zookeeper.casRetryPolicyMaxRetries```
 :   Configuration for the maximum number of retries of the
     BoundedExponentialBackoffRetry policy used for the Compare and Swap
@@ -251,6 +286,8 @@ File '@PLUGIN@.config'
     into Zookeeper
 
     Defaults: 1000
+
+#### Custom kafka properties:
 
 In addition to the above settings, custom Kafka properties can be explicitly set
 for `publisher` and `subscriber`.

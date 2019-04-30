@@ -22,6 +22,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
@@ -517,6 +518,8 @@ public class Configuration {
     public static final String KEY_MIGRATE = "migrate";
     public final String TRANSACTION_LOCK_TIMEOUT_KEY = "transactionLockTimeoutMs";
 
+    public static final String KEY_ENFORCEMENT_RULES = "enforcementRules";
+
     private final String connectionString;
     private final String root;
     private final int sessionTimeoutMs;
@@ -528,6 +531,8 @@ public class Configuration {
     private final int casMaxSleepTimeMs;
     private final int casMaxRetries;
     private final boolean enabled;
+
+    private final List<String> enforcementRules;
 
     private final Long transactionLockTimeOut;
 
@@ -600,7 +605,9 @@ public class Configuration {
 
       checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
 
-      enabled = Configuration.getBoolean(cfg, SECTION, SUBSECTION, ENABLE_KEY, true);
+      enabled = Configuration.getBoolean(cfg, SECTION, null, ENABLE_KEY, true);
+
+      enforcementRules = Configuration.getList(cfg, SECTION, null, KEY_ENFORCEMENT_RULES);
     }
 
     public CuratorFramework buildCurator() {
@@ -632,6 +639,15 @@ public class Configuration {
     public boolean isEnabled() {
       return enabled;
     }
+
+    public List<String> getEnforcementRules() {
+      return enforcementRules;
+    }
+  }
+
+  static List<String> getList(
+      Supplier<Config> cfg, String section, String subsection, String name) {
+    return ImmutableList.copyOf(cfg.get().getStringList(section, subsection, name));
   }
 
   static boolean getBoolean(
