@@ -14,11 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.lifecycle.LifecycleModule;
-import com.google.gerrit.server.ModuleImpl;
 import com.google.gerrit.server.config.SitePaths;
-import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gson.Gson;
 import com.google.inject.CreationException;
 import com.google.inject.Inject;
@@ -34,7 +31,6 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarde
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
-import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -50,21 +46,10 @@ import org.slf4j.LoggerFactory;
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private final Configuration config;
-  private final boolean disableGitRepositoryValidation;
 
   @Inject
   public Module(Configuration config) {
-    this(config, false);
-  }
-
-  // TODO: It is not possible to properly test the libModules in Gerrit.
-  // Disable the Git repository validation during integration test and then build the necessary
-  // support
-  // in Gerrit for it.
-  @VisibleForTesting
-  public Module(Configuration config, boolean disableGitRepositoryValidation) {
     this.config = config;
-    this.disableGitRepositoryValidation = disableGitRepositoryValidation;
   }
 
   @Override
@@ -98,9 +83,6 @@ public class Module extends LifecycleModule {
       install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
 
-    install(
-        new ValidationModule(
-            config, disableGitRepositoryValidation || !config.getZookeeperConfig().isEnabled()));
     bind(Gson.class)
         .annotatedWith(BrokerGson.class)
         .toProvider(GsonProvider.class)

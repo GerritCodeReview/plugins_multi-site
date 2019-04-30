@@ -24,11 +24,9 @@ import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.Z
 
 public class ValidationModule extends FactoryModule {
   private final Configuration cfg;
-  private final boolean disableGitRepositoryValidation;
 
-  public ValidationModule(Configuration cfg, boolean disableGitRepositoryValidation) {
+  public ValidationModule(Configuration cfg) {
     this.cfg = cfg;
-    this.disableGitRepositoryValidation = disableGitRepositoryValidation;
   }
 
   @Override
@@ -38,10 +36,7 @@ public class ValidationModule extends FactoryModule {
     factory(MultiSiteRefUpdate.Factory.class);
     factory(MultiSiteBatchRefUpdate.Factory.class);
 
-    if (!disableGitRepositoryValidation) {
-      bind(GitRepositoryManager.class).to(MultiSiteGitRepositoryManager.class);
-    }
-
+    bind(GitRepositoryManager.class).to(MultiSiteGitRepositoryManager.class);
     bind(SharedRefEnforcement.class).to(DefaultSharedRefEnforcement.class).in(Scopes.SINGLETON);
 
     install(new ZkValidationModule(cfg));

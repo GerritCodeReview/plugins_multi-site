@@ -96,7 +96,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
       this.config =
           new FileBasedConfig(
               sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile(), FS.DETECTED);
-      this.multiSiteModule = new Module(new Configuration(config, new Config()), true);
+      this.multiSiteModule = new Module(new Configuration(config, new Config()));
     }
 
     @Override
