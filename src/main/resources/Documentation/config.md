@@ -229,14 +229,14 @@ File '@PLUGIN@.config'
     operations on Zookeeper
 
     Defaults: 1000
-    
+
 ```ref-database.zookeeper.casRetryPolicyMaxSleepTimeMs```
 :   Configuration for the max sleep timeout (iun ms) to use to create the
     BoundedExponentialBackoffRetry policy used for the Compare and Swap
     operations on Zookeeper
 
     Defaults: 3000
-    
+
 ```ref-database.zookeeper.casRetryPolicyMaxRetries```
 :   Configuration for the max number of retries to use to create the
     BoundedExponentialBackoffRetry policy used for the Compare and Swap
@@ -250,13 +250,31 @@ File '@PLUGIN@.config'
     into Zookeeper
 
     Defaults: 1000
-    
+
 ```ref-database.zookeeper.dryRun```
 :   Configuration for activating dry run execution when running checks against
     the shared-ref database. All the ref-db sync failures will log the exception
     but not throw the exception.
 
     Defaults: false
+
+```ref-database.zookeeper.enforcementRules```
+:   List of project enforcement rules used when running the validation against
+    the shared Ref-Db. Each project rule must replicate the  key enforcementRules.
+    Types of enforcement policies available: 
+1. *REQUIRED* - Will throw an exception every time the RefUpdate is out of sync with shared Ref-Db
+2. *DESIRED* - Will validate against the shared Ref-Db, will log errors but will not throw exceptions 
+3. *IGNORED* - Will skip the any validation against the shared Ref-Db
+ 
+*Examples:*
+* enforcementRules = "AProject:ARefPath,DESIRED" -> _ARefPath will have DESIRED policy enforcement, 
+all other refs within the project will be REQUIRED_
+* enforcementRules = ":ARefPath,IGNORED" -> _ARefPath will be IGNORED for all the projects, unless
+specified otherwise within another project_
+* enforcementRules = "AProject:,IGNORED" -> _All refs within this project will be ignored_ 
+
+
+    Defaults: No rules
 
 #### Custom kafka properties:
 
