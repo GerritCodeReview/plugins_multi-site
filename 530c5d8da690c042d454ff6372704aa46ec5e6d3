@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bb9ef7f9_00a7bb4f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefEnforcement.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1059414
+      },
+      "writtenOn": "2019-04-30T10:08:10Z",
+      "side": 1,
+      "message": "I think the name is not very clear. Probably something like \"doesRefNeedClusterSynchronisation\" would do (my name proposal will force you to revert the logic though)",
+      "revId": "530c5d8da690c042d454ff6372704aa46ec5e6d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
