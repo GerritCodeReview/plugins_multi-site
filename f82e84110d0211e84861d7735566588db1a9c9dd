@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "da08fa87_453c3162",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-04-30T20:53:57Z",
+      "side": 1,
+      "message": "I am not sure configuration errors should be swallowed and the default used instead.\nPerhaps the plugin should not be loaded at all if it\u0027s misconfigured.",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "912616e8_d58ca9b5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-04-30T20:53:57Z",
+      "side": 1,
+      "message": "should this be final?",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40c981a7_7764b9b5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-04-30T20:53:57Z",
+      "side": 1,
+      "message": "not sure this will work, aren\u0027t assertion disabled by default by the JVM?",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "565643c8_e374541e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-04-30T20:53:57Z",
+      "side": 1,
+      "message": "Have you considered using Collectors.toMap() method instead?",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c021129_9eaa725d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-04-30T20:53:57Z",
+      "side": 1,
+      "message": "Why are we catching \u0027e\u0027 and then throwing it again?\n\nAren\u0027t AssertionError unchecked? they probably won\u0027t need handling...",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4242ff3d_09180837",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-04-30T20:53:57Z",
+      "side": 1,
+      "message": "will projectName always exist in the map?\nOtherwise you\u0027ll get a NEP",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "754cb273_a57818c0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-04-30T20:53:57Z",
+      "side": 1,
+      "message": "perhaps is more readable?\nOptional.ofNullable(...).orElse(defaultValue);",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
