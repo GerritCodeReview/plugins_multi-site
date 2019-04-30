@@ -76,6 +76,7 @@ Add the multi-site module to `$GERRIT_SITE/etc/gerrit.config` as follows:
 
 ```
 [gerrit]
+  installDbModule = com.googlesource.gerrit.plugins.multisite.GitModule
   installModule = com.googlesource.gerrit.plugins.multisite.Module
 ```
 
