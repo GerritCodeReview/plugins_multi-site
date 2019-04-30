@@ -149,7 +149,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
       multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
       fail("Expecting an IOException to be thrown");
     } catch (IOException e) {
-      verify(validationMetrics).incrementSplitBrainRefUpdates();
+      verify(validationMetrics).incrementSplitBrainPrevention();
     }
   }
 

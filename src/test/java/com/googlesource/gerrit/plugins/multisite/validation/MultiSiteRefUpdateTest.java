@@ -30,6 +30,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
@@ -117,12 +118,12 @@ public class MultiSiteRefUpdateTest implements RefFixture {
       multiSiteRefUpdate.update();
       fail("Expecting an IOException to be thrown");
     } catch (IOException e) {
-      verify(validationMetrics).incrementSplitBrainRefUpdates();
+      verify(validationMetrics).incrementSplitBrainPrevention();
     }
   }
 
   @Test
-  public void newUpdateShouldNotIncreaseRefUpdateFailureCountIfFailingToDoPostUpdate()
+  public void newUpdateShouldNotIncreaseSplitBrainPreventedCounterIfFailingSharedDbPostUpdate()
       throws IOException {
     setMockRequiredReturnValues();
 
@@ -138,7 +139,28 @@ public class MultiSiteRefUpdateTest implements RefFixture {
       multiSiteRefUpdate.update();
       fail("Expecting an IOException to be thrown");
     } catch (IOException e) {
-      verifyZeroInteractions(validationMetrics);
+      verify(validationMetrics, never()).incrementSplitBrainPrevention();
+    }
+  }
+
+  @Test
+  public void newUpdateShouldtIncreaseSplitBrainCounterIfFailingSharedDbPostUpdate()
+      throws IOException {
+    setMockRequiredReturnValues();
+
+    doReturn(true).when(sharedRefDb).isMostRecentRefVersion(A_TEST_PROJECT_NAME, oldRef);
+    doReturn(false).when(sharedRefDb).compareAndPut(A_TEST_PROJECT_NAME, oldRef, newRef);
+
+    RefUpdate refUpdate = RefUpdateStub.forSuccessfulUpdate(oldRef, newRef.getObjectId());
+
+    MultiSiteRefUpdate multiSiteRefUpdate =
+        getMultiSiteRefUpdateWithDefaultPolicyEnforcement(refUpdate);
+
+    try {
+      multiSiteRefUpdate.update();
+      fail("Expecting an IOException to be thrown");
+    } catch (IOException e) {
+      verify(validationMetrics).incrementSplitBrain();
     }
   }
 
@@ -175,7 +197,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
       multiSiteRefUpdate.delete();
       fail("Expecting an IOException to be thrown");
     } catch (IOException e) {
-      verify(validationMetrics).incrementSplitBrainRefUpdates();
+      verify(validationMetrics).incrementSplitBrainPrevention();
     }
   }
 
