@@ -18,7 +18,9 @@ import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.assertFalse;
 import static org.eclipse.jgit.transport.ReceiveCommand.Type.UPDATE;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gerrit.metrics.DisabledMetricMaker;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DryRunSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
@@ -112,7 +114,7 @@ public class RefUpdateValidatorTest extends LocalDiskRepositoryTestCase implemen
     List<ReceiveCommand> cmds = Arrays.asList(new ReceiveCommand(A, B, externalIds, UPDATE));
 
     BatchRefUpdate batchRefUpdate = newBatchUpdate(cmds);
-    RefUpdateValidator RefUpdateValidator = newDefaultValidator(projectName, batchRefUpdate);
+    RefUpdateValidator RefUpdateValidator = newCustomRefValidator(projectName, batchRefUpdate);
 
     Ref zkExistingRef = zkSharedRefDatabase.newRef(externalIds, B);
     zookeeperContainer.createRefInZk(projectName, zkExistingRef);
@@ -148,6 +150,15 @@ public class RefUpdateValidatorTest extends LocalDiskRepositoryTestCase implemen
       String projectName, BatchRefUpdate batchRefUpdate) {
     return getRefValidatorForEnforcement(
         projectName, batchRefUpdate, new DryRunSharedRefEnforcement());
+  }
+
+  private RefUpdateValidator newCustomRefValidator(
+      String projectName, BatchRefUpdate batchRefUpdate) {
+    return getRefValidatorForEnforcement(
+        projectName,
+        batchRefUpdate,
+        new CustomSharedRefEnforcementByProject(
+            ImmutableList.of("All-Users:refs/meta/external-ids,desired")));
   }
 
   private RefUpdateValidator getRefValidatorForEnforcement(
