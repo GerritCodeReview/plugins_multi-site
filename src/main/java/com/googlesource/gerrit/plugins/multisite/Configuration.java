@@ -22,12 +22,16 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -517,6 +521,8 @@ public class Configuration {
     public static final String KEY_MIGRATE = "migrate";
     public final String TRANSACTION_LOCK_TIMEOUT_KEY = "transactionLockTimeoutMs";
 
+    public static final String KEY_ENFORCEMENT_RULE = "enforcementRule";
+
     private final String connectionString;
     private final String root;
     private final int sessionTimeoutMs;
@@ -528,6 +534,8 @@ public class Configuration {
     private final int casMaxSleepTimeMs;
     private final int casMaxRetries;
     private final boolean enabled;
+
+    private final Multimap<EnforcePolicy, String> enforcementRules;
 
     private final Long transactionLockTimeOut;
 
@@ -600,7 +608,13 @@ public class Configuration {
 
       checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
 
-      enabled = Configuration.getBoolean(cfg, SECTION, SUBSECTION, ENABLE_KEY, true);
+      enabled = Configuration.getBoolean(cfg, SECTION, null, ENABLE_KEY, true);
+
+      enforcementRules = MultimapBuilder.hashKeys().arrayListValues().build();
+      for (EnforcePolicy policy : EnforcePolicy.values()) {
+        enforcementRules.putAll(
+            policy, Configuration.getList(cfg, SECTION, policy.name(), KEY_ENFORCEMENT_RULE));
+      }
     }
 
     public CuratorFramework buildCurator() {
@@ -632,6 +646,15 @@ public class Configuration {
     public boolean isEnabled() {
       return enabled;
     }
+
+    public Multimap<EnforcePolicy, String> getEnforcementRules() {
+      return enforcementRules;
+    }
+  }
+
+  static List<String> getList(
+      Supplier<Config> cfg, String section, String subsection, String name) {
+    return ImmutableList.copyOf(cfg.get().getStringList(section, subsection, name));
   }
 
   static boolean getBoolean(
