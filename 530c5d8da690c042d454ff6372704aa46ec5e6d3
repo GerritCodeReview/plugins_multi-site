@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "411dd279_b67bd586",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-30T10:41:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d03a2378_dde13b0e",
+      "range": {
+        "startLine": 7,
+        "startChar": 27,
+        "endLine": 7,
+        "endChar": 33
+      },
+      "revId": "530c5d8da690c042d454ff6372704aa46ec5e6d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bb9ef7f9_00a7bb4f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefEnforcement.java",
         "patchSetId": 6
@@ -36,6 +60,24 @@
       "writtenOn": "2019-04-30T10:08:10Z",
       "side": 1,
       "message": "I think the name is not very clear. Probably something like \"doesRefNeedClusterSynchronisation\" would do (my name proposal will force you to revert the logic though)",
+      "revId": "530c5d8da690c042d454ff6372704aa46ec5e6d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4eddf48a_055a1e72",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefEnforcement.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-04-30T10:41:38Z",
+      "side": 1,
+      "message": "Done. Added also the missing documentation",
+      "parentUuid": "bb9ef7f9_00a7bb4f",
       "revId": "530c5d8da690c042d454ff6372704aa46ec5e6d3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
