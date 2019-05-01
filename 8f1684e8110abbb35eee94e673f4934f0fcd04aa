@@ -309,6 +309,30 @@
       "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "868b9918_079cc7da",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/GsonParserTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-05-01T22:29:58Z",
+      "side": 1,
+      "message": "\u003e P.S. The PS10 works :-) can you have a look?\n\nOh, indeed, I voted on the previous patch, but you have already uploaded a fix ;-)\n\nBTW, I like your minimally invasive approach, specific to this plugin. In the long run, we should be able to introduce auto-value-gson extension, and then tweaking of deserialization of any AutoValues based entity keys wouldn\u0027t be needed.",
+      "parentUuid": "1addc23f_c26a0cf0",
+      "range": {
+        "startLine": 30,
+        "startChar": 2,
+        "endLine": 49,
+        "endChar": 3
+      },
+      "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

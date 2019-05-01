@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b004b822_83bd0d08",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-05-01T22:29:58Z",
+      "side": 1,
+      "message": "We should extend the commit message about the fact, that deserialization of cache eviction event (that is defined in this plugin with surrogate key) with entity keys, that were migrated to the AutoValue (Account.Id and AccountGroup.Id) is fixed in this plugin manually.",
+      "revId": "507d796fd5297a976afdc087bb427daa44c72a0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1cc85ba_02e7cc27",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/GsonParser.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-05-01T22:29:58Z",
+      "side": 1,
+      "message": "Nice!",
+      "range": {
+        "startLine": 40,
+        "startChar": 8,
+        "endLine": 48,
+        "endChar": 14
+      },
+      "revId": "507d796fd5297a976afdc087bb427daa44c72a0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

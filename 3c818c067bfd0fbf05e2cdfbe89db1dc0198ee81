@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7d5b76b4_f7032cf2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/GsonParser.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-05-01T22:29:58Z",
+      "side": 0,
+      "message": "trim() is not called any more. Was its removal intentional?",
+      "range": {
+        "startLine": 34,
+        "startChar": 54,
+        "endLine": 34,
+        "endChar": 60
+      },
+      "revId": "3c818c067bfd0fbf05e2cdfbe89db1dc0198ee81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
