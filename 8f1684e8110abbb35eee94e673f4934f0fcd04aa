@@ -145,6 +145,30 @@
     },
     {
       "key": {
+        "uuid": "a678584c_4f5e5e76",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/BrokerPublisherTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-01T22:17:39Z",
+      "side": 1,
+      "message": "Thanks Dave for fixing this in master, multi-site is back on track now :-)",
+      "parentUuid": "4a783ff9_db0366cd",
+      "range": {
+        "startLine": 130,
+        "startChar": 36,
+        "endLine": 130,
+        "endChar": 39
+      },
+      "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c8e4d739_7de167a7",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/GsonParserTest.java",
         "patchSetId": 7
