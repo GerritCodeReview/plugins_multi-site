@@ -10,3 +10,4 @@
 /bazel-multi-site
 /eclipse-out/
 /.apt_generated/
+/.vagrant/
