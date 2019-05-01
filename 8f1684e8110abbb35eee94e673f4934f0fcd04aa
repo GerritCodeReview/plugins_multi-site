@@ -261,6 +261,30 @@
       "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1addc23f_c26a0cf0",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/GsonParserTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-01T21:46:16Z",
+      "side": 1,
+      "message": "\u003e Yes, you are right, and I totally forgot this fact. CacheEvictionEvent is a single event that can trasport different caches and keys. cache name is a string and cache key is object that can contain Account.Id.\n\u003e \n\u003e Right now Account.Id was migrated to AutoValue and we don\u0027t have TypeAdapter for it, mainly because in event classes in Gerrit core always integer type is used to transport account id information.\n\nYes, exactly.\n\n\u003e \n\u003e I think we have a number of potential fixes here:\n\u003e \n\u003e * 1. We try to tweak the deserialize to understand Account.Id in this and other plugins (high-availability plugin would also be affected by this problem)\n\nNope, I would like to keep in the plugin the logic of the plugin, not in Gerrit.\n\n\u003e * 2. Split the generic CacheEvictionEvent to dedicated events: AccountCacheEvictionEvent and friends and use dedicated type for the id, e.g.: integer.\n\nThere is already a single event with a switch/case inside. I\u0027m reusing at the moment that one and, as follow-up, yes we can event more dedicated events per cache.\n\n\u003e * 3. Extend EventGson in gerrit core and add Account.Id and other classes that are used by the plugins. However, we usually don\u0027t do this, putting something in gerrit core that is only needed by gerrit plugins.\n\nNope, it would be subject to removal in the future because it is unused.\n\nP.S. The PS10 works :-) can you have a look?",
+      "parentUuid": "75ef8166_e87d22c1",
+      "range": {
+        "startLine": 30,
+        "startChar": 2,
+        "endLine": 49,
+        "endChar": 3
+      },
+      "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
