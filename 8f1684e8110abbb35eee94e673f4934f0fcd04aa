@@ -142,6 +142,29 @@
       "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8e4d739_7de167a7",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/GsonParserTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-05-01T08:36:44Z",
+      "side": 1,
+      "message": "I had to ignore these tests. Why are they needed? Do we really use Account.Id in event classes?",
+      "range": {
+        "startLine": 30,
+        "startChar": 2,
+        "endLine": 49,
+        "endChar": 3
+      },
+      "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
