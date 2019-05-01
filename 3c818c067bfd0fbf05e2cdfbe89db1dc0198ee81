@@ -22,6 +22,30 @@
       "revId": "3c818c067bfd0fbf05e2cdfbe89db1dc0198ee81",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8eda9cc7_f948061f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/GsonParser.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-01T22:35:40Z",
+      "side": 0,
+      "message": "I do not believe it was necessary. The Strings.nullToEmpty() is put only to prevent an annoying NPE in case of no JSON payload provided. With regards to the JSON content, spaces are irrelevant for its parsing, isn\u0027t it?",
+      "parentUuid": "7d5b76b4_f7032cf2",
+      "range": {
+        "startLine": 34,
+        "startChar": 54,
+        "endLine": 34,
+        "endChar": 60
+      },
+      "revId": "3c818c067bfd0fbf05e2cdfbe89db1dc0198ee81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
