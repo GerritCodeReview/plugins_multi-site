@@ -70,6 +70,29 @@
       "revId": "3c818c067bfd0fbf05e2cdfbe89db1dc0198ee81",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c3d22f3b_cb11a24d",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/BrokerPublisherTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-05-01T22:39:31Z",
+      "side": 0,
+      "message": "For the record: this change was needed, because EventGson is now also registering the ProjectNameKeyAdapter:\n\n  return new GsonBuilder()\n     .registerTypeAdapter(Project.NameKey.class, new ProjectNameKeyAdapter())\n\nthat is serializing/deserializing the Project.NameKey differently.\n\nOptional: Mention this fact in the commit message.",
+      "range": {
+        "startLine": 126,
+        "startChar": 19,
+        "endLine": 128,
+        "endChar": 18
+      },
+      "revId": "3c818c067bfd0fbf05e2cdfbe89db1dc0198ee81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
