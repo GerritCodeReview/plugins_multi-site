@@ -213,6 +213,30 @@
       "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "225717ae_9e61fdb1",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/GsonParserTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-01T20:42:33Z",
+      "side": 1,
+      "message": "I am wrong, they are actually used when decoding the incoming message of cache evictions. Let me adapt the deserializer to use the auto-value instantiation by hand.",
+      "parentUuid": "4edd51f5_31ec8287",
+      "range": {
+        "startLine": 30,
+        "startChar": 2,
+        "endLine": 49,
+        "endChar": 3
+      },
+      "revId": "8f1684e8110abbb35eee94e673f4934f0fcd04aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
