@@ -12,6 +12,7 @@ The environment is composed by:
  - wget
  - envsubst
  - haproxy
+ - git
 
 ## Examples
 Simplest setup with all default values and cleanup previous deployment
