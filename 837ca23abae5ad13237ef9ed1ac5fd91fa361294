@@ -255,6 +255,30 @@
     },
     {
       "key": {
+        "uuid": "e84ebd0a_685da718",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/NoOpDfsRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T21:17:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9594228_b39f0ada",
+      "range": {
+        "startLine": 23,
+        "startChar": 17,
+        "endLine": 23,
+        "endChar": 39
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "adb803c7_6b395845",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/NoOpDfsRefDatabase.java",
         "patchSetId": 28
@@ -278,6 +302,30 @@
     },
     {
       "key": {
+        "uuid": "978754f7_8102bf02",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/NoOpDfsRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T21:17:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adb803c7_6b395845",
+      "range": {
+        "startLine": 24,
+        "startChar": 11,
+        "endLine": 24,
+        "endChar": 16
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bed9d1b4_6202f9e8",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/NoOpDfsRefDatabase.java",
         "patchSetId": 28
@@ -298,6 +346,30 @@
       "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c234272e_4ac09123",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/NoOpDfsRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T21:17:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bed9d1b4_6202f9e8",
+      "range": {
+        "startLine": 34,
+        "startChar": 11,
+        "endLine": 34,
+        "endChar": 15
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
