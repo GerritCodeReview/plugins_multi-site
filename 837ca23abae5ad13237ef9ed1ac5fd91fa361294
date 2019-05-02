@@ -537,6 +537,24 @@
     },
     {
       "key": {
+        "uuid": "42da8d1e_6470f691",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T21:47:14Z",
+      "side": 1,
+      "message": "P.S. You could, in theory, have a split-brain anyway *IF* you do a full round-robin of the incoming writes. However, the current multi-site \"stage\" accepts writes only on one site and read on all the others.\n\nOnce we start accepting multiple writes across all sites for all repos, things will change of course :-)",
+      "parentUuid": "56982aa6_42d3f68d",
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "029d86dd_dc2d5e19",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
         "patchSetId": 28
