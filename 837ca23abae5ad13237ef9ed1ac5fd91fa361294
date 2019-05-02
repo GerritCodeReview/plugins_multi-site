@@ -478,6 +478,30 @@
     },
     {
       "key": {
+        "uuid": "1dccb7bf_c0db8e42",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T21:44:13Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b253c4b9_b04c8fd6",
+      "range": {
+        "startLine": 129,
+        "startChar": 31,
+        "endLine": 129,
+        "endChar": 42
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ebe164cd_a7b35ee7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
         "patchSetId": 28
@@ -489,6 +513,24 @@
       "writtenOn": "2019-05-02T21:39:21Z",
       "side": 1,
       "message": "why ?",
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56982aa6_42d3f68d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T21:44:13Z",
+      "side": 1,
+      "message": "The immutable refs would never result in a split-brain.",
+      "parentUuid": "ebe164cd_a7b35ee7",
       "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
