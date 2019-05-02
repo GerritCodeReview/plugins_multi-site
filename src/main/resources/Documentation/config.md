@@ -2,8 +2,9 @@
 @PLUGIN@ Configuration
 =========================
 
-The @PLUGIN@ plugin must be installed on all the instances and the following
-fields should be specified in `$site_path/etc/@PLUGIN@.config` file:
+The @PLUGIN@ plugin must be installed as a library module in the
+`$GERRIT_SITE/lib` folder of all the instances and the following fields should
+be specified in the `$site_path/etc/@PLUGIN@.config` file:
 
 File '@PLUGIN@.config'
 --------------------
@@ -82,7 +83,7 @@ File '@PLUGIN@.config'
     Defaults to true.
 
 ```index.numStripedLocks```
-:   Number of striped locks to use for during secondary indexes reindex.
+:   Number of striped locks to use during reindexing of secondary indexes.
     Defaults to 10
 
 ```index.synchronize```
@@ -102,11 +103,11 @@ File '@PLUGIN@.config'
     Defaults to 2.
 
 ```index.retryInterval```
-:   The interval of time in milliseconds between the subsequent auto-retries.
+:   The time interval in milliseconds between subsequent auto-retries.
     Defaults to 30000 (30 seconds).
 
 ```kafka.bootstrapServers```
-:	  List of Kafka broker hosts:port to use for publishing events to the message
+:	  List of Kafka broker hosts (host:port) to use for publishing events to the message
     broker
 
 ```kafka.indexEventTopic```
@@ -178,7 +179,7 @@ File '@PLUGIN@.config'
     Defaults: true
 
 ```kafka.subscriber.pollingIntervalMs```
-:   Polling interval for checking incoming events
+:   Polling interval in milliseconds for checking incoming events
 
     Defaults: 1000
 
@@ -187,58 +188,58 @@ File '@PLUGIN@.config'
     Defaults: true
 
 ```ref-database.zookeeper.connectString```
-:   Connection string to  zookeeper
+:   Connection string to Zookeeper
 
 ```ref-database.zookeeper.rootNode```
-:   Root node to use under Zookeeper to store/retrieve information
+:   Root node to use in Zookeeper to store/retrieve information
 
     Defaults: "/gerrit/multi-site"
 
 
 ```ref-database.zookeeper.sessionTimeoutMs```
-:   Root node to use under Zookeeper to store/retrieve information
+:   Zookeeper session timeout in milliseconds
 
     Defaults: 1000
 
 ```ref-database.zookeeper.connectionTimeoutMs```
-:   Root node to use under Zookeeper to store/retrieve information
+:   Zookeeper connection timeout in milliseconds
 
     Defaults: 1000
 
 ```ref-database.zookeeper.retryPolicyBaseSleepTimeMs```
-:   Configuration for the base sleep timeout (iun ms) to use to create the
+:   Configuration for the base sleep timeout in milliseconds of the
     BoundedExponentialBackoffRetry policy used for the Zookeeper connection
 
     Defaults: 1000
 
 ```ref-database.zookeeper.retryPolicyMaxSleepTimeMs```
-:   Configuration for the max sleep timeout (in milliseconds) to use to create the
+:   Configuration for the maximum sleep timeout in milliseconds of the
     BoundedExponentialBackoffRetry policy used for the Zookeeper connection
 
     Defaults: 3000
 
 ```ref-database.zookeeper.retryPolicyMaxRetries```
-:   Configuration for the max number of retries to use to create the
+:   Configuration for the maximum number of retries of the
     BoundedExponentialBackoffRetry policy used for the Zookeeper connection
 
     Defaults: 3
 
 ```ref-database.zookeeper.casRetryPolicyBaseSleepTimeMs```
-:   Configuration for the base sleep timeout (in milliseconds) to use to create the
+:   Configuration for the base sleep timeout in milliseconds of the
     BoundedExponentialBackoffRetry policy used for the Compare and Swap
     operations on Zookeeper
 
     Defaults: 1000
     
 ```ref-database.zookeeper.casRetryPolicyMaxSleepTimeMs```
-:   Configuration for the max sleep timeout (in milliseconds) to use to create the
+:   Configuration for the maximum sleep timeout in milliseconds of the
     BoundedExponentialBackoffRetry policy used for the Compare and Swap
     operations on Zookeeper
 
     Defaults: 3000
     
 ```ref-database.zookeeper.casRetryPolicyMaxRetries```
-:   Configuration for the max number of retries to use to create the
+:   Configuration for the maximum number of retries of the
     BoundedExponentialBackoffRetry policy used for the Compare and Swap
     operations on Zookeeper
 
@@ -251,17 +252,15 @@ File '@PLUGIN@.config'
 
     Defaults: 1000
 
-#### Custom kafka properties:
-
 In addition to the above settings, custom Kafka properties can be explicitly set
 for `publisher` and `subscriber`.
 In order to be acknowledged, these properties need to be prefixed with the
-`KafkaProp-` prefix and then camelCased, as follows: `KafkaProp-yourPropertyValue`
+`KafkaProp-` prefix and be formatted using camel case, as follows: `KafkaProp-yourPropertyValue`
 
-For example, if you want to set the `auto.commit.interval.ms` property for your
-consumers, you will need to configure this property as `KafkaProp-autoCommitIntervalMs`.
+For example, if you want to set the `auto.commit.interval.ms` property for
+consumers, you need to configure this property as `KafkaProp-autoCommitIntervalMs`.
 
-**NOTE**: custom kafka properties will be ignored when the relevant subsection is
+**NOTE**: custom Kafka properties will be ignored when the relevant subsection is
 disabled (i.e. `kafka.subscriber.enabled` and/or `kafka.publisher.enabled` are
 set to `false`).
 
