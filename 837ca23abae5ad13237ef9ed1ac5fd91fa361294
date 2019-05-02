@@ -1,0 +1,515 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6ef91bf1_f5d9f780",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "ensureNotNullRef?",
+      "range": {
+        "startLine": 77,
+        "startChar": 16,
+        "endLine": 77,
+        "endChar": 32
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "daf9ed11_48a288d4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "This is confusing, I would rewrite it as:\n\n  MoreObjects.firstNotNull(oldRef, newRef).getName()",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 94
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9dfeab13_0eacffca",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "This is way too wide, why can\u0027t we stick with the IOException?",
+      "range": {
+        "startLine": 244,
+        "startChar": 13,
+        "endLine": 244,
+        "endChar": 22
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd3684c3_62ef5e8f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "This is wrong, we have a \"catch-all\" that does nothing and has the side-effect of then having to have a \"throws Exception\" all upstream.",
+      "range": {
+        "startLine": 274,
+        "startChar": 5,
+        "endLine": 277,
+        "endChar": 5
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acaf6853_2188e048",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "Have you ever seen a situation where some commands can be successful but not others? The batch update should guarantee that all of them are done or none of them.\n\nAre we introducing unnecessary complexity here?",
+      "range": {
+        "startLine": 284,
+        "startChar": 12,
+        "endLine": 284,
+        "endChar": 56
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "76e5ea5f_58c43173",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "refToUpdate?",
+      "range": {
+        "startLine": 301,
+        "startChar": 10,
+        "endLine": 301,
+        "endChar": 20
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fab748bf_b2e837f3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "Use the import static of SharedRefDb, otherwise looks like reading it that NULL_REF is an instance field of sharedRefDb, which is untrue.",
+      "range": {
+        "startLine": 302,
+        "startChar": 28,
+        "endLine": 302,
+        "endChar": 40
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cda67eb1_05330cd5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "Best to have in a self-documenting method getRefLockKey?",
+      "range": {
+        "startLine": 306,
+        "startChar": 30,
+        "endLine": 306,
+        "endChar": 88
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5501da9e_29c2f5bd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "Isn\u0027t this condition already managed in the \"isMostRecentRefVersion\" ?",
+      "range": {
+        "startLine": 311,
+        "startChar": 6,
+        "endLine": 311,
+        "endChar": 75
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7726612b_52a9283f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "Are we locking before checking?\nIf we are not up-to-date, why should we be locking at all?\n\nUse the double-check lock pattern:\ncheck\nlock\ncheck",
+      "range": {
+        "startLine": 307,
+        "startChar": 0,
+        "endLine": 315,
+        "endChar": 7
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9594228_b39f0ada",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/NoOpDfsRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "IsUpToDate?",
+      "range": {
+        "startLine": 23,
+        "startChar": 17,
+        "endLine": 23,
+        "endChar": 39
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "adb803c7_6b395845",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/NoOpDfsRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "If this is a Noop, it should return true.",
+      "range": {
+        "startLine": 24,
+        "startChar": 11,
+        "endLine": 24,
+        "endChar": 16
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bed9d1b4_6202f9e8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/NoOpDfsRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "This would throw an NPE, it should instead be a Noop right?",
+      "range": {
+        "startLine": 34,
+        "startChar": 11,
+        "endLine": 34,
+        "endChar": 15
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f5f2c9b_16d899ae",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "isUpToDate?",
+      "range": {
+        "startLine": 96,
+        "startChar": 10,
+        "endLine": 96,
+        "endChar": 32
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28ddaf22_aff93e83",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "JavaDoc missing",
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "029d86dd_dc2d5e19",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "This is the wrong place: this interface should tell what a shared-refdb looks like and the ignored refs are not specific to an implementation of a shared-refdb but tied to Gerrit isn\u0027t it?\n\nAdditionally, it\u0027s out of the scope of this change.",
+      "range": {
+        "startLine": 137,
+        "startChar": 18,
+        "endLine": 137,
+        "endChar": 37
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2fef6131_f0e2caed",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "nit: unreleated space change",
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ae1e150_fbac58c8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "Why warning? This is a completely normal condition: we don\u0027t want to pollute logs with unnecessary alarming notices.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 25
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da406d90_c6d6c30d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "Can we really have Zookeeper nodes with null values? If yes, then *here* I would put a warning because it isn\u0027t a normal situation and something did not work as expected right? Or is this the management of the tombstone?",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 42
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd2cd744_f31d59a5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "Can be inlined at L73",
+      "range": {
+        "startLine": 71,
+        "startChar": 21,
+        "endLine": 71,
+        "endChar": 33
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1dc9443_96883261",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "Is this really an I/O problem?",
+      "range": {
+        "startLine": 91,
+        "startChar": 16,
+        "endLine": 91,
+        "endChar": 27
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a66a209_2ea9566a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "Missing @Override annotation",
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "429fc042_ef0ff89f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T10:46:39Z",
+      "side": 1,
+      "message": "This is more a lock-related exception: can we find something more relevant?",
+      "range": {
+        "startLine": 101,
+        "startChar": 16,
+        "endLine": 101,
+        "endChar": 27
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
