@@ -14,17 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 function check_application_requirements {
-	type haproxy >/dev/null 2>&1 || { echo >&2 "Require haproxy but it's not installed. Aborting."; exit 1; }
-	type java >/dev/null 2>&1 || { echo >&2 "Require java but it's not installed. Aborting."; exit 1; }
-	type docker >/dev/null 2>&1 || { echo >&2 "Require docker but it's not installed. Aborting."; exit 1; }
-	type docker-compose >/dev/null 2>&1 || { echo >&2 "Require docker-compose but it's not installed. Aborting."; exit 1; }
-	type wget >/dev/null 2>&1 || { echo >&2 "Require wget but it's not installed. Aborting."; exit 1; }
-	type envsubst >/dev/null 2>&1 || { echo >&2 "Require envsubst but it's not installed. Aborting."; exit 1; }
-	type openssl >/dev/null 2>&1 || { echo >&2 "Require openssl but it's not installed. Aborting."; exit 1; }
+	declare -a requirements=(haproxy java docker docker-compose wget envsubst openssl git pgrep pkill)
+	for r in "${requirements[@]}" ; do 
+		hash "${r}" || { echo >&2 "Require ${r} but it is not installed. Aborting."; exit 1; }
+	done
+	echo "[OK] All rquirements available."
 }
 
 function get_replication_url {
@@ -40,18 +37,18 @@ function get_replication_url {
 }
 
 function deploy_tls_certificates {
-	echo "Deplying certificates in $HA_PROXY_CERTIFICATES_DIR..."
+	echo "Deploying certificates in $HA_PROXY_CERTIFICATES_DIR..."
 	openssl req -new -newkey rsa:2048 -x509 -sha256 -days 365 -nodes \
-	-out $HA_PROXY_CERTIFICATES_DIR/MyCertificate.crt \
-	-keyout $HA_PROXY_CERTIFICATES_DIR/GerritLocalKey.key \
+	-out "${HA_PROXY_CERTIFICATES_DIR}/MyCertificate.crt" \
+	-keyout "${HA_PROXY_CERTIFICATES_DIR}/GerritLocalKey.key" \
 	-subj "/C=GB/ST=London/L=London/O=Gerrit Org/OU=IT Department/CN=localhost"
-	cat $HA_PROXY_CERTIFICATES_DIR/MyCertificate.crt $HA_PROXY_CERTIFICATES_DIR/GerritLocalKey.key | tee $HA_PROXY_CERTIFICATES_DIR/GerritLocalKey.pem
+	cat "${HA_PROXY_CERTIFICATES_DIR}/MyCertificate.crt" "${HA_PROXY_CERTIFICATES_DIR}/GerritLocalKey.key" | tee "${HA_PROXY_CERTIFICATES_DIR}/GerritLocalKey.pem"
 }
 
 function copy_config_files {
-	for file in `ls $SCRIPT_DIR/configs/*.config`
+	for file in "${SCRIPT_DIR}"/configs/*.config
 	do
-		file_name=`basename $file`
+		file_name=$(basename "${file}")
 
 		CONFIG_TEST_SITE=$1
 		export GERRIT_HTTPD_PORT=$2
@@ -62,13 +59,15 @@ function copy_config_files {
 		export GERRIT_HOSTNAME=$7
 		export REPLICATION_HOSTNAME=$8
 		export REMOTE_DEBUG_PORT=$9
-		export REPLICATION_URL=$(get_replication_url $REPLICATION_LOCATION_TEST_SITE $REPLICATION_HOSTNAME)
+		REPLICATION_URL=$(get_replication_url "$REPLICATION_LOCATION_TEST_SITE" "$REPLICATION_HOSTNAME")
+		export REPLICATION_URL
 
-		echo "Replacing variables for file $file and copying to $CONFIG_TEST_SITE/$file_name"
+		echo "Replacing variables for file ${file} and copying to ${CONFIG_TEST_SITE}/${file_name}"
 
-		cat $file | envsubst | sed 's/#{name}#/${name}/g' > $CONFIG_TEST_SITE/$file_name
+		envsubst < "$file" | sed 's/#{ name }#/${ name }/g' > "${CONFIG_TEST_SITE}/${file_name}"
 	done
 }
+
 function start_ha_proxy {
 
 	export HA_GERRIT_CANONICAL_HOSTNAME=$GERRIT_CANONICAL_HOSTNAME
@@ -84,12 +83,12 @@ function start_ha_proxy {
 	export HA_GERRIT_SITE1_SSHD_PORT=$GERRIT_1_SSHD_PORT
 	export HA_GERRIT_SITE2_SSHD_PORT=$GERRIT_2_SSHD_PORT
 
-	cat $SCRIPT_DIR/haproxy-config/haproxy.cfg | envsubst > $HA_PROXY_CONFIG_DIR/haproxy.cfg
+	envsubst < "${SCRIPT_DIR}/haproxy-config/haproxy.cfg" > "${HA_PROXY_CONFIG_DIR}/haproxy.cfg"
 
 	echo "Starting HA-PROXY..."
 	echo "THE SCRIPT LOCATION $SCRIPT_DIR"
 	echo "THE HA SCRIPT_LOCATION $HA_SCRIPT_DIR"
-	haproxy -f $HA_PROXY_CONFIG_DIR/haproxy.cfg &
+	haproxy -f "${HA_PROXY_CONFIG_DIR}/haproxy.cfg" &
 }
 
 function deploy_config_files {
@@ -103,82 +102,89 @@ function deploy_config_files {
 	GERRIT_SITE1_HOSTNAME=$1
 	GERRIT_SITE1_HTTPD_PORT=$2
 	GERRIT_SITE1_SSHD_PORT=$3
-	CONFIG_TEST_SITE_1=$LOCATION_TEST_SITE_1/etc
+	CONFIG_TEST_SITE_1="${LOCATION_TEST_SITE_1}/etc"
 	GERRIT_SITE1_REMOTE_DEBUG_PORT="5005"
 	# SITE 2
 	GERRIT_SITE2_HOSTNAME=$4
 	GERRIT_SITE2_HTTPD_PORT=$5
 	GERRIT_SITE2_SSHD_PORT=$6
-	CONFIG_TEST_SITE_2=$LOCATION_TEST_SITE_2/etc
+	CONFIG_TEST_SITE_2="${LOCATION_TEST_SITE_2}/etc"
 	GERRIT_SITE2_REMOTE_DEBUG_PORT="5006"
 
 	# Set config SITE1
-	copy_config_files $CONFIG_TEST_SITE_1 $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_SSHD_PORT $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE1_REMOTE_DEBUG_PORT
+	copy_config_files "$CONFIG_TEST_SITE_1" "$GERRIT_SITE1_HTTPD_PORT" "$LOCATION_TEST_SITE_1" "$GERRIT_SITE1_SSHD_PORT" "$GERRIT_SITE2_HTTPD_PORT" "$LOCATION_TEST_SITE_2" "$GERRIT_SITE1_HOSTNAME" "$GERRIT_SITE2_HOSTNAME" "$GERRIT_SITE1_REMOTE_DEBUG_PORT"
 
 
 	# Set config SITE2
-	copy_config_files $CONFIG_TEST_SITE_2 $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE2_SSHD_PORT $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE2_REMOTE_DEBUG_PORT
+	copy_config_files "$CONFIG_TEST_SITE_2" "$GERRIT_SITE2_HTTPD_PORT" "$LOCATION_TEST_SITE_2" "$GERRIT_SITE2_SSHD_PORT" "$GERRIT_SITE1_HTTPD_PORT" "$LOCATION_TEST_SITE_1" "$GERRIT_SITE1_HOSTNAME" "$GERRIT_SITE2_HOSTNAME" "$GERRIT_SITE2_REMOTE_DEBUG_PORT"
 }
 
 
 function cleanup_environment {
 	echo "Killing existing HA-PROXY setup"
-	kill $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}') 2> /dev/null
+	pkill -f haproxy
 	echo "Stoping kafka and zk"
-	docker-compose -f $SCRIPT_DIR/docker-compose.kafka-broker.yaml down 2> /dev/null
+	docker-compose -f "${SCRIPT_DIR}/docker-compose.kafka-broker.yaml" down 2> /dev/null
 
 	echo "Stoping GERRIT instances"
-	$1/bin/gerrit.sh stop 2> /dev/null
-	$2/bin/gerrit.sh stop 2> /dev/null
+	"${1}/bin/gerrit.sh" stop 2> /dev/null
+	"${2}/bin/gerrit.sh" stop 2> /dev/null
 
 	echo "REMOVING setup directory $3"
-	rm -rf $3 2> /dev/null
+	rm -rf "$3" 2> /dev/null
 }
 
 function check_if_kafka_is_running {
-	echo $(docker inspect kafka_test_node 2> /dev/null | grep '"Running": true' | wc -l)
+	docker inspect kafka_test_node 2> /dev/null | grep -c '"Running": true'
+}
+
+function usage {
+	WHOAMI=$(whoami)
+	cat <<USAGE
+Usage: sh ${0} [--option $value]
+
+[--release-war-file]            Location to release.war file
+[--multisite-lib-file]          Location to lib multi-site.jar file
+
+[--new-deployment]              Cleans up previous gerrit deployment and re-installs it. default true
+[--get-websession-plugin]       Download websession-flatfile plugin from CI lastSuccessfulBuild; default true
+[--deployment-location]         Base location for the test deployment; default /tmp
+
+[--gerrit-canonical-host]       The default host for Gerrit to be accessed through; default localhost
+[--gerrit-canonical-port]       The default port for Gerrit to be accessed throug; default 8080
+
+[--gerrit-ssh-advertised-port]  Gerrit Instance 1 sshd port; default 29418
+
+[--gerrit1-httpd-port]          Gerrit Instance 1 http port; default 18080
+[--gerrit1-sshd-port]           Gerrit Instance 1 sshd port; default 39418
+
+[--gerrit2-httpd-port]          Gerrit Instance 2 http port; default 18081
+[--gerrit2-sshd-port]           Gerrit Instance 2 sshd port; default 49418
+
+[--replication-type]            Options [file,ssh]; default ssh
+[--replication-ssh-user]        SSH user for the replication plugin; default ${WHOAMI}
+[--replication-delay]           Replication delay across the two instances in seconds
+
+[--just-cleanup-env]            Cleans up previous deployment; default false
+
+[--enabled-https]               Enabled https; default true
+
+USAGE
 }
 
 while [ $# -ne 0 ]
 do
 case "$1" in
   "--help" )
-		echo "Usage: sh $0 [--option $value]"
-		echo
-		echo "[--release-war-file]            Location to release.war file"
-		echo "[--multisite-lib-file]          Location to lib multi-site.jar file"
-		echo
-		echo "[--new-deployment]              Cleans up previous gerrit deployment and re-installs it. default true"
-		echo "[--get-websession-plugin]       Download websession-flatfile plugin from CI lastSuccessfulBuild; default true"
-		echo "[--deployment-location]         Base location for the test deployment; default /tmp"
-		echo
-		echo "[--gerrit-canonical-host]       The default host for Gerrit to be accessed through; default localhost"
-		echo "[--gerrit-canonical-port]       The default port for Gerrit to be accessed throug; default 8080"
-		echo
-		echo "[--gerrit-ssh-advertised-port]  Gerrit Instance 1 sshd port; default 29418"
-		echo
-		echo "[--gerrit1-httpd-port]          Gerrit Instance 1 http port; default 18080"
-		echo "[--gerrit1-sshd-port]           Gerrit Instance 1 sshd port; default 39418"
-		echo
-		echo "[--gerrit2-httpd-port]          Gerrit Instance 2 http port; default 18081"
-		echo "[--gerrit2-sshd-port]           Gerrit Instance 2 sshd port; default 49418"
-		echo
-		echo "[--replication-type]            Options [file,ssh]; default ssh"
-		echo "[--replication-ssh-user]        SSH user for the replication plugin; default $(whoami)"
-		echo "[--replication-delay]           Replication delay across the two instances in seconds"
-		echo
-		echo "[--just-cleanup-env]            Cleans up previous deployment; default false"
-		echo
-		echo "[--enabled-https]               Enabled https; default true"
-		echo
+		usage
 		exit 0
   ;;
-  "--new-deployment")
+  "--new-deployment" )
         NEW_INSTALLATION=$2
 		shift
 		shift
   ;;
-  "--get-websession-plugin")
+  "--get-websession-plugin" )
 		DOWNLOAD_WEBSESSION_FLATFILE=$2
 		shift
 		shift
@@ -238,12 +244,12 @@ case "$1" in
 		shift
 		shift
   ;;
-  "--replication-type")
+  "--replication-type" )
 		export REPLICATION_TYPE=$2
 		shift
 		shift
   ;;
-  "--replication-delay")
+  "--replication-delay" )
 		export REPLICATION_DELAY_SEC=$2
 		shift
 		shift
@@ -270,59 +276,65 @@ done
 check_application_requirements
 
 # Defaults
-NEW_INSTALLATION=${NEW_INSTALLATION:-"true"}
-DOWNLOAD_WEBSESSION_FLATFILE=${DOWNLOAD_WEBSESSION_FLATFILE:-"true"}
-DEPLOYMENT_LOCATION=${DEPLOYMENT_LOCATION:-"/tmp"}
-export GERRIT_CANONICAL_HOSTNAME=${GERRIT_CANONICAL_HOSTNAME:-"localhost"}
-export GERRIT_CANONICAL_PORT=${GERRIT_CANONICAL_PORT:-"8080"}
-GERRIT_1_HOSTNAME=${GERRIT_1_HOSTNAME:-"localhost"}
-GERRIT_2_HOSTNAME=${GERRIT_2_HOSTNAME:-"localhost"}
-GERRIT_1_HTTPD_PORT=${GERRIT_1_HTTPD_PORT:-"18080"}
-GERRIT_2_HTTPD_PORT=${GERRIT_2_HTTPD_PORT:-"18081"}
-GERRIT_1_SSHD_PORT=${GERRIT_1_SSHD_PORT:-"39418"}
-GERRIT_2_SSHD_PORT=${GERRIT_2_SSHD_PORT:-"49418"}
-REPLICATION_TYPE=${REPLICATION_TYPE:-"ssh"}
-REPLICATION_SSH_USER=${REPLICATION_SSH_USER:-$(whoami)}
-export REPLICATION_DELAY_SEC=${REPLICATION_DELAY_SEC:-"5"}
-export SSH_ADVERTISED_PORT=${SSH_ADVERTISED_PORT:-"29418"}
-HTTPS_ENABLED=${HTTPS_ENABLED:-"true"}
+: "${NEW_INSTALLATION:="true"}"
+: "${DOWNLOAD_WEBSESSION_FLATFILE:="true"}"
+: "${DEPLOYMENT_LOCATION:="/tmp"}"
+: "${GERRIT_CANONICAL_HOSTNAME:="localhost"}"
+: "${GERRIT_CANONICAL_PORT:="8080"}"
+: "${GERRIT_1_HOSTNAME:="localhost"}"
+: "${GERRIT_2_HOSTNAME:="localhost"}"
+: "${GERRIT_1_HTTPD_PORT:="18080"}"
+: "${GERRIT_2_HTTPD_PORT:="18081"}"
+: "${GERRIT_1_SSHD_PORT:="39418"}"
+: "${GERRIT_2_SSHD_PORT:="49418"}"
+: "${REPLICATION_TYPE:="ssh"}"
+: "${REPLICATION_SSH_USER:=$(whoami)}"
+: "${REPLICATION_DELAY_SEC:="5"}"
+: "${SSH_ADVERTISED_PORT:="29418"}"	
+: "${HTTPS_ENABLED:="true"}"
+: "${RELEASE_WAR_FILE_LOCATION:=bazel-bin/release.war}"
+: "${MULTISITE_LIB_LOCATION:=bazel-genfiles/plugins/multi-site/multi-site.jar}"
 
-COMMON_LOCATION=$DEPLOYMENT_LOCATION/gerrit_setup
-LOCATION_TEST_SITE_1=$COMMON_LOCATION/instance-1
-LOCATION_TEST_SITE_2=$COMMON_LOCATION/instance-2
-HA_PROXY_CONFIG_DIR=$COMMON_LOCATION/ha-proxy-config
-HA_PROXY_CERTIFICATES_DIR="$HA_PROXY_CONFIG_DIR/certificates"
-
-RELEASE_WAR_FILE_LOCATION=${RELEASE_WAR_FILE_LOCATION:-bazel-bin/release.war}
-MULTISITE_LIB_LOCATION=${MULTISITE_LIB_LOCATION:-bazel-genfiles/plugins/multi-site/multi-site.jar}
+export GERRIT_CANONICAL_HOSTNAME \
+	   GERRIT_CANONICAL_PORT \
+	   REPLICATION_DELAY_SEC \
+	   SSH_ADVERTISED_PORT
 
 
-export FAKE_NFS=$COMMON_LOCATION/fake_nfs
+COMMON_LOCATION="${DEPLOYMENT_LOCATION}/gerrit_setup"
+LOCATION_TEST_SITE_1="${COMMON_LOCATION}/instance-1"
+LOCATION_TEST_SITE_2="${COMMON_LOCATION}/instance-2"
+HA_PROXY_CONFIG_DIR="${COMMON_LOCATION}/ha-proxy-config"
+HA_PROXY_CERTIFICATES_DIR="${HA_PROXY_CONFIG_DIR}/certificates"
+
+export FAKE_NFS="${COMMON_LOCATION}/fake_nfs"
 
 if [ "$JUST_CLEANUP_ENV" = "true" ];then
-	cleanup_environment $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $COMMON_LOCATION
+	cleanup_environment "$LOCATION_TEST_SITE_1" "$LOCATION_TEST_SITE_2" "$COMMON_LOCATION"
 	exit 0
 fi
 
-if [ -z $RELEASE_WAR_FILE_LOCATION ];then
+if [ -z "$RELEASE_WAR_FILE_LOCATION" ];then
 	echo "A release.war file is required. Usage: sh $0 --release-war-file /path/to/release.war"
+	usage
 	exit 1
 else
-	cp -f $RELEASE_WAR_FILE_LOCATION $DEPLOYMENT_LOCATION/gerrit.war >/dev/null 2>&1 || { echo >&2 "$RELEASE_WAR_FILE_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+	cp -f "$RELEASE_WAR_FILE_LOCATION" "${DEPLOYMENT_LOCATION}/gerrit.war" >/dev/null 2>&1 || { echo >&2 "${RELEASE_WAR_FILE_LOCATION}: Not able to copy the file. Aborting"; uasge; exit 1; }
 fi
-if [ -z $MULTISITE_LIB_LOCATION ];then
+if [ -z "$MULTISITE_LIB_LOCATION" ];then
 	echo "The multi-site library is required. Usage: sh $0 --multisite-lib-file /path/to/multi-site.jar"
+	usage
 	exit 1
 else
-	cp -f $MULTISITE_LIB_LOCATION $DEPLOYMENT_LOCATION/multi-site.jar  >/dev/null 2>&1 || { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+	cp -f "$MULTISITE_LIB_LOCATION" "${DEPLOYMENT_LOCATION}/multi-site.jar"  >/dev/null 2>&1 || { echo >&2 "${MULTISITE_LIB_LOCATION}: Not able to copy the file. Aborting"; uasge; exit 1; }
 fi
-if [ $DOWNLOAD_WEBSESSION_FLATFILE = "true" ];then
+if [ "$DOWNLOAD_WEBSESSION_FLATFILE" = "true" ];then
 	echo "Downloading websession-flatfile plugin stable 2.16"
 	wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-2.16/job/plugin-websession-flatfile-bazel-master-stable-2.16/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/websession-flatfile/websession-flatfile.jar \
-	-O $DEPLOYMENT_LOCATION/websession-flatfile.jar || { echo >&2 "Cannot download websession-flatfile plugin: Check internet connection. Abort\
+	-O "${DEPLOYMENT_LOCATION}/websession-flatfile.jar" || { echo >&2 "Cannot download websession-flatfile plugin: Check internet connection. Abort\
 ing"; exit 1; }
 	wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-2.16/job/plugin-healthcheck-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/healthcheck/healthcheck.jar \
-	-O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
+	-O "${DEPLOYMENT_LOCATION}/healthcheck.jar" || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
 ing"; exit 1; }
 else
 	echo "Without the websession-flatfile; user login via haproxy will fail."
@@ -344,74 +356,76 @@ else
 fi
 
 # New installation
-if [ $NEW_INSTALLATION = "true" ]; then
-
-	cleanup_environment $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $COMMON_LOCATION
+if [ "$NEW_INSTALLATION" = "true" ]; then
+	set -x
+	cleanup_environment "$LOCATION_TEST_SITE_1" "$LOCATION_TEST_SITE_2" "$COMMON_LOCATION"
 
 	echo "Setting up directories"
-	mkdir -p $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $HA_PROXY_CERTIFICATES_DIR $FAKE_NFS
-	java -jar $DEPLOYMENT_LOCATION/gerrit.war init --batch --no-auto-start --install-all-plugins --dev -d $LOCATION_TEST_SITE_1
+	mkdir -p "$LOCATION_TEST_SITE_1" "$LOCATION_TEST_SITE_2" "$HA_PROXY_CERTIFICATES_DIR" "$FAKE_NFS"
+	java -jar "${DEPLOYMENT_LOCATION}/gerrit.war" init --batch --no-auto-start --install-all-plugins --dev -d "$LOCATION_TEST_SITE_1"
 
 	# Deploying TLS certificates
 	if [ "$HTTPS_ENABLED" = "true" ];then deploy_tls_certificates;fi
 
 	echo "Copy multi-site library"
-	cp -f $DEPLOYMENT_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/lib/multi-site.jar
+	cp -f "${DEPLOYMENT_LOCATION}/multi-site.jar" "${LOCATION_TEST_SITE_1}/lib/multi-site.jar"
 
 	echo "Copy websession-flatfile plugin"
-	cp -f $DEPLOYMENT_LOCATION/websession-flatfile.jar $LOCATION_TEST_SITE_1/plugins/websession-flatfile.jar
+	cp -f "${DEPLOYMENT_LOCATION}/websession-flatfile.jar" "${LOCATION_TEST_SITE_1}/plugins/websession-flatfile.jar"
 
 	echo "Copy healthcheck plugin"
-	cp -f $DEPLOYMENT_LOCATION/healthcheck.jar $LOCATION_TEST_SITE_1/plugins/healthcheck.jar
+	cp -f "${DEPLOYMENT_LOCATION}/healthcheck.jar" "${LOCATION_TEST_SITE_1}/plugins/healthcheck.jar"
 
 	echo "Re-indexing"
-	java -jar $DEPLOYMENT_LOCATION/gerrit.war reindex -d $LOCATION_TEST_SITE_1
+	java -jar "${DEPLOYMENT_LOCATION}/gerrit.war" reindex -d "$LOCATION_TEST_SITE_1"
 	# Replicating environment
 	echo "Replicating environment"
-	cp -fR $LOCATION_TEST_SITE_1/* $LOCATION_TEST_SITE_2
+	cp -fR "$LOCATION_TEST_SITE_1"/* "$LOCATION_TEST_SITE_2"
+	set +x 
 fi
 
 
 IS_KAFKA_RUNNING=$(check_if_kafka_is_running)
-if [ $IS_KAFKA_RUNNING -lt 1 ];then
+if [ "$IS_KAFKA_RUNNING" -lt 1 ];then
 
 	echo "Starting zk and kafka"
-	docker-compose -f $SCRIPT_DIR/docker-compose.kafka-broker.yaml up -d
+	docker-compose -f "${SCRIPT_DIR}/docker-compose.kafka-broker.yaml" up -d
 	echo "Waiting for kafka to start..."
 	while [[ $(check_if_kafka_is_running) -lt 1 ]];do sleep 10s; done
 fi
 
 echo "Re-deploying configuration files"
-deploy_config_files $GERRIT_1_HOSTNAME $GERRIT_1_HTTPD_PORT $GERRIT_1_SSHD_PORT $GERRIT_2_HOSTNAME $GERRIT_2_HTTPD_PORT $GERRIT_2_SSHD_PORT
+deploy_config_files "$GERRIT_1_HOSTNAME" "$GERRIT_1_HTTPD_PORT" "$GERRIT_1_SSHD_PORT" "$GERRIT_2_HOSTNAME" "$GERRIT_2_HTTPD_PORT" "$GERRIT_2_SSHD_PORT"
 echo "Starting gerrit site 1"
-$LOCATION_TEST_SITE_1/bin/gerrit.sh restart
+"${LOCATION_TEST_SITE_1}/bin/gerrit.sh" restart
 echo "Starting gerrit site 2"
-$LOCATION_TEST_SITE_2/bin/gerrit.sh restart
+"${LOCATION_TEST_SITE_2}/bin/gerrit.sh" restart
 
 
-if [[ $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}' | wc -l) -lt 1 ]];then
+if [[ $(pgrep -f haproxy -c) -lt 1 ]]; then
 	echo "Starting haproxy"
 	start_ha_proxy
 fi
 
-echo "==============================="
-echo "Current gerrit multi-site setup"
-echo "==============================="
-echo "The admin password is 'secret'"
-echo "deployment-location=$DEPLOYMENT_LOCATION"
-echo "replication-type=$REPLICATION_TYPE"
-echo "replication-ssh-user=$REPLICATION_SSH_USER"
-echo "replication-delay=$REPLICATION_DELAY_SEC"
-echo "enable-https=$HTTPS_ENABLED"
-echo
-echo "GERRIT HA-PROXY: $GERRIT_CANONICAL_WEB_URL"
-echo "GERRIT-1: http://$GERRIT_1_HOSTNAME:$GERRIT_1_HTTPD_PORT"
-echo "GERRIT-2: http://$GERRIT_2_HOSTNAME:$GERRIT_2_HTTPD_PORT"
-echo
-echo "Site-1: $LOCATION_TEST_SITE_1"
-echo "Site-2: $LOCATION_TEST_SITE_2"
-echo
-echo "$HTTPS_CLONE_MSG"
-echo
+cat <<SETUPMSG
+===============================
+Current gerrit multi-site setup
+===============================
+The admin password is 'secret'
+deployment-location=${DEPLOYMENT_LOCATION}
+replication-type=${REPLICATION_TYPE}
+replication-ssh-user=${REPLICATION_SSH_USER}
+replication-delay=${REPLICATION_DELAY_SEC}
+enable-https=${HTTPS_ENABLED}
 
+GERRIT HA-PROXY: $GERRIT_CANONICAL_WEB_URL
+GERRIT-1: http://${GERRIT_1_HOSTNAME}:${GERRIT_1_HTTPD_PORT}
+GERRIT-2: http://${GERRIT_2_HOSTNAME}:${GERRIT_2_HTTPD_PORT}
+
+Site-1: ${LOCATION_TEST_SITE_1}
+Site-2: ${LOCATION_TEST_SITE_2}
+
+${HTTPS_CLONE_MSG}
+
+SETUPMSG
 exit $?
