@@ -22,6 +22,30 @@
       "revId": "cf54e3caa0200b8550dfa78e7f80f45feda2a2e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62155ea2_2abe793c",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 31
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T21:50:28Z",
+      "side": 1,
+      "message": "I am actually going to argue if this flag is useful or not :-(\nIt is unclear to me what is doing: checks but logs only? Does it update the shared ref? What happens in the shared ref is out of sync? Just dump the logs?\n\nWhat I believe is going to be more useful instead is the configurable enforcement policy on a per-repo/per-ref basis.",
+      "parentUuid": "432de65f_d87e77e1",
+      "range": {
+        "startLine": 256,
+        "startChar": 29,
+        "endLine": 257,
+        "endChar": 32
+      },
+      "revId": "cf54e3caa0200b8550dfa78e7f80f45feda2a2e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
