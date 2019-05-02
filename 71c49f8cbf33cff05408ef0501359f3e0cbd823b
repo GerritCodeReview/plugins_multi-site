@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "edb81f1a_deb515dd",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-02T15:24:40Z",
+      "side": 0,
+      "message": "You\u0027ll need this. The replication.config file is not replacing the name of the repository because #{name}# needs to be ${name}",
+      "range": {
+        "startLine": 69,
+        "startChar": 2,
+        "endLine": 69,
+        "endChar": 51
+      },
+      "revId": "71c49f8cbf33cff05408ef0501359f3e0cbd823b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
