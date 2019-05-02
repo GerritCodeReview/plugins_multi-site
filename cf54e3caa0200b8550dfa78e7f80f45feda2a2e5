@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "432de65f_d87e77e1",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 31
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2019-05-02T21:39:21Z",
+      "side": 1,
+      "message": "If set to `true` all the ref-db sync failures will log but not throw the exception.",
+      "range": {
+        "startLine": 256,
+        "startChar": 29,
+        "endLine": 257,
+        "endChar": 32
+      },
+      "revId": "cf54e3caa0200b8550dfa78e7f80f45feda2a2e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
