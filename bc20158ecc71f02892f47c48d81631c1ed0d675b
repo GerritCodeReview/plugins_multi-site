@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb3317c2_caaabd34",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 35
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T23:36:26Z",
+      "side": 1,
+      "message": "This class is way too big because it tries to encapsulate all the logic of the simple and batch updates altogether. Needs breaking down into two separate classes, smaller and more manageable.",
+      "revId": "bc20158ecc71f02892f47c48d81631c1ed0d675b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
