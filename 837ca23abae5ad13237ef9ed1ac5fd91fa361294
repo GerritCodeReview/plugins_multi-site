@@ -460,6 +460,24 @@
     },
     {
       "key": {
+        "uuid": "94a395e8_b82a0521",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T21:42:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28ddaf22_aff93e83",
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ebe164cd_a7b35ee7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
         "patchSetId": 28
@@ -497,6 +515,30 @@
       "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a33c9b4_4578a161",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T21:42:42Z",
+      "side": 1,
+      "message": "Actually this has been moved already and this method is now unused.",
+      "parentUuid": "029d86dd_dc2d5e19",
+      "range": {
+        "startLine": 137,
+        "startChar": 18,
+        "endLine": 137,
+        "endChar": 37
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
