@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "58229a85_2669880d",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2019-05-02T22:05:50Z",
+      "side": 1,
+      "message": "Can you add more context to make this understandable for users who are not aware of implementation details ?\nWhat is the role of the shared Ref-Db and what\u0027s the purpose of validation and enforcement policies ?",
+      "range": {
+        "startLine": 262,
+        "startChar": 60,
+        "endLine": 263,
+        "endChar": 21
+      },
+      "revId": "19b6340fbc9cf80492d4f4016fd7fe6aaea0615a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e31e582c_01385e6f",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2019-05-02T22:05:50Z",
+      "side": 1,
+      "message": "Can you elaborate on\n- what\u0027s the observable consequence of throwing this exception ?\n- when to use this policy ?",
+      "revId": "19b6340fbc9cf80492d4f4016fd7fe6aaea0615a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
