@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "43ddfe11_8f07d11f",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-02T15:19:40Z",
+      "side": 1,
+      "message": "[[ \"${IS_KAFKA_RUNNING}\" -lt 1 ]]",
+      "range": {
+        "startLine": 389,
+        "startChar": 3,
+        "endLine": 389,
+        "endChar": 32
+      },
+      "revId": "3f62d88388676f4f77d6fffd288cd937e65c6f49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb3e412d_1595165d",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-02T15:19:40Z",
+      "side": 1,
+      "message": "mac does not have -c option\nif [[ ! $(pgrep -f haproxy) ]]",
+      "range": {
+        "startLine": 405,
+        "startChar": 3,
+        "endLine": 405,
+        "endChar": 37
+      },
+      "revId": "3f62d88388676f4f77d6fffd288cd937e65c6f49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
