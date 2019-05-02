@@ -396,6 +396,30 @@
     },
     {
       "key": {
+        "uuid": "783c4b33_874b4f50",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 28
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-02T21:33:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f5f2c9b_16d899ae",
+      "range": {
+        "startLine": 96,
+        "startChar": 10,
+        "endLine": 96,
+        "endChar": 32
+      },
+      "revId": "837ca23abae5ad13237ef9ed1ac5fd91fa361294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "28ddaf22_aff93e83",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
         "patchSetId": 28
