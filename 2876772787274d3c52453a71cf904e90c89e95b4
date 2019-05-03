@@ -47,6 +47,30 @@
       "revId": "2876772787274d3c52453a71cf904e90c89e95b4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eef9caf0_daf51b52",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefUpdateTest.java",
+        "patchSetId": 39
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-03T16:42:31Z",
+      "side": 1,
+      "message": "Confirmed that the code is working. Let\u0027s address the rewrite of this suite as a follow-up. For the time being the suite is left @Ignored.",
+      "parentUuid": "3734f894_1bdc6216",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 57
+      },
+      "revId": "2876772787274d3c52453a71cf904e90c89e95b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
