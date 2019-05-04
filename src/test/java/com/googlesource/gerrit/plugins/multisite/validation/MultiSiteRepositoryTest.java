@@ -58,8 +58,8 @@ public class MultiSiteRepositoryTest implements RefFixture {
     try (MultiSiteRepository multiSiteRepository =
         new MultiSiteRepository(multiSiteRefDbFactory, PROJECT_NAME, repository)) {
 
-    multiSiteRepository.getRefDatabase();
-    verify(multiSiteRefDbFactory).create(PROJECT_NAME, genericRefDb);
+      multiSiteRepository.getRefDatabase();
+      verify(multiSiteRefDbFactory).create(PROJECT_NAME, genericRefDb);
     }
   }
 
@@ -68,9 +68,9 @@ public class MultiSiteRepositoryTest implements RefFixture {
     setMockitoCommon();
     try (MultiSiteRepository multiSiteRepository =
         new MultiSiteRepository(multiSiteRefDbFactory, PROJECT_NAME, repository)) {
-    multiSiteRepository.getRefDatabase().newUpdate(REFS_HEADS_MASTER, false);
+      multiSiteRepository.getRefDatabase().newUpdate(REFS_HEADS_MASTER, false);
 
-    verify(multiSiteRefDb).newUpdate(REFS_HEADS_MASTER, false);
+      verify(multiSiteRefDb).newUpdate(REFS_HEADS_MASTER, false);
     }
   }
 
@@ -80,14 +80,14 @@ public class MultiSiteRepositoryTest implements RefFixture {
     doReturn(Result.NEW).when(multiSiteRefUpdate).update();
     doReturn(multiSiteRefUpdate).when(multiSiteRefDb).newUpdate(REFS_HEADS_MASTER, false);
 
-    try(MultiSiteRepository multiSiteRepository =
+    try (MultiSiteRepository multiSiteRepository =
         new MultiSiteRepository(multiSiteRefDbFactory, PROJECT_NAME, repository)) {
 
-    Result updateResult =
-        multiSiteRepository.getRefDatabase().newUpdate(REFS_HEADS_MASTER, false).update();
+      Result updateResult =
+          multiSiteRepository.getRefDatabase().newUpdate(REFS_HEADS_MASTER, false).update();
 
-    verify(multiSiteRefUpdate).update();
-    assertThat(updateResult).isEqualTo(Result.NEW);
+      verify(multiSiteRefUpdate).update();
+      assertThat(updateResult).isEqualTo(Result.NEW);
     }
   }
 }
