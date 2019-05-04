@@ -30,7 +30,6 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
-import java.io.IOException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Ref.Storage;
@@ -52,19 +51,7 @@ public class RefSharedDatabaseTest implements RefFixture {
     ObjectId objectId = AN_OBJECT_ID_1;
     String refName = aBranchRef();
 
-    Ref aNewRef =
-        new SharedRefDatabase() {
-
-          @Override
-          public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
-            return false;
-          }
-
-          @Override
-          public boolean compareAndPut(String project, Ref oldRef, Ref newRef) throws IOException {
-            return false;
-          }
-        }.newRef(refName, objectId);
+    Ref aNewRef = SharedRefDatabase.newRef(refName, objectId);
 
     assertThat(aNewRef.getName()).isEqualTo(refName);
     assertThat(aNewRef.getObjectId()).isEqualTo(objectId);

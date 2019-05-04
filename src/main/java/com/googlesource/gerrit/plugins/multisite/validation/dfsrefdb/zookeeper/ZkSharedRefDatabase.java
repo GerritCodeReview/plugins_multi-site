@@ -14,19 +14,21 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
-import com.google.common.base.MoreObjects;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedLockException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import javax.inject.Named;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.atomic.AtomicValue;
 import org.apache.curator.framework.recipes.atomic.DistributedAtomicValue;
+import org.apache.curator.framework.recipes.locks.InterProcessMutex;
+import org.apache.curator.framework.recipes.locks.Locker;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 
@@ -35,75 +37,96 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
 
   private final CuratorFramework client;
   private final RetryPolicy retryPolicy;
-  private final SharedRefEnforcement refEnforcement;
+
+  private final Long transactionLockTimeOut;
 
   @Inject
-  public ZkSharedRefDatabase(
-      CuratorFramework client,
-      @Named("ZkLockRetryPolicy") RetryPolicy retryPolicy,
-      SharedRefEnforcement refEnforcement) {
+  public ZkSharedRefDatabase(CuratorFramework client, ZkConnectionConfig connConfig) {
     this.client = client;
-    this.retryPolicy = retryPolicy;
-    this.refEnforcement = refEnforcement;
+    this.retryPolicy = connConfig.curatorRetryPolicy;
+    this.transactionLockTimeOut = connConfig.transactionLockTimeout;
+  }
+
+  @Override
+  public boolean isUpToDate(String project, Ref ref) throws SharedLockException {
+    if (!exists(project, ref.getName())) {
+      return true;
+    }
+
+    try {
+      final byte[] valueInZk = client.getData().forPath(pathFor(project, ref.getName()));
+
+      // Assuming this is a delete node NULL_REF
+      if (valueInZk == null) {
+        return false;
+      }
+
+      return readObjectId(valueInZk).equals(ref.getObjectId());
+    } catch (Exception e) {
+      throw new SharedLockException(project, ref.getName(), e);
+    }
   }
 
   @Override
   public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
-    return compareAndPut(project, oldRef, NULL_REF);
+    return compareAndPut(project, oldRef, ObjectId.zeroId());
   }
 
   @Override
-  public boolean compareAndPut(String projectName, Ref oldRef, Ref newRef) throws IOException {
-    EnforcePolicy enforcementPolicy =
-        refEnforcement.getPolicy(
-            projectName, MoreObjects.firstNonNull(oldRef.getName(), newRef.getName()));
-
-    if (enforcementPolicy == EnforcePolicy.IGNORED) {
-      return true;
+  public boolean exists(String project, String refName) throws ZookeeperRuntimeException {
+    try {
+      return client.checkExists().forPath(pathFor(project, refName)) != null;
+    } catch (Exception e) {
+      throw new ZookeeperRuntimeException("Failed to check if path exists in Zookeeper", e);
     }
+  }
+
+  @Override
+  public Locker lockRef(String project, String refName) throws SharedLockException {
+    InterProcessMutex refPathMutex =
+        new InterProcessMutex(client, "/locks" + pathFor(project, refName));
+    try {
+      return new Locker(refPathMutex, transactionLockTimeOut, MILLISECONDS);
+    } catch (Exception e) {
+      throw new SharedLockException(project, refName, e);
+    }
+  }
+
+  @Override
+  public boolean compareAndPut(String projectName, Ref oldRef, ObjectId newRefValue)
+      throws IOException {
 
     final DistributedAtomicValue distributedRefValue =
-        new DistributedAtomicValue(client, pathFor(projectName, oldRef, newRef), retryPolicy);
+        new DistributedAtomicValue(client, pathFor(projectName, oldRef), retryPolicy);
 
     try {
       if (oldRef == NULL_REF) {
-        return distributedRefValue.initialize(writeObjectId(newRef.getObjectId()));
+        return distributedRefValue.initialize(writeObjectId(newRefValue));
       }
-      final ObjectId newValue =
-          newRef.getObjectId() == null ? ObjectId.zeroId() : newRef.getObjectId();
+      final ObjectId newValue = newRefValue == null ? ObjectId.zeroId() : newRefValue;
       final AtomicValue<byte[]> newDistributedValue =
           distributedRefValue.compareAndSet(
               writeObjectId(oldRef.getObjectId()), writeObjectId(newValue));
 
-      if (!newDistributedValue.succeeded() && refNotInZk(projectName, oldRef, newRef)) {
-        return distributedRefValue.initialize(writeObjectId(newRef.getObjectId()));
+      if (!newDistributedValue.succeeded() && refNotInZk(projectName, oldRef)) {
+        return distributedRefValue.initialize(writeObjectId(newRefValue));
       }
 
-      boolean succeeded = newDistributedValue.succeeded();
-
-      if (!succeeded && enforcementPolicy == EnforcePolicy.DESIRED) {
-        logger.atWarning().log(
-            "Unable to compareAndPut %s %s=>%s, local ref-db is out of synch with the shared-db");
-        return true;
-      }
-
-      return succeeded;
+      return newDistributedValue.succeeded();
     } catch (Exception e) {
       logger.atWarning().withCause(e).log(
-          "Error trying to perform CAS at path %s", pathFor(projectName, oldRef, newRef));
+          "Error trying to perform CAS at path %s", pathFor(projectName, oldRef));
       throw new IOException(
-          String.format(
-              "Error trying to perform CAS at path %s", pathFor(projectName, oldRef, newRef)),
-          e);
+          String.format("Error trying to perform CAS at path %s", pathFor(projectName, oldRef)), e);
     }
   }
 
-  private boolean refNotInZk(String projectName, Ref oldRef, Ref newRef) throws Exception {
-    return client.checkExists().forPath(pathFor(projectName, oldRef, newRef)) == null;
+  private boolean refNotInZk(String projectName, Ref oldRef) throws Exception {
+    return client.checkExists().forPath(pathFor(projectName, oldRef)) == null;
   }
 
-  static String pathFor(String projectName, Ref oldRef, Ref newRef) {
-    return pathFor(projectName, MoreObjects.firstNonNull(oldRef.getName(), newRef.getName()));
+  static String pathFor(String projectName, Ref oldRef) {
+    return pathFor(projectName, oldRef.getName());
   }
 
   static String pathFor(String projectName, String refName) {
