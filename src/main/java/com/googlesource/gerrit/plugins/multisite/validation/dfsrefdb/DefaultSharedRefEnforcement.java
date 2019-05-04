@@ -25,7 +25,7 @@ public class DefaultSharedRefEnforcement implements SharedRefEnforcement {
 
   @Override
   public EnforcePolicy getPolicy(String projectName, String refName) {
-    if (ignoreRefInSharedDb(refName)) {
+    if (isRefToBeIgnoredBySharedRefDb(refName)) {
       return EnforcePolicy.IGNORED;
     }
 
@@ -33,9 +33,8 @@ public class DefaultSharedRefEnforcement implements SharedRefEnforcement {
         PREDEF_ENFORCEMENTS.get(projectName + ":" + refName), EnforcePolicy.REQUIRED);
   }
 
-  private boolean ignoreRefInSharedDb(String refName) {
-    return refName == null
-        || refName.startsWith("refs/draft-comments")
-        || (refName.startsWith("refs/changes") && !refName.endsWith("/meta"));
+  @Override
+  public EnforcePolicy getPolicy(String projectName) {
+    return EnforcePolicy.REQUIRED;
   }
 }

@@ -12,10 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.forwarder.events;
+package com.googlesource.gerrit.plugins.multisite;
 
-public abstract class IndexEvent extends MultiSiteEvent {
-  protected IndexEvent(String type) {
-    super(type);
+import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
+
+public class GitModule extends AbstractModule {
+  private final Configuration config;
+
+  @Inject
+  public GitModule(Configuration config) {
+    this.config = config;
+  }
+
+  @Override
+  protected void configure() {
+    if (config.getZookeeperConfig().isEnabled()) {
+      install(new ValidationModule(config));
+    }
   }
 }

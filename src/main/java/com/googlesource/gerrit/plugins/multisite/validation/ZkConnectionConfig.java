@@ -12,20 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
+package com.googlesource.gerrit.plugins.multisite.validation;
 
-import java.io.IOException;
-import org.eclipse.jgit.lib.Ref;
+import org.apache.curator.RetryPolicy;
 
-public class NoOpDfsRefDatabase implements SharedRefDatabase {
+public class ZkConnectionConfig {
 
-  @Override
-  public boolean compareAndPut(String project, Ref oldRef, Ref newRef) throws IOException {
-    return true;
-  }
+  public final RetryPolicy curatorRetryPolicy;
+  public final Long transactionLockTimeout;
 
-  @Override
-  public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
-    return true;
+  public ZkConnectionConfig(RetryPolicy curatorRetryPolicy, Long transactionLockTimeout) {
+    this.curatorRetryPolicy = curatorRetryPolicy;
+    this.transactionLockTimeout = transactionLockTimeout;
   }
 }

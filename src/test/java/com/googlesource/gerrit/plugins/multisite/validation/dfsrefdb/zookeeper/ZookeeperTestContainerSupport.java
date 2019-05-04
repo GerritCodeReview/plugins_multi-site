@@ -11,23 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// Copyright (C) 2018 The Android Open Source Project
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
-import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase.NULL_REF;
 import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase.pathFor;
 import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase.writeObjectId;
 
@@ -97,7 +83,7 @@ public class ZookeeperTestContainerSupport {
   }
 
   public ObjectId readRefValueFromZk(String projectName, Ref ref) throws Exception {
-    final byte[] bytes = curator.getData().forPath(pathFor(projectName, NULL_REF, ref));
+    final byte[] bytes = curator.getData().forPath(pathFor(projectName, ref));
     return ZkSharedRefDatabase.readObjectId(bytes);
   }
 
@@ -105,6 +91,6 @@ public class ZookeeperTestContainerSupport {
     curator
         .create()
         .creatingParentContainersIfNeeded()
-        .forPath(pathFor(projectName, NULL_REF, ref), writeObjectId(ref.getObjectId()));
+        .forPath(pathFor(projectName, ref), writeObjectId(ref.getObjectId()));
   }
 }
