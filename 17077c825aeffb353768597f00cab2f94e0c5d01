@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d944ec0d_2d8148c1",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/RefUpdateStub.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-04T15:24:45Z",
+      "side": 1,
+      "message": "Needs to be uploaded to stable-2.16, not on the merge.\n\nThen we can merge that back on",
+      "parentUuid": "f30c6ed4_431bacd8",
+      "revId": "17077c825aeffb353768597f00cab2f94e0c5d01",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1dfe7985_79a57bed",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/RefUpdateStub.java",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "17077c825aeffb353768597f00cab2f94e0c5d01",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33d46449_d36df6d9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/RefUpdateStub.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-04T15:24:45Z",
+      "side": 1,
+      "message": "As above",
+      "parentUuid": "1dfe7985_79a57bed",
+      "revId": "17077c825aeffb353768597f00cab2f94e0c5d01",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
