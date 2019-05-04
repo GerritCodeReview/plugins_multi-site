@@ -1,89 +1,85 @@
 # Gerrit Multi-Site Plugin Design
 
-This document aims at helping in collecting and organizing the thoughts about
-the design of the Gerrit multi-site plugin and supporting the definition of the
+This document collects and organizes thoughts about
+the design of the Gerrit multi-site plugin,  supporting the definition of the
 [implementation roadmap](#next-steps-in-the-road-map).
 
-It starts presenting a background of the problem that is trying to address and
-the tools currently available in the Gerrit ecosystem that helps to support the
-solution. It then gives an overall roadmap of the support for Gerrit
-multi-site and a snapshot of the current status of the design and its associated
+It first presents background for the problems the plugin will address and
+the tools currently available in the Gerrit ecosystem that support the
+solution. It then lays out an overall roadmap for implementing support for Gerrit
+multi-site, and a snapshot of the current status of the design including associated
 limitations and constraints.
 
 ## Approaches to highly scalable and available Gerrit
 
-Offering a highly available and scalable service is a challenging problem. There
-are trade-offs to be made because of the constraints defined by the
-[CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem), and therefore designing a
-performant and scalable solution is a real challenge.
-
 Companies that adopt Gerrit as the center of their development and review
-pipeline often have the requirement to be available on a 24/7 basis and possibly
-serving large and geographically distributed teams in different continents.
+pipeline often have the requirement to be available on a 24/7 basis. This requirement
+may extend across large and geographically distributed teams in different continents.
 
-### Vertical scaling and high-availability
+Because of constraints defined by the [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem)
+designing a performant and scalable solution is a real challenge.
+
+### Vertical scaling and high availability
 
 Vertical scaling is one of the options to support a high load and a large number
-of users.  Having a big powerful server with multiple cores and plenty of RAM to
+of users.  A powerful server with multiple cores and sufficient RAM to
 potentially fit the most frequently used repositories simplifies the design and
-implementation of the system. Nowadays the cost of hardware and the availability
-of multi-core CPUs have made this solution highly attractive to some large
-Gerrit setups. The central Gerrit server can also be duplicated with an
-active/passive or active/active high-availability setup where the storage of the
-Git repositories is shared across nodes through dedicated fibre-channel lines or
+implementation of the system. The relatively reasonable cost of hardware and availability
+of multi-core CPUs make this solution highly attractive to some large
+Gerrit setups. Further, the central Gerrit server can be duplicated with an
+active/passive or active/active high availability configuration with the storage of the
+Git repositories shared across nodes through dedicated fibre-channel lines or
 SANs.
 
-This approach can be suitable for mid to large-sized Gerrit Installations where
+This approach can be suitable for mid to large-sized Gerrit installations where
 teams are co-located or connected via high-speed dedicated networks. However,
-then teams can be located on the other side of the planet, the speed of light
-would still limit the highest theoretical fire-channel direct connection (e.g.,
-from San Francisco to Bangalore the  theoretical absolute minimum latency is 50
-msec, but in practical terms, it is often around 150/200 msec in the best case
-scenarios).
+when teams are located on opposite sides of the planet, even at the speed of light
+the highest theoretical fire-channel direct connection can be limiting.  For example,
+from San Francisco to Bangalore the theoretical absolute minimum latency is 50
+msec. In practice, however, it is often around 150/200 msec in the best case
+scenarios.
 
 ### Horizontal scaling and multi-site
 
-One alternative approach is horizontal scaling, where the workload can be spread
-across several nodes distributed to different locations. This solution offers a
-higher level of scalability and lower latency across locations but requires
-a more complex design.
+In the alternate option, horizontal scaling, the workload is spread
+across several nodes, which are distributed to different locations.
+For our teams in San Francisco and Bangalore, each accesses a
+set of Gerrit masters located closer to their geographical location, with higher
+bandwidth and lower latency. (To control operational cost from the proliferation of
+servers, the number of Gerrit masters can be scaled up and down on demand.)
 
-Two teams located one in San Francisco and the other in Bangalore would access a
-set of Gerrit masters located closer to their geographical position, with higher
-bandwidth and lower latency. The number of Gerrit masters can be scaled up and
-down on-demand, reducing the potential operational costs due to the
-proliferation of multiple servers.
+This solution offers a higher level of scalability and lower latency across locations,
+but it requires a more complex design.
 
 ### Multi-master and multi-site, the best of both worlds
 
-The vertical and horizontal approaches can be also combined together to achieve
-both high performances on the same location and low latency across
+The vertical and horizontal approaches can be combined to achieve
+both high performance on the same location and low latency across
 geographically distributed sites.
 
-The geographical locations with larger teams and projects can have a bigger
-Gerrit server in a high-availability configuration, while the ones that have
+Geographical locations with larger teams and projects can have a bigger
+Gerrit server in a high availability configuration, while locations with
 less critical service levels can use a lower-spec setup.
 
 ## Focus of the multi-site plugin
 
-The  multi-site plugin is intended to enable the  OpenSource version of Gerrit
-Code Review code-base to support horizontal scalability across sites.
+The  multi-site plugin enables the OpenSource version of Gerrit
+Code Review to support horizontal scalability across sites.
 
-Gerrit has been already been deployed in a multi-site configuration at
-[Google](https://www.youtube.com/watch?v=wlHpqfnIBWE) and a multi-master fashion
+Gerrit has already been deployed in a multi-site configuration at
+[Google](https://www.youtube.com/watch?v=wlHpqfnIBWE) and in a multi-master fashion
 at [Qualcomm](https://www.youtube.com/watch?v=X_rmI8TbKmY). Both implementations
-included fixes and extensions that were focussed in addressing the specific
-infrastructure requirements of the Google and Qualcomm global networks. Those
-requirements may or may not be shared with the rest of the OpenSource Community.
+include fixes and extensions that are tailored to the specific
+infrastructure requirements of each company's global networks. Those
+solutions may or may not be shared with the rest of the OpenSource Community.
+Specifically, Google's deployment is proprietary and not suitable for any
+environment outside Google's data-centers.  Further, in
+Qualcomm's case, their version of Gerrit is a fork of v2.7.
 
-Qualcomm's version of Gerrit is a fork of v2.7, Google's deployment is
-proprietary and would not be suitable for any environment outside the Google's
-data-centers.
-
-The multi-site plugin, instead, is based on standard OpenSource components and
+In contrast, the multi-site plugin is based on standard OpenSource components and
 is deployed on a standard cloud environment. It is currently used in a multi-
 master and multi-site deployment on GerritHub.io, serving two continents (Europe
-and Americas) in a high-availability setup on each site.
+and North America) in a high availability setup on each site.
 
 # The road to multi-site
 
@@ -103,36 +99,36 @@ cooperating Gerrit masters across the globe.
 9. 3x masters (active RW/active RW) sharded with auto-election / two locations
 10. Multiple masters (active RW/active RW) with quorum / multiple locations
 
-The transition between steps does require not only an evolution of the Gerrit
-setup and the set of plugins but also a different maturity level in the way the
-servers are provision, maintained and versioned across the network. Qualcomm
-pointed out the evolution of the company culture and the ability to consistently
-version and provision the different server environments as a winning factor of
+The transition between steps requires not only an evolution of the Gerrit
+setup and the set of plugins but also the implementation of more mature methods to
+provision, maintain and version servers across the network. Qualcomm has
+pointed out that the evolution of the company culture and the ability to consistently
+version and provision the different server environments are winning features of
 their multi-master setup.
 
-Google is currently running at stage #10, Qualcomm is at stage #4 with the
-difference that both masters are serving RW traffic, due to the specifics
-of their underlying storage, NFS and JGit implementation that allows concurrent
-locking at filesystem level.
+Google is currently running at Stage #10.  Qualcomm is at Stage #4 with the
+difference that both masters are serving RW traffic, which is possible because the specifics
+of their underlying storage, NFS and JGit implementation allows concurrent
+locking at the filesystem level.
 
 ## TODO: Synchronous replication
-Consider also synchronous replication for the cases like 5, 6, 7... in which
-case a write operation is only accepted if it is synchronously replicated to the
-other master node. This would be a 100% loss-less disaster recovery support. Without
-synchronous replication, when the RW master crashes and loses data, there could
-be no way to recover missed replications without involving users who pushed the commits
-in the first place to push them again. Further, with the synchronous replication
+Consider also synchronous replication for cases like 5, 6, 7... in which
+cases a write operation is only accepted if it is synchronously replicated to the
+other master node(s). This would provide 100% loss-less disaster recovery support. Without
+synchronous replication, when the RW master crashes, losing data, there could
+be no way to recover missed replications without soliciting users who pushed the commits
+in the first place to push them again. Further, with synchronous replication
 the RW site has to "degrade" to RO mode when the other node is not reachable and
 synchronous replications are not possible.
 
-We have to re-evaluate the useability of the replication plugin for supporting
-the synchronous replication. For example, the replicationDelay doesn't make much
+We must re-evaluate the useability of the replication plugin for supporting
+synchronous replication. For example, the replicationDelay doesn't make much
 sense in the synchronous case. Further, the rescheduling of a replication due
 to an in-flight push to the same remote URI also doesn't make much sense as we
 want the replication to happen immediately. Further, if the ref-update of the
 incoming push request has to be blocked until the synchronous replication
 finishes, the replication plugin cannot even start a replication as there is no
-a ref-updated event yet. We may consider implementing the synchronous
+ref-updated event yet. We may consider implementing the synchronous
 replication on a lower level. For example have an "pack-received" event and
 then simply forward that pack file to the other site. Similarly for the
 ref-updated events, instead of a real git push, we could just forward the
@@ -140,137 +136,132 @@ ref-updates to the other site.
 
 ## History and maturity level of the multi-site plugin
 
-This plugin is coming from the excellent work on the high-availability plugin,
-introduced by Ericsson for solving a mutli-master at stage #4. The git log history
-of this projects still shows the 'branching point' on where it started.
+This plugin expands upon the excellent work on the high-availability plugin,
+introduced by Ericsson for implementing mutli-master at Stage #4. The git log history
+of this projects still shows the 'branching point' where it started.
 
-The current version of the multi-site plugin is at stage #7, which is a pretty
+The current version of the multi-site plugin is at Stage #7, which is a pretty
 advanced stage in the Gerrit multi-master/multi-site configuration.
 
-Thanks to the multi-site plugin, it is possible to have Gerrit configured and
+Thanks to the multi-site plugin, it is now possible for Gerrit data to be
 available in two separate geo-locations (e.g. San Francisco and Bangalore),
-where both of them are serving local traffic through the local instances with
-minimum latency.
+each serving local traffic through the local instances with minimum latency.
 
-### Why another plugin from a high-availability fork?
+### Why another plugin from a high availability fork?
 
-By reading this design document you may be wondering the reason behind
-creating yet another plugin for solving multi-master instead of just keeping
-a single code-base with the high-availability plugin.
-The reason can be found in the initial part of design that described the two
-different approaches to scalability: vertical (single site) and horizonal (multi-site).
+You may be questioning the reasoning behind
+creating yet another plugin for  multi-master, instead of maintaining
+a single code-base with the high-availability plugin. The choice stems from
+the differing design considerations to address scalabiilty, as discussed above
+for the vertical (single site) and horizonal (multi-site) approaches.
 
-You could in theory keep a single code-base to manage both of them, however the
-result would have been very complicated and difficult to configure and install.
-Having two more focussed plugins, one for high-availability and another for
-multi-site, would allow to have a simpler and more usable experience for developers
+In theory, one could keep a single code-base to manage both approaches, however the
+result would be very complicated and difficult to configure and install.
+Having two more focussed plugins, one for high availability and another for
+multi-site, allows us to have a simpler, more usable experience, both for developers
 of the plugin and for the Gerrit administrators using it.
 
 ### Benefits
 
-There are some advantages in implementing multi-site at stage #7:
+There are some advantages in implementing multi-site at Stage #7:
 
-- Optimal latency of the read-only operations on both sites, which makes around 90%
+- Optimal latency of the read-only operations on both sites, which constitutes around 90%
   of the Gerrit traffic overall.
 
-- High SLA (99.99% or higher, source: GerritHub.io) due to the possibility of
-  implementing both high-availability inside the local site and automatic site
-  failover in case of a catastrophe in one of the two sites.
+- High SLA (99.99% or higher, source: GerritHub.io) can be achieved by
+  implementing both high availability inside each local site, and automatic
+  catastrophic failover between the two sites.
 
-- Transparency of access through a single Gerrit URL entry-point.
+- Access transparency through a single Gerrit URL entry-point.
 
-- Automatic failover, disaster recovery and leader re-election.
+- Automatic failover, disaster recovery, and leader re-election.
 
-- The two sites have local consistency and, on a global level, eventual consistency.
+- The two sites have local consistency, with eventual consistency globally.
 
 ### Limitations
 
-The current limitations of stage #7 are:
+The current limitations of Stage #7 are:
 
-- Only one of the two sites can be RW and thus accepting modifications on the
+- **Single RW site**: Only the RW site can accept modifications on the
   Git repositories or the review data.
 
-- It can easily support only two sites.
-  You could potentially use it for more sites, however the configuration
+- **Supports only two sites**:
+  One could, potentially, support more sites, but the configuration
   and maintenance efforts are more than linear to the number of nodes.
 
-- Switch between the RO to RW site is defined by a unique decision point, which
-  is a Single-Point-of-Failure
+- **Single point of failure:** The switch between the RO to RW sites is managed by a unique decision point.
 
-- Lack of transactionality between sites.
-  Data written to one site is acknowledged
-  before its replication to the other location.
+- **Lack of transactionality**:
+  Data written to one site is acknowledged before its replication to the other location.
 
-- The solution requires a Server completely based on NoteDb and thus requires
-  Gerrit v2.16 or later.
-
-**NOTE:** If you are not familiar with NoteDb, please read the relevant
-[section in the Gerrit documentation](https://gerrit-documentation.storage.googleapis.com/Documentation/2.16.5/note-db.html).
+- **Requires Gerrit v2.16 or later**: Data conisistency requires a server completely based on NoteDb.
+  If you are not familiar with NoteDb, please read the relevant
+  [section in the Gerrit documentation](https://gerrit-documentation.storage.googleapis.com/Documentation/2.16.5/note-db.html).
 
 ### Example of multi-site operations
 
 Let's suppose the RW site is San Francisco and the RO site Bangalore. The
 modifications of data will always come to San Francisco and flow to Bangalore
-with a latency that can be anywhere between seconds and minutes, depending on
+with a latency that can be between seconds and minutes, depending on
 the network infrastructure between the two sites. A developer located in
-Bangalore will always see a "snapshot in the past" of the data from both the
-Gerrit UI and on the Git repository served locally, while a developer located in
+Bangalore will always see a "snapshot in the past" of the data, both from the
+Gerrit UI and on the Git repository served locally.  In contrast, a developer located in
 San Francisco will always see the "latest and greatest" of everything.
 
-Should the central site in San Francisco collapse or not become available for a
-significant period of time, the Bangalore site will take over as main RW Gerrit
-site and will be able to serve any operation. The roles will then be inverted
-where the people in San Francisco will have to use the remote Gerrit server
-located in Bangalore while the local system is down. Once the San Francisco site
-is back, it will need to pass the "necessary checks" to be re-elected as the
+Should the central site in San Francisco become unavailable for a
+significant period of time, the Bangalore site will take over as the RW Gerrit
+site. The roles will then be inverted.
+People in San Francisco will be served remotely by the 
+Bangalore server while the local system is down. When the San Francisco site
+returns to service, and passes the "necessary checks", it will be re-elected as the
 main RW site.
 
 # Plugin design
 
-This section goes into the high-level design of the current solution and lists
-the components involved and how they interact with each other.
+This section goes into the high-level design of the current solution, lists
+the components involved, and describes how the components interact with each other.
 
-## What to replicate across Gerrit sites
+## What is replicated across Gerrit sites
 
 There are several distinct classes of information that have to be kept
-consistent across different sites to guarantee seamless operation of the
+consistent across different sites in order to guarantee seamless operation of the
 distributed system.
 
-- Git repositories: they are stored on disk and are the most important
-Information to maintain.
+- **Git repositories**: They are stored on disk and are the most important
+information to maintain.  The repositories store the following data:
 
   * Git BLOBs, objects, refs and trees.
 
   * NoteDb, including Groups, Accounts and review data
 
-  * Projects configuration and ACLs
+  * Project configurations and ACLs
 
-  * Projects submit rules
+  * Project submit rules
 
-- Indexes: this is a series of secondary indexes to allow search and quick access
+- **Indexes**: A series of secondary indexes to allow search and quick access
   to the Git repository data. Indexes are persistent across restarts.
 
-- Caches: is a set of in-memory and persisted designed to reduce CPU and disk
-  utilization and improve performance
+- **Caches**: A set of in-memory and persisted data designed to reduce CPU and disk
+  utilization and to improve performance.
 
-- Web Sessions: define an active user session with Gerrit allowing to reduce the
+- **Web Sessions**: Define an active user session with Gerrit, used to reduce
   load to the underlying authentication system.
   Sessions are stored by default on the local filesystem in an H2 table but can
   be externalized via plugins, like the WebSession Flatfile.
 
-To achieve a stage #7 multi-site configuration, all the above information needs
-to replicate transparently across sites.
+To achieve a Stage #7 multi-site configuration, all the above information must
+be replicated transparently across sites.
 
-## Overall high-level architecture
+## High-level architecture
 
-The multi-site solution described here is based on the combined use of different
+The multi-site solution described here depends upon the combined use of different
 components:
 
-- **multi-site plugin**: enables the replication of Gerrit _indexes_, _caches_,
-  and _stream events_ across sites
+- **multi-site plugin**: Enables the replication of Gerrit _indexes_, _caches_,
+  and _stream events_ across sites.
 
 - **replication plugin**: enables the replication of the _Git repositories_ across
-  sites
+  sites.
 
 - **web-session flat file plugin**: supports the storage of _active sessions_
   to an external file that can be shared and synchronized across sites.
@@ -280,119 +271,114 @@ components:
 
 - **HA Proxy**: provides the single entry-point to all Gerrit functionality across sites.
 
-The combination of the above components makes the Gerrit multi-site
-configuration possible.
+The interactions between these components are illustrated in the following diagram:
 
 ![Initial Multi-Site Plugin Architecture](./images/architecture-first-iteration.png)
 
-## Current implementation Details
+## Implementation Details
 
+### Message brokers
 The multi-site plugin adopts an event-sourcing pattern and is based on an
-external message broker. The current implementation is based on Apache Kafka,
-however, it is potentially extensible to many others like RabbitMQ or NATS.
+external message broker. The current implementation uses Apache Kafka.
+It is, however, potentially extensible to others, like RabbitMQ or NATS.
 
 ### Eventual consistency on Git, indexes, caches, and stream events
 
 The replication of the Git repositories, indexes, cache and stream events happen
 on different channels and at different speeds. Git data is typically larger than
 meta-data and has higher latency than reindexing, cache evictions or stream
-events. That means that when someone pushes a new change to Gerrit on one site,
+events. This means that when someone pushes a new change to Gerrit on one site,
 the Git data (commits, BLOBs, trees, and refs) may arrive later than the
 associated reindexing or cache eviction events.
 
 It is, therefore, necessary to handle the lack of synchronization of those
-channels in the multi-site plugin and reconcile the events at the destination
-ends.
+channels in the multi-site plugin and reconcile the events at the destinations.
 
 The solution adopted by the multi-site plugin supports eventual consistency at
-rest at the data level, thanks to the following two components:
+rest at the data level, thanks to the following two components which:
 
-* A mechanism to recognize _not-yet-processable events_ related to data not yet
+* **Identify not-yet-processable events**: 
+A mechanism to recognize _not-yet-processable events_ related to data not yet
 available (based on the timestamp information available on both the metadata
 update and the data event)
 
-* A queue of *not-yet-processable events* and an *asynchronous processor*
+* **Queue not-yet-processable events**: 
+A queue of *not-yet-processable events* and an *asynchronous processor*
 to check if they became processable. The system also is configured to discard
 events that have been in the queue for too long.
 
-### Avoiding event replication loops
+### Avoid event replication loops
 
-Stream events also are wrapped into an event header containing a source identifier,
-so that events originated by the same node in the broker-based channel are silently
-dropped to prevent the loop.
-The events originated by the same node in the broker-based channel are
-dropped to prevent the loop. Stream events also are wrapped into an event header
-containing a source identifier, so that they are not replicated multiple times.
+Stream events are wrapped into an event header containing a source identifier.
+Events originated by the same node in the broker-based channel are silently
+dropped so that they do not replicate multiple times.
 
-Gerrit has the concept of server-id, which, unfortunately, would not help us for
-solving this problem:  all the nodes in a Gerrit cluster must have the same
+Gerrit has the concept of **server-id** which, unfortunately, does not help
+solve this problem because all the nodes in a Gerrit cluster must have the same
 server-id to allow interoperability of the data stored in NoteDb.
 
-The multi-site plugin introduces a new concept of instance-id, which is a UUID
+The multi-site plugin introduces a new concept of **instance-id**, which is a UUID
 generated during startup and saved into the data folder of the Gerrit site. If
 the Gerrit site is cleared or removed, a new id is generated and the multi-site
 plugin will start consuming all events that have been previously produced.
 
-The concept of the instance-id is very useful and other plugins could benefit
-from it. It would be the first candidate to be moved into the Gerrit core and
-generated and maintained with the rest of the configuration.
+The concept of the instance-id is very useful. Since other plugins could benefit
+from it, it will be the first candidate to move into the Gerrit core,
+generated and maintained with the rest of the configuration.  Then it can be
+included in **all** stream events, at which time the multi-site plugin's 
+"enveloping of events" will become redundant.
 
-Once Gerrit will start having an instance-id, that information could then be
-included in all stream events also, making the multi-site plugin "enveloping of
-events" redundant.
+### Manage failures
 
-### Managing failures
+The broker based solutions improve the resilience and scalability of the system.
+But there is still a point of failure: the availability of the broker itself. However,
+using the broker does allow having a high-level of redundancy and a multi-master
+/ multi-site configuration at the transport and storage level.
 
-The broker based solutions improve the resilience and scalability of the system,
-but still has a point of failure in the availability of the broker. However, the
-choice of the broker allows having a high-level of redundancy and a multi-master
-/ multi-site configuration at transport and storage level.
-
-At the moment the acknowledge level for publication can be controlled via
+At the moment, the acknowledge level for publication can be controlled via
 configuration and allows to tune the QoS of the publication process. Failures
-are explicitly not handled at the moment, and they are just logged as errors.
+are explicitly not handled at the moment; they are just logged as errors.
 There is no retry mechanism to handle temporary failures.
 
-### Avoiding Split Brain
+### Avoid Split Brain
 
-The current solution of multi-site at stage #7 with asynchronous replication is
-exposed to the risk of the system reaching a Split - Brain situation (see
-[issue #10554](https://bugs.chromium.org/p/gerrit/issues/detail?id=10554).
+The current solution of multi-site at Stage #7 with asynchronous replication
+risks that the system will reach a Split Brain situation (see
+[issue #10554](https://bugs.chromium.org/p/gerrit/issues/detail?id=10554)).
 
-The diagram below shows happy path with a crash recovery situation bringing to a
-healthy system.
+#### The diagram below illustrates the happy path with crash recovery returning the system to a healthy state.
 
 ![Healthy Use Case](src/main/resources/Documentation/git-replication-healthy.png)
 
 In this case we are considering two different clients each doing a `push` on top of
 the same reference. This could be a new commit in a branch or the change of an existing commit.
 
-At `t0`: both clients are seeing the status of `HEAD` being `W0`. `Instance1` is the
+At `t0`: both clients see the status of `HEAD` being `W0`. `Instance1` is the
 RW node and will receive any `push` request. `Instance1` and `Instance2` are in sync
 at `W0`.
 
-At `t1`: `Client1` pushes `W1`. The request is served by `Instance1` that acknowledges it
+At `t1`: `Client1` pushes `W1`. The request is served by `Instance1` which acknowledges it
 and starts the replication process (with some delay).
 
 At `t2`: The replication operation is completed. Both instances are in a consistent state
-`W0 -> W1`. `Client1` shares that state but `Client2` is still behind
+`W0 -> W1`. `Client1` shares that state but `Client2` is still behind.
 
-At `t3`: `Instance1` crashes
+At `t3`: `Instance1` crashes.
 
-At `t4`: `Client2` pushes `W2` that is still based on `W0` (`W0 -> W2`).
-The request is served by `Instance2` that detects that the client push operation was based
-on an out-of-date starting state for the ref. The operation is refused. `Client2` synchronise its local 
-state (e.g. rebases its commit) and pushes `W0 -> W1 -> W2`.
-That operation is now is now considered valid, acknowledged and put in the replication queue until
-`Instance1` will become available.
+At `t4`: `Client2` pushes `W2` which is still based on `W0` (`W0 -> W2`).
+The request is served by `Instance2` which detects that the client push operation was based
+on an out-of-date starting state for the ref. The operation is refused. `Client2`
+synchronises its local state (e.g. rebases its commit) and pushes `W0 -> W1 -> W2`.
+That operation is now considered valid, acknowledged and put in the replication queue until
+`Instance1` becomes available.
 
-At `t5`: `Instance1` restarts and gets replicated at `W0 -> W1 -> W2`
+At `t5`: `Instance1` restarts and is replicated at `W0 -> W1 -> W2`
 
-The Split Brain situation is shown in the following diagram.
+#### The Split Brain situation is illustrated in the following diagram.
 
 ![Split Brain Use Case](src/main/resources/Documentation/git-replication-split-brain.png)
 
-In this case the steps are very similar but `Instance1` fails after acknowledging the
+In this case the steps are very similar except that `Instance1` fails after acknowledging the
 push of `W0 -> W1` but before having replicated the status to `Instance2`.
 
 When in `t4` `Client2` pushes `W0 -> W2` to `Instance2`, this is considered a valid operation.
@@ -401,102 +387,105 @@ It gets acknowledged and inserted in the replication queue.
 At `t5` `Instance1` restarts. At this point both instances have pending replication
 operations. They are executed in parallel and they bring the system to divergence.
 
-The problem is caused by the fact that:
-- the RW node acknowledges a `push` operation before __all__ replicas are fully in sync
-- the other instances are not able to understand that they are out of sync
+Root causes of the Split Brain problem:
+- The RW node acknowledges a `push` operation before __all__ replicas are fully in sync.
+- The other instances are not aware that they are out of sync.
 
-The two problems above could be solved using different approaches:
+Two possible approaches to solve the Split Brain problem:
 
-- _Synchronous replication_. In this case the system would behave essentially as the
-_happy path_ diagram show above and would solve the problem operating on the first of the causes,
+- **Synchronous replication**: In this case the system would behave essentially as the
+_happy path_ diagram shown above and would solve the problem by operating on the first of the causes,
 at the expense of performance, availability and scalability. It is a viable and simple solution
 for two nodes set up with an infrastructure allowing fast replication.
 
-- _Centralise the information about the latest status of mutable refs_. This will operate
-on the second cause, i.e. allowing instances to realise that _they are not in sync on a particular ref_
-and refuse any write operation on that ref. The system could operate normally on any other ref and also
-will have no limitation in other functions such as Serving the GUI, supporting reads, accepting new 
-changes or patch-sets on existing changes. This option is discussed in further detail below.
+- **Centralise the information about the latest status of mutable refs**: This would operate
+on the second cause. That is, it would allow instances to realise that _they are
+not in sync on a particular ref_ and refuse any write operation on that ref.
+The system could operate normally on any other ref and also would impose no
+limitation in other functions such as, Serving the GUI, supporting reads, accepting new
+changes or patch-sets on existing changes. This option is discussed in further
+detail below.
 
-It is important to notice that the two options are not exclusive.
+**NOTE**: The two options are not exclusive.
 
-#### Introducing a `DfsRefDatabase`
+#### Introduce a `DfsRefDatabase`
 
-A possible implementation of the out-of-sync detection logic is based on a central
+An implementation of the out-of-sync detection logic could be based on a central
 coordinator holding the _last known status_ of a _mutable ref_ (immutable refs won't
-have to be stored here). This would be essentially a DFS base `RefDatabase` or `DfsRefDatabase`.
+have to be stored here). This would be, essentially, a DFS base `RefDatabase` or `DfsRefDatabase`.
 
-This component:
+This component would:
  
-- Will contain a subset of the local `RefDatabase` data:
-  - would store only _mutable _ `refs`
-  - will keep only the most recent `sha` for each specific `ref`
-- Needs to be able to perform atomic _Compare and Set_ operations on a
-key -> value storage, for example it could be implemented using `Zookeeper` (one implementation
-was done by Dave Borowitz some years ago)
+- Contain a subset of the local `RefDatabase` data:
+  - Store only _mutable _ `refs`
+  - Keep only the most recent `sha` for each specific `ref`
+- Require that atomic _Compare and Set_ operations can be performed on a
+key -> value storage.  For example, it could be implemented using `Zookeeper`. (One implementation
+was done by Dave Borowitz some years ago.)
 
-The interaction diagram in this case is shown below:
+This interaction is illustrated in the diagram below:
 
 ![Split Brain Prevented](src/main/resources/Documentation/git-replication-split-brain-detected.png)
 
-What changes in respect to the split brain use case is that now, whenever a change of a
-_mutable ref_ is requested, the gerrit server verifies with the central RefDB that its
+The difference, in respect to the split brain use case, is that now, whenever a change of a
+_mutable ref_ is requested, the Gerrit server verifies with the central RefDB that its
 status __for this ref__ is consistent with the latest cluster status. If that is true
 the operation succeeds. The ref status is atomically compared and set to the new status
 to prevent race conditions.
 
-We can see that in this case `Instance2` enters a Read Only mode for the specific branch
+In this case `Instance2` enters a Read Only mode for the specific branch
 until the replication from `Instance1` is completed successfully. At this point write
 operations on the reference can be recovered.
-If `Client2` can perform the `push` again vs `Instance2`, the server would recognise that
-the client status needs update, the client will `rebase` and `push` the correct status.
+If `Client2` can perform the `push` again vs `Instance2`, the server recognises that
+the client status needs an update, the client will `rebase` and `push` the correct status.
 
 __NOTE__:
-This implementation will prevent the cluster to enter split brain but might bring a 
+This implementation will prevent the cluster to enter split brain but might result in a
 set of refs in Read Only state across all the cluster if the RW node is failing after having
 sent the request to the Ref-DB but before persisting this request into its `git` layer.
 
-# Next steps in the road-map
+# Next steps in the roadmap
 
-## Step-1: fill the gaps of multi-site stage #7:
+## Step-1: Fill the gaps in multi-site Stage #7 implementation:
 
-- Detection of a stale site. The health check plugin has no awareness that one
+- **Detection of a stale site**: The health check plugin has no awareness that one
   site that can be "too outdated" because it is still technically "healthy." A
   stale site needs to be put outside the balancing and all traffic needs to go
   to the more up-to-date site.
 
-- Web session replication. Currently needs to be implemented at filesystem level
-  using rsync across sites, which can be a problem because of the delay
-  introduced. Should a site fail, some of the users may lose their sessions
+- **Web session replication**: This currently must be implemented at the filesystem level
+  using rsync across sites.  This is problematic because of the delay it
+  introduces. Should a site fail, some of the users may lose their sessions
   because the rsync was not executed yet.
 
-- Index rebuild in case of broker failure. In the catastrophic event of a global
-  failure at the broker level, the indexes of the two sites would be out of
-  sync. A mechanism is needed to be put in place to recover the situation
-  without having to necessarily reindex both sites offline, which would require
-  even days for huge installations.
+- **Index rebuild in case of broker failure**: In the case of a catastrophic
+  failure at the broker level, the indexes of the two sites will be out of
+  sync. A mechanism is needed to recover the situation
+  without requiring the reindex of both sites offline, since that could take
+  as much as days for huge installations.
 
-- Git/SSH redirection. Local users relying on Git/SSH protocol would not be able
-  to use the local site for serving their requests, because HAProxy would not be
-  able to understand the type of traffic and would be forced always to use the
-  RW site, even though the operation was RO.
+- **Git/SSH redirection**: Local users who rely on Git/SSH protocol are not able
+  to use the local site for serving their requests, because HAProxy is not
+  able to differentiate the type of traffic and, thus, is forced always to use the
+  RW site, even though the operation is RO.
 
-- Support for different brokers: the current multi-site plugin supports Kafka.
-  More brokers would need to be supported in a fashion similar to the
+- **Support for different brokers**: Currently, the multi-site plugin supports Kafka.
+  More brokers need to be supported in a fashion similar to the
   [ITS-* plugins framework](https://gerrit-review.googlesource.com/admin/repos/q/filter:plugins%252Fits).
-  The multi-site plugin would not have anymore the explicit
-  references to Kafka, but other plugins may contribute the implementation to
-  the broker extension point.
+  Explicit references to Kafka must be removed from the multi-site plugin.  Other plugins may contribute
+  implementations to the broker extension point.
 
-- Splitting the publishing and subscribing part of this plugin in two separate
-  plugins: the generation of the events would be combined to the current kafka-
-  events plugin while the multi-site will be more focussed in supporting the
-  consumption and sorting out the replication issues.
+- **Split the publishing and subscribing**:  Create two separate
+  plugins.  Combine the generation of the events into the current kafka-
+  events plugin.  The multi-site plugin will focus on
+  consumption of, and sorting of, the replication issues.
 
-## Step-2: move to multi-site stage #8.
+## Step-2: Move to multi-site Stage #8.
 
 - Auto-reconfigure HAProxy rules based on the projects sharding policy
 
 - Serve RW/RW traffic based on the project name/ref-name.
 
 - Balance traffic with "locally-aware" policies based on historical data
+
+- Preventing split-brain in case of temporary sites isolation

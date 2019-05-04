@@ -27,7 +27,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
-import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase.NULL_REF;
 import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase.pathFor;
 import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase.writeObjectId;
 
@@ -97,7 +96,7 @@ public class ZookeeperTestContainerSupport {
   }
 
   public ObjectId readRefValueFromZk(String projectName, Ref ref) throws Exception {
-    final byte[] bytes = curator.getData().forPath(pathFor(projectName, NULL_REF, ref));
+    final byte[] bytes = curator.getData().forPath(pathFor(projectName, ref));
     return ZkSharedRefDatabase.readObjectId(bytes);
   }
 
@@ -105,6 +104,6 @@ public class ZookeeperTestContainerSupport {
     curator
         .create()
         .creatingParentContainersIfNeeded()
-        .forPath(pathFor(projectName, NULL_REF, ref), writeObjectId(ref.getObjectId()));
+        .forPath(pathFor(projectName, ref), writeObjectId(ref.getObjectId()));
   }
 }
