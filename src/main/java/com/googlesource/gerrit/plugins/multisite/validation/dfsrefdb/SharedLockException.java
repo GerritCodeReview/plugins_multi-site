@@ -12,10 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.forwarder.events;
+package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
-public abstract class IndexEvent extends MultiSiteEvent {
-  protected IndexEvent(String type) {
-    super(type);
+import java.io.IOException;
+
+/** Unable to lock a project/ref resource. */
+public class SharedLockException extends IOException {
+  private static final long serialVersionUID = 1L;
+
+  public SharedLockException(String project, String refName, Exception cause) {
+    super(String.format("Unable to lock project %s on ref %s", project, refName), cause);
   }
 }

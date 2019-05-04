@@ -15,7 +15,7 @@ Currently, the mode supported is one primary read/write master and multiple
 read-only masters but eventually the plan is to support `n` read/write masters.
 The read/write master is handling any traffic while the
 read-only masters are serving the Gerrit GUI assets, the HTTP GET REST API and
-the git-upload-packs. They read-only masters are kept updated to be always
+git-upload-pack. The read-only masters are kept updated to be always
 ready to become a read/write master.
 
 The areas of alignment between the masters are:
@@ -28,7 +28,8 @@ The areas of alignment between the masters are:
 This plugin is focussing on only the points 1. to 3., while other plugins can be
 used to manage the replication of 4. across sites.
 
-This plugin needs to be installed in all the masters, and it will take care of
+This plugin needs to be installed as a library module in the
+`$GERRIT_SITE/lib`directory of all the masters, and it will take care of
 keeping 1., 2. and 3. aligned across all the nodes.
 
 #### Caches

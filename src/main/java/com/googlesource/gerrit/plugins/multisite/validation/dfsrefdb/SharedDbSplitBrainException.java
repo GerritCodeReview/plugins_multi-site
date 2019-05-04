@@ -12,10 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.forwarder.events;
+package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
-public abstract class IndexEvent extends MultiSiteEvent {
-  protected IndexEvent(String type) {
-    super(type);
+import java.io.IOException;
+
+public class SharedDbSplitBrainException extends IOException {
+  private static final long serialVersionUID = 1L;
+
+  public SharedDbSplitBrainException(String message) {
+    super(message);
+  }
+
+  public SharedDbSplitBrainException(String message, Throwable cause) {
+    super(message, cause);
   }
 }

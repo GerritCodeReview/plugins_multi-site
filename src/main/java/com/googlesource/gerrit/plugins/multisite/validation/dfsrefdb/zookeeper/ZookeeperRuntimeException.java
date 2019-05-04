@@ -12,10 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.forwarder.events;
+package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
-public abstract class IndexEvent extends MultiSiteEvent {
-  protected IndexEvent(String type) {
-    super(type);
+/** Unable to communicate with Zookeeper */
+public class ZookeeperRuntimeException extends RuntimeException {
+  private static final long serialVersionUID = 1L;
+
+  public ZookeeperRuntimeException(String description, Throwable t) {
+    super(description, t);
   }
 }
