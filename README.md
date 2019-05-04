@@ -1,25 +1,25 @@
 # Gerrit multi-site plugin
 
-This plugin allows having multiple Gerrit masters to be deployed across various
-sites without having to share any storage. The alignment between the masters
-happens using the replication plugin and an external message broker.
+This plugin allows to deploy a distributed cluster of multiple Gerrit masters
+each using a separate site without sharing any storage. The alignment between
+the masters happens using the replication plugin and an external message broker.
 
-The Gerrit masters requirements are:
+Requirements for the Gerrit masters are:
 
 - Gerrit v2.16.5 or later
 - Migrated to NoteDb
 - Connected to the same message broker
-- Accessible behind a load balancer (e.g., HAProxy)
+- Accessible via a load balancer (e.g. HAProxy)
 
 **NOTE**: The multi-site plugin will not start if Gerrit is not yet migrated
 to NoteDb.
 
 Currently, the only mode supported is one primary read/write master
-and multiple read-only masters but eventually the plan is to support N
+and multiple read-only masters but eventually the plan is to support multiple
 read/write masters. The read/write master is handling any traffic while the
 read-only masters are serving the Gerrit GUI assets, the HTTP GET REST API and
-the git-upload-packs. The read-only masters are kept updated to be always ready
-to become a read/write master.
+git fetch requests (git-upload-pack). The read-only masters are kept synchronized
+with the read/write master in order to be always ready to become a read/write master.
 
 For more details on the overall multi-site design and roadmap, please refer
 to the [multi-site plugin DESIGN.md document](DESIGN.md)
@@ -103,6 +103,6 @@ following basic settings:
 For more details on the configuration settings, please refer to the
 [multi-site configuration documentation](src/main/resources/Documentation/config.md).
 
-You need also to setup the Git-level replication between nodes, for more details
+You also need to setup the Git-level replication between nodes, for more details
 please refer to the
 [replication plugin documentation](https://gerrit.googlesource.com/plugins/replication/+/refs/heads/master/src/main/resources/Documentation/config.md).

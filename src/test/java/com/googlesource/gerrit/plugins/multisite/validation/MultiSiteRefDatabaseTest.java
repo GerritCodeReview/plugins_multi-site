@@ -67,6 +67,6 @@ public class MultiSiteRefDatabaseTest implements RefFixture {
 
     multiSiteRefDb.newUpdate(refName, false);
 
-    verify(refUpdateFactoryMock).create(A_TEST_PROJECT_NAME, refUpdateMock);
+    verify(refUpdateFactoryMock).create(A_TEST_PROJECT_NAME, refUpdateMock, refDatabaseMock);
   }
 }
