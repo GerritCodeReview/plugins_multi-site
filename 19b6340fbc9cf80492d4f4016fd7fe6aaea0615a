@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "76be6155_bd20f4c7",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-08T15:59:32Z",
+      "side": 1,
+      "message": "I\u0027ve pushed a more detailed explanation of the Ref-Db. Let me know if it makes sense.",
+      "parentUuid": "58229a85_2669880d",
+      "range": {
+        "startLine": 262,
+        "startChar": 60,
+        "endLine": 263,
+        "endChar": 21
+      },
+      "revId": "19b6340fbc9cf80492d4f4016fd7fe6aaea0615a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e31e582c_01385e6f",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 5
@@ -54,6 +78,24 @@
       "side": 1,
       "message": "for each of these policies",
       "parentUuid": "e31e582c_01385e6f",
+      "revId": "19b6340fbc9cf80492d4f4016fd7fe6aaea0615a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ed76078_1de9bd11",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-08T15:59:32Z",
+      "side": 1,
+      "message": "Done as well. Let me know if it\u0027s clearer now.",
+      "parentUuid": "41fcbda1_bb84fc8d",
       "revId": "19b6340fbc9cf80492d4f4016fd7fe6aaea0615a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
