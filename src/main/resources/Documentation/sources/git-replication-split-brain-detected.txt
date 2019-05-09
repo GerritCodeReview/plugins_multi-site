@@ -2,16 +2,16 @@ title Replication - Split Brain Detected
 
 participant Client1 
 participant Instance1
-participant Ref-DB Coordinator
+participant SharedDir Coordinator
 participant Instance2
 participant Client2
 
 state over Client1, Client2, Instance1, Instance2: W0
 state over Client1 : W0 -> W1
 Client1 -> +Instance1: Push W1
-Instance1 -> +Ref-DB Coordinator: CAS if state == W0 set state W0 -> W1
-state over Ref-DB Coordinator : W0 -> W1
-Ref-DB Coordinator -> -Instance1 : ACK
+Instance1 -> +SharedDir Coordinator: CAS if state == W0 set state W0 -> W1
+state over SharedDir Coordinator : W0 -> W1
+SharedDir Coordinator -> -Instance1 : ACK
 state over Instance1 : W0 -> W1
 Instance1 -> -Client1: Ack W1
 
@@ -20,8 +20,8 @@ state over Instance1 : Crash
 state over Client2 : W0 -> W2
 Client2 -> +Instance2: Push W2
 
-Instance2 -> +Ref-DB Coordinator: CAS if state == W0 set state W0 -> W2
-Ref-DB Coordinator -> -Instance2 : NACK
+Instance2 -> +SharedDir Coordinator: CAS if state == W0 set state W0 -> W2
+SharedDir Coordinator -> -Instance2 : NACK
 
 Instance2 -> -Client2 : Push failed -- RO Mode
 
@@ -36,10 +36,8 @@ Instance2 -> Client2 : Missing W1
 Client2 -> Instance2: Pull W1
 state over Client2 : W0 -> W1 -> W2
 Client2 -> Instance2: Push W2
-Instance2 -> +Ref-DB Coordinator: CAS if state == W1 set state W1 -> W2
-state over Ref-DB Coordinator: W0 -> W1 -> W2
-Ref-DB Coordinator -> -Instance2 : ACK
+Instance2 -> +SharedDir Coordinator: CAS if state == W1 set state W1 -> W2
+state over SharedDir Coordinator: W0 -> W1 -> W2
+SharedDir Coordinator -> -Instance2 : ACK
 state over Instance2: W0 -> W1 -> W2 
 Instance2 -> -Client2 : ACK 
-
-

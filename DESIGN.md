@@ -257,8 +257,14 @@ be replicated transparently across sites.
 The multi-site solution described here depends upon the combined use of different
 components:
 
-- **multi-site plugin**: Enables the replication of Gerrit _indexes_, _caches_,
-  and _stream events_ across sites.
+- **multi-site libModule**: Exposes interfaces needed to plug in specific
+implementation of `Brokers` and `SharedDir` plugins.
+
+- **broker plugin**: an implementation of the broker interface, which enables the
+replication of Gerrit _indexes_, _caches_,  and _stream events_ across sites.
+
+- **sharedDir plugin**: an implementation of the sharedDir interface, which enables
+the detection of out-of-sync refs across gerrit sites.
 
 - **replication plugin**: enables the replication of the _Git repositories_ across
   sites.
@@ -277,10 +283,40 @@ The interactions between these components are illustrated in the following diagr
 
 ## Implementation Details
 
-### Message brokers
-The multi-site plugin adopts an event-sourcing pattern and is based on an
-external message broker. The current implementation uses Apache Kafka.
-It is, however, potentially extensible to others, like RabbitMQ or NATS.
+### Multi-site libModule
+The multi-site component is agnostic to specific choices of brokers and
+shareDirs implementations, and it does not care how they, specifically, fulfill
+their task.
+
+Instead, this component takes on only two responsibilities:
+
+* Exposing DynamicItem bindings onto which concrete _Broker_ and a _SharedDir_
+plugins can register their specific implementations. When no such plugins are
+installed, then a default `Noop` bindings will be registered instead.
+
+* Wrapping the GitRepositoryManager so that every interaction with git can be
+verified by the sharedDir plugin.
+
+### Message brokers plugin
+It is the responsibility of this plugin to provide a specific pub/sub broker
+implementation able to produce and consume _indexes_, _caches_,  and _stream
+events_ across sites.
+
+When provided, the message broker plugin will override the dynamicItem binding exposed
+by the multi-site module with a specific implementation, such as Kafka, RabbitMQ, NATS, etc.
+
+### SharedDir plugin
+It is the responsibility of this plugin to detect out-of-sync refs across multi sites
+(aka split brain).  This can be achieved by a coordinator holding the most recent
+`sha` for each specific mutable `refs`.
+This requires some sort of atomic _Compare and Set_ operation.
+
+When provided, the sharedDir plugin will override the dynamicItem binding exposed
+by the multi-site module with a specific implementation, such as Zoekeeper, etcd,
+MySQL, Mongo, etc.
+
+See [Prevent split brain thanks to sharedDir coordinator](#prevent-split-brain-thanks-to-sharedDir-coordinator)
+For a thorough example on this.
 
 ### Eventual consistency on Git, indexes, caches, and stream events
 
@@ -408,22 +444,10 @@ detail below.
 
 **NOTE**: The two options are not exclusive.
 
-#### Introduce a `DfsRefDatabase`
+#### Prevent split brain thanks to sharedDir coordinator
 
-An implementation of the out-of-sync detection logic could be based on a central
-coordinator holding the _last known status_ of a _mutable ref_ (immutable refs won't
-have to be stored here). This would be, essentially, a DFS base `RefDatabase` or `DfsRefDatabase`.
-
-This component would:
- 
-- Contain a subset of the local `RefDatabase` data:
-  - Store only _mutable _ `refs`
-  - Keep only the most recent `sha` for each specific `ref`
-- Require that atomic _Compare and Set_ operations can be performed on a
-key -> value storage.  For example, it could be implemented using `Zookeeper`. (One implementation
-was done by Dave Borowitz some years ago.)
-
-This interaction is illustrated in the diagram below:
+The above scenario can be prevented by using an implementation of the sharedDir
+plugin, which will operate as follows:
 
 ![Split Brain Prevented](images/git-replication-split-brain-detected.png)
 
@@ -469,17 +493,6 @@ sent the request to the Ref-DB but before persisting this request into its `git`
   able to differentiate the type of traffic and, thus, is forced always to use the
   RW site, even though the operation is RO.
 
-- **Support for different brokers**: Currently, the multi-site plugin supports Kafka.
-  More brokers need to be supported in a fashion similar to the
-  [ITS-* plugins framework](https://gerrit-review.googlesource.com/admin/repos/q/filter:plugins%252Fits).
-  Explicit references to Kafka must be removed from the multi-site plugin.  Other plugins may contribute
-  implementations to the broker extension point.
-
-- **Split the publishing and subscribing**:  Create two separate
-  plugins.  Combine the generation of the events into the current kafka-
-  events plugin.  The multi-site plugin will focus on
-  consumption of, and sorting of, the replication issues.
-
 ## Step-2: Move to multi-site Stage #8.
 
 - Auto-reconfigure HAProxy rules based on the projects sharding policy
@@ -487,5 +500,3 @@ sent the request to the Ref-DB but before persisting this request into its `git`
 - Serve RW/RW traffic based on the project name/ref-name.
 
 - Balance traffic with "locally-aware" policies based on historical data
-
-- Preventing split-brain in case of temporary sites isolation
