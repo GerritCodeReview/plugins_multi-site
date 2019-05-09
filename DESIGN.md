@@ -257,8 +257,18 @@ be replicated transparently across sites.
 The multi-site solution described here depends upon the combined use of different
 components:
 
-- **multi-site plugin**: Enables the replication of Gerrit _indexes_, _caches_,
-  and _stream events_ across sites.
+- **multi-site libModule**: exports interfaces as DynamicItems to plug in specific
+implementation of `Brokers` and `Global Ref-DB` plugins.
+
+- **broker plugin**: an implementation of the broker interface, which enables the
+replication of Gerrit _indexes_, _caches_,  and _stream events_ across sites.
+When no specific implementation is provided, then the [Broker Noop implementation](#broker-noop-implementation)
+then libModule interfaces are mapped to internal no-ops implementations.
+
+- **Global Ref-DB plugin**: an implementation of the Global Ref-DB interface,
+which enables the detection of out-of-sync refs across gerrit sites.
+When no specific implementation is provided, then the [Global Ref-DB Noop implementation](#global-ref-db-noop-implementation)
+then libModule interfaces are mapped to internal no-ops implementations.
 
 - **replication plugin**: enables the replication of the _Git repositories_ across
   sites.
@@ -277,10 +287,78 @@ The interactions between these components are illustrated in the following diagr
 
 ## Implementation Details
 
-### Message brokers
-The multi-site plugin adopts an event-sourcing pattern and is based on an
-external message broker. The current implementation uses Apache Kafka.
-It is, however, potentially extensible to others, like RabbitMQ or NATS.
+### Multi-site libModule
+As mentioned earlier there are different components behind the overarching architecture
+of this solution of a distributed multi-site gerrit installation, each one fulfilling
+a specific goal. However, whilst the goal of each component is well-defined, the
+mechanics on how each single component achieves that goal is not: the choice of which
+specific message broker or which Ref-DB to use can depend on different factors,
+such as scalability, maintainability, business standards and costs, to name a few.
+
+For this reason the multi-site component is designed to be explicitly agnostic to
+specific choices of brokers and Global Ref-DB implementations, and it does
+not care how they, specifically, fulfill their task.
+
+Instead, this component takes on only two responsibilities:
+
+* Wrapping the GitRepositoryManager so that every interaction with git can be
+verified by the Global Ref-DB plugin.
+
+* Exposing DynamicItem bindings onto which concrete _Broker_ and a _Global Ref-DB_
+plugins can register their specific implementations.
+When no such plugins are installed, then the initial binding points to no-ops.
+
+* Detect out-of-sync refs across multiple gerrit sites:
+Each change attempting to mutate a ref will be checked against the Ref-DB to
+guarantee that each node has an up-to-date view of the repository state.
+
+### Message brokers plugin
+Each gerrit node in the cluster needs to be informed and inform all other nodes
+about fundamental events, such as indexing of new changes, cache evictions and
+stream events. This component will provide a specific pub/sub broker implementation
+that is able to do so.
+
+When provided, the message broker plugin will override the dynamicItem binding exposed
+by the multi-site module with a specific implementation, such as Kafka, RabbitMQ, NATS, etc.
+
+#### Broker Noop implementation
+The default `Noop` implementation provided by the `Multi-site` libModule does nothing
+upon publishing and producing events. This is useful for setting up a test environment
+and allows multi-site library to be installed independently from any additional
+plugins or the existence of a specific broker installation.
+The Noop implementation can also be useful when there is no need for coordination
+with remote nodes, since it avoids maintaining an external broker altogether:
+for example, using the multi-site plugin purely for the purpose of replicating the Git
+repository to a disaster-recovery site and nothing else.
+
+### Global Ref-DB plugin
+Whilst the replication plugin allows the propagation of the Git repositories across
+sites and the broker plugin provides a mechanism to propagate events, the Ref-DB
+Coordinator ensures correct alignment of refs of the multi-site nodes.
+
+It is the responsibility of this plugin to store atomically key/pairs of refs in
+order to allow the libModule to detect out-of-sync refs across multi sites.
+(aka split brain).  This is achieved by storing the most recent `sha` for each
+specific mutable `refs`, by the usage of some sort of atomic _Compare and Set_ operation.
+
+We mentioned earlier the [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem),
+which in a nutshell states that a distributed system can only provide two of these
+three properties: _Consistency_, _Availability_ and _Partition tolerance_: the Ref-DB
+Coordinator helps achieving _Consistency_ and _Partition tolerance_ (thus sacrificing
+Availability).
+
+See [Prevent split brain thanks to Global Ref-DB](#prevent-split-brain-thanks-to-ref-db-coordinator)
+For a thorough example on this.
+
+When provided, the Global Ref-DB plugin will override the dynamicItem binding
+exposed by the multi-site module with a specific implementation, such as Zoekeeper,
+etcd, MySQL, Mongo, etc.
+
+#### Global Ref-DB Noop implementation
+The default `Noop` implementation provided by the `Multi-site` libModule accepts
+any refs without checking for consistency. This is useful for setting up a test environment
+and allows multi-site library to be installed independently from any additional
+plugins or the existence of a specific Ref-DB installation.
 
 ### Eventual consistency on Git, indexes, caches, and stream events
 
@@ -408,22 +486,10 @@ detail below.
 
 **NOTE**: The two options are not exclusive.
 
-#### Introduce a `DfsRefDatabase`
+#### Prevent split brain thanks to Global Ref-DB
 
-An implementation of the out-of-sync detection logic could be based on a central
-coordinator holding the _last known status_ of a _mutable ref_ (immutable refs won't
-have to be stored here). This would be, essentially, a DFS base `RefDatabase` or `DfsRefDatabase`.
-
-This component would:
- 
-- Contain a subset of the local `RefDatabase` data:
-  - Store only _mutable _ `refs`
-  - Keep only the most recent `sha` for each specific `ref`
-- Require that atomic _Compare and Set_ operations can be performed on a
-key -> value storage.  For example, it could be implemented using `Zookeeper`. (One implementation
-was done by Dave Borowitz some years ago.)
-
-This interaction is illustrated in the diagram below:
+The above scenario can be prevented by using an implementation of the Global Ref-DB
+interface, which will operate as follows:
 
 ![Split Brain Prevented](images/git-replication-split-brain-detected.png)
 
@@ -469,17 +535,6 @@ sent the request to the Ref-DB but before persisting this request into its `git`
   able to differentiate the type of traffic and, thus, is forced always to use the
   RW site, even though the operation is RO.
 
-- **Support for different brokers**: Currently, the multi-site plugin supports Kafka.
-  More brokers need to be supported in a fashion similar to the
-  [ITS-* plugins framework](https://gerrit-review.googlesource.com/admin/repos/q/filter:plugins%252Fits).
-  Explicit references to Kafka must be removed from the multi-site plugin.  Other plugins may contribute
-  implementations to the broker extension point.
-
-- **Split the publishing and subscribing**:  Create two separate
-  plugins.  Combine the generation of the events into the current kafka-
-  events plugin.  The multi-site plugin will focus on
-  consumption of, and sorting of, the replication issues.
-
 ## Step-2: Move to multi-site Stage #8.
 
 - Auto-reconfigure HAProxy rules based on the projects sharding policy
@@ -487,5 +542,3 @@ sent the request to the Ref-DB but before persisting this request into its `git`
 - Serve RW/RW traffic based on the project name/ref-name.
 
 - Balance traffic with "locally-aware" policies based on historical data
-
-- Preventing split-brain in case of temporary sites isolation
