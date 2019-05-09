@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9ec7e2e6_5b3a48c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-09T17:16:33Z",
+      "side": 1,
+      "message": "You are right, I should not mention shared database.\nHowever I am not sure we agreed in naming it shared Ref Database: the name we chose was `sharedDir` [see dashboards in slack].\nI am happy to change to a more sensible name if we all agree.",
+      "parentUuid": "a9867b88_2b76f6aa",
+      "range": {
+        "startLine": 9,
+        "startChar": 49,
+        "endLine": 9,
+        "endChar": 64
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "482f695e_8fe0ab6a",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "ae3c0168_85118696",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-09T17:16:33Z",
+      "side": 1,
+      "message": "I meant this as a phrasal verb, not as a noun, I think it should stay as-is",
+      "parentUuid": "482f695e_8fe0ab6a",
+      "range": {
+        "startLine": 260,
+        "startChar": 57,
+        "endLine": 260,
+        "endChar": 64
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1dc62416_0a0394a9",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -59,6 +107,30 @@
       "writtenOn": "2019-05-09T17:05:10Z",
       "side": 1,
       "message": "Shared Ref Directory",
+      "range": {
+        "startLine": 261,
+        "startChar": 33,
+        "endLine": 261,
+        "endChar": 42
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce17539b_34c1054c",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-09T17:16:33Z",
+      "side": 1,
+      "message": "See above",
+      "parentUuid": "1dc62416_0a0394a9",
       "range": {
         "startLine": 261,
         "startChar": 33,
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "fdc5b82f_d9b6ce18",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-09T17:16:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88dbd861_ff6814b5",
+      "range": {
+        "startLine": 301,
+        "startChar": 0,
+        "endLine": 301,
+        "endChar": 20
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cae994d5_46af4b2e",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "c903230e_8c88c094",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-09T17:16:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cae994d5_46af4b2e",
+      "range": {
+        "startLine": 310,
+        "startChar": 6,
+        "endLine": 310,
+        "endChar": 9
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "81c208ee_9d58e635",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -137,6 +257,30 @@
       "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a6a05ac4_b9bad0b4",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-09T17:16:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81c208ee_9d58e635",
+      "range": {
+        "startLine": 314,
+        "startChar": 74,
+        "endLine": 314,
+        "endChar": 76
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
