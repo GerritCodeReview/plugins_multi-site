@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "7d95aacf_9140cc30",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-09T17:23:16Z",
+      "side": 1,
+      "message": "Cool! Yes that\u0027s what I wrote, we\u0027ve agreed shared ref directory or sharedDir and replace the old \u0027shared ref database\u0027",
+      "parentUuid": "9ec7e2e6_5b3a48c1",
+      "range": {
+        "startLine": 9,
+        "startChar": 49,
+        "endLine": 9,
+        "endChar": 64
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "482f695e_8fe0ab6a",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "I meant this as a phrasal verb, not as a noun, I think it should stay as-is",
       "parentUuid": "482f695e_8fe0ab6a",
+      "range": {
+        "startLine": 260,
+        "startChar": 57,
+        "endLine": 260,
+        "endChar": 64
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a5c4a886_2d50ce45",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-09T17:23:16Z",
+      "side": 1,
+      "message": "makes sense",
+      "parentUuid": "ae3c0168_85118696",
       "range": {
         "startLine": 260,
         "startChar": 57,
@@ -140,6 +188,30 @@
       "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1fc61126_5e569838",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-09T17:23:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce17539b_34c1054c",
+      "range": {
+        "startLine": 261,
+        "startChar": 33,
+        "endLine": 261,
+        "endChar": 42
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
