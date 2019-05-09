@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "b0b3904d_e3aa4e8b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-09T20:19:17Z",
+      "side": 1,
+      "message": "I believe Tony meant \"in addition to static\". \n\n   private static final String ALL \u003d \".*\";",
+      "parentUuid": "8da53478_692107ee",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "40c981a7_7764b9b5",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
         "patchSetId": 1
@@ -101,6 +119,24 @@
       "side": 1,
       "message": "Why would it be disabled? The unit test does work",
       "parentUuid": "40c981a7_7764b9b5",
+      "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "552ca05a_1f69d83a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProject.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-09T20:19:17Z",
+      "side": 1,
+      "message": "Java assertions are disabled by default at runtime. Are you possibly running in debug mode?",
+      "parentUuid": "e5906dde_5289645b",
       "revId": "f82e84110d0211e84861d7735566588db1a9c9dd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true

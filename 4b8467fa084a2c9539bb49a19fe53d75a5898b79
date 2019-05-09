@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4de1003c_f0cf2fcf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-09T20:19:17Z",
+      "side": 1,
+      "message": "This is just repeating what the headline says.\nCan elaborate a bit more on *WHY* you are adding this?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 12
+      },
+      "revId": "4b8467fa084a2c9539bb49a19fe53d75a5898b79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47c7c009_b7fb6ac5",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-09T20:19:17Z",
+      "side": 1,
+      "message": "overall in the chapter: wrap long lines.",
+      "revId": "4b8467fa084a2c9539bb49a19fe53d75a5898b79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "010e4085_a6b3aed0",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-09T20:19:17Z",
+      "side": 1,
+      "message": "Seems a bit complicated as syntax. Why not including the policy name in the section?\n\nExample:\n[ref-database \"enforcementRules\"]\n  DESIRED \u003d AProject:ArefPath\n  REQUIRED \u003d All-Projects\n  IGNORED \u003d All-Users",
+      "range": {
+        "startLine": 216,
+        "startChar": 22,
+        "endLine": 216,
+        "endChar": 47
+      },
+      "revId": "4b8467fa084a2c9539bb49a19fe53d75a5898b79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3cad0f9c_8ebd4a4c",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-09T20:19:17Z",
+      "side": 1,
+      "message": "Is this related to the change?",
+      "range": {
+        "startLine": 290,
+        "startChar": 0,
+        "endLine": 292,
+        "endChar": 0
+      },
+      "revId": "4b8467fa084a2c9539bb49a19fe53d75a5898b79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
