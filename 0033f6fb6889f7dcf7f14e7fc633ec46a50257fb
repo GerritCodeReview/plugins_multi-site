@@ -22,6 +22,30 @@
       "revId": "0033f6fb6889f7dcf7f14e7fc633ec46a50257fb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0dc39051_b797043d",
+        "filename": "setup_local_env/configs/gerrit.config",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-09T22:23:14Z",
+      "side": 1,
+      "message": "the merge change\nhttps://gerrit-review.googlesource.com/c/plugins/multi-site/+/224093",
+      "parentUuid": "8d28419b_b7889989",
+      "range": {
+        "startLine": 6,
+        "startChar": 1,
+        "endLine": 6,
+        "endChar": 73
+      },
+      "revId": "0033f6fb6889f7dcf7f14e7fc633ec46a50257fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
