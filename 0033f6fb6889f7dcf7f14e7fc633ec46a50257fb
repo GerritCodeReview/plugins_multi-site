@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8d28419b_b7889989",
+        "filename": "setup_local_env/configs/gerrit.config",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-09T20:21:14Z",
+      "side": 1,
+      "message": "This should come from stable-3.0 merge to master",
+      "range": {
+        "startLine": 6,
+        "startChar": 1,
+        "endLine": 6,
+        "endChar": 73
+      },
+      "revId": "0033f6fb6889f7dcf7f14e7fc633ec46a50257fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
