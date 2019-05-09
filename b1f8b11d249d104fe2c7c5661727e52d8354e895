@@ -262,6 +262,29 @@
     },
     {
       "key": {
+        "uuid": "d2085355_e08952d3",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-09T17:24:13Z",
+      "side": 1,
+      "message": "Same as above\nIt is the responsibility of this plugin...",
+      "range": {
+        "startLine": 308,
+        "startChar": 0,
+        "endLine": 308,
+        "endChar": 35
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cae994d5_46af4b2e",
         "filename": "DESIGN.md",
         "patchSetId": 1
