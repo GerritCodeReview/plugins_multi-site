@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a9867b88_2b76f6aa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-09T17:05:10Z",
+      "side": 1,
+      "message": "We should agree on the naming convention. I believe this morning we\u0027ve said we are going to call it shared ref directory rather than shared Ref database",
+      "range": {
+        "startLine": 9,
+        "startChar": 49,
+        "endLine": 9,
+        "endChar": 64
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "482f695e_8fe0ab6a",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-09T17:05:10Z",
+      "side": 1,
+      "message": "plug-in",
+      "range": {
+        "startLine": 260,
+        "startChar": 57,
+        "endLine": 260,
+        "endChar": 64
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1dc62416_0a0394a9",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-09T17:05:10Z",
+      "side": 1,
+      "message": "Shared Ref Directory",
+      "range": {
+        "startLine": 261,
+        "startChar": 33,
+        "endLine": 261,
+        "endChar": 42
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88dbd861_ff6814b5",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-09T17:05:10Z",
+      "side": 1,
+      "message": "It is the responsibility of this plugin...",
+      "range": {
+        "startLine": 301,
+        "startChar": 0,
+        "endLine": 301,
+        "endChar": 20
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cae994d5_46af4b2e",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-09T17:05:10Z",
+      "side": 1,
+      "message": "for",
+      "range": {
+        "startLine": 310,
+        "startChar": 6,
+        "endLine": 310,
+        "endChar": 9
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81c208ee_9d58e635",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-09T17:05:10Z",
+      "side": 1,
+      "message": "I would also mention etcd as a pontential implementation.",
+      "range": {
+        "startLine": 314,
+        "startChar": 74,
+        "endLine": 314,
+        "endChar": 76
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
