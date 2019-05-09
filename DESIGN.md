@@ -273,7 +273,7 @@ components:
 
 The interactions between these components are illustrated in the following diagram:
 
-![Initial Multi-Site Plugin Architecture](./images/architecture-first-iteration.png)
+![Initial Multi-Site Plugin Architecture](src/main/resources/Documentation/architecture-first-iteration.png)
 
 ## Implementation Details
 
