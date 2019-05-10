@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "3e253974_7e5fb114",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectDeletedSharedDbCleanup.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-10T09:04:35Z",
+      "side": 1,
+      "message": "this is duplicated",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 33
+      },
+      "revId": "6088a7329424ff84ff4c92ed55fdbc3cb74ca53b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "db17a5ad_a529458d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectDeletedSharedDbCleanup.java",
         "patchSetId": 11
