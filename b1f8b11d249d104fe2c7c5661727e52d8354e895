@@ -73,6 +73,53 @@
     },
     {
       "key": {
+        "uuid": "4df91e5f_2e29d0e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-10T06:36:12Z",
+      "side": 1,
+      "message": "\u003e Cool! Yes that\u0027s what I wrote, we\u0027ve agreed shared ref directory or sharedDir and replace the old \u0027shared ref database\u0027\n\nI believe there is a misunderstanding here: the current \"shared ref-db\" *IS* not the shared-dir but is very similar to it.\n\nThe shared-dir should be only a \"mechanism\" to store a series of key-value pairs, where keys are hierarchical like a directory. The shared ref-db is then a way of using the shared-dir for the purpose of storing the Git refs.\n\nDoes that clarify? Would you agree?",
+      "parentUuid": "7d95aacf_9140cc30",
+      "range": {
+        "startLine": 9,
+        "startChar": 49,
+        "endLine": 9,
+        "endChar": 64
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1bdc4d78_7c695d71",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-10T06:36:12Z",
+      "side": 1,
+      "message": "dynamic",
+      "range": {
+        "startLine": 13,
+        "startChar": 54,
+        "endLine": 13,
+        "endChar": 61
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "482f695e_8fe0ab6a",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -376,6 +423,40 @@
       "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "78e2adb9_92fd9193",
+        "filename": "src/main/resources/Documentation/git-replication-split-brain-detected.png",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-10T06:36:12Z",
+      "side": 1,
+      "message": "Actually, in this picture, it should stay the \"Ref-DB Coordinator\" IMHO.\nThe reason is that here we talk about the \"role\" of the coordinator that is actually to have a shared ref-db, in addition to the local one in Git.\n\nThe shared-dir is an \"implementation detail\" of how to build a ref-db coordinator.",
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f970d00_9edc1a85",
+        "filename": "src/main/resources/Documentation/sources/git-replication-split-brain-detected.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-10T06:36:12Z",
+      "side": 1,
+      "message": "This should stay as before, as I explained already in the picture.",
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
