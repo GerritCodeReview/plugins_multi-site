@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "afa316c5_3584dc17",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectDeletedSharedDbCleanup.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-10T09:20:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e253974_7e5fb114",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 33
+      },
+      "revId": "6088a7329424ff84ff4c92ed55fdbc3cb74ca53b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db17a5ad_a529458d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectDeletedSharedDbCleanup.java",
         "patchSetId": 11
@@ -45,6 +69,30 @@
       "revId": "6088a7329424ff84ff4c92ed55fdbc3cb74ca53b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c7c05d39_05f3574d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectDeletedSharedDbCleanup.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-10T09:20:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db17a5ad_a529458d",
+      "range": {
+        "startLine": 56,
+        "startChar": 6,
+        "endLine": 61,
+        "endChar": 13
+      },
+      "revId": "6088a7329424ff84ff4c92ed55fdbc3cb74ca53b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
