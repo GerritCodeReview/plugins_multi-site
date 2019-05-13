@@ -56,18 +56,21 @@ public class ConfigurationTest {
   }
 
   @Test
-  public void testGetIndexThreadPoolSize() throws Exception {
+  public void testGetIndexThreadPoolSize() {
     assertThat(getConfiguration().index().threadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
 
     globalPluginConfig.setInt(INDEX_SECTION, null, THREAD_POOL_SIZE_KEY, THREAD_POOL_SIZE);
     assertThat(getConfiguration().index().threadPoolSize()).isEqualTo(THREAD_POOL_SIZE);
+  }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetIndexThreadPoolSizeWithInvalidSize() {
     globalPluginConfig.setString(INDEX_SECTION, null, THREAD_POOL_SIZE_KEY, INVALID_INT);
-    assertThat(getConfiguration().index().threadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
+    getConfiguration().index().threadPoolSize();
   }
 
   @Test
-  public void testGetIndexSynchronize() throws Exception {
+  public void testGetIndexSynchronize() {
     assertThat(getConfiguration().index().synchronize()).isEqualTo(DEFAULT_SYNCHRONIZE);
 
     globalPluginConfig.setBoolean(INDEX_SECTION, null, SYNCHRONIZE_KEY, false);
@@ -75,24 +78,30 @@ public class ConfigurationTest {
 
     globalPluginConfig.setBoolean(INDEX_SECTION, null, SYNCHRONIZE_KEY, true);
     assertThat(getConfiguration().index().synchronize()).isTrue();
+  }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetIndexSynchronizeWithInvalidSize() {
     globalPluginConfig.setString(INDEX_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
     assertThat(getConfiguration().index().synchronize()).isTrue();
   }
 
   @Test
-  public void testGetCacheThreadPoolSize() throws Exception {
+  public void testGetCacheThreadPoolSize() {
     assertThat(getConfiguration().cache().threadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
 
     globalPluginConfig.setInt(CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, THREAD_POOL_SIZE);
     assertThat(getConfiguration().cache().threadPoolSize()).isEqualTo(THREAD_POOL_SIZE);
+  }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetCacheThreadPoolSizeWithInvalidSize() {
     globalPluginConfig.setString(CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, INVALID_INT);
     assertThat(getConfiguration().cache().threadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
   }
 
   @Test
-  public void testGetCacheSynchronize() throws Exception {
+  public void testGetCacheSynchronize() {
     assertThat(getConfiguration().cache().synchronize()).isEqualTo(DEFAULT_SYNCHRONIZE);
 
     globalPluginConfig.setBoolean(CACHE_SECTION, null, SYNCHRONIZE_KEY, false);
@@ -100,13 +109,10 @@ public class ConfigurationTest {
 
     globalPluginConfig.setBoolean(CACHE_SECTION, null, SYNCHRONIZE_KEY, true);
     assertThat(getConfiguration().cache().synchronize()).isTrue();
-
-    globalPluginConfig.setString(CACHE_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
-    assertThat(getConfiguration().cache().synchronize()).isTrue();
   }
 
   @Test
-  public void testGetEventSynchronize() throws Exception {
+  public void testGetEventSynchronize() {
     assertThat(getConfiguration().event().synchronize()).isEqualTo(DEFAULT_SYNCHRONIZE);
 
     globalPluginConfig.setBoolean(EVENT_SECTION, null, SYNCHRONIZE_KEY, false);
@@ -114,13 +120,10 @@ public class ConfigurationTest {
 
     globalPluginConfig.setBoolean(EVENT_SECTION, null, SYNCHRONIZE_KEY, true);
     assertThat(getConfiguration().event().synchronize()).isTrue();
-
-    globalPluginConfig.setString(EVENT_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
-    assertThat(getConfiguration().event().synchronize()).isTrue();
   }
 
   @Test
-  public void testGetCachePatterns() throws Exception {
+  public void testGetCachePatterns() {
     globalPluginConfig.setStringList(
         CACHE_SECTION, null, PATTERN_KEY, ImmutableList.of("^my_cache.*", "other"));
     assertThat(getConfiguration().cache().patterns())
@@ -207,7 +210,7 @@ public class ConfigurationTest {
   }
 
   @Test
-  public void shouldReturnValidationErrorsWhenReplicationOnStartupIsEnabled() throws Exception {
+  public void shouldReturnValidationErrorsWhenReplicationOnStartupIsEnabled() {
     Config replicationConfig = new Config();
     replicationConfig.setBoolean("gerrit", null, "replicateOnStartup", true);
     assertThat(new Configuration(globalPluginConfig, replicationConfig).validate()).isNotEmpty();

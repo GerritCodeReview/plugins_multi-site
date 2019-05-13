@@ -17,6 +17,13 @@ package com.googlesource.gerrit.plugins.multisite;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Suppliers.ofInstance;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.ConfigurationHelper.getBoolean;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.ConfigurationHelper.getConfigFile;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.ConfigurationHelper.getInt;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.ConfigurationHelper.getList;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.ConfigurationHelper.getLong;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.ConfigurationHelper.getString;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.ConfigurationHelper.lazyLoad;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
@@ -138,28 +145,6 @@ public class Configuration {
     return replicationConfigValidation.get();
   }
 
-  private static FileBasedConfig getConfigFile(SitePaths sitePaths, String configFileName) {
-    return new FileBasedConfig(sitePaths.etc_dir.resolve(configFileName).toFile(), FS.DETECTED);
-  }
-
-  private Supplier<Config> lazyLoad(Config config) {
-    if (config instanceof FileBasedConfig) {
-      return memoize(
-          () -> {
-            FileBasedConfig fileConfig = (FileBasedConfig) config;
-            String fileConfigFileName = fileConfig.getFile().getPath();
-            try {
-              log.info("Loading configuration from {}", fileConfigFileName);
-              fileConfig.load();
-            } catch (IOException | ConfigInvalidException e) {
-              log.error("Unable to load configuration from " + fileConfigFileName, e);
-            }
-            return fileConfig;
-          });
-    }
-    return ofInstance(config);
-  }
-
   private Supplier<Collection<Message>> lazyValidateReplicatioConfig(Config replicationConfig) {
     if (replicationConfig instanceof FileBasedConfig) {
       FileBasedConfig fileConfig = (FileBasedConfig) replicationConfig;
@@ -180,37 +165,6 @@ public class Configuration {
               "Invalid replication.config: gerrit.replicateOnStartup has to be set to 'false' for multi-site setups"));
     }
     return Collections.emptyList();
-  }
-
-  private static int getInt(
-      Supplier<Config> cfg, String section, String subSection, String name, int defaultValue) {
-    try {
-      return cfg.get().getInt(section, subSection, name, defaultValue);
-    } catch (IllegalArgumentException e) {
-      log.error("invalid value for {}; using default value {}", name, defaultValue);
-      log.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
-      return defaultValue;
-    }
-  }
-
-  private static long getLong(
-      Supplier<Config> cfg, String section, String subSection, String name, long defaultValue) {
-    try {
-      return cfg.get().getLong(section, subSection, name, defaultValue);
-    } catch (IllegalArgumentException e) {
-      log.error("invalid value for {}; using default value {}", name, defaultValue);
-      log.debug("Failed to retrieve long value: {}", e.getMessage(), e);
-      return defaultValue;
-    }
-  }
-
-  private static String getString(
-      Supplier<Config> cfg, String section, String subsection, String name, String defaultValue) {
-    String value = cfg.get().getString(section, subsection, name);
-    if (!Strings.isNullOrEmpty(value)) {
-      return value;
-    }
-    return defaultValue;
   }
 
   private static Map<EventFamily, Boolean> eventsEnabled(
@@ -308,9 +262,8 @@ public class Configuration {
 
     private KafkaPublisher(Supplier<Config> cfg) {
       enabled =
-          cfg.get()
-              .getBoolean(
-                  KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
+          getBoolean(
+              cfg, KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
 
       eventsEnabled = eventsEnabled(cfg, KAFKA_PUBLISHER_SUBSECTION);
 
@@ -354,13 +307,14 @@ public class Configuration {
       this.cfg = configSupplier.get();
 
       this.pollingInterval =
-          cfg.getInt(
+          getInt(
+              cfg,
               KAFKA_SECTION,
               KAFKA_SUBSCRIBER_SUBSECTION,
               "pollingIntervalMs",
               DEFAULT_POLLING_INTERVAL_MS);
 
-      enabled = cfg.getBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
+      enabled = getBoolean(cfg, KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
 
       eventsEnabled = eventsEnabled(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION);
 
@@ -389,15 +343,6 @@ public class Configuration {
     public Integer getPollingInterval() {
       return pollingInterval;
     }
-
-    private String getString(
-        Config cfg, String section, String subsection, String name, String defaultValue) {
-      String value = cfg.getString(section, subsection, name);
-      if (!Strings.isNullOrEmpty(value)) {
-        return value;
-      }
-      return defaultValue;
-    }
   }
 
   /** Common parameters to cache, event, index */
@@ -408,8 +353,7 @@ public class Configuration {
     private final boolean synchronize;
 
     private Forwarding(Supplier<Config> cfg, String section) {
-      synchronize =
-          Configuration.getBoolean(cfg, section, null, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE);
+      synchronize = getBoolean(cfg, section, null, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE);
     }
 
     public boolean synchronize() {
@@ -428,7 +372,7 @@ public class Configuration {
       super(cfg, CACHE_SECTION);
       threadPoolSize =
           getInt(cfg, CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
-      patterns = Arrays.asList(cfg.get().getStringList(CACHE_SECTION, null, PATTERN_KEY));
+      patterns = getList(cfg, CACHE_SECTION, null, PATTERN_KEY);
     }
 
     public int threadPoolSize() {
@@ -608,13 +552,12 @@ public class Configuration {
 
       checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
 
-      enabled = Configuration.getBoolean(cfg, SECTION, null, ENABLE_KEY, true);
+      enabled = getBoolean(cfg, SECTION, null, ENABLE_KEY, true);
 
       enforcementRules = MultimapBuilder.hashKeys().arrayListValues().build();
       for (EnforcePolicy policy : EnforcePolicy.values()) {
         enforcementRules.putAll(
-            policy,
-            Configuration.getList(cfg, SECTION, SUBSECTION_ENFORCEMENT_RULES, policy.name()));
+            policy, getList(cfg, SECTION, SUBSECTION_ENFORCEMENT_RULES, policy.name()));
       }
     }
 
@@ -653,19 +596,83 @@ public class Configuration {
     }
   }
 
-  static List<String> getList(
-      Supplier<Config> cfg, String section, String subsection, String name) {
-    return ImmutableList.copyOf(cfg.get().getStringList(section, subsection, name));
-  }
+  protected static class ConfigurationHelper {
 
-  static boolean getBoolean(
-      Supplier<Config> cfg, String section, String subsection, String name, boolean defaultValue) {
-    try {
-      return cfg.get().getBoolean(section, subsection, name, defaultValue);
-    } catch (IllegalArgumentException e) {
-      log.error("invalid value for {}; using default value {}", name, defaultValue);
-      log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
+    private static final Logger log = LoggerFactory.getLogger(ConfigurationHelper.class);
+
+    public static int getInt(
+        Supplier<Config> cfg, String section, String subSection, String name, int defaultValue) {
+      return getInt(cfg.get(), section, subSection, name, defaultValue);
+    }
+
+    static int getInt(
+        Config cfg, String section, String subSection, String name, int defaultValue) {
+      return cfg.getInt(section, subSection, name, defaultValue);
+    }
+
+    static String getString(
+        Supplier<Config> cfg, String section, String subsection, String name, String defaultValue) {
+      return getString(cfg.get(), section, subsection, name, defaultValue);
+    }
+
+    static String getString(
+        Config cfg, String section, String subsection, String name, String defaultValue) {
+      String value = cfg.getString(section, subsection, name);
+      if (!Strings.isNullOrEmpty(value)) {
+        return value;
+      }
       return defaultValue;
+    }
+
+    static long getLong(
+        Supplier<Config> cfg, String section, String subSection, String name, long defaultValue) {
+      return getLong(cfg.get(), section, subSection, name, defaultValue);
+    }
+
+    static long getLong(
+        Config cfg, String section, String subSection, String name, long defaultValue) {
+      return cfg.getLong(section, subSection, name, defaultValue);
+    }
+
+    static Supplier<Config> lazyLoad(Config config) {
+      if (config instanceof FileBasedConfig) {
+        return memoize(
+            () -> {
+              FileBasedConfig fileConfig = (FileBasedConfig) config;
+              String fileConfigFileName = fileConfig.getFile().getPath();
+              try {
+                log.info("Loading configuration from {}", fileConfigFileName);
+                fileConfig.load();
+              } catch (IOException | ConfigInvalidException e) {
+                log.error("Unable to load configuration from " + fileConfigFileName, e);
+              }
+              return fileConfig;
+            });
+      }
+      return ofInstance(config);
+    }
+
+    static List<String> getList(Config cfg, String section, String subsection, String name) {
+      return ImmutableList.copyOf(cfg.getStringList(section, subsection, name));
+    }
+
+    static List<String> getList(
+        Supplier<Config> cfg, String section, String subsection, String name) {
+      return getList(cfg.get(), section, subsection, name);
+    }
+
+    static boolean getBoolean(
+        Supplier<Config> cfg, String section, String subsection, String name, boolean defaultValue) {
+      return getBoolean(cfg.get(), section, subsection, name, defaultValue);
+    }
+
+    static boolean getBoolean(
+        Config cfg, String section, String subsection, String name, boolean defaultValue) {
+      return cfg.getBoolean(section, subsection, name, defaultValue);
+    }
+
+    static FileBasedConfig getConfigFile(SitePaths sitePaths, String configFileName) {
+      return new FileBasedConfig(sitePaths.etc_dir.resolve(configFileName).toFile(), FS.DETECTED);
     }
   }
 }
