@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e4901ded_554b37fd",
+        "filename": "dockerised_local_env/gerrit-2/docker-entrypoint.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-05-13T16:37:21Z",
+      "side": 1,
+      "message": "yep let\u0027s do it in a separate change",
+      "parentUuid": "618d9a66_098726be",
+      "revId": "f58fed4649673390f853e2b23ef942ffd9b647ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "63acf23e_3c9755ad",
         "filename": "dockerised_local_env/gerrit-common/gerrit.config",
         "patchSetId": 5
