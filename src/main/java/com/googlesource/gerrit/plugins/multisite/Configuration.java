@@ -20,9 +20,7 @@ import static com.google.common.base.Suppliers.ofInstance;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
-import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
@@ -95,7 +93,7 @@ public class Configuration {
 
   @VisibleForTesting
   public Configuration(Config multiSiteConfig, Config replicationConfig) {
-    Supplier<Config> lazyCfg = lazyLoad(multiSiteConfig);
+    Supplier<Config> lazyCfg = ConfigurationHelper.lazyLoad(multiSiteConfig);
     replicationConfigValidation = lazyValidateReplicatioConfig(replicationConfig);
     kafka = memoize(() -> new Kafka(lazyCfg));
     publisher = memoize(() -> new KafkaPublisher(lazyCfg));
@@ -142,24 +140,6 @@ public class Configuration {
     return new FileBasedConfig(sitePaths.etc_dir.resolve(configFileName).toFile(), FS.DETECTED);
   }
 
-  private Supplier<Config> lazyLoad(Config config) {
-    if (config instanceof FileBasedConfig) {
-      return memoize(
-          () -> {
-            FileBasedConfig fileConfig = (FileBasedConfig) config;
-            String fileConfigFileName = fileConfig.getFile().getPath();
-            try {
-              log.info("Loading configuration from {}", fileConfigFileName);
-              fileConfig.load();
-            } catch (IOException | ConfigInvalidException e) {
-              log.error("Unable to load configuration from " + fileConfigFileName, e);
-            }
-            return fileConfig;
-          });
-    }
-    return ofInstance(config);
-  }
-
   private Supplier<Collection<Message>> lazyValidateReplicatioConfig(Config replicationConfig) {
     if (replicationConfig instanceof FileBasedConfig) {
       FileBasedConfig fileConfig = (FileBasedConfig) replicationConfig;
@@ -180,37 +160,6 @@ public class Configuration {
               "Invalid replication.config: gerrit.replicateOnStartup has to be set to 'false' for multi-site setups"));
     }
     return Collections.emptyList();
-  }
-
-  private static int getInt(
-      Supplier<Config> cfg, String section, String subSection, String name, int defaultValue) {
-    try {
-      return cfg.get().getInt(section, subSection, name, defaultValue);
-    } catch (IllegalArgumentException e) {
-      log.error("invalid value for {}; using default value {}", name, defaultValue);
-      log.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
-      return defaultValue;
-    }
-  }
-
-  private static long getLong(
-      Supplier<Config> cfg, String section, String subSection, String name, long defaultValue) {
-    try {
-      return cfg.get().getLong(section, subSection, name, defaultValue);
-    } catch (IllegalArgumentException e) {
-      log.error("invalid value for {}; using default value {}", name, defaultValue);
-      log.debug("Failed to retrieve long value: {}", e.getMessage(), e);
-      return defaultValue;
-    }
-  }
-
-  private static String getString(
-      Supplier<Config> cfg, String section, String subsection, String name, String defaultValue) {
-    String value = cfg.get().getString(section, subsection, name);
-    if (!Strings.isNullOrEmpty(value)) {
-      return value;
-    }
-    return defaultValue;
   }
 
   private static Map<EventFamily, Boolean> eventsEnabled(
@@ -249,7 +198,7 @@ public class Configuration {
     }
     target.put(
         "bootstrap.servers",
-        getString(
+        ConfigurationHelper.getString(
             configSupplier,
             KAFKA_SECTION,
             null,
@@ -274,7 +223,7 @@ public class Configuration {
 
     Kafka(Supplier<Config> config) {
       this.bootstrapServers =
-          getString(
+          ConfigurationHelper.getString(
               config, KAFKA_SECTION, null, "bootstrapServers", DEFAULT_KAFKA_BOOTSTRAP_SERVERS);
 
       this.eventTopics = new HashMap<>();
@@ -282,7 +231,8 @@ public class Configuration {
         String topicConfigKey = topicDefault.getKey().lowerCamelName() + "Topic";
         eventTopics.put(
             topicDefault.getKey(),
-            getString(config, KAFKA_SECTION, null, topicConfigKey, topicDefault.getValue()));
+            ConfigurationHelper.getString(
+                config, KAFKA_SECTION, null, topicConfigKey, topicDefault.getValue()));
       }
     }
 
@@ -308,9 +258,8 @@ public class Configuration {
 
     private KafkaPublisher(Supplier<Config> cfg) {
       enabled =
-          cfg.get()
-              .getBoolean(
-                  KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
+          ConfigurationHelper.getBoolean(
+              cfg, KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
 
       eventsEnabled = eventsEnabled(cfg, KAFKA_PUBLISHER_SUBSECTION);
 
@@ -354,13 +303,16 @@ public class Configuration {
       this.cfg = configSupplier.get();
 
       this.pollingInterval =
-          cfg.getInt(
+          ConfigurationHelper.getInt(
+              cfg,
               KAFKA_SECTION,
               KAFKA_SUBSCRIBER_SUBSECTION,
               "pollingIntervalMs",
               DEFAULT_POLLING_INTERVAL_MS);
 
-      enabled = cfg.getBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
+      enabled =
+          ConfigurationHelper.getBoolean(
+              cfg, KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
 
       eventsEnabled = eventsEnabled(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION);
 
@@ -379,7 +331,7 @@ public class Configuration {
 
     public Properties initPropsWith(UUID instanceId) {
       String groupId =
-          getString(
+          ConfigurationHelper.getString(
               cfg, KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, "groupId", instanceId.toString());
       this.put("group.id", groupId);
 
@@ -388,15 +340,6 @@ public class Configuration {
 
     public Integer getPollingInterval() {
       return pollingInterval;
-    }
-
-    private String getString(
-        Config cfg, String section, String subsection, String name, String defaultValue) {
-      String value = cfg.getString(section, subsection, name);
-      if (!Strings.isNullOrEmpty(value)) {
-        return value;
-      }
-      return defaultValue;
     }
   }
 
@@ -409,7 +352,7 @@ public class Configuration {
 
     private Forwarding(Supplier<Config> cfg, String section) {
       synchronize =
-          Configuration.getBoolean(cfg, section, null, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE);
+          ConfigurationHelper.getBoolean(cfg, section, null, SYNCHRONIZE_KEY, DEFAULT_SYNCHRONIZE);
     }
 
     public boolean synchronize() {
@@ -427,8 +370,9 @@ public class Configuration {
     private Cache(Supplier<Config> cfg) {
       super(cfg, CACHE_SECTION);
       threadPoolSize =
-          getInt(cfg, CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
-      patterns = Arrays.asList(cfg.get().getStringList(CACHE_SECTION, null, PATTERN_KEY));
+          ConfigurationHelper.getInt(
+              cfg, CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
+      patterns = ConfigurationHelper.getList(cfg, CACHE_SECTION, null, PATTERN_KEY);
     }
 
     public int threadPoolSize() {
@@ -462,12 +406,17 @@ public class Configuration {
     private Index(Supplier<Config> cfg) {
       super(cfg, INDEX_SECTION);
       threadPoolSize =
-          getInt(cfg, INDEX_SECTION, null, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
+          ConfigurationHelper.getInt(
+              cfg, INDEX_SECTION, null, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
       retryInterval =
-          getInt(cfg, INDEX_SECTION, null, RETRY_INTERVAL_KEY, DEFAULT_INDEX_RETRY_INTERVAL);
-      maxTries = getInt(cfg, INDEX_SECTION, null, MAX_TRIES_KEY, DEFAULT_INDEX_MAX_TRIES);
+          ConfigurationHelper.getInt(
+              cfg, INDEX_SECTION, null, RETRY_INTERVAL_KEY, DEFAULT_INDEX_RETRY_INTERVAL);
+      maxTries =
+          ConfigurationHelper.getInt(
+              cfg, INDEX_SECTION, null, MAX_TRIES_KEY, DEFAULT_INDEX_MAX_TRIES);
       numStripedLocks =
-          getInt(cfg, INDEX_SECTION, null, NUM_STRIPED_LOCKS, DEFAULT_NUM_STRIPED_LOCKS);
+          ConfigurationHelper.getInt(
+              cfg, INDEX_SECTION, null, NUM_STRIPED_LOCKS, DEFAULT_NUM_STRIPED_LOCKS);
     }
 
     public int threadPoolSize() {
@@ -543,15 +492,20 @@ public class Configuration {
 
     private ZookeeperConfig(Supplier<Config> cfg) {
       connectionString =
-          getString(cfg, SECTION, SUBSECTION, KEY_CONNECT_STRING, DEFAULT_ZK_CONNECT);
-      root = getString(cfg, SECTION, SUBSECTION, KEY_ROOT_NODE, "gerrit/multi-site");
+          ConfigurationHelper.getString(
+              cfg, SECTION, SUBSECTION, KEY_CONNECT_STRING, DEFAULT_ZK_CONNECT);
+      root =
+          ConfigurationHelper.getString(
+              cfg, SECTION, SUBSECTION, KEY_ROOT_NODE, "gerrit/multi-site");
       sessionTimeoutMs =
-          getInt(cfg, SECTION, SUBSECTION, KEY_SESSION_TIMEOUT_MS, defaultSessionTimeoutMs);
+          ConfigurationHelper.getInt(
+              cfg, SECTION, SUBSECTION, KEY_SESSION_TIMEOUT_MS, defaultSessionTimeoutMs);
       connectionTimeoutMs =
-          getInt(cfg, SECTION, SUBSECTION, KEY_CONNECTION_TIMEOUT_MS, defaultConnectionTimeoutMs);
+          ConfigurationHelper.getInt(
+              cfg, SECTION, SUBSECTION, KEY_CONNECTION_TIMEOUT_MS, defaultConnectionTimeoutMs);
 
       baseSleepTimeMs =
-          getInt(
+          ConfigurationHelper.getInt(
               cfg,
               SECTION,
               SUBSECTION,
@@ -559,7 +513,7 @@ public class Configuration {
               DEFAULT_RETRY_POLICY_BASE_SLEEP_TIME_MS);
 
       maxSleepTimeMs =
-          getInt(
+          ConfigurationHelper.getInt(
               cfg,
               SECTION,
               SUBSECTION,
@@ -567,7 +521,7 @@ public class Configuration {
               DEFAULT_RETRY_POLICY_MAX_SLEEP_TIME_MS);
 
       maxRetries =
-          getInt(
+          ConfigurationHelper.getInt(
               cfg,
               SECTION,
               SUBSECTION,
@@ -575,7 +529,7 @@ public class Configuration {
               DEFAULT_RETRY_POLICY_MAX_RETRIES);
 
       casBaseSleepTimeMs =
-          getInt(
+          ConfigurationHelper.getInt(
               cfg,
               SECTION,
               SUBSECTION,
@@ -583,7 +537,7 @@ public class Configuration {
               DEFAULT_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS);
 
       casMaxSleepTimeMs =
-          getInt(
+          ConfigurationHelper.getInt(
               cfg,
               SECTION,
               SUBSECTION,
@@ -591,7 +545,7 @@ public class Configuration {
               DEFAULT_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS);
 
       casMaxRetries =
-          getInt(
+          ConfigurationHelper.getInt(
               cfg,
               SECTION,
               SUBSECTION,
@@ -599,7 +553,7 @@ public class Configuration {
               DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES);
 
       transactionLockTimeOut =
-          getLong(
+          ConfigurationHelper.getLong(
               cfg,
               SECTION,
               SUBSECTION,
@@ -608,13 +562,13 @@ public class Configuration {
 
       checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
 
-      enabled = Configuration.getBoolean(cfg, SECTION, null, ENABLE_KEY, true);
+      enabled = ConfigurationHelper.getBoolean(cfg, SECTION, null, ENABLE_KEY, true);
 
       enforcementRules = MultimapBuilder.hashKeys().arrayListValues().build();
       for (EnforcePolicy policy : EnforcePolicy.values()) {
         enforcementRules.putAll(
             policy,
-            Configuration.getList(cfg, SECTION, SUBSECTION_ENFORCEMENT_RULES, policy.name()));
+            ConfigurationHelper.getList(cfg, SECTION, SUBSECTION_ENFORCEMENT_RULES, policy.name()));
       }
     }
 
@@ -650,22 +604,6 @@ public class Configuration {
 
     public Multimap<EnforcePolicy, String> getEnforcementRules() {
       return enforcementRules;
-    }
-  }
-
-  static List<String> getList(
-      Supplier<Config> cfg, String section, String subsection, String name) {
-    return ImmutableList.copyOf(cfg.get().getStringList(section, subsection, name));
-  }
-
-  static boolean getBoolean(
-      Supplier<Config> cfg, String section, String subsection, String name, boolean defaultValue) {
-    try {
-      return cfg.get().getBoolean(section, subsection, name, defaultValue);
-    } catch (IllegalArgumentException e) {
-      log.error("invalid value for {}; using default value {}", name, defaultValue);
-      log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
-      return defaultValue;
     }
   }
 }

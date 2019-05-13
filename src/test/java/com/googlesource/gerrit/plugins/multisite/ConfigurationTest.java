@@ -61,9 +61,6 @@ public class ConfigurationTest {
 
     globalPluginConfig.setInt(INDEX_SECTION, null, THREAD_POOL_SIZE_KEY, THREAD_POOL_SIZE);
     assertThat(getConfiguration().index().threadPoolSize()).isEqualTo(THREAD_POOL_SIZE);
-
-    globalPluginConfig.setString(INDEX_SECTION, null, THREAD_POOL_SIZE_KEY, INVALID_INT);
-    assertThat(getConfiguration().index().threadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
   }
 
   @Test
@@ -75,9 +72,6 @@ public class ConfigurationTest {
 
     globalPluginConfig.setBoolean(INDEX_SECTION, null, SYNCHRONIZE_KEY, true);
     assertThat(getConfiguration().index().synchronize()).isTrue();
-
-    globalPluginConfig.setString(INDEX_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
-    assertThat(getConfiguration().index().synchronize()).isTrue();
   }
 
   @Test
@@ -86,9 +80,6 @@ public class ConfigurationTest {
 
     globalPluginConfig.setInt(CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, THREAD_POOL_SIZE);
     assertThat(getConfiguration().cache().threadPoolSize()).isEqualTo(THREAD_POOL_SIZE);
-
-    globalPluginConfig.setString(CACHE_SECTION, null, THREAD_POOL_SIZE_KEY, INVALID_INT);
-    assertThat(getConfiguration().cache().threadPoolSize()).isEqualTo(DEFAULT_THREAD_POOL_SIZE);
   }
 
   @Test
@@ -100,9 +91,6 @@ public class ConfigurationTest {
 
     globalPluginConfig.setBoolean(CACHE_SECTION, null, SYNCHRONIZE_KEY, true);
     assertThat(getConfiguration().cache().synchronize()).isTrue();
-
-    globalPluginConfig.setString(CACHE_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
-    assertThat(getConfiguration().cache().synchronize()).isTrue();
   }
 
   @Test
@@ -113,9 +101,6 @@ public class ConfigurationTest {
     assertThat(getConfiguration().event().synchronize()).isFalse();
 
     globalPluginConfig.setBoolean(EVENT_SECTION, null, SYNCHRONIZE_KEY, true);
-    assertThat(getConfiguration().event().synchronize()).isTrue();
-
-    globalPluginConfig.setString(EVENT_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
     assertThat(getConfiguration().event().synchronize()).isTrue();
   }
 
