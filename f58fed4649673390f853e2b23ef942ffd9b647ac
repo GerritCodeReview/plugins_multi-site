@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "618d9a66_098726be",
+        "filename": "dockerised_local_env/gerrit-2/docker-entrypoint.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1029357
+      },
+      "writtenOn": "2019-05-13T15:43:28Z",
+      "side": 1,
+      "message": "Might want to poll the gerrit-1 to confirm that it is really up?  Probably address this in a different change set.",
+      "revId": "f58fed4649673390f853e2b23ef942ffd9b647ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63acf23e_3c9755ad",
+        "filename": "dockerised_local_env/gerrit-common/gerrit.config",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1029357
+      },
+      "writtenOn": "2019-05-13T15:43:28Z",
+      "side": 1,
+      "message": "This is probably not needed?",
+      "revId": "f58fed4649673390f853e2b23ef942ffd9b647ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
