@@ -110,7 +110,7 @@ public class Module extends LifecycleModule {
 
     install(
         new ValidationModule(
-            config, disableGitRepositoryValidation || !config.getZookeeperConfig().isEnabled()));
+            config, disableGitRepositoryValidation || !config.getSharedRefDb().isEnabled()));
 
     install(new ZkValidationModule(config));
 
