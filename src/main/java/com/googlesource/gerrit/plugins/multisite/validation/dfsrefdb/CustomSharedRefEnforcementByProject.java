@@ -21,7 +21,7 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.Configuration;
+import com.googlesource.gerrit.plugins.multisite.ZookeeperConfig;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -32,16 +32,16 @@ public class CustomSharedRefEnforcementByProject implements SharedRefEnforcement
   private final Supplier<Map<String, Map<String, EnforcePolicy>>> predefEnforcements;
 
   @Inject
-  public CustomSharedRefEnforcementByProject(Configuration config) {
+  public CustomSharedRefEnforcementByProject(ZookeeperConfig config) {
     this.predefEnforcements = memoize(() -> parseDryRunEnforcementsToMap(config));
   }
 
   private static Map<String, Map<String, EnforcePolicy>> parseDryRunEnforcementsToMap(
-      Configuration config) {
+      ZookeeperConfig config) {
     Map<String, Map<String, EnforcePolicy>> enforcementMap = new HashMap<>();
 
     for (Map.Entry<EnforcePolicy, String> enforcementEntry :
-        config.getZookeeperConfig().getEnforcementRules().entries()) {
+        config.getEnforcementRules().entries()) {
       parseEnforcementEntry(enforcementMap, enforcementEntry);
     }
 
