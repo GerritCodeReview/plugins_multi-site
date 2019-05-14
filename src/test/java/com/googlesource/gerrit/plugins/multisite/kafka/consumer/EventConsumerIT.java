@@ -40,6 +40,7 @@ import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Module;
 import com.googlesource.gerrit.plugins.multisite.NoteDbStatus;
+import com.googlesource.gerrit.plugins.multisite.ZookeeperConfig;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
@@ -94,6 +95,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
     }
 
     private final FileBasedConfig config;
+    private final FileBasedConfig sharedRefConfig;
     private final Module multiSiteModule;
 
     @Inject
@@ -101,7 +103,15 @@ public class EventConsumerIT extends AbstractDaemonTest {
       this.config =
           new FileBasedConfig(
               sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile(), FS.DETECTED);
-      this.multiSiteModule = new Module(new Configuration(config, new Config()), noteDb, true);
+      this.sharedRefConfig =
+          new FileBasedConfig(
+              sitePaths.etc_dir.resolve(ZookeeperConfig.ZOOKEEPER_MS_CONFIG).toFile(), FS.DETECTED);
+      this.multiSiteModule =
+          new Module(
+              new Configuration(config, new Config()),
+              new ZookeeperConfig(sharedRefConfig),
+              noteDb,
+              true);
     }
 
     @Override
@@ -125,7 +135,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
       config.setString("kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
       config.setBoolean("kafka", "publisher", "enabled", true);
       config.setBoolean("kafka", "subscriber", "enabled", true);
-      config.setBoolean("ref-database", null, "enabled", false);
+      sharedRefConfig.setBoolean("ref-database", null, "enabled", false);
       config.save();
 
       return kafkaContainer;
