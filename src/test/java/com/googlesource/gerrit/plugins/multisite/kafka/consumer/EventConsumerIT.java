@@ -40,6 +40,7 @@ import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Module;
 import com.googlesource.gerrit.plugins.multisite.NoteDbStatus;
+import com.googlesource.gerrit.plugins.multisite.ZookeeperConfig;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
@@ -93,15 +94,24 @@ public class EventConsumerIT extends AbstractDaemonTest {
       }
     }
 
-    private final FileBasedConfig config;
+    private final FileBasedConfig multiSiteConfig;
+    private final FileBasedConfig sharedDirConfig;
     private final Module multiSiteModule;
 
     @Inject
     public KafkaTestContainerModule(SitePaths sitePaths, NoteDbStatus noteDb) {
-      this.config =
+      this.multiSiteConfig =
           new FileBasedConfig(
               sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile(), FS.DETECTED);
-      this.multiSiteModule = new Module(new Configuration(config, new Config()), noteDb, true);
+      this.sharedDirConfig =
+          new FileBasedConfig(
+              sitePaths.etc_dir.resolve(ZookeeperConfig.ZOOKEEPER_MS_CONFIG).toFile(), FS.DETECTED);
+      this.multiSiteModule =
+          new Module(
+              new Configuration(multiSiteConfig, new Config()),
+              new ZookeeperConfig(sharedDirConfig),
+              noteDb,
+              true);
     }
 
     @Override
@@ -122,11 +132,12 @@ public class EventConsumerIT extends AbstractDaemonTest {
       KafkaContainer kafkaContainer = new KafkaContainer();
       kafkaContainer.start();
 
-      config.setString("kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
-      config.setBoolean("kafka", "publisher", "enabled", true);
-      config.setBoolean("kafka", "subscriber", "enabled", true);
-      config.setBoolean("ref-database", null, "enabled", false);
-      config.save();
+      multiSiteConfig.setString(
+          "kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
+      multiSiteConfig.setBoolean("kafka", "publisher", "enabled", true);
+      multiSiteConfig.setBoolean("kafka", "subscriber", "enabled", true);
+      sharedDirConfig.setBoolean("ref-database", null, "enabled", false);
+      multiSiteConfig.save();
 
       return kafkaContainer;
     }
