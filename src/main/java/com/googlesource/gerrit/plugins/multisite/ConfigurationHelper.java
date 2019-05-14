@@ -20,11 +20,13 @@ import static com.google.common.base.Suppliers.ofInstance;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
+import com.google.gerrit.server.config.SitePaths;
 import java.io.IOException;
 import java.util.List;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
+import org.eclipse.jgit.util.FS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,9 +86,13 @@ public final class ConfigurationHelper {
     return ofInstance(config);
   }
 
+  public static List<String> getList(Config cfg, String section, String subsection, String name) {
+    return ImmutableList.copyOf(cfg.getStringList(section, subsection, name));
+  }
+
   public static List<String> getList(
       Supplier<Config> cfg, String section, String subsection, String name) {
-    return ImmutableList.copyOf(cfg.get().getStringList(section, subsection, name));
+    return getList(cfg.get(), section, subsection, name);
   }
 
   public static boolean getBoolean(
@@ -97,5 +103,9 @@ public final class ConfigurationHelper {
   public static boolean getBoolean(
       Config cfg, String section, String subsection, String name, boolean defaultValue) {
     return cfg.getBoolean(section, subsection, name, defaultValue);
+  }
+
+  public static FileBasedConfig getConfigFile(SitePaths sitePaths, String configFileName) {
+    return new FileBasedConfig(sitePaths.etc_dir.resolve(configFileName).toFile(), FS.DETECTED);
   }
 }
