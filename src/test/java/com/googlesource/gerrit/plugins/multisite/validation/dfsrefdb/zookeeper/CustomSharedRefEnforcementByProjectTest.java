@@ -18,7 +18,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase.newRef;
 
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.Configuration.ZookeeperConfig;
+import com.googlesource.gerrit.plugins.multisite.ZookeeperConfig;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
@@ -34,8 +34,8 @@ public class CustomSharedRefEnforcementByProjectTest implements RefFixture {
 
   @Before
   public void setUp() {
-    Config multiSiteConfig = new Config();
-    multiSiteConfig.setStringList(
+    Config sharedRefDbConfig = new Config();
+    sharedRefDbConfig.setStringList(
         ZookeeperConfig.SECTION,
         ZookeeperConfig.SUBSECTION_ENFORCEMENT_RULES,
         EnforcePolicy.DESIRED.name(),
@@ -43,13 +43,13 @@ public class CustomSharedRefEnforcementByProjectTest implements RefFixture {
             "ProjectOne",
             "ProjectTwo:refs/heads/master/test",
             "ProjectTwo:refs/heads/master/test2"));
-    multiSiteConfig.setString(
+    sharedRefDbConfig.setString(
         ZookeeperConfig.SECTION,
         ZookeeperConfig.SUBSECTION_ENFORCEMENT_RULES,
         EnforcePolicy.IGNORED.name(),
         ":refs/heads/master/test");
 
-    refEnforcement = newCustomRefEnforcement(multiSiteConfig);
+    refEnforcement = newCustomRefEnforcement(sharedRefDbConfig);
   }
 
   @Test
@@ -138,18 +138,18 @@ public class CustomSharedRefEnforcementByProjectTest implements RefFixture {
 
   private SharedRefEnforcement newCustomRefEnforcementWithValue(
       EnforcePolicy policy, String... projectAndRefs) {
-    Config multiSiteConfig = new Config();
-    multiSiteConfig.setStringList(
+    Config sharedRefDbConfiguration = new Config();
+    sharedRefDbConfiguration.setStringList(
         ZookeeperConfig.SECTION,
         ZookeeperConfig.SUBSECTION_ENFORCEMENT_RULES,
         policy.name(),
         Arrays.asList(projectAndRefs));
-    return newCustomRefEnforcement(multiSiteConfig);
+    return newCustomRefEnforcement(sharedRefDbConfiguration);
   }
 
-  private SharedRefEnforcement newCustomRefEnforcement(Config multiSiteConfig) {
+  private SharedRefEnforcement newCustomRefEnforcement(Config sharedRefDbConfig) {
     return new CustomSharedRefEnforcementByProject(
-        new Configuration(multiSiteConfig, new Config()));
+        new Configuration(new Config(), new Config(), sharedRefDbConfig));
   }
 
   @Override
