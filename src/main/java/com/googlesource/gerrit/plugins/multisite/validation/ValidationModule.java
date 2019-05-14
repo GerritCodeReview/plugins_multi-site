@@ -16,19 +16,11 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.server.git.GitRepositoryManager;
-import com.google.inject.Scopes;
-import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 
 public class ValidationModule extends FactoryModule {
-  private final Configuration cfg;
   private final boolean disableGitRepositoryValidation;
 
-  public ValidationModule(Configuration cfg, boolean disableGitRepositoryValidation) {
-    this.cfg = cfg;
+  public ValidationModule(boolean disableGitRepositoryValidation) {
     this.disableGitRepositoryValidation = disableGitRepositoryValidation;
   }
 
@@ -44,14 +36,5 @@ public class ValidationModule extends FactoryModule {
     if (!disableGitRepositoryValidation) {
       bind(GitRepositoryManager.class).to(MultiSiteGitRepositoryManager.class);
     }
-    if (cfg.getZookeeperConfig().getEnforcementRules().isEmpty()) {
-      bind(SharedRefEnforcement.class).to(DefaultSharedRefEnforcement.class).in(Scopes.SINGLETON);
-    } else {
-      bind(SharedRefEnforcement.class)
-          .to(CustomSharedRefEnforcementByProject.class)
-          .in(Scopes.SINGLETON);
-    }
-
-    install(new ZkValidationModule(cfg));
   }
 }
