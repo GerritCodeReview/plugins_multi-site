@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Suppliers.ofInstance;
 
@@ -22,14 +21,11 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,11 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
-import org.apache.commons.lang.StringUtils;
-import org.apache.curator.RetryPolicy;
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.retry.BoundedExponentialBackoffRetry;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
@@ -59,12 +50,12 @@ public class Configuration {
   public static final String PLUGIN_NAME = "multi-site";
   public static final String MULTI_SITE_CONFIG = PLUGIN_NAME + ".config";
   public static final String REPLICATION_CONFIG = "replication.config";
+  public static final String MS_SHARED_REF_DIR_CONFIG = "multi-site-zookeeper.config";
 
   static final String INSTANCE_ID_FILE = "instanceId.data";
 
   // common parameters to cache and index sections
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
-
   static final int DEFAULT_INDEX_MAX_TRIES = 2;
   static final int DEFAULT_INDEX_RETRY_INTERVAL = 30000;
   private static final int DEFAULT_POLLING_INTERVAL_MS = 1000;
@@ -88,20 +79,24 @@ public class Configuration {
 
   @Inject
   Configuration(SitePaths sitePaths) {
-    this(getConfigFile(sitePaths, MULTI_SITE_CONFIG), getConfigFile(sitePaths, REPLICATION_CONFIG));
+    this(
+        getConfigFile(sitePaths, MULTI_SITE_CONFIG),
+        getConfigFile(sitePaths, REPLICATION_CONFIG),
+        getConfigFile(sitePaths, REPLICATION_CONFIG));
   }
 
   @VisibleForTesting
-  public Configuration(Config multiSiteConfig, Config replicationConfig) {
-    Supplier<Config> lazyCfg = ConfigurationHelper.lazyLoad(multiSiteConfig);
+  public Configuration(Config multiSiteConfig, Config replicationConfig, Config sharedRefDb) {
+    Supplier<Config> lazyMultiSiteCfg = ConfigurationHelper.lazyLoad(multiSiteConfig);
+    Supplier<Config> lazySharedRefDb = ConfigurationHelper.lazyLoad(sharedRefDb);
     replicationConfigValidation = lazyValidateReplicatioConfig(replicationConfig);
-    kafka = memoize(() -> new Kafka(lazyCfg));
-    publisher = memoize(() -> new KafkaPublisher(lazyCfg));
-    subscriber = memoize(() -> new KafkaSubscriber(lazyCfg));
-    cache = memoize(() -> new Cache(lazyCfg));
-    event = memoize(() -> new Event(lazyCfg));
-    index = memoize(() -> new Index(lazyCfg));
-    zookeeperConfig = memoize(() -> new ZookeeperConfig(lazyCfg));
+    kafka = memoize(() -> new Kafka(lazyMultiSiteCfg));
+    publisher = memoize(() -> new KafkaPublisher(lazyMultiSiteCfg));
+    subscriber = memoize(() -> new KafkaSubscriber(lazyMultiSiteCfg));
+    cache = memoize(() -> new Cache(lazyMultiSiteCfg));
+    event = memoize(() -> new Event(lazyMultiSiteCfg));
+    index = memoize(() -> new Index(lazyMultiSiteCfg));
+    zookeeperConfig = memoize(() -> new ZookeeperConfig(lazySharedRefDb));
   }
 
   public ZookeeperConfig getZookeeperConfig() {
@@ -433,177 +428,6 @@ public class Configuration {
 
     public int numStripedLocks() {
       return numStripedLocks;
-    }
-  }
-
-  public static class ZookeeperConfig {
-    public static final String SECTION = "ref-database";
-    public static final int defaultSessionTimeoutMs;
-    public static final int defaultConnectionTimeoutMs;
-    public static final String DEFAULT_ZK_CONNECT = "localhost:2181";
-    private final int DEFAULT_RETRY_POLICY_BASE_SLEEP_TIME_MS = 1000;
-    private final int DEFAULT_RETRY_POLICY_MAX_SLEEP_TIME_MS = 3000;
-    private final int DEFAULT_RETRY_POLICY_MAX_RETRIES = 3;
-    private final int DEFAULT_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS = 100;
-    private final int DEFAULT_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS = 300;
-    private final int DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES = 3;
-    private final int DEFAULT_TRANSACTION_LOCK_TIMEOUT = 1000;
-
-    static {
-      CuratorFrameworkFactory.Builder b = CuratorFrameworkFactory.builder();
-      defaultSessionTimeoutMs = b.getSessionTimeoutMs();
-      defaultConnectionTimeoutMs = b.getConnectionTimeoutMs();
-    }
-
-    public static final String SUBSECTION = "zookeeper";
-    public static final String KEY_CONNECT_STRING = "connectString";
-    public static final String KEY_SESSION_TIMEOUT_MS = "sessionTimeoutMs";
-    public static final String KEY_CONNECTION_TIMEOUT_MS = "connectionTimeoutMs";
-    public static final String KEY_RETRY_POLICY_BASE_SLEEP_TIME_MS = "retryPolicyBaseSleepTimeMs";
-    public static final String KEY_RETRY_POLICY_MAX_SLEEP_TIME_MS = "retryPolicyMaxSleepTimeMs";
-    public static final String KEY_RETRY_POLICY_MAX_RETRIES = "retryPolicyMaxRetries";
-    public static final String KEY_LOCK_TIMEOUT_MS = "lockTimeoutMs";
-    public static final String KEY_ROOT_NODE = "rootNode";
-    public final String KEY_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS = "casRetryPolicyBaseSleepTimeMs";
-    public final String KEY_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS = "casRetryPolicyMaxSleepTimeMs";
-    public final String KEY_CAS_RETRY_POLICY_MAX_RETRIES = "casRetryPolicyMaxRetries";
-    public static final String KEY_MIGRATE = "migrate";
-    public final String TRANSACTION_LOCK_TIMEOUT_KEY = "transactionLockTimeoutMs";
-
-    public static final String SUBSECTION_ENFORCEMENT_RULES = "enforcementRules";
-
-    private final String connectionString;
-    private final String root;
-    private final int sessionTimeoutMs;
-    private final int connectionTimeoutMs;
-    private final int baseSleepTimeMs;
-    private final int maxSleepTimeMs;
-    private final int maxRetries;
-    private final int casBaseSleepTimeMs;
-    private final int casMaxSleepTimeMs;
-    private final int casMaxRetries;
-    private final boolean enabled;
-
-    private final Multimap<EnforcePolicy, String> enforcementRules;
-
-    private final Long transactionLockTimeOut;
-
-    private CuratorFramework build;
-
-    private ZookeeperConfig(Supplier<Config> cfg) {
-      connectionString =
-          ConfigurationHelper.getString(
-              cfg, SECTION, SUBSECTION, KEY_CONNECT_STRING, DEFAULT_ZK_CONNECT);
-      root =
-          ConfigurationHelper.getString(
-              cfg, SECTION, SUBSECTION, KEY_ROOT_NODE, "gerrit/multi-site");
-      sessionTimeoutMs =
-          ConfigurationHelper.getInt(
-              cfg, SECTION, SUBSECTION, KEY_SESSION_TIMEOUT_MS, defaultSessionTimeoutMs);
-      connectionTimeoutMs =
-          ConfigurationHelper.getInt(
-              cfg, SECTION, SUBSECTION, KEY_CONNECTION_TIMEOUT_MS, defaultConnectionTimeoutMs);
-
-      baseSleepTimeMs =
-          ConfigurationHelper.getInt(
-              cfg,
-              SECTION,
-              SUBSECTION,
-              KEY_RETRY_POLICY_BASE_SLEEP_TIME_MS,
-              DEFAULT_RETRY_POLICY_BASE_SLEEP_TIME_MS);
-
-      maxSleepTimeMs =
-          ConfigurationHelper.getInt(
-              cfg,
-              SECTION,
-              SUBSECTION,
-              KEY_RETRY_POLICY_MAX_SLEEP_TIME_MS,
-              DEFAULT_RETRY_POLICY_MAX_SLEEP_TIME_MS);
-
-      maxRetries =
-          ConfigurationHelper.getInt(
-              cfg,
-              SECTION,
-              SUBSECTION,
-              KEY_RETRY_POLICY_MAX_RETRIES,
-              DEFAULT_RETRY_POLICY_MAX_RETRIES);
-
-      casBaseSleepTimeMs =
-          ConfigurationHelper.getInt(
-              cfg,
-              SECTION,
-              SUBSECTION,
-              KEY_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS,
-              DEFAULT_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS);
-
-      casMaxSleepTimeMs =
-          ConfigurationHelper.getInt(
-              cfg,
-              SECTION,
-              SUBSECTION,
-              KEY_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS,
-              DEFAULT_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS);
-
-      casMaxRetries =
-          ConfigurationHelper.getInt(
-              cfg,
-              SECTION,
-              SUBSECTION,
-              KEY_CAS_RETRY_POLICY_MAX_RETRIES,
-              DEFAULT_CAS_RETRY_POLICY_MAX_RETRIES);
-
-      transactionLockTimeOut =
-          ConfigurationHelper.getLong(
-              cfg,
-              SECTION,
-              SUBSECTION,
-              TRANSACTION_LOCK_TIMEOUT_KEY,
-              DEFAULT_TRANSACTION_LOCK_TIMEOUT);
-
-      checkArgument(StringUtils.isNotEmpty(connectionString), "zookeeper.%s contains no servers");
-
-      enabled = ConfigurationHelper.getBoolean(cfg, SECTION, null, ENABLE_KEY, true);
-
-      enforcementRules = MultimapBuilder.hashKeys().arrayListValues().build();
-      for (EnforcePolicy policy : EnforcePolicy.values()) {
-        enforcementRules.putAll(
-            policy,
-            ConfigurationHelper.getList(cfg, SECTION, SUBSECTION_ENFORCEMENT_RULES, policy.name()));
-      }
-    }
-
-    public CuratorFramework buildCurator() {
-      if (build == null) {
-        this.build =
-            CuratorFrameworkFactory.builder()
-                .connectString(connectionString)
-                .sessionTimeoutMs(sessionTimeoutMs)
-                .connectionTimeoutMs(connectionTimeoutMs)
-                .retryPolicy(
-                    new BoundedExponentialBackoffRetry(baseSleepTimeMs, maxSleepTimeMs, maxRetries))
-                .namespace(root)
-                .build();
-        this.build.start();
-      }
-
-      return this.build;
-    }
-
-    public Long getZkInterProcessLockTimeOut() {
-      return transactionLockTimeOut;
-    }
-
-    public RetryPolicy buildCasRetryPolicy() {
-      return new BoundedExponentialBackoffRetry(
-          casBaseSleepTimeMs, casMaxSleepTimeMs, casMaxRetries);
-    }
-
-    public boolean isEnabled() {
-      return enabled;
-    }
-
-    public Multimap<EnforcePolicy, String> getEnforcementRules() {
-      return enforcementRules;
     }
   }
 }

@@ -52,7 +52,7 @@ public class ConfigurationTest {
   }
 
   private Configuration getConfiguration() {
-    return new Configuration(globalPluginConfig, replicationConfig);
+    return new Configuration(globalPluginConfig, replicationConfig, new Config());
   }
 
   @Test
@@ -195,6 +195,7 @@ public class ConfigurationTest {
   public void shouldReturnValidationErrorsWhenReplicationOnStartupIsEnabled() throws Exception {
     Config replicationConfig = new Config();
     replicationConfig.setBoolean("gerrit", null, "replicateOnStartup", true);
-    assertThat(new Configuration(globalPluginConfig, replicationConfig).validate()).isNotEmpty();
+    assertThat(new Configuration(globalPluginConfig, replicationConfig, new Config()).validate())
+        .isNotEmpty();
   }
 }
