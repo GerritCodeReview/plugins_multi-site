@@ -34,6 +34,7 @@ import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -48,12 +49,13 @@ import org.slf4j.LoggerFactory;
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private Configuration config;
+  private ZookeeperConfig zkConfig;
   private NoteDbStatus noteDb;
   private final boolean disableGitRepositoryValidation;
 
   @Inject
-  public Module(Configuration config, NoteDbStatus noteDb) {
-    this(config, noteDb, false);
+  public Module(Configuration config, ZookeeperConfig zkConfig, NoteDbStatus noteDb) {
+    this(config, zkConfig, noteDb, false);
   }
 
   // TODO: It is not possible to properly test the libModules in Gerrit.
@@ -61,13 +63,18 @@ public class Module extends LifecycleModule {
   // support
   // in Gerrit for it.
   @VisibleForTesting
-  public Module(Configuration config, NoteDbStatus noteDb, boolean disableGitRepositoryValidation) {
-    init(config, noteDb);
+  public Module(
+      Configuration config,
+      ZookeeperConfig zkConfig,
+      NoteDbStatus noteDb,
+      boolean disableGitRepositoryValidation) {
+    init(config, zkConfig, noteDb);
     this.disableGitRepositoryValidation = disableGitRepositoryValidation;
   }
 
-  private void init(Configuration config, NoteDbStatus noteDb) {
+  private void init(Configuration config, ZookeeperConfig zkConfig, NoteDbStatus noteDb) {
     this.config = config;
+    this.zkConfig = zkConfig;
     this.noteDb = noteDb;
   }
 
@@ -107,9 +114,10 @@ public class Module extends LifecycleModule {
       install(new BrokerForwarderModule(config.kafkaPublisher()));
     }
 
-    install(
-        new ValidationModule(
-            config, disableGitRepositoryValidation || !config.getZookeeperConfig().isEnabled()));
+    install(new ValidationModule(disableGitRepositoryValidation || !zkConfig.isEnabled()));
+
+    install(new ZkValidationModule(zkConfig));
+
     bind(Gson.class)
         .annotatedWith(BrokerGson.class)
         .toProvider(GsonProvider.class)
