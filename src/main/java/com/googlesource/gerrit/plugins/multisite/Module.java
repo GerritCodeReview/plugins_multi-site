@@ -49,6 +49,7 @@ import org.slf4j.LoggerFactory;
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private Configuration config;
+  private ZookeeperConfig zkConfig;
   private NoteDbStatus noteDb;
   private final boolean disableGitRepositoryValidation;
 
@@ -110,7 +111,7 @@ public class Module extends LifecycleModule {
 
     install(
         new ValidationModule(
-            config, disableGitRepositoryValidation || !config.getZookeeperConfig().isEnabled()));
+            config, disableGitRepositoryValidation || !config.getSharedRefDb().isEnabled()));
 
     install(new ZkValidationModule(config));
 
