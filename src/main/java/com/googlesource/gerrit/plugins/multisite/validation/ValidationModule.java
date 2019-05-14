@@ -15,6 +15,8 @@
 package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.gerrit.extensions.config.FactoryModule;
+import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -43,12 +45,13 @@ public class ValidationModule extends FactoryModule {
     if (!disableGitRepositoryValidation) {
       bind(GitRepositoryManager.class).to(MultiSiteGitRepositoryManager.class);
     }
-    if (cfg.getZookeeperConfig().getEnforcementRules().isEmpty()) {
+    if (cfg.getSharedRefDb().getEnforcementRules().isEmpty()) {
       bind(SharedRefEnforcement.class).to(DefaultSharedRefEnforcement.class).in(Scopes.SINGLETON);
     } else {
       bind(SharedRefEnforcement.class)
           .to(CustomSharedRefEnforcementByProject.class)
           .in(Scopes.SINGLETON);
     }
+    DynamicSet.bind(binder(), ProjectDeletedListener.class).to(ProjectDeletedSharedDbCleanup.class);
   }
 }
