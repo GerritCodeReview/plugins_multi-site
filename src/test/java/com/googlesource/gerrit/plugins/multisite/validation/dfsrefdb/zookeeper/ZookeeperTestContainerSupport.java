@@ -17,7 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase.pathFor;
 import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase.writeObjectId;
 
-import com.googlesource.gerrit.plugins.multisite.Configuration;
+import com.googlesource.gerrit.plugins.multisite.ZookeeperConfig;
 import org.apache.curator.framework.CuratorFramework;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.ObjectId;
@@ -38,7 +38,7 @@ public class ZookeeperTestContainerSupport {
   }
 
   private ZookeeperContainer container;
-  private Configuration configuration;
+  private ZookeeperConfig configuration;
   private CuratorFramework curator;
 
   public CuratorFramework getCurator() {
@@ -49,32 +49,23 @@ public class ZookeeperTestContainerSupport {
     return container;
   }
 
-  public Configuration getConfig() {
-    return configuration;
-  }
-
   @SuppressWarnings("resource")
   public ZookeeperTestContainerSupport(boolean migrationMode) {
     container = new ZookeeperContainer().withExposedPorts(2181).waitingFor(Wait.forListeningPort());
     container.start();
     Integer zkHostPort = container.getMappedPort(2181);
-    Config splitBrainconfig = new Config();
+    Config sharedRefDbConfig = new Config();
     String connectString = container.getContainerIpAddress() + ":" + zkHostPort;
-    splitBrainconfig.setBoolean("ref-database", null, "enabled", true);
-    splitBrainconfig.setString("ref-database", "zookeeper", "connectString", connectString);
-    splitBrainconfig.setString(
+    sharedRefDbConfig.setBoolean("ref-database", null, "enabled", true);
+    sharedRefDbConfig.setString("ref-database", "zookeeper", "connectString", connectString);
+    sharedRefDbConfig.setString(
         "ref-database",
-        Configuration.ZookeeperConfig.SUBSECTION,
-        Configuration.ZookeeperConfig.KEY_CONNECT_STRING,
+        ZookeeperConfig.SUBSECTION,
+        ZookeeperConfig.KEY_CONNECT_STRING,
         connectString);
-    splitBrainconfig.setBoolean(
-        "ref-database",
-        Configuration.ZookeeperConfig.SUBSECTION,
-        Configuration.ZookeeperConfig.KEY_MIGRATE,
-        migrationMode);
 
-    configuration = new Configuration(splitBrainconfig, new Config());
-    this.curator = configuration.getZookeeperConfig().buildCurator();
+    configuration = new ZookeeperConfig(sharedRefDbConfig);
+    this.curator = configuration.buildCurator();
   }
 
   public void cleanup() {
