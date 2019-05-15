@@ -38,6 +38,7 @@ import com.google.inject.Inject;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
+import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.Module;
 import com.googlesource.gerrit.plugins.multisite.NoteDbStatus;
 import com.googlesource.gerrit.plugins.multisite.ZookeeperConfig;
@@ -96,6 +97,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
 
     private final FileBasedConfig multiSiteConfig;
     private final FileBasedConfig sharedDirConfig;
+
     private final Module multiSiteModule;
 
     @Inject
@@ -109,6 +111,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
       this.multiSiteModule =
           new Module(
               new Configuration(multiSiteConfig, new Config()),
+              new KafkaConfiguration(multiSiteConfig),
               new ZookeeperConfig(sharedDirConfig),
               noteDb,
               true);
@@ -131,13 +134,12 @@ public class EventConsumerIT extends AbstractDaemonTest {
     private KafkaContainer startAndConfigureKafkaConnection() throws IOException {
       KafkaContainer kafkaContainer = new KafkaContainer();
       kafkaContainer.start();
-
       multiSiteConfig.setString(
           "kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
       multiSiteConfig.setBoolean("kafka", "publisher", "enabled", true);
       multiSiteConfig.setBoolean("kafka", "subscriber", "enabled", true);
-      sharedDirConfig.setBoolean("ref-database", null, "enabled", false);
       multiSiteConfig.save();
+      sharedDirConfig.setBoolean("ref-database", null, "enabled", false);
 
       return kafkaContainer;
     }
