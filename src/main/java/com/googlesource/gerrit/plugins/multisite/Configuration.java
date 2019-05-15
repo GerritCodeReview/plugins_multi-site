@@ -62,25 +62,18 @@ public class Configuration {
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
   static final int DEFAULT_INDEX_MAX_TRIES = 2;
   static final int DEFAULT_INDEX_RETRY_INTERVAL = 30000;
-  private static final int DEFAULT_POLLING_INTERVAL_MS = 1000;
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
   static final String NUM_STRIPED_LOCKS = "numStripedLocks";
   static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
   static final String ENABLE_KEY = "enabled";
-  static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
-  static final boolean DEFAULT_ENABLE_PROCESSING = true;
-  static final String KAFKA_SECTION = "kafka";
-  public static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
 
-  private final Supplier<KafkaPublisher> publisher;
   private final Supplier<Cache> cache;
   private final Supplier<Event> event;
   private final Supplier<Index> index;
-  private final Supplier<KafkaSubscriber> subscriber;
-  private final Supplier<Kafka> kafka;
   private final Supplier<SharedRefDatabase> sharedRefDb;
   private final Supplier<Collection<Message>> replicationConfigValidation;
   private final Config multiSiteConfig;
+  private final KafkaConfiguration kafkaConfig;
 
   @Inject
   Configuration(SitePaths sitePaths) {
@@ -91,10 +84,8 @@ public class Configuration {
   public Configuration(Config multiSiteConfig, Config replicationConfig) {
     Supplier<Config> lazyMultiSiteCfg = lazyLoad(multiSiteConfig);
     this.multiSiteConfig = multiSiteConfig;
+    this.kafkaConfig = new KafkaConfiguration(multiSiteConfig);
     replicationConfigValidation = lazyValidateReplicatioConfig(replicationConfig);
-    kafka = memoize(() -> new Kafka(lazyMultiSiteCfg));
-    publisher = memoize(() -> new KafkaPublisher(lazyMultiSiteCfg));
-    subscriber = memoize(() -> new KafkaSubscriber(lazyMultiSiteCfg));
     cache = memoize(() -> new Cache(lazyMultiSiteCfg));
     event = memoize(() -> new Event(lazyMultiSiteCfg));
     index = memoize(() -> new Index(lazyMultiSiteCfg));
@@ -110,11 +101,11 @@ public class Configuration {
   }
 
   public Kafka getKafka() {
-    return kafka.get();
+    return kafkaConfig.getKafka();
   }
 
   public KafkaPublisher kafkaPublisher() {
-    return publisher.get();
+    return kafkaConfig.kafkaPublisher();
   }
 
   public Cache cache() {
@@ -130,7 +121,7 @@ public class Configuration {
   }
 
   public KafkaSubscriber kafkaSubscriber() {
-    return subscriber.get();
+    return kafkaConfig.kafkaSubscriber();
   }
 
   public Collection<Message> validate() {
@@ -192,59 +183,6 @@ public class Configuration {
     }
   }
 
-  private static String getString(
-      Supplier<Config> cfg, String section, String subsection, String name, String defaultValue) {
-    String value = cfg.get().getString(section, subsection, name);
-    if (!Strings.isNullOrEmpty(value)) {
-      return value;
-    }
-    return defaultValue;
-  }
-
-  private static Map<EventFamily, Boolean> eventsEnabled(
-      Supplier<Config> config, String subsection) {
-    Map<EventFamily, Boolean> eventsEnabled = new HashMap<>();
-    for (EventFamily eventFamily : EventFamily.values()) {
-      String enabledConfigKey = eventFamily.lowerCamelName() + "Enabled";
-
-      eventsEnabled.put(
-          eventFamily,
-          config
-              .get()
-              .getBoolean(KAFKA_SECTION, subsection, enabledConfigKey, DEFAULT_ENABLE_PROCESSING));
-    }
-    return eventsEnabled;
-  }
-
-  private static void applyKafkaConfig(
-      Supplier<Config> configSupplier, String subsectionName, Properties target) {
-    Config config = configSupplier.get();
-    for (String section : config.getSubsections(KAFKA_SECTION)) {
-      if (section.equals(subsectionName)) {
-        for (String name : config.getNames(KAFKA_SECTION, section, true)) {
-          if (name.startsWith(KAFKA_PROPERTY_PREFIX)) {
-            Object value = config.getString(KAFKA_SECTION, subsectionName, name);
-            String configProperty = name.replaceFirst(KAFKA_PROPERTY_PREFIX, "");
-            String propName =
-                CaseFormat.LOWER_CAMEL
-                    .to(CaseFormat.LOWER_HYPHEN, configProperty)
-                    .replaceAll("-", ".");
-            log.info("[{}] Setting kafka property: {} = {}", subsectionName, propName, value);
-            target.put(propName, value);
-          }
-        }
-      }
-    }
-    target.put(
-        "bootstrap.servers",
-        getString(
-            configSupplier,
-            KAFKA_SECTION,
-            null,
-            "bootstrapServers",
-            DEFAULT_KAFKA_BOOTSTRAP_SERVERS));
-  }
-
   public static class Kafka {
     private final Map<EventFamily, String> eventTopics;
     private final String bootstrapServers;
@@ -263,14 +201,23 @@ public class Configuration {
     Kafka(Supplier<Config> config) {
       this.bootstrapServers =
           getString(
-              config, KAFKA_SECTION, null, "bootstrapServers", DEFAULT_KAFKA_BOOTSTRAP_SERVERS);
+              config,
+              KafkaConfiguration.KAFKA_SECTION,
+              null,
+              "bootstrapServers",
+              KafkaConfiguration.DEFAULT_KAFKA_BOOTSTRAP_SERVERS);
 
       this.eventTopics = new HashMap<>();
       for (Map.Entry<EventFamily, String> topicDefault : EVENT_TOPICS.entrySet()) {
         String topicConfigKey = topicDefault.getKey().lowerCamelName() + "Topic";
         eventTopics.put(
             topicDefault.getKey(),
-            getString(config, KAFKA_SECTION, null, topicConfigKey, topicDefault.getValue()));
+            getString(
+                config,
+                KafkaConfiguration.KAFKA_SECTION,
+                null,
+                topicConfigKey,
+                topicDefault.getValue()));
       }
     }
 
@@ -280,6 +227,15 @@ public class Configuration {
 
     public String getBootstrapServers() {
       return bootstrapServers;
+    }
+
+    private static String getString(
+        Supplier<Config> cfg, String section, String subsection, String name, String defaultValue) {
+      String value = cfg.get().getString(section, subsection, name);
+      if (!Strings.isNullOrEmpty(value)) {
+        return value;
+      }
+      return defaultValue;
     }
   }
 
@@ -298,13 +254,16 @@ public class Configuration {
       enabled =
           cfg.get()
               .getBoolean(
-                  KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
+                  KafkaConfiguration.KAFKA_SECTION,
+                  KAFKA_PUBLISHER_SUBSECTION,
+                  KafkaConfiguration.ENABLE_KEY,
+                  DEFAULT_BROKER_ENABLED);
 
-      eventsEnabled = eventsEnabled(cfg, KAFKA_PUBLISHER_SUBSECTION);
+      eventsEnabled = KafkaConfiguration.eventsEnabled(cfg, KAFKA_PUBLISHER_SUBSECTION);
 
       if (enabled) {
         setDefaults();
-        applyKafkaConfig(cfg, KAFKA_PUBLISHER_SUBSECTION, this);
+        KafkaConfiguration.applyKafkaConfig(cfg, KAFKA_PUBLISHER_SUBSECTION, this);
       }
     }
 
@@ -343,17 +302,22 @@ public class Configuration {
 
       this.pollingInterval =
           cfg.getInt(
-              KAFKA_SECTION,
+              KafkaConfiguration.KAFKA_SECTION,
               KAFKA_SUBSCRIBER_SUBSECTION,
               "pollingIntervalMs",
-              DEFAULT_POLLING_INTERVAL_MS);
+              KafkaConfiguration.DEFAULT_POLLING_INTERVAL_MS);
 
-      enabled = cfg.getBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
+      enabled =
+          cfg.getBoolean(
+              KafkaConfiguration.KAFKA_SECTION,
+              KAFKA_SUBSCRIBER_SUBSECTION,
+              KafkaConfiguration.ENABLE_KEY,
+              false);
 
-      eventsEnabled = eventsEnabled(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION);
+      eventsEnabled = KafkaConfiguration.eventsEnabled(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION);
 
       if (enabled) {
-        applyKafkaConfig(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION, this);
+        KafkaConfiguration.applyKafkaConfig(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION, this);
       }
     }
 
@@ -368,7 +332,11 @@ public class Configuration {
     public Properties initPropsWith(UUID instanceId) {
       String groupId =
           getString(
-              cfg, KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, "groupId", instanceId.toString());
+              cfg,
+              KafkaConfiguration.KAFKA_SECTION,
+              KAFKA_SUBSCRIBER_SUBSECTION,
+              "groupId",
+              instanceId.toString());
       this.put("group.id", groupId);
 
       return this;
@@ -514,6 +482,116 @@ public class Configuration {
       log.error("invalid value for {}; using default value {}", name, defaultValue);
       log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
       return defaultValue;
+    }
+  }
+
+  static class KafkaConfiguration {
+
+    private static final Logger log = LoggerFactory.getLogger(KafkaConfiguration.class);
+    public static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
+    static final String KAFKA_SECTION = "kafka";
+    static final String ENABLE_KEY = "enabled";
+    static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
+    static final boolean DEFAULT_ENABLE_PROCESSING = true;
+    private static final int DEFAULT_POLLING_INTERVAL_MS = 1000;
+
+    private final Supplier<KafkaSubscriber> subscriber;
+    private final Supplier<Kafka> kafka;
+    private final Supplier<KafkaPublisher> publisher;
+
+    @VisibleForTesting
+    public KafkaConfiguration(Config kafkaConfig) {
+      Supplier<Config> lazyCfg = lazyLoad(kafkaConfig);
+      kafka = memoize(() -> new Kafka(lazyCfg));
+      publisher = memoize(() -> new KafkaPublisher(lazyCfg));
+      subscriber = memoize(() -> new KafkaSubscriber(lazyCfg));
+    }
+
+    public Kafka getKafka() {
+      return kafka.get();
+    }
+
+    public KafkaSubscriber kafkaSubscriber() {
+      return subscriber.get();
+    }
+
+    private static void applyKafkaConfig(
+        Supplier<Config> configSupplier, String subsectionName, Properties target) {
+      Config config = configSupplier.get();
+      for (String section : config.getSubsections(KAFKA_SECTION)) {
+        if (section.equals(subsectionName)) {
+          for (String name : config.getNames(KAFKA_SECTION, section, true)) {
+            if (name.startsWith(KAFKA_PROPERTY_PREFIX)) {
+              Object value = config.getString(KAFKA_SECTION, subsectionName, name);
+              String configProperty = name.replaceFirst(KAFKA_PROPERTY_PREFIX, "");
+              String propName =
+                  CaseFormat.LOWER_CAMEL
+                      .to(CaseFormat.LOWER_HYPHEN, configProperty)
+                      .replaceAll("-", ".");
+              log.info("[{}] Setting kafka property: {} = {}", subsectionName, propName, value);
+              target.put(propName, value);
+            }
+          }
+        }
+      }
+      target.put(
+          "bootstrap.servers",
+          getString(
+              configSupplier,
+              KAFKA_SECTION,
+              null,
+              "bootstrapServers",
+              DEFAULT_KAFKA_BOOTSTRAP_SERVERS));
+    }
+
+    private static String getString(
+        Supplier<Config> cfg, String section, String subsection, String name, String defaultValue) {
+      String value = cfg.get().getString(section, subsection, name);
+      if (!Strings.isNullOrEmpty(value)) {
+        return value;
+      }
+      return defaultValue;
+    }
+
+    private static Map<EventFamily, Boolean> eventsEnabled(
+        Supplier<Config> config, String subsection) {
+      Map<EventFamily, Boolean> eventsEnabled = new HashMap<>();
+      for (EventFamily eventFamily : EventFamily.values()) {
+        String enabledConfigKey = eventFamily.lowerCamelName() + "Enabled";
+
+        eventsEnabled.put(
+            eventFamily,
+            config
+                .get()
+                .getBoolean(
+                    KafkaConfiguration.KAFKA_SECTION,
+                    subsection,
+                    enabledConfigKey,
+                    KafkaConfiguration.DEFAULT_ENABLE_PROCESSING));
+      }
+      return eventsEnabled;
+    }
+
+    public KafkaPublisher kafkaPublisher() {
+      return publisher.get();
+    }
+
+    private Supplier<Config> lazyLoad(Config config) {
+      if (config instanceof FileBasedConfig) {
+        return memoize(
+            () -> {
+              FileBasedConfig fileConfig = (FileBasedConfig) config;
+              String fileConfigFileName = fileConfig.getFile().getPath();
+              try {
+                log.info("Loading configuration from {}", fileConfigFileName);
+                fileConfig.load();
+              } catch (IOException | ConfigInvalidException e) {
+                log.error("Unable to load configuration from " + fileConfigFileName, e);
+              }
+              return fileConfig;
+            });
+      }
+      return ofInstance(config);
     }
   }
 }
