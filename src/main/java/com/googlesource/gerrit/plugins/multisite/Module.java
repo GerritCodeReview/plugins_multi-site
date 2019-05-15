@@ -53,7 +53,9 @@ public class Module extends LifecycleModule {
   private final boolean disableGitRepositoryValidation;
 
   @Inject
-  public Module(Configuration config, NoteDbStatus noteDb) {
+  public Module(
+      Configuration config,
+      NoteDbStatus noteDb) {
     this(config, noteDb, false);
   }
 
@@ -62,12 +64,17 @@ public class Module extends LifecycleModule {
   // support
   // in Gerrit for it.
   @VisibleForTesting
-  public Module(Configuration config, NoteDbStatus noteDb, boolean disableGitRepositoryValidation) {
+  public Module(
+      Configuration config,
+      NoteDbStatus noteDb,
+      boolean disableGitRepositoryValidation) {
     init(config, noteDb);
     this.disableGitRepositoryValidation = disableGitRepositoryValidation;
   }
 
-  private void init(Configuration config, NoteDbStatus noteDb) {
+  private void init(
+      Configuration config,
+      NoteDbStatus noteDb) {
     this.config = config;
     this.noteDb = noteDb;
   }
