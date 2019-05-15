@@ -21,8 +21,8 @@ import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gson.Gson;
 import com.google.gwtorm.server.OrmException;
-import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
+import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
@@ -50,12 +50,12 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
   private final UUID instanceId;
   private final AtomicBoolean closed = new AtomicBoolean(false);
   private final Deserializer<SourceAwareEventWrapper> valueDeserializer;
-  private final Configuration configuration;
+  private final KafkaConfiguration configuration;
   private final OneOffRequestContext oneOffCtx;
   private final MessageLogger msgLog;
 
   public AbstractKafkaSubcriber(
-      Configuration configuration,
+      KafkaConfiguration configuration,
       Deserializer<byte[]> keyDeserializer,
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
       ForwardedEventRouter eventRouter,

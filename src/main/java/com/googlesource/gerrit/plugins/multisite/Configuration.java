@@ -20,28 +20,19 @@ import static com.googlesource.gerrit.plugins.multisite.ConfigurationHelper.getB
 import static com.googlesource.gerrit.plugins.multisite.ConfigurationHelper.getConfigFile;
 import static com.googlesource.gerrit.plugins.multisite.ConfigurationHelper.getInt;
 import static com.googlesource.gerrit.plugins.multisite.ConfigurationHelper.getList;
-import static com.googlesource.gerrit.plugins.multisite.ConfigurationHelper.getString;
 import static com.googlesource.gerrit.plugins.multisite.ConfigurationHelper.lazyLoad;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.CaseFormat;
 import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.UUID;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
@@ -62,22 +53,14 @@ public class Configuration {
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
   static final int DEFAULT_INDEX_MAX_TRIES = 2;
   static final int DEFAULT_INDEX_RETRY_INTERVAL = 30000;
-  private static final int DEFAULT_POLLING_INTERVAL_MS = 1000;
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
   static final String NUM_STRIPED_LOCKS = "numStripedLocks";
   static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
   static final String ENABLE_KEY = "enabled";
-  static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
-  static final boolean DEFAULT_ENABLE_PROCESSING = true;
-  static final String KAFKA_SECTION = "kafka";
-  public static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
 
-  private final Supplier<KafkaPublisher> publisher;
   private final Supplier<Cache> cache;
   private final Supplier<Event> event;
   private final Supplier<Index> index;
-  private final Supplier<KafkaSubscriber> subscriber;
-  private final Supplier<Kafka> kafka;
   private final Supplier<Collection<Message>> replicationConfigValidation;
 
   @Inject
@@ -89,20 +72,9 @@ public class Configuration {
   public Configuration(Config multiSiteConfig, Config replicationConfig) {
     Supplier<Config> lazyMultiSiteCfg = lazyLoad(multiSiteConfig);
     replicationConfigValidation = lazyValidateReplicatioConfig(replicationConfig);
-    kafka = memoize(() -> new Kafka(lazyMultiSiteCfg));
-    publisher = memoize(() -> new KafkaPublisher(lazyMultiSiteCfg));
-    subscriber = memoize(() -> new KafkaSubscriber(lazyMultiSiteCfg));
     cache = memoize(() -> new Cache(lazyMultiSiteCfg));
     event = memoize(() -> new Event(lazyMultiSiteCfg));
     index = memoize(() -> new Index(lazyMultiSiteCfg));
-  }
-
-  public Kafka getKafka() {
-    return kafka.get();
-  }
-
-  public KafkaPublisher kafkaPublisher() {
-    return publisher.get();
   }
 
   public Cache cache() {
@@ -115,10 +87,6 @@ public class Configuration {
 
   public Index index() {
     return index.get();
-  }
-
-  public KafkaSubscriber kafkaSubscriber() {
-    return subscriber.get();
   }
 
   public Collection<Message> validate() {
@@ -145,184 +113,6 @@ public class Configuration {
               "Invalid replication.config: gerrit.replicateOnStartup has to be set to 'false' for multi-site setups"));
     }
     return Collections.emptyList();
-  }
-
-  private static Map<EventFamily, Boolean> eventsEnabled(
-      Supplier<Config> config, String subsection) {
-    Map<EventFamily, Boolean> eventsEnabled = new HashMap<>();
-    for (EventFamily eventFamily : EventFamily.values()) {
-      String enabledConfigKey = eventFamily.lowerCamelName() + "Enabled";
-
-      eventsEnabled.put(
-          eventFamily,
-          config
-              .get()
-              .getBoolean(KAFKA_SECTION, subsection, enabledConfigKey, DEFAULT_ENABLE_PROCESSING));
-    }
-    return eventsEnabled;
-  }
-
-  private static void applyKafkaConfig(
-      Supplier<Config> configSupplier, String subsectionName, Properties target) {
-    Config config = configSupplier.get();
-    for (String section : config.getSubsections(KAFKA_SECTION)) {
-      if (section.equals(subsectionName)) {
-        for (String name : config.getNames(KAFKA_SECTION, section, true)) {
-          if (name.startsWith(KAFKA_PROPERTY_PREFIX)) {
-            Object value = config.getString(KAFKA_SECTION, subsectionName, name);
-            String configProperty = name.replaceFirst(KAFKA_PROPERTY_PREFIX, "");
-            String propName =
-                CaseFormat.LOWER_CAMEL
-                    .to(CaseFormat.LOWER_HYPHEN, configProperty)
-                    .replaceAll("-", ".");
-            log.info("[{}] Setting kafka property: {} = {}", subsectionName, propName, value);
-            target.put(propName, value);
-          }
-        }
-      }
-    }
-    target.put(
-        "bootstrap.servers",
-        getString(
-            configSupplier,
-            KAFKA_SECTION,
-            null,
-            "bootstrapServers",
-            DEFAULT_KAFKA_BOOTSTRAP_SERVERS));
-  }
-
-  public static class Kafka {
-    private final Map<EventFamily, String> eventTopics;
-    private final String bootstrapServers;
-
-    private static final Map<EventFamily, String> EVENT_TOPICS =
-        ImmutableMap.of(
-            EventFamily.INDEX_EVENT,
-            "GERRIT.EVENT.INDEX",
-            EventFamily.STREAM_EVENT,
-            "GERRIT.EVENT.STREAM",
-            EventFamily.CACHE_EVENT,
-            "GERRIT.EVENT.CACHE",
-            EventFamily.PROJECT_LIST_EVENT,
-            "GERRIT.EVENT.PROJECT.LIST");
-
-    Kafka(Supplier<Config> config) {
-      this.bootstrapServers =
-          getString(
-              config, KAFKA_SECTION, null, "bootstrapServers", DEFAULT_KAFKA_BOOTSTRAP_SERVERS);
-
-      this.eventTopics = new HashMap<>();
-      for (Map.Entry<EventFamily, String> topicDefault : EVENT_TOPICS.entrySet()) {
-        String topicConfigKey = topicDefault.getKey().lowerCamelName() + "Topic";
-        eventTopics.put(
-            topicDefault.getKey(),
-            getString(config, KAFKA_SECTION, null, topicConfigKey, topicDefault.getValue()));
-      }
-    }
-
-    public String getTopic(EventFamily eventType) {
-      return eventTopics.get(eventType);
-    }
-
-    public String getBootstrapServers() {
-      return bootstrapServers;
-    }
-  }
-
-  public static class KafkaPublisher extends Properties {
-    private static final long serialVersionUID = 0L;
-
-    public static final String KAFKA_STRING_SERIALIZER = StringSerializer.class.getName();
-
-    public static final String KAFKA_PUBLISHER_SUBSECTION = "publisher";
-    public static final boolean DEFAULT_BROKER_ENABLED = false;
-
-    private final boolean enabled;
-    private final Map<EventFamily, Boolean> eventsEnabled;
-
-    private KafkaPublisher(Supplier<Config> cfg) {
-      enabled =
-          getBoolean(
-              cfg, KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
-
-      eventsEnabled = eventsEnabled(cfg, KAFKA_PUBLISHER_SUBSECTION);
-
-      if (enabled) {
-        setDefaults();
-        applyKafkaConfig(cfg, KAFKA_PUBLISHER_SUBSECTION, this);
-      }
-    }
-
-    private void setDefaults() {
-      put("acks", "all");
-      put("retries", 0);
-      put("batch.size", 16384);
-      put("linger.ms", 1);
-      put("buffer.memory", 33554432);
-      put("key.serializer", KAFKA_STRING_SERIALIZER);
-      put("value.serializer", KAFKA_STRING_SERIALIZER);
-      put("reconnect.backoff.ms", 5000L);
-    }
-
-    public boolean enabled() {
-      return enabled;
-    }
-
-    public boolean enabledEvent(EventFamily eventType) {
-      return eventsEnabled.get(eventType);
-    }
-  }
-
-  public class KafkaSubscriber extends Properties {
-    private static final long serialVersionUID = 1L;
-
-    static final String KAFKA_SUBSCRIBER_SUBSECTION = "subscriber";
-
-    private final boolean enabled;
-    private final Integer pollingInterval;
-    private Map<EventFamily, Boolean> eventsEnabled;
-    private final Config cfg;
-
-    public KafkaSubscriber(Supplier<Config> configSupplier) {
-      this.cfg = configSupplier.get();
-
-      this.pollingInterval =
-          getInt(
-              cfg,
-              KAFKA_SECTION,
-              KAFKA_SUBSCRIBER_SUBSECTION,
-              "pollingIntervalMs",
-              DEFAULT_POLLING_INTERVAL_MS);
-
-      enabled = getBoolean(cfg, KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
-
-      eventsEnabled = eventsEnabled(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION);
-
-      if (enabled) {
-        applyKafkaConfig(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION, this);
-      }
-    }
-
-    public boolean enabled() {
-      return enabled;
-    }
-
-    public boolean enabledEvent(EventFamily eventFamily) {
-      return eventsEnabled.get(eventFamily);
-    }
-
-    public Properties initPropsWith(UUID instanceId) {
-      String groupId =
-          getString(
-              cfg, KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, "groupId", instanceId.toString());
-      this.put("group.id", groupId);
-
-      return this;
-    }
-
-    public Integer getPollingInterval() {
-      return pollingInterval;
-    }
   }
 
   /** Common parameters to cache, event, index */
