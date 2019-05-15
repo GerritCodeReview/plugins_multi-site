@@ -38,6 +38,9 @@ public class ModuleTest {
 
   @Mock private ZookeeperConfig zkConfigMock;
 
+  @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+  private KafkaConfiguration kafkaConfigMock;
+
   @Mock private NoteDbStatus noteDb;
 
   @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
@@ -46,7 +49,7 @@ public class ModuleTest {
 
   @Before
   public void setUp() {
-    module = new Module(configMock, zkConfigMock, noteDb);
+    module = new Module(configMock, kafkaConfigMock, zkConfigMock, noteDb);
   }
 
   @Test
