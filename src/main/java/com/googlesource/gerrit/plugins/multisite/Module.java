@@ -49,12 +49,16 @@ import org.slf4j.LoggerFactory;
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private Configuration config;
+  private KafkaConfiguration kafkaConfig;
   private NoteDbStatus noteDb;
   private final boolean disableGitRepositoryValidation;
 
   @Inject
-  public Module(Configuration config, NoteDbStatus noteDb) {
-    this(config, noteDb, false);
+  public Module(
+      Configuration config,
+      KafkaConfiguration kafkaConfig,
+      NoteDbStatus noteDb) {
+    this(config, kafkaConfig, noteDb, false);
   }
 
   // TODO: It is not possible to properly test the libModules in Gerrit.
@@ -62,13 +66,21 @@ public class Module extends LifecycleModule {
   // support
   // in Gerrit for it.
   @VisibleForTesting
-  public Module(Configuration config, NoteDbStatus noteDb, boolean disableGitRepositoryValidation) {
-    init(config, noteDb);
+  public Module(
+      Configuration config,
+      KafkaConfiguration kafkaConfig,
+      NoteDbStatus noteDb,
+      boolean disableGitRepositoryValidation) {
+    init(config, kafkaConfig, noteDb);
     this.disableGitRepositoryValidation = disableGitRepositoryValidation;
   }
 
-  private void init(Configuration config, NoteDbStatus noteDb) {
+  private void init(
+      Configuration config,
+      KafkaConfiguration kafkaConfig,
+      NoteDbStatus noteDb) {
     this.config = config;
+    this.kafkaConfig = kafkaConfig;
     this.noteDb = noteDb;
   }
 
@@ -100,12 +112,12 @@ public class Module extends LifecycleModule {
       install(new IndexModule());
     }
 
-    if (config.kafkaSubscriber().enabled()) {
-      install(new KafkaConsumerModule(config.kafkaSubscriber()));
+    if (kafkaConfig.kafkaSubscriber().enabled()) {
+      install(new KafkaConsumerModule(kafkaConfig.kafkaSubscriber()));
       install(new ForwardedEventRouterModule());
     }
-    if (config.kafkaPublisher().enabled()) {
-      install(new BrokerForwarderModule(config.kafkaPublisher()));
+    if (kafkaConfig.kafkaPublisher().enabled()) {
+      install(new BrokerForwarderModule(kafkaConfig.kafkaPublisher()));
     }
 
     install(
