@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6c4c00ca_57a1f801",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-05-16T12:36:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9eea808b_545fa685",
+      "revId": "d97aeb0723251b2ae7cf5bd4b19300e798c6ab6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0786cf20_967e6db2",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
         "patchSetId": 5
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "49825f17_1299cd32",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-05-16T12:36:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0786cf20_967e6db2",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "d97aeb0723251b2ae7cf5bd4b19300e798c6ab6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4e6f1554_1a1562ad",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/KafkaConfigurationTest.java",
         "patchSetId": 5
@@ -62,6 +104,30 @@
       "revId": "d97aeb0723251b2ae7cf5bd4b19300e798c6ab6b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "39cff0f0_62b07b96",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/KafkaConfigurationTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-05-16T12:36:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e6f1554_1a1562ad",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "d97aeb0723251b2ae7cf5bd4b19300e798c6ab6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
