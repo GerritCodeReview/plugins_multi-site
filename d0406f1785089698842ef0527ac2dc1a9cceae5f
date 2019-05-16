@@ -16,6 +16,24 @@
       "revId": "d0406f1785089698842ef0527ac2dc1a9cceae5f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4dd3b44c_ddcc231a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/ConfigurationTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-16T13:08:34Z",
+      "side": 0,
+      "message": "You\u0027re right. This should probably become a different test",
+      "parentUuid": "bc071be7_1099c008",
+      "revId": "d0406f1785089698842ef0527ac2dc1a9cceae5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
