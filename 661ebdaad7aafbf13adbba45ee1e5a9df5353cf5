@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9edc0959_6b65be15",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-05-16T12:34:17Z",
+      "side": 1,
+      "message": "should we save sharedDirConfig as well?",
+      "revId": "661ebdaad7aafbf13adbba45ee1e5a9df5353cf5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
