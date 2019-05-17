@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "155f79b8_36b578c7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ConfigurationHelper.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-17T06:00:04Z",
+      "side": 1,
+      "message": "Not public please :-) This helper is supposed to be used only by the Configuration class and not outside.",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 6
+      },
+      "revId": "ae2c421eef6d9fa231f3bba42a66a888d4eb7e59",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c309ccf6_ddde43d8",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/ConfigurationTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-17T06:00:04Z",
+      "side": 1,
+      "message": "Why does a refactoring require changing tests?",
+      "revId": "ae2c421eef6d9fa231f3bba42a66a888d4eb7e59",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
