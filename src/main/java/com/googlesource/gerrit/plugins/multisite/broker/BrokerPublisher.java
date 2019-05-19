@@ -39,17 +39,20 @@ public class BrokerPublisher implements LifecycleListener {
   private final Gson gson;
   private final UUID instanceId;
   private final MessageLogger msgLog;
+  private final BrokerMetrics brokerMetrics;
 
   @Inject
   public BrokerPublisher(
       BrokerSession session,
       @BrokerGson Gson gson,
       @InstanceId UUID instanceId,
-      MessageLogger msgLog) {
+      MessageLogger msgLog,
+      BrokerMetrics brokerMetrics) {
     this.session = session;
     this.gson = gson;
     this.instanceId = instanceId;
     this.msgLog = msgLog;
+    this.brokerMetrics = brokerMetrics;
   }
 
   @Override
@@ -73,7 +76,13 @@ public class BrokerPublisher implements LifecycleListener {
 
     SourceAwareEventWrapper brokerEvent = toBrokerEvent(event);
     msgLog.log(Direction.PUBLISH, brokerEvent);
-    return session.publishEvent(eventType, getPayload(brokerEvent));
+    Boolean eventPublished = session.publishEvent(eventType, getPayload(brokerEvent));
+    if (eventPublished) {
+      brokerMetrics.incrementBrokerPublishedMessage();
+    } else {
+      brokerMetrics.incrementBrokerFailedToPublishMessage();
+    }
+    return eventPublished;
   }
 
   private String getPayload(SourceAwareEventWrapper event) {
