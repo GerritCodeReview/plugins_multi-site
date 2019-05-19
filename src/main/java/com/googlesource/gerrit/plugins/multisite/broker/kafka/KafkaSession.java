@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.broker.kafka;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
@@ -22,7 +23,6 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -31,14 +31,22 @@ import org.slf4j.LoggerFactory;
 
 public class KafkaSession implements BrokerSession {
   private static final Logger LOGGER = LoggerFactory.getLogger(KafkaSession.class);
+  private Provider<Producer<String, String>> producerProvider;
   private KafkaConfiguration properties;
   private final UUID instanceId;
+  private final KafkaBrokerMetrics brokerMetrics;
   private volatile Producer<String, String> producer;
 
   @Inject
-  public KafkaSession(KafkaConfiguration kafkaConfig, @InstanceId UUID instanceId) {
+  public KafkaSession(
+      Provider<Producer<String, String>> producerProvider,
+      KafkaConfiguration kafkaConfig,
+      @InstanceId UUID instanceId,
+      KafkaBrokerMetrics brokerMetrics) {
+    this.producerProvider = producerProvider;
     this.properties = kafkaConfig;
     this.instanceId = instanceId;
+    this.brokerMetrics = brokerMetrics;
   }
 
   @Override
@@ -56,13 +64,12 @@ public class KafkaSession implements BrokerSession {
       return;
     }
 
-    LOGGER.info("Connect to {}...", properties.getKafka().getBootstrapServers());
     /* Need to make sure that the thread of the running connection uses
      * the correct class loader otherwize you can endup with hard to debug
      * ClassNotFoundExceptions
      */
     setConnectionClassLoader();
-    producer = new KafkaProducer<>(properties.kafkaPublisher());
+    producer = producerProvider.get();
     LOGGER.info("Connection established.");
   }
 
@@ -91,9 +98,11 @@ public class KafkaSession implements BrokerSession {
     try {
       RecordMetadata metadata = future.get();
       LOGGER.debug("The offset of the record we just sent is: {}", metadata.offset());
+      brokerMetrics.incrementBrokerProducedMessage();
       return true;
     } catch (InterruptedException | ExecutionException e) {
       LOGGER.error("Cannot send the message", e);
+      brokerMetrics.incrementBrokerFailedToProduceMessage();
       return false;
     }
   }
