@@ -19,6 +19,7 @@ import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.validation.broker.BrokerMetrics;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -33,12 +34,15 @@ public class KafkaSession implements BrokerSession {
   private static final Logger LOGGER = LoggerFactory.getLogger(KafkaSession.class);
   private KafkaConfiguration properties;
   private final UUID instanceId;
+  private final BrokerMetrics brokerMetrics;
   private volatile Producer<String, String> producer;
 
   @Inject
-  public KafkaSession(KafkaConfiguration kafkaConfig, @InstanceId UUID instanceId) {
+  public KafkaSession(
+      KafkaConfiguration kafkaConfig, @InstanceId UUID instanceId, BrokerMetrics brokerMetrics) {
     this.properties = kafkaConfig;
     this.instanceId = instanceId;
+    this.brokerMetrics = brokerMetrics;
   }
 
   @Override
@@ -91,6 +95,7 @@ public class KafkaSession implements BrokerSession {
     try {
       RecordMetadata metadata = future.get();
       LOGGER.debug("The offset of the record we just sent is: {}", metadata.offset());
+      brokerMetrics.incrementBrokerProducedMessage();
       return true;
     } catch (InterruptedException | ExecutionException e) {
       LOGGER.error("Cannot send the message", e);
