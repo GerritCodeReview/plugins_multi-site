@@ -87,3 +87,25 @@ For all the masters on all the sites:
 
 For further information and supported options, refer to [config](config.md)
 documentation.
+
+## Metrics
+
+@PLUGIN@ plugin exposes following metrics:
+
+### Validation
+* Ref-update operations, split-brain detected and prevented
+
+`metric=multi_site/validation/git_update_split_brain_prevented_total, type=com.codahale.metrics.Meter`
+
+* Ref-update operation left node in a split-brain scenario
+
+`metric=multi_site/validation/git_update_split_brain_total, type=com.codahale.metrics.Meter`
+
+### Kafka broker message producer
+* Broker message produced count
+
+`metric=multi_site/kafka/broker/kafka_broker_message_producer_counter/kafka_broker_msg_producer_counter, type=com.codahale.metrics.Meter`
+
+* Broker failed to produce message count
+
+`metric=multi_site/kafka/broker/kafka_broker_msg_producer_failure_counter, type=com.codahale.metrics.Meter`
