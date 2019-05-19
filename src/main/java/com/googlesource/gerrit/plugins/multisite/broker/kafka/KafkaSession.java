@@ -33,12 +33,17 @@ public class KafkaSession implements BrokerSession {
   private static final Logger LOGGER = LoggerFactory.getLogger(KafkaSession.class);
   private KafkaConfiguration properties;
   private final UUID instanceId;
+  private final KafkaBrokerMetrics brokerMetrics;
   private volatile Producer<String, String> producer;
 
   @Inject
-  public KafkaSession(KafkaConfiguration kafkaConfig, @InstanceId UUID instanceId) {
+  public KafkaSession(
+      KafkaConfiguration kafkaConfig,
+      @InstanceId UUID instanceId,
+      KafkaBrokerMetrics brokerMetrics) {
     this.properties = kafkaConfig;
     this.instanceId = instanceId;
+    this.brokerMetrics = brokerMetrics;
   }
 
   @Override
@@ -91,9 +96,11 @@ public class KafkaSession implements BrokerSession {
     try {
       RecordMetadata metadata = future.get();
       LOGGER.debug("The offset of the record we just sent is: {}", metadata.offset());
+      brokerMetrics.incrementBrokerProducedMessage();
       return true;
     } catch (InterruptedException | ExecutionException e) {
       LOGGER.error("Cannot send the message", e);
+      brokerMetrics.incrementBrokerFailedToProduceMessage();
       return false;
     }
   }
