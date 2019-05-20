@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0257c968_a1c4f481",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ZookeeperConfig.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-20T07:12:36Z",
+      "side": 1,
+      "message": "@luca you still want to share the gerrit.config file?\nI thought this could be the first step to decouple the Zookeeper configuration logic as well as the configuration file.",
+      "revId": "b8aa94549b6fd4060d72a46503ce430e6bf89fde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
