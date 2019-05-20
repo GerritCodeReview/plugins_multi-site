@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c69a4243_10d1e815",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-20T06:38:34Z",
+      "side": 1,
+      "message": "makes sense",
+      "parentUuid": "a298bcf8_af520750",
+      "range": {
+        "startLine": 9,
+        "startChar": 49,
+        "endLine": 9,
+        "endChar": 54
+      },
+      "revId": "b0bedab7be9832f215e68d004677e8f6f43f179c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ce4c11e8_9c901787",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 8
@@ -36,6 +60,30 @@
       "writtenOn": "2019-05-20T06:34:47Z",
       "side": 1,
       "message": "Don\u0027t see so much the value for an helper class as we don\u0027t want/need to reuse it anywhere else.",
+      "range": {
+        "startLine": 599,
+        "startChar": 2,
+        "endLine": 599,
+        "endChar": 44
+      },
+      "revId": "b0bedab7be9832f215e68d004677e8f6f43f179c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0538b828_4e9bd285",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 599,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-05-20T06:38:34Z",
+      "side": 1,
+      "message": "Yes, you\u0027re right, given how things evolved. This is just adding more lines of code. Abandoning this change.",
+      "parentUuid": "ce4c11e8_9c901787",
       "range": {
         "startLine": 599,
         "startChar": 2,
