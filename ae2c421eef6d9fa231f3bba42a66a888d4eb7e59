@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "4e66475d_dca6091a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ConfigurationHelper.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-05-20T06:31:52Z",
+      "side": 1,
+      "message": "\u003e You\u0027re right if we need to completely decouple them, they should not share this class. \n\u003e This helper class could potentially, in some way be used by the interface that the ZookeeperConfig and KafkaConfig will depend on.\n\nThere is no reason why other plugins should depend on this class, unless is doing something special that needs to be inherited.\n\nAlways depend on interfaces, not on subclassing. \n\n\u003e For now, I\u0027ve made it protected as suggested and moved it inside the Configuration class.\n\n+1",
+      "parentUuid": "dae41c72_35480e99",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 6
+      },
+      "revId": "ae2c421eef6d9fa231f3bba42a66a888d4eb7e59",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c309ccf6_ddde43d8",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/ConfigurationTest.java",
         "patchSetId": 7
