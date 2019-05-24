@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "d731e1f7_e5e65c71",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-24T14:57:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4df91e5f_2e29d0e5",
+      "range": {
+        "startLine": 9,
+        "startChar": 49,
+        "endLine": 9,
+        "endChar": 64
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1bdc4d78_7c695d71",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -117,6 +141,30 @@
       "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f42642d_2fb38857",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-24T14:57:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bdc4d78_7c695d71",
+      "range": {
+        "startLine": 13,
+        "startChar": 54,
+        "endLine": 13,
+        "endChar": 61
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -332,6 +380,30 @@
     },
     {
       "key": {
+        "uuid": "4ddcce52_59a1506b",
+        "filename": "DESIGN.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-24T14:57:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2085355_e08952d3",
+      "range": {
+        "startLine": 308,
+        "startChar": 0,
+        "endLine": 308,
+        "endChar": 35
+      },
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cae994d5_46af4b2e",
         "filename": "DESIGN.md",
         "patchSetId": 1
@@ -443,6 +515,42 @@
     },
     {
       "key": {
+        "uuid": "6f6cd9a3_caf546ed",
+        "filename": "src/main/resources/Documentation/git-replication-split-brain-detected.png",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-24T14:57:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78e2adb9_92fd9193",
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0076558f_4d0b9a5f",
+        "filename": "src/main/resources/Documentation/git-replication-split-brain-detected.png",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-24T14:57:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78e2adb9_92fd9193",
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3f970d00_9edc1a85",
         "filename": "src/main/resources/Documentation/sources/git-replication-split-brain-detected.txt",
         "patchSetId": 1
@@ -457,6 +565,24 @@
       "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ed9f8ad_f38efca1",
+        "filename": "src/main/resources/Documentation/sources/git-replication-split-brain-detected.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-05-24T14:57:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f970d00_9edc1a85",
+      "revId": "b1f8b11d249d104fe2c7c5661727e52d8354e895",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
