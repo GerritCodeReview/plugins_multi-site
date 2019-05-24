@@ -15,7 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 
@@ -110,12 +110,11 @@ public class ForwardedProjectListUpdateHandlerTest {
         .onCreateProject(PROJECT_KEY);
 
     assertThat(Context.isForwardedEvent()).isFalse();
-    try {
-      handler.update(new ProjectListUpdateEvent(PROJECT_NAME, false));
-      fail("should have thrown a RuntimeException");
-    } catch (RuntimeException e) {
-      assertThat(e.getMessage()).isEqualTo(SOME_MESSAGE);
-    }
+    RuntimeException thrown =
+        assertThrows(
+            RuntimeException.class,
+            () -> handler.update(new ProjectListUpdateEvent(PROJECT_NAME, false)));
+    assertThat(thrown).hasMessageThat().isEqualTo(SOME_MESSAGE);
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(projectCacheMock).onCreateProject(PROJECT_KEY);
@@ -133,12 +132,11 @@ public class ForwardedProjectListUpdateHandlerTest {
         .remove(PROJECT_KEY);
 
     assertThat(Context.isForwardedEvent()).isFalse();
-    try {
-      handler.update(new ProjectListUpdateEvent(PROJECT_NAME, true));
-      fail("should have thrown a RuntimeException");
-    } catch (RuntimeException e) {
-      assertThat(e.getMessage()).isEqualTo(SOME_MESSAGE);
-    }
+    RuntimeException thrown =
+        assertThrows(
+            RuntimeException.class,
+            () -> handler.update(new ProjectListUpdateEvent(PROJECT_NAME, true)));
+    assertThat(thrown).hasMessageThat().isEqualTo(SOME_MESSAGE);
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(projectCacheMock).remove(PROJECT_KEY);
