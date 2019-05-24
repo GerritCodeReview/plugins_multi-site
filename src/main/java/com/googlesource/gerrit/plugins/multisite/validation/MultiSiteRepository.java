@@ -53,7 +53,6 @@ import org.eclipse.jgit.util.FS;
 
 public class MultiSiteRepository extends Repository {
 
-  private final MultiSiteRefDatabase.Factory multiSiteRefDbFactory;
   private final Repository repository;
   private final RefDatabase refDatabase;
   private final MultiSiteRefDatabase multiSiteRefDatabase;
@@ -68,7 +67,6 @@ public class MultiSiteRepository extends Repository {
       @Assisted String projectName,
       @Assisted Repository repository) {
     super(new BaseRepositoryBuilder());
-    this.multiSiteRefDbFactory = multiSiteRefDbFactory;
     this.repository = repository;
     this.refDatabase = repository.getRefDatabase();
     this.multiSiteRefDatabase = multiSiteRefDbFactory.create(projectName, refDatabase);
