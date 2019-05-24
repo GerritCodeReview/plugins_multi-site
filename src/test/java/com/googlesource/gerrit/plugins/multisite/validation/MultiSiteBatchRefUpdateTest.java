@@ -89,6 +89,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
     return "branch_" + nameRule.getMethodName();
   }
 
+  @SuppressWarnings("deprecation")
   private void setMockRequiredReturnValues() throws IOException {
 
     doReturn(batchRefUpdate).when(refDatabase).newBatchUpdate();

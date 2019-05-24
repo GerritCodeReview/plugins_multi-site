@@ -155,6 +155,7 @@ public class MultiSiteRepository extends Repository {
     return repository.getFS();
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public boolean hasObject(AnyObjectId objectId) {
     return repository.hasObject(objectId);
@@ -228,16 +229,19 @@ public class MultiSiteRepository extends Repository {
     return repository.getAdditionalHaves();
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public Map<String, Ref> getAllRefs() {
     return repository.getAllRefs();
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public Map<String, Ref> getTags() {
     return repository.getTags();
   }
 
+  @SuppressWarnings("deprecation")
   @Override
   public Ref peel(Ref ref) {
     return repository.peel(ref);
