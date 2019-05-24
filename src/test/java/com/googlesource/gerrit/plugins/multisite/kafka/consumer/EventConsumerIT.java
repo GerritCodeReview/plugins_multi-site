@@ -140,9 +140,9 @@ public class EventConsumerIT extends AbstractDaemonTest {
     String project = change.project().get();
     int changeNum = change.getId().get();
     String changeNotesRef = change.notes().getRefName();
-    int patchsetNum = change.currentPatchSet().getPatchSetId();
-    String patchsetRevision = change.currentPatchSet().getCommitId().name();
-    String patchsetRef = change.currentPatchSet().getRefName();
+    int patchsetNum = change.currentPatchSet().id().get();
+    String patchsetRevision = change.currentPatchSet().commitId().name();
+    String patchsetRef = change.currentPatchSet().refName();
 
     Map<String, List<Event>> eventsByType = receiveEventsByType(droppedEventsQueue);
     assertThat(eventsByType).isNotEmpty();
@@ -208,7 +208,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
     RevCommit parent;
     try (Repository repo = repoManager.openRepository(change.project());
         RevWalk walk = new RevWalk(repo)) {
-      RevCommit commit = walk.parseCommit(change.currentPatchSet().getCommitId());
+      RevCommit commit = walk.parseCommit(change.currentPatchSet().commitId());
       parent = commit.getParent(0);
     }
     return parent.getId().name();
