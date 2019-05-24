@@ -154,7 +154,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
             eventsByType.get("ref-updated").stream()
                 .map(e -> ((RefUpdatedEvent) e).getRefName())
                 .collect(toSet()))
-        .containsAllOf(changeNotesRef, patchsetRef); // 'refs/sequences/changes'
+        .containsAtLeast(changeNotesRef, patchsetRef); // 'refs/sequences/changes'
     // not always updated thus
     // not checked
 
