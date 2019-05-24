@@ -14,8 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static java.util.Arrays.asList;
-import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -128,12 +128,10 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
     setMockRequiredReturnValues();
 
     doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, oldRef);
-    try {
-      multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
-      fail("Expecting an IOException to be thrown");
-    } catch (IOException e) {
-      verify(validationMetrics).incrementSplitBrainPrevention();
-    }
+    assertThrows(
+        IOException.class,
+        () -> multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList()));
+    verify(validationMetrics).incrementSplitBrainPrevention();
   }
 
   @Test

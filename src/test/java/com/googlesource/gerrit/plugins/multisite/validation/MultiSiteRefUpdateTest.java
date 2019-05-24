@@ -15,7 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.validation;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -101,12 +101,8 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     MultiSiteRefUpdate multiSiteRefUpdate =
         getMultiSiteRefUpdateWithDefaultPolicyEnforcement(refUpdate);
 
-    try {
-      multiSiteRefUpdate.update();
-      fail("Expecting an IOException to be thrown");
-    } catch (IOException e) {
-      verify(validationMetrics).incrementSplitBrainPrevention();
-    }
+    assertThrows(IOException.class, () -> multiSiteRefUpdate.update());
+    verify(validationMetrics).incrementSplitBrainPrevention();
   }
 
   @Test
@@ -123,12 +119,8 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     MultiSiteRefUpdate multiSiteRefUpdate =
         getMultiSiteRefUpdateWithDefaultPolicyEnforcement(refUpdate);
 
-    try {
-      multiSiteRefUpdate.update();
-      fail("Expecting an IOException to be thrown");
-    } catch (IOException e) {
-      verify(validationMetrics, never()).incrementSplitBrainPrevention();
-    }
+    assertThrows(IOException.class, () -> multiSiteRefUpdate.update());
+    verify(validationMetrics, never()).incrementSplitBrainPrevention();
   }
 
   @Test
@@ -145,12 +137,8 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     MultiSiteRefUpdate multiSiteRefUpdate =
         getMultiSiteRefUpdateWithDefaultPolicyEnforcement(refUpdate);
 
-    try {
-      multiSiteRefUpdate.update();
-      fail("Expecting an IOException to be thrown");
-    } catch (IOException e) {
-      verify(validationMetrics).incrementSplitBrain();
-    }
+    assertThrows(IOException.class, () -> multiSiteRefUpdate.update());
+    verify(validationMetrics).incrementSplitBrain();
   }
 
   @Test
@@ -178,12 +166,8 @@ public class MultiSiteRefUpdateTest implements RefFixture {
     MultiSiteRefUpdate multiSiteRefUpdate =
         getMultiSiteRefUpdateWithDefaultPolicyEnforcement(refUpdate);
 
-    try {
-      multiSiteRefUpdate.delete();
-      fail("Expecting an IOException to be thrown");
-    } catch (IOException e) {
-      verify(validationMetrics).incrementSplitBrainPrevention();
-    }
+    assertThrows(IOException.class, () -> multiSiteRefUpdate.delete());
+    verify(validationMetrics).incrementSplitBrainPrevention();
   }
 
   private MultiSiteRefUpdate getMultiSiteRefUpdateWithDefaultPolicyEnforcement(

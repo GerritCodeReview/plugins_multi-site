@@ -15,7 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.fail;
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
@@ -163,12 +163,11 @@ public class ForwardedIndexChangeHandlerTest {
         .index(any(Change.class));
 
     assertThat(Context.isForwardedEvent()).isFalse();
-    try {
-      handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
-      fail("should have thrown an IOException");
-    } catch (IOException e) {
-      assertThat(e.getMessage()).isEqualTo("someMessage");
-    }
+    IOException thrown =
+        assertThrows(
+            IOException.class,
+            () -> handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty()));
+    assertThat(thrown).hasMessageThat().isEqualTo("someMessage");
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(indexerMock, times(1)).index(any(Change.class));

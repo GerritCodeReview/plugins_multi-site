@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
@@ -30,7 +31,6 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.IndexEventRouter;
 import java.util.Optional;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -123,12 +123,8 @@ public class IndexEventRouterTest {
   public void routerShouldFailForNotRecognisedEvents() throws Exception {
     final IndexEvent newEventType = new IndexEvent("new-type") {};
 
-    try {
-      router.route(newEventType);
-      Assert.fail("Expected exception for not supported event");
-    } catch (UnsupportedOperationException expected) {
-      verifyZeroInteractions(
-          indexAccountHandler, indexChangeHandler, indexGroupHandler, indexProjectHandler);
-    }
+    assertThrows(UnsupportedOperationException.class, () -> router.route(newEventType));
+    verifyZeroInteractions(
+        indexAccountHandler, indexChangeHandler, indexGroupHandler, indexProjectHandler);
   }
 }
