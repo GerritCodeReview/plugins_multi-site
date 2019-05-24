@@ -99,11 +99,6 @@ public class MultiSiteRefDatabase extends RefDatabase {
   }
 
   @Override
-  public Ref getRef(String name) throws IOException {
-    return refDatabase.getRef(name);
-  }
-
-  @Override
   public String toString() {
     return refDatabase.toString();
   }
