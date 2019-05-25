@@ -261,7 +261,7 @@ public class Configuration {
     private final Map<EventFamily, String> eventTopics;
     private final String bootstrapServers;
 
-    private static final Map<EventFamily, String> EVENT_TOPICS =
+    private static final ImmutableMap<EventFamily, String> EVENT_TOPICS =
         ImmutableMap.of(
             EventFamily.INDEX_EVENT,
             "GERRIT.EVENT.INDEX",
