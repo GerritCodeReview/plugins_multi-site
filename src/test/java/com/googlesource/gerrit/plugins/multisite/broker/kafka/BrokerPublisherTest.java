@@ -140,7 +140,7 @@ public class BrokerPublisherTest {
     assertThat(publisher.eventToJson(event).equals(expectedCommentEventJsonObject)).isTrue();
   }
 
-  private class TestBrokerSession implements BrokerSession {
+  private static class TestBrokerSession implements BrokerSession {
 
     @Override
     public boolean isOpen() {
