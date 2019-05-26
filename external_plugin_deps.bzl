@@ -83,6 +83,6 @@ def external_plugin_deps():
 
     maven_jar(
         name = "zookeeper",
-        artifact = "org.apache.zookeeper:zookeeper:3.4.8",
-        sha1 = "933ea2ed15e6a0e24b788973e3d128ff163c3136",
+        artifact = "org.apache.zookeeper:zookeeper:3.4.14",
+        sha1 = "c114c1e1c8172a7cd3f6ae39209a635f7a06c1a1",
     )
