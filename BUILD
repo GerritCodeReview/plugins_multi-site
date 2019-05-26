@@ -21,7 +21,7 @@ gerrit_plugin(
         "@curator-client//jar",
         "@curator-framework//jar",
         "@curator-recipes//jar",
-        "@kafka_client//jar",
+        "@kafka-client//jar",
         "@zookeeper//jar",
     ],
 )
@@ -47,7 +47,7 @@ java_library(
         ":multi-site__plugin",
         "@mockito//jar",
         "@wiremock//jar",
-        "@kafka_client//jar",
+        "@kafka-client//jar",
         "@testcontainers-kafka//jar",
         "//lib/testcontainers",
         "@curator-framework//jar",
