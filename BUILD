@@ -45,7 +45,6 @@ java_library(
     visibility = ["//visibility:public"],
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":multi-site__plugin",
-        "@mockito//jar",
         "@wiremock//jar",
         "@kafka_client//jar",
         "@testcontainers-kafka//jar",
