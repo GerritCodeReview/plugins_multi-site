@@ -18,10 +18,10 @@ gerrit_plugin(
     resources = glob(["src/main/resources/**/*"]),
     deps = [
         "@commons-lang3//jar",
-        "@kafka_client//jar",
+        "@curator-client//jar",
         "@curator-framework//jar",
         "@curator-recipes//jar",
-        "@curator-client//jar",
+        "@kafka_client//jar",
         "@zookeeper//jar",
     ],
 )
