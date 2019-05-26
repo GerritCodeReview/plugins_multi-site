@@ -22,6 +22,30 @@
       "revId": "d83e238b3f6bb821c2ba44df749a548dbf9a1e74",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7e55066a_809d03c3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-05-26T23:23:24Z",
+      "side": 1,
+      "message": "Not necessarily.  We suppress it like this in some cases in core too.",
+      "parentUuid": "40af4802_1e4c6c92",
+      "range": {
+        "startLine": 159,
+        "startChar": 14,
+        "endLine": 159,
+        "endChar": 34
+      },
+      "revId": "d83e238b3f6bb821c2ba44df749a548dbf9a1e74",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
