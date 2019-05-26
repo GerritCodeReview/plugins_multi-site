@@ -17,7 +17,6 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@commons-lang3//jar",
         "@curator-client//jar",
         "@curator-framework//jar",
         "@curator-recipes//jar",
