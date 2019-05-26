@@ -22,6 +22,30 @@
       "revId": "9b01233853999c39037761217497602f9f56e032",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf25bc5e_760e00a0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-05-26T23:22:10Z",
+      "side": 1,
+      "message": "I think this is a side effect of passing in the charset; the default BufferedReader constructors don\u0027t take such a parameter.\n\nhttps://docs.oracle.com/javase/8/docs/api/java/io/BufferedReader.html",
+      "parentUuid": "9d0410d8_da3decef",
+      "range": {
+        "startLine": 152,
+        "startChar": 31,
+        "endLine": 152,
+        "endChar": 40
+      },
+      "revId": "9b01233853999c39037761217497602f9f56e032",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
