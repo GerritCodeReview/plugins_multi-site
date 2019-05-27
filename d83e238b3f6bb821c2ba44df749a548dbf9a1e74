@@ -70,6 +70,30 @@
       "revId": "d83e238b3f6bb821c2ba44df749a548dbf9a1e74",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6de6e011_d3d16dfd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-05-27T23:19:41Z",
+      "side": 1,
+      "message": "The warning is intended to report cases where the return value is of significance and should be checked.  In this case we don\u0027t care, so we just suppress it. It\u0027s the same in several places for Future\u003c?\u003e returns.\n\nNote: We could also suppress the error-prone warning directly, but that results in yet another warning in Eclipse because it doesn\u0027t recognise the suppression name.",
+      "parentUuid": "4513954e_99e1222f",
+      "range": {
+        "startLine": 159,
+        "startChar": 14,
+        "endLine": 159,
+        "endChar": 34
+      },
+      "revId": "d83e238b3f6bb821c2ba44df749a548dbf9a1e74",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
