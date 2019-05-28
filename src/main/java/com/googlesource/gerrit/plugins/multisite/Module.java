@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gson.Gson;
@@ -33,7 +35,6 @@ import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerMod
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -120,7 +121,7 @@ public class Module extends LifecycleModule {
 
   private UUID tryToLoadSavedInstanceId(String serverIdFile) {
     if (Files.exists(Paths.get(serverIdFile))) {
-      try (BufferedReader br = new BufferedReader(new FileReader(serverIdFile))) {
+      try (BufferedReader br = Files.newBufferedReader(Paths.get(serverIdFile), UTF_8)) {
         return UUID.fromString(br.readLine());
       } catch (IOException e) {
         log.warn(

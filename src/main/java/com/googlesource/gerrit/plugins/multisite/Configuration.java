@@ -261,7 +261,7 @@ public class Configuration {
     private final Map<EventFamily, String> eventTopics;
     private final String bootstrapServers;
 
-    private static final Map<EventFamily, String> EVENT_TOPICS =
+    private static final ImmutableMap<EventFamily, String> EVENT_TOPICS =
         ImmutableMap.of(
             EventFamily.INDEX_EVENT,
             "GERRIT.EVENT.INDEX",
@@ -340,7 +340,7 @@ public class Configuration {
     }
   }
 
-  public class KafkaSubscriber extends Properties {
+  public static class KafkaSubscriber extends Properties {
     private static final long serialVersionUID = 1L;
 
     static final String KAFKA_SUBSCRIBER_SUBSECTION = "subscriber";
