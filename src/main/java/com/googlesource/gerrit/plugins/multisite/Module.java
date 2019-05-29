@@ -14,8 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
@@ -149,7 +147,7 @@ public class Module extends LifecycleModule {
 
   private UUID tryToLoadSavedInstanceId(String serverIdFile) {
     if (Files.exists(Paths.get(serverIdFile))) {
-      try (BufferedReader br = Files.newBufferedReader(Paths.get(serverIdFile), UTF_8)) {
+      try (BufferedReader br = Files.newBufferedReader(Paths.get(serverIdFile))) {
         return UUID.fromString(br.readLine());
       } catch (IOException e) {
         log.warn(
