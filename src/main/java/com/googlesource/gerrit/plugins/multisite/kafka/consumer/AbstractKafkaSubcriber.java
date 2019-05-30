@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.registration.DynamicSet;
@@ -133,7 +135,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
       }
     } catch (Exception e) {
       logger.atSevere().withCause(e).log(
-          "Malformed event '%s': [Exception: %s]", new String(consumerRecord.value()));
+          "Malformed event '%s': [Exception: %s]", new String(consumerRecord.value(), UTF_8));
     }
   }
 

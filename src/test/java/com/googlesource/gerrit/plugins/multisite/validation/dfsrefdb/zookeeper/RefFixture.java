@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
-import com.google.gerrit.reviewdb.client.Project.NameKey;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.client.RefNames;
 import org.eclipse.jgit.lib.ObjectId;
 import org.junit.Ignore;
@@ -27,7 +27,7 @@ public interface RefFixture {
   static final String ALLOWED_NAME_CHARS =
       ALLOWED_CHARS + ALLOWED_CHARS.toUpperCase() + ALLOWED_DIGITS;
   static final String A_TEST_PROJECT_NAME = "A_TEST_PROJECT_NAME";
-  static final NameKey A_TEST_PROJECT_NAME_KEY = new NameKey(A_TEST_PROJECT_NAME);
+  static final Project.NameKey A_TEST_PROJECT_NAME_KEY = new Project.NameKey(A_TEST_PROJECT_NAME);
   static final ObjectId AN_OBJECT_ID_1 = new ObjectId(1, 2, 3, 4, 5);
   static final ObjectId AN_OBJECT_ID_2 = new ObjectId(1, 2, 3, 4, 6);
   static final ObjectId AN_OBJECT_ID_3 = new ObjectId(1, 2, 3, 4, 7);
