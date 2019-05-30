@@ -100,8 +100,8 @@ public class ChangeCheckerImpl implements ChangeChecker {
         .map(
             e ->
                 (computedChangeTs.get() > e.eventCreatedOn)
-                    || (computedChangeTs.get() == e.eventCreatedOn)
-                        && (Objects.equals(getBranchTargetSha(), e.targetSha)))
+                    || ((computedChangeTs.get() == e.eventCreatedOn)
+                        && (Objects.equals(getBranchTargetSha(), e.targetSha))))
         .orElse(true);
   }
 

@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import com.google.gerrit.reviewdb.client.Project.NameKey;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.git.LocalDiskRepositoryManager;
 import com.google.gerrit.server.git.RepositoryCaseMismatchException;
@@ -39,22 +39,23 @@ public class MultiSiteGitRepositoryManager implements GitRepositoryManager {
   }
 
   @Override
-  public Repository openRepository(NameKey name) throws RepositoryNotFoundException, IOException {
+  public Repository openRepository(Project.NameKey name)
+      throws RepositoryNotFoundException, IOException {
     return wrap(name, gitRepositoryManager.openRepository(name));
   }
 
   @Override
-  public Repository createRepository(NameKey name)
+  public Repository createRepository(Project.NameKey name)
       throws RepositoryCaseMismatchException, RepositoryNotFoundException, IOException {
     return wrap(name, gitRepositoryManager.createRepository(name));
   }
 
   @Override
-  public SortedSet<NameKey> list() {
+  public SortedSet<Project.NameKey> list() {
     return gitRepositoryManager.list();
   }
 
-  private Repository wrap(NameKey projectName, Repository projectRepo) {
+  private Repository wrap(Project.NameKey projectName, Repository projectRepo) {
     return multiSiteRepoFactory.create(projectName.get(), projectRepo);
   }
 }
