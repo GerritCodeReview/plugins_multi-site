@@ -273,7 +273,7 @@ components:
 
 The interactions between these components are illustrated in the following diagram:
 
-![Initial Multi-Site Plugin Architecture](./images/architecture-first-iteration.png)
+![Initial Multi-Site Plugin Architecture](images/architecture-first-iteration.png)
 
 ## Implementation Details
 
@@ -348,7 +348,7 @@ risks that the system will reach a Split Brain situation (see
 
 #### The diagram below illustrates the happy path with crash recovery returning the system to a healthy state.
 
-![Healthy Use Case](src/main/resources/Documentation/git-replication-healthy.png)
+![Healthy Use Case](images/git-replication-healthy.png)
 
 In this case we are considering two different clients each doing a `push` on top of
 the same reference. This could be a new commit in a branch or the change of an existing commit.
@@ -376,7 +376,7 @@ At `t5`: `Instance1` restarts and is replicated at `W0 -> W1 -> W2`
 
 #### The Split Brain situation is illustrated in the following diagram.
 
-![Split Brain Use Case](src/main/resources/Documentation/git-replication-split-brain.png)
+![Split Brain Use Case](images/git-replication-split-brain.png)
 
 In this case the steps are very similar except that `Instance1` fails after acknowledging the
 push of `W0 -> W1` but before having replicated the status to `Instance2`.
@@ -425,7 +425,7 @@ was done by Dave Borowitz some years ago.)
 
 This interaction is illustrated in the diagram below:
 
-![Split Brain Prevented](src/main/resources/Documentation/git-replication-split-brain-detected.png)
+![Split Brain Prevented](images/git-replication-split-brain-detected.png)
 
 The difference, in respect to the split brain use case, is that now, whenever a change of a
 _mutable ref_ is requested, the Gerrit server verifies with the central RefDB that its

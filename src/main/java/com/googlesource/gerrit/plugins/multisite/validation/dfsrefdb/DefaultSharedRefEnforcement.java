@@ -16,11 +16,10 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableMap;
-import java.util.Map;
 
 public class DefaultSharedRefEnforcement implements SharedRefEnforcement {
 
-  private static final Map<String, EnforcePolicy> PREDEF_ENFORCEMENTS =
+  private static final ImmutableMap<String, EnforcePolicy> PREDEF_ENFORCEMENTS =
       ImmutableMap.of("All-Users:refs/meta/external-ids", EnforcePolicy.DESIRED);
 
   @Override

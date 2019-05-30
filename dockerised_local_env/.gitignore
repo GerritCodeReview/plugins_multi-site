@@ -6,6 +6,7 @@ gerrit-1/index
 gerrit-1/data
 gerrit-1/bin
 gerrit-1/etc
+gerrit-1/tmp
 gerrit-2/plugins
 gerrit-2/db
 gerrit-2/git
@@ -14,3 +15,4 @@ gerrit-2/index
 gerrit-2/data
 gerrit-2/bin
 gerrit-2/etc
+gerrit-2/tmp
