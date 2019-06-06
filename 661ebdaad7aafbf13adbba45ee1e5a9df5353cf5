@@ -34,6 +34,24 @@
       "revId": "661ebdaad7aafbf13adbba45ee1e5a9df5353cf5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "090af569_dc5f2a68",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-06T14:57:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dad1c42c_523c35ae",
+      "revId": "661ebdaad7aafbf13adbba45ee1e5a9df5353cf5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
