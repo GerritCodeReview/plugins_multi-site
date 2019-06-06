@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "98a0f288_13802202",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-06T19:02:49Z",
+      "side": 0,
+      "message": "Replication is failing, I believe if you name the Gerrit containers here \u0027CONTAINER_NAME\u0027, it should fix the issue.\nReplication error:\n```Cannot replicate to git://gerrit-2:9418/All-Users.git\norg.eclipse.jgit.errors.TransportException: git://gerrit-2:9418/All-Users.git: unknown host``",
+      "revId": "9f917f6002a462c10a4f6cf403bdfbc76765fbec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
