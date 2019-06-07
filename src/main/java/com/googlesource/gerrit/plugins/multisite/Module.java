@@ -33,7 +33,8 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarde
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
-import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
+import com.googlesource.gerrit.plugins.multisite.validation.MultiSiteValidationModule;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -108,8 +109,11 @@ public class Module extends LifecycleModule {
     }
 
     install(
-        new ValidationModule(
+        new MultiSiteValidationModule(
             config, disableGitRepositoryValidation || !config.getZookeeperConfig().isEnabled()));
+
+    install(new ZkValidationModule(config));
+
     bind(Gson.class)
         .annotatedWith(BrokerGson.class)
         .toProvider(GsonProvider.class)

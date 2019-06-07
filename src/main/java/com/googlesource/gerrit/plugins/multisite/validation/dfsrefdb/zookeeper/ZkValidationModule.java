@@ -33,6 +33,7 @@ public class ZkValidationModule extends AbstractModule {
 
   @Override
   protected void configure() {
+
     bind(SharedRefDatabase.class).to(ZkSharedRefDatabase.class);
     bind(CuratorFramework.class).toInstance(cfg.getZookeeperConfig().buildCurator());
 
