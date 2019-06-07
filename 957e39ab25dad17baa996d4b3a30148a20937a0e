@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "4c775736_9354aea1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-07T15:54:07Z",
+      "side": 1,
+      "message": "The idea is to move these out of the common Module when we extract the zookeeper logic into its own plugin.\nThat means moving the ZookeeperConfig and the ZkValidationModule into the Zookeeper plugin equivalent Module",
+      "parentUuid": "d56daaa1_ea1fca3c",
+      "range": {
+        "startLine": 52,
+        "startChar": 10,
+        "endLine": 52,
+        "endChar": 25
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "57cd1421_ef4eb020",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
         "patchSetId": 18
@@ -94,6 +118,30 @@
     },
     {
       "key": {
+        "uuid": "9a940fe8_cc6a38da",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ZookeeperConfig.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-07T15:54:07Z",
+      "side": 1,
+      "message": "The idea is to change it to a different configuration file name when we move it into its own plugin.",
+      "parentUuid": "2bda790f_700b5342",
+      "range": {
+        "startLine": 42,
+        "startChar": 29,
+        "endLine": 42,
+        "endChar": 70
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f958b838_cb9a86b6",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteValidationModule.java",
         "patchSetId": 18
@@ -108,6 +156,24 @@
       "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "145ee5b3_9627228a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteValidationModule.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-07T15:54:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f958b838_cb9a86b6",
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -154,6 +220,30 @@
       "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af9e8da0_85025fa3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-07T15:54:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cedf912a_2c77545e",
+      "range": {
+        "startLine": 97,
+        "startChar": 34,
+        "endLine": 97,
+        "endChar": 49
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
