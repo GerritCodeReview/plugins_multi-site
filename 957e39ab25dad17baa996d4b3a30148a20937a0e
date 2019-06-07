@@ -142,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "34a6c598_9014383d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ZookeeperConfig.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-07T18:54:57Z",
+      "side": 1,
+      "message": "That point is very far away down the line and wouldn\u0027t be in the stable-2.16 branch either. People are using multi-site already and we can\u0027t change their config syntax in a minor release.",
+      "parentUuid": "9a940fe8_cc6a38da",
+      "range": {
+        "startLine": 42,
+        "startChar": 29,
+        "endLine": 42,
+        "endChar": 70
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f958b838_cb9a86b6",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteValidationModule.java",
         "patchSetId": 18
