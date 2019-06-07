@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d56daaa1_ea1fca3c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-07T15:06:13Z",
+      "side": 1,
+      "message": "Zookeeper-specific stuff shouldn\u0027t be in the common Module as injected members.",
+      "range": {
+        "startLine": 52,
+        "startChar": 10,
+        "endLine": 52,
+        "endChar": 25
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57cd1421_ef4eb020",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-07T15:06:13Z",
+      "side": 1,
+      "message": "The ZkValidationModule should be responsible for extracting its config, not the global module.",
+      "range": {
+        "startLine": 77,
+        "startChar": 9,
+        "endLine": 77,
+        "endChar": 17
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b24935c0_963aef09",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-07T15:06:13Z",
+      "side": 1,
+      "message": "Just pass the global configuration here, the ZkValidationModule will be responsible to get its specific one.",
+      "range": {
+        "startLine": 122,
+        "startChar": 37,
+        "endLine": 122,
+        "endChar": 45
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2bda790f_700b5342",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ZookeeperConfig.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-07T15:06:13Z",
+      "side": 1,
+      "message": "Is there any value in redefining the multi-site.config here?",
+      "range": {
+        "startLine": 42,
+        "startChar": 29,
+        "endLine": 42,
+        "endChar": 70
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f958b838_cb9a86b6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteValidationModule.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-07T15:06:13Z",
+      "side": 1,
+      "message": "nit: empty line.",
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d96403f_26bf4aa8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkValidationModule.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-07T15:06:13Z",
+      "side": 1,
+      "message": "This module should be in charge to get its configuration based on the global MultiSite config.",
+      "range": {
+        "startLine": 30,
+        "startChar": 28,
+        "endLine": 30,
+        "endChar": 43
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cedf912a_2c77545e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-07T15:06:13Z",
+      "side": 1,
+      "message": "do we really rename this test variable in this change? Changing tests and refactoring code at the same time is risky because you never know who broke what.",
+      "range": {
+        "startLine": 97,
+        "startChar": 34,
+        "endLine": 97,
+        "endChar": 49
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
