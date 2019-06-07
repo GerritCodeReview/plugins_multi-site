@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "160c8d2a_fdfdab78",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-07T14:48:07Z",
+      "side": 1,
+      "message": "The plugin is called multi-site already: what would be the value of repeating it in the module name?",
+      "range": {
+        "startLine": 112,
+        "startChar": 12,
+        "endLine": 112,
+        "endChar": 21
+      },
+      "revId": "d5c395cfa9e2d7a1709fd97fcf33956c55ba4a4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a01875ae_b6990d7b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteValidationModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-07T14:48:07Z",
+      "side": 1,
+      "message": "Why calling it MultiSite would make it clearer? The plugin name is called already \u0027multi-site\u0027.",
+      "range": {
+        "startLine": 25,
+        "startChar": 13,
+        "endLine": 25,
+        "endChar": 22
+      },
+      "revId": "d5c395cfa9e2d7a1709fd97fcf33956c55ba4a4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "31979268_1cd800b8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteValidationModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-07T14:48:07Z",
+      "side": 1,
+      "message": "Why calling it MultiSite would make it clearer? The plugin name is called already \u0027multi-site\u0027.",
+      "range": {
+        "startLine": 25,
+        "startChar": 13,
+        "endLine": 25,
+        "endChar": 22
+      },
+      "revId": "d5c395cfa9e2d7a1709fd97fcf33956c55ba4a4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe716a53_aa2951d4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkValidationModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-07T14:48:07Z",
+      "side": 1,
+      "message": "nit: empty line.",
+      "revId": "d5c395cfa9e2d7a1709fd97fcf33956c55ba4a4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
