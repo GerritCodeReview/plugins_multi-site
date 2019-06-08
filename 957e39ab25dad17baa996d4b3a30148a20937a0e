@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "046a6fb5_42e3fb9b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-08T20:14:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c775736_9354aea1",
+      "range": {
+        "startLine": 52,
+        "startChar": 10,
+        "endLine": 52,
+        "endChar": 25
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "57cd1421_ef4eb020",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
         "patchSetId": 18
@@ -72,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "bbde6863_7e9ce3f9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-08T20:14:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57cd1421_ef4eb020",
+      "range": {
+        "startLine": 77,
+        "startChar": 9,
+        "endLine": 77,
+        "endChar": 17
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b24935c0_963aef09",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
         "patchSetId": 18
@@ -92,6 +140,30 @@
       "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2463495_0e3e74d6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-08T20:14:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b24935c0_963aef09",
+      "range": {
+        "startLine": 122,
+        "startChar": 37,
+        "endLine": 122,
+        "endChar": 45
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -166,6 +238,30 @@
     },
     {
       "key": {
+        "uuid": "3b4fe11f_73db2c60",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ZookeeperConfig.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-08T20:14:46Z",
+      "side": 1,
+      "message": "Makes sense. I\u0027ve removed the logic of reading the configuration file.",
+      "parentUuid": "34a6c598_9014383d",
+      "range": {
+        "startLine": 42,
+        "startChar": 29,
+        "endLine": 42,
+        "endChar": 70
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f958b838_cb9a86b6",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteValidationModule.java",
         "patchSetId": 18
@@ -212,6 +308,30 @@
       "writtenOn": "2019-06-07T15:06:13Z",
       "side": 1,
       "message": "This module should be in charge to get its configuration based on the global MultiSite config.",
+      "range": {
+        "startLine": 30,
+        "startChar": 28,
+        "endLine": 30,
+        "endChar": 43
+      },
+      "revId": "957e39ab25dad17baa996d4b3a30148a20937a0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ec533ce_3456b0c8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkValidationModule.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-08T20:14:46Z",
+      "side": 1,
+      "message": "ZkValidationModule is now responsible for getting the ZookeeperConfig based on the global multisite config",
+      "parentUuid": "9d96403f_26bf4aa8",
       "range": {
         "startLine": 30,
         "startChar": 28,
