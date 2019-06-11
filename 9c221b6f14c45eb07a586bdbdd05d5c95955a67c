@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ef1b0e36_9f605824",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-11T08:03:36Z",
+      "side": 1,
+      "message": "For some reason, this binding is not working, is it possible it gets overridden at a later stage?\nThe impact is that the shared RefDb does not get cleaned up when a project is deleted",
+      "revId": "9c221b6f14c45eb07a586bdbdd05d5c95955a67c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
