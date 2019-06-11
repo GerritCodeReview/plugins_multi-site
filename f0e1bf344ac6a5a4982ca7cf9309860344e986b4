@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "318a6f91_144fb6de",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-11T16:37:47Z",
+      "side": 1,
+      "message": "Should this binding be decided depending on whether the shared RefDb is enabled or should we use DynamicSet.bind(SharedRefDatabase.class).to(SharedRefDatabaseNoOp.class)\nand then override it within the ZkValidationModule?",
+      "range": {
+        "startLine": 117,
+        "startChar": 4,
+        "endLine": 121,
+        "endChar": 5
+      },
+      "revId": "f0e1bf344ac6a5a4982ca7cf9309860344e986b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
