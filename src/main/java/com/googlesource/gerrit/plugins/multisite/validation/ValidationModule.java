@@ -22,6 +22,8 @@ import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabaseNoOp;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 
 public class ValidationModule extends FactoryModule {
@@ -53,5 +55,6 @@ public class ValidationModule extends FactoryModule {
           .in(Scopes.SINGLETON);
     }
     DynamicSet.bind(binder(), ProjectDeletedListener.class).to(ProjectDeletedSharedDbCleanup.class);
+    DynamicSet.bind(binder(), SharedRefDatabase.class).to(SharedRefDatabaseNoOp.class);
   }
 }
