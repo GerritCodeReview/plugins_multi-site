@@ -318,10 +318,10 @@ else
 fi
 if [ $DOWNLOAD_WEBSESSION_FLATFILE = "true" ];then
 	echo "Downloading websession-flatfile plugin stable 3.0"
-	wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-websession-flatfile-bazel-master-stable-3.0/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/websession-flatfile/websession-flatfile.jar \
+	wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-websession-flatfile-bazel-master-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-flatfile/websession-flatfile.jar \
 	-O $DEPLOYMENT_LOCATION/websession-flatfile.jar || { echo >&2 "Cannot download websession-flatfile plugin: Check internet connection. Abort\
 ing"; exit 1; }
-	wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-healthcheck-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/healthcheck/healthcheck.jar \
+	wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-healthcheck-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar \
 	-O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
 ing"; exit 1; }
 else

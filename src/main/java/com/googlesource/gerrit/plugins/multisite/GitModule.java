@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 
 public class GitModule extends AbstractModule {
   private final Configuration config;
@@ -28,8 +29,9 @@ public class GitModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    if (config.getZookeeperConfig().isEnabled()) {
+    if (config.getSharedRefDb().isEnabled()) {
       install(new ValidationModule(config));
     }
+    install(new ZkValidationModule(config));
   }
 }
