@@ -14,11 +14,13 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
+import com.google.inject.ImplementedBy;
 import java.io.IOException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
 
+@ImplementedBy(SharedRefDatabaseNoOp.class)
 public interface SharedRefDatabase {
 
   /** A null ref that isn't associated to any name. */
