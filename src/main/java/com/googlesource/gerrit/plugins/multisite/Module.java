@@ -34,6 +34,8 @@ import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabaseNoOp;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -112,7 +114,11 @@ public class Module extends LifecycleModule {
         new ValidationModule(
             config, disableGitRepositoryValidation || !config.getSharedRefDb().isEnabled()));
 
-    install(new ZkValidationModule(config));
+    if (config.getSharedRefDb().isEnabled()) {
+      install(new ZkValidationModule(config));
+    } else {
+      bind(SharedRefDatabase.class).to(SharedRefDatabaseNoOp.class);
+    }
 
     bind(Gson.class)
         .annotatedWith(BrokerGson.class)
