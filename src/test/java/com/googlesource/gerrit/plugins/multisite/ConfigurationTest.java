@@ -15,26 +15,27 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Cache.CACHE_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Cache.PATTERN_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.DEFAULT_THREAD_POOL_SIZE;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.ENABLE_KEY;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.Cache.CACHE_SECTION;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.Cache.PATTERN_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Event.EVENT_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Forwarding.DEFAULT_SYNCHRONIZE;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Forwarding.SYNCHRONIZE_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.INDEX_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.KafkaConfiguration.KAFKA_PROPERTY_PREFIX;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.KafkaConfiguration.KAFKA_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.KafkaPublisher.KAFKA_PUBLISHER_SUBSECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.KafkaSubscriber.KAFKA_SUBSCRIBER_SUBSECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
+import static com.googlesource.gerrit.plugins.multisite.KafkaConfiguration.KAFKA_PROPERTY_PREFIX;
+import static com.googlesource.gerrit.plugins.multisite.KafkaConfiguration.KAFKA_SECTION;
+import static com.googlesource.gerrit.plugins.multisite.KafkaConfiguration.KafkaPublisher.KAFKA_PUBLISHER_SUBSECTION;
+import static com.googlesource.gerrit.plugins.multisite.KafkaConfiguration.KafkaSubscriber.KAFKA_SUBSCRIBER_SUBSECTION;
 
-import com.google.common.collect.ImmutableList;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import com.google.common.collect.ImmutableList;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConfigurationTest {
@@ -44,15 +45,18 @@ public class ConfigurationTest {
 
   private Config globalPluginConfig;
   private Config replicationConfig;
+  private KafkaConfiguration kafkaConfig;
 
   @Before
   public void setUp() {
     globalPluginConfig = new Config();
     replicationConfig = new Config();
+    kafkaConfig = new KafkaConfiguration(globalPluginConfig);
+    
   }
 
   private Configuration getConfiguration() {
-    return new Configuration(globalPluginConfig, replicationConfig);
+    return new Configuration(globalPluginConfig, replicationConfig, kafkaConfig);
   }
 
   @Test
@@ -210,6 +214,6 @@ public class ConfigurationTest {
   public void shouldReturnValidationErrorsWhenReplicationOnStartupIsEnabled() throws Exception {
     Config replicationConfig = new Config();
     replicationConfig.setBoolean("gerrit", null, "replicateOnStartup", true);
-    assertThat(new Configuration(globalPluginConfig, replicationConfig).validate()).isNotEmpty();
+    assertThat(new Configuration(globalPluginConfig, replicationConfig, kafkaConfig).validate()).isNotEmpty();
   }
 }
