@@ -38,6 +38,7 @@ import com.google.inject.Inject;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
+import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.Module;
 import com.googlesource.gerrit.plugins.multisite.NoteDbStatus;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
@@ -101,7 +102,12 @@ public class EventConsumerIT extends AbstractDaemonTest {
       this.config =
           new FileBasedConfig(
               sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile(), FS.DETECTED);
-      this.multiSiteModule = new Module(new Configuration(config, new Config()), noteDb, true);
+      this.multiSiteModule =
+          new Module(
+              new Configuration(config, new Config()),
+              noteDb,
+              new KafkaConfiguration(config),
+              true);
     }
 
     @Override
@@ -153,7 +159,9 @@ public class EventConsumerIT extends AbstractDaemonTest {
         .containsExactly(createChangeIndexEvent(project, changeNum, getParentCommit(change)));
 
     assertThat(
-            eventsByType.get("ref-updated").stream()
+            eventsByType
+                .get("ref-updated")
+                .stream()
                 .map(e -> ((RefUpdatedEvent) e).getRefName())
                 .collect(toSet()))
         .containsAllOf(changeNotesRef, patchsetRef); // 'refs/sequences/changes'
@@ -245,7 +253,8 @@ public class EventConsumerIT extends AbstractDaemonTest {
 
   private Map<String, List<Event>> receiveEventsByType(
       LinkedBlockingQueue<SourceAwareEventWrapper> queue) throws InterruptedException {
-    return drainQueue(queue).stream()
+    return drainQueue(queue)
+        .stream()
         .sorted(Comparator.comparing(e -> e.type))
         .collect(Collectors.groupingBy(e -> e.type));
   }
