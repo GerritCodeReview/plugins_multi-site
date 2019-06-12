@@ -19,6 +19,7 @@ import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.Shar
 
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Configuration.SharedRefDatabase;
+import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
@@ -149,7 +150,7 @@ public class CustomSharedRefEnforcementByProjectTest implements RefFixture {
 
   private SharedRefEnforcement newCustomRefEnforcement(Config sharedRefDbConfig) {
     return new CustomSharedRefEnforcementByProject(
-        new Configuration(sharedRefDbConfig, new Config()));
+        new Configuration(sharedRefDbConfig, new Config(), new KafkaConfiguration(sharedRefDbConfig)));
   }
 
   @Override
