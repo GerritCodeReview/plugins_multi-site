@@ -16,6 +16,24 @@
       "revId": "8df5eb2d217634320c5ddd627e4053d356a37b73",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e49c08f_04deee66",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-06-12T04:33:05Z",
+      "side": 0,
+      "message": "Why? I have tested with the same version and the tests were passing.",
+      "parentUuid": "7b65af58_ddda44ad",
+      "revId": "8df5eb2d217634320c5ddd627e4053d356a37b73",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
