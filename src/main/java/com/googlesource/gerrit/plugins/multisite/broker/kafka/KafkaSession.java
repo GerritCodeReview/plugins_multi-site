@@ -15,8 +15,8 @@
 package com.googlesource.gerrit.plugins.multisite.broker.kafka;
 
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
+import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import java.util.UUID;
@@ -31,13 +31,13 @@ import org.slf4j.LoggerFactory;
 
 public class KafkaSession implements BrokerSession {
   private static final Logger LOGGER = LoggerFactory.getLogger(KafkaSession.class);
-  private final Configuration properties;
+  private KafkaConfiguration kafkaConfig;
   private final UUID instanceId;
   private volatile Producer<String, String> producer;
 
   @Inject
-  public KafkaSession(Configuration configuration, @InstanceId UUID instanceId) {
-    this.properties = configuration;
+  public KafkaSession(KafkaConfiguration kafkaConfig, @InstanceId UUID instanceId) {
+    this.kafkaConfig = kafkaConfig;
     this.instanceId = instanceId;
   }
 
@@ -56,13 +56,13 @@ public class KafkaSession implements BrokerSession {
       return;
     }
 
-    LOGGER.info("Connect to {}...", properties.getKafka().getBootstrapServers());
+    LOGGER.info("Connect to {}...", kafkaConfig.getKafka().getBootstrapServers());
     /* Need to make sure that the thread of the running connection uses
      * the correct class loader otherwize you can endup with hard to debug
      * ClassNotFoundExceptions
      */
     setConnectionClassLoader();
-    producer = new KafkaProducer<>(properties.kafkaPublisher());
+    producer = new KafkaProducer<>(kafkaConfig.kafkaPublisher());
     LOGGER.info("Connection established.");
   }
 
@@ -82,7 +82,7 @@ public class KafkaSession implements BrokerSession {
 
   @Override
   public boolean publishEvent(EventFamily eventType, String payload) {
-    return publishToTopic(properties.getKafka().getTopic(eventType), payload);
+    return publishToTopic(kafkaConfig.getKafka().getTopic(eventType), payload);
   }
 
   private boolean publishToTopic(String topic, String payload) {
