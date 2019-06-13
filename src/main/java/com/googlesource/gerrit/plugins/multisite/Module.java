@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gson.Gson;
@@ -25,6 +26,8 @@ import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerSessionNoOp;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
@@ -103,6 +106,9 @@ public class Module extends LifecycleModule {
 
     listener().to(Log4jMessageLogger.class);
     bind(MessageLogger.class).to(Log4jMessageLogger.class);
+    
+    DynamicItem.itemOf(binder(), BrokerSession.class);
+    DynamicItem.bind(binder(), BrokerSession.class).to(BrokerSessionNoOp.class);
 
     install(new ForwarderModule());
 
