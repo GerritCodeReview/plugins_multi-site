@@ -150,7 +150,7 @@ public class CustomSharedRefEnforcementByProjectTest implements RefFixture {
 
   private SharedRefEnforcement newCustomRefEnforcement(Config sharedRefDbConfig) {
     return new CustomSharedRefEnforcementByProject(
-        new Configuration(sharedRefDbConfig, new Config(), new KafkaConfiguration(sharedRefDbConfig)));
+        new Configuration(sharedRefDbConfig, new Config()));
   }
 
   @Override

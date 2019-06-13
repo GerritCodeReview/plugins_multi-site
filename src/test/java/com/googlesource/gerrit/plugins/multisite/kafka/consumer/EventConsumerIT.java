@@ -104,8 +104,9 @@ public class EventConsumerIT extends AbstractDaemonTest {
               sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile(), FS.DETECTED);
       this.multiSiteModule =
           new Module(
-              new Configuration(config, new Config(), new KafkaConfiguration(config)),
+              new Configuration(config, new Config()),
               noteDb,
+              new KafkaConfiguration(config),
               true);
     }
 

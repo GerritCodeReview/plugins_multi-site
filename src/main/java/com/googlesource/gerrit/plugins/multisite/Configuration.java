@@ -39,9 +39,6 @@ import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
-import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration.Kafka;
-import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration.KafkaPublisher;
-import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration.KafkaSubscriber;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 
 @Singleton
@@ -69,18 +66,16 @@ public class Configuration {
   private final Supplier<SharedRefDatabase> sharedRefDb;
   private final Supplier<Collection<Message>> replicationConfigValidation;
   private final Config multiSiteConfig;
-  private final KafkaConfiguration kafkaConfig;
 
   @Inject
-  Configuration(SitePaths sitePaths, KafkaConfiguration kafkaConfig) {
-	  this(getConfigFile(sitePaths, MULTI_SITE_CONFIG), getConfigFile(sitePaths, REPLICATION_CONFIG), kafkaConfig);
+  Configuration(SitePaths sitePaths) {
+    this(getConfigFile(sitePaths, MULTI_SITE_CONFIG), getConfigFile(sitePaths, REPLICATION_CONFIG));
   }
 
   @VisibleForTesting
-  public Configuration(Config multiSiteConfig, Config replicationConfig, KafkaConfiguration kafkaConfig) {
+  public Configuration(Config multiSiteConfig, Config replicationConfig) {
     Supplier<Config> lazyMultiSiteCfg = lazyLoad(multiSiteConfig);
     this.multiSiteConfig = multiSiteConfig;
-    this.kafkaConfig = kafkaConfig;
     replicationConfigValidation = lazyValidateReplicatioConfig(replicationConfig);
     cache = memoize(() -> new Cache(lazyMultiSiteCfg));
     event = memoize(() -> new Event(lazyMultiSiteCfg));
@@ -96,14 +91,6 @@ public class Configuration {
     return sharedRefDb.get();
   }
 
-  public Kafka getKafka() {
-    return kafkaConfig.getKafka();
-  }
-
-  public KafkaPublisher kafkaPublisher() {
-    return kafkaConfig.kafkaPublisher();
-  }
-
   public Cache cache() {
     return cache.get();
   }
@@ -114,10 +101,6 @@ public class Configuration {
 
   public Index index() {
     return index.get();
-  }
-
-  public KafkaSubscriber kafkaSubscriber() {
-    return kafkaConfig.kafkaSubscriber();
   }
 
   public Collection<Message> validate() {
@@ -178,8 +161,6 @@ public class Configuration {
       return defaultValue;
     }
   }
-
-
 
   public static class SharedRefDatabase {
     public static final String SECTION = "ref-database";
@@ -309,6 +290,4 @@ public class Configuration {
       return defaultValue;
     }
   }
-
-  
 }

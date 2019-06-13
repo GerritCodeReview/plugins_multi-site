@@ -40,17 +40,15 @@ public class ConfigurationTest {
 
   private Config globalPluginConfig;
   private Config replicationConfig;
-  private KafkaConfiguration kafkaConfig;
 
   @Before
   public void setUp() {
     globalPluginConfig = new Config();
     replicationConfig = new Config();
-    kafkaConfig = new KafkaConfiguration(globalPluginConfig);
   }
 
   private Configuration getConfiguration() {
-    return new Configuration(globalPluginConfig, replicationConfig, kafkaConfig);
+    return new Configuration(globalPluginConfig, replicationConfig);
   }
 
   @Test
@@ -130,7 +128,6 @@ public class ConfigurationTest {
   public void shouldReturnValidationErrorsWhenReplicationOnStartupIsEnabled() throws Exception {
     Config replicationConfig = new Config();
     replicationConfig.setBoolean("gerrit", null, "replicateOnStartup", true);
-    assertThat(new Configuration(globalPluginConfig, replicationConfig, kafkaConfig).validate())
-        .isNotEmpty();
+    assertThat(new Configuration(globalPluginConfig, replicationConfig).validate()).isNotEmpty();
   }
 }
