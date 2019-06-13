@@ -46,9 +46,13 @@ import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSessionModule;
 import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.AbstractSubscriber;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.ConsumerExecutor;
 import com.googlesource.gerrit.plugins.multisite.event.subscriber.EventSubscriber;
 import com.googlesource.gerrit.plugins.multisite.event.subscriber.EventSubscriberModule;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.MultiSiteConsumerRunner;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
@@ -57,6 +61,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -171,7 +177,13 @@ public class EventConsumerIT extends AbstractDaemonTest {
   public static class TestEventSubscriberModule extends EventSubscriberModule {
     @Override
     protected void configure() {
+      bind(Executor.class)
+          .annotatedWith(ConsumerExecutor.class)
+          .toInstance(Executors.newFixedThreadPool(EventFamily.values().length));
+      listener().to(MultiSiteConsumerRunner.class);
       DynamicItem.itemOf(binder(), EventSubscriber.class);
+
+      DynamicSet.setOf(binder(), AbstractSubscriber.class);
     }
   }
 

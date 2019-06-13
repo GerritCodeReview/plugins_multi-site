@@ -24,8 +24,6 @@ import com.googlesource.gerrit.plugins.multisite.event.subscriber.EventSubscribe
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.MultiSiteEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.Deserializer;
 
@@ -45,14 +43,7 @@ public class KafkaConsumerModule extends LifecycleModule {
     bind(new TypeLiteral<Deserializer<SourceAwareEventWrapper>>() {})
         .to(KafkaEventDeserializer.class);
 
-    bind(Executor.class)
-        .annotatedWith(ConsumerExecutor.class)
-        .toInstance(Executors.newFixedThreadPool(EventFamily.values().length));
-    listener().to(MultiSiteKafkaConsumerRunner.class);
-
     DynamicItem.bind(binder(), EventSubscriber.class).to(KafkaEventSubscriber.class);
-
-    DynamicSet.setOf(binder(), AbstractSubscriber.class);
 
     if (config.kafkaSubscriber().enabledEvent(EventFamily.INDEX_EVENT)) {
       DynamicSet.bind(binder(), AbstractSubscriber.class).to(IndexEventSubscriber.class);

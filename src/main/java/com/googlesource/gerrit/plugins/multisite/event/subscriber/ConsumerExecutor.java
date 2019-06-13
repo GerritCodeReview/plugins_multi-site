@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
+package com.googlesource.gerrit.plugins.multisite.event.subscriber;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -21,4 +21,4 @@ import java.lang.annotation.Retention;
 
 @Retention(RUNTIME)
 @BindingAnnotation
-@interface ConsumerExecutor {}
+public @interface ConsumerExecutor {}
