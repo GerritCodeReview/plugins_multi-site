@@ -21,6 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.gerrit.extensions.client.ChangeKind;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.reviewdb.client.Change;
@@ -73,7 +74,7 @@ public class BrokerPublisherTest {
 
   @Before
   public void setUp() {
-    publisher = new BrokerPublisher(session, gson, UUID.randomUUID(), NO_MSG_LOG, brokerMetrics);
+    publisher = new BrokerPublisher(DynamicItem.itemOf(BrokerSession.class, session), gson, UUID.randomUUID(), NO_MSG_LOG, brokerMetrics);
   }
 
   @Test
