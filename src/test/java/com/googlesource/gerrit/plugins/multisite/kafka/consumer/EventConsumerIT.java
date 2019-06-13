@@ -24,6 +24,7 @@ import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.events.LifecycleListener;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
@@ -40,11 +41,17 @@ import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Module;
 import com.googlesource.gerrit.plugins.multisite.NoteDbStatus;
+import com.googlesource.gerrit.plugins.multisite.PluginModule;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerSessionModule;
 import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.EventSubscriber;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.EventSubscriberModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -98,6 +105,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
 
     private final FileBasedConfig config;
     private final Module multiSiteModule;
+    private final PluginModule pluginModule;
 
     @Inject
     public KafkaTestContainerModule(SitePaths sitePaths, NoteDbStatus noteDb) throws IOException {
@@ -110,15 +118,21 @@ public class EventConsumerIT extends AbstractDaemonTest {
       config.save();
 
       Configuration multiSiteConfig = new Configuration(config, new Config());
-      KafkaConfiguration kafkaConfiguration = new KafkaConfiguration(multiSiteConfig);
       this.multiSiteModule =
           new Module(
               multiSiteConfig,
               noteDb,
-              new KafkaForwardedEventRouterModule(
-                  kafkaConfiguration, new KafkaConsumerModule(kafkaConfiguration)),
-              new KafkaBrokerForwarderModule(kafkaConfiguration),
+              new TestEventSubscriberModule(),
+              new TestBrokerSessionModule(),
               true);
+      this.pluginModule =
+          new PluginModule(
+              multiSiteConfig,
+              new ZkValidationModule(multiSiteConfig),
+              new KafkaForwardedEventRouterModule(
+                  new KafkaConfiguration(multiSiteConfig),
+                  new KafkaConsumerModule(new KafkaConfiguration(multiSiteConfig))),
+              new KafkaBrokerForwarderModule(new KafkaConfiguration(multiSiteConfig)));
     }
 
     @Override
@@ -129,6 +143,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
         listener().toInstance(new KafkaStopAtShutdown(kafka));
 
         install(multiSiteModule);
+        install(pluginModule);
 
       } catch (IOException e) {
         throw new IllegalStateException(e);
@@ -143,6 +158,20 @@ public class EventConsumerIT extends AbstractDaemonTest {
       config.save();
 
       return kafkaContainer;
+    }
+  }
+
+  public static class TestBrokerSessionModule extends BrokerSessionModule {
+    @Override
+    protected void configure() {
+      DynamicItem.itemOf(binder(), BrokerSession.class);
+    }
+  }
+
+  public static class TestEventSubscriberModule extends EventSubscriberModule {
+    @Override
+    protected void configure() {
+      DynamicItem.itemOf(binder(), EventSubscriber.class);
     }
   }
 

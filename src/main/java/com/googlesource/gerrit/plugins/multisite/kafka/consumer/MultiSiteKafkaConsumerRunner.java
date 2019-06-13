@@ -19,18 +19,19 @@ import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.AbstractSubscriber;
 import java.util.concurrent.Executor;
 
 @Singleton
 public class MultiSiteKafkaConsumerRunner implements LifecycleListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private final DynamicSet<AbstractKafkaSubcriber> consumers;
+  private final DynamicSet<AbstractSubscriber> consumers;
   private final Executor executor;
 
   @Inject
   public MultiSiteKafkaConsumerRunner(
-      @ConsumerExecutor Executor executor, DynamicSet<AbstractKafkaSubcriber> consumers) {
+      @ConsumerExecutor Executor executor, DynamicSet<AbstractSubscriber> consumers) {
     this.consumers = consumers;
     this.executor = executor;
   }

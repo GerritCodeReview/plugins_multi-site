@@ -21,16 +21,17 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.AbstractSubscriber;
 import com.googlesource.gerrit.plugins.multisite.event.subscriber.EventSubscriber;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedStreamEventRouter;
 import java.util.UUID;
 
 @Singleton
-public class StreamEventSubscriber extends AbstractKafkaSubcriber {
+public class StreamEventSubscriber extends AbstractSubscriber {
   @Inject
   public StreamEventSubscriber(
-      StreamEventRouter eventRouter,
+      ForwardedStreamEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
       @BrokerGson Gson gsonProvider,
       @InstanceId UUID instanceId,

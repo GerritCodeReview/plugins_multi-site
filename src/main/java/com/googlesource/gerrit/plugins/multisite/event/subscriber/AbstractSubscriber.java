@@ -1,18 +1,4 @@
-// Copyright (C) 2019 The Android Open Source Project
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
+package com.googlesource.gerrit.plugins.multisite.event.subscriber;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
@@ -22,14 +8,15 @@ import com.google.gwtorm.server.OrmException;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
-import com.googlesource.gerrit.plugins.multisite.event.subscriber.EventSubscriber;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedEventRouter;
+import com.googlesource.gerrit.plugins.multisite.kafka.consumer.DroppedEventListener;
+import com.googlesource.gerrit.plugins.multisite.kafka.consumer.SourceAwareEventWrapper;
 import java.io.IOException;
 import java.util.UUID;
 
-public abstract class AbstractKafkaSubcriber implements Runnable {
+public abstract class AbstractSubscriber implements Runnable {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   final ForwardedEventRouter eventRouter;
@@ -39,7 +26,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
   final EventSubscriber consumer;
   private final Gson gson;
 
-  public AbstractKafkaSubcriber(
+  public AbstractSubscriber(
       ForwardedEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
       UUID instanceId,

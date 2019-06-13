@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.broker;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.extensions.events.LifecycleListener;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -35,7 +36,8 @@ import org.slf4j.LoggerFactory;
 public class BrokerPublisher implements LifecycleListener {
   protected final Logger log = LoggerFactory.getLogger(getClass());
 
-  private final BrokerSession session;
+  private final DynamicItem<BrokerSession> session;
+
   private final Gson gson;
   private final UUID instanceId;
   private final MessageLogger msgLog;
@@ -43,7 +45,7 @@ public class BrokerPublisher implements LifecycleListener {
 
   @Inject
   public BrokerPublisher(
-      BrokerSession session,
+      DynamicItem<BrokerSession> session,
       @BrokerGson Gson gson,
       @InstanceId UUID instanceId,
       MessageLogger msgLog,
@@ -57,15 +59,15 @@ public class BrokerPublisher implements LifecycleListener {
 
   @Override
   public void start() {
-    if (!session.isOpen()) {
-      session.connect();
+    if (!session.get().isOpen()) {
+      session.get().connect();
     }
   }
 
   @Override
   public void stop() {
-    if (session.isOpen()) {
-      session.disconnect();
+    if (session.get().isOpen()) {
+      session.get().disconnect();
     }
   }
 
@@ -75,7 +77,8 @@ public class BrokerPublisher implements LifecycleListener {
     }
 
     SourceAwareEventWrapper brokerEvent = toBrokerEvent(event);
-    Boolean eventPublished = session.publishEvent(eventType, getPayload(brokerEvent));
+    session.get().connect();
+    Boolean eventPublished = session.get().publishEvent(eventType, getPayload(brokerEvent));
     if (eventPublished) {
       msgLog.log(Direction.PUBLISH, brokerEvent);
       brokerMetrics.incrementBrokerPublishedMessage();
