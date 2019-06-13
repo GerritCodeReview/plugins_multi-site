@@ -17,9 +17,9 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.TypeLiteral;
-import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration.KafkaSubscriber;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.MultiSiteEvent;
+import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
@@ -27,10 +27,10 @@ import org.apache.kafka.common.serialization.Deserializer;
 
 public class KafkaConsumerModule extends LifecycleModule {
 
-  private final KafkaSubscriber kafkaSubscriber;
+  private KafkaConfiguration config;
 
-  public KafkaConsumerModule(KafkaSubscriber kafkaSubscriber) {
-    this.kafkaSubscriber = kafkaSubscriber;
+  public KafkaConsumerModule(KafkaConfiguration config) {
+    this.config = config;
   }
 
   @Override
@@ -47,17 +47,17 @@ public class KafkaConsumerModule extends LifecycleModule {
 
     DynamicSet.setOf(binder(), AbstractKafkaSubcriber.class);
 
-    if (kafkaSubscriber.enabledEvent(EventFamily.INDEX_EVENT)) {
+    if (config.kafkaSubscriber().enabledEvent(EventFamily.INDEX_EVENT)) {
       DynamicSet.bind(binder(), AbstractKafkaSubcriber.class).to(IndexEventSubscriber.class);
     }
-    if (kafkaSubscriber.enabledEvent(EventFamily.STREAM_EVENT)) {
+    if (config.kafkaSubscriber().enabledEvent(EventFamily.STREAM_EVENT)) {
       DynamicSet.bind(binder(), AbstractKafkaSubcriber.class).to(StreamEventSubscriber.class);
     }
-    if (kafkaSubscriber.enabledEvent(EventFamily.CACHE_EVENT)) {
+    if (config.kafkaSubscriber().enabledEvent(EventFamily.CACHE_EVENT)) {
       DynamicSet.bind(binder(), AbstractKafkaSubcriber.class)
-          .to(CacheEvictionEventSubscriber.class);
+          .to(KafkaCacheEvictionEventSubscriber.class);
     }
-    if (kafkaSubscriber.enabledEvent(EventFamily.PROJECT_LIST_EVENT)) {
+    if (config.kafkaSubscriber().enabledEvent(EventFamily.PROJECT_LIST_EVENT)) {
       DynamicSet.bind(binder(), AbstractKafkaSubcriber.class)
           .to(ProjectUpdateEventSubscriber.class);
     }

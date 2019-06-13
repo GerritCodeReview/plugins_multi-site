@@ -45,18 +45,18 @@ public class Configuration {
 
   public static final String PLUGIN_NAME = "multi-site";
   public static final String MULTI_SITE_CONFIG = PLUGIN_NAME + ".config";
-  public static final String REPLICATION_CONFIG = "replication.config";
 
   static final String INSTANCE_ID_FILE = "instanceId.data";
-
-  // common parameters to cache and index sections
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
-  static final int DEFAULT_INDEX_MAX_TRIES = 2;
-  static final int DEFAULT_INDEX_RETRY_INTERVAL = 30000;
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
-  static final String NUM_STRIPED_LOCKS = "numStripedLocks";
-  static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
   static final String ENABLE_KEY = "enabled";
+
+  private static final String REPLICATION_CONFIG = "replication.config";
+  // common parameters to cache and index sections
+  private static final int DEFAULT_INDEX_MAX_TRIES = 2;
+  private static final int DEFAULT_INDEX_RETRY_INTERVAL = 30000;
+  private static final String NUM_STRIPED_LOCKS = "numStripedLocks";
+  private static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
 
   private final Supplier<Cache> cache;
   private final Supplier<Event> event;
