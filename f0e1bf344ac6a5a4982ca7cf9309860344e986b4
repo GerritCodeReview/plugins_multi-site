@@ -22,6 +22,30 @@
       "revId": "f0e1bf344ac6a5a4982ca7cf9309860344e986b4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "985d4d42_f5ba0fdc",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-13T12:17:17Z",
+      "side": 1,
+      "message": "Done - Changed the logic to first bind the NoOp of the shared ref database and then have the ZkValidationModule to override this binding.",
+      "parentUuid": "318a6f91_144fb6de",
+      "range": {
+        "startLine": 117,
+        "startChar": 4,
+        "endLine": 121,
+        "endChar": 5
+      },
+      "revId": "f0e1bf344ac6a5a4982ca7cf9309860344e986b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

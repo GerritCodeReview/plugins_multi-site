@@ -22,6 +22,30 @@
       "revId": "6112e7b0338ed74f4fd40061108962d4b32dacd2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acc17162_1cdb787b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-13T12:17:17Z",
+      "side": 1,
+      "message": "Yes, this was my doubt and that\u0027s why I had made a previous comment here.\nI agree that we should start by mapping the NoOp and then have the ZKValidationModule or any other implementation of the validation module to override the binding.\nI have now changed the code to reflect this logic.",
+      "parentUuid": "a0136e5c_334b15f8",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 0
+      },
+      "revId": "6112e7b0338ed74f4fd40061108962d4b32dacd2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
