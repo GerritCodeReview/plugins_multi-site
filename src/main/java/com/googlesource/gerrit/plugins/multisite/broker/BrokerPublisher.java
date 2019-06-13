@@ -42,7 +42,7 @@ public class BrokerPublisher implements LifecycleListener {
 
   @Inject
   public BrokerPublisher(
-      BrokerSession session,
+      @ResolvedByProvider BrokerSession session,
       @BrokerGson Gson gson,
       @InstanceId UUID instanceId,
       MessageLogger msgLog) {

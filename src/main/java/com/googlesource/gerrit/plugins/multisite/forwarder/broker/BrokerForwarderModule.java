@@ -16,10 +16,13 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.Configuration.KafkaPublisher;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
-import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaSession;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerSessionNoOp;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerSessionProvider;
+import com.googlesource.gerrit.plugins.multisite.broker.ResolvedByProvider;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
@@ -36,7 +39,9 @@ public class BrokerForwarderModule extends LifecycleModule {
   @Override
   protected void configure() {
     listener().to(BrokerPublisher.class);
-    bind(BrokerSession.class).to(KafkaSession.class);
+    DynamicSet.setOf(binder(), BrokerSession.class);
+    DynamicSet.bind(binder(),BrokerSession.class).to(BrokerSessionNoOp.class);
+    bind(BrokerSession.class).annotatedWith(ResolvedByProvider.class).toProvider(BrokerSessionProvider.class);
 
     if (kafkaPublisher.enabledEvent(EventFamily.INDEX_EVENT)) {
       DynamicSet.bind(binder(), IndexEventForwarder.class).to(BrokerIndexEventForwarder.class);
