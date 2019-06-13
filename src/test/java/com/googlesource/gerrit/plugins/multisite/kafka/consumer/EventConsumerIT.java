@@ -17,6 +17,25 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.stream.Collectors.toSet;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import org.eclipse.jgit.lib.Config;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.storage.file.FileBasedConfig;
+import org.eclipse.jgit.util.FS;
+import org.junit.Test;
+import org.testcontainers.containers.KafkaContainer;
+
 import com.google.gerrit.acceptance.AbstractDaemonTest;
 import com.google.gerrit.acceptance.GerritConfig;
 import com.google.gerrit.acceptance.LogThreshold;
@@ -38,28 +57,10 @@ import com.google.inject.Inject;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.Module;
 import com.googlesource.gerrit.plugins.multisite.NoteDbStatus;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import org.eclipse.jgit.lib.Config;
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevWalk;
-import org.eclipse.jgit.storage.file.FileBasedConfig;
-import org.eclipse.jgit.util.FS;
-import org.junit.Test;
-import org.testcontainers.containers.KafkaContainer;
 
 @NoHttpd
 @LogThreshold(level = "INFO")
@@ -98,16 +99,16 @@ public class EventConsumerIT extends AbstractDaemonTest {
     private final Module multiSiteModule;
 
     @Inject
-    public KafkaTestContainerModule(SitePaths sitePaths, NoteDbStatus noteDb) {
+    public KafkaTestContainerModule(SitePaths sitePaths, NoteDbStatus noteDb) throws IOException {
       this.config =
           new FileBasedConfig(
               sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile(), FS.DETECTED);
-      this.multiSiteModule =
-          new Module(
-              new Configuration(config, new Config()),
-              noteDb,
-              new KafkaConfiguration(config),
-              true);
+      config.setBoolean("kafka", "publisher", "enabled", true);
+      config.setBoolean("kafka", "subscriber", "enabled", true);
+      config.setBoolean("ref-database", null, "enabled", false);
+      config.save();
+
+      this.multiSiteModule = new Module(new Configuration(config, new Config()), noteDb, true);
     }
 
     @Override
@@ -129,9 +130,6 @@ public class EventConsumerIT extends AbstractDaemonTest {
       kafkaContainer.start();
 
       config.setString("kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
-      config.setBoolean("kafka", "publisher", "enabled", true);
-      config.setBoolean("kafka", "subscriber", "enabled", true);
-      config.setBoolean("ref-database", null, "enabled", false);
       config.save();
 
       return kafkaContainer;
