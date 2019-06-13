@@ -43,12 +43,13 @@ import org.slf4j.LoggerFactory;
 public class KafkaConfiguration {
 
   private static final Logger log = LoggerFactory.getLogger(KafkaConfiguration.class);
-  public static final String KAFKA_CONFIG = "multi-site.config";
-  public static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
+
+  static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
   static final String KAFKA_SECTION = "kafka";
-  static final String ENABLE_KEY = "enabled";
-  static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
-  static final boolean DEFAULT_ENABLE_PROCESSING = true;
+  private static final String KAFKA_CONFIG = "multi-site.config";
+  private static final String ENABLE_KEY = "enabled";
+  private static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
+  private static final boolean DEFAULT_ENABLE_PROCESSING = true;
   private static final int DEFAULT_POLLING_INTERVAL_MS = 1000;
 
   private final Supplier<KafkaSubscriber> subscriber;
@@ -61,7 +62,7 @@ public class KafkaConfiguration {
   }
 
   @VisibleForTesting
-  public KafkaConfiguration(Config kafkaConfig) {
+  KafkaConfiguration(Config kafkaConfig) {
     Supplier<Config> lazyCfg = lazyLoad(kafkaConfig);
     kafka = memoize(() -> new Kafka(lazyCfg));
     publisher = memoize(() -> new KafkaPublisher(lazyCfg));
@@ -118,23 +119,8 @@ public class KafkaConfiguration {
     return defaultValue;
   }
 
-  private static Map<EventFamily, Boolean> eventsEnabled(
-      Supplier<Config> config, String subsection) {
-    Map<EventFamily, Boolean> eventsEnabled = new HashMap<>();
-    for (EventFamily eventFamily : EventFamily.values()) {
-      String enabledConfigKey = eventFamily.lowerCamelName() + "Enabled";
-
-      eventsEnabled.put(
-          eventFamily,
-          config
-              .get()
-              .getBoolean(
-                  KAFKA_SECTION,
-                  subsection,
-                  enabledConfigKey,
-                  DEFAULT_ENABLE_PROCESSING));
-    }
-    return eventsEnabled;
+  private static Boolean enabled(Supplier<Config> config, String section) {
+    return config.get().getBoolean(KAFKA_SECTION, section, ENABLE_KEY, DEFAULT_ENABLE_PROCESSING);
   }
 
   public KafkaPublisher kafkaPublisher() {
@@ -215,16 +201,9 @@ public class KafkaConfiguration {
     public static final boolean DEFAULT_BROKER_ENABLED = false;
 
     private final boolean enabled;
-    private final Map<EventFamily, Boolean> eventsEnabled;
 
     private KafkaPublisher(Supplier<Config> cfg) {
-      enabled =
-          cfg.get()
-              .getBoolean(
-                  KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
-
-      eventsEnabled = eventsEnabled(cfg, KAFKA_PUBLISHER_SUBSECTION);
-
+      enabled = enabled(cfg, KAFKA_PUBLISHER_SUBSECTION);
       if (enabled) {
         setDefaults();
         applyKafkaConfig(cfg, KAFKA_PUBLISHER_SUBSECTION, this);
@@ -241,14 +220,6 @@ public class KafkaConfiguration {
       put("value.serializer", KAFKA_STRING_SERIALIZER);
       put("reconnect.backoff.ms", 5000L);
     }
-
-    public boolean enabled() {
-      return enabled;
-    }
-
-    public boolean enabledEvent(EventFamily eventType) {
-      return eventsEnabled.get(eventType);
-    }
   }
 
   public static class KafkaSubscriber extends Properties {
@@ -258,7 +229,6 @@ public class KafkaConfiguration {
 
     private final boolean enabled;
     private final Integer pollingInterval;
-    private Map<EventFamily, Boolean> eventsEnabled;
     private final Config cfg;
 
     public KafkaSubscriber(Supplier<Config> configSupplier) {
@@ -271,21 +241,10 @@ public class KafkaConfiguration {
               "pollingIntervalMs",
               DEFAULT_POLLING_INTERVAL_MS);
 
-      enabled = cfg.getBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
-
-      eventsEnabled = eventsEnabled(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION);
-
+      enabled = enabled(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION);
       if (enabled) {
         applyKafkaConfig(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION, this);
       }
-    }
-
-    public boolean enabled() {
-      return enabled;
-    }
-
-    public boolean enabledEvent(EventFamily eventFamily) {
-      return eventsEnabled.get(eventFamily);
     }
 
     public Properties initPropsWith(UUID instanceId) {
