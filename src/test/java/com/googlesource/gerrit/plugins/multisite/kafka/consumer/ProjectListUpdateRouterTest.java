@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedProjectListUpdateHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
-import com.googlesource.gerrit.plugins.multisite.kafka.router.ProjectListUpdateRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.ProjectListUpdateRouter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
