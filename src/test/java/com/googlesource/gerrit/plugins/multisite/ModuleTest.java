@@ -36,9 +36,6 @@ public class ModuleTest {
   @Mock(answer = Answers.RETURNS_DEEP_STUBS)
   private Configuration configMock;
 
-  @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-  private KafkaConfiguration kafkaConfig;
-
   @Mock private NoteDbStatus noteDb;
 
   @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
@@ -47,7 +44,7 @@ public class ModuleTest {
 
   @Before
   public void setUp() {
-    module = new Module(configMock, noteDb, kafkaConfig);
+    module = new Module(configMock, noteDb);
   }
 
   @Test

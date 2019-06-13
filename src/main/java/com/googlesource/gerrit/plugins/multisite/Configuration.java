@@ -26,12 +26,15 @@ import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
@@ -45,18 +48,23 @@ public class Configuration {
 
   public static final String PLUGIN_NAME = "multi-site";
   public static final String MULTI_SITE_CONFIG = PLUGIN_NAME + ".config";
-  public static final String REPLICATION_CONFIG = "replication.config";
 
   static final String INSTANCE_ID_FILE = "instanceId.data";
-
-  // common parameters to cache and index sections
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
-  static final int DEFAULT_INDEX_MAX_TRIES = 2;
-  static final int DEFAULT_INDEX_RETRY_INTERVAL = 30000;
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
-  static final String NUM_STRIPED_LOCKS = "numStripedLocks";
-  static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
   static final String ENABLE_KEY = "enabled";
+
+  private static final String REPLICATION_CONFIG = "replication.config";
+  // common parameters to cache and index sections
+  private static final int DEFAULT_INDEX_MAX_TRIES = 2;
+  private static final int DEFAULT_INDEX_RETRY_INTERVAL = 30000;
+  private static final String NUM_STRIPED_LOCKS = "numStripedLocks";
+  private static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
+  private static final boolean DEFAULT_ENABLE_PROCESSING = true;
+  private static final String BROKER_SECTION = "kafka";
+  private static final String PUBLISHER_SUBSECTION = "publisher";
+  private static final boolean DEFAULT_BROKER_ENABLED = false;
+  private static final String SUBSCRIBER_SUBSECTION = "subscriber";
 
   private final Supplier<Cache> cache;
   private final Supplier<Event> event;
@@ -64,6 +72,10 @@ public class Configuration {
   private final Supplier<SharedRefDatabase> sharedRefDb;
   private final Supplier<Collection<Message>> replicationConfigValidation;
   private final Config multiSiteConfig;
+  private final Map<EventFamily, Boolean> publisherEventsEnabled;
+  private final Boolean publisherEnabled;
+  private final Map<EventFamily, Boolean> subscriberEventsEnabled;
+  private final Boolean subscriberEnabled;
 
   @Inject
   Configuration(SitePaths sitePaths) {
@@ -79,6 +91,10 @@ public class Configuration {
     event = memoize(() -> new Event(lazyMultiSiteCfg));
     index = memoize(() -> new Index(lazyMultiSiteCfg));
     sharedRefDb = memoize(() -> new SharedRefDatabase(lazyMultiSiteCfg));
+    publisherEventsEnabled = eventsEnabled(lazyMultiSiteCfg, PUBLISHER_SUBSECTION);
+    publisherEnabled = enabled(lazyMultiSiteCfg, PUBLISHER_SUBSECTION);
+    subscriberEventsEnabled = eventsEnabled(lazyMultiSiteCfg, SUBSCRIBER_SUBSECTION);
+    subscriberEnabled = enabled(lazyMultiSiteCfg, SUBSCRIBER_SUBSECTION);
   }
 
   public Config getMultiSiteConfig() {
@@ -103,6 +119,22 @@ public class Configuration {
 
   public Collection<Message> validate() {
     return replicationConfigValidation.get();
+  }
+
+  public boolean publisherEnabled() {
+    return publisherEnabled;
+  }
+
+  public boolean publisherEnabledEvent(EventFamily eventType) {
+    return publisherEventsEnabled.get(eventType);
+  }
+
+  public boolean subscriberEnabled() {
+    return subscriberEnabled;
+  }
+
+  public boolean subscriberEnabledEvent(EventFamily eventFamily) {
+    return subscriberEventsEnabled.get(eventFamily);
   }
 
   private static FileBasedConfig getConfigFile(SitePaths sitePaths, String configFileName) {
@@ -158,6 +190,25 @@ public class Configuration {
       log.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
       return defaultValue;
     }
+  }
+
+  private static Boolean enabled(Supplier<Config> config, String section) {
+    return config.get().getBoolean(BROKER_SECTION, section, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
+  }
+
+  private static Map<EventFamily, Boolean> eventsEnabled(
+      Supplier<Config> config, String subsection) {
+    Map<EventFamily, Boolean> eventsEnabled = new HashMap<>();
+    for (EventFamily eventFamily : EventFamily.values()) {
+      String enabledConfigKey = eventFamily.lowerCamelName() + "Enabled";
+
+      eventsEnabled.put(
+          eventFamily,
+          config
+              .get()
+              .getBoolean(BROKER_SECTION, subsection, enabledConfigKey, DEFAULT_ENABLE_PROCESSING));
+    }
+    return eventsEnabled;
   }
 
   public static class SharedRefDatabase {
