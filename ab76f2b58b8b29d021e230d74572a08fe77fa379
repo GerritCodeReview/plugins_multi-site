@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "97684622_35ab2f09",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-13T12:27:38Z",
+      "side": 1,
+      "message": "This global Module should not have any reference to KafkaConfiguration.\nThe KafkaModule should be responsible for reading the multi-site global config and extract the kafka configuration specifics.\nCheck the comments done by @luca in a similar change and try to follow the same approach\nhttps://gerrit-review.googlesource.com/c/plugins/multi-site/+/224396",
+      "revId": "ab76f2b58b8b29d021e230d74572a08fe77fa379",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
