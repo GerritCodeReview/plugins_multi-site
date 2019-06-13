@@ -14,8 +14,10 @@
 
 package com.googlesource.gerrit.plugins.multisite.broker;
 
+import com.google.inject.ImplementedBy;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 
+@ImplementedBy(BrokerSessionNoOp.class)
 public interface BrokerSession {
 
   boolean isOpen();
