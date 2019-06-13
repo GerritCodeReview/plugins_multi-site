@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.router;
+package com.googlesource.gerrit.plugins.multisite.forwarder.router;
 
-import com.google.gerrit.server.events.Event;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 
-public interface ForwardedStreamEventRouter extends ForwardedEventRouter<Event> {}
+public interface ForwardedIndexEventRouter extends ForwardedEventRouter<IndexEvent> {}

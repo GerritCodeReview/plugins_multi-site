@@ -17,13 +17,10 @@ package com.googlesource.gerrit.plugins.multisite;
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Suppliers.ofInstance;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableMap;
-import com.google.gerrit.server.config.SitePaths;
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import java.io.IOException;
@@ -35,7 +32,6 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
-import org.eclipse.jgit.util.FS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,32 +39,22 @@ import org.slf4j.LoggerFactory;
 public class KafkaConfiguration {
 
   private static final Logger log = LoggerFactory.getLogger(KafkaConfiguration.class);
-  public static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
+  static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
   static final String KAFKA_SECTION = "kafka";
-  static final String ENABLE_KEY = "enabled";
-  static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
-  static final boolean DEFAULT_ENABLE_PROCESSING = true;
+  private static final String ENABLE_KEY = "enabled";
+  private static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
+  private static final boolean DEFAULT_ENABLE_PROCESSING = true;
   private static final int DEFAULT_POLLING_INTERVAL_MS = 1000;
 
   private final Supplier<KafkaSubscriber> subscriber;
   private final Supplier<Kafka> kafka;
   private final Supplier<KafkaPublisher> publisher;
 
-  @Inject
-  KafkaConfiguration(SitePaths sitePaths) {
-    this(getConfigFile(sitePaths, Configuration.MULTI_SITE_CONFIG));
-  }
-
-  @VisibleForTesting
   public KafkaConfiguration(Config kafkaConfig) {
     Supplier<Config> lazyCfg = lazyLoad(kafkaConfig);
     kafka = memoize(() -> new Kafka(lazyCfg));
     publisher = memoize(() -> new KafkaPublisher(lazyCfg));
     subscriber = memoize(() -> new KafkaSubscriber(lazyCfg));
-  }
-
-  private static FileBasedConfig getConfigFile(SitePaths sitePaths, String configFileName) {
-    return new FileBasedConfig(sitePaths.etc_dir.resolve(configFileName).toFile(), FS.DETECTED);
   }
 
   public Kafka getKafka() {
