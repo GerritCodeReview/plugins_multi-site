@@ -14,9 +14,12 @@
 
 package com.googlesource.gerrit.plugins.multisite.broker.kafka;
 
+import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Inject;
+import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
@@ -31,6 +34,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 
 public class KafkaBrokerForwarderModule extends LifecycleModule {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private final KafkaConfiguration config;
 
   @Inject
@@ -42,7 +46,8 @@ public class KafkaBrokerForwarderModule extends LifecycleModule {
   protected void configure() {
     if (config.kafkaPublisher().enabled()) {
       listener().to(BrokerPublisher.class);
-      bind(BrokerSession.class).to(KafkaSession.class);
+      DynamicItem.bind(binder(), BrokerSession.class).to(KafkaSession.class).in(Scopes.SINGLETON);
+      logger.atInfo().log("Broker engine: kafka");
 
       if (config.kafkaPublisher().enabledEvent(EventFamily.INDEX_EVENT)) {
         DynamicSet.bind(binder(), IndexEventForwarder.class).to(BrokerIndexEventForwarder.class);
