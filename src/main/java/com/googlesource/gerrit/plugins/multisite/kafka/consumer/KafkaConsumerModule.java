@@ -14,10 +14,13 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.AbstractSubscriber;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.EventSubscriber;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.MultiSiteEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
@@ -47,21 +50,22 @@ public class KafkaConsumerModule extends LifecycleModule {
         .toInstance(Executors.newFixedThreadPool(EventFamily.values().length));
     listener().to(MultiSiteKafkaConsumerRunner.class);
 
-    DynamicSet.setOf(binder(), AbstractKafkaSubcriber.class);
+    DynamicItem.bind(binder(), EventSubscriber.class).to(KafkaEventSubscriber.class);
+
+    DynamicSet.setOf(binder(), AbstractSubscriber.class);
 
     if (config.kafkaSubscriber().enabledEvent(EventFamily.INDEX_EVENT)) {
-      DynamicSet.bind(binder(), AbstractKafkaSubcriber.class).to(IndexEventSubscriber.class);
+      DynamicSet.bind(binder(), AbstractSubscriber.class).to(IndexEventSubscriber.class);
     }
     if (config.kafkaSubscriber().enabledEvent(EventFamily.STREAM_EVENT)) {
-      DynamicSet.bind(binder(), AbstractKafkaSubcriber.class).to(StreamEventSubscriber.class);
+      DynamicSet.bind(binder(), AbstractSubscriber.class).to(StreamEventSubscriber.class);
     }
     if (config.kafkaSubscriber().enabledEvent(EventFamily.CACHE_EVENT)) {
-      DynamicSet.bind(binder(), AbstractKafkaSubcriber.class)
+      DynamicSet.bind(binder(), AbstractSubscriber.class)
           .to(KafkaCacheEvictionEventSubscriber.class);
     }
     if (config.kafkaSubscriber().enabledEvent(EventFamily.PROJECT_LIST_EVENT)) {
-      DynamicSet.bind(binder(), AbstractKafkaSubcriber.class)
-          .to(ProjectUpdateEventSubscriber.class);
+      DynamicSet.bind(binder(), AbstractSubscriber.class).to(ProjectUpdateEventSubscriber.class);
     }
 
     DynamicSet.setOf(binder(), DroppedEventListener.class);

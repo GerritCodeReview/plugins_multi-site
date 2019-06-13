@@ -15,44 +15,29 @@
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.AbstractSubscriber;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.EventSubscriber;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.ProjectListUpdateRouter;
-import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedProjectListUpdateRouter;
 import java.util.UUID;
-import org.apache.kafka.common.serialization.Deserializer;
 
 @Singleton
-public class ProjectUpdateEventSubscriber extends AbstractKafkaSubcriber {
+public class ProjectUpdateEventSubscriber extends AbstractSubscriber {
   @Inject
   public ProjectUpdateEventSubscriber(
-      KafkaConfiguration configuration,
-      KafkaConsumerFactory consumerFactory,
-      Deserializer<byte[]> keyDeserializer,
-      Deserializer<SourceAwareEventWrapper> valueDeserializer,
-      ProjectListUpdateRouter eventRouter,
+      ForwardedProjectListUpdateRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
       @BrokerGson Gson gson,
       @InstanceId UUID instanceId,
-      OneOffRequestContext oneOffCtx,
-      MessageLogger msgLog) {
-    super(
-        configuration,
-        consumerFactory,
-        keyDeserializer,
-        valueDeserializer,
-        eventRouter,
-        droppedEventListeners,
-        gson,
-        instanceId,
-        oneOffCtx,
-        msgLog);
+      MessageLogger msgLog,
+      EventSubscriber consumer) {
+    super(eventRouter, droppedEventListeners, instanceId, msgLog, gson, consumer);
   }
 
   @Override

@@ -12,19 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.broker;
+package com.googlesource.gerrit.plugins.multisite.event.subscriber;
 
-import com.google.gerrit.extensions.annotations.ExtensionPoint;
+import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.kafka.consumer.SourceAwareEventWrapper;
+import java.util.function.Consumer;
 
-@ExtensionPoint
-public interface BrokerSession {
+@Singleton
+public class EventSubscriberNoOp implements EventSubscriber {
 
-  boolean isOpen();
+  @Override
+  public void subscribe(
+      EventFamily eventFamily, Consumer<SourceAwareEventWrapper> messageProcessor) {}
 
-  void connect();
-
-  void disconnect();
-
-  boolean publishEvent(EventFamily eventFamily, String payload);
+  @Override
+  public void shutdown() {}
 }

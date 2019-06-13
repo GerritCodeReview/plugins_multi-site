@@ -12,19 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.broker;
+package com.googlesource.gerrit.plugins.multisite.event.subscriber;
 
-import com.google.gerrit.extensions.annotations.ExtensionPoint;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.inject.Singleton;
 
-@ExtensionPoint
-public interface BrokerSession {
-
-  boolean isOpen();
-
-  void connect();
-
-  void disconnect();
-
-  boolean publishEvent(EventFamily eventFamily, String payload);
+@Singleton
+public class EventSubscriberModule extends LifecycleModule {
+  @Override
+  protected void configure() {
+    DynamicItem.itemOf(binder(), EventSubscriber.class);
+    DynamicItem.bind(binder(), EventSubscriber.class).to(EventSubscriberNoOp.class);
+  }
 }
