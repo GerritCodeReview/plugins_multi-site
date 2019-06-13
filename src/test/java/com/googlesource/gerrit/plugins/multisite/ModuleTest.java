@@ -17,8 +17,8 @@ package com.googlesource.gerrit.plugins.multisite;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.gerrit.server.config.SitePaths;
-import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
-import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerSessionModule;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.EventSubscriberModule;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -40,8 +40,9 @@ public class ModuleTest {
 
   @Mock private NoteDbStatus noteDb;
 
-  @Mock private KafkaForwardedEventRouterModule routerModule;
-  @Mock private KafkaBrokerForwarderModule brokerForwarderModule;
+  @Mock private EventSubscriberModule eventSubscriberModule;
+
+  @Mock private BrokerSessionModule brokerSessionModule;
 
   @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
@@ -49,7 +50,7 @@ public class ModuleTest {
 
   @Before
   public void setup() {
-    module = new Module(configMock, noteDb, routerModule, brokerForwarderModule);
+    module = new Module(configMock, noteDb, eventSubscriberModule, brokerSessionModule);
   }
 
   @Test

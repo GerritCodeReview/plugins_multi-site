@@ -14,8 +14,10 @@
 
 package com.googlesource.gerrit.plugins.multisite.broker;
 
+import com.google.gerrit.extensions.annotations.ExtensionPoint;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 
+@ExtensionPoint
 public interface BrokerSession {
 
   boolean isOpen();

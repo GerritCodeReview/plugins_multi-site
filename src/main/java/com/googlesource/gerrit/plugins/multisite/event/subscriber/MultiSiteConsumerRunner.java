@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
+package com.googlesource.gerrit.plugins.multisite.event.subscriber;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.events.LifecycleListener;
@@ -22,15 +22,15 @@ import com.google.inject.Singleton;
 import java.util.concurrent.Executor;
 
 @Singleton
-public class MultiSiteKafkaConsumerRunner implements LifecycleListener {
+public class MultiSiteConsumerRunner implements LifecycleListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private final DynamicSet<AbstractKafkaSubcriber> consumers;
+  private final DynamicSet<EventSubscriber> consumers;
   private final Executor executor;
 
   @Inject
-  public MultiSiteKafkaConsumerRunner(
-      @ConsumerExecutor Executor executor, DynamicSet<AbstractKafkaSubcriber> consumers) {
+  public MultiSiteConsumerRunner(
+      @ConsumerExecutor Executor executor, DynamicSet<EventSubscriber> consumers) {
     this.consumers = consumers;
     this.executor = executor;
   }

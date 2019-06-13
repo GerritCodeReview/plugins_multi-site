@@ -41,10 +41,9 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Module;
 import com.googlesource.gerrit.plugins.multisite.NoteDbStatus;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
-import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerSessionModule;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.EventSubscriberModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
-import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -110,14 +109,12 @@ public class EventConsumerIT extends AbstractDaemonTest {
       config.save();
 
       Configuration multiSiteConfig = new Configuration(config, new Config());
-      KafkaConfiguration kafkaConfiguration = new KafkaConfiguration(multiSiteConfig);
       this.multiSiteModule =
           new Module(
               multiSiteConfig,
               noteDb,
-              new KafkaForwardedEventRouterModule(
-                  kafkaConfiguration, new KafkaConsumerModule(kafkaConfiguration)),
-              new KafkaBrokerForwarderModule(kafkaConfiguration),
+              new EventSubscriberModule(),
+              new BrokerSessionModule(),
               true);
     }
 
