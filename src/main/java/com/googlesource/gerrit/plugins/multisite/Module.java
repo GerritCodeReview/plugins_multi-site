@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gson.Gson;
@@ -25,13 +26,21 @@ import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerSessionNoOp;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
-import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.CacheEvictionEventRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedCacheEvictionEventRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedIndexEventRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedProjectListUpdateRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedStreamEventRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.IndexEventRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.ProjectListUpdateRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRouter;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
-import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -48,17 +57,12 @@ public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private Configuration config;
   private NoteDbStatus noteDb;
-  private KafkaForwardedEventRouterModule kafkaForwardedEventRouterModule;
-  private KafkaBrokerForwarderModule kafkaBrokerForwarderModule;
+
   private final boolean disableGitRepositoryValidation;
 
   @Inject
-  public Module(
-      Configuration config,
-      NoteDbStatus noteDb,
-      KafkaForwardedEventRouterModule forwardedEeventRouterModule,
-      KafkaBrokerForwarderModule brokerForwarderModule) {
-    this(config, noteDb, forwardedEeventRouterModule, brokerForwarderModule, false);
+  public Module(Configuration config, NoteDbStatus noteDb) {
+    this(config, noteDb, false);
   }
 
   // TODO: It is not possible to properly test the libModules in Gerrit.
@@ -66,25 +70,14 @@ public class Module extends LifecycleModule {
   // support
   // in Gerrit for it.
   @VisibleForTesting
-  public Module(
-      Configuration config,
-      NoteDbStatus noteDb,
-      KafkaForwardedEventRouterModule forwardedEeventRouterModule,
-      KafkaBrokerForwarderModule brokerForwarderModule,
-      boolean disableGitRepositoryValidation) {
-    init(config, noteDb, forwardedEeventRouterModule, brokerForwarderModule);
+  public Module(Configuration config, NoteDbStatus noteDb, boolean disableGitRepositoryValidation) {
+    init(config, noteDb);
     this.disableGitRepositoryValidation = disableGitRepositoryValidation;
   }
 
-  private void init(
-      Configuration config,
-      NoteDbStatus noteDb,
-      KafkaForwardedEventRouterModule forwardedEeventRouterModule,
-      KafkaBrokerForwarderModule brokerForwarderModule) {
+  private void init(Configuration config, NoteDbStatus noteDb) {
     this.config = config;
     this.noteDb = noteDb;
-    this.kafkaForwardedEventRouterModule = forwardedEeventRouterModule;
-    this.kafkaBrokerForwarderModule = brokerForwarderModule;
   }
 
   @Override
@@ -103,6 +96,10 @@ public class Module extends LifecycleModule {
     listener().to(Log4jMessageLogger.class);
     bind(MessageLogger.class).to(Log4jMessageLogger.class);
 
+    DynamicItem.itemOf(binder(), BrokerSession.class);
+    DynamicItem.bind(binder(), BrokerSession.class).to(BrokerSessionNoOp.class);
+    log.info("Broker engine: none");
+
     install(new ForwarderModule());
 
     if (config.cache().synchronize()) {
@@ -114,10 +111,10 @@ public class Module extends LifecycleModule {
     if (config.index().synchronize()) {
       install(new IndexModule());
     }
-
-    install(kafkaForwardedEventRouterModule);
-
-    install(kafkaBrokerForwarderModule);
+    bind(ForwardedIndexEventRouter.class).to(IndexEventRouter.class);
+    bind(ForwardedCacheEvictionEventRouter.class).to(CacheEvictionEventRouter.class);
+    bind(ForwardedProjectListUpdateRouter.class).to(ProjectListUpdateRouter.class);
+    bind(ForwardedStreamEventRouter.class).to(StreamEventRouter.class);
 
     install(
         new ValidationModule(

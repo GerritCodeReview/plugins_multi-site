@@ -40,11 +40,13 @@ import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Module;
 import com.googlesource.gerrit.plugins.multisite.NoteDbStatus;
+import com.googlesource.gerrit.plugins.multisite.PluginModule;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -98,6 +100,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
 
     private final FileBasedConfig config;
     private final Module multiSiteModule;
+    private final PluginModule pluginModule;
 
     @Inject
     public KafkaTestContainerModule(SitePaths sitePaths, NoteDbStatus noteDb) throws IOException {
@@ -110,15 +113,15 @@ public class EventConsumerIT extends AbstractDaemonTest {
       config.save();
 
       Configuration multiSiteConfig = new Configuration(config, new Config());
-      KafkaConfiguration kafkaConfiguration = new KafkaConfiguration(multiSiteConfig);
-      this.multiSiteModule =
-          new Module(
+      this.multiSiteModule = new Module(multiSiteConfig, noteDb, true);
+      this.pluginModule =
+          new PluginModule(
               multiSiteConfig,
-              noteDb,
+              new ZkValidationModule(multiSiteConfig),
               new KafkaForwardedEventRouterModule(
-                  kafkaConfiguration, new KafkaConsumerModule(kafkaConfiguration)),
-              new KafkaBrokerForwarderModule(kafkaConfiguration),
-              true);
+                  new KafkaConfiguration(multiSiteConfig),
+                  new KafkaConsumerModule(new KafkaConfiguration(multiSiteConfig))),
+              new KafkaBrokerForwarderModule(new KafkaConfiguration(multiSiteConfig)));
     }
 
     @Override
@@ -129,6 +132,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
         listener().toInstance(new KafkaStopAtShutdown(kafka));
 
         install(multiSiteModule);
+        install(pluginModule);
 
       } catch (IOException e) {
         throw new IllegalStateException(e);
@@ -167,7 +171,9 @@ public class EventConsumerIT extends AbstractDaemonTest {
         .containsExactly(createChangeIndexEvent(project, changeNum, getParentCommit(change)));
 
     assertThat(
-            eventsByType.get("ref-updated").stream()
+            eventsByType
+                .get("ref-updated")
+                .stream()
                 .map(e -> ((RefUpdatedEvent) e).getRefName())
                 .collect(toSet()))
         .containsAllOf(changeNotesRef, patchsetRef); // 'refs/sequences/changes'
@@ -259,7 +265,8 @@ public class EventConsumerIT extends AbstractDaemonTest {
 
   private Map<String, List<Event>> receiveEventsByType(
       LinkedBlockingQueue<SourceAwareEventWrapper> queue) throws InterruptedException {
-    return drainQueue(queue).stream()
+    return drainQueue(queue)
+        .stream()
         .sorted(Comparator.comparing(e -> e.type))
         .collect(Collectors.groupingBy(e -> e.type));
   }
