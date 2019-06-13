@@ -14,17 +14,19 @@
 
 package com.googlesource.gerrit.plugins.multisite.broker;
 
-import com.google.gerrit.extensions.annotations.ExtensionPoint;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.inject.AbstractModule;
+import com.google.inject.Singleton;
 
-@ExtensionPoint
-public interface BrokerSession {
+@Singleton
+public class BrokerSessionModule extends AbstractModule {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  boolean isOpen();
-
-  void connect();
-
-  void disconnect();
-
-  boolean publishEvent(EventFamily eventFamily, String payload);
+  @Override
+  protected void configure() {
+    DynamicItem.itemOf(binder(), BrokerSession.class);
+    DynamicItem.bind(binder(), BrokerSession.class).to(BrokerSessionNoOp.class);
+    logger.atInfo().log("Broker engine: none");
+  }
 }

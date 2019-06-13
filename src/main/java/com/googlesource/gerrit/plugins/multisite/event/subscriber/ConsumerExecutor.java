@@ -12,19 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.broker;
+package com.googlesource.gerrit.plugins.multisite.event.subscriber;
 
-import com.google.gerrit.extensions.annotations.ExtensionPoint;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@ExtensionPoint
-public interface BrokerSession {
+import com.google.inject.BindingAnnotation;
+import java.lang.annotation.Retention;
 
-  boolean isOpen();
-
-  void connect();
-
-  void disconnect();
-
-  boolean publishEvent(EventFamily eventFamily, String payload);
-}
+@Retention(RUNTIME)
+@BindingAnnotation
+@interface ConsumerExecutor {}
