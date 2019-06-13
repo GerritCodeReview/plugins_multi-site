@@ -34,6 +34,24 @@
       "revId": "ab76f2b58b8b29d021e230d74572a08fe77fa379",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db02de96_ca74c35e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-13T20:19:38Z",
+      "side": 1,
+      "message": "Done. Kafka related logic moved to separate KafkaModule",
+      "parentUuid": "b5ed948d_eaa2a161",
+      "revId": "ab76f2b58b8b29d021e230d74572a08fe77fa379",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
