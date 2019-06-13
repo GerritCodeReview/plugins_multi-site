@@ -12,14 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.router;
+package com.googlesource.gerrit.plugins.multisite.forwarder.router;
 
-import com.google.gerrit.server.permissions.PermissionBackendException;
-import com.google.gwtorm.server.OrmException;
-import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
-import java.io.IOException;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 
-public interface ForwardedEventRouter<EventType> {
-  void route(EventType sourceEvent)
-      throws IOException, OrmException, PermissionBackendException, CacheNotFoundException;
-}
+public interface ForwardedProjectListUpdateRouter
+    extends ForwardedEventRouter<ProjectListUpdateEvent> {}

@@ -26,13 +26,12 @@ import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
+import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
-import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
-import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
-import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
+import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 import java.io.BufferedReader;
@@ -50,12 +49,17 @@ public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private Configuration config;
   private NoteDbStatus noteDb;
+  private KafkaForwardedEventRouterModule kafkaForwardedEventRouterModule;
+  private KafkaBrokerForwarderModule kafkaBrokerForwarderModule;
   private final boolean disableGitRepositoryValidation;
-  private KafkaConfiguration kafkaConfig;
 
   @Inject
-  public Module(Configuration config, NoteDbStatus noteDb, KafkaConfiguration kafkaConfig) {
-    this(config, noteDb, kafkaConfig, false);
+  public Module(
+      Configuration config,
+      NoteDbStatus noteDb,
+      KafkaForwardedEventRouterModule forwardedEeventRouterModule,
+      KafkaBrokerForwarderModule brokerForwarderModule) {
+    this(config, noteDb, forwardedEeventRouterModule, brokerForwarderModule, false);
   }
 
   // TODO: It is not possible to properly test the libModules in Gerrit.
@@ -66,16 +70,22 @@ public class Module extends LifecycleModule {
   public Module(
       Configuration config,
       NoteDbStatus noteDb,
-      KafkaConfiguration kafkaConfig,
+      KafkaForwardedEventRouterModule forwardedEeventRouterModule,
+      KafkaBrokerForwarderModule brokerForwarderModule,
       boolean disableGitRepositoryValidation) {
-    init(config, noteDb, kafkaConfig);
+    init(config, noteDb, forwardedEeventRouterModule, brokerForwarderModule);
     this.disableGitRepositoryValidation = disableGitRepositoryValidation;
   }
 
-  private void init(Configuration config, NoteDbStatus noteDb, KafkaConfiguration kafkaConfig) {
+  private void init(
+      Configuration config,
+      NoteDbStatus noteDb,
+      KafkaForwardedEventRouterModule forwardedEeventRouterModule,
+      KafkaBrokerForwarderModule brokerForwarderModule) {
     this.config = config;
     this.noteDb = noteDb;
-    this.kafkaConfig = kafkaConfig;
+    this.kafkaForwardedEventRouterModule = forwardedEeventRouterModule;
+    this.kafkaBrokerForwarderModule = brokerForwarderModule;
   }
 
   @Override
@@ -106,13 +116,9 @@ public class Module extends LifecycleModule {
       install(new IndexModule());
     }
 
-    if (kafkaConfig.kafkaSubscriber().enabled()) {
-      install(new KafkaConsumerModule(kafkaConfig.kafkaSubscriber()));
-      install(new ForwardedEventRouterModule());
-    }
-    if (kafkaConfig.kafkaPublisher().enabled()) {
-      install(new BrokerForwarderModule(kafkaConfig.kafkaPublisher()));
-    }
+    install(kafkaForwardedEventRouterModule);
+
+    install(kafkaBrokerForwarderModule);
 
     install(
         new ValidationModule(
