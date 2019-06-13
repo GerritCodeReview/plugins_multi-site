@@ -27,6 +27,7 @@ import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.EventSubscriber;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedEventRouter;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
@@ -41,7 +42,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.Deserializer;
 
-public abstract class AbstractKafkaSubcriber implements Runnable {
+public abstract class AbstractKafkaSubcriber implements EventSubscriber {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final Consumer<byte[], byte[]> consumer;
@@ -136,6 +137,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
   }
 
   // Shutdown hook which can be called from a separate thread
+  @Override
   public void shutdown() {
     closed.set(true);
     consumer.wakeup();
