@@ -12,19 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.broker;
+package com.googlesource.gerrit.plugins.multisite.broker.kafka;
 
-import com.google.inject.ImplementedBy;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.google.gerrit.lifecycle.LifecycleModule;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
 
-@ImplementedBy(BrokerSessionNoOp.class)
-public interface BrokerSession {
-
-  boolean isOpen();
-
-  void connect();
-
-  void disconnect();
-
-  boolean publishEvent(EventFamily eventFamily, String payload);
+public class KafkaSessionModule extends LifecycleModule {
+  @Override
+  protected void configure() {
+    bind(BrokerSession.class).to(KafkaSession.class);
+  }
 }
