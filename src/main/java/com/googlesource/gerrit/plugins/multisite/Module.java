@@ -26,6 +26,7 @@ import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
+import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaSessionModule;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
@@ -106,6 +107,7 @@ public class Module extends LifecycleModule {
     }
     if (config.kafkaPublisher().enabled()) {
       install(new BrokerForwarderModule(config.kafkaPublisher()));
+      install(new KafkaSessionModule());
     }
 
     install(
