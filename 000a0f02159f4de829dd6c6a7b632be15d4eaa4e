@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "a85a76d7_785ec7ba",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-14T11:39:43Z",
+      "side": 1,
+      "message": "a separate",
+      "range": {
+        "startLine": 9,
+        "startChar": 47,
+        "endLine": 9,
+        "endChar": 55
+      },
+      "revId": "000a0f02159f4de829dd6c6a7b632be15d4eaa4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8d8955b0_44d049ca",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
         "patchSetId": 1
@@ -19,6 +42,23 @@
         "endLine": 28,
         "endChar": 64
       },
+      "revId": "000a0f02159f4de829dd6c6a7b632be15d4eaa4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "968c6419_dccc2bb9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-14T11:39:43Z",
+      "side": 1,
+      "message": "KafkaBrokerModule?",
       "revId": "000a0f02159f4de829dd6c6a7b632be15d4eaa4e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
