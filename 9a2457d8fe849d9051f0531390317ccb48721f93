@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "2b5f48c0_5181dfb9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-14T13:30:39Z",
+      "side": 0,
+      "message": "Change will be to large to review I will add it in a new change",
+      "parentUuid": "ddc17f06_7504f9d9",
+      "revId": "9a2457d8fe849d9051f0531390317ccb48721f93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8eb20009_73352907",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 1
@@ -72,6 +90,30 @@
       "side": 0,
       "message": "I thought that I will be to large to review in one go.I\u0027m fine to squash it",
       "parentUuid": "8eb20009_73352907",
+      "range": {
+        "startLine": 75,
+        "startChar": 35,
+        "endLine": 75,
+        "endChar": 67
+      },
+      "revId": "9a2457d8fe849d9051f0531390317ccb48721f93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "45611cf8_63406969",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-14T13:30:39Z",
+      "side": 0,
+      "message": "Squashed with the previous change",
+      "parentUuid": "2119fd74_e94fdf40",
       "range": {
         "startLine": 75,
         "startChar": 35,
