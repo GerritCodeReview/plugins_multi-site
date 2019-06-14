@@ -65,6 +65,30 @@
     },
     {
       "key": {
+        "uuid": "798f553a_1e3194be",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-14T11:40:14Z",
+      "side": 1,
+      "message": "I wanted to do incremental changes so Configuration API is not changing at this point. In next change I\u0027m moving out KafkaConfig. I had one change but it was something like 600 lines of code so I thought that it\u0027s to much for a single review",
+      "parentUuid": "c14c9881_c1be0fe3",
+      "range": {
+        "startLine": 75,
+        "startChar": 35,
+        "endLine": 75,
+        "endChar": 67
+      },
+      "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "95a8d2f2_27a4b7a8",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 1
@@ -76,6 +100,30 @@
       "writtenOn": "2019-06-14T11:31:03Z",
       "side": 1,
       "message": "Is this still needed? The kafkaConfiguration is completely independent in this change, do we really need a reference to it from the Configuration class?",
+      "range": {
+        "startLine": 83,
+        "startChar": 3,
+        "endLine": 83,
+        "endChar": 20
+      },
+      "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ba48f7f_00f9e9ff",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-14T11:40:14Z",
+      "side": 1,
+      "message": "Same as comment just to keep Configuration API compatible so one change is not changing to much in the code. Moved out in the next change",
+      "parentUuid": "95a8d2f2_27a4b7a8",
       "range": {
         "startLine": 83,
         "startChar": 3,
