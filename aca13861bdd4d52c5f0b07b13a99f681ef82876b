@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "888a760e_2874f173",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T11:04:09Z",
+      "side": 1,
+      "message": "Would it be better to change to \"Move KafkaConfiguration outside the Configuration class\"?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 48
+      },
+      "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "17f139e6_0b3339c9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T11:04:09Z",
+      "side": 1,
+      "message": "nit: Remove new line",
+      "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8cfc77b3_35f195ec",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T11:04:09Z",
+      "side": 1,
+      "message": "nit: Remove space",
+      "range": {
+        "startLine": 313,
+        "startChar": 0,
+        "endLine": 313,
+        "endChar": 2
+      },
+      "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
