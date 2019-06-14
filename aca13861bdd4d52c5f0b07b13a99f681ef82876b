@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "42e0c4d3_6d9dc8d7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-14T13:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "888a760e_2874f173",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 48
+      },
+      "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "17f139e6_0b3339c9",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 1
@@ -39,6 +63,24 @@
       "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4227d4e0_77c478f9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-14T13:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17f139e6_0b3339c9",
+      "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -77,6 +119,30 @@
       "side": 1,
       "message": "I wanted to do incremental changes so Configuration API is not changing at this point. In next change I\u0027m moving out KafkaConfig. I had one change but it was something like 600 lines of code so I thought that it\u0027s to much for a single review",
       "parentUuid": "c14c9881_c1be0fe3",
+      "range": {
+        "startLine": 75,
+        "startChar": 35,
+        "endLine": 75,
+        "endChar": 67
+      },
+      "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f6a72d6_edae3e92",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-14T13:56:13Z",
+      "side": 1,
+      "message": "Squashed with change which was addressing that",
+      "parentUuid": "798f553a_1e3194be",
       "range": {
         "startLine": 75,
         "startChar": 35,
@@ -136,6 +202,30 @@
     },
     {
       "key": {
+        "uuid": "9bea8b52_97b0ce1e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-14T13:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ba48f7f_00f9e9ff",
+      "range": {
+        "startLine": 83,
+        "startChar": 3,
+        "endLine": 83,
+        "endChar": 20
+      },
+      "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8cfc77b3_35f195ec",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 1
@@ -156,6 +246,30 @@
       "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66ab1070_2c50baff",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-14T13:56:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8cfc77b3_35f195ec",
+      "range": {
+        "startLine": 313,
+        "startChar": 0,
+        "endLine": 313,
+        "endChar": 2
+      },
+      "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
