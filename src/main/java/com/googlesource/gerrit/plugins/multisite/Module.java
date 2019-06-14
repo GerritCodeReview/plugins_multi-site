@@ -101,12 +101,12 @@ public class Module extends LifecycleModule {
       install(new IndexModule());
     }
 
-    if (config.kafkaSubscriber().enabled()) {
-      install(new KafkaConsumerModule(config.kafkaSubscriber()));
+    if (config.subscriberEnabled()) {
+      install(new KafkaConsumerModule(config));
       install(new ForwardedEventRouterModule());
     }
-    if (config.kafkaPublisher().enabled()) {
-      install(new BrokerForwarderModule(config.kafkaPublisher()));
+    if (config.publisherEnabled()) {
+      install(new BrokerForwarderModule(config));
       install(new KafkaSessionModule());
     }
 

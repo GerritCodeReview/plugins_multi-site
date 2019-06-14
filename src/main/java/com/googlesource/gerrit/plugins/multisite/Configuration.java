@@ -71,6 +71,10 @@ public class Configuration {
   static final boolean DEFAULT_ENABLE_PROCESSING = true;
   static final String KAFKA_SECTION = "kafka";
   public static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
+  static final String KAFKA_PUBLISHER_SUBSECTION = "publisher";
+  public static final boolean DEFAULT_BROKER_ENABLED = false;
+
+  static final String KAFKA_SUBSCRIBER_SUBSECTION = "subscriber";
 
   private final Supplier<KafkaPublisher> publisher;
   private final Supplier<Cache> cache;
@@ -81,6 +85,10 @@ public class Configuration {
   private final Supplier<SharedRefDatabase> sharedRefDb;
   private final Supplier<Collection<Message>> replicationConfigValidation;
   private final Config multiSiteConfig;
+  private final Map<EventFamily, Boolean> publisherEventsEnabled;
+  private final Boolean publisherEnabled;
+  private final Map<EventFamily, Boolean> subscriberEventsEnabled;
+  private final Boolean subscriberEnabled;
 
   @Inject
   Configuration(SitePaths sitePaths) {
@@ -99,6 +107,10 @@ public class Configuration {
     event = memoize(() -> new Event(lazyMultiSiteCfg));
     index = memoize(() -> new Index(lazyMultiSiteCfg));
     sharedRefDb = memoize(() -> new SharedRefDatabase(lazyMultiSiteCfg));
+    publisherEventsEnabled = eventsEnabled(lazyMultiSiteCfg, KAFKA_PUBLISHER_SUBSECTION);
+    publisherEnabled = enabled(lazyMultiSiteCfg, KAFKA_PUBLISHER_SUBSECTION);
+    subscriberEventsEnabled = eventsEnabled(lazyMultiSiteCfg, KAFKA_SUBSCRIBER_SUBSECTION);
+    subscriberEnabled = enabled(lazyMultiSiteCfg, KAFKA_SUBSCRIBER_SUBSECTION);
   }
 
   public Config getMultiSiteConfig() {
@@ -135,6 +147,22 @@ public class Configuration {
 
   public Collection<Message> validate() {
     return replicationConfigValidation.get();
+  }
+
+  public boolean publisherEnabled() {
+    return publisherEnabled;
+  }
+
+  public boolean publisherEnabledEvent(EventFamily eventType) {
+    return publisherEventsEnabled.get(eventType);
+  }
+
+  public boolean subscriberEnabled() {
+    return subscriberEnabled;
+  }
+
+  public boolean subscriberEnabledEvent(EventFamily eventFamily) {
+    return subscriberEventsEnabled.get(eventFamily);
   }
 
   private static FileBasedConfig getConfigFile(SitePaths sitePaths, String configFileName) {
@@ -199,6 +227,10 @@ public class Configuration {
       return value;
     }
     return defaultValue;
+  }
+
+  private static Boolean enabled(Supplier<Config> config, String section) {
+    return config.get().getBoolean(KAFKA_SECTION, section, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
   }
 
   private static Map<EventFamily, Boolean> eventsEnabled(
@@ -288,20 +320,9 @@ public class Configuration {
 
     public static final String KAFKA_STRING_SERIALIZER = StringSerializer.class.getName();
 
-    public static final String KAFKA_PUBLISHER_SUBSECTION = "publisher";
-    public static final boolean DEFAULT_BROKER_ENABLED = false;
-
-    private final boolean enabled;
-    private final Map<EventFamily, Boolean> eventsEnabled;
-
     private KafkaPublisher(Supplier<Config> cfg) {
-      enabled =
-          cfg.get()
-              .getBoolean(
-                  KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
 
-      eventsEnabled = eventsEnabled(cfg, KAFKA_PUBLISHER_SUBSECTION);
-
+      boolean enabled = enabled(cfg, KAFKA_PUBLISHER_SUBSECTION);
       if (enabled) {
         setDefaults();
         applyKafkaConfig(cfg, KAFKA_PUBLISHER_SUBSECTION, this);
@@ -318,24 +339,12 @@ public class Configuration {
       put("value.serializer", KAFKA_STRING_SERIALIZER);
       put("reconnect.backoff.ms", 5000L);
     }
-
-    public boolean enabled() {
-      return enabled;
-    }
-
-    public boolean enabledEvent(EventFamily eventType) {
-      return eventsEnabled.get(eventType);
-    }
   }
 
   public static class KafkaSubscriber extends Properties {
     private static final long serialVersionUID = 1L;
 
-    static final String KAFKA_SUBSCRIBER_SUBSECTION = "subscriber";
-
-    private final boolean enabled;
     private final Integer pollingInterval;
-    private Map<EventFamily, Boolean> eventsEnabled;
     private final Config cfg;
 
     public KafkaSubscriber(Supplier<Config> configSupplier) {
@@ -348,21 +357,10 @@ public class Configuration {
               "pollingIntervalMs",
               DEFAULT_POLLING_INTERVAL_MS);
 
-      enabled = cfg.getBoolean(KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
-
-      eventsEnabled = eventsEnabled(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION);
-
+      Boolean enabled = enabled(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION);
       if (enabled) {
         applyKafkaConfig(configSupplier, KAFKA_SUBSCRIBER_SUBSECTION, this);
       }
-    }
-
-    public boolean enabled() {
-      return enabled;
-    }
-
-    public boolean enabledEvent(EventFamily eventFamily) {
-      return eventsEnabled.get(eventFamily);
     }
 
     public Properties initPropsWith(UUID instanceId) {

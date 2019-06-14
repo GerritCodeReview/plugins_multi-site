@@ -25,8 +25,8 @@ import static com.googlesource.gerrit.plugins.multisite.Configuration.Forwarding
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.INDEX_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.KAFKA_PROPERTY_PREFIX;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.KAFKA_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.KafkaPublisher.KAFKA_PUBLISHER_SUBSECTION;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.KafkaSubscriber.KAFKA_SUBSCRIBER_SUBSECTION;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.KAFKA_PUBLISHER_SUBSECTION;
+import static com.googlesource.gerrit.plugins.multisite.Configuration.KAFKA_SUBSCRIBER_SUBSECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
 
 import com.google.common.collect.ImmutableList;
