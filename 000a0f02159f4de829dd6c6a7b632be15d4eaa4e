@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8d8955b0_44d049ca",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T11:01:00Z",
+      "side": 1,
+      "message": "Not used anymore",
+      "range": {
+        "startLine": 28,
+        "startChar": 2,
+        "endLine": 28,
+        "endChar": 64
+      },
+      "revId": "000a0f02159f4de829dd6c6a7b632be15d4eaa4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "628cf973_d265f32c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T11:01:00Z",
+      "side": 1,
+      "message": "License header missing",
+      "revId": "000a0f02159f4de829dd6c6a7b632be15d4eaa4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99f787a4_e8347099",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T11:01:00Z",
+      "side": 1,
+      "message": "I believe this doesn\u0027t belong here",
+      "range": {
+        "startLine": 23,
+        "startChar": 6,
+        "endLine": 23,
+        "endChar": 48
+      },
+      "revId": "000a0f02159f4de829dd6c6a7b632be15d4eaa4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "31b56b12_d41559eb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T11:01:00Z",
+      "side": 1,
+      "message": "I believe this should not be here neither",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 71
+      },
+      "revId": "000a0f02159f4de829dd6c6a7b632be15d4eaa4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
