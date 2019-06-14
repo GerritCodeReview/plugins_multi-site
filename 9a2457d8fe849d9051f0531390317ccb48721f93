@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "292098ec_b2c52910",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T11:01:29Z",
+      "side": 0,
+      "message": "The multi-site Configuration does not reference Kafka anymore, but I believe it should reference a Broker with global parameters, ie. Broker.isEnabled() and which events are enabled to be pushed/consumed by the broker.",
+      "revId": "9a2457d8fe849d9051f0531390317ccb48721f93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
