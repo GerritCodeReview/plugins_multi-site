@@ -155,6 +155,30 @@
     },
     {
       "key": {
+        "uuid": "caa7ada2_ef8e5d91",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-14T13:56:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f6a72d6_edae3e92",
+      "range": {
+        "startLine": 75,
+        "startChar": 35,
+        "endLine": 75,
+        "endChar": 67
+      },
+      "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "95a8d2f2_27a4b7a8",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 1
