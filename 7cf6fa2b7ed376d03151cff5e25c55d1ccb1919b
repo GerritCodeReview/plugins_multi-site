@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ffa31515_f7add725",
+        "filename": "dockerised_local_env/haproxy/Dockerfile",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-06-14T17:01:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5416333_249ad741",
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "afde0baf_a3873f58",
         "filename": "dockerised_local_env/haproxy/Dockerfile",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e74cd2c_93056949",
+        "filename": "dockerised_local_env/haproxy/Dockerfile",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-06-14T17:01:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afde0baf_a3873f58",
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -56,6 +92,30 @@
       "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf745862_7b3fa37f",
+        "filename": "dockerised_local_env/haproxy/docker-entrypoint.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-06-14T17:01:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abcf6645_5b92a916",
+      "range": {
+        "startLine": 12,
+        "startChar": 1,
+        "endLine": 12,
+        "endChar": 67
+      },
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -106,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "25bdc6a6_0a6f4aa7",
+        "filename": "dockerised_local_env/haproxy/haproxy.cfg",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-06-14T17:01:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9de915ba_b4dc0bc8",
+      "range": {
+        "startLine": 26,
+        "startChar": 11,
+        "endLine": 26,
+        "endChar": 16
+      },
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "61ccda3c_d7a172e6",
         "filename": "dockerised_local_env/haproxy/haproxy.cfg",
         "patchSetId": 3
@@ -138,6 +222,24 @@
       "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da094689_2e4269d2",
+        "filename": "dockerised_local_env/haproxy/haproxy.cfg",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-06-14T17:01:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a3052bb_f80b7443",
+      "revId": "7cf6fa2b7ed376d03151cff5e25c55d1ccb1919b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {

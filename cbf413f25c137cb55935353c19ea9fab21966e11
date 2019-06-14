@@ -22,6 +22,30 @@
       "revId": "cbf413f25c137cb55935353c19ea9fab21966e11",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a98cb32_dd24e1a0",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-06-14T17:01:21Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6ffda0d6_111f7979",
+      "range": {
+        "startLine": 71,
+        "startChar": 22,
+        "endLine": 71,
+        "endChar": 26
+      },
+      "revId": "cbf413f25c137cb55935353c19ea9fab21966e11",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
