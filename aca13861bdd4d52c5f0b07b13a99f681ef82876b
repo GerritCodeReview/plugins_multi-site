@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c343f8eb_09ab079a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/ConfigurationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T10:34:44Z",
+      "side": 0,
+      "message": "The year should not change when you change the file, but when you create it.\nI think these tests were brought from the previous plugin. I could be wrong though",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 22
+      },
+      "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ca563c3_04e10397",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/ConfigurationTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T10:34:44Z",
+      "side": 0,
+      "message": "nit: Remove extra space",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 4
+      },
+      "revId": "aca13861bdd4d52c5f0b07b13a99f681ef82876b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
