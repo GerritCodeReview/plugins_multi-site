@@ -16,6 +16,24 @@
       "revId": "b35bd1ab2c7b1ef1eac06d7d4fce188e3c26d4cf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86ec913d_7f74253f",
+        "filename": "dockerised_local_env/gerrit-2/etc/healthcheck.config",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-06-14T17:03:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80fc0a3f_aa9c5e27",
+      "revId": "b35bd1ab2c7b1ef1eac06d7d4fce188e3c26d4cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
