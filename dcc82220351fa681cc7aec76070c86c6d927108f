@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "47e1b9c8_bb38b781",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T13:06:10Z",
+      "side": 1,
+      "message": "This port collides with the HAProxy port mapping",
+      "range": {
+        "startLine": 22,
+        "startChar": 10,
+        "endLine": 22,
+        "endChar": 15
+      },
+      "revId": "dcc82220351fa681cc7aec76070c86c6d927108f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1e8d55d_81919a9f",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T13:06:10Z",
+      "side": 1,
+      "message": "Docker will not be able to map to this privileged port. It\u0027s failing here. Will shift all the ports so that HAProxy Docker container is mapped to 8080 and the Gerrit instances to 8081 and 8082",
+      "range": {
+        "startLine": 83,
+        "startChar": 9,
+        "endLine": 83,
+        "endChar": 11
+      },
+      "revId": "dcc82220351fa681cc7aec76070c86c6d927108f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8dd4961f_00c9467f",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T13:06:10Z",
+      "side": 1,
+      "message": "changing this port to 8080 as well",
+      "range": {
+        "startLine": 83,
+        "startChar": 12,
+        "endLine": 83,
+        "endChar": 14
+      },
+      "revId": "dcc82220351fa681cc7aec76070c86c6d927108f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "46a6eb43_0a52080f",
+        "filename": "dockerised_local_env/docker-compose.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-14T13:06:10Z",
+      "side": 1,
+      "message": "The communication is done within the docker network. This can be 8080 as well",
+      "range": {
+        "startLine": 98,
+        "startChar": 22,
+        "endLine": 98,
+        "endChar": 26
+      },
+      "revId": "dcc82220351fa681cc7aec76070c86c6d927108f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
