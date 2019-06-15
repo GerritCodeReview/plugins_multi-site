@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "78e27e50_c92b13aa",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-15T08:11:01Z",
+      "side": 1,
+      "message": "Do we need this check?",
+      "revId": "4897740f546680d3cb794a778c9db4cfd0bd20b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "931d1eca_f5bcdab7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-15T08:11:01Z",
+      "side": 1,
+      "message": "Do we need this check?",
+      "revId": "4897740f546680d3cb794a778c9db4cfd0bd20b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3affa04a_199e453e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-15T08:11:01Z",
+      "side": 1,
+      "message": "Is this a correct package? Maybe com.googlesource.gerrit.plugins.multisite.forwarder is a better place for this class?",
+      "revId": "4897740f546680d3cb794a778c9db4cfd0bd20b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
