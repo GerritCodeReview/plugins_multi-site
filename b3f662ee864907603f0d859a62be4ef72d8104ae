@@ -26,6 +26,30 @@
     },
     {
       "key": {
+        "uuid": "7cff2e01_e1d49e35",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T20:53:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d785b86a_c6747cb5",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 51
+      },
+      "revId": "b3f662ee864907603f0d859a62be4ef72d8104ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ea2f9ad1_68e7926b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 15
@@ -47,6 +71,30 @@
       "revId": "b3f662ee864907603f0d859a62be4ef72d8104ae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4732a29b_ec41f636",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T20:53:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea2f9ad1_68e7926b",
+      "range": {
+        "startLine": 488,
+        "startChar": 2,
+        "endLine": 488,
+        "endChar": 33
+      },
+      "revId": "b3f662ee864907603f0d859a62be4ef72d8104ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
