@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8660f784_b44deef8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:31:30Z",
+      "side": 1,
+      "message": "Should this be in the Configuration class?",
+      "range": {
+        "startLine": 66,
+        "startChar": 48,
+        "endLine": 66,
+        "endChar": 53
+      },
+      "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1d5a139_ba4fc4f1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:31:30Z",
+      "side": 1,
+      "message": "All of those should be the responsibility of the KafkaConfiguration, WDYT?",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 0
+      },
+      "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5722a331_35c7a123",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:31:30Z",
+      "side": 1,
+      "message": "This constant exists already in Configuration, why not reusing it?",
+      "range": {
+        "startLine": 49,
+        "startChar": 2,
+        "endLine": 49,
+        "endChar": 65
+      },
+      "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2da6d8b_9203f05f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaConsumerModule.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:31:30Z",
+      "side": 1,
+      "message": "KafkaConsumerModule should receive the KafkaConfiguration. However, because you have put kafka-specific methods in Configuration (back again ! They were removed just 2 commits ago) then you are forced to pass the general configuration, which is incorrect IMHO.",
+      "range": {
+        "startLine": 34,
+        "startChar": 29,
+        "endLine": 34,
+        "endChar": 42
+      },
+      "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
