@@ -19,7 +19,6 @@ def external_plugin_deps():
     )
 
     BYTE_BUDDY_VER = "1.9.10"
-    CURATOR_VER = "4.2.0"
 
     maven_jar(
         name = "byte-buddy",
@@ -50,6 +49,8 @@ def external_plugin_deps():
         artifact = "org.testcontainers:kafka:1.11.3",
         sha1 = "932d1baa2541f218b1b44a0546ae83d530011468",
     )
+
+    CURATOR_VER = "4.2.0"
 
     maven_jar(
         name = "curator-test",
