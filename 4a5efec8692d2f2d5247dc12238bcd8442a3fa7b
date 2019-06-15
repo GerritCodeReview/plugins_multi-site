@@ -70,6 +70,30 @@
       "revId": "4a5efec8692d2f2d5247dc12238bcd8442a3fa7b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1112e03d_93670383",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarderModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-15T08:08:08Z",
+      "side": 1,
+      "message": "It\u0027s already done in change: 227872",
+      "parentUuid": "712a9fa4_fd88f1c9",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 46
+      },
+      "revId": "4a5efec8692d2f2d5247dc12238bcd8442a3fa7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
