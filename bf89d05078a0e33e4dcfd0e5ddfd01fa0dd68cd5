@@ -1,0 +1,193 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "16614ad9_a159f532",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:25:18Z",
+      "side": 1,
+      "message": "There is a lot more than that in this change. Can you please elaborate a bit more on the benefits of this change?",
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c317893_eba5bb90",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:25:18Z",
+      "side": 1,
+      "message": "I believe there is an issue opened for this change, can you add the reference?",
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5310ca22_7eef6dcb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:25:18Z",
+      "side": 1,
+      "message": "Why are you moving those imports around? Have you checked with GJF 1.7 which is the correct position?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 104
+      },
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5531d6b8_560f6e0a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:25:18Z",
+      "side": 1,
+      "message": "Why are you moving those imports around?",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 77
+      },
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9302c861_ec29e0e8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:25:18Z",
+      "side": 1,
+      "message": "@Singleton missing?",
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e32e372f_f63839ab",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:25:18Z",
+      "side": 1,
+      "message": "Is this useful? That isn\u0027t the kafka configuration but the multi-site.config: why don\u0027t you just use the existing constant?",
+      "range": {
+        "startLine": 46,
+        "startChar": 2,
+        "endLine": 46,
+        "endChar": 64
+      },
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d3e0117_f07eca13",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:25:18Z",
+      "side": 1,
+      "message": "Can we keep the \u0027properties\u0027 name for now, so that this change can be minimal?",
+      "range": {
+        "startLine": 36,
+        "startChar": 29,
+        "endLine": 36,
+        "endChar": 40
+      },
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "367a3f59_60fddc41",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaConsumerModule.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:25:18Z",
+      "side": 1,
+      "message": "Why are you moving those imports around?",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 58
+      },
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c45852d_6c8dc04e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/ConfigurationTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:25:18Z",
+      "side": 1,
+      "message": "Why are you moving those imports around?",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 91
+      },
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
