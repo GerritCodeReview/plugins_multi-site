@@ -34,6 +34,24 @@
       "revId": "8df5eb2d217634320c5ddd627e4053d356a37b73",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a15ec9a6_b1e64c7c",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-15T21:42:36Z",
+      "side": 0,
+      "message": "Apologies, I messed up the rebase :-( I then reverted to your version and merged that one.",
+      "parentUuid": "3e49c08f_04deee66",
+      "revId": "8df5eb2d217634320c5ddd627e4053d356a37b73",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
