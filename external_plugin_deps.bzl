@@ -21,6 +21,8 @@ def external_plugin_deps():
         sha1 = "932d1baa2541f218b1b44a0546ae83d530011468",
     )
 
+    CURATOR_VER = "4.2.0"
+
     maven_jar(
         name = "curator-test",
         artifact = "org.apache.curator:curator-test:" + CURATOR_VER,
