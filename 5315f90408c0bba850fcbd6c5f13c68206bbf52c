@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "89e8275e_57321ecd",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-17T09:41:08Z",
+      "side": 1,
+      "message": "It will break here. These changes were not introduced in the previous merge into stable-3.0",
+      "range": {
+        "startLine": 321,
+        "startChar": 148,
+        "endLine": 321,
+        "endChar": 162
+      },
+      "revId": "5315f90408c0bba850fcbd6c5f13c68206bbf52c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a49078a_42e367f3",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-17T09:41:08Z",
+      "side": 1,
+      "message": "Same problem here",
+      "range": {
+        "startLine": 324,
+        "startChar": 133,
+        "endLine": 324,
+        "endChar": 147
+      },
+      "revId": "5315f90408c0bba850fcbd6c5f13c68206bbf52c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
