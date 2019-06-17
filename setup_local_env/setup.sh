@@ -294,7 +294,7 @@ HA_PROXY_CONFIG_DIR=$COMMON_LOCATION/ha-proxy-config
 HA_PROXY_CERTIFICATES_DIR="$HA_PROXY_CONFIG_DIR/certificates"
 
 RELEASE_WAR_FILE_LOCATION=${RELEASE_WAR_FILE_LOCATION:-bazel-bin/release.war}
-MULTISITE_LIB_LOCATION=${MULTISITE_LIB_LOCATION:-bazel-genfiles/plugins/multi-site/multi-site.jar}
+MULTISITE_LIB_LOCATION=${MULTISITE_LIB_LOCATION:-bazel-bin/plugins/multi-site/multi-site.jar}
 
 
 export FAKE_NFS=$COMMON_LOCATION/fake_nfs

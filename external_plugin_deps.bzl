@@ -7,8 +7,6 @@ def external_plugin_deps():
         sha1 = "4a920d6c04fd2444c7bc94880adc8313f5b31ba3",
     )
 
-    CURATOR_VER = "4.2.0"
-
     maven_jar(
         name = "kafka-client",
         artifact = "org.apache.kafka:kafka-clients:2.1.0",
@@ -20,6 +18,8 @@ def external_plugin_deps():
         artifact = "org.testcontainers:kafka:1.11.3",
         sha1 = "932d1baa2541f218b1b44a0546ae83d530011468",
     )
+
+    CURATOR_VER = "4.2.0"
 
     maven_jar(
         name = "curator-test",
