@@ -69,7 +69,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
 
   public static class KafkaTestContainerModule extends LifecycleModule {
 
-    public class KafkaStopAtShutdown implements LifecycleListener {
+    public static class KafkaStopAtShutdown implements LifecycleListener {
       private final KafkaContainer kafka;
 
       public KafkaStopAtShutdown(KafkaContainer kafka) {

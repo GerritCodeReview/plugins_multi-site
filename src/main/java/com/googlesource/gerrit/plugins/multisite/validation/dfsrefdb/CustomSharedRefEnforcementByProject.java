@@ -41,7 +41,7 @@ public class CustomSharedRefEnforcementByProject implements SharedRefEnforcement
     Map<String, Map<String, EnforcePolicy>> enforcementMap = new HashMap<>();
 
     for (Map.Entry<EnforcePolicy, String> enforcementEntry :
-        config.getZookeeperConfig().getEnforcementRules().entries()) {
+        config.getSharedRefDb().getEnforcementRules().entries()) {
       parseEnforcementEntry(enforcementMap, enforcementEntry);
     }
 
