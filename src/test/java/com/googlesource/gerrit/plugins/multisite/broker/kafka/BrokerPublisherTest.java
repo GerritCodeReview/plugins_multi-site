@@ -138,7 +138,7 @@ public class BrokerPublisherTest {
     assertThat(publisher.eventToJson(event)).isEqualTo(expectedCommentEventJsonObject);
   }
 
-  private class TestBrokerSession implements BrokerSession {
+  private static class TestBrokerSession implements BrokerSession {
 
     @Override
     public boolean isOpen() {

@@ -17,11 +17,10 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@commons-lang3//jar",
-        "@kafka_client//jar",
+        "@curator-client//jar",
         "@curator-framework//jar",
         "@curator-recipes//jar",
-        "@curator-client//jar",
+        "@kafka-client//jar",
         "@zookeeper//jar",
     ],
 )
@@ -46,7 +45,7 @@ java_library(
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":multi-site__plugin",
         "@wiremock//jar",
-        "@kafka_client//jar",
+        "@kafka-client//jar",
         "@testcontainers-kafka//jar",
         "//lib/testcontainers",
         "@curator-framework//jar",
