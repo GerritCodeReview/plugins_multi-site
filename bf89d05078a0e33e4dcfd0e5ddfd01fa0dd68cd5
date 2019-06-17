@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2bee0440_55abc638",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-17T08:36:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16614ad9_a159f532",
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1c317893_eba5bb90",
         "filename": "/COMMIT_MSG",
         "patchSetId": 7
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "9ef55db4_315fec0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-17T08:36:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c317893_eba5bb90",
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5310ca22_7eef6dcb",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 7
@@ -47,6 +83,30 @@
       "writtenOn": "2019-06-15T21:25:18Z",
       "side": 1,
       "message": "Why are you moving those imports around? Have you checked with GJF 1.7 which is the correct position?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 104
+      },
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a6dff41_d14145b4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-17T08:36:14Z",
+      "side": 1,
+      "message": "I\u0027m using GJF 1.7 I\u0027ve setup it using gerrit documentation. Probably it\u0027s a Eclipse version but in Java -\u003e Code Style -\u003e Organize Imports I still have default ordering for java, javax, org, com. After removing it I have GJF imports ordering. I think we should update gerrit documentation as well.",
+      "parentUuid": "5310ca22_7eef6dcb",
       "range": {
         "startLine": 32,
         "startChar": 0,
@@ -82,6 +142,30 @@
     },
     {
       "key": {
+        "uuid": "bd7c23c7_ff8c01c9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-17T08:36:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5531d6b8_560f6e0a",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 77
+      },
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9302c861_ec29e0e8",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
         "patchSetId": 7
@@ -99,6 +183,24 @@
     },
     {
       "key": {
+        "uuid": "f0f3d8d6_79dfcccd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-17T08:36:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9302c861_ec29e0e8",
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e32e372f_f63839ab",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
         "patchSetId": 7
@@ -110,6 +212,30 @@
       "writtenOn": "2019-06-15T21:25:18Z",
       "side": 1,
       "message": "Is this useful? That isn\u0027t the kafka configuration but the multi-site.config: why don\u0027t you just use the existing constant?",
+      "range": {
+        "startLine": 46,
+        "startChar": 2,
+        "endLine": 46,
+        "endChar": 64
+      },
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf0ee4b4_01cbf0bb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-17T08:36:14Z",
+      "side": 1,
+      "message": "In the future we want to move Kafka related configuration out of multi-site.config. I thought it should have it\u0027s own config file property so we not going to get confused in the future. Plus I want to have as less dependencies to Configuration as possible",
+      "parentUuid": "e32e372f_f63839ab",
       "range": {
         "startLine": 46,
         "startChar": 2,
@@ -145,6 +271,30 @@
     },
     {
       "key": {
+        "uuid": "de791237_55241dee",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-17T08:36:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d3e0117_f07eca13",
+      "range": {
+        "startLine": 36,
+        "startChar": 29,
+        "endLine": 36,
+        "endChar": 40
+      },
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "367a3f59_60fddc41",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaConsumerModule.java",
         "patchSetId": 7
@@ -168,6 +318,30 @@
     },
     {
       "key": {
+        "uuid": "9fe11022_8ccad858",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaConsumerModule.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-17T08:36:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "367a3f59_60fddc41",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 58
+      },
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6c45852d_6c8dc04e",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/ConfigurationTest.java",
         "patchSetId": 7
@@ -188,6 +362,30 @@
       "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe40453b_cba47118",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/ConfigurationTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-17T08:36:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c45852d_6c8dc04e",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 91
+      },
+      "revId": "bf89d05078a0e33e4dcfd0e5ddfd01fa0dd68cd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
