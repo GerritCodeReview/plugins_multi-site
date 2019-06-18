@@ -15,8 +15,6 @@
 package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.gerrit.extensions.config.FactoryModule;
-import com.google.gerrit.extensions.events.ProjectDeletedListener;
-import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -48,6 +46,5 @@ public class ValidationModule extends FactoryModule {
           .to(CustomSharedRefEnforcementByProject.class)
           .in(Scopes.SINGLETON);
     }
-    DynamicSet.bind(binder(), ProjectDeletedListener.class).to(ProjectDeletedSharedDbCleanup.class);
   }
 }
