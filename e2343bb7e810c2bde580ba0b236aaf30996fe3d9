@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "850133d9_d11d9d0b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T22:58:52Z",
+      "side": 1,
+      "message": "I am not following: in stable-2.16 it will remain \"kafka\" thus it means it will only be read by Kafka, correct?\n\nWhat\u0027s the point then in having it in the Configuration class if belongs to Kafka?\nDo you see any situation wherein stable-2.16 we will put another broker (e.g. RabbitMQ) config in a \"kafka\" section?",
+      "parentUuid": "a1bddf03_6cf15fbb",
+      "range": {
+        "startLine": 66,
+        "startChar": 48,
+        "endLine": 66,
+        "endChar": 53
+      },
+      "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e1d5a139_ba4fc4f1",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 6
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "My understanding was that Kafka is just \u0027transport protocol\u0027 and this configuration is generic because it\u0027s describing which event we are going to handle in the multi-site plugin no matter which \u0027transport protocol\u0027 we have decided to use. If that\u0027s true I think it should belong here. It will help us to manage events configuration in a single place so if we have multiple \u0027transport protocol\u0027 plugins and we want to disable/enable event we have to do it in one place not in every plugin. The default binding should be done to NoOp implementation and later replaced by \u0027transport protocol\u0027 plugin which in this case is Kafka.\nThis approach was also mentioned by Tiago in the comment for Patch Set 1. And I believe Configuration.SharedRefDatabase is following the same pattern.",
       "parentUuid": "e1d5a139_ba4fc4f1",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 0
+      },
+      "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74b20bc8_9263bee9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T22:58:52Z",
+      "side": 1,
+      "message": "See the comment above: at the moment they are in the \"kafka\" section and there is no way to reuse it elsewhere.\n\nWith regards to the reason why the enablement exists historically in the \"kafka\" section: it was done for managing the rolling upgrade from the high-availability to the multi-site plugin.\n\nNow that the upgrade is done, they can stay in the \"kafka\" section and never been exposed anywhere.\n\nIf you do not want the broker, then you\u0027ll just use the NoOp binding. If you use the broker, you have both publish and subscribe.\nWhat would be the use-case of publishing only without subscribing? Or the other way around?",
+      "parentUuid": "44354535_4df6253a",
       "range": {
         "startLine": 126,
         "startChar": 0,
@@ -154,6 +202,30 @@
       "side": 1,
       "message": "Already started similar discussion under one of the comments for the Configuration class. My understanding was that events configuration is \u0027transport protocol\u0027 independent that\u0027s why is in Configuration instead of KafkaConfiguration class",
       "parentUuid": "f2da6d8b_9203f05f",
+      "range": {
+        "startLine": 34,
+        "startChar": 29,
+        "endLine": 34,
+        "endChar": 42
+      },
+      "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08fd6dd7_0745524d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaConsumerModule.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T22:58:52Z",
+      "side": 1,
+      "message": "See my answers in that discussion: if you resolve the problem of having Kafka settings in the general config, this problem is going to be automatically resolved.",
+      "parentUuid": "e632fd11_2a7f761a",
       "range": {
         "startLine": 34,
         "startChar": 29,

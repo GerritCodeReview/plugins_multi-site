@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "0fbf17cb_d6444469",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T22:58:52Z",
+      "side": 1,
+      "message": "At the moment the Kafka configuration is in charge to read its configuration, that involves also the fact of being enabled/disabled.\n\nIn the future, possibly we get rid of the \"enabled\" for the individual subscriber or publisher altogether, as it doesn\u0027t make sense anymore beyond v2.16.",
+      "parentUuid": "1759a290_9d05a33d",
+      "revId": "4897740f546680d3cb794a778c9db4cfd0bd20b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "931d1eca_f5bcdab7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
         "patchSetId": 5
@@ -72,6 +90,24 @@
     },
     {
       "key": {
+        "uuid": "7df1cfb3_8d6b2929",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T22:58:52Z",
+      "side": 1,
+      "message": "Same reply.",
+      "parentUuid": "22a6e9fb_603c60e0",
+      "revId": "4897740f546680d3cb794a778c9db4cfd0bd20b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3affa04a_199e453e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
         "patchSetId": 5
@@ -101,6 +137,24 @@
       "side": 1,
       "message": "I agree, this is not Kafka specific. @Luca WDYT?",
       "parentUuid": "3affa04a_199e453e",
+      "revId": "4897740f546680d3cb794a778c9db4cfd0bd20b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "664a2d14_d6d675c1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T22:58:52Z",
+      "side": 1,
+      "message": "From its name, doesn\u0027t look like being Kafka-specific.",
+      "parentUuid": "435f70b1_40c0ef79",
       "revId": "4897740f546680d3cb794a778c9db4cfd0bd20b9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
