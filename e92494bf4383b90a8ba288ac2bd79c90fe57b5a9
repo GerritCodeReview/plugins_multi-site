@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b2777549_c83c5fbd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T23:11:01Z",
+      "side": 1,
+      "message": "Are those generic or specific to Kafka?\nIf they are generic, should they stay in a common source file and not in Kafka?",
+      "range": {
+        "startLine": 37,
+        "startChar": 16,
+        "endLine": 37,
+        "endChar": 29
+      },
+      "revId": "e92494bf4383b90a8ba288ac2bd79c90fe57b5a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6175cedc_13084eeb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/broker/BrokerMetrics.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T23:11:01Z",
+      "side": 1,
+      "message": "What about the CONSUMER_COUNTER? Are you planning to have a corresponding follow-up change?",
+      "range": {
+        "startLine": 39,
+        "startChar": 27,
+        "endLine": 39,
+        "endChar": 43
+      },
+      "revId": "e92494bf4383b90a8ba288ac2bd79c90fe57b5a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
