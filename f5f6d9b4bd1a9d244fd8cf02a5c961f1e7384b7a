@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8092d379_58c30ccd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T13:24:10Z",
+      "side": 1,
+      "message": "This just repeats the headline: can you explain why you are doing this change?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 55
+      },
+      "revId": "f5f6d9b4bd1a9d244fd8cf02a5c961f1e7384b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9b67e178_58c8263e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T13:24:10Z",
+      "side": 1,
+      "message": "This isn\u0027t working because even the just-in-time bindings cannot be overridden by another plugin.\n\nWe should use the DynamicItem instead.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 43
+      },
+      "revId": "f5f6d9b4bd1a9d244fd8cf02a5c961f1e7384b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1951f369_e05dac36",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabaseNoOp.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-18T13:24:10Z",
+      "side": 1,
+      "message": "All those logs seem a bit redundant to me: the NoOp is just supposed to do nothing, but nothing at all. It\u0027s more like disabling the feature of a ref-database altogether.",
+      "revId": "f5f6d9b4bd1a9d244fd8cf02a5c961f1e7384b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
