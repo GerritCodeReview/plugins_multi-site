@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ac058174_d4fc95a5",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-18T09:15:22Z",
+      "side": 1,
+      "message": "We are still pointing to stable-3.0 instead of master",
+      "revId": "108d49e54c3cdc0b6fc6d932691d3fcc70054ad1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04d2602e_0d552908",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-18T09:15:22Z",
+      "side": 1,
+      "message": "same here stable-3.0 instead of master",
+      "range": {
+        "startLine": 324,
+        "startChar": 53,
+        "endLine": 324,
+        "endChar": 64
+      },
+      "revId": "108d49e54c3cdc0b6fc6d932691d3fcc70054ad1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
