@@ -144,6 +144,30 @@
     },
     {
       "key": {
+        "uuid": "2952446e_f90401a2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-19T13:24:38Z",
+      "side": 1,
+      "message": "Ok, now I see your point. I thought that we want to do as much changes as possible in 2.16 so in the future we will just change the config with minimal changes in the code. But I understand that is to early to do those changes.\nI need clarification on one more thing:\n1. KafkaBrokerModule and BrokerForwarderModule are both Kafka related so we should keep them together as it was before?\n2. You mentioned that there is no point of publishing without subscribing so should I create new KafkaBrokerModule which includes KafkaConsumerModule, BrokerForwarderModule and ForwardedEventRouterModule and do the enable/disable checks there or you want to keep them separate in main Module and do the check there?",
+      "parentUuid": "74b20bc8_9263bee9",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 0
+      },
+      "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5722a331_35c7a123",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
         "patchSetId": 6
