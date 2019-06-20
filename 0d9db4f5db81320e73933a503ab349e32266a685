@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0374e1fc_5202d360",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaBrokerMetrics.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-20T15:33:51Z",
+      "side": 1,
+      "message": "Then we should move counters increment from KafkaSession to BrokerPublisher. I wanted to log as low as possible to have metric specific to kafka. Idea was to monitor if kafka producer is publishing correctly. In BrokerPublisher we cannot guarantee that",
+      "parentUuid": "75b7ca3a_333da3aa",
+      "range": {
+        "startLine": 25,
+        "startChar": 13,
+        "endLine": 25,
+        "endChar": 31
+      },
+      "revId": "0d9db4f5db81320e73933a503ab349e32266a685",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0d16ac96_115c9e23",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/ProducerProvider.java",
         "patchSetId": 5
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "b46c2649_3a9544ba",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/ProducerProvider.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-20T15:33:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d16ac96_115c9e23",
+      "revId": "0d9db4f5db81320e73933a503ab349e32266a685",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e5e7108d_22b75a5b",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSessionTest.java",
         "patchSetId": 5
@@ -56,6 +98,24 @@
       "revId": "0d9db4f5db81320e73933a503ab349e32266a685",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3956923_b054f25d",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSessionTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-20T15:33:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5e7108d_22b75a5b",
+      "revId": "0d9db4f5db81320e73933a503ab349e32266a685",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

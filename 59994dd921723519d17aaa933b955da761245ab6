@@ -34,6 +34,24 @@
       "revId": "59994dd921723519d17aaa933b955da761245ab6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63675e71_275cb783",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-20T15:33:51Z",
+      "side": 0,
+      "message": "I can do that it\u0027s really easy but I thought that we are going to have small change which is hard to justify from added value perspective so chance that is going to be rejected is high\n@Luca WDYT?",
+      "parentUuid": "eb88aa00_a4bae387",
+      "revId": "59994dd921723519d17aaa933b955da761245ab6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
