@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "75b7ca3a_333da3aa",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaBrokerMetrics.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-20T11:33:07Z",
+      "side": 1,
+      "message": "Should this be BrokerMetrics and remove all the Kafka specifics?\nThis should just increment messages sent by a broker",
+      "range": {
+        "startLine": 25,
+        "startChar": 13,
+        "endLine": 25,
+        "endChar": 31
+      },
+      "revId": "0d9db4f5db81320e73933a503ab349e32266a685",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d16ac96_115c9e23",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/ProducerProvider.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-20T11:33:07Z",
+      "side": 1,
+      "message": "License header missing",
+      "revId": "0d9db4f5db81320e73933a503ab349e32266a685",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5e7108d_22b75a5b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSessionTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-06-20T11:33:07Z",
+      "side": 1,
+      "message": "License header missing",
+      "revId": "0d9db4f5db81320e73933a503ab349e32266a685",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
