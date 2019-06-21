@@ -27,6 +27,7 @@ import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
+import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberMetrics;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedEventRouter;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
@@ -52,8 +53,10 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
   private final AtomicBoolean closed = new AtomicBoolean(false);
   private final Deserializer<SourceAwareEventWrapper> valueDeserializer;
   private final KafkaConfiguration configuration;
+  private final KafkaConsumerFactory consumerFactory;
   private final OneOffRequestContext oneOffCtx;
   private final MessageLogger msgLog;
+  private SubscriberMetrics subscriberMetrics;
 
   public AbstractKafkaSubcriber(
       KafkaConfiguration configuration,
@@ -65,14 +68,17 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
       @BrokerGson Gson gson,
       @InstanceId UUID instanceId,
       OneOffRequestContext oneOffCtx,
-      MessageLogger msgLog) {
+      MessageLogger msgLog,
+      SubscriberMetrics subscriberMetrics) {
     this.configuration = configuration;
+    this.consumerFactory = consumerFactory;
     this.eventRouter = eventRouter;
     this.droppedEventListeners = droppedEventListeners;
     this.gson = gson;
     this.instanceId = instanceId;
     this.oneOffCtx = oneOffCtx;
     this.msgLog = msgLog;
+    this.subscriberMetrics = subscriberMetrics;
     final ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
     try {
       Thread.currentThread().setContextClassLoader(AbstractKafkaSubcriber.class.getClassLoader());
@@ -99,6 +105,9 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
     } catch (WakeupException e) {
       // Ignore exception if closing
       if (!closed.get()) throw e;
+    } catch (Exception e) {
+      subscriberMetrics.incrementSubscriberFailedToPollMessages();
+      throw e;
     } finally {
       consumer.close();
     }
@@ -121,17 +130,21 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
         try {
           msgLog.log(Direction.CONSUME, event);
           eventRouter.route(event.getEventBody(gson));
+          subscriberMetrics.incrementSubscriberConsumedMessage();
         } catch (IOException e) {
           logger.atSevere().withCause(e).log(
               "Malformed event '%s': [Exception: %s]", event.getHeader().getEventType());
+          subscriberMetrics.incrementSubscriberFailedToConsumeMessage();
         } catch (PermissionBackendException | OrmException e) {
           logger.atSevere().withCause(e).log(
               "Cannot handle message %s: [Exception: %s]", event.getHeader().getEventType());
+          subscriberMetrics.incrementSubscriberFailedToConsumeMessage();
         }
       }
     } catch (Exception e) {
       logger.atSevere().withCause(e).log(
           "Malformed event '%s': [Exception: %s]", new String(consumerRecord.value(), UTF_8));
+      subscriberMetrics.incrementSubscriberFailedToConsumeMessage();
     }
   }
 
