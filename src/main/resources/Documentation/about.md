@@ -100,3 +100,16 @@ documentation.
 * Broker failed to publish message count
 
 `metric=multi_site/broker/broker_message_publisher_failure_counter/broker_msg_publisher_failure_counter, type=com.codahale.metrics.Meter`
+
+### Message subscriber
+* Subscriber message consumed count
+
+`multi_site/subscriber/subscriber_message_consumer_counter/subscriber_msg_consumer_counter, type=com.codahale.metrics.Meter`
+
+* Subscriber failed to consume message count
+
+`multi_site/subscriber/subscriber_message_consumer_failure_counter/subscriber_msg_consumer_failure_counter, type=com.codahale.metrics.Meter`
+
+* Subscriber failed to poll messages count
+
+`multi_site/subscriber/subscriber_message_consumer_poll_failure_counter/subscriber_msg_consumer_poll_failure_counter, type=com.codahale.metrics.Meter`
