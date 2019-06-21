@@ -16,6 +16,24 @@
       "revId": "2bd965e103803eca75219a24835b62b83b438683",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "585654b6_2e66587b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-21T20:39:49Z",
+      "side": 0,
+      "message": "In theory we should not load the module if it\u0027s disabled. However, I do see your point that the enable/disable is exactly inside the [kafka] section and thus you can\u0027t avoid loading at least the configuration module.\n\nI believe that is as much as we can do on stable-2.16. On stable-3.0 we can start making some changes on the configuration structure.",
+      "parentUuid": "04813780_3ce5c58d",
+      "revId": "2bd965e103803eca75219a24835b62b83b438683",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

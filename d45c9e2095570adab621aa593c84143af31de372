@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b71aa118_0182a809",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-21T20:39:49Z",
+      "side": 1,
+      "message": "@Inject missing",
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7661cae2_aa9afff2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarderModule.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-21T20:39:49Z",
+      "side": 1,
+      "message": "Should this be called \u0027KafkaBrokerForwarderModule\u0027 and moved to a kafka package?",
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24225ca5_ce4dfcae",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/router/ForwardedEventRouterModule.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-21T20:39:49Z",
+      "side": 1,
+      "message": "Should this be called KafkaForwardedEventRouterModule and moved into the kafka package?",
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
