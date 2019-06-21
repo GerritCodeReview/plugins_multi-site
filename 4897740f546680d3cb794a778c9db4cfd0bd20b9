@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "f3174b43_fac191e7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-21T09:05:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fbf17cb_d6444469",
+      "revId": "4897740f546680d3cb794a778c9db4cfd0bd20b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "931d1eca_f5bcdab7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
         "patchSetId": 5
@@ -108,6 +126,24 @@
     },
     {
       "key": {
+        "uuid": "2c070fd7_7be512e7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-21T09:05:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7df1cfb3_8d6b2929",
+      "revId": "4897740f546680d3cb794a778c9db4cfd0bd20b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3affa04a_199e453e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
         "patchSetId": 5
@@ -158,6 +194,24 @@
       "revId": "4897740f546680d3cb794a778c9db4cfd0bd20b9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f34aaa0_22939a81",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-21T09:05:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "664a2d14_d6d675c1",
+      "revId": "4897740f546680d3cb794a778c9db4cfd0bd20b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

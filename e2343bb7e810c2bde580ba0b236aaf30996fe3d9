@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "211dfe6a_2c8e20ea",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-21T09:05:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "850133d9_d11d9d0b",
+      "range": {
+        "startLine": 66,
+        "startChar": 48,
+        "endLine": 66,
+        "endChar": 53
+      },
+      "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e1d5a139_ba4fc4f1",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 6
@@ -168,6 +192,30 @@
     },
     {
       "key": {
+        "uuid": "7b30e952_d176d595",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-21T09:05:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2952446e_f90401a2",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 0
+      },
+      "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5722a331_35c7a123",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
         "patchSetId": 6
@@ -188,6 +236,30 @@
       "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb0a8244_d3a73091",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-21T09:05:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5722a331_35c7a123",
+      "range": {
+        "startLine": 49,
+        "startChar": 2,
+        "endLine": 49,
+        "endChar": 65
+      },
+      "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -259,6 +331,30 @@
       "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57a1725f_01b506ae",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaConsumerModule.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-21T09:05:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08fd6dd7_0745524d",
+      "range": {
+        "startLine": 34,
+        "startChar": 29,
+        "endLine": 34,
+        "endChar": 42
+      },
+      "revId": "e2343bb7e810c2bde580ba0b236aaf30996fe3d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
