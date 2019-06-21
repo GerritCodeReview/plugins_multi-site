@@ -22,6 +22,7 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
+import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberMetrics;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ProjectListUpdateRouter;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
@@ -41,7 +42,8 @@ public class ProjectUpdateEventSubscriber extends AbstractKafkaSubcriber {
       @BrokerGson Gson gson,
       @InstanceId UUID instanceId,
       OneOffRequestContext oneOffCtx,
-      MessageLogger msgLog) {
+      MessageLogger msgLog,
+      SubscriberMetrics subscriberMetrics) {
     super(
         configuration,
         consumerFactory,
@@ -52,7 +54,8 @@ public class ProjectUpdateEventSubscriber extends AbstractKafkaSubcriber {
         gson,
         instanceId,
         oneOffCtx,
-        msgLog);
+        msgLog,
+        subscriberMetrics);
   }
 
   @Override
