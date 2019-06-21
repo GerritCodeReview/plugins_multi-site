@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "db6db079_e5de815b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaBrokerMetrics.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-21T21:29:09Z",
+      "side": 1,
+      "message": "This doesn\u0027t contain any dependencies from Kafka, why do we need to make it Kafka-specific then?",
+      "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a55acc1_ac735d97",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-21T21:29:09Z",
+      "side": 1,
+      "message": "Is this change related to the metrics?",
+      "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "299d4d90_13c11751",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/ProducerProvider.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-21T21:29:09Z",
+      "side": 1,
+      "message": "Why is this ProducerProvider introduced in the change for the metrics? Are you implementing an additional feature or refactoring?",
+      "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cdfcc638_f878f12a",
+        "filename": "src/main/resources/Documentation/about.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-21T21:29:09Z",
+      "side": 1,
+      "message": "These should be in a separate change about documenting the split-brain metrics.",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 0
+      },
+      "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f8d1aa9b_097305b8",
+        "filename": "src/main/resources/Documentation/about.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-21T21:29:09Z",
+      "side": 1,
+      "message": "I would suggest to remove the \u0027kafka\u0027 in the name and make then generic to any broker.",
+      "range": {
+        "startLine": 107,
+        "startChar": 32,
+        "endLine": 107,
+        "endChar": 38
+      },
+      "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89814d49_6850cdce",
+        "filename": "src/main/resources/Documentation/about.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-21T21:29:09Z",
+      "side": 1,
+      "message": "Same as above.",
+      "range": {
+        "startLine": 111,
+        "startChar": 32,
+        "endLine": 111,
+        "endChar": 38
+      },
+      "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
