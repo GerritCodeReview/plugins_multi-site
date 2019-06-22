@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6b7a96d5_84ab2101",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-22T11:30:12Z",
+      "side": 1,
+      "message": "Ok, it\u0027s moved. I was confused with ZookeeperConfig which is in com.googlesource.gerrit.plugins.multisite package. Maybe we should move it in a next change as well?",
+      "parentUuid": "9c5d0435_b4b39c15",
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b71aa118_0182a809",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
         "patchSetId": 10
@@ -30,6 +48,24 @@
       "writtenOn": "2019-06-21T20:39:49Z",
       "side": 1,
       "message": "@Inject missing",
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1172aad1_a56f008b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-22T11:30:12Z",
+      "side": 1,
+      "message": "It\u0027s created with \u0027new\u0027 in ForwardedEventRouterModule and binded with: bind(KafkaConfiguration.class).toInstance(kafkaConfig); \nI\u0027ve explained why we are doing that in a different comment. \nAgain it\u0027s same as in:\ncom.googlesource.gerrit.plugins.multisite.ZookeeperConfig",
+      "parentUuid": "b71aa118_0182a809",
       "revId": "d45c9e2095570adab621aa593c84143af31de372",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "621486a6_14b5b813",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarderModule.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-22T11:30:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7661cae2_aa9afff2",
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "59b96807_d4b8286e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarderModule.java",
         "patchSetId": 10
@@ -64,6 +118,24 @@
       "writtenOn": "2019-06-21T21:14:04Z",
       "side": 1,
       "message": "@Inject",
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e10faef_2fbb710e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarderModule.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-22T11:30:12Z",
+      "side": 1,
+      "message": "I\u0027m not sure if we can do that. This module is loaded using \u0027new\u0027 in com.googlesource.gerrit.plugins.multisite.Module: install(new BrokerForwarderModule(config.getMultiSiteConfig()));\nThis is done exactly as ZkValidationModule: install(new ZkValidationModule(config));",
+      "parentUuid": "59b96807_d4b8286e",
       "revId": "d45c9e2095570adab621aa593c84143af31de372",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -93,6 +165,30 @@
     },
     {
       "key": {
+        "uuid": "82052def_86f1366b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarderModule.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-22T11:30:12Z",
+      "side": 1,
+      "message": "Same as above",
+      "parentUuid": "2bee1a69_46bb7fda",
+      "range": {
+        "startLine": 34,
+        "startChar": 18,
+        "endLine": 34,
+        "endChar": 40
+      },
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "24225ca5_ce4dfcae",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/router/ForwardedEventRouterModule.java",
         "patchSetId": 10
@@ -110,6 +206,24 @@
     },
     {
       "key": {
+        "uuid": "5758d137_4ed317da",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/router/ForwardedEventRouterModule.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-22T11:30:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24225ca5_ce4dfcae",
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c59e5900_c009c9a8",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/CacheEvictionEventSubscriber.java",
         "patchSetId": 10
@@ -124,6 +238,24 @@
       "revId": "d45c9e2095570adab621aa593c84143af31de372",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a0d9845a_8eaca849",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/CacheEvictionEventSubscriber.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-22T11:30:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c59e5900_c009c9a8",
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
