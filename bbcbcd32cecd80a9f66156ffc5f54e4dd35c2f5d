@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "69325946_1d02286d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaBrokerMetrics.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-24T09:46:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db6db079_e5de815b",
+      "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0a55acc1_ac735d97",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
         "patchSetId": 8
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "32c04665_bc060a6f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-24T09:46:43Z",
+      "side": 1,
+      "message": "I did this change to be able to test KafkaSession metrics. Because I moved metrics to BrokerPublisher I don\u0027t need this change so it\u0027s reverted.",
+      "parentUuid": "0a55acc1_ac735d97",
+      "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "299d4d90_13c11751",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/ProducerProvider.java",
         "patchSetId": 8
@@ -50,6 +86,24 @@
       "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4f1c69d_97b15bd2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/ProducerProvider.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-24T09:46:43Z",
+      "side": 1,
+      "message": "This refactoring was needed for testing. Currently I\u0027m using BrokerPublisher so this change is not needed.",
+      "parentUuid": "299d4d90_13c11751",
+      "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -76,6 +130,30 @@
     },
     {
       "key": {
+        "uuid": "3027298f_5cd8d80f",
+        "filename": "src/main/resources/Documentation/about.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-24T09:46:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdfcc638_f878f12a",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 0
+      },
+      "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f8d1aa9b_097305b8",
         "filename": "src/main/resources/Documentation/about.md",
         "patchSetId": 8
@@ -99,6 +177,30 @@
     },
     {
       "key": {
+        "uuid": "d9736c62_3f06126f",
+        "filename": "src/main/resources/Documentation/about.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-24T09:46:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8d1aa9b_097305b8",
+      "range": {
+        "startLine": 107,
+        "startChar": 32,
+        "endLine": 107,
+        "endChar": 38
+      },
+      "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "89814d49_6850cdce",
         "filename": "src/main/resources/Documentation/about.md",
         "patchSetId": 8
@@ -119,6 +221,30 @@
       "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c326ef67_3d676662",
+        "filename": "src/main/resources/Documentation/about.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-24T09:46:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89814d49_6850cdce",
+      "range": {
+        "startLine": 111,
+        "startChar": 32,
+        "endLine": 111,
+        "endChar": 38
+      },
+      "revId": "bbcbcd32cecd80a9f66156ffc5f54e4dd35c2f5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "715c5c34_061e0de6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaBrokerMetrics.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-24T09:46:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0374e1fc_5202d360",
+      "range": {
+        "startLine": 25,
+        "startChar": 13,
+        "endLine": 25,
+        "endChar": 31
+      },
+      "revId": "0d9db4f5db81320e73933a503ab349e32266a685",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0d16ac96_115c9e23",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/ProducerProvider.java",
         "patchSetId": 5

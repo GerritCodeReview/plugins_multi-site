@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "eb91194f_fe257721",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-24T09:46:43Z",
+      "side": 1,
+      "message": "As I mentioned before I wanted to have kafka specific metrics to be warn when we have issues with kafka itself. But if we prefer broker level metrics I\u0027m fine with that. I\u0027ve moved increment to BrokerPublisher so we are able to switch the broker in the future",
+      "parentUuid": "415963ec_220915e8",
+      "range": {
+        "startLine": 37,
+        "startChar": 16,
+        "endLine": 37,
+        "endChar": 29
+      },
+      "revId": "e92494bf4383b90a8ba288ac2bd79c90fe57b5a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1594efd0_c212ae3e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
         "patchSetId": 2
@@ -111,6 +135,24 @@
       "revId": "e92494bf4383b90a8ba288ac2bd79c90fe57b5a9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72f76507_ee5be9ac",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-24T09:46:43Z",
+      "side": 1,
+      "message": "Log was moved to ProducerProvider but it\u0027s not relevant anymore",
+      "parentUuid": "1594efd0_c212ae3e",
+      "revId": "e92494bf4383b90a8ba288ac2bd79c90fe57b5a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
