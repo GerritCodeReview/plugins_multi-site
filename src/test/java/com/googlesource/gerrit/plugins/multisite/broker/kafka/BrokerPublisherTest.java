@@ -15,86 +15,69 @@
 package com.googlesource.gerrit.plugins.multisite.broker.kafka;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.google.gerrit.extensions.client.ChangeKind;
 import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.BranchNameKey;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.server.data.AccountAttribute;
 import com.google.gerrit.server.data.ApprovalAttribute;
 import com.google.gerrit.server.events.CommentAddedEvent;
-import com.google.gerrit.server.events.EventGsonProvider;
+import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.util.time.TimeUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.googlesource.gerrit.plugins.multisite.DisabledMessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerMetrics;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class BrokerPublisherTest {
+
+  @Mock private BrokerMetrics brokerMetrics;
+  @Mock private BrokerSession session;
   private BrokerPublisher publisher;
+
   private MessageLogger NO_MSG_LOG = new DisabledMessageLogger();
   private Gson gson = new EventGsonProvider().get();
 
+  private String accountName = "Foo Bar";
+  private String accountEmail = "foo@bar.com";
+  private String accountUsername = "foobar";
+  private String approvalType = ChangeKind.REWORK.toString();
+
+  private String approvalDescription = "ApprovalDescription";
+  private String approvalValue = "+2";
+  private String oldApprovalValue = "+1";
+  private Long approvalGrantedOn = 123L;
+  private String commentDescription = "Patch Set 1: Code-Review+2";
+  private String projectName = "project";
+  private String refName = "refs/heads/master";
+  private String changeId = "Iabcd1234abcd1234abcd1234abcd1234abcd1234";
+  private Long eventCreatedOn = 123L;
+
   @Before
   public void setUp() {
-    publisher = new BrokerPublisher(new TestBrokerSession(), gson, UUID.randomUUID(), NO_MSG_LOG);
+    publisher = new BrokerPublisher(session, gson, UUID.randomUUID(), NO_MSG_LOG, brokerMetrics);
   }
 
   @Test
   public void shouldSerializeCommentAddedEvent() {
 
-    final String accountName = "Foo Bar";
-    final String accountEmail = "foo@bar.com";
-    final String accountUsername = "foobar";
-    final String approvalType = ChangeKind.REWORK.toString();
-
-    final String approvalDescription = "ApprovalDescription";
-    final String approvalValue = "+2";
-    final String oldApprovalValue = "+1";
-    final Long approvalGrantedOn = 123L;
-    final String commentDescription = "Patch Set 1: Code-Review+2";
-    final String projectName = "project";
-    final String refName = "refs/heads/master";
-    final String changeId = "Iabcd1234abcd1234abcd1234abcd1234abcd1234";
-    final Long eventCreatedOn = 123L;
-
-    final Change change =
-        new Change(
-            Change.key(changeId),
-            Change.id(1),
-            Account.id(1),
-            BranchNameKey.create(projectName, refName),
-            TimeUtil.nowTs());
-
-    CommentAddedEvent event = new CommentAddedEvent(change);
-    AccountAttribute accountAttribute = new AccountAttribute();
-    accountAttribute.email = accountEmail;
-    accountAttribute.name = accountName;
-    accountAttribute.username = accountUsername;
-
-    event.eventCreatedOn = eventCreatedOn;
-    event.approvals =
-        () -> {
-          ApprovalAttribute approvalAttribute = new ApprovalAttribute();
-          approvalAttribute.value = approvalValue;
-          approvalAttribute.oldValue = oldApprovalValue;
-          approvalAttribute.description = approvalDescription;
-          approvalAttribute.by = accountAttribute;
-          approvalAttribute.type = ChangeKind.REWORK.toString();
-          approvalAttribute.grantedOn = approvalGrantedOn;
-
-          return new ApprovalAttribute[] {approvalAttribute};
-        };
-
-    event.author = () -> accountAttribute;
-    event.comment = commentDescription;
+    Event event = createSampleEvent();
 
     String expectedSerializedCommentEvent =
         "{\"author\": {\"name\": \""
@@ -138,22 +121,55 @@ public class BrokerPublisherTest {
     assertThat(publisher.eventToJson(event)).isEqualTo(expectedCommentEventJsonObject);
   }
 
-  private class TestBrokerSession implements BrokerSession {
+  @Test
+  public void shouldIncrementBrokerMetricCounterWhenMessagePublished() {
+    Event event = createSampleEvent();
+    when(session.publishEvent(any(), any())).thenReturn(true);
+    publisher.publishEvent(EventFamily.INDEX_EVENT, event);
+    verify(brokerMetrics, only()).incrementBrokerPublishedMessage();
+  }
 
-    @Override
-    public boolean isOpen() {
-      return false;
-    }
+  @Test
+  public void shouldIncrementBrokerFailedMetricCounterWhenMessagePublished() {
+    Event event = createSampleEvent();
+    when(session.publishEvent(any(), any())).thenReturn(false);
 
-    @Override
-    public void connect() {}
+    publisher.publishEvent(EventFamily.INDEX_EVENT, event);
+    verify(brokerMetrics, only()).incrementBrokerFailedToPublishMessage();
+  }
 
-    @Override
-    public void disconnect() {}
+  private Event createSampleEvent() {
+    final Change change =
+        new Change(
+            new Change.Key(changeId),
+            new Change.Id(1),
+            new Account.Id(1),
+            new Branch.NameKey(projectName, refName),
+            TimeUtil.nowTs());
 
-    @Override
-    public boolean publishEvent(EventFamily eventFamily, String payload) {
-      return false;
-    }
+    CommentAddedEvent event = new CommentAddedEvent(change);
+    AccountAttribute accountAttribute = new AccountAttribute();
+    accountAttribute.email = accountEmail;
+    accountAttribute.name = accountName;
+    accountAttribute.username = accountUsername;
+
+    event.eventCreatedOn = eventCreatedOn;
+    event.approvals =
+        () -> {
+          ApprovalAttribute approvalAttribute = new ApprovalAttribute();
+          approvalAttribute.value = approvalValue;
+          approvalAttribute.oldValue = oldApprovalValue;
+          approvalAttribute.description = approvalDescription;
+          approvalAttribute.by = accountAttribute;
+          approvalAttribute.type = ChangeKind.REWORK.toString();
+          approvalAttribute.grantedOn = approvalGrantedOn;
+
+          return new ApprovalAttribute[] {approvalAttribute};
+        };
+
+    event.author = () -> accountAttribute;
+    event.comment = commentDescription;
+
+    return event;
   }
 }

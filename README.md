@@ -53,7 +53,7 @@ cd gerrit
 bazel build plugins/multi-site
 ```
 
-The multi-site.jar plugin is generated to `bazel-genfiles/plugins/multi-site/multi-site.jar`.
+The multi-site.jar plugin is generated to `bazel-bin/plugins/multi-site/multi-site.jar`.
 
 Example of testing the multi-site plugin:
 

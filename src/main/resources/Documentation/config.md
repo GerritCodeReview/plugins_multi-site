@@ -280,6 +280,8 @@ File '@PLUGIN@.config'
 
     Defaults: 1000
 
+#### Custom kafka properties:
+
 In addition to the above settings, custom Kafka properties can be explicitly set
 for `publisher` and `subscriber`.
 In order to be acknowledged, these properties need to be prefixed with the
