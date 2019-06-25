@@ -86,3 +86,16 @@ For all the masters on all the sites:
 
 For further information and supported options, refer to [config](config.md)
 documentation.
+
+## Metrics
+
+@PLUGIN@ plugin exposes following metrics:
+
+### Broker message publisher
+* Broker message published count
+
+`metric=multi_site/broker/broker_message_publisher_counter/broker_msg_publisher_counter, type=com.codahale.metrics.Meter`
+
+* Broker failed to publish message count
+
+`metric=multi_site/broker/broker_message_publisher_failure_counter/broker_msg_publisher_failure_counter, type=com.codahale.metrics.Meter`
