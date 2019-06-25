@@ -16,6 +16,24 @@
       "revId": "9981b16a66b7c7d61a3ab96e637c6fb41c78183c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d159ade_c73bc154",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-25T06:59:14Z",
+      "side": 1,
+      "message": "Are you comparing with patchset 8? If you compare with base you will see that this line is a rollback to the base. I\u0027ve moved that line to ProducerProvider but now I don\u0027t need ProducerProvider so this line is again in the same place",
+      "parentUuid": "bab6d0cf_c79842d5",
+      "revId": "9981b16a66b7c7d61a3ab96e637c6fb41c78183c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
