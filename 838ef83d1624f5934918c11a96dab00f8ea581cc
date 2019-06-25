@@ -34,6 +34,24 @@
       "revId": "838ef83d1624f5934918c11a96dab00f8ea581cc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5910bc30_45547bb7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaConsumerFactory.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-25T18:01:59Z",
+      "side": 1,
+      "message": "Oh yes, I didn\u0027t notice that. Then no way to use assisted injection :-(",
+      "parentUuid": "1becb5dc_be706507",
+      "revId": "838ef83d1624f5934918c11a96dab00f8ea581cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
