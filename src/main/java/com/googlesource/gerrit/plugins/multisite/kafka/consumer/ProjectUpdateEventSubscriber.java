@@ -33,6 +33,7 @@ public class ProjectUpdateEventSubscriber extends AbstractKafkaSubcriber {
   @Inject
   public ProjectUpdateEventSubscriber(
       KafkaConfiguration configuration,
+      KafkaConsumerFactory consumerFactory,
       Deserializer<byte[]> keyDeserializer,
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
       ProjectListUpdateRouter eventRouter,
@@ -43,6 +44,7 @@ public class ProjectUpdateEventSubscriber extends AbstractKafkaSubcriber {
       MessageLogger msgLog) {
     super(
         configuration,
+        consumerFactory,
         keyDeserializer,
         valueDeserializer,
         eventRouter,
