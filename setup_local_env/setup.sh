@@ -294,7 +294,7 @@ HA_PROXY_CONFIG_DIR=$COMMON_LOCATION/ha-proxy-config
 HA_PROXY_CERTIFICATES_DIR="$HA_PROXY_CONFIG_DIR/certificates"
 
 RELEASE_WAR_FILE_LOCATION=${RELEASE_WAR_FILE_LOCATION:-bazel-bin/release.war}
-MULTISITE_LIB_LOCATION=${MULTISITE_LIB_LOCATION:-bazel-genfiles/plugins/multi-site/multi-site.jar}
+MULTISITE_LIB_LOCATION=${MULTISITE_LIB_LOCATION:-bazel-bin/plugins/multi-site/multi-site.jar}
 
 
 export FAKE_NFS=$COMMON_LOCATION/fake_nfs
@@ -317,11 +317,11 @@ else
 	cp -f $MULTISITE_LIB_LOCATION $DEPLOYMENT_LOCATION/multi-site.jar  >/dev/null 2>&1 || { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 fi
 if [ $DOWNLOAD_WEBSESSION_FLATFILE = "true" ];then
-	echo "Downloading websession-flatfile plugin stable 3.0"
-	wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-websession-flatfile-bazel-master-stable-3.0/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/websession-flatfile/websession-flatfile.jar \
+	echo "Downloading websession-flatfile plugin master"
+	wget https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-websession-flatfile-bazel-master-master/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-flatfile/websession-flatfile.jar \
 	-O $DEPLOYMENT_LOCATION/websession-flatfile.jar || { echo >&2 "Cannot download websession-flatfile plugin: Check internet connection. Abort\
 ing"; exit 1; }
-	wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-healthcheck-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/healthcheck/healthcheck.jar \
+	wget https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-healthcheck-bazel-master/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar \
 	-O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
 ing"; exit 1; }
 else

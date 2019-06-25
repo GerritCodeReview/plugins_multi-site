@@ -21,7 +21,6 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 
 public class ValidationModule extends FactoryModule {
   private final Configuration cfg;
@@ -40,14 +39,12 @@ public class ValidationModule extends FactoryModule {
     factory(BatchRefUpdateValidator.Factory.class);
 
     bind(GitRepositoryManager.class).to(MultiSiteGitRepositoryManager.class);
-    if (cfg.getZookeeperConfig().getEnforcementRules().isEmpty()) {
+    if (cfg.getSharedRefDb().getEnforcementRules().isEmpty()) {
       bind(SharedRefEnforcement.class).to(DefaultSharedRefEnforcement.class).in(Scopes.SINGLETON);
     } else {
       bind(SharedRefEnforcement.class)
           .to(CustomSharedRefEnforcementByProject.class)
           .in(Scopes.SINGLETON);
     }
-
-    install(new ZkValidationModule(cfg));
   }
 }

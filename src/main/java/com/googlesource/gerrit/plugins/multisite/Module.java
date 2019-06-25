@@ -14,6 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.CreationException;
@@ -28,9 +31,9 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarde
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
+import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,11 +45,31 @@ import org.slf4j.LoggerFactory;
 
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
-  private final Configuration config;
+  private Configuration config;
+  private final boolean disableGitRepositoryValidation;
+  private KafkaConfiguration kafkaConfig;
 
   @Inject
-  public Module(Configuration config) {
+  public Module(Configuration config, KafkaConfiguration kafkaConfig) {
+    this(config, kafkaConfig, false);
+  }
+
+  // TODO: It is not possible to properly test the libModules in Gerrit.
+  // Disable the Git repository validation during integration test and then build the necessary
+  // support
+  // in Gerrit for it.
+  @VisibleForTesting
+  public Module(
+      Configuration config,
+      KafkaConfiguration kafkaConfig,
+      boolean disableGitRepositoryValidation) {
+    init(config, kafkaConfig);
+    this.disableGitRepositoryValidation = disableGitRepositoryValidation;
+  }
+
+  private void init(Configuration config, KafkaConfiguration kafkaConfig) {
     this.config = config;
+    this.kafkaConfig = kafkaConfig;
   }
 
   @Override
@@ -72,12 +95,17 @@ public class Module extends LifecycleModule {
       install(new IndexModule());
     }
 
-    if (config.kafkaSubscriber().enabled()) {
-      install(new KafkaConsumerModule(config.kafkaSubscriber()));
+    if (kafkaConfig.kafkaSubscriber().enabled()) {
+      install(new KafkaConsumerModule(kafkaConfig.kafkaSubscriber()));
       install(new ForwardedEventRouterModule());
     }
-    if (config.kafkaPublisher().enabled()) {
-      install(new BrokerForwarderModule(config.kafkaPublisher()));
+    if (kafkaConfig.kafkaPublisher().enabled()) {
+      install(new BrokerForwarderModule(kafkaConfig.kafkaPublisher()));
+    }
+
+    if (config.getSharedRefDb().isEnabled()) {
+      DynamicSet.bind(binder(), ProjectDeletedListener.class)
+          .to(ProjectDeletedSharedDbCleanup.class);
     }
   }
 
@@ -112,7 +140,7 @@ public class Module extends LifecycleModule {
 
   private UUID tryToLoadSavedInstanceId(String serverIdFile) {
     if (Files.exists(Paths.get(serverIdFile))) {
-      try (BufferedReader br = new BufferedReader(new FileReader(serverIdFile))) {
+      try (BufferedReader br = Files.newBufferedReader(Paths.get(serverIdFile))) {
         return UUID.fromString(br.readLine());
       } catch (IOException e) {
         log.warn(
