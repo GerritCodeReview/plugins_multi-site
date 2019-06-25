@@ -14,11 +14,12 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
+import static java.util.Objects.requireNonNull;
+
 import com.google.gerrit.server.events.Event;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import java.util.UUID;
-import org.apache.commons.lang3.Validate;
 
 public class SourceAwareEventWrapper {
 
@@ -67,9 +68,9 @@ public class SourceAwareEventWrapper {
     }
 
     public void validate() {
-      Validate.notNull(eventId, "EventId cannot be null");
-      Validate.notNull(eventType, "EventType cannot be null");
-      Validate.notNull(sourceInstanceId, "Source Instance ID cannot be null");
+      requireNonNull(eventId, "EventId cannot be null");
+      requireNonNull(eventType, "EventType cannot be null");
+      requireNonNull(sourceInstanceId, "Source Instance ID cannot be null");
     }
 
     @Override
@@ -94,8 +95,8 @@ public class SourceAwareEventWrapper {
   }
 
   public void validate() {
-    Validate.notNull(header, "Header cannot be null");
-    Validate.notNull(body, "Body cannot be null");
+    requireNonNull(header, "Header cannot be null");
+    requireNonNull(body, "Body cannot be null");
     header.validate();
   }
 }

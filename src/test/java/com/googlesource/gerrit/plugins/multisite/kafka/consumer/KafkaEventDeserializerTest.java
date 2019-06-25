@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import static com.google.common.truth.Truth.assertThat;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.google.gerrit.server.events.EventGsonProvider;
 import com.google.gson.Gson;
@@ -44,7 +45,8 @@ public class KafkaEventDeserializerTest {
                 + "\"body\": {}"
                 + "}",
             eventId, eventType, sourceInstanceId, eventCreatedOn);
-    final SourceAwareEventWrapper event = deserializer.deserialize("ignored", eventJson.getBytes());
+    final SourceAwareEventWrapper event =
+        deserializer.deserialize("ignored", eventJson.getBytes(UTF_8));
 
     assertThat(event.getBody().entrySet()).isEmpty();
     assertThat(event.getHeader().getEventId()).isEqualTo(eventId);
@@ -55,11 +57,11 @@ public class KafkaEventDeserializerTest {
 
   @Test(expected = RuntimeException.class)
   public void kafkaEventDeserializerShouldFailForInvalidJson() {
-    deserializer.deserialize("ignored", "this is not a JSON string".getBytes());
+    deserializer.deserialize("ignored", "this is not a JSON string".getBytes(UTF_8));
   }
 
   @Test(expected = RuntimeException.class)
   public void kafkaEventDeserializerShouldFailForInvalidObjectButValidJSON() {
-    deserializer.deserialize("ignored", "{}".getBytes());
+    deserializer.deserialize("ignored", "{}".getBytes(UTF_8));
   }
 }
