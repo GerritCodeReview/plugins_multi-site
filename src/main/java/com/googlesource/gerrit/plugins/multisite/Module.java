@@ -44,14 +44,35 @@ import java.util.Collection;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.google.common.annotations.VisibleForTesting;
 
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
-  private final Configuration config;
+  private Configuration config;
+  private final boolean disableGitRepositoryValidation;
+  private KafkaConfiguration kafkaConfig;
 
   @Inject
-  public Module(Configuration config) {
+  public Module(Configuration config, KafkaConfiguration kafkaConfig) {
+    this(config, kafkaConfig, false);
+  }
+
+  // TODO: It is not possible to properly test the libModules in Gerrit.
+  // Disable the Git repository validation during integration test and then build the necessary
+  // support
+  // in Gerrit for it.
+  @VisibleForTesting
+  public Module(
+      Configuration config,
+      KafkaConfiguration kafkaConfig,
+      boolean disableGitRepositoryValidation) {
+    init(config, kafkaConfig);
+    this.disableGitRepositoryValidation = disableGitRepositoryValidation;
+  }
+
+  private void init(Configuration config, KafkaConfiguration kafkaConfig) {
     this.config = config;
+    this.kafkaConfig = kafkaConfig;
   }
 
   @Override
@@ -77,12 +98,12 @@ public class Module extends LifecycleModule {
       install(new IndexModule());
     }
 
-    if (config.kafkaSubscriber().enabled()) {
-      install(new KafkaConsumerModule(config.kafkaSubscriber()));
+    if (kafkaConfig.kafkaSubscriber().enabled()) {
+      install(new KafkaConsumerModule(kafkaConfig.kafkaSubscriber()));
       install(new ForwardedEventRouterModule());
     }
-    if (config.kafkaPublisher().enabled()) {
-      install(new BrokerForwarderModule(config.kafkaPublisher()));
+    if (kafkaConfig.kafkaPublisher().enabled()) {
+      install(new BrokerForwarderModule(kafkaConfig.kafkaPublisher()));
     }
 
     if (config.getSharedRefDb().isEnabled()) {
