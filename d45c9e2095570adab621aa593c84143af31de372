@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "10adfe45_e827958c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-25T17:58:24Z",
+      "side": 1,
+      "message": "Yes, in a separate change.",
+      "parentUuid": "6b7a96d5_84ab2101",
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b71aa118_0182a809",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
         "patchSetId": 10
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "It\u0027s created with \u0027new\u0027 in ForwardedEventRouterModule and binded with: bind(KafkaConfiguration.class).toInstance(kafkaConfig); \nI\u0027ve explained why we are doing that in a different comment. \nAgain it\u0027s same as in:\ncom.googlesource.gerrit.plugins.multisite.ZookeeperConfig",
       "parentUuid": "b71aa118_0182a809",
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "389031c9_a7f26c9a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/KafkaConfiguration.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-25T17:58:24Z",
+      "side": 1,
+      "message": "Just inject it instead of creating it with the new.",
+      "parentUuid": "1172aad1_a56f008b",
       "revId": "d45c9e2095570adab621aa593c84143af31de372",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -107,6 +143,24 @@
     },
     {
       "key": {
+        "uuid": "6665f58e_5829e2a4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarderModule.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-25T17:58:24Z",
+      "side": 1,
+      "message": "Forgot to include the change in the latest PS? I can\u0027t see where this is getting renamed and moved to the Kafka package.",
+      "parentUuid": "621486a6_14b5b813",
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "59b96807_d4b8286e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarderModule.java",
         "patchSetId": 10
@@ -136,6 +190,24 @@
       "side": 1,
       "message": "I\u0027m not sure if we can do that. This module is loaded using \u0027new\u0027 in com.googlesource.gerrit.plugins.multisite.Module: install(new BrokerForwarderModule(config.getMultiSiteConfig()));\nThis is done exactly as ZkValidationModule: install(new ZkValidationModule(config));",
       "parentUuid": "59b96807_d4b8286e",
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4333b2a6_46c6b8a5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarderModule.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-25T17:58:24Z",
+      "side": 1,
+      "message": "why don\u0027t you just inject the module there also? Guice will do the \"magic\" for you ;-)",
+      "parentUuid": "8e10faef_2fbb710e",
       "revId": "d45c9e2095570adab621aa593c84143af31de372",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -177,6 +249,30 @@
       "side": 1,
       "message": "Same as above",
       "parentUuid": "2bee1a69_46bb7fda",
+      "range": {
+        "startLine": 34,
+        "startChar": 18,
+        "endLine": 34,
+        "endChar": 40
+      },
+      "revId": "d45c9e2095570adab621aa593c84143af31de372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "114e7144_bae63485",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarderModule.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-25T17:58:24Z",
+      "side": 1,
+      "message": "Same magic as above :-)",
+      "parentUuid": "82052def_86f1366b",
       "range": {
         "startLine": 34,
         "startChar": 18,
