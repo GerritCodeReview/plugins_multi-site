@@ -36,13 +36,16 @@ public class ModuleTest {
   @Mock(answer = Answers.RETURNS_DEEP_STUBS)
   private Configuration configMock;
 
+  @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+  private KafkaConfiguration kafkaConfig;
+
   @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
   private Module module;
 
   @Before
   public void setUp() {
-    module = new Module(configMock);
+    module = new Module(configMock, kafkaConfig);
   }
 
   @Test
