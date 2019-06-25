@@ -39,6 +39,7 @@ import com.google.inject.Inject;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
+import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.Module;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
@@ -69,7 +70,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
 
   public static class KafkaTestContainerModule extends LifecycleModule {
 
-    public class KafkaStopAtShutdown implements LifecycleListener {
+    public static class KafkaStopAtShutdown implements LifecycleListener {
       private final KafkaContainer kafka;
 
       public KafkaStopAtShutdown(KafkaContainer kafka) {
@@ -95,7 +96,8 @@ public class EventConsumerIT extends AbstractDaemonTest {
       this.config =
           new FileBasedConfig(
               sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile(), FS.DETECTED);
-      this.multiSiteModule = new Module(new Configuration(config, new Config()));
+      this.multiSiteModule =
+          new Module(new Configuration(config, new Config()), new KafkaConfiguration(config), true);
     }
 
     @Override
