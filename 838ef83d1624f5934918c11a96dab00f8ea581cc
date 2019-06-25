@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c975d77f_77e4e43b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaConsumerFactory.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-25T17:47:40Z",
+      "side": 1,
+      "message": "Is there any reason why a Guice Factory wouldn\u0027t be suitable for this? All throughout Gerrit we use Guice Factories with assisted injections, which should avoid creating this boilerplate.\n\nSee https://github.com/google/guice/wiki/AssistedInject for more information about the Guice assisted injection mechanism.",
+      "revId": "838ef83d1624f5934918c11a96dab00f8ea581cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
