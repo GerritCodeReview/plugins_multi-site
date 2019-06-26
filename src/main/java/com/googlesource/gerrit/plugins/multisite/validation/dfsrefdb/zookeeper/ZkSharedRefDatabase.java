@@ -58,10 +58,22 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
 
       // Assuming this is a delete node NULL_REF
       if (valueInZk == null) {
+        logger.atInfo().log(
+            "%s:%s not found in Zookeeper, assumed as delete node NULL_REF",
+            project, ref.getName());
         return false;
       }
 
-      return readObjectId(valueInZk).equals(ref.getObjectId());
+      ObjectId objectIdInSharedRefDb = readObjectId(valueInZk);
+      Boolean isUpToDate = objectIdInSharedRefDb.equals(ref.getObjectId());
+
+      if (!isUpToDate) {
+        logger.atWarning().log(
+            "%s:%s is out of sync: local=%s zk=%s",
+            project, ref.getName(), ref.getObjectId(), objectIdInSharedRefDb);
+      }
+
+      return isUpToDate;
     } catch (Exception e) {
       throw new SharedLockException(project, ref.getName(), e);
     }
