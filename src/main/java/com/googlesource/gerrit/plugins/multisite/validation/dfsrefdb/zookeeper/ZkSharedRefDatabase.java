@@ -58,10 +58,23 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
 
       // Assuming this is a delete node NULL_REF
       if (valueInZk == null) {
+        logger.atInfo().log(
+            "Current shared ref-db value for project '%s' and ref '%s' is empty. Assuming this is a delete node",
+            project, ref.getName());
         return false;
       }
 
-      return readObjectId(valueInZk).equals(ref.getObjectId());
+      ObjectId objectIdInSharedRefDb = readObjectId(valueInZk);
+
+      Boolean isUpToDate = objectIdInSharedRefDb.equals(ref.getObjectId());
+
+      if (!isUpToDate) {
+        logger.atWarning().log(
+            "Local ref %s (ObjectId=%s) on project %s is out of sync with the shared ref-db (ObjectId=%s)",
+            ref.getName(), ref.getObjectId(), project, objectIdInSharedRefDb);
+      }
+
+      return isUpToDate;
     } catch (Exception e) {
       throw new SharedLockException(project, ref.getName(), e);
     }
