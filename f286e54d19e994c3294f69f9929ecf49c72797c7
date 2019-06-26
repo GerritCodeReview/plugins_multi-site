@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b02e7b69_b49a1ead",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-26T15:42:11Z",
+      "side": 1,
+      "message": "Add [DO NOT MERGE] if this change is not supposed to be merged and stay in the code-base.",
+      "revId": "f286e54d19e994c3294f69f9929ecf49c72797c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "632c9986_3bd00fb7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-26T15:42:11Z",
+      "side": 1,
+      "message": "For sure it is useful, not only for split-brain issues.",
+      "range": {
+        "startLine": 9,
+        "startChar": 10,
+        "endLine": 9,
+        "endChar": 51
+      },
+      "revId": "f286e54d19e994c3294f69f9929ecf49c72797c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3477ad80_772c7d49",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-26T15:42:11Z",
+      "side": 1,
+      "message": "Can this be in a form that is easier to extract?\n\nExample:\n\n  project:refs local\u003dSHA1 zk\u003dSHA1",
+      "revId": "f286e54d19e994c3294f69f9929ecf49c72797c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
