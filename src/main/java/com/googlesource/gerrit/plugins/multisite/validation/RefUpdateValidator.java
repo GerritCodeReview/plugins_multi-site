@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase.nullRef;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
@@ -146,21 +148,20 @@ public class RefUpdateValidator {
     }
   }
 
-  protected void checkIfLocalRefIsUpToDateWithSharedRefDb(
+  protected RefPair checkIfLocalRefIsUpToDateWithSharedRefDb(
       RefPair refPair, CloseableSet<AutoCloseable> locks)
       throws SharedLockException, OutOfSyncException, IOException {
     String refName = refPair.getName();
     EnforcePolicy refEnforcementPolicy = refEnforcement.getPolicy(projectName, refName);
     if (refEnforcementPolicy == EnforcePolicy.IGNORED) {
-      return;
+      return refPair;
     }
-
-    Ref localRef = refPair.compareRef;
 
     locks.addResourceIfNotExist(
         String.format("%s-%s", projectName, refName),
         () -> sharedRefDb.lockRef(projectName, refName));
 
+    Ref localRef = getLatestLocalRef(refPair);
     boolean isInSync =
         (localRef != null)
             ? sharedRefDb.isUpToDate(projectName, localRef)
@@ -172,6 +173,12 @@ public class RefUpdateValidator {
       softFailBasedOnEnforcement(
           new OutOfSyncException(projectName, localRef), refEnforcementPolicy);
     }
+
+    return new RefPair(localRef == null ? nullRef(refName) : localRef, refPair.putValue);
+  }
+
+  private Ref getLatestLocalRef(RefPair refPair) throws IOException {
+    return refDb.exactRef(refPair.getName());
   }
 
   protected boolean isSuccessful(RefUpdate.Result result) {

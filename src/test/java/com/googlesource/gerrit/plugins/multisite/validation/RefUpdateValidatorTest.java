@@ -67,6 +67,7 @@ public class RefUpdateValidatorTest implements RefFixture {
     localRef = newRef(refName, AN_OBJECT_ID_3);
 
     doReturn(localRef).when(localRefDb).getRef(refName);
+    doReturn(localRef).when(localRefDb).exactRef(refName);
     doReturn(oldUpdateRef).when(refUpdate).getRef();
     doReturn(newUpdateRef.getObjectId()).when(refUpdate).getNewObjectId();
     doReturn(refName).when(refUpdate).getName();
