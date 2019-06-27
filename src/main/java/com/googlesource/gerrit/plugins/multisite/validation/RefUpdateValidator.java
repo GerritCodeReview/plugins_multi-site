@@ -136,7 +136,8 @@ public class RefUpdateValidator {
             projectName, refPair.getName(), refPair.putValue);
     boolean succeeded;
     try {
-      succeeded = sharedRefDb.compareAndPut(projectName, refPair.compareRef, refPair.putValue);
+      succeeded =
+          sharedRefDb.compareAndPut(projectName, getLatestLocalRef(refPair), refPair.putValue);
     } catch (IOException e) {
       throw new SharedDbSplitBrainException(errorMessage, e);
     }
@@ -155,12 +156,11 @@ public class RefUpdateValidator {
       return;
     }
 
-    Ref localRef = refPair.compareRef;
-
     locks.addResourceIfNotExist(
         String.format("%s-%s", projectName, refName),
         () -> sharedRefDb.lockRef(projectName, refName));
 
+    Ref localRef = getLatestLocalRef(refPair);
     boolean isInSync =
         (localRef != null)
             ? sharedRefDb.isUpToDate(projectName, localRef)
@@ -172,6 +172,10 @@ public class RefUpdateValidator {
       softFailBasedOnEnforcement(
           new OutOfSyncException(projectName, localRef), refEnforcementPolicy);
     }
+  }
+
+  private Ref getLatestLocalRef(RefPair refPair) throws IOException {
+    return refDb.exactRef(refPair.getName());
   }
 
   protected boolean isSuccessful(RefUpdate.Result result) {
