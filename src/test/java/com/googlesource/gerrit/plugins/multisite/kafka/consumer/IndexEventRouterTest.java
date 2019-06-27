@@ -29,7 +29,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEve
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.kafka.router.IndexEventRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.IndexEventRouter;
 import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;

@@ -24,13 +24,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
+import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
-import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
-import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
-import com.googlesource.gerrit.plugins.multisite.kafka.router.ForwardedEventRouterModule;
+import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -46,12 +45,16 @@ import org.slf4j.LoggerFactory;
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private Configuration config;
+  private KafkaForwardedEventRouterModule kafkaForwardedEventRouterModule;
+  private KafkaBrokerForwarderModule kafkaBrokerForwarderModule;
   private final boolean disableGitRepositoryValidation;
-  private KafkaConfiguration kafkaConfig;
 
   @Inject
-  public Module(Configuration config, KafkaConfiguration kafkaConfig) {
-    this(config, kafkaConfig, false);
+  public Module(
+      Configuration config,
+      KafkaForwardedEventRouterModule forwardedEeventRouterModule,
+      KafkaBrokerForwarderModule brokerForwarderModule) {
+    this(config, forwardedEeventRouterModule, brokerForwarderModule, false);
   }
 
   // TODO: It is not possible to properly test the libModules in Gerrit.
@@ -61,15 +64,20 @@ public class Module extends LifecycleModule {
   @VisibleForTesting
   public Module(
       Configuration config,
-      KafkaConfiguration kafkaConfig,
+      KafkaForwardedEventRouterModule forwardedEeventRouterModule,
+      KafkaBrokerForwarderModule brokerForwarderModule,
       boolean disableGitRepositoryValidation) {
-    init(config, kafkaConfig);
+    init(config, forwardedEeventRouterModule, brokerForwarderModule);
     this.disableGitRepositoryValidation = disableGitRepositoryValidation;
   }
 
-  private void init(Configuration config, KafkaConfiguration kafkaConfig) {
+  private void init(
+      Configuration config,
+      KafkaForwardedEventRouterModule forwardedEeventRouterModule,
+      KafkaBrokerForwarderModule brokerForwarderModule) {
     this.config = config;
-    this.kafkaConfig = kafkaConfig;
+    this.kafkaForwardedEventRouterModule = forwardedEeventRouterModule;
+    this.kafkaBrokerForwarderModule = brokerForwarderModule;
   }
 
   @Override
@@ -95,13 +103,9 @@ public class Module extends LifecycleModule {
       install(new IndexModule());
     }
 
-    if (kafkaConfig.kafkaSubscriber().enabled()) {
-      install(new KafkaConsumerModule(kafkaConfig.kafkaSubscriber()));
-      install(new ForwardedEventRouterModule());
-    }
-    if (kafkaConfig.kafkaPublisher().enabled()) {
-      install(new BrokerForwarderModule(kafkaConfig.kafkaPublisher()));
-    }
+    install(kafkaForwardedEventRouterModule);
+
+    install(kafkaBrokerForwarderModule);
 
     if (config.getSharedRefDb().isEnabled()) {
       DynamicSet.bind(binder(), ProjectDeletedListener.class)

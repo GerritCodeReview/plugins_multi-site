@@ -12,16 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.router;
+package com.googlesource.gerrit.plugins.multisite.forwarder.router;
 
-import com.google.inject.AbstractModule;
+import com.google.gerrit.server.permissions.PermissionBackendException;
+import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
+import java.io.IOException;
 
-public class ForwardedEventRouterModule extends AbstractModule {
-  @Override
-  protected void configure() {
-    bind(ForwardedIndexEventRouter.class).to(IndexEventRouter.class);
-    bind(ForwardedCacheEvictionEventRouter.class).to(CacheEvictionEventRouter.class);
-    bind(ForwardedProjectListUpdateRouter.class).to(ProjectListUpdateRouter.class);
-    bind(ForwardedStreamEventRouter.class).to(StreamEventRouter.class);
-  }
+public interface ForwardedEventRouter<EventType> {
+  void route(EventType sourceEvent)
+      throws IOException, PermissionBackendException, CacheNotFoundException;
 }

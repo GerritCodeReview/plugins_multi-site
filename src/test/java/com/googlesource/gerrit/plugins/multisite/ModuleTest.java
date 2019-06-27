@@ -17,6 +17,8 @@ package com.googlesource.gerrit.plugins.multisite;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.gerrit.server.config.SitePaths;
+import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
+import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,16 +38,16 @@ public class ModuleTest {
   @Mock(answer = Answers.RETURNS_DEEP_STUBS)
   private Configuration configMock;
 
-  @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-  private KafkaConfiguration kafkaConfig;
+  @Mock private KafkaForwardedEventRouterModule routerModule;
+  @Mock private KafkaBrokerForwarderModule brokerForwarderModule;
 
   @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
   private Module module;
 
   @Before
-  public void setUp() {
-    module = new Module(configMock, kafkaConfig);
+  public void setup() {
+    module = new Module(configMock, routerModule, brokerForwarderModule);
   }
 
   @Test

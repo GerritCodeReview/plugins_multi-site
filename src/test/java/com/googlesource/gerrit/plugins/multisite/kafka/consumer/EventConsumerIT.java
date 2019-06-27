@@ -39,9 +39,11 @@ import com.google.inject.Inject;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.Module;
+import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
+import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -92,12 +94,24 @@ public class EventConsumerIT extends AbstractDaemonTest {
     private final Module multiSiteModule;
 
     @Inject
-    public KafkaTestContainerModule(SitePaths sitePaths) {
+    public KafkaTestContainerModule(SitePaths sitePaths) throws IOException {
       this.config =
           new FileBasedConfig(
               sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile(), FS.DETECTED);
+      config.setBoolean("kafka", "publisher", "enabled", true);
+      config.setBoolean("kafka", "subscriber", "enabled", true);
+      config.setBoolean("ref-database", null, "enabled", false);
+      config.save();
+
+      Configuration multiSiteConfig = new Configuration(config, new Config());
+      KafkaConfiguration kafkaConfiguration = new KafkaConfiguration(multiSiteConfig);
       this.multiSiteModule =
-          new Module(new Configuration(config, new Config()), new KafkaConfiguration(config), true);
+          new Module(
+              multiSiteConfig,
+              new KafkaForwardedEventRouterModule(
+                  kafkaConfiguration, new KafkaConsumerModule(kafkaConfiguration)),
+              new KafkaBrokerForwarderModule(kafkaConfiguration),
+              true);
     }
 
     @Override
@@ -119,9 +133,6 @@ public class EventConsumerIT extends AbstractDaemonTest {
       kafkaContainer.start();
 
       config.setString("kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
-      config.setBoolean("kafka", "publisher", "enabled", true);
-      config.setBoolean("kafka", "subscriber", "enabled", true);
-      config.setBoolean("ref-database", null, "enabled", false);
       config.save();
       Configuration multiSiteConfig = new Configuration(config, new Config());
       bind(Configuration.class).toInstance(multiSiteConfig);

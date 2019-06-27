@@ -23,7 +23,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForw
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 
 @Singleton
-class BrokerProjectListUpdateForwarder implements ProjectListUpdateForwarder {
+public class BrokerProjectListUpdateForwarder implements ProjectListUpdateForwarder {
   private final BrokerPublisher publisher;
 
   @Inject
