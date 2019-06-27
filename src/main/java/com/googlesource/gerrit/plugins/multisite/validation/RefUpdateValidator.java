@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase.nullRef;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
@@ -26,6 +28,7 @@ import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEn
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
 import java.util.HashMap;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.lib.RefUpdate;
@@ -146,32 +149,39 @@ public class RefUpdateValidator {
     }
   }
 
-  protected void checkIfLocalRefIsUpToDateWithSharedRefDb(
+  protected RefPair checkIfLocalRefIsUpToDateWithSharedRefDb(
       RefPair refPair, CloseableSet<AutoCloseable> locks)
       throws SharedLockException, OutOfSyncException, IOException {
     String refName = refPair.getName();
     EnforcePolicy refEnforcementPolicy = refEnforcement.getPolicy(projectName, refName);
     if (refEnforcementPolicy == EnforcePolicy.IGNORED) {
-      return;
+      return refPair;
     }
-
-    Ref localRef = refPair.compareRef;
 
     locks.addResourceIfNotExist(
         String.format("%s-%s", projectName, refName),
         () -> sharedRefDb.lockRef(projectName, refName));
 
+    RefPair latestRefPair = getLatestLocalRef(refPair);
     boolean isInSync =
-        (localRef != null)
-            ? sharedRefDb.isUpToDate(projectName, localRef)
-            : !sharedRefDb.exists(projectName, refName);
+        (latestRefPair.compareRef.getObjectId().equals(ObjectId.zeroId()))
+            ? !sharedRefDb.exists(projectName, refName)
+            : sharedRefDb.isUpToDate(projectName, latestRefPair.compareRef);
 
     if (!isInSync) {
       validationMetrics.incrementSplitBrainPrevention();
 
       softFailBasedOnEnforcement(
-          new OutOfSyncException(projectName, localRef), refEnforcementPolicy);
+          new OutOfSyncException(projectName, latestRefPair.compareRef), refEnforcementPolicy);
     }
+
+    return latestRefPair;
+  }
+
+  private RefPair getLatestLocalRef(RefPair refPair) throws IOException {
+    Ref latestRef = refDb.exactRef(refPair.getName());
+    return new RefPair(
+        latestRef == null ? nullRef(refPair.getName()) : latestRef, refPair.putValue);
   }
 
   protected boolean isSuccessful(RefUpdate.Result result) {
