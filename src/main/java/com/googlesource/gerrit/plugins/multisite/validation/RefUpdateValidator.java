@@ -178,7 +178,8 @@ public class RefUpdateValidator {
     return latestRefPair;
   }
 
-  private RefPair getLatestLocalRef(RefPair refPair) throws IOException {
+
+  protected RefPair getLatestLocalRef(RefPair refPair) throws IOException {
     Ref latestRef = refDb.exactRef(refPair.getName());
     return new RefPair(
         latestRef == null ? nullRef(refPair.getName()) : latestRef, refPair.putValue);

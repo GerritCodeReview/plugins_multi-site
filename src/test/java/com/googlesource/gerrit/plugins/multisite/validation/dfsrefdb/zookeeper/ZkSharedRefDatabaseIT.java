@@ -16,8 +16,10 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import com.google.gerrit.acceptance.AbstractDaemonTest;
+import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.googlesource.gerrit.plugins.multisite.validation.BatchRefUpdateValidator;
 import com.googlesource.gerrit.plugins.multisite.validation.MultiSiteBatchRefUpdate;
@@ -41,6 +43,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 
+@UseLocalDisk
 public class ZkSharedRefDatabaseIT extends AbstractDaemonTest implements RefFixture {
   @Rule public TestName nameRule = new TestName();
 
@@ -106,6 +109,36 @@ public class ZkSharedRefDatabaseIT extends AbstractDaemonTest implements RefFixt
   }
 
   @Test
+  public void sequenceOfGitUpdatesWithMultipleCommandsInBatch() throws Exception {
+	ObjectId commitObjectIdOne = commitBuilder().add("test_file1.txt", "A").create().getId();
+    ObjectId commitObjectIdTwo = commitBuilder().add("test_file1.txt", "B").create().getId();
+    ObjectId commitObjectIdThree = commitBuilder().add("test_file2.txt", "C").create().getId();
+
+    ReceiveCommand firstCommand =
+        new ReceiveCommand(ObjectId.zeroId(), commitObjectIdOne, A_TEST_REF_NAME);
+
+    ReceiveCommand secondCommand =
+        new ReceiveCommand(ObjectId.zeroId(), commitObjectIdTwo, A_TEST_REF_NAME);
+
+    ReceiveCommand aNewCreate =
+        new ReceiveCommand(ObjectId.zeroId(), commitObjectIdThree, "refs/for/master2");
+
+    InMemoryRepository repository = testRepo.getRepository();
+    try (RevWalk rw = new RevWalk(repository)) {
+      newBatchRefUpdate(repository, firstCommand, secondCommand, aNewCreate)
+          .execute(rw, NullProgressMonitor.INSTANCE);
+    }
+
+    // All commands in batch failed because of the second one
+    assertThat(firstCommand.getResult()).isEqualTo(Result.OK);
+    assertThat(secondCommand.getResult()).isEqualTo(Result.OK);
+    assertThat(aNewCreate.getResult()).isEqualTo(Result.OK);
+
+    assertTrue(existsDataInZkForCommand(secondCommand));
+    assertTrue(existsDataInZkForCommand(aNewCreate));
+  }
+
+  @Test
   public void aBatchWithOneFailedCommandShouldFailAllOtherCommands() throws Exception {
     ObjectId commitObjectIdOne = commitBuilder().add("test_file1.txt", "A").create().getId();
     ObjectId commitObjectIdTwo = commitBuilder().add("test_file1.txt", "B").create().getId();
@@ -139,7 +172,7 @@ public class ZkSharedRefDatabaseIT extends AbstractDaemonTest implements RefFixt
   }
 
   private boolean existsDataInZkForCommand(ReceiveCommand firstCommand) throws Exception {
-    return zkSharedRefDatabase.exists(A_TEST_PROJECT_NAME, firstCommand.getRefName());
+    return zkSharedRefDatabase.exists(project.get(), firstCommand.getRefName());
   }
 
   private MultiSiteBatchRefUpdate newBatchRefUpdate(
@@ -160,7 +193,7 @@ public class ZkSharedRefDatabaseIT extends AbstractDaemonTest implements RefFixt
 
     MultiSiteBatchRefUpdate result =
         new MultiSiteBatchRefUpdate(
-            batchRefValidatorFactory, A_TEST_PROJECT_NAME, localGitRepo.getRefDatabase());
+            batchRefValidatorFactory, project.get(), localGitRepo.getRefDatabase());
 
     result.setAllowNonFastForwards(false);
     for (ReceiveCommand command : commands) {
