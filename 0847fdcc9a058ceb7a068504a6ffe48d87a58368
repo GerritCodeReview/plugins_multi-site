@@ -142,6 +142,52 @@
       "revId": "0847fdcc9a058ceb7a068504a6ffe48d87a58368",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02a3ad4e_7a43c13e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-28T11:30:09Z",
+      "side": 1,
+      "message": "This should return an updated RefPair with the latest value read from the ref-db",
+      "range": {
+        "startLine": 150,
+        "startChar": 12,
+        "endLine": 150,
+        "endChar": 16
+      },
+      "revId": "0847fdcc9a058ceb7a068504a6ffe48d87a58368",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72a3e95e_98e38133",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-28T11:30:09Z",
+      "side": 1,
+      "message": "Should return a new updated RefPair",
+      "range": {
+        "startLine": 177,
+        "startChar": 10,
+        "endLine": 177,
+        "endChar": 13
+      },
+      "revId": "0847fdcc9a058ceb7a068504a6ffe48d87a58368",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
