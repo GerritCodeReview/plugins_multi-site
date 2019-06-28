@@ -88,6 +88,24 @@
       "revId": "0847fdcc9a058ceb7a068504a6ffe48d87a58368",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f80ab37_6a44c1a5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-28T09:26:25Z",
+      "side": 1,
+      "message": "Not really, the batch could impact multiple refs also, you need to apply all of them.\n\nThe real problem is that we do not know which was the previous SHA1 because of the retry and concurrency involved with the updates.",
+      "parentUuid": "b9da678f_5d899bb5",
+      "revId": "0847fdcc9a058ceb7a068504a6ffe48d87a58368",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
