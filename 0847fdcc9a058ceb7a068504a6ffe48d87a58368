@@ -52,6 +52,24 @@
       "revId": "0847fdcc9a058ceb7a068504a6ffe48d87a58368",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "984a9fb8_360a8058",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-28T09:11:27Z",
+      "side": 1,
+      "message": "What about remembering local ref before batch update then after batch invoke we can read local ref again, go backward by reading parent, update RefPair until we find local ref before update. I\u0027m afraid that this can have performance impact",
+      "parentUuid": "77d966fc_60bb0adf",
+      "revId": "0847fdcc9a058ceb7a068504a6ffe48d87a58368",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
