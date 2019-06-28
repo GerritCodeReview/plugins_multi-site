@@ -34,6 +34,24 @@
       "revId": "0847fdcc9a058ceb7a068504a6ffe48d87a58368",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77d966fc_60bb0adf",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-28T08:48:04Z",
+      "side": 1,
+      "message": "Oh, got your point now: because this is done *after* the update, then the local ref is of course NOT the one in Zookeeper.\n\nThe issue here is that:\n1) We can\u0027t use the one *before* the update because the update can go in multiple retry in case of concurrency.\n2) We can\u0027t use the one *after* because it would be different from the one we have in Zookeeper\n\nAny other idea?",
+      "parentUuid": "10aa41c7_404832a9",
+      "revId": "0847fdcc9a058ceb7a068504a6ffe48d87a58368",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
