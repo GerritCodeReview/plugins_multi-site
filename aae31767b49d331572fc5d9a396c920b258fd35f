@@ -16,6 +16,24 @@
       "revId": "aae31767b49d331572fc5d9a396c920b258fd35f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5da7d35e_cab90e25",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-28T15:00:17Z",
+      "side": 1,
+      "message": "That\u0027s the point here. I was wondering if we have to compare and update all chain of changes? It\u0027s enough that after batch update for every ref we compare with zk local ref before update \"p.compareRef\" and updated zk to \"head\" of local ref after update \"current.getObjectId()\". Example for ref1 have have 0(in zk) and new changes 0 -\u003e 1 -\u003e 2 -\u003e 3 so instead of doing loop and updating zk to 1,2 and and finally to 3 w can do one check if 0 \u003d\u003d zk if yes zk \u003d3 and we can do that separately for each unique ref in batch. It\u0027s just a code snippet for discussion.",
+      "parentUuid": "c295632e_5de70c24",
+      "revId": "aae31767b49d331572fc5d9a396c920b258fd35f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
