@@ -34,6 +34,24 @@
       "revId": "aae31767b49d331572fc5d9a396c920b258fd35f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5329e5dc_d7b2446b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-28T15:08:30Z",
+      "side": 1,
+      "message": "\u003e That\u0027s the point here. I was wondering if we have to compare and update all chain of changes? It\u0027s enough that after batch update for every ref we compare with zk local ref before update \"p.compareRef\" and updated zk to \"head\" of local ref after update \"current.getObjectId()\".\n\nBut the p.compareRef could be largely obsolete, because it has been taken well before the ref-update happened.\n\nImagine you have concurrency on that repo and the SHA1 *before* the update was 0. Then you start trying the update and you go in contention with another push for 20-30s. After that you succeed and execute the ref-update, but the SHA1 *after the contention is 4.\n\nThen you try to do a compare and set of 0-\u003e3 but it will fail, because you assume that the current SHA1 is 0, but actually it has been already updated to 4, because of the concurrent push that went into the retry cycle.\n\nThis fix therefore doesn\u0027t really address the underlying issue IMHO.\n\nAny more ideas? Comments?",
+      "parentUuid": "5da7d35e_cab90e25",
+      "revId": "aae31767b49d331572fc5d9a396c920b258fd35f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
