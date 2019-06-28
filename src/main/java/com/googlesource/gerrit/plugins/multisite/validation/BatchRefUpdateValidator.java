@@ -22,10 +22,15 @@ import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEn
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.eclipse.jgit.lib.BatchRefUpdate;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.transport.ReceiveCommand;
 
@@ -82,7 +87,8 @@ public class BatchRefUpdateValidator extends RefUpdateValidator {
         refsToUpdate.stream().filter(RefPair::hasFailed).collect(Collectors.toList());
     if (!refsFailures.isEmpty()) {
       String allFailuresMessage =
-          refsFailures.stream()
+          refsFailures
+              .stream()
               .map(refPair -> String.format("Failed to fetch ref %s", refPair.compareRef.getName()))
               .collect(Collectors.joining(", "));
       Exception firstFailureException = refsFailures.get(0).exception;
@@ -94,6 +100,7 @@ public class BatchRefUpdateValidator extends RefUpdateValidator {
     try (CloseableSet<AutoCloseable> locks = new CloseableSet<>()) {
       checkIfLocalRefIsUpToDateWithSharedRefDb(refsToUpdate, locks);
       delegateUpdate.invoke();
+
       updateSharedRefDb(batchRefUpdate.getCommands().stream(), refsToUpdate);
     }
   }
@@ -107,9 +114,33 @@ public class BatchRefUpdateValidator extends RefUpdateValidator {
       return;
     }
 
-    for (RefPair refPair : refsToUpdate) {
+    List<RefPair> updatedRefPairs =
+        refsToUpdate
+            .stream()
+            .filter(distinctByKey(BatchRefUpdateValidator::getName))
+            .map(
+                p -> {
+                  try {
+                    Ref current = getLatestLocalRef(p);
+                    return new RefPair(p.compareRef, current.getObjectId());
+                  } catch (IOException e) {
+                    throw new RuntimeException(e);
+                  }
+                })
+            .collect(Collectors.toList());
+
+    for (RefPair refPair : updatedRefPairs) {
       updateSharedDbOrThrowExceptionFor(refPair);
     }
+  }
+  
+  public static  String getName(RefPair p) {
+	    return p.compareRef.getName();
+	  }
+
+  public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+    Set<Object> seen = ConcurrentHashMap.newKeySet();
+    return t -> seen.add(keyExtractor.apply(t));
   }
 
   private Stream<RefPair> getRefsPairs(List<ReceiveCommand> receivedCommands) {

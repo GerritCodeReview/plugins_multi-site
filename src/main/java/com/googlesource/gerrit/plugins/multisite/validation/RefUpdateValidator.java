@@ -137,7 +137,7 @@ public class RefUpdateValidator {
     boolean succeeded;
     try {
       succeeded =
-          sharedRefDb.compareAndPut(projectName, getLatestLocalRef(refPair), refPair.putValue);
+          sharedRefDb.compareAndPut(projectName, refPair.compareRef, refPair.putValue);
     } catch (IOException e) {
       throw new SharedDbSplitBrainException(errorMessage, e);
     }
@@ -174,7 +174,7 @@ public class RefUpdateValidator {
     }
   }
 
-  private Ref getLatestLocalRef(RefPair refPair) throws IOException {
+  protected Ref getLatestLocalRef(RefPair refPair) throws IOException {
     return refDb.exactRef(refPair.getName());
   }
 
