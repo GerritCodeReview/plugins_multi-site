@@ -124,6 +124,24 @@
       "revId": "0847fdcc9a058ceb7a068504a6ffe48d87a58368",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84bcac60_d83ec43d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-28T11:23:39Z",
+      "side": 1,
+      "message": "\u003e What about my previous comment? After batch updates we can read local ref and figure out previous SHA1 for commit in batch.\n\nWe could actually use the reflog for that, that\u0027s an interesting idea.",
+      "parentUuid": "660999cd_0b898295",
+      "revId": "0847fdcc9a058ceb7a068504a6ffe48d87a58368",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
