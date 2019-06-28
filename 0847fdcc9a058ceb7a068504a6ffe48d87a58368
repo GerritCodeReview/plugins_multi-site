@@ -16,6 +16,24 @@
       "revId": "0847fdcc9a058ceb7a068504a6ffe48d87a58368",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "10aa41c7_404832a9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-28T08:38:01Z",
+      "side": 1,
+      "message": "Oh, so the code was wrong and the test was wrong ... and we had a green build as a result :-(\n\nWill add that information on the bug raised on the issue tracker.",
+      "parentUuid": "dd798654_48de8047",
+      "revId": "0847fdcc9a058ceb7a068504a6ffe48d87a58368",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
