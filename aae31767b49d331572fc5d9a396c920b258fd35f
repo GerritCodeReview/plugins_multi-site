@@ -52,6 +52,24 @@
       "revId": "aae31767b49d331572fc5d9a396c920b258fd35f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "daa233e8_b86aaf25",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-06-29T09:46:22Z",
+      "side": 1,
+      "message": "What about this change after your\u0027s latest patch set for parent change? We are updating local ref before update in a lock session so in theory we shouldn\u0027t have collision with another push(that\u0027s your change). Then we are setting zookeeper to the local ref head after update. I have added unit test which is addressing issue which is not solved in the patch set for parent change.",
+      "parentUuid": "5329e5dc_d7b2446b",
+      "revId": "aae31767b49d331572fc5d9a396c920b258fd35f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
