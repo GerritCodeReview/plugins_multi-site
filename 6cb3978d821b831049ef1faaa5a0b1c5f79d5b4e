@@ -16,6 +16,98 @@
       "revId": "6cb3978d821b831049ef1faaa5a0b1c5f79d5b4e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4669fd39_b65818c4",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-30T21:50:26Z",
+      "side": 1,
+      "message": "The name of the test isn\u0027t telling me what you are willing to verify as test case.",
+      "range": {
+        "startLine": 112,
+        "startChar": 14,
+        "endLine": 112,
+        "endChar": 61
+      },
+      "revId": "6cb3978d821b831049ef1faaa5a0b1c5f79d5b4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88df1c25_f849ceb3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-30T21:50:26Z",
+      "side": 1,
+      "message": "This should be the SHA1 of firstCommand, otherwise firstCommand and secondCommand are in conflict.",
+      "range": {
+        "startLine": 121,
+        "startChar": 27,
+        "endLine": 121,
+        "endChar": 44
+      },
+      "revId": "6cb3978d821b831049ef1faaa5a0b1c5f79d5b4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "04d112e7_d4343335",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-30T21:50:26Z",
+      "side": 1,
+      "message": "If they should all fail, why you are expecting Result.OK?",
+      "range": {
+        "startLine": 133,
+        "startChar": 51,
+        "endLine": 133,
+        "endChar": 61
+      },
+      "revId": "6cb3978d821b831049ef1faaa5a0b1c5f79d5b4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "073d11dd_61bcae8a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-06-30T21:50:26Z",
+      "side": 1,
+      "message": "None of them should exist, because the whole batch should be rejected.",
+      "range": {
+        "startLine": 137,
+        "startChar": 4,
+        "endLine": 138,
+        "endChar": 53
+      },
+      "revId": "6cb3978d821b831049ef1faaa5a0b1c5f79d5b4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
