@@ -21,6 +21,7 @@ import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDa
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -92,7 +93,7 @@ public class BatchRefUpdateValidator extends RefUpdateValidator {
     }
 
     try (CloseableSet<AutoCloseable> locks = new CloseableSet<>()) {
-      checkIfLocalRefIsUpToDateWithSharedRefDb(refsToUpdate, locks);
+      refsToUpdate = compareAndGetLatestLocalRefs(refsToUpdate, locks);
       delegateUpdate.invoke();
       updateSharedRefDb(batchRefUpdate.getCommands().stream(), refsToUpdate);
     }
@@ -143,10 +144,12 @@ public class BatchRefUpdateValidator extends RefUpdateValidator {
     return command.getNewId();
   }
 
-  private void checkIfLocalRefIsUpToDateWithSharedRefDb(
+  private List<RefPair> compareAndGetLatestLocalRefs(
       List<RefPair> refsToUpdate, CloseableSet<AutoCloseable> locks) throws IOException {
+    List<RefPair> latestRefsToUpdate = new ArrayList<>();
     for (RefPair refPair : refsToUpdate) {
-      checkIfLocalRefIsUpToDateWithSharedRefDb(refPair, locks);
+      latestRefsToUpdate.add(compareAndGetLatestLocalRef(refPair, locks));
     }
+    return latestRefsToUpdate;
   }
 }
