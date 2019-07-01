@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "ccdd9314_cb1d0129",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-01T15:19:17Z",
+      "side": 1,
+      "message": "SGTM, can you make the rename?",
+      "parentUuid": "953e87fc_34ae5264",
+      "range": {
+        "startLine": 147,
+        "startChar": 24,
+        "endLine": 147,
+        "endChar": 64
+      },
+      "revId": "e6148e9586b7e35408ff65e07f505746b2fe3803",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4563fedc_6ba5b87e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
         "patchSetId": 6
