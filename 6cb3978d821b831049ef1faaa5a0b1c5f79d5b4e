@@ -137,6 +137,30 @@
     },
     {
       "key": {
+        "uuid": "49515a88_3e8ea838",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-01T08:34:51Z",
+      "side": 1,
+      "message": "\u003e if I\u0027m gonna do:\n\u003e \n\u003e     ReceiveCommand secondCommand \u003d\n\u003e         new ReceiveCommand(commitObjectIdOne, commitObjectIdTwo, A_TEST_REF_NAME);\n\u003e Method\n\u003e org.eclipse.jgit.internal.storage.dfs.ReftableBatchRefUpdate.matchOld(ReceiveCommand, Ref) is going to return false and status on cmd will be LOCK_FAILURE\n\nDfs? RefTable? I don\u0027t believe this conditions are real. We don\u0027t use the DFS backend and not even the RefTable for refs.\n\nThese tests are half-mocked, half-real, the worse of both worlds :-(",
+      "parentUuid": "2287e2c5_003bc444",
+      "range": {
+        "startLine": 121,
+        "startChar": 27,
+        "endLine": 121,
+        "endChar": 44
+      },
+      "revId": "6cb3978d821b831049ef1faaa5a0b1c5f79d5b4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "04d112e7_d4343335",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseIT.java",
         "patchSetId": 3
@@ -172,6 +196,30 @@
       "side": 1,
       "message": "all should be ok I\u0027m testing positive path with multiple commands in one batch",
       "parentUuid": "04d112e7_d4343335",
+      "range": {
+        "startLine": 133,
+        "startChar": 51,
+        "endLine": 133,
+        "endChar": 61
+      },
+      "revId": "6cb3978d821b831049ef1faaa5a0b1c5f79d5b4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "287e0011_46b7bac8",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-01T08:34:51Z",
+      "side": 1,
+      "message": "No, they shouldn\u0027t be OK as we have two receive commands that are conflicting between each other.",
+      "parentUuid": "1f77d337_d5303a3a",
       "range": {
         "startLine": 133,
         "startChar": 51,
