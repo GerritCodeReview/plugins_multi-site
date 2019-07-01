@@ -113,6 +113,30 @@
     },
     {
       "key": {
+        "uuid": "2287e2c5_003bc444",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-07-01T07:10:43Z",
+      "side": 1,
+      "message": "if I\u0027m gonna do:\n\n    ReceiveCommand secondCommand \u003d\n        new ReceiveCommand(commitObjectIdOne, commitObjectIdTwo, A_TEST_REF_NAME);\nMethod\norg.eclipse.jgit.internal.storage.dfs.ReftableBatchRefUpdate.matchOld(ReceiveCommand, Ref) is going to return false and status on cmd will be LOCK_FAILURE",
+      "parentUuid": "f8d5170c_96cc6500",
+      "range": {
+        "startLine": 121,
+        "startChar": 27,
+        "endLine": 121,
+        "endChar": 44
+      },
+      "revId": "6cb3978d821b831049ef1faaa5a0b1c5f79d5b4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "04d112e7_d4343335",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabaseIT.java",
         "patchSetId": 3
