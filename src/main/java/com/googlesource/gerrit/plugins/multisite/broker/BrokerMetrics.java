@@ -38,14 +38,18 @@ public class BrokerMetrics {
             new Description("Number of messages published by the broker publisher")
                 .setRate()
                 .setUnit("messages"),
-            Field.ofString(PUBLISHER_SUCCESS_COUNTER, "Broker message published count"));
+            Field.ofString(PUBLISHER_SUCCESS_COUNTER)
+                .description("Broker message published count")
+                .build());
     this.brokerPublisherFailureCounter =
         metricMaker.newCounter(
             "multi_site/broker/broker_message_publisher_failure_counter",
             new Description("Number of messages failed to publish by the broker publisher")
                 .setRate()
                 .setUnit("errors"),
-            Field.ofString(PUBLISHER_FAILURE_COUNTER, "Broker failed to publish message count"));
+            Field.ofString(PUBLISHER_FAILURE_COUNTER)
+                .description("Broker failed to publish message count")
+                .build());
   }
 
   public void incrementBrokerPublishedMessage() {

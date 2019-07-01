@@ -35,17 +35,17 @@ public class ValidationMetrics {
         metricMaker.newCounter(
             "multi_site/validation/git_update_split_brain_prevented",
             new Description("Rate of REST API error responses").setRate().setUnit("errors"),
-            Field.ofString(
-                GIT_UPDATE_SPLIT_BRAIN_PREVENTED,
-                "Ref-update operations, split-brain detected and prevented"));
+            Field.ofString(GIT_UPDATE_SPLIT_BRAIN_PREVENTED)
+                .description("Ref-update operations, split-brain detected and prevented")
+                .build());
 
     this.splitBrainCounter =
         metricMaker.newCounter(
             "multi_site/validation/git_update_split_brain",
             new Description("Rate of REST API error responses").setRate().setUnit("errors"),
-            Field.ofString(
-                GIT_UPDATE_SPLIT_BRAIN,
-                "Ref-update operation left node in a split-brain scenario"));
+            Field.ofString(GIT_UPDATE_SPLIT_BRAIN)
+                .description("Ref-update operation left node in a split-brain scenario")
+                .build());
   }
 
   public void incrementSplitBrainPrevention() {

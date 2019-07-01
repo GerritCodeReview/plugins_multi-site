@@ -99,6 +99,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
         .thenReturn(asList(successReceiveCommandAfterExecution));
 
     doReturn(oldRef).when(refDatabase).getRef(A_TEST_REF_NAME);
+    doReturn(oldRef).when(refDatabase).exactRef(A_TEST_REF_NAME);
 
     multiSiteRefUpdate = getMultiSiteBatchRefUpdateWithDefaultPolicyEnforcement();
 
