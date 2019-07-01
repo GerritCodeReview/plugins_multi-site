@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bf495acc_4419fe0c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-01T14:46:18Z",
+      "side": 1,
+      "message": "That\u0027s the thing, this method does two things:\n- check for local ref is up to date\n- get the latest local ref\n\nIt\u0027s important to do both because you need to get *exactly* the ref that was checked for the subsequence update.\n\nAny idea that suggests that this is performing some check also?",
+      "parentUuid": "5ed9e3fe_21ce3a78",
+      "range": {
+        "startLine": 147,
+        "startChar": 24,
+        "endLine": 147,
+        "endChar": 64
+      },
+      "revId": "e6148e9586b7e35408ff65e07f505746b2fe3803",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4563fedc_6ba5b87e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
         "patchSetId": 6
