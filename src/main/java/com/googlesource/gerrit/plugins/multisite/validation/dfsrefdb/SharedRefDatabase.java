@@ -158,6 +158,15 @@ public interface SharedRefDatabase {
   boolean exists(String project, String refName);
 
   /**
+   * Verify if the DB contains a ObjectId.zeroId for the specific project and ref name
+   *
+   * @param project
+   * @param refName
+   * @return true if the ref exists on the project and it is set to ObjectId.zeroId
+   */
+  boolean isTombstone(String project, String refName);
+
+  /**
    * Clean project path from SharedRefDatabase
    *
    * @param project project name

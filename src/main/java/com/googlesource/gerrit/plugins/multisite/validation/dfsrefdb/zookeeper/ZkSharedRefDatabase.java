@@ -103,6 +103,22 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   }
 
   @Override
+  public boolean isTombstone(String project, String refName) {
+    try {
+      byte[] valueInZk = client.getData().forPath(pathFor(project, refName));
+      if (valueInZk == null) {
+        return false;
+      }
+      return ObjectId.fromString(client.getData().forPath(pathFor(project, refName)), 0)
+          .equals(ObjectId.zeroId());
+
+    } catch (Exception e) {
+      throw new ZookeeperRuntimeException(
+          "Failed to check if path is set to tombstone in Zookeeper", e);
+    }
+  }
+
+  @Override
   public Locker lockRef(String project, String refName) throws SharedLockException {
     InterProcessMutex refPathMutex =
         new InterProcessMutex(client, "/locks" + pathFor(project, refName));
