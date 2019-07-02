@@ -149,8 +149,7 @@ public class RefUpdateValidator {
     }
   }
 
-  protected RefPair compareAndGetLatestLocalRef(
-      RefPair refPair, CloseableSet<AutoCloseable> locks)
+  protected RefPair compareAndGetLatestLocalRef(RefPair refPair, CloseableSet<AutoCloseable> locks)
       throws SharedLockException, OutOfSyncException, IOException {
     String refName = refPair.getName();
     EnforcePolicy refEnforcementPolicy = refEnforcement.getPolicy(projectName, refName);
@@ -163,12 +162,11 @@ public class RefUpdateValidator {
         () -> sharedRefDb.lockRef(projectName, refName));
 
     RefPair latestRefPair = getLatestLocalRef(refPair);
-    boolean isInSync =
-        (latestRefPair.compareRef.getObjectId().equals(ObjectId.zeroId()))
-            ? !sharedRefDb.exists(projectName, refName)
-            : sharedRefDb.isUpToDate(projectName, latestRefPair.compareRef);
+    if (sharedRefDb.isUpToDate(projectName, latestRefPair.compareRef)) {
+      return latestRefPair;
+    }
 
-    if (!isInSync) {
+    if (isNullRef(latestRefPair.compareRef) || sharedRefDb.exists(projectName, refName)) {
       validationMetrics.incrementSplitBrainPrevention();
 
       softFailBasedOnEnforcement(
@@ -176,6 +174,10 @@ public class RefUpdateValidator {
     }
 
     return latestRefPair;
+  }
+
+  private boolean isNullRef(Ref ref) {
+    return ref.getObjectId().equals(ObjectId.zeroId());
   }
 
   private RefPair getLatestLocalRef(RefPair refPair) throws IOException {

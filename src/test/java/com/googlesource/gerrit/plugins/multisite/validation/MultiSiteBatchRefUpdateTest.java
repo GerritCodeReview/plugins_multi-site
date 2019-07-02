@@ -126,7 +126,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
   @Test
   public void executeAndFailsWithExceptions() throws IOException {
     setMockRequiredReturnValues();
-
+    doReturn(true).when(sharedRefDb).exists(A_TEST_PROJECT_NAME, A_TEST_REF_NAME);
     doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, oldRef);
     try {
       multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
