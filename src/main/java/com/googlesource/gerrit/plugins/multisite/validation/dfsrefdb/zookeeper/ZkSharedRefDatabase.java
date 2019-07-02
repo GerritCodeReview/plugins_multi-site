@@ -96,7 +96,9 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   @Override
   public boolean exists(String project, String refName) throws ZookeeperRuntimeException {
     try {
-      return client.checkExists().forPath(pathFor(project, refName)) != null;
+      return client.checkExists().forPath(pathFor(project, refName)) != null
+          && !ObjectId.fromString(client.getData().forPath(pathFor(project, refName)), 0)
+              .equals(ObjectId.zeroId());
     } catch (Exception e) {
       throw new ZookeeperRuntimeException("Failed to check if path exists in Zookeeper", e);
     }
