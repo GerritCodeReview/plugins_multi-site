@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f2987feb_132a60d3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-02T09:39:19Z",
+      "side": 1,
+      "message": "This condition should actually cover the tombstone case already, do we really need an extra method and to make this check so complicated?\n\nWhy not saying instead:\n\na) sharedRefDb.isUpToDate \u003d\u003e then return true\nb) if(latestRefPair.compareRef.getObjectId().equals(ObjectId.zeroId())) \u003d\u003e then return !sharedRefDb.exists(projectName, refName)\nc) otherwise return false",
+      "range": {
+        "startLine": 169,
+        "startChar": 14,
+        "endLine": 169,
+        "endChar": 75
+      },
+      "revId": "49d16914505c2e3e5f0401df079f8378a04ff922",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00417b07_3d84c44e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-02T09:39:19Z",
+      "side": 1,
+      "message": "I don\u0027t believe we need an extra method for this, as the exist and isUpToDate should suffice",
+      "range": {
+        "startLine": 167,
+        "startChar": 10,
+        "endLine": 167,
+        "endChar": 21
+      },
+      "revId": "49d16914505c2e3e5f0401df079f8378a04ff922",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c4be104_3dd11837",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkSharedRefDatabase.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-02T09:39:19Z",
+      "side": 1,
+      "message": "We should include the refName also in the exception.",
+      "range": {
+        "startLine": 117,
+        "startChar": 30,
+        "endLine": 117,
+        "endChar": 34
+      },
+      "revId": "49d16914505c2e3e5f0401df079f8378a04ff922",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
