@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import com.google.gerrit.acceptance.AbstractDaemonTest;
 import com.google.gerrit.metrics.DisabledMetricMaker;
@@ -136,6 +137,31 @@ public class ZkSharedRefDatabaseIT extends AbstractDaemonTest implements RefFixt
     assertFalse(existsDataInZkForCommand(firstCommand));
     assertFalse(existsDataInZkForCommand(aNonFastForwardUpdate));
     assertFalse(existsDataInZkForCommand(aNewCreate));
+  }
+
+  @Test
+  public void shouldBeSucceesfulWhenRefIsRecreated() throws Exception {
+    ObjectId commitObjectIdOne = commitBuilder().add("test_file1.txt", "A").create().getId();
+    ObjectId commitObjectIdTwo = commitBuilder().add("test_file1.txt", "B").create().getId();
+
+    ReceiveCommand firstCommand =
+        new ReceiveCommand(ObjectId.zeroId(), commitObjectIdOne, A_TEST_REF_NAME);
+
+    ReceiveCommand deleteCommand =
+        new ReceiveCommand(commitObjectIdOne, ObjectId.zeroId(), A_TEST_REF_NAME, Type.DELETE);
+
+    ReceiveCommand secondCommand =
+        new ReceiveCommand(ObjectId.zeroId(), commitObjectIdTwo, A_TEST_REF_NAME);
+
+    InMemoryRepository repository = testRepo.getRepository();
+    try (RevWalk rw = new RevWalk(repository)) {
+
+      newBatchRefUpdate(repository, firstCommand).execute(rw, NullProgressMonitor.INSTANCE);
+      newBatchRefUpdate(repository, deleteCommand).execute(rw, NullProgressMonitor.INSTANCE);
+      newBatchRefUpdate(repository, secondCommand).execute(rw, NullProgressMonitor.INSTANCE);
+    }
+
+    assertTrue(existsDataInZkForCommand(secondCommand));
   }
 
   private boolean existsDataInZkForCommand(ReceiveCommand firstCommand) throws Exception {
