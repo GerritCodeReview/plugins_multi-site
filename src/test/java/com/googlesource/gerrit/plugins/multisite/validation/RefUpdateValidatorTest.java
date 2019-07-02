@@ -135,6 +135,7 @@ public class RefUpdateValidatorTest implements RefFixture {
   @Test(expected = OutOfSyncException.class)
   public void validationShouldFailWhenLocalRefDbIsNotUpToDate() throws Exception {
     lenient().doReturn(true).when(sharedRefDb).isUpToDate(anyString(), any(Ref.class));
+    doReturn(true).when(sharedRefDb).exists(A_TEST_PROJECT_NAME, refName);
     doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, localRef);
 
     refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
