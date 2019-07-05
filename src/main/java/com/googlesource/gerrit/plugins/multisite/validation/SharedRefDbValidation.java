@@ -19,8 +19,6 @@ import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDa
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,14 +27,7 @@ import org.eclipse.jgit.transport.RemoteRefUpdate;
 public class SharedRefDbValidation {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  public static Map<String, RemoteRefUpdate> filterOutOfSyncRemoteRefUpdates(
-      String projectName, SharedRefDatabase sharedRefDb, Map<String, RemoteRefUpdate> refUpdates) {
-    return filterOutOfSyncRemoteRefUpdates(
-            projectName, sharedRefDb, refUpdates.entrySet().stream(), entry -> entry.getValue())
-        .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-  }
-
-  public static Collection<RemoteRefUpdate> filterOutOfSyncRemoteRefUpdates(
+  public static List<RemoteRefUpdate> filterOutOfSyncRemoteRefUpdates(
       String projectName, SharedRefDatabase sharedRefDb, Collection<RemoteRefUpdate> refUpdates) {
     return filterOutOfSyncRemoteRefUpdates(
             projectName, sharedRefDb, refUpdates.stream(), Function.identity())

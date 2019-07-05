@@ -37,7 +37,6 @@ public class MultiSiteGitRepositoryManagerTest implements RefFixture {
 
   @Mock MultiSiteRepository multiSiteRepositoryMock;
 
-  @Mock MultiSiteTransport.Factory multiSiteTransportFactory;
 
   MultiSiteGitRepositoryManager msRepoMgr;
 
@@ -54,7 +53,6 @@ public class MultiSiteGitRepositoryManagerTest implements RefFixture {
     msRepoMgr =
         new MultiSiteGitRepositoryManager(
             multiSiteRepositoryFactoryMock,
-            multiSiteTransportFactory,
             localDiskRepositoryManagerMock);
   }
 
