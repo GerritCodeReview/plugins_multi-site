@@ -364,6 +364,9 @@ if [ $NEW_INSTALLATION = "true" ]; then
 	echo "Copy healthcheck plugin"
 	cp -f $DEPLOYMENT_LOCATION/healthcheck.jar $LOCATION_TEST_SITE_1/plugins/healthcheck.jar
 
+	echo "Copy replication plugin"
+	cp -f $LOCATION_TEST_SITE_1/plugins/replication.jar $LOCATION_TEST_SITE_1/lib/replication.jar
+
 	echo "Re-indexing"
 	java -jar $DEPLOYMENT_LOCATION/gerrit.war reindex -d $LOCATION_TEST_SITE_1
 	# Replicating environment
