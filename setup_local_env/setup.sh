@@ -364,11 +364,18 @@ if [ $NEW_INSTALLATION = "true" ]; then
 	echo "Copy healthcheck plugin"
 	cp -f $DEPLOYMENT_LOCATION/healthcheck.jar $LOCATION_TEST_SITE_1/plugins/healthcheck.jar
 
+	echo "Copy replication plugin"
+	cp -f $LOCATION_TEST_SITE_1/plugins/replication.jar $LOCATION_TEST_SITE_1/lib/replication.jar
+
 	echo "Re-indexing"
 	java -jar $DEPLOYMENT_LOCATION/gerrit.war reindex -d $LOCATION_TEST_SITE_1
 	# Replicating environment
 	echo "Replicating environment"
 	cp -fR $LOCATION_TEST_SITE_1/* $LOCATION_TEST_SITE_2
+
+	#prevent issue with dynamic bining order
+	touch -d "$(date -R -r $LOCATION_TEST_SITE_1/lib/replication.jar) - 1 minute" $LOCATION_TEST_SITE_1/lib/multi-site.jar
+	touch -d "$(date -R -r $LOCATION_TEST_SITE_2/lib/replication.jar) - 1 minute" $LOCATION_TEST_SITE_2/lib/multi-site.jar
 fi
 
 
