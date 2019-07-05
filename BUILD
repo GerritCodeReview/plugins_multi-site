@@ -22,6 +22,7 @@ gerrit_plugin(
         "@curator-recipes//jar",
         "@kafka-client//jar",
         "@zookeeper//jar",
+        "//plugins/replication",
     ],
 )
 
