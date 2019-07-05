@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Scopes;
@@ -23,6 +24,7 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
+import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 
 public class ValidationModule extends FactoryModule {
   private final Configuration cfg;
@@ -41,6 +43,9 @@ public class ValidationModule extends FactoryModule {
     factory(MultiSiteBatchRefUpdate.Factory.class);
     factory(RefUpdateValidator.Factory.class);
     factory(BatchRefUpdateValidator.Factory.class);
+
+    DynamicItem.bind(binder(), ReplicationPushFilter.class)
+        .to(MultisiteBeforeReplicationPushFilter.class);
 
     if (!disableGitRepositoryValidation) {
       bind(GitRepositoryManager.class).to(MultiSiteGitRepositoryManager.class);
