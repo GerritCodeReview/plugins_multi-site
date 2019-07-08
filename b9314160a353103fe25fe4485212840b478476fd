@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "4d5949a1_dd4ded94",
+        "filename": "BUILD",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-07-08T18:21:17Z",
+      "side": 1,
+      "message": "I\u0027m not sure if I understand correctly. Do we have standalone build for multi-site plugin? Currently I going to get exception when I will go to multi-site directory and call bazel build multi-site. In the documentation setup section says that we have to link multi-site to gerrit/plugins/ and than bazel build plugins/multi-site works. That\u0027s why I thought that because we always have to build together with gerrit it\u0027s fine to add //plugins/replication",
+      "parentUuid": "82961af5_591e918c",
+      "revId": "b9314160a353103fe25fe4485212840b478476fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d39c8b9b_18536b8d",
         "filename": "setup_local_env/setup.sh",
         "patchSetId": 6
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "aa5f5562_46ff8e1a",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-07-08T18:21:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d39c8b9b_18536b8d",
+      "range": {
+        "startLine": 367,
+        "startChar": 0,
+        "endLine": 370,
+        "endChar": 0
+      },
+      "revId": "b9314160a353103fe25fe4485212840b478476fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b0dc4d7_92fc6bec",
         "filename": "setup_local_env/setup.sh",
         "patchSetId": 6
@@ -62,6 +104,30 @@
       "revId": "b9314160a353103fe25fe4485212840b478476fd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf79d038_e2465bf6",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-07-08T18:21:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b0dc4d7_92fc6bec",
+      "range": {
+        "startLine": 376,
+        "startChar": 0,
+        "endLine": 378,
+        "endChar": 119
+      },
+      "revId": "b9314160a353103fe25fe4485212840b478476fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
