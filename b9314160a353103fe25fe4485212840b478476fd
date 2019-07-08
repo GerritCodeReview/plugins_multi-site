@@ -145,6 +145,24 @@
       "revId": "b9314160a353103fe25fe4485212840b478476fd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ea76345_d38ccaa4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteBeforeReplicationPushFilter.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-07-08T20:02:26Z",
+      "side": 1,
+      "message": "I was thinking the same but than I had a closer look at the code and the only common part with RefUpdateValidator is that we are calling isUpToDate method.There is also some extra logic which we don\u0027t have in RefUpdateValidator. To be honest I thought that this code was already reviewed because it\u0027s coming from the previous approach. In the newest patch set I\u0027ve clean up the code a bit to make it more readable. @Tiago could you please confirm that we still need all that logic?",
+      "parentUuid": "7b0a56c8_fedbcbd6",
+      "revId": "b9314160a353103fe25fe4485212840b478476fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
