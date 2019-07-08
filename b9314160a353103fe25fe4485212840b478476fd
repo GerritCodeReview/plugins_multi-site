@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "82961af5_591e918c",
+        "filename": "BUILD",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-08T06:46:39Z",
+      "side": 1,
+      "message": "Can you add the reference to in the WORKSPACE file, so that standalone build will continue to work?",
+      "revId": "b9314160a353103fe25fe4485212840b478476fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d39c8b9b_18536b8d",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-08T06:46:39Z",
+      "side": 1,
+      "message": "No need to make a copy, you can simply link it.",
+      "range": {
+        "startLine": 367,
+        "startChar": 0,
+        "endLine": 370,
+        "endChar": 0
+      },
+      "revId": "b9314160a353103fe25fe4485212840b478476fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b0dc4d7_92fc6bec",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-08T06:46:39Z",
+      "side": 1,
+      "message": "This is caused by your Noop implementation, just remove it altogether.",
+      "range": {
+        "startLine": 376,
+        "startChar": 0,
+        "endLine": 378,
+        "endChar": 119
+      },
+      "revId": "b9314160a353103fe25fe4485212840b478476fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b0a56c8_fedbcbd6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteBeforeReplicationPushFilter.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-08T06:46:39Z",
+      "side": 1,
+      "message": "This method looks to me too long and complicated. We do already have that logic implemented, why do we need to re-write it? Why not just reusing it?",
+      "revId": "b9314160a353103fe25fe4485212840b478476fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
