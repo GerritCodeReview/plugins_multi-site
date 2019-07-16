@@ -19,6 +19,7 @@ import static junit.framework.TestCase.assertFalse;
 import static org.eclipse.jgit.transport.ReceiveCommand.Type.UPDATE;
 
 import com.google.gerrit.metrics.DisabledMetricMaker;
+import com.googlesource.gerrit.plugins.multisite.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
@@ -145,6 +146,7 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
         zkSharedRefDatabase,
         new ValidationMetrics(new DisabledMetricMaker()),
         sharedRefEnforcement,
+        new DisabledSharedRefLogger(),
         projectName,
         diskRepo.getRefDatabase());
   }
