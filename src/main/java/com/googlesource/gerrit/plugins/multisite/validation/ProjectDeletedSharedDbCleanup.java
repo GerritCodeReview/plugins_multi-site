@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.SharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import java.io.IOException;
 
@@ -26,12 +27,16 @@ public class ProjectDeletedSharedDbCleanup implements ProjectDeletedListener {
   private final SharedRefDatabase sharedDb;
 
   private final ValidationMetrics validationMetrics;
+  private final SharedRefLogger sharedRefLogger;
 
   @Inject
   public ProjectDeletedSharedDbCleanup(
-      SharedRefDatabase sharedDb, ValidationMetrics validationMetrics) {
+      SharedRefDatabase sharedDb,
+      ValidationMetrics validationMetrics,
+      SharedRefLogger sharedRefLogger) {
     this.sharedDb = sharedDb;
     this.validationMetrics = validationMetrics;
+    this.sharedRefLogger = sharedRefLogger;
   }
 
   @Override
@@ -42,6 +47,7 @@ public class ProjectDeletedSharedDbCleanup implements ProjectDeletedListener {
 
     try {
       sharedDb.removeProject(projectName);
+      sharedRefLogger.logDeletion(projectName);
     } catch (IOException e) {
       validationMetrics.incrementSplitBrain();
       logger.atSevere().withCause(e).log(
