@@ -19,6 +19,7 @@ import static org.mockito.Mockito.mock;
 
 import com.google.gerrit.extensions.api.changes.NotifyHandling;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.googlesource.gerrit.plugins.multisite.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationMetrics;
 import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
@@ -187,7 +188,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
     String projectName = A_TEST_PROJECT_NAME;
     Ref someRef = refOf(AN_OBJECT_ID_1);
     ProjectDeletedSharedDbCleanup projectDeletedSharedDbCleanup =
-        new ProjectDeletedSharedDbCleanup(zkSharedRefDatabase, mockValidationMetrics);
+        new ProjectDeletedSharedDbCleanup(zkSharedRefDatabase, mockValidationMetrics, new DisabledSharedRefLogger());
 
     ProjectDeletedListener.Event event =
         new ProjectDeletedListener.Event() {

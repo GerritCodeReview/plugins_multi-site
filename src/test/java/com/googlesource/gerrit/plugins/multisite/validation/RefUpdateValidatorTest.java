@@ -22,6 +22,7 @@ import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import com.googlesource.gerrit.plugins.multisite.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.OutOfSyncException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedDbSplitBrainException;
@@ -75,7 +76,7 @@ public class RefUpdateValidatorTest implements RefFixture {
 
     refUpdateValidator =
         new RefUpdateValidator(
-            sharedRefDb, validationMetrics, defaultRefEnforcement, A_TEST_PROJECT_NAME, localRefDb);
+            sharedRefDb, validationMetrics, defaultRefEnforcement, new DisabledSharedRefLogger(), A_TEST_PROJECT_NAME, localRefDb);
   }
 
   @Test

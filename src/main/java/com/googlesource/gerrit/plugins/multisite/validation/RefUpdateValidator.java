@@ -20,6 +20,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.googlesource.gerrit.plugins.multisite.SharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.OutOfSyncException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedDbSplitBrainException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedLockException;
@@ -40,6 +41,7 @@ public class RefUpdateValidator {
   protected final ValidationMetrics validationMetrics;
 
   protected final String projectName;
+  private final SharedRefLogger sharedRefLogger;
   protected final RefDatabase refDb;
   protected final SharedRefEnforcement refEnforcement;
 
@@ -69,10 +71,12 @@ public class RefUpdateValidator {
       SharedRefDatabase sharedRefDb,
       ValidationMetrics validationMetrics,
       SharedRefEnforcement refEnforcement,
+      SharedRefLogger sharedRefLogger,
       @Assisted String projectName,
       @Assisted RefDatabase refDb) {
     this.sharedRefDb = sharedRefDb;
     this.validationMetrics = validationMetrics;
+    this.sharedRefLogger = sharedRefLogger;
     this.refDb = refDb;
     this.projectName = projectName;
     this.refEnforcement = refEnforcement;
@@ -140,6 +144,7 @@ public class RefUpdateValidator {
     boolean succeeded;
     try {
       succeeded = sharedRefDb.compareAndPut(projectName, refPair.compareRef, refPair.putValue);
+      sharedRefLogger.log(projectName,refPair.compareRef,refPair.putValue);
     } catch (IOException e) {
       throw new SharedDbSplitBrainException(errorMessage, e);
     }

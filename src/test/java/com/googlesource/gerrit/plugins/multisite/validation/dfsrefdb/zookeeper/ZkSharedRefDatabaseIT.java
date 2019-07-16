@@ -20,6 +20,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.google.gerrit.acceptance.AbstractDaemonTest;
 import com.google.gerrit.metrics.DisabledMetricMaker;
+import com.googlesource.gerrit.plugins.multisite.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.BatchRefUpdateValidator;
 import com.googlesource.gerrit.plugins.multisite.validation.MultiSiteBatchRefUpdate;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationMetrics;
@@ -179,6 +180,7 @@ public class ZkSharedRefDatabaseIT extends AbstractDaemonTest implements RefFixt
                 zkSharedRefDatabase,
                 new ValidationMetrics(new DisabledMetricMaker()),
                 new DefaultSharedRefEnforcement(),
+                new DisabledSharedRefLogger(),
                 projectName,
                 refDb);
           }
