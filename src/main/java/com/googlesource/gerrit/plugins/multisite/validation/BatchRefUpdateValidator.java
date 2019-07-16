@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
@@ -43,7 +44,7 @@ public class BatchRefUpdateValidator extends RefUpdateValidator {
 
   @Inject
   public BatchRefUpdateValidator(
-      SharedRefDatabase sharedRefDb,
+      SharedRefDatabaseWrapper sharedRefDb,
       ValidationMetrics validationMetrics,
       SharedRefEnforcement refEnforcement,
       @Assisted String projectName,
