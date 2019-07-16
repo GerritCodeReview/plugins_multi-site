@@ -19,6 +19,7 @@ import static junit.framework.TestCase.assertFalse;
 import static org.eclipse.jgit.transport.ReceiveCommand.Type.UPDATE;
 
 import com.google.gerrit.metrics.DisabledMetricMaker;
+import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
@@ -54,7 +55,7 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
   private RevCommit B;
 
   ZookeeperTestContainerSupport zookeeperContainer;
-  ZkSharedRefDatabase zkSharedRefDatabase;
+  SharedRefDatabaseWrapper zkSharedRefDatabase;
 
   @Before
   public void setup() throws Exception {
@@ -79,11 +80,13 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
     int NUMBER_OF_RETRIES = 5;
 
     zkSharedRefDatabase =
-        new ZkSharedRefDatabase(
-            zookeeperContainer.getCurator(),
-            new ZkConnectionConfig(
-                new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
-                TRANSACTION_LOCK_TIMEOUT));
+        new SharedRefDatabaseWrapper(
+            new ZkSharedRefDatabase(
+                zookeeperContainer.getCurator(),
+                new ZkConnectionConfig(
+                    new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
+                    TRANSACTION_LOCK_TIMEOUT)),
+            new DisabledSharedRefLogger());
   }
 
   @Test

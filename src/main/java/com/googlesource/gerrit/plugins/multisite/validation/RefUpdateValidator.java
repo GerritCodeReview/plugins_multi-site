@@ -20,6 +20,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.OutOfSyncException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedDbSplitBrainException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedLockException;
@@ -36,7 +37,7 @@ import org.eclipse.jgit.lib.RefUpdate;
 public class RefUpdateValidator {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  protected final SharedRefDatabase sharedRefDb;
+  protected final SharedRefDatabaseWrapper sharedRefDb;
   protected final ValidationMetrics validationMetrics;
 
   protected final String projectName;
@@ -66,7 +67,7 @@ public class RefUpdateValidator {
 
   @Inject
   public RefUpdateValidator(
-      SharedRefDatabase sharedRefDb,
+      SharedRefDatabaseWrapper sharedRefDb,
       ValidationMetrics validationMetrics,
       SharedRefEnforcement refEnforcement,
       @Assisted String projectName,
