@@ -23,6 +23,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.googlesource.gerrit.plugins.multisite.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
@@ -155,6 +156,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
                 sharedRefDb,
                 validationMetrics,
                 new DefaultSharedRefEnforcement(),
+                new DisabledSharedRefLogger(),
                 projectName,
                 refDb);
           }
