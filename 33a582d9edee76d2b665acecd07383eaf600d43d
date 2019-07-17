@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "7e8d738a_f2f224d8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-17T09:15:24Z",
+      "side": 1,
+      "message": "\u003e I actually tried to implement this using a refLogReader, but that doesn\u0027t work because of missing READ_REFLOG permissions.\n\u003e Creating a oneOffContext to open the repo as an admin user, also doesn\u0027t work because the relevant implementations (users factory, group caches, etc) have not been bound when the multi-site libModule is instantiated.\n\nI did not mean to read the actual reflog but just use the same JSON syntax.",
+      "parentUuid": "1126a6b7_0f895d5f",
+      "range": {
+        "startLine": 40,
+        "startChar": 9,
+        "endLine": 40,
+        "endChar": 45
+      },
+      "revId": "33a582d9edee76d2b665acecd07383eaf600d43d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "514a0a51_2961710f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
         "patchSetId": 3
