@@ -49,11 +49,6 @@ public class SharedRefDatabaseWrapper implements SharedRefDatabase {
   }
 
   @Override
-  public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
-    return sharedRefDb.compareAndRemove(project, oldRef);
-  }
-
-  @Override
   public AutoCloseable lockRef(String project, String refName) throws SharedLockException {
     return sharedRefDb.lockRef(project, refName);
   }
