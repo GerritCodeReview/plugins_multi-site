@@ -86,18 +86,6 @@ public interface SharedRefDatabase {
   }
 
   /**
-   * Utility method for new refs.
-   *
-   * @param project project name of the ref
-   * @param newRef new reference to store.
-   * @return true if the operation was successful; false otherwise.
-   * @throws IOException
-   */
-  default boolean compareAndCreate(String project, Ref newRef) throws IOException {
-    return compareAndPut(project, nullRef(newRef.getName()), newRef.getObjectId());
-  }
-
-  /**
    * Verify in shared db if Ref is the most recent
    *
    * @param project project name of the ref
@@ -127,16 +115,6 @@ public interface SharedRefDatabase {
    * @throws java.io.IOException the reference cannot be put due to a system error.
    */
   boolean compareAndPut(String project, Ref currRef, ObjectId newRefValue) throws IOException;
-
-  /**
-   * Compare a reference, and delete if it matches.
-   *
-   * @param project project name of the ref
-   * @param oldRef the old reference information that was previously read.
-   * @return true if the remove was successful; false otherwise.
-   * @throws java.io.IOException the reference could not be removed due to a system error.
-   */
-  boolean compareAndRemove(String project, Ref oldRef) throws IOException;
 
   /**
    * Lock a reference for writing.
