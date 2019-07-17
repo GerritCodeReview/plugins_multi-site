@@ -285,6 +285,30 @@
     },
     {
       "key": {
+        "uuid": "cad01968_6ba98a0c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-17T14:34:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e70a6eda_e1dfa3a2",
+      "range": {
+        "startLine": 50,
+        "startChar": 6,
+        "endLine": 50,
+        "endChar": 37
+      },
+      "revId": "33a582d9edee76d2b665acecd07383eaf600d43d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0144fa0b_19e5079c",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectDeletedSharedDbCleanup.java",
         "patchSetId": 3
@@ -356,6 +380,30 @@
     },
     {
       "key": {
+        "uuid": "7e68a8f5_b2dd04e7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectDeletedSharedDbCleanup.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-17T14:34:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d4da3a0_99139c63",
+      "range": {
+        "startLine": 50,
+        "startChar": 22,
+        "endLine": 50,
+        "endChar": 33
+      },
+      "revId": "33a582d9edee76d2b665acecd07383eaf600d43d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2026cc07_94454d9f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
         "patchSetId": 3
@@ -400,6 +448,30 @@
       "revId": "33a582d9edee76d2b665acecd07383eaf600d43d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb9315e6_adbc51f0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-17T14:34:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6eed0a1_9b6b4bb1",
+      "range": {
+        "startLine": 147,
+        "startChar": 22,
+        "endLine": 147,
+        "endChar": 25
+      },
+      "revId": "33a582d9edee76d2b665acecd07383eaf600d43d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
