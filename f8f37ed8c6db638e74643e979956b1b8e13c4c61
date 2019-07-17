@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eaa4ee35_3b510ee9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/DisabledSharedRefLogger.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-17T12:17:24Z",
+      "side": 1,
+      "message": "This is defined for testing purposes, correct? It should be moved to the tests",
+      "revId": "f8f37ed8c6db638e74643e979956b1b8e13c4c61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe142433_120304a3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-17T12:17:24Z",
+      "side": 1,
+      "message": "The opening of the repo and walk can be put inside the positive branch of the if.",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 56,
+        "endChar": 47
+      },
+      "revId": "f8f37ed8c6db638e74643e979956b1b8e13c4c61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aba4b446_fdb76bad",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-17T12:17:24Z",
+      "side": 1,
+      "message": "DELETE_PROJECT",
+      "range": {
+        "startLine": 61,
+        "startChar": 23,
+        "endLine": 61,
+        "endChar": 33
+      },
+      "revId": "f8f37ed8c6db638e74643e979956b1b8e13c4c61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

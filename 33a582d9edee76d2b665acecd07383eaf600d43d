@@ -332,6 +332,30 @@
     },
     {
       "key": {
+        "uuid": "2d4da3a0_99139c63",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectDeletedSharedDbCleanup.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-07-17T12:17:24Z",
+      "side": 1,
+      "message": "\u003e Do you mean in the specific zookeper implementation?\n\u003e I would like the sharedref_log to be populated regardless the implementation that is plugged in (i.e. zookeper) \n\u003e \n\u003e If you meant SharedRefDatabase, that\u0027s an interface and thus provide no implementation, so the logging cannot go there.\n\nYes, that\u0027s why typically loggers needs stay in between as wrappers:\n- you wrap the shared-refdb\n- you log what\u0027s coming in and out\n- you delegate to the real implementation\n\nThat\u0027s a common pattern for loggers. WDYT?",
+      "parentUuid": "c4ce8395_ffd3b284",
+      "range": {
+        "startLine": 50,
+        "startChar": 22,
+        "endLine": 50,
+        "endChar": 33
+      },
+      "revId": "33a582d9edee76d2b665acecd07383eaf600d43d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2026cc07_94454d9f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
         "patchSetId": 3
