@@ -15,7 +15,9 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.SourceAwareEventWrapper;
+import org.junit.Ignore;
 
+@Ignore
 public class DisabledMessageLogger implements MessageLogger {
 
   @Override
