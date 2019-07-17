@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b3ba5733_e4a74243",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-17T09:11:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9de2bf25_4a2a69f5",
+      "range": {
+        "startLine": 28,
+        "startChar": 42,
+        "endLine": 28,
+        "endChar": 57
+      },
+      "revId": "33a582d9edee76d2b665acecd07383eaf600d43d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8f413056_caf7274e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "fd94f484_74bcb4af",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-17T09:11:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8f413056_caf7274e",
+      "range": {
+        "startLine": 38,
+        "startChar": 14,
+        "endLine": 38,
+        "endChar": 17
+      },
+      "revId": "33a582d9edee76d2b665acecd07383eaf600d43d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "56d18fbf_6aca4729",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
         "patchSetId": 3
@@ -59,6 +107,30 @@
       "writtenOn": "2019-07-16T20:51:58Z",
       "side": 1,
       "message": "Would be best to use a JSON format, so that it is easier to parse and filter. What about using the same JSON format of the Gerrit ref-log? (see https://gerrit-review.googlesource.com/Documentation/rest-api-projects.html#get-reflog)",
+      "range": {
+        "startLine": 40,
+        "startChar": 9,
+        "endLine": 40,
+        "endChar": 45
+      },
+      "revId": "33a582d9edee76d2b665acecd07383eaf600d43d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1126a6b7_0f895d5f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-17T09:11:19Z",
+      "side": 1,
+      "message": "I actually tried to implement this using a refLogReader, but that doesn\u0027t work because of missing READ_REFLOG permissions.\nCreating a oneOffContext to open the repo as an admin user, also doesn\u0027t work because the relevant implementations (users factory, group caches, etc) have not been bound when the multi-site libModule is instantiated.\n\nI could try to read information from the new objectId again from jgit, but I am not sure if that\u0027s going to show the same problems as refLogs. \n\nLet me try a different approach, in the meantime, do you have any idea how to work around that?",
+      "parentUuid": "56d18fbf_6aca4729",
       "range": {
         "startLine": 40,
         "startChar": 9,
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "5add24d0_1622935e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-17T09:11:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "514a0a51_2961710f",
+      "range": {
+        "startLine": 48,
+        "startChar": 14,
+        "endLine": 48,
+        "endChar": 25
+      },
+      "revId": "33a582d9edee76d2b665acecd07383eaf600d43d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2e0c6327_c20a394b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
         "patchSetId": 3
@@ -105,6 +201,30 @@
       "writtenOn": "2019-07-16T20:51:58Z",
       "side": 1,
       "message": "Instead of adding the logger all around, why don\u0027t we concentrate on the shared ref-db code?",
+      "range": {
+        "startLine": 50,
+        "startChar": 6,
+        "endLine": 50,
+        "endChar": 37
+      },
+      "revId": "33a582d9edee76d2b665acecd07383eaf600d43d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e70a6eda_e1dfa3a2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-17T09:11:19Z",
+      "side": 1,
+      "message": "See my reply above, hope it makes sense",
+      "parentUuid": "2e0c6327_c20a394b",
       "range": {
         "startLine": 50,
         "startChar": 6,
@@ -140,6 +260,30 @@
     },
     {
       "key": {
+        "uuid": "c4ce8395_ffd3b284",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectDeletedSharedDbCleanup.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-17T09:11:19Z",
+      "side": 1,
+      "message": "Do you mean in the specific zookeper implementation?\nI would like the sharedref_log to be populated regardless the implementation that is plugged in (i.e. zookeper) \n\nIf you meant SharedRefDatabase, that\u0027s an interface and thus provide no implementation, so the logging cannot go there.\n\nI am probably missing something, am I? :)",
+      "parentUuid": "0144fa0b_19e5079c",
+      "range": {
+        "startLine": 50,
+        "startChar": 22,
+        "endLine": 50,
+        "endChar": 33
+      },
+      "revId": "33a582d9edee76d2b665acecd07383eaf600d43d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2026cc07_94454d9f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
         "patchSetId": 3
@@ -151,6 +295,30 @@
       "writtenOn": "2019-07-16T20:51:58Z",
       "side": 1,
       "message": "This could go *inside* the sharedRefDb.compareAndPut()",
+      "range": {
+        "startLine": 147,
+        "startChar": 22,
+        "endLine": 147,
+        "endChar": 25
+      },
+      "revId": "33a582d9edee76d2b665acecd07383eaf600d43d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6eed0a1_9b6b4bb1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-17T09:11:19Z",
+      "side": 1,
+      "message": "See my response above",
+      "parentUuid": "2026cc07_94454d9f",
       "range": {
         "startLine": 147,
         "startChar": 22,
