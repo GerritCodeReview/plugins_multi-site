@@ -191,6 +191,30 @@
     },
     {
       "key": {
+        "uuid": "e250d538_8c632dee",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-19T17:44:11Z",
+      "side": 1,
+      "message": "Ok i understand what you mean...Yes, perhaps we need it, but that would be the same as the log entry no?",
+      "parentUuid": "f9320550_6aff99f0",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 23
+      },
+      "revId": "340058e597c3d3aa3e787c29cf4a85fcf7955a31",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "74792d64_ab8d1581",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
         "patchSetId": 9
