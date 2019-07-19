@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a62d2c9c_2fc86206",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefDatabaseWrapper.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-19T17:30:06Z",
+      "side": 1,
+      "message": "This method is not used.\nIf you look in the next change in the chain you\u0027ll see that I am actually removing this.",
+      "parentUuid": "856ce048_f2f460da",
+      "range": {
+        "startLine": 53,
+        "startChar": 11,
+        "endLine": 53,
+        "endChar": 57
+      },
+      "revId": "340058e597c3d3aa3e787c29cf4a85fcf7955a31",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f28db1f7_750042be",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefDatabaseWrapper.java",
         "patchSetId": 9
@@ -36,6 +60,30 @@
       "writtenOn": "2019-07-19T17:18:04Z",
       "side": 1,
       "message": "could it be useful to log the locking operations as well?",
+      "range": {
+        "startLine": 58,
+        "startChar": 23,
+        "endLine": 58,
+        "endChar": 30
+      },
+      "revId": "340058e597c3d3aa3e787c29cf4a85fcf7955a31",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2210e1d4_b4591c19",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefDatabaseWrapper.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-19T17:30:06Z",
+      "side": 1,
+      "message": "Mmmm, I am not sure.\nPerhaps it would actually.\n@luca, @marcin, @tiago WDYT?",
+      "parentUuid": "f28db1f7_750042be",
       "range": {
         "startLine": 58,
         "startChar": 23,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "a6b037e6_ef8e136b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-19T17:30:06Z",
+      "side": 1,
+      "message": "this is already logged as part of the committer object: https://pastebin.com/m0CHgAuL\nAnd also the log entry has a commit timestamp",
+      "parentUuid": "ad62fb05_ddf31a5f",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 23
+      },
+      "revId": "340058e597c3d3aa3e787c29cf4a85fcf7955a31",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "74792d64_ab8d1581",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
         "patchSetId": 9
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "a5bf7343_e0f66c57",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-19T17:30:06Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "74792d64_ab8d1581",
+      "range": {
+        "startLine": 57,
+        "startChar": 4,
+        "endLine": 57,
+        "endChar": 26
+      },
+      "revId": "340058e597c3d3aa3e787c29cf4a85fcf7955a31",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cd640356_4844a7a3",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
         "patchSetId": 9
@@ -114,6 +210,30 @@
       "revId": "340058e597c3d3aa3e787c29cf4a85fcf7955a31",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "651cfe67_3ba2ad9c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-19T17:30:06Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cd640356_4844a7a3",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 24
+      },
+      "revId": "340058e597c3d3aa3e787c29cf4a85fcf7955a31",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
