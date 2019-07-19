@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "be1addf2_9c057ba1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-07-19T17:35:08Z",
+      "side": 1,
+      "message": "Do we also have the the timestamp of the reupdate operation? I think that\u0027s what we are also interested in.",
+      "parentUuid": "a6b037e6_ef8e136b",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 23
+      },
+      "revId": "340058e597c3d3aa3e787c29cf4a85fcf7955a31",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "74792d64_ab8d1581",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
         "patchSetId": 9
