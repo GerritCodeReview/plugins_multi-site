@@ -215,6 +215,30 @@
     },
     {
       "key": {
+        "uuid": "98a96f83_3c25ebd3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2019-07-20T01:20:22Z",
+      "side": 1,
+      "message": "I don\u0027t think so. The log entry will report the time you are logging something, which is not necessarily the one the action you want to log was performed.\n\nImagine you do an \"UpdateRef\" which takes one second and then you log it. You wouldn\u0027t know at what time the UpdateRef was done.",
+      "parentUuid": "e250d538_8c632dee",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 23
+      },
+      "revId": "340058e597c3d3aa3e787c29cf4a85fcf7955a31",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "74792d64_ab8d1581",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
         "patchSetId": 9
