@@ -22,6 +22,30 @@
       "revId": "893c387d26d4ad96426966aeb8e920ec3a0f6d2f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02c570d5_4c8e0fd2",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/DisabledMessageLogger.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-07-22T02:32:29Z",
+      "side": 1,
+      "message": "IIRC that is the case when running the tests in Eclipse, but not when running on the command line with Bazel.",
+      "parentUuid": "0163b02e_3fd36bed",
+      "range": {
+        "startLine": 20,
+        "startChar": 1,
+        "endLine": 20,
+        "endChar": 7
+      },
+      "revId": "893c387d26d4ad96426966aeb8e920ec3a0f6d2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
