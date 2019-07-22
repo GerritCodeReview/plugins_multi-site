@@ -46,6 +46,30 @@
       "revId": "893c387d26d4ad96426966aeb8e920ec3a0f6d2f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9d05568_774f293f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/DisabledMessageLogger.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-22T12:41:34Z",
+      "side": 1,
+      "message": "Yes, bazel will try to run it without the @ignore flat and die with a:\n\n```\n1) initializationError(com.googlesource.gerrit.plugins.multisite.DisabledMessageLogger)\njava.lang.Exception: No runnable methods\n\n```",
+      "parentUuid": "02c570d5_4c8e0fd2",
+      "range": {
+        "startLine": 20,
+        "startChar": 1,
+        "endLine": 20,
+        "endChar": 7
+      },
+      "revId": "893c387d26d4ad96426966aeb8e920ec3a0f6d2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
