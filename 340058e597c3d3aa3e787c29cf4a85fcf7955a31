@@ -239,6 +239,30 @@
     },
     {
       "key": {
+        "uuid": "8b2c6370_d679b291",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-22T12:27:32Z",
+      "side": 1,
+      "message": "mmmh, so I have been thinking about this.\nAt the moment the refUpdate works this way:\n- The local ref is updated (RefUpdateValidator.executeRefUpdate)\n- Upon success, the sharedRef DB is locked and then updated via compareAndPut() method, to reflect that change.\n\nBy the time compareAndPut() method is called, any information on what time/how long the local ref update took is long gone.\nWe could propagate that timestamp (let\u0027s call it, say, refUpdateTime) all the way to the actual compareAndPut() method, but this would require to change the compareAndPut() interface for an information that would only be used for logging, and thus possibly not used at all, depending on the bound implementation.\n\nI would argue that this logging (sharedref_log) should solely record interactions with the sharedRef database rather than being a source of truth on related data, such as the refUpdate time/length.\n\nThe original request for this issue was to make the output similar to the refLog one[1], which is the one that is provided by this change.\nI believe this is in scope because it just _hydrates_ objectId information, rather than adding _extra_ information such as the refUpdate time.\n\nHope it makes sense :)\nWDYT?  \n\n[1] https://bugs.chromium.org/p/gerrit/issues/detail?id\u003d11166#c2",
+      "parentUuid": "98a96f83_3c25ebd3",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 23
+      },
+      "revId": "340058e597c3d3aa3e787c29cf4a85fcf7955a31",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "74792d64_ab8d1581",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
         "patchSetId": 9
