@@ -14,10 +14,12 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.googlesource.gerrit.plugins.multisite.kafka.consumer.SourceAwareEventWrapper;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Ref;
 
-public class DisabledMessageLogger implements MessageLogger {
+public interface SharedRefLogger {
 
-  @Override
-  public void log(Direction direction, SourceAwareEventWrapper event) {}
+  void logRefUpdate(String project, Ref currRef, ObjectId newRefValue);
+
+  void logProjectDelete(String project);
 }
