@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
+
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.CommonConverters;
@@ -25,6 +27,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
 import org.apache.log4j.PatternLayout;
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
@@ -55,17 +59,32 @@ public class Log4jSharedRefLogger extends LibModuleLogFile implements SharedRefL
       try (Repository repository =
               gitRepositoryManager.openRepository(new Project.NameKey(project));
           RevWalk walk = new RevWalk(repository)) {
-        RevCommit commit = walk.parseCommit(newRefValue);
+        try {
+          RevCommit commit = walk.parseCommit(newRefValue);
 
-        sharedRefDBLog.info(
-            gson.toJson(
-                new SharedRefLogEntry.UpdateRef(
-                    project,
-                    currRef.getName(),
-                    currRef.getObjectId().getName(),
-                    newRefValue.getName(),
-                    CommonConverters.toGitPerson(commit.getCommitterIdent()),
-                    commit.getShortMessage())));
+          sharedRefDBLog.info(
+              gson.toJson(
+                  new SharedRefLogEntry.UpdateRef(
+                      project,
+                      currRef.getName(),
+                      currRef.getObjectId().getName(),
+                      newRefValue.getName(),
+                      CommonConverters.toGitPerson(commit.getCommitterIdent()),
+                      commit.getShortMessage())));
+        } catch (IncorrectObjectTypeException e) {
+          final int objectType = walk.getObjectReader().open(newRefValue).getType();
+          if (objectType == OBJ_BLOB) {
+            sharedRefDBLog.info(
+                gson.toJson(
+                    new SharedRefLogEntry.UpdateBlob(
+                        project,
+                        currRef.getName(),
+                        currRef.getObjectId().getName(),
+                        newRefValue.getName())));
+          } else {
+            throw new IncorrectObjectTypeException(newRefValue, Constants.typeString(objectType));
+          }
+        }
       } catch (IOException e) {
         logger.atSevere().withCause(e).log(
             "Cannot log sharedRefDB interaction for ref %s on project %s",

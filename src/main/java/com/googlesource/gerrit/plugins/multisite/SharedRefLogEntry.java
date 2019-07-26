@@ -19,6 +19,7 @@ import com.google.gerrit.extensions.common.GitPerson;
 public class SharedRefLogEntry {
 
   public enum Type {
+    UPDATE_BLOB,
     UPDATE_REF,
     DELETE_REF,
     DELETE_PROJECT
@@ -49,6 +50,21 @@ public class SharedRefLogEntry {
       this.newId = newId;
       this.committer = committer;
       this.comment = comment;
+    }
+  }
+
+  public static class UpdateBlob extends SharedRefLogEntry {
+
+    public String refName;
+    public String oldId;
+    public String newId;
+
+    UpdateBlob(String projectName, String refName, String oldId, String newId) {
+      this.type = Type.UPDATE_BLOB;
+      this.projectName = projectName;
+      this.refName = refName;
+      this.oldId = oldId;
+      this.newId = newId;
     }
   }
 
