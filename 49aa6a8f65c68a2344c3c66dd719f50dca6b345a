@@ -22,6 +22,30 @@
       "revId": "49aa6a8f65c68a2344c3c66dd719f50dca6b345a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75ff40db_7be75479",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-26T14:39:59Z",
+      "side": 1,
+      "message": "I could check beforehand if the sha1 isn\u0027t a commit, but to be honest I chose this implementation because I think it is going to be more performant than doing so.\n\nThe assumption is that the vast majority of ref updates will be commits, rather than blobs (sequence numbers, for example, are only update when the bunch of allocated integers has run out, 21 by default):\n\nSo assuming that the ref update is a commit and falling back to check that is a blob is more performant than checking the type *every time* beforehand, if that makes sense.\n\n\u003e Every exception is a context switch and has a performance penalty associated.\n\nIn other words:\nExceptions will not be thrown in *most* cases, as *most* of the times the update ref will be a commit, rather than a blob. I think the cost of checking the commit type every time outbalances the cost of throwing/recatching an exception seldomly.",
+      "parentUuid": "9ed945fc_bdd194f4",
+      "range": {
+        "startLine": 74,
+        "startChar": 10,
+        "endLine": 74,
+        "endChar": 48
+      },
+      "revId": "49aa6a8f65c68a2344c3c66dd719f50dca6b345a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
