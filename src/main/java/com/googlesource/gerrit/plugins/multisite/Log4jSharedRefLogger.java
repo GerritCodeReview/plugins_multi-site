@@ -14,6 +14,10 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
+import static org.eclipse.jgit.lib.Constants.OBJ_COMMIT;
+
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.CommonConverters;
@@ -25,6 +29,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
 import org.apache.log4j.PatternLayout;
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
+import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
@@ -36,7 +42,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 public class Log4jSharedRefLogger extends LibModuleLogFile implements SharedRefLogger {
   private static final String LOG_NAME = "sharedref_log";
-  private final Logger sharedRefDBLog;
+  private Logger sharedRefDBLog;
   private final GitRepositoryManager gitRepositoryManager;
   private static final Gson gson = OutputFormat.JSON_COMPACT.newGson();
 
@@ -55,23 +61,38 @@ public class Log4jSharedRefLogger extends LibModuleLogFile implements SharedRefL
       try (Repository repository =
               gitRepositoryManager.openRepository(new Project.NameKey(project));
           RevWalk walk = new RevWalk(repository)) {
-        RevCommit commit = walk.parseCommit(newRefValue);
+        int objectType = walk.parseAny(newRefValue).getType();
+        switch (objectType) {
+          case OBJ_COMMIT:
+            RevCommit commit = walk.parseCommit(newRefValue);
 
-        sharedRefDBLog.info(
-            gson.toJson(
-                new SharedRefLogEntry.UpdateRef(
-                    project,
-                    currRef.getName(),
-                    currRef.getObjectId().getName(),
-                    newRefValue.getName(),
-                    CommonConverters.toGitPerson(commit.getCommitterIdent()),
-                    commit.getShortMessage())));
+            sharedRefDBLog.info(
+                gson.toJson(
+                    new SharedRefLogEntry.UpdateRef(
+                        project,
+                        currRef.getName(),
+                        currRef.getObjectId().getName(),
+                        newRefValue.getName(),
+                        CommonConverters.toGitPerson(commit.getCommitterIdent()),
+                        commit.getShortMessage())));
+            break;
+          case OBJ_BLOB:
+            sharedRefDBLog.info(
+                gson.toJson(
+                    new SharedRefLogEntry.UpdateBlob(
+                        project,
+                        currRef.getName(),
+                        currRef.getObjectId().getName(),
+                        newRefValue.getName())));
+            break;
+          default:
+            throw new IncorrectObjectTypeException(newRefValue, Constants.typeString(objectType));
+        }
       } catch (IOException e) {
         logger.atSevere().withCause(e).log(
             "Cannot log sharedRefDB interaction for ref %s on project %s",
             currRef.getName(), project);
       }
-
     } else {
       sharedRefDBLog.info(
           gson.toJson(
@@ -83,5 +104,10 @@ public class Log4jSharedRefLogger extends LibModuleLogFile implements SharedRefL
   @Override
   public void logProjectDelete(String project) {
     sharedRefDBLog.info(gson.toJson(new SharedRefLogEntry.DeleteProject(project)));
+  }
+
+  @VisibleForTesting
+  public void setLogger(Logger logger) {
+    this.sharedRefDBLog = logger;
   }
 }
