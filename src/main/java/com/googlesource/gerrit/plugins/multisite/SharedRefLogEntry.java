@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.common.GitPerson;
 
 public class SharedRefLogEntry {
@@ -40,8 +41,8 @@ public class SharedRefLogEntry {
         String refName,
         String oldId,
         String newId,
-        GitPerson committer,
-        String comment) {
+        @Nullable GitPerson committer,
+        @Nullable String comment) {
       this.type = Type.UPDATE_REF;
       this.projectName = projectName;
       this.refName = refName;
