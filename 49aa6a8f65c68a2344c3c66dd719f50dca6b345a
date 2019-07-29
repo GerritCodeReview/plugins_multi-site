@@ -46,6 +46,30 @@
       "revId": "49aa6a8f65c68a2344c3c66dd719f50dca6b345a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f24e9edd_0e015dec",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-07-29T08:56:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75ff40db_7be75479",
+      "range": {
+        "startLine": 74,
+        "startChar": 10,
+        "endLine": 74,
+        "endChar": 48
+      },
+      "revId": "49aa6a8f65c68a2344c3c66dd719f50dca6b345a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
