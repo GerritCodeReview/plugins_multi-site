@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "014439a7_13c31a7f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-07-30T17:38:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8092d379_58c30ccd",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 55
+      },
+      "revId": "f5f6d9b4bd1a9d244fd8cf02a5c961f1e7384b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9b67e178_58c8263e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
         "patchSetId": 5
@@ -36,6 +60,30 @@
       "writtenOn": "2019-06-18T13:24:10Z",
       "side": 1,
       "message": "This isn\u0027t working because even the just-in-time bindings cannot be overridden by another plugin.\n\nWe should use the DynamicItem instead.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 43
+      },
+      "revId": "f5f6d9b4bd1a9d244fd8cf02a5c961f1e7384b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad7d27ec_4881d760",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabase.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-07-30T17:38:11Z",
+      "side": 1,
+      "message": "I understand in one plugin we can have only one binding to DynamicItem.\nIs this a good opportunity to start moving the Zookeeeper implementation out of the multi-site lib?",
+      "parentUuid": "9b67e178_58c8263e",
       "range": {
         "startLine": 23,
         "startChar": 0,
@@ -77,6 +125,24 @@
       "side": 1,
       "message": "Yes but they are at fine level so I understand that it will be visible only in special cases of debugging or during  development. If it\u0027s still not enough we can move then to finest",
       "parentUuid": "1951f369_e05dac36",
+      "revId": "f5f6d9b4bd1a9d244fd8cf02a5c961f1e7384b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "32e2329b_b1330427",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/SharedRefDatabaseNoOp.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-07-30T17:38:11Z",
+      "side": 1,
+      "message": "As @marcin says this is just fine log. I think it\u0027s useful to have somewhere in the logs that the multi-site was running the NoOp implementation until a different one overrides it.",
+      "parentUuid": "cb23d708_fc03c557",
       "revId": "f5f6d9b4bd1a9d244fd8cf02a5c961f1e7384b7a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
