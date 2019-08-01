@@ -76,7 +76,12 @@ public class RefUpdateValidatorTest implements RefFixture {
 
     refUpdateValidator =
         new RefUpdateValidator(
-            sharedRefDb, validationMetrics, defaultRefEnforcement, A_TEST_PROJECT_NAME, localRefDb);
+            sharedRefDb,
+            validationMetrics,
+            defaultRefEnforcement,
+            new DummyLockWrapper(),
+            A_TEST_PROJECT_NAME,
+            localRefDb);
   }
 
   @Test

@@ -116,6 +116,32 @@ public class Log4jSharedRefLoggerTest extends AbstractDaemonTest {
     assertThat(gotLogEntry.newId).isEqualTo(currRef.getObjectId().getName());
   }
 
+  @Test
+  public void shouldLogLockAcquisition() {
+    String refName = "refs/foo/bar";
+    log4jSharedRefLogger.logLockAcquisition(project.get(), refName);
+
+    SharedRefLogEntry.LockAcquire gotLogEntry =
+        gson.fromJson(logWriter.toString(), SharedRefLogEntry.LockAcquire.class);
+
+    assertThat(gotLogEntry.type).isEqualTo(SharedRefLogEntry.Type.LOCK_ACQUIRE);
+    assertThat(gotLogEntry.projectName).isEqualTo(project.get());
+    assertThat(gotLogEntry.refName).isEqualTo(refName);
+  }
+
+  @Test
+  public void shouldLogLockRelease() {
+    String refName = "refs/foo/bar";
+    log4jSharedRefLogger.logLockRelease(project.get(), refName);
+
+    SharedRefLogEntry.LockAcquire gotLogEntry =
+        gson.fromJson(logWriter.toString(), SharedRefLogEntry.LockAcquire.class);
+
+    assertThat(gotLogEntry.type).isEqualTo(SharedRefLogEntry.Type.LOCK_RELEASE);
+    assertThat(gotLogEntry.projectName).isEqualTo(project.get());
+    assertThat(gotLogEntry.refName).isEqualTo(refName);
+  }
+
   private Log4jSharedRefLogger newLog4jSharedRefLogger() throws IOException {
     final Log4jSharedRefLogger log4jSharedRefLogger =
         new Log4jSharedRefLogger(new SystemLog(new SitePaths(newPath()), baseConfig), repoManager);
