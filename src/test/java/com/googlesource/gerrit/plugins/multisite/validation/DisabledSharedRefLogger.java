@@ -27,4 +27,10 @@ public class DisabledSharedRefLogger implements SharedRefLogger {
 
   @Override
   public void logProjectDelete(String project) {}
+
+  @Override
+  public void logLockAcquisition(String project, String refName) {}
+
+  @Override
+  public void logLockRelease(String project, String refName) {}
 }

@@ -106,6 +106,16 @@ public class Log4jSharedRefLogger extends LibModuleLogFile implements SharedRefL
     sharedRefDBLog.info(gson.toJson(new SharedRefLogEntry.DeleteProject(project)));
   }
 
+  @Override
+  public void logLockAcquisition(String project, String refName) {
+    sharedRefDBLog.info(gson.toJson(new SharedRefLogEntry.LockAcquire(project, refName)));
+  }
+
+  @Override
+  public void logLockRelease(String project, String refName) {
+    sharedRefDBLog.info(gson.toJson(new SharedRefLogEntry.LockRelease(project, refName)));
+  }
+
   @VisibleForTesting
   public void setLogger(Logger logger) {
     this.sharedRefDBLog = logger;

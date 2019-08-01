@@ -23,6 +23,7 @@ import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.BatchRefUpdateValidator;
 import com.googlesource.gerrit.plugins.multisite.validation.DisabledSharedRefLogger;
+import com.googlesource.gerrit.plugins.multisite.validation.DummyLockWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.MultiSiteBatchRefUpdate;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationMetrics;
 import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
@@ -183,6 +184,7 @@ public class ZkSharedRefDatabaseIT extends AbstractDaemonTest implements RefFixt
                 zkSharedRefDatabase,
                 new ValidationMetrics(new DisabledMetricMaker()),
                 new DefaultSharedRefEnforcement(),
+                new DummyLockWrapper(),
                 projectName,
                 refDb);
           }

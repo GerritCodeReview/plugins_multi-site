@@ -155,6 +155,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
                 sharedRefDb,
                 validationMetrics,
                 new DefaultSharedRefEnforcement(),
+                new DummyLockWrapper(),
                 projectName,
                 refDb);
           }

@@ -197,6 +197,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
                     sharedRefDb,
                     validationMetrics,
                     new DefaultSharedRefEnforcement(),
+                    new DummyLockWrapper(),
                     projectName,
                     refDb);
             return RefUpdateValidator;
