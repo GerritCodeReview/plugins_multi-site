@@ -148,6 +148,7 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
         zkSharedRefDatabase,
         new ValidationMetrics(new DisabledMetricMaker()),
         sharedRefEnforcement,
+        new DummyLockWrapper(),
         projectName,
         diskRepo.getRefDatabase());
   }

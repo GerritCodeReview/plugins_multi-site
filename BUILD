@@ -46,6 +46,7 @@ java_library(
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":multi-site__plugin",
         "@curator-client//jar",
+        "@curator-recipes//jar",
         "@curator-framework//jar",
         "@curator-test//jar",
         "@mockito//jar",

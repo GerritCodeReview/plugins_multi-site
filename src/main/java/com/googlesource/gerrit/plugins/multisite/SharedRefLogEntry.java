@@ -22,7 +22,9 @@ public class SharedRefLogEntry {
   public enum Type {
     UPDATE_REF,
     DELETE_REF,
-    DELETE_PROJECT
+    DELETE_PROJECT,
+    LOCK_ACQUIRE,
+    LOCK_RELEASE
   }
 
   public String projectName;
@@ -71,6 +73,28 @@ public class SharedRefLogEntry {
       this.projectName = projectName;
       this.refName = refName;
       this.oldId = oldId;
+    }
+  }
+
+  public static class LockAcquire extends SharedRefLogEntry {
+
+    public String refName;
+
+    LockAcquire(String projectName, String refName) {
+      this.type = Type.LOCK_ACQUIRE;
+      this.projectName = projectName;
+      this.refName = refName;
+    }
+  }
+
+  public static class LockRelease extends SharedRefLogEntry {
+
+    public String refName;
+
+    LockRelease(String projectName, String refName) {
+      this.type = Type.LOCK_RELEASE;
+      this.projectName = projectName;
+      this.refName = refName;
     }
   }
 }
