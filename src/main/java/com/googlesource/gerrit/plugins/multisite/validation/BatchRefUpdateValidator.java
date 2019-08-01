@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.googlesource.gerrit.plugins.multisite.LockWrapper;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
@@ -47,9 +48,10 @@ public class BatchRefUpdateValidator extends RefUpdateValidator {
       SharedRefDatabaseWrapper sharedRefDb,
       ValidationMetrics validationMetrics,
       SharedRefEnforcement refEnforcement,
+      LockWrapper.Factory lockWrapperFactory,
       @Assisted String projectName,
       @Assisted RefDatabase refDb) {
-    super(sharedRefDb, validationMetrics, refEnforcement, projectName, refDb);
+    super(sharedRefDb, validationMetrics, refEnforcement, lockWrapperFactory, projectName, refDb);
   }
 
   public void executeBatchUpdateWithValidation(

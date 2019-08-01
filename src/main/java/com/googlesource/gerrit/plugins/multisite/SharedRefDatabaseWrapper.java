@@ -50,7 +50,9 @@ public class SharedRefDatabaseWrapper implements SharedRefDatabase {
 
   @Override
   public AutoCloseable lockRef(String project, String refName) throws SharedLockException {
-    return sharedRefDb.lockRef(project, refName);
+    AutoCloseable locker = sharedRefDb.lockRef(project, refName);
+    sharedRefLogger.logLockAcquisition(project, refName);
+    return locker;
   }
 
   @Override
