@@ -75,9 +75,9 @@ public class BrokerPublisher implements LifecycleListener {
     }
 
     SourceAwareEventWrapper brokerEvent = toBrokerEvent(event);
-    msgLog.log(Direction.PUBLISH, brokerEvent);
     Boolean eventPublished = session.publishEvent(eventType, getPayload(brokerEvent));
     if (eventPublished) {
+      msgLog.log(Direction.PUBLISH, brokerEvent);
       brokerMetrics.incrementBrokerPublishedMessage();
     } else {
       brokerMetrics.incrementBrokerFailedToPublishMessage();
