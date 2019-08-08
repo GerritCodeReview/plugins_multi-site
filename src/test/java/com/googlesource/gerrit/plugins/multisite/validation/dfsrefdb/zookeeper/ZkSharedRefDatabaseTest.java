@@ -19,6 +19,8 @@ import static org.mockito.Mockito.mock;
 
 import com.google.gerrit.extensions.api.changes.NotifyHandling;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
+import com.googlesource.gerrit.plugins.multisite.validation.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationMetrics;
 import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
@@ -38,7 +40,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   @Rule public TestName nameRule = new TestName();
 
   ZookeeperTestContainerSupport zookeeperContainer;
-  ZkSharedRefDatabase zkSharedRefDatabase;
+  SharedRefDatabaseWrapper zkSharedRefDatabase;
   SharedRefEnforcement refEnforcement;
 
   ValidationMetrics mockValidationMetrics;
@@ -52,11 +54,13 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
     int NUMBER_OF_RETRIES = 5;
 
     zkSharedRefDatabase =
-        new ZkSharedRefDatabase(
-            zookeeperContainer.getCurator(),
-            new ZkConnectionConfig(
-                new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
-                TRANSACTION_LOCK_TIMEOUT));
+        new SharedRefDatabaseWrapper(
+            new ZkSharedRefDatabase(
+                zookeeperContainer.getCurator(),
+                new ZkConnectionConfig(
+                    new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
+                    TRANSACTION_LOCK_TIMEOUT)),
+            new DisabledSharedRefLogger());
 
     mockValidationMetrics = mock(ValidationMetrics.class);
   }
