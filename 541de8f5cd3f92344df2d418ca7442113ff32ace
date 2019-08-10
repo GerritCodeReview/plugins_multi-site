@@ -45,6 +45,30 @@
       "revId": "541de8f5cd3f92344df2d418ca7442113ff32ace",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7abc9bf7_27e4fd37",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteBeforeReplicationPushFilter.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-10T01:58:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db708f2a_281bdb8c",
+      "range": {
+        "startLine": 42,
+        "startChar": 11,
+        "endLine": 42,
+        "endChar": 88
+      },
+      "revId": "541de8f5cd3f92344df2d418ca7442113ff32ace",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
