@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3f0d07c9_7cbca77d",
+        "filename": "setup_local_env/configs/gerrit.config",
+        "patchSetId": 10
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-10T02:00:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f5e9bef_cd5a434e",
+      "range": {
+        "startLine": 5,
+        "startChar": 4,
+        "endLine": 5,
+        "endChar": 95
+      },
+      "revId": "541de8f5cd3f92344df2d418ca7442113ff32ace",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "db708f2a_281bdb8c",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteBeforeReplicationPushFilter.java",
         "patchSetId": 10
