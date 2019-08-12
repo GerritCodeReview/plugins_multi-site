@@ -19,6 +19,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import com.google.gerrit.acceptance.AbstractDaemonTest;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.BatchRefUpdateValidator;
@@ -27,6 +28,7 @@ import com.googlesource.gerrit.plugins.multisite.validation.MultiSiteBatchRefUpd
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationMetrics;
 import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import org.apache.curator.retry.RetryNTimes;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
@@ -61,11 +63,13 @@ public class ZkSharedRefDatabaseIT extends AbstractDaemonTest implements RefFixt
     zookeeperContainer = new ZookeeperTestContainerSupport(false);
     zkSharedRefDatabase =
         new SharedRefDatabaseWrapper(
-            new ZkSharedRefDatabase(
-                zookeeperContainer.getCurator(),
-                new ZkConnectionConfig(
-                    new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
-                    TRANSACTION_LOCK_TIMEOUT)),
+            DynamicItem.itemOf(
+                SharedRefDatabase.class,
+                new ZkSharedRefDatabase(
+                    zookeeperContainer.getCurator(),
+                    new ZkConnectionConfig(
+                        new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
+                        TRANSACTION_LOCK_TIMEOUT))),
             new DisabledSharedRefLogger());
   }
 

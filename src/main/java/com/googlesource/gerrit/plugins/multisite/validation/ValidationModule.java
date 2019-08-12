@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Scopes;
@@ -24,6 +25,8 @@ import com.googlesource.gerrit.plugins.multisite.Log4jSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.SharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.NoopSharedRefDatabase;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 
 public class ValidationModule extends FactoryModule {
@@ -37,6 +40,9 @@ public class ValidationModule extends FactoryModule {
 
   @Override
   protected void configure() {
+    DynamicItem.itemOf(binder(), SharedRefDatabase.class);
+    DynamicItem.bind(binder(), SharedRefDatabase.class).to(NoopSharedRefDatabase.class);
+
     bind(SharedRefLogger.class).to(Log4jSharedRefLogger.class);
 
     factory(MultiSiteRepository.Factory.class);

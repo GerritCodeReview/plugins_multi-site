@@ -18,6 +18,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.assertFalse;
 import static org.eclipse.jgit.transport.ReceiveCommand.Type.UPDATE;
 
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
@@ -81,11 +82,13 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
 
     zkSharedRefDatabase =
         new SharedRefDatabaseWrapper(
-            new ZkSharedRefDatabase(
-                zookeeperContainer.getCurator(),
-                new ZkConnectionConfig(
-                    new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
-                    TRANSACTION_LOCK_TIMEOUT)),
+            DynamicItem.itemOf(
+                SharedRefDatabase.class,
+                new ZkSharedRefDatabase(
+                    zookeeperContainer.getCurator(),
+                    new ZkConnectionConfig(
+                        new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
+                        TRANSACTION_LOCK_TIMEOUT))),
             new DisabledSharedRefLogger());
   }
 
