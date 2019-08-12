@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedLockException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
@@ -23,25 +24,25 @@ import org.eclipse.jgit.lib.Ref;
 
 public class SharedRefDatabaseWrapper implements SharedRefDatabase {
 
-  private final SharedRefDatabase sharedRefDb;
+  private final DynamicItem<SharedRefDatabase> sharedRefDbDynamicItem;
   private final SharedRefLogger sharedRefLogger;
 
   @Inject
   public SharedRefDatabaseWrapper(
-      SharedRefDatabase sharedRefDatabase, SharedRefLogger sharedRefLogger) {
-    this.sharedRefDb = sharedRefDatabase;
+      DynamicItem<SharedRefDatabase> sharedRefDbDynamicItem, SharedRefLogger sharedRefLogger) {
+    this.sharedRefDbDynamicItem = sharedRefDbDynamicItem;
     this.sharedRefLogger = sharedRefLogger;
   }
 
   @Override
   public boolean isUpToDate(String project, Ref ref) throws SharedLockException {
-    return sharedRefDb.isUpToDate(project, ref);
+    return sharedRefDbDynamicItem.get().isUpToDate(project, ref);
   }
 
   @Override
   public boolean compareAndPut(String project, Ref currRef, ObjectId newRefValue)
       throws IOException {
-    boolean succeeded = sharedRefDb.compareAndPut(project, currRef, newRefValue);
+    boolean succeeded = sharedRefDbDynamicItem.get().compareAndPut(project, currRef, newRefValue);
     if (succeeded) {
       sharedRefLogger.logRefUpdate(project, currRef, newRefValue);
     }
@@ -50,19 +51,19 @@ public class SharedRefDatabaseWrapper implements SharedRefDatabase {
 
   @Override
   public AutoCloseable lockRef(String project, String refName) throws SharedLockException {
-    AutoCloseable locker = sharedRefDb.lockRef(project, refName);
+    AutoCloseable locker = sharedRefDbDynamicItem.get().lockRef(project, refName);
     sharedRefLogger.logLockAcquisition(project, refName);
     return locker;
   }
 
   @Override
   public boolean exists(String project, String refName) {
-    return sharedRefDb.exists(project, refName);
+    return sharedRefDbDynamicItem.get().exists(project, refName);
   }
 
   @Override
   public void removeProject(String project) throws IOException {
-    sharedRefDb.removeProject(project);
+    sharedRefDbDynamicItem.get().removeProject(project);
     sharedRefLogger.logProjectDelete(project);
   }
 }
