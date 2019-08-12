@@ -71,6 +71,8 @@ a Docker server.
 
 Install the multi-site plugin into the `$GERRIT_SITE/lib` directory of all
 the Gerrit servers that are part of the multi-site cluster.
+Create a symbolic link from `$GERRIT_SITE/lib/multi-site.jar` into the
+`$GERRIT_SITE/plugins`.
 
 Add the multi-site module to `$GERRIT_SITE/etc/gerrit.config` as follows:
 
