@@ -14,7 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.ZookeeperConfig;
 import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
@@ -25,13 +27,14 @@ public class ZkValidationModule extends AbstractModule {
 
   private ZookeeperConfig cfg;
 
+  @Inject
   public ZkValidationModule(Configuration cfg) {
     this.cfg = new ZookeeperConfig(cfg.getMultiSiteConfig());
   }
 
   @Override
   protected void configure() {
-    bind(SharedRefDatabase.class).to(ZkSharedRefDatabase.class);
+    DynamicItem.bind(binder(), SharedRefDatabase.class).to(ZkSharedRefDatabase.class);
     bind(CuratorFramework.class).toInstance(cfg.buildCurator());
 
     bind(ZkConnectionConfig.class)
