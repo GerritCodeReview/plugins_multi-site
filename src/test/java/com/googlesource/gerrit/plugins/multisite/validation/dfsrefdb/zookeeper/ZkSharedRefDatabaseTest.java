@@ -19,6 +19,7 @@ import static org.mockito.Mockito.mock;
 
 import com.google.gerrit.extensions.api.changes.NotifyHandling;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
@@ -55,11 +56,13 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
 
     zkSharedRefDatabase =
         new SharedRefDatabaseWrapper(
-            new ZkSharedRefDatabase(
-                zookeeperContainer.getCurator(),
-                new ZkConnectionConfig(
-                    new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
-                    TRANSACTION_LOCK_TIMEOUT)),
+            DynamicItem.itemOf(
+                SharedRefDatabase.class,
+                new ZkSharedRefDatabase(
+                    zookeeperContainer.getCurator(),
+                    new ZkConnectionConfig(
+                        new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
+                        TRANSACTION_LOCK_TIMEOUT))),
             new DisabledSharedRefLogger());
 
     mockValidationMetrics = mock(ValidationMetrics.class);

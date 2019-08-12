@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedLockException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
@@ -28,8 +29,8 @@ public class SharedRefDatabaseWrapper implements SharedRefDatabase {
 
   @Inject
   public SharedRefDatabaseWrapper(
-      SharedRefDatabase sharedRefDatabase, SharedRefLogger sharedRefLogger) {
-    this.sharedRefDb = sharedRefDatabase;
+      DynamicItem<SharedRefDatabase> sharedRefDatabase, SharedRefLogger sharedRefLogger) {
+    this.sharedRefDb = sharedRefDatabase.get();
     this.sharedRefLogger = sharedRefLogger;
   }
 
