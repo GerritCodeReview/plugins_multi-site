@@ -355,8 +355,11 @@ if [ $NEW_INSTALLATION = "true" ]; then
 	# Deploying TLS certificates
 	if [ "$HTTPS_ENABLED" = "true" ];then deploy_tls_certificates;fi
 
-	echo "Copy multi-site library"
+	echo "Copy multi-site library to lib directory"
 	cp -f $DEPLOYMENT_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/lib/multi-site.jar
+
+	echo "Copy multi-site library to plugin directory"
+	cp -f $DEPLOYMENT_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/plugins/multi-site.jar
 
 	echo "Copy websession-flatfile plugin"
 	cp -f $DEPLOYMENT_LOCATION/websession-flatfile.jar $LOCATION_TEST_SITE_1/plugins/websession-flatfile.jar
