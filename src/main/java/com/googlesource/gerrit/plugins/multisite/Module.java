@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gson.Gson;
@@ -33,6 +34,8 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.NoopSharedRefDatabase;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -119,6 +122,9 @@ public class Module extends LifecycleModule {
     install(kafkaForwardedEventRouterModule);
 
     install(kafkaBrokerForwarderModule);
+
+    DynamicItem.itemOf(binder(), SharedRefDatabase.class);
+    DynamicItem.bind(binder(), SharedRefDatabase.class).to(NoopSharedRefDatabase.class);
 
     install(
         new ValidationModule(
