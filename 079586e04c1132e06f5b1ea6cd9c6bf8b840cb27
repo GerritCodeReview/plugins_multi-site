@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0a503485_625f3bc7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-13T10:15:23Z",
+      "side": 1,
+      "message": "I can factor out the common parts of the payload, but as I explain to your other comment I would like to model these two entries differently.\n\nWhat do you think?",
+      "parentUuid": "9ecb7197_55b0a331",
+      "range": {
+        "startLine": 76,
+        "startChar": 24,
+        "endLine": 77,
+        "endChar": 50
+      },
+      "revId": "079586e04c1132e06f5b1ea6cd9c6bf8b840cb27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "af3421f2_294b489c",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
         "patchSetId": 3
@@ -36,6 +60,30 @@
       "writtenOn": "2019-08-13T05:55:38Z",
       "side": 1,
       "message": "Updating a blob means still updating a ref, isn\u0027t it?",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 15
+      },
+      "revId": "079586e04c1132e06f5b1ea6cd9c6bf8b840cb27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "960f68e9_429ac1d3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-13T10:15:23Z",
+      "side": 1,
+      "message": "I thought it was beneficial to model this as a different entity, as it stands for a different type of update: these updates do not have a commit associated, nor a comment, so the payload of this log entry needs to be different, and I\u0027d like to avoid to use @nullable or optionals.\n\nIt will be clearer to the reader, that the ref updated is not a commit.\n\nDo you have any suggestion for a better naming?\nHow about\n\nREF_UPDATE_COMMIT\nREF_UPDATE_BLOB\n\nboth of them are ref updates, but the associated object is of a different type\n\nWDYT?",
+      "parentUuid": "af3421f2_294b489c",
       "range": {
         "startLine": 22,
         "startChar": 4,
