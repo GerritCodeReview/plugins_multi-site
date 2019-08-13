@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7b7fda1e_c49022b9",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 9
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-13T10:56:59Z",
+      "side": 1,
+      "message": "I\u0027m not sure if link for $LOCATION_TEST_SITE_2 will be correct, we are going to copy $LOCATION_TEST_SITE_1 into $LOCATION_TEST_SITE_2 in line 374. That\u0027s why for replication plugin we are doing links when locations are copied. See line 377",
+      "revId": "7e5a01ce73e86f3410715953fcb027949389e08b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
