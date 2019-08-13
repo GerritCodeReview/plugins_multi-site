@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "83242f0f_e9607e95",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-13T10:35:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5025ee4c_59fc46d9",
+      "range": {
+        "startLine": 361,
+        "startChar": 7,
+        "endLine": 361,
+        "endChar": 11
+      },
+      "revId": "2adb79b912b0cf889bcbba1429aaf5ead2c6cc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e0603eb8_5514d811",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefDatabaseWrapper.java",
         "patchSetId": 8
@@ -41,6 +65,53 @@
         "startChar": 4,
         "endLine": 33,
         "endChar": 47
+      },
+      "revId": "2adb79b912b0cf889bcbba1429aaf5ead2c6cc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ee927b2_08667ae1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefDatabaseWrapper.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-13T10:35:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e0603eb8_5514d811",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 47
+      },
+      "revId": "2adb79b912b0cf889bcbba1429aaf5ead2c6cc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0ffb0b31_5ab8e6e2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/NoopSharedRefDatabase.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-13T10:35:38Z",
+      "side": 1,
+      "message": "The safest implementation should be returning false, not true, as acknowledging that an entry is missing from the database minimized the possible collision space and avoid false split-brains[1]\n\n[1] https://gerrit.googlesource.com/plugins/multi-site/+/2adb79b912b0cf889bcbba1429aaf5ead2c6cc7b/src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java#176",
+      "range": {
+        "startLine": 40,
+        "startChar": 11,
+        "endLine": 40,
+        "endChar": 15
       },
       "revId": "2adb79b912b0cf889bcbba1429aaf5ead2c6cc7b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
