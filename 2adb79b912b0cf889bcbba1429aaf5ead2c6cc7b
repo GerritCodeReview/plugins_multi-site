@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "4c81f999_383a9045",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-13T10:50:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83242f0f_e9607e95",
+      "range": {
+        "startLine": 361,
+        "startChar": 7,
+        "endLine": 361,
+        "endChar": 11
+      },
+      "revId": "2adb79b912b0cf889bcbba1429aaf5ead2c6cc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e0603eb8_5514d811",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefDatabaseWrapper.java",
         "patchSetId": 8
@@ -96,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "2fd22778_4efa92ce",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefDatabaseWrapper.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-13T10:50:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ee927b2_08667ae1",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 47
+      },
+      "revId": "2adb79b912b0cf889bcbba1429aaf5ead2c6cc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0ffb0b31_5ab8e6e2",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/NoopSharedRefDatabase.java",
         "patchSetId": 8
@@ -116,6 +164,30 @@
       "revId": "2adb79b912b0cf889bcbba1429aaf5ead2c6cc7b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "040240ba_ae92220b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/NoopSharedRefDatabase.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-13T10:50:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ffb0b31_5ab8e6e2",
+      "range": {
+        "startLine": 40,
+        "startChar": 11,
+        "endLine": 40,
+        "endChar": 15
+      },
+      "revId": "2adb79b912b0cf889bcbba1429aaf5ead2c6cc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
