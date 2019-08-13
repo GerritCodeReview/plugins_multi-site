@@ -141,6 +141,30 @@
       "revId": "079586e04c1132e06f5b1ea6cd9c6bf8b840cb27",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eadbb88d_860b7f97",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-13T12:47:50Z",
+      "side": 1,
+      "message": "\u003e Yep, agreed,\n\u003e but we also decided[1] to hydrate that transition with some useful data (on the blueprint of reflog, similar to what message_log does).\n\u003e This is already in stable-2.16.\n\u003e \n\u003e Are you suggesting that we now remove that extra info and leave only \"SHA1, new SHA1 and the type (BLOB vs. COMMIT)\"?\n\nWe can keep the info we have about COMMIT, just BLOB should have less because there is no commit data to extract.\n\n\u003e Logging REF_UPDATE_BLOB does not require extra information, just less of it, I struggle to understand why we\u0027d want to remove useful information from REF_UPDATE_COMMIT, which is already there.\n\nWe can keep that, we are in agreement. Just I wouldn\u0027t like to add more info on the BLOB, just a couple of fields less.\n\nCan we get rid of the UPDATE_BLOB type, which is really misleading: this is a ref-update and should be called UPDATE_REF, just without commit info because it is a BLOB.",
+      "parentUuid": "ad11c555_6703b3ab",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 15
+      },
+      "revId": "079586e04c1132e06f5b1ea6cd9c6bf8b840cb27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
