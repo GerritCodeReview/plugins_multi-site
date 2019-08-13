@@ -33,6 +33,7 @@ public class IndexEventSubscriber extends AbstractKafkaSubcriber {
   @Inject
   public IndexEventSubscriber(
       KafkaConfiguration configuration,
+      KafkaConsumerFactory consumerFactory,
       Deserializer<byte[]> keyDeserializer,
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
       IndexEventRouter eventRouter,
@@ -43,6 +44,7 @@ public class IndexEventSubscriber extends AbstractKafkaSubcriber {
       MessageLogger msgLog) {
     super(
         configuration,
+        consumerFactory,
         keyDeserializer,
         valueDeserializer,
         eventRouter,

@@ -48,6 +48,7 @@ public interface SharedRefEnforcement {
   default boolean isRefToBeIgnoredBySharedRefDb(String refName) {
     return refName == null
         || refName.startsWith("refs/draft-comments")
-        || (refName.startsWith("refs/changes") && !refName.endsWith("/meta"));
+        || (refName.startsWith("refs/changes") && !refName.endsWith("/meta"))
+        || refName.startsWith("refs/cache-automerge");
   }
 }

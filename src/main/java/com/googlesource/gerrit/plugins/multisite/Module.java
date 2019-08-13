@@ -15,8 +15,6 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.gerrit.extensions.events.ProjectDeletedListener;
-import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gson.Gson;
@@ -33,7 +31,6 @@ import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
-import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -110,10 +107,6 @@ public class Module extends LifecycleModule {
 
     install(kafkaBrokerForwarderModule);
 
-    if (config.getSharedRefDb().isEnabled()) {
-      DynamicSet.bind(binder(), ProjectDeletedListener.class)
-          .to(ProjectDeletedSharedDbCleanup.class);
-    }
 
     bind(Gson.class)
         .annotatedWith(BrokerGson.class)

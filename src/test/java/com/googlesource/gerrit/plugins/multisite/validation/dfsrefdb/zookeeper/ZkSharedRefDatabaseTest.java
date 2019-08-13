@@ -19,6 +19,9 @@ import static org.mockito.Mockito.mock;
 
 import com.google.gerrit.extensions.api.changes.NotifyHandling;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.extensions.registration.DynamicItem;
+import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
+import com.googlesource.gerrit.plugins.multisite.validation.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationMetrics;
 import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
@@ -38,7 +41,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   @Rule public TestName nameRule = new TestName();
 
   ZookeeperTestContainerSupport zookeeperContainer;
-  ZkSharedRefDatabase zkSharedRefDatabase;
+  SharedRefDatabaseWrapper zkSharedRefDatabase;
   SharedRefEnforcement refEnforcement;
 
   ValidationMetrics mockValidationMetrics;
@@ -52,11 +55,15 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
     int NUMBER_OF_RETRIES = 5;
 
     zkSharedRefDatabase =
-        new ZkSharedRefDatabase(
-            zookeeperContainer.getCurator(),
-            new ZkConnectionConfig(
-                new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
-                TRANSACTION_LOCK_TIMEOUT));
+        new SharedRefDatabaseWrapper(
+            DynamicItem.itemOf(
+                SharedRefDatabase.class,
+                new ZkSharedRefDatabase(
+                    zookeeperContainer.getCurator(),
+                    new ZkConnectionConfig(
+                        new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
+                        TRANSACTION_LOCK_TIMEOUT))),
+            new DisabledSharedRefLogger());
 
     mockValidationMetrics = mock(ValidationMetrics.class);
   }
@@ -64,16 +71,6 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   @After
   public void cleanup() {
     zookeeperContainer.cleanup();
-  }
-
-  @Test
-  public void shouldCompareAndCreateSuccessfully() throws Exception {
-    Ref ref = refOf(AN_OBJECT_ID_1);
-
-    assertThat(zkSharedRefDatabase.compareAndCreate(A_TEST_PROJECT_NAME, ref)).isTrue();
-
-    assertThat(zookeeperContainer.readRefValueFromZk(A_TEST_PROJECT_NAME, ref))
-        .isEqualTo(ref.getObjectId());
   }
 
   @Test
@@ -126,39 +123,6 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
 
     assertThat(zkSharedRefDatabase.compareAndPut(projectName, expectedRef, AN_OBJECT_ID_3))
         .isFalse();
-  }
-
-  @Test
-  public void shouldCompareAndRemoveSuccessfully() throws Exception {
-    Ref oldRef = refOf(AN_OBJECT_ID_1);
-    String projectName = A_TEST_PROJECT_NAME;
-
-    zookeeperContainer.createRefInZk(projectName, oldRef);
-
-    assertThat(zkSharedRefDatabase.compareAndRemove(projectName, oldRef)).isTrue();
-  }
-
-  @Test
-  public void shouldReplaceTheRefWithATombstoneAfterCompareAndPutRemove() throws Exception {
-    Ref oldRef = refOf(AN_OBJECT_ID_1);
-
-    zookeeperContainer.createRefInZk(A_TEST_PROJECT_NAME, oldRef);
-
-    assertThat(zkSharedRefDatabase.compareAndRemove(A_TEST_PROJECT_NAME, oldRef)).isTrue();
-
-    assertThat(zookeeperContainer.readRefValueFromZk(A_TEST_PROJECT_NAME, oldRef))
-        .isEqualTo(ObjectId.zeroId());
-  }
-
-  @Test
-  public void shouldNotCompareAndPutSuccessfullyAfterACompareAndRemove() throws Exception {
-    Ref oldRef = refOf(AN_OBJECT_ID_1);
-    String projectName = A_TEST_PROJECT_NAME;
-
-    zookeeperContainer.createRefInZk(projectName, oldRef);
-
-    zkSharedRefDatabase.compareAndRemove(projectName, oldRef);
-    assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRef, AN_OBJECT_ID_2)).isFalse();
   }
 
   private Ref refOf(ObjectId objectId) {
