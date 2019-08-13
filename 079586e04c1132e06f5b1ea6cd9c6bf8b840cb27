@@ -93,6 +93,30 @@
       "revId": "079586e04c1132e06f5b1ea6cd9c6bf8b840cb27",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e22c1a52_9d3c2975",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-13T10:34:32Z",
+      "side": 1,
+      "message": "Let\u0027s not forget the purpose of a ref-log: just tracking the status transitions of the refs, not the whole repo.\n\nTracking the old SHA1, new SHA1 and the type (BLOB vs. COMMIT) would be more than enough.",
+      "parentUuid": "960f68e9_429ac1d3",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 15
+      },
+      "revId": "079586e04c1132e06f5b1ea6cd9c6bf8b840cb27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
