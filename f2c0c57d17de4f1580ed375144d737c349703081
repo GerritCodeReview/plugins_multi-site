@@ -22,6 +22,30 @@
       "revId": "f2c0c57d17de4f1580ed375144d737c349703081",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "39d3d701_0bad2129",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefDatabaseWrapper.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-13T09:47:18Z",
+      "side": 1,
+      "message": "Thanks for the hint @marcin!\nI tested this and it seems to be working fine, but I think you\u0027re right, we want to have a deterministic behaviour.\nlet me amend this.",
+      "parentUuid": "4d5fee78_d3847175",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 47
+      },
+      "revId": "f2c0c57d17de4f1580ed375144d737c349703081",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
