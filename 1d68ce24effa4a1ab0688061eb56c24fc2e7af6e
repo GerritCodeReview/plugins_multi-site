@@ -22,6 +22,30 @@
       "revId": "1d68ce24effa4a1ab0688061eb56c24fc2e7af6e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "037d8898_a3d83c47",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkValidationModule.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-13T19:28:13Z",
+      "side": 1,
+      "message": "\u003e if not every time in SharedRefDatabaseWrapper we do get() we are getting new instance(I had the same problem with Kafka broker).\n\nMy understanding was that the dynamicItem is a tiny wrapper around a provider. When you bind a different item, then you are just replacing that provider with another one that gives you the newly registered item.\n\nWhen you call get(), you get whatever item is registered and yes, perhaps is a new one every time, I am not sure, but I wouldn\u0027t have thought that registering the DynamicItem as a singleton would make any difference.\n\nIs this so? did you manage to test that registering DynamicItem as a singleton stops getting always new instances?",
+      "parentUuid": "de80132b_bd565609",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 86
+      },
+      "revId": "1d68ce24effa4a1ab0688061eb56c24fc2e7af6e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
