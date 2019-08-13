@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d5fee78_d3847175",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefDatabaseWrapper.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-13T09:44:53Z",
+      "side": 1,
+      "message": "Small hint here, in 10829 I was struggling with similar situation. sharedRefDatabase.get was called before DynamicItem was replaced from NoOp to proper implementation so I was always using NoOP, solution is to not use get() in constructor but in runtime",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 47
+      },
+      "revId": "f2c0c57d17de4f1580ed375144d737c349703081",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
