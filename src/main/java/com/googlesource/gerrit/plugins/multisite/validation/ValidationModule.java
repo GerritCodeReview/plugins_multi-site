@@ -49,7 +49,9 @@ public class ValidationModule extends FactoryModule {
     install(new ReplicationExtensionPointModule());
 
     DynamicItem.itemOf(binder(), SharedRefDatabase.class);
-    DynamicItem.bind(binder(), SharedRefDatabase.class).to(NoopSharedRefDatabase.class);
+    DynamicItem.bind(binder(), SharedRefDatabase.class)
+        .to(NoopSharedRefDatabase.class)
+        .in(Scopes.SINGLETON);
     logger.atInfo().log("Shared ref-db engine: none");
 
     bind(SharedRefLogger.class).to(Log4jSharedRefLogger.class);

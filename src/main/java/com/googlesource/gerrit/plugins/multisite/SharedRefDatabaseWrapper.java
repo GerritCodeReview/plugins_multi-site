@@ -36,13 +36,13 @@ public class SharedRefDatabaseWrapper implements SharedRefDatabase {
 
   @Override
   public boolean isUpToDate(String project, Ref ref) throws SharedLockException {
-    return sharedRefDbDynamicItem.get().isUpToDate(project, ref);
+    return sharedRefDb().isUpToDate(project, ref);
   }
 
   @Override
   public boolean compareAndPut(String project, Ref currRef, ObjectId newRefValue)
       throws IOException {
-    boolean succeeded = sharedRefDbDynamicItem.get().compareAndPut(project, currRef, newRefValue);
+    boolean succeeded = sharedRefDb().compareAndPut(project, currRef, newRefValue);
     if (succeeded) {
       sharedRefLogger.logRefUpdate(project, currRef, newRefValue);
     }
@@ -51,19 +51,23 @@ public class SharedRefDatabaseWrapper implements SharedRefDatabase {
 
   @Override
   public AutoCloseable lockRef(String project, String refName) throws SharedLockException {
-    AutoCloseable locker = sharedRefDbDynamicItem.get().lockRef(project, refName);
+    AutoCloseable locker = sharedRefDb().lockRef(project, refName);
     sharedRefLogger.logLockAcquisition(project, refName);
     return locker;
   }
 
   @Override
   public boolean exists(String project, String refName) {
-    return sharedRefDbDynamicItem.get().exists(project, refName);
+    return sharedRefDb().exists(project, refName);
   }
 
   @Override
   public void removeProject(String project) throws IOException {
-    sharedRefDbDynamicItem.get().removeProject(project);
+    sharedRefDb().removeProject(project);
     sharedRefLogger.logProjectDelete(project);
+  }
+
+  private SharedRefDatabase sharedRefDb() {
+    return sharedRefDbDynamicItem.get();
   }
 }
