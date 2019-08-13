@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5025ee4c_59fc46d9",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-13T10:08:55Z",
+      "side": 1,
+      "message": "If we test what we document as behaviour, we should make a symbolic link",
+      "range": {
+        "startLine": 361,
+        "startChar": 7,
+        "endLine": 361,
+        "endChar": 11
+      },
+      "revId": "2adb79b912b0cf889bcbba1429aaf5ead2c6cc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e0603eb8_5514d811",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefDatabaseWrapper.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-13T10:08:55Z",
+      "side": 1,
+      "message": "Not sure this is correct: when the DynamicItem gets re-bound the wrapper will still use a stable shared-refdb.",
+      "range": {
+        "startLine": 33,
+        "startChar": 4,
+        "endLine": 33,
+        "endChar": 47
+      },
+      "revId": "2adb79b912b0cf889bcbba1429aaf5ead2c6cc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
