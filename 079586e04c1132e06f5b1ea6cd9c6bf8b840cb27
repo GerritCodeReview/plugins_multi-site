@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "6a94776b_e7b9bb4e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-13T13:45:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c461887a_7c6bd62a",
+      "range": {
+        "startLine": 76,
+        "startChar": 24,
+        "endLine": 77,
+        "endChar": 50
+      },
+      "revId": "079586e04c1132e06f5b1ea6cd9c6bf8b840cb27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "af3421f2_294b489c",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
         "patchSetId": 3
@@ -204,6 +228,30 @@
       "side": 1,
       "message": "Ack",
       "parentUuid": "eadbb88d_860b7f97",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 15
+      },
+      "revId": "079586e04c1132e06f5b1ea6cd9c6bf8b840cb27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d1e16f68_5e071a38",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-13T13:45:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83eb1781_297bf166",
       "range": {
         "startLine": 22,
         "startChar": 4,
