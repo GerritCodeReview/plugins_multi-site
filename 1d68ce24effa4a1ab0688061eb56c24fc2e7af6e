@@ -46,6 +46,30 @@
       "revId": "1d68ce24effa4a1ab0688061eb56c24fc2e7af6e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33ee06e8_93b095e4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkValidationModule.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-13T19:45:04Z",
+      "side": 1,
+      "message": "My understanding was the same but I had the problem with KafkaSession when I had it without singleton scope every time I was calling get() I was getting instance which wasn\u0027t connected, after marking it as a singleton I have to connect just once.",
+      "parentUuid": "037d8898_a3d83c47",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 86
+      },
+      "revId": "1d68ce24effa4a1ab0688061eb56c24fc2e7af6e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
