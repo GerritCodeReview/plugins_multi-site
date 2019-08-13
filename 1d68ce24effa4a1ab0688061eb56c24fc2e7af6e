@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "de80132b_bd565609",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkValidationModule.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-13T18:22:33Z",
+      "side": 1,
+      "message": "I know that it\u0027s already merge but I realise something. Shouldn\u0027t we have here DynamicItem.bind(binder(), SharedRefDatabase.class).to(ZkSharedRefDatabase.class).*in(Scopes.SINGLETON)*; if not every time in SharedRefDatabaseWrapper we do get() we are getting new instance(I had the same problem with kafka broker).",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 86
+      },
+      "revId": "1d68ce24effa4a1ab0688061eb56c24fc2e7af6e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
