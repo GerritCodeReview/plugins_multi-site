@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ecb7197_55b0a331",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-13T05:55:38Z",
+      "side": 1,
+      "message": "This is the only thing that isn\u0027t present when the objectType is a BLOB: can we just put a conditional to it, instead of having a copy\u0026paste of the whole thing?",
+      "range": {
+        "startLine": 76,
+        "startChar": 24,
+        "endLine": 77,
+        "endChar": 50
+      },
+      "revId": "079586e04c1132e06f5b1ea6cd9c6bf8b840cb27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af3421f2_294b489c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefLogEntry.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-13T05:55:38Z",
+      "side": 1,
+      "message": "Updating a blob means still updating a ref, isn\u0027t it?",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 15
+      },
+      "revId": "079586e04c1132e06f5b1ea6cd9c6bf8b840cb27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
