@@ -16,6 +16,24 @@
       "revId": "7e5a01ce73e86f3410715953fcb027949389e08b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79984d08_89032788",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 9
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-13T11:06:56Z",
+      "side": 1,
+      "message": "the symlink in $LOCATION_TEST_SITE_2 will still point to $LOCATION_TEST_SITE_1/lib/multi-site.jar\nso things work fine.\nBut I agree it\u0027s a bit dirty\n\nlet me fix that :)",
+      "parentUuid": "7b7fda1e_c49022b9",
+      "revId": "7e5a01ce73e86f3410715953fcb027949389e08b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
