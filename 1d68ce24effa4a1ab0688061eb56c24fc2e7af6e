@@ -94,6 +94,30 @@
       "revId": "1d68ce24effa4a1ab0688061eb56c24fc2e7af6e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c7cbbb6d_37a7ee18",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkValidationModule.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-13T22:05:30Z",
+      "side": 1,
+      "message": "Fixed in https://gerrit-review.googlesource.com/c/plugins/multi-site/+/234132",
+      "parentUuid": "bb69f967_c372bf95",
+      "range": {
+        "startLine": 37,
+        "startChar": 4,
+        "endLine": 37,
+        "endChar": 86
+      },
+      "revId": "1d68ce24effa4a1ab0688061eb56c24fc2e7af6e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
