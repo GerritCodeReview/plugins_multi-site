@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "35fc181e_bdcc933b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkValidationModule.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-13T08:54:46Z",
+      "side": 1,
+      "message": "In my opinion it should be in the PluginModule which is in the Gerrit-Module` in BUILD, check BUILD file Luca already mentioned it there",
+      "parentUuid": "b0537987_a3cea52f",
+      "range": {
+        "startLine": 31,
+        "startChar": 9,
+        "endLine": 31,
+        "endChar": 27
+      },
+      "revId": "198714534e947f22c09517783797d7315c388f5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "498270f7_5126aafe",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/zookeeper/ZkValidationModule.java",
         "patchSetId": 5
