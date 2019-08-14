@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
@@ -52,10 +51,8 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
                 refUpdate -> {
                   String ref = refUpdate.getSrcRef();
                   try {
-                    if (sharedRefDb
-                        .isUpToDate(
-                            projectName,
-                            SharedRefDatabase.newRef(ref, refUpdate.getNewObjectId()))) {
+                    if (sharedRefDb.isUpToDate(
+                        projectName, SharedRefDatabase.newRef(ref, refUpdate.getNewObjectId()))) {
                       return true;
                     }
                     repLog.warn(

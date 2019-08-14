@@ -23,14 +23,11 @@ import com.google.gerrit.extensions.registration.DynamicItem;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.MultisiteReplicationPushFilter;
-import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.apache.curator.retry.RetryNTimes;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
@@ -54,8 +51,7 @@ public class MultisiteReplicationPushFilterTest {
     doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(project), any());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(
-          sharedRefDatabaseMock);
+        new MultisiteReplicationPushFilter(sharedRefDatabaseMock);
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactlyElementsIn(refUpdates);
@@ -69,8 +65,7 @@ public class MultisiteReplicationPushFilterTest {
     SharedRefDatabaseWrapper sharedRefDatabase = newSharedRefDatabase(outdatedRef.getSrcRef());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(
- sharedRefDatabase);
+        new MultisiteReplicationPushFilter(sharedRefDatabase);
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactly(refUpToDate);
@@ -125,10 +120,8 @@ public class MultisiteReplicationPushFilterTest {
           }
         };
     return new SharedRefDatabaseWrapper(
-            DynamicItem.itemOf(
-                    SharedRefDatabase.class,
-                    sharedRefDatabase),
-                new DisabledSharedRefLogger());
+        DynamicItem.itemOf(SharedRefDatabase.class, sharedRefDatabase),
+        new DisabledSharedRefLogger());
   }
 
   private RemoteRefUpdate refUpdate(String refName) throws IOException {
