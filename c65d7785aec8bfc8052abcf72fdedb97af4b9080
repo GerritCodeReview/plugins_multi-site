@@ -22,6 +22,30 @@
       "revId": "c65d7785aec8bfc8052abcf72fdedb97af4b9080",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93f24d31_3059e8db",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-14T10:45:44Z",
+      "side": 1,
+      "message": "Yep, every interaction with sharedRefDB should go through the wrapper.\nSo that we can centrally capture those interactions in logs, metrics, etc",
+      "parentUuid": "8db8daef_ad7d4099",
+      "range": {
+        "startLine": 37,
+        "startChar": 28,
+        "endLine": 37,
+        "endChar": 45
+      },
+      "revId": "c65d7785aec8bfc8052abcf72fdedb97af4b9080",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
