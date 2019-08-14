@@ -19,6 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.googlesource.gerrit.plugins.multisite.validation.MultisiteReplicationPushFilter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -48,7 +49,8 @@ public class MultisiteReplicationPushFilterTest {
     doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(project), any());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(sharedRefDatabaseMock);
+        new MultisiteReplicationPushFilter(
+            DynamicItem.itemOf(SharedRefDatabase.class, sharedRefDatabaseMock));
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactlyElementsIn(refUpdates);
@@ -62,7 +64,8 @@ public class MultisiteReplicationPushFilterTest {
     SharedRefDatabase sharedRefDatabase = newSharedRefDatabase(outdatedRef.getSrcRef());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(sharedRefDatabase);
+        new MultisiteReplicationPushFilter(
+            DynamicItem.itemOf(SharedRefDatabase.class, sharedRefDatabase));
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactly(refUpToDate);
@@ -79,7 +82,8 @@ public class MultisiteReplicationPushFilterTest {
     SharedRefDatabase sharedRefDatabase = newSharedRefDatabase(changeMetaRef.getSrcRef());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(sharedRefDatabase);
+        new MultisiteReplicationPushFilter(
+            DynamicItem.itemOf(SharedRefDatabase.class, sharedRefDatabase));
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactly(refUpToDate, refChangeUpToDate);
