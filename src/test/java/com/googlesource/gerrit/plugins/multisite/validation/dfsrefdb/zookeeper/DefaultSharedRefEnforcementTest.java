@@ -42,6 +42,13 @@ public class DefaultSharedRefEnforcementTest implements RefFixture {
   }
 
   @Test
+  public void aCacheAutomergeShouldBeIgnored() {
+    Ref immutableChangeRef = newRef("refs/cache-automerge/01/1/1000000", AN_OBJECT_ID_1);
+    assertThat(refEnforcement.getPolicy(A_TEST_PROJECT_NAME, immutableChangeRef.getName()))
+        .isEqualTo(EnforcePolicy.IGNORED);
+  }
+
+  @Test
   public void aDraftCommentsShouldBeIgnored() {
     Ref immutableChangeRef = newRef("refs/draft-comments/01/1/1000000", AN_OBJECT_ID_1);
     assertThat(refEnforcement.getPolicy(A_TEST_PROJECT_NAME, immutableChangeRef.getName()))

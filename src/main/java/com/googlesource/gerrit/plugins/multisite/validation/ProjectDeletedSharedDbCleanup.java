@@ -17,19 +17,19 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
+import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import java.io.IOException;
 
 public class ProjectDeletedSharedDbCleanup implements ProjectDeletedListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private final SharedRefDatabase sharedDb;
+  private final SharedRefDatabaseWrapper sharedDb;
 
   private final ValidationMetrics validationMetrics;
 
   @Inject
   public ProjectDeletedSharedDbCleanup(
-      SharedRefDatabase sharedDb, ValidationMetrics validationMetrics) {
+      SharedRefDatabaseWrapper sharedDb, ValidationMetrics validationMetrics) {
     this.sharedDb = sharedDb;
     this.validationMetrics = validationMetrics;
   }

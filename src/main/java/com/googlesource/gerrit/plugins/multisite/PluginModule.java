@@ -1,4 +1,4 @@
-// Copyright (C) 2019 The Android Open Source Project
+// Copyright (C) 2015 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,27 +14,28 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.google.gerrit.extensions.events.ProjectDeletedListener;
-import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.inject.AbstractModule;
+import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
-import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 
-public class GitModule extends AbstractModule {
-  private final Configuration config;
+public class PluginModule extends LifecycleModule {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+  private Configuration config;
+  private ZkValidationModule zkValidationModule;
 
   @Inject
-  public GitModule(Configuration config) {
+  public PluginModule(Configuration config, ZkValidationModule zkValidationModule) {
     this.config = config;
+    this.zkValidationModule = zkValidationModule;
   }
 
   @Override
   protected void configure() {
     if (config.getSharedRefDb().isEnabled()) {
-      DynamicSet.bind(binder(), ProjectDeletedListener.class)
-          .to(ProjectDeletedSharedDbCleanup.class);
-      install(new ValidationModule(config));
+      logger.atInfo().log("Shared ref-db engine: Zookeeper");
+      install(zkValidationModule);
     }
   }
 }

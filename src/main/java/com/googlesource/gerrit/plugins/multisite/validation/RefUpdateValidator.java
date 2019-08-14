@@ -20,6 +20,8 @@ import com.google.common.base.MoreObjects;
 import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.googlesource.gerrit.plugins.multisite.LockWrapper;
+import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.OutOfSyncException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedDbSplitBrainException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedLockException;
@@ -36,10 +38,11 @@ import org.eclipse.jgit.lib.RefUpdate;
 public class RefUpdateValidator {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  protected final SharedRefDatabase sharedRefDb;
+  protected final SharedRefDatabaseWrapper sharedRefDb;
   protected final ValidationMetrics validationMetrics;
 
   protected final String projectName;
+  private final LockWrapper.Factory lockWrapperFactory;
   protected final RefDatabase refDb;
   protected final SharedRefEnforcement refEnforcement;
 
@@ -66,13 +69,15 @@ public class RefUpdateValidator {
 
   @Inject
   public RefUpdateValidator(
-      SharedRefDatabase sharedRefDb,
+      SharedRefDatabaseWrapper sharedRefDb,
       ValidationMetrics validationMetrics,
       SharedRefEnforcement refEnforcement,
+      LockWrapper.Factory lockWrapperFactory,
       @Assisted String projectName,
       @Assisted RefDatabase refDb) {
     this.sharedRefDb = sharedRefDb;
     this.validationMetrics = validationMetrics;
+    this.lockWrapperFactory = lockWrapperFactory;
     this.refDb = refDb;
     this.projectName = projectName;
     this.refEnforcement = refEnforcement;
@@ -159,7 +164,9 @@ public class RefUpdateValidator {
 
     locks.addResourceIfNotExist(
         String.format("%s-%s", projectName, refName),
-        () -> sharedRefDb.lockRef(projectName, refName));
+        () ->
+            lockWrapperFactory.create(
+                projectName, refName, sharedRefDb.lockRef(projectName, refName)));
 
     RefPair latestRefPair = getLatestLocalRef(refPair);
     if (sharedRefDb.isUpToDate(projectName, latestRefPair.compareRef)) {
