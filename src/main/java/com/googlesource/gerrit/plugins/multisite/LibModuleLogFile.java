@@ -14,10 +14,19 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.googlesource.gerrit.plugins.multisite.kafka.consumer.SourceAwareEventWrapper;
+import com.google.gerrit.server.util.SystemLog;
+import org.apache.log4j.AsyncAppender;
+import org.apache.log4j.Layout;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
-public class DisabledMessageLogger implements MessageLogger {
+public abstract class LibModuleLogFile {
 
-  @Override
-  public void log(Direction direction, SourceAwareEventWrapper event) {}
+  public LibModuleLogFile(SystemLog systemLog, String logName, Layout layout) {
+    AsyncAppender asyncAppender = systemLog.createAsyncAppender(logName, layout, true, true);
+    Logger logger = LogManager.getLogger(logName);
+    logger.removeAppender(logName);
+    logger.addAppender(asyncAppender);
+    logger.setAdditivity(false);
+  }
 }

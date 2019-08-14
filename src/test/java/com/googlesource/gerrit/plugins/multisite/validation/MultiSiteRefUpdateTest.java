@@ -21,9 +21,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
+import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.RefUpdateValidator.Factory;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefUpdateStub;
 import java.io.IOException;
@@ -46,7 +46,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 // working, and the other way around
 public class MultiSiteRefUpdateTest implements RefFixture {
 
-  @Mock SharedRefDatabase sharedRefDb;
+  @Mock SharedRefDatabaseWrapper sharedRefDb;
   @Mock ValidationMetrics validationMetrics;
   @Mock RefDatabase refDb;
 
@@ -197,6 +197,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
                     sharedRefDb,
                     validationMetrics,
                     new DefaultSharedRefEnforcement(),
+                    new DummyLockWrapper(),
                     projectName,
                     refDb);
             return RefUpdateValidator;
