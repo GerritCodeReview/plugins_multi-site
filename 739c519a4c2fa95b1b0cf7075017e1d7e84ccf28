@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f1ce531_0cab2559",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-14T19:29:35Z",
+      "side": 1,
+      "message": "this part can be moved out in the next change, it\u0027s not related to Kafka and should be in the multi-site engine",
+      "range": {
+        "startLine": 116,
+        "startChar": 6,
+        "endLine": 131,
+        "endChar": 9
+      },
+      "revId": "739c519a4c2fa95b1b0cf7075017e1d7e84ccf28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "33fa262b_86590d9e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-14T19:29:35Z",
+      "side": 1,
+      "message": "these tests are still failing to fix it we need to prepare custom test version of EventSubscriberModule and BrokerSessionModule modules which are going to pass messages using in-memory queue",
+      "range": {
+        "startLine": 102,
+        "startChar": 11,
+        "endLine": 102,
+        "endChar": 35
+      },
+      "revId": "739c519a4c2fa95b1b0cf7075017e1d7e84ccf28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
