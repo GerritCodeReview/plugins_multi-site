@@ -12,24 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite;
+package com.googlesource.gerrit.plugins.multisite.validation;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
+import com.googlesource.gerrit.plugins.multisite.SharedRefLogger;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Ref;
+import org.junit.Ignore;
 
-public class GitModule extends AbstractModule {
-  private final Configuration config;
-
-  @Inject
-  public GitModule(Configuration config) {
-    this.config = config;
-  }
+@Ignore
+public class DisabledSharedRefLogger implements SharedRefLogger {
 
   @Override
-  protected void configure() {
-    if (config.getSharedRefDb().isEnabled()) {
-      install(new ValidationModule(config));
-    }
-  }
+  public void logRefUpdate(String project, Ref currRef, ObjectId newRefValue) {}
+
+  @Override
+  public void logProjectDelete(String project) {}
+
+  @Override
+  public void logLockAcquisition(String project, String refName) {}
+
+  @Override
+  public void logLockRelease(String project, String refName) {}
 }

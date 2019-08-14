@@ -14,22 +14,30 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.google.inject.AbstractModule;
+import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 
-public class GitModule extends AbstractModule {
-  private final Configuration config;
+public class PluginModule extends LifecycleModule {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
+  private Configuration config;
+  private ZkValidationModule zkValidationModule;
 
   @Inject
-  public GitModule(Configuration config) {
+  public PluginModule(Configuration config, ZkValidationModule zkValidationModule) {
     this.config = config;
+    this.zkValidationModule = zkValidationModule;
   }
 
   @Override
   protected void configure() {
+    listener().to(PluginStartup.class);
+
     if (config.getSharedRefDb().isEnabled()) {
-      install(new ValidationModule(config));
+      logger.atInfo().log("Shared ref-db engine: Zookeeper");
+      install(zkValidationModule);
     }
   }
 }

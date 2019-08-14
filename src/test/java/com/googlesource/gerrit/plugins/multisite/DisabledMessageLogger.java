@@ -14,22 +14,12 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
+import com.googlesource.gerrit.plugins.multisite.kafka.consumer.SourceAwareEventWrapper;
+import org.junit.Ignore;
 
-public class GitModule extends AbstractModule {
-  private final Configuration config;
-
-  @Inject
-  public GitModule(Configuration config) {
-    this.config = config;
-  }
+@Ignore
+public class DisabledMessageLogger implements MessageLogger {
 
   @Override
-  protected void configure() {
-    if (config.getSharedRefDb().isEnabled()) {
-      install(new ValidationModule(config));
-    }
-  }
+  public void log(Direction direction, SourceAwareEventWrapper event) {}
 }

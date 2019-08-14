@@ -14,22 +14,25 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.google.inject.AbstractModule;
+import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
+import com.google.inject.Injector;
 
-public class GitModule extends AbstractModule {
-  private final Configuration config;
+public class PluginStartup implements LifecycleListener {
+  private SharedRefDatabaseWrapper sharedRefDb;
+  private Injector injector;
 
   @Inject
-  public GitModule(Configuration config) {
-    this.config = config;
+  public PluginStartup(SharedRefDatabaseWrapper sharedRefDb, Injector injector) {
+    this.sharedRefDb = sharedRefDb;
+    this.injector = injector;
   }
 
   @Override
-  protected void configure() {
-    if (config.getSharedRefDb().isEnabled()) {
-      install(new ValidationModule(config));
-    }
+  public void start() {
+    injector.injectMembers(sharedRefDb);
   }
+
+  @Override
+  public void stop() {}
 }
