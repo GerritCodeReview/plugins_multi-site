@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c1ae4668_68e0e750",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-14T21:11:41Z",
+      "side": 1,
+      "message": "It looks like you did some further adaptations of the logic: you should mention them also below the list of all commits included.",
+      "revId": "5e0fb1bf0633e42755b1d4d91f30e1c53d6eed12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a565e92_1327c1e6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/GitModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-14T21:11:41Z",
+      "side": 1,
+      "message": "This was moved in Change-Id: I785bfd33a5b to the global Module: why does the merge need to move it to GitModule?",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 51
+      },
+      "revId": "5e0fb1bf0633e42755b1d4d91f30e1c53d6eed12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
