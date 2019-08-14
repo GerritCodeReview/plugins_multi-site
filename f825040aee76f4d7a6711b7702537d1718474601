@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a48c6322_eaf29c03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-14T21:23:44Z",
+      "side": 1,
+      "message": "This is incorrect: the PluginModule is instantiated by the plugin loader.",
+      "range": {
+        "startLine": 9,
+        "startChar": 43,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "f825040aee76f4d7a6711b7702537d1718474601",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5bf81641_fa4d9d28",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-14T21:23:44Z",
+      "side": 1,
+      "message": "This sounds like a hack rather than a solution.\n\nWhy not simply move the DynamicItem declaration (only *that* part) to the libModule (sysInjector)?",
+      "range": {
+        "startLine": 20,
+        "startChar": 40,
+        "endLine": 21,
+        "endChar": 70
+      },
+      "revId": "f825040aee76f4d7a6711b7702537d1718474601",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
