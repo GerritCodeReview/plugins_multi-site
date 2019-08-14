@@ -22,11 +22,10 @@ import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.LockWrapper;
 import com.googlesource.gerrit.plugins.multisite.Log4jSharedRefLogger;
+import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.SharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.NoopSharedRefDatabase;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.replication.ReplicationExtensionPointModule;
 import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
@@ -44,12 +43,7 @@ public class ValidationModule extends FactoryModule {
   protected void configure() {
     install(new ReplicationExtensionPointModule());
 
-    DynamicItem.itemOf(binder(), SharedRefDatabase.class);
-    DynamicItem.bind(binder(), SharedRefDatabase.class)
-        .to(NoopSharedRefDatabase.class)
-        .in(Scopes.SINGLETON);
-    logger.atInfo().log("Shared ref-db engine: none");
-
+    bind(SharedRefDatabaseWrapper.class).in(Scopes.SINGLETON);
     bind(SharedRefLogger.class).to(Log4jSharedRefLogger.class);
     factory(LockWrapper.Factory.class);
 
