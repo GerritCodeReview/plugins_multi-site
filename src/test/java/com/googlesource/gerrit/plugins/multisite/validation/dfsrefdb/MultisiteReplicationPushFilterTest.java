@@ -19,12 +19,18 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 
+import com.google.gerrit.extensions.registration.DynamicItem;
+import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
+import com.googlesource.gerrit.plugins.multisite.validation.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.MultisiteReplicationPushFilter;
+import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.apache.curator.retry.RetryNTimes;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
@@ -37,7 +43,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MultisiteReplicationPushFilterTest {
 
-  @Mock SharedRefDatabase sharedRefDatabaseMock;
+  @Mock SharedRefDatabaseWrapper sharedRefDatabaseMock;
 
   String project = "fooProject";
 
@@ -48,7 +54,8 @@ public class MultisiteReplicationPushFilterTest {
     doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(project), any());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(sharedRefDatabaseMock);
+        new MultisiteReplicationPushFilter(
+          sharedRefDatabaseMock);
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactlyElementsIn(refUpdates);
@@ -59,10 +66,11 @@ public class MultisiteReplicationPushFilterTest {
     RemoteRefUpdate refUpToDate = refUpdate("refs/heads/uptodate");
     RemoteRefUpdate outdatedRef = refUpdate("refs/heads/outdated");
     List<RemoteRefUpdate> refUpdates = Arrays.asList(refUpToDate, outdatedRef);
-    SharedRefDatabase sharedRefDatabase = newSharedRefDatabase(outdatedRef.getSrcRef());
+    SharedRefDatabaseWrapper sharedRefDatabase = newSharedRefDatabase(outdatedRef.getSrcRef());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(sharedRefDatabase);
+        new MultisiteReplicationPushFilter(
+ sharedRefDatabase);
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactly(refUpToDate);
@@ -76,7 +84,7 @@ public class MultisiteReplicationPushFilterTest {
     RemoteRefUpdate changeRef = refUpdate("refs/changes/12/4512/1");
     List<RemoteRefUpdate> refUpdates =
         Arrays.asList(refUpToDate, refChangeUpToDate, changeMetaRef, changeRef);
-    SharedRefDatabase sharedRefDatabase = newSharedRefDatabase(changeMetaRef.getSrcRef());
+    SharedRefDatabaseWrapper sharedRefDatabase = newSharedRefDatabase(changeMetaRef.getSrcRef());
 
     MultisiteReplicationPushFilter pushFilter =
         new MultisiteReplicationPushFilter(sharedRefDatabase);
@@ -85,7 +93,7 @@ public class MultisiteReplicationPushFilterTest {
     assertThat(filteredRefUpdates).containsExactly(refUpToDate, refChangeUpToDate);
   }
 
-  private SharedRefDatabase newSharedRefDatabase(String... rejectedRefs) {
+  private SharedRefDatabaseWrapper newSharedRefDatabase(String... rejectedRefs) {
     Set<String> rejectedSet = new HashSet<>();
     rejectedSet.addAll(Arrays.asList(rejectedRefs));
 
@@ -116,7 +124,11 @@ public class MultisiteReplicationPushFilterTest {
             return false;
           }
         };
-    return sharedRefDatabase;
+    return new SharedRefDatabaseWrapper(
+            DynamicItem.itemOf(
+                    SharedRefDatabase.class,
+                    sharedRefDatabase),
+                new DisabledSharedRefLogger());
   }
 
   private RemoteRefUpdate refUpdate(String refName) throws IOException {
