@@ -27,21 +27,20 @@ import org.apache.curator.framework.CuratorFramework;
 public class ZkValidationModule extends AbstractModule {
 
   private ZookeeperConfig cfg;
+  private final DynamicItem<SharedRefDatabase> currentSharedRefDatabase;
 
   @Inject
-  public ZkValidationModule(Configuration cfg) {
+  public ZkValidationModule(Configuration cfg, DynamicItem<SharedRefDatabase> currentSharedRefDatabase) {
     this.cfg = new ZookeeperConfig(cfg.getMultiSiteConfig());
+    this.currentSharedRefDatabase = currentSharedRefDatabase;
   }
 
   @Override
   protected void configure() {
-    DynamicItem.bind(binder(), SharedRefDatabase.class)
-        .to(ZkSharedRefDatabase.class)
-        .in(Scopes.SINGLETON);
-    bind(CuratorFramework.class).toInstance(cfg.buildCurator());
+    currentSharedRefDatabase.set(
+      new ZkSharedRefDatabase(cfg.buildCurator(), new ZkConnectionConfig(cfg.buildCasRetryPolicy(), cfg.getZkInterProcessLockTimeOut())),
+      currentSharedRefDatabase.getPluginName()
+    );
 
-    bind(ZkConnectionConfig.class)
-        .toInstance(
-            new ZkConnectionConfig(cfg.buildCasRetryPolicy(), cfg.getZkInterProcessLockTimeOut()));
   }
 }
