@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedLockException;
@@ -33,10 +34,10 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
   static final String REPLICATION_LOG_NAME = "replication_log";
   static final Logger repLog = LoggerFactory.getLogger(REPLICATION_LOG_NAME);
 
-  private final SharedRefDatabase sharedRefDb;
+  private final DynamicItem<SharedRefDatabase> sharedRefDb;
 
   @Inject
-  public MultisiteReplicationPushFilter(SharedRefDatabase sharedRefDb) {
+  public MultisiteReplicationPushFilter(DynamicItem<SharedRefDatabase> sharedRefDb) {
     this.sharedRefDb = sharedRefDb;
   }
 
@@ -50,8 +51,11 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
                 refUpdate -> {
                   String ref = refUpdate.getSrcRef();
                   try {
-                    if (sharedRefDb.isUpToDate(
-                        projectName, SharedRefDatabase.newRef(ref, refUpdate.getNewObjectId()))) {
+                    if (sharedRefDb
+                        .get()
+                        .isUpToDate(
+                            projectName,
+                            SharedRefDatabase.newRef(ref, refUpdate.getNewObjectId()))) {
                       return true;
                     }
                     repLog.warn(
