@@ -45,6 +45,30 @@
       "revId": "f825040aee76f4d7a6711b7702537d1718474601",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8502ca21_c699c5c7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-15T09:45:01Z",
+      "side": 1,
+      "message": "I\u0027ve tried to implement your suggestion but no luck :( I\u0027ve moved `DynamicItem.itemOf(binder(), SharedRefDatabase.class); ` from ValidationModule(dbInjector) to `com.googlesource.gerrit.plugins.multisite.Module`(sysInjector) but then I\u0027m getting:\nCould not find a suitable constructor in com.google.gerrit.extensions.registration.DynamicItem. Classes must have either one (and only one) constructor annotated with @Inject or a zero-argument constructor that is not private.\n...\nCaused by: java.lang.RuntimeException: DbInjector failed\n        ... 12 more\nCaused by: com.google.inject.CreationException: Unable to create injector, see the following errors:\n\n1) Could not find a suitable constructor in com.google.gerrit.extensions.registration.DynamicItem. Classes must have either one (and only one) constructor annotated with @Inject or a zero-argument constructor that is not private.\n  at com.google.gerrit.extensions.registration.DynamicItem.class(DynamicItem.java:37)\n  while locating com.google.gerrit.extensions.registration.DynamicItem\u003ccom.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase\u003e\n\n\nLooks like dbInjector cannot see DynamicItem registered by `itemOf` in sysInjector. I was getting the same error when just for test I commented out `DynamicItem.itemOf(binder(), SharedRefDatabase.class); ` line in ValidationModule",
+      "parentUuid": "5bf81641_fa4d9d28",
+      "range": {
+        "startLine": 20,
+        "startChar": 40,
+        "endLine": 21,
+        "endChar": 70
+      },
+      "revId": "f825040aee76f4d7a6711b7702537d1718474601",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
