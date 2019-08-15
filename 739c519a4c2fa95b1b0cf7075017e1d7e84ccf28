@@ -45,6 +45,30 @@
       "revId": "739c519a4c2fa95b1b0cf7075017e1d7e84ccf28",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d0cd388_007cd3c6",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/EventConsumerIT.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-15T11:13:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33fa262b_86590d9e",
+      "range": {
+        "startLine": 102,
+        "startChar": 11,
+        "endLine": 102,
+        "endChar": 35
+      },
+      "revId": "739c519a4c2fa95b1b0cf7075017e1d7e84ccf28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
