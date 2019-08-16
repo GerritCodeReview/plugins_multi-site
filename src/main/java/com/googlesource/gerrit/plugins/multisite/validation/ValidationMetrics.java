@@ -18,6 +18,7 @@ import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.Field;
 import com.google.gerrit.metrics.MetricMaker;
+import com.google.gerrit.server.logging.PluginMetadata;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -35,7 +36,11 @@ public class ValidationMetrics {
         metricMaker.newCounter(
             "multi_site/validation/git_update_split_brain_prevented",
             new Description("Rate of REST API error responses").setRate().setUnit("errors"),
-            Field.ofString(GIT_UPDATE_SPLIT_BRAIN_PREVENTED)
+            Field.ofString(
+                    GIT_UPDATE_SPLIT_BRAIN_PREVENTED,
+                    (metadataBuilder, fieldValue) ->
+                        metadataBuilder.addPluginMetadata(
+                            PluginMetadata.create(GIT_UPDATE_SPLIT_BRAIN_PREVENTED, fieldValue)))
                 .description("Ref-update operations, split-brain detected and prevented")
                 .build());
 
@@ -43,7 +48,11 @@ public class ValidationMetrics {
         metricMaker.newCounter(
             "multi_site/validation/git_update_split_brain",
             new Description("Rate of REST API error responses").setRate().setUnit("errors"),
-            Field.ofString(GIT_UPDATE_SPLIT_BRAIN)
+            Field.ofString(
+                    GIT_UPDATE_SPLIT_BRAIN,
+                    (metadataBuilder, fieldValue) ->
+                        metadataBuilder.addPluginMetadata(
+                            PluginMetadata.create(GIT_UPDATE_SPLIT_BRAIN, fieldValue)))
                 .description("Ref-update operation left node in a split-brain scenario")
                 .build());
   }

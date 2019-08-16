@@ -18,6 +18,7 @@ import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.Field;
 import com.google.gerrit.metrics.MetricMaker;
+import com.google.gerrit.server.logging.PluginMetadata;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -38,7 +39,11 @@ public class BrokerMetrics {
             new Description("Number of messages published by the broker publisher")
                 .setRate()
                 .setUnit("messages"),
-            Field.ofString(PUBLISHER_SUCCESS_COUNTER)
+            Field.ofString(
+                    PUBLISHER_SUCCESS_COUNTER,
+                    (metadataBuilder, fieldValue) ->
+                        metadataBuilder.addPluginMetadata(
+                            PluginMetadata.create(PUBLISHER_SUCCESS_COUNTER, fieldValue)))
                 .description("Broker message published count")
                 .build());
     this.brokerPublisherFailureCounter =
@@ -47,7 +52,11 @@ public class BrokerMetrics {
             new Description("Number of messages failed to publish by the broker publisher")
                 .setRate()
                 .setUnit("errors"),
-            Field.ofString(PUBLISHER_FAILURE_COUNTER)
+            Field.ofString(
+                    PUBLISHER_FAILURE_COUNTER,
+                    (metadataBuilder, fieldValue) ->
+                        metadataBuilder.addPluginMetadata(
+                            PluginMetadata.create(PUBLISHER_FAILURE_COUNTER, fieldValue)))
                 .description("Broker failed to publish message count")
                 .build());
   }
