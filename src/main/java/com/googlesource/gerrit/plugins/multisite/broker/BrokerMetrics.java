@@ -15,14 +15,13 @@
 package com.googlesource.gerrit.plugins.multisite.broker;
 
 import com.google.gerrit.metrics.Counter1;
-import com.google.gerrit.metrics.Description;
-import com.google.gerrit.metrics.Field;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
 
 @Singleton
-public class BrokerMetrics {
+public class BrokerMetrics extends MultiSiteMetrics {
   private static final String PUBLISHER_SUCCESS_COUNTER = "broker_msg_publisher_counter";
   private static final String PUBLISHER_FAILURE_COUNTER = "broker_msg_publisher_failure_counter";
 
@@ -35,21 +34,15 @@ public class BrokerMetrics {
     this.brokerPublisherSuccessCounter =
         metricMaker.newCounter(
             "multi_site/broker/broker_message_publisher_counter",
-            new Description("Number of messages published by the broker publisher")
-                .setRate()
-                .setUnit("messages"),
-            Field.ofString(PUBLISHER_SUCCESS_COUNTER)
-                .description("Broker message published count")
-                .build());
+            rateDescription("messages", "Number of messages published by the broker publisher"),
+            stringField(PUBLISHER_SUCCESS_COUNTER, "Broker message published count"));
+
     this.brokerPublisherFailureCounter =
         metricMaker.newCounter(
             "multi_site/broker/broker_message_publisher_failure_counter",
-            new Description("Number of messages failed to publish by the broker publisher")
-                .setRate()
-                .setUnit("errors"),
-            Field.ofString(PUBLISHER_FAILURE_COUNTER)
-                .description("Broker failed to publish message count")
-                .build());
+            rateDescription(
+                "errors", "Number of messages failed to publish by the broker publisher"),
+            stringField(PUBLISHER_FAILURE_COUNTER, "Broker failed to publish message count"));
   }
 
   public void incrementBrokerPublishedMessage() {

@@ -15,14 +15,13 @@
 package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.gerrit.metrics.Counter1;
-import com.google.gerrit.metrics.Description;
-import com.google.gerrit.metrics.Field;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
 
 @Singleton
-public class ValidationMetrics {
+public class ValidationMetrics extends MultiSiteMetrics {
   private static final String GIT_UPDATE_SPLIT_BRAIN_PREVENTED = "git_update_split_brain_prevented";
   private static final String GIT_UPDATE_SPLIT_BRAIN = "git_update_split_brain";
 
@@ -34,18 +33,18 @@ public class ValidationMetrics {
     this.splitBrainPreventionCounter =
         metricMaker.newCounter(
             "multi_site/validation/git_update_split_brain_prevented",
-            new Description("Rate of REST API error responses").setRate().setUnit("errors"),
-            Field.ofString(GIT_UPDATE_SPLIT_BRAIN_PREVENTED)
-                .description("Ref-update operations, split-brain detected and prevented")
-                .build());
+            rateDescription("errors", "Rate of REST API error responses"),
+            stringField(
+                GIT_UPDATE_SPLIT_BRAIN_PREVENTED,
+                "Ref-update operations, split-brain detected and prevented"));
 
     this.splitBrainCounter =
         metricMaker.newCounter(
             "multi_site/validation/git_update_split_brain",
-            new Description("Rate of REST API error responses").setRate().setUnit("errors"),
-            Field.ofString(GIT_UPDATE_SPLIT_BRAIN)
-                .description("Ref-update operation left node in a split-brain scenario")
-                .build());
+            rateDescription("errors", "Rate of REST API error responses"),
+            stringField(
+                GIT_UPDATE_SPLIT_BRAIN,
+                "Ref-update operation left node in a split-brain scenario"));
   }
 
   public void incrementSplitBrainPrevention() {
