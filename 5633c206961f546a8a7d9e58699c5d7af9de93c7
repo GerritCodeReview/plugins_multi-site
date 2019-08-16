@@ -22,6 +22,30 @@
       "revId": "5633c206961f546a8a7d9e58699c5d7af9de93c7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d70cfc22_a2c58d10",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerMetrics.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-16T15:23:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b37678b2_9f6a482d",
+      "range": {
+        "startLine": 66,
+        "startChar": 2,
+        "endLine": 66,
+        "endChar": 46
+      },
+      "revId": "5633c206961f546a8a7d9e58699c5d7af9de93c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
