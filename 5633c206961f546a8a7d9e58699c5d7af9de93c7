@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b37678b2_9f6a482d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerMetrics.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-16T15:03:00Z",
+      "side": 1,
+      "message": "Wow, that is super-complex for a very simple problem IMHO.\nKISS by simply passing the metadataKey as a parameter and returning the whole metrics?",
+      "range": {
+        "startLine": 66,
+        "startChar": 2,
+        "endLine": 66,
+        "endChar": 46
+      },
+      "revId": "5633c206961f546a8a7d9e58699c5d7af9de93c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
