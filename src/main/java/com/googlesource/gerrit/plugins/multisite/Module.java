@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
@@ -54,31 +53,9 @@ public class Module extends LifecycleModule {
   private Configuration config;
   private KafkaForwardedEventRouterModule kafkaForwardedEventRouterModule;
   private KafkaBrokerForwarderModule kafkaBrokerForwarderModule;
-  private final boolean disableGitRepositoryValidation;
 
   @Inject
   public Module(
-      Configuration config,
-      KafkaForwardedEventRouterModule forwardedEeventRouterModule,
-      KafkaBrokerForwarderModule brokerForwarderModule) {
-    this(config, forwardedEeventRouterModule, brokerForwarderModule, false);
-  }
-
-  // TODO: It is not possible to properly test the libModules in Gerrit.
-  // Disable the Git repository validation during integration test and then build the necessary
-  // support
-  // in Gerrit for it.
-  @VisibleForTesting
-  public Module(
-      Configuration config,
-      KafkaForwardedEventRouterModule forwardedEeventRouterModule,
-      KafkaBrokerForwarderModule brokerForwarderModule,
-      boolean disableGitRepositoryValidation) {
-    init(config, forwardedEeventRouterModule, brokerForwarderModule);
-    this.disableGitRepositoryValidation = disableGitRepositoryValidation;
-  }
-
-  private void init(
       Configuration config,
       KafkaForwardedEventRouterModule forwardedEeventRouterModule,
       KafkaBrokerForwarderModule brokerForwarderModule) {

@@ -111,8 +111,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
               multiSiteConfig,
               new KafkaForwardedEventRouterModule(
                   kafkaConfiguration, new KafkaConsumerModule(kafkaConfiguration)),
-              new KafkaBrokerForwarderModule(kafkaConfiguration),
-              true);
+              new KafkaBrokerForwarderModule(kafkaConfiguration));
     }
 
     @Override
