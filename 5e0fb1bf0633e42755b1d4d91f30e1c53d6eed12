@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1bd50619_f390956c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-16T09:26:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1ae4668_68e0e750",
+      "revId": "5e0fb1bf0633e42755b1d4d91f30e1c53d6eed12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2a565e92_1327c1e6",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/GitModule.java",
         "patchSetId": 2
@@ -39,6 +57,30 @@
       "revId": "5e0fb1bf0633e42755b1d4d91f30e1c53d6eed12",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea032823_d3c554ce",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/GitModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-16T09:26:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a565e92_1327c1e6",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 51
+      },
+      "revId": "5e0fb1bf0633e42755b1d4d91f30e1c53d6eed12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
