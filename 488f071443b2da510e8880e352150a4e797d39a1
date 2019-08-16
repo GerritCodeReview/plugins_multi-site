@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7b1aaeed_876a606e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerMetrics.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-16T14:48:17Z",
+      "side": 1,
+      "message": "This is 99.9% identical to the one at L42: can we DRY it out?",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 90
+      },
+      "revId": "488f071443b2da510e8880e352150a4e797d39a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
