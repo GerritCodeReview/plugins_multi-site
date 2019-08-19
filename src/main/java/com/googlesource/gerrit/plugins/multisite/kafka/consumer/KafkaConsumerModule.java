@@ -18,6 +18,7 @@ import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+import com.googlesource.gerrit.plugins.multisite.event.subscriber.EventSubscriber;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.MultiSiteEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
@@ -46,6 +47,7 @@ public class KafkaConsumerModule extends LifecycleModule {
         .annotatedWith(ConsumerExecutor.class)
         .toInstance(Executors.newFixedThreadPool(EventFamily.values().length));
     listener().to(MultiSiteKafkaConsumerRunner.class);
+    bind(EventSubscriber.class).to(KafkaEventSubscriber.class);
 
     DynamicSet.setOf(binder(), AbstractKafkaSubcriber.class);
 
