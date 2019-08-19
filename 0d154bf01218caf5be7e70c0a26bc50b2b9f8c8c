@@ -1,0 +1,176 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "516daa29_07eb6a99",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-19T12:04:11Z",
+      "side": 1,
+      "message": "Why do we need Kafka-client just now?",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 29
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7aade46e_d81c17fb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-19T12:04:11Z",
+      "side": 1,
+      "message": "Why only catching KafkaException and not Exception instead?",
+      "range": {
+        "startLine": 109,
+        "startChar": 13,
+        "endLine": 109,
+        "endChar": 27
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c122bbdd_b9204551",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-19T12:04:11Z",
+      "side": 1,
+      "message": "I believe we should increment the failures count here also?",
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "309c1cf1_6511253f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/IndexEventSubscriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-19T12:04:11Z",
+      "side": 1,
+      "message": "subscriberMetrics",
+      "range": {
+        "startLine": 46,
+        "startChar": 24,
+        "endLine": 46,
+        "endChar": 46
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "36fd1433_69ab920e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaCacheEvictionEventSubscriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-19T12:04:11Z",
+      "side": 1,
+      "message": "subscriberMetrics",
+      "range": {
+        "startLine": 46,
+        "startChar": 24,
+        "endLine": 46,
+        "endChar": 46
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a190fba3_15625472",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/ProjectUpdateEventSubscriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-19T12:04:11Z",
+      "side": 1,
+      "message": "subscriberMetrics",
+      "range": {
+        "startLine": 46,
+        "startChar": 24,
+        "endLine": 46,
+        "endChar": 46
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86fdc9ee_e1c6f319",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/StreamEventSubscriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-19T12:04:11Z",
+      "side": 1,
+      "message": "subscriberMetrics",
+      "range": {
+        "startLine": 46,
+        "startChar": 24,
+        "endLine": 46,
+        "endChar": 46
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "72a166b9_af87e856",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaSubscriberTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-19T12:04:11Z",
+      "side": 1,
+      "message": "If you are really testing only the metrics, why making it dependant from Kafka? I believe the metrics code would stay the same also when Kafka will go away.",
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
