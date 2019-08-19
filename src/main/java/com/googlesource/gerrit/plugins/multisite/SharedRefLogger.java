@@ -14,22 +14,16 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Ref;
 
-public class GitModule extends AbstractModule {
-  private final Configuration config;
+public interface SharedRefLogger {
 
-  @Inject
-  public GitModule(Configuration config) {
-    this.config = config;
-  }
+  void logRefUpdate(String project, Ref currRef, ObjectId newRefValue);
 
-  @Override
-  protected void configure() {
-    if (config.getSharedRefDb().isEnabled()) {
-      install(new ValidationModule(config));
-    }
-  }
+  void logProjectDelete(String project);
+
+  void logLockAcquisition(String project, String refName);
+
+  void logLockRelease(String project, String refName);
 }

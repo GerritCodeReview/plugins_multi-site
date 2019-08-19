@@ -355,7 +355,7 @@ if [ $NEW_INSTALLATION = "true" ]; then
 	# Deploying TLS certificates
 	if [ "$HTTPS_ENABLED" = "true" ];then deploy_tls_certificates;fi
 
-	echo "Copy multi-site library"
+	echo "Copy multi-site library to lib directory"
 	cp -f $DEPLOYMENT_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/lib/multi-site.jar
 
 	echo "Copy websession-flatfile plugin"
@@ -369,6 +369,14 @@ if [ $NEW_INSTALLATION = "true" ]; then
 	# Replicating environment
 	echo "Replicating environment"
 	cp -fR $LOCATION_TEST_SITE_1/* $LOCATION_TEST_SITE_2
+
+	echo "Link replication plugin"
+	ln -s $LOCATION_TEST_SITE_1/plugins/replication.jar $LOCATION_TEST_SITE_1/lib/replication.jar
+	ln -s $LOCATION_TEST_SITE_2/plugins/replication.jar $LOCATION_TEST_SITE_2/lib/replication.jar
+
+	echo "Link multi-site library to plugin directory"
+	ln -s $LOCATION_TEST_SITE_1/lib/multi-site.jar $LOCATION_TEST_SITE_1/plugins/multi-site.jar
+	ln -s $LOCATION_TEST_SITE_2/lib/multi-site.jar $LOCATION_TEST_SITE_2/plugins/multi-site.jar
 fi
 
 

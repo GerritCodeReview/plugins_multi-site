@@ -33,6 +33,7 @@ public class StreamEventSubscriber extends AbstractKafkaSubcriber {
   @Inject
   public StreamEventSubscriber(
       KafkaConfiguration configuration,
+      KafkaConsumerFactory consumerFactory,
       Deserializer<byte[]> keyDeserializer,
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
       StreamEventRouter eventRouter,
@@ -43,6 +44,7 @@ public class StreamEventSubscriber extends AbstractKafkaSubcriber {
       MessageLogger msgLog) {
     super(
         configuration,
+        consumerFactory,
         keyDeserializer,
         valueDeserializer,
         eventRouter,

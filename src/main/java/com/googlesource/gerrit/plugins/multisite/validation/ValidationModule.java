@@ -14,15 +14,25 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.config.FactoryModule;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
+import com.googlesource.gerrit.plugins.multisite.LockWrapper;
+import com.googlesource.gerrit.plugins.multisite.Log4jSharedRefLogger;
+import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
+import com.googlesource.gerrit.plugins.multisite.SharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
+import com.googlesource.gerrit.plugins.replication.ReplicationExtensionPointModule;
+import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 
 public class ValidationModule extends FactoryModule {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
   private final Configuration cfg;
 
   public ValidationModule(Configuration cfg) {
@@ -31,6 +41,12 @@ public class ValidationModule extends FactoryModule {
 
   @Override
   protected void configure() {
+    install(new ReplicationExtensionPointModule());
+
+    bind(SharedRefDatabaseWrapper.class).in(Scopes.SINGLETON);
+    bind(SharedRefLogger.class).to(Log4jSharedRefLogger.class);
+    factory(LockWrapper.Factory.class);
+
     factory(MultiSiteRepository.Factory.class);
     factory(MultiSiteRefDatabase.Factory.class);
     factory(MultiSiteRefUpdate.Factory.class);
@@ -39,6 +55,9 @@ public class ValidationModule extends FactoryModule {
     factory(BatchRefUpdateValidator.Factory.class);
 
     bind(GitRepositoryManager.class).to(MultiSiteGitRepositoryManager.class);
+    DynamicItem.bind(binder(), ReplicationPushFilter.class)
+        .to(MultisiteReplicationPushFilter.class);
+
     if (cfg.getSharedRefDb().getEnforcementRules().isEmpty()) {
       bind(SharedRefEnforcement.class).to(DefaultSharedRefEnforcement.class).in(Scopes.SINGLETON);
     } else {

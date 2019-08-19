@@ -33,6 +33,7 @@ public class KafkaCacheEvictionEventSubscriber extends AbstractKafkaSubcriber {
   @Inject
   public KafkaCacheEvictionEventSubscriber(
       KafkaConfiguration configuration,
+      KafkaConsumerFactory consumerFactory,
       Deserializer<byte[]> keyDeserializer,
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
       StreamEventRouter eventRouter,
@@ -43,6 +44,7 @@ public class KafkaCacheEvictionEventSubscriber extends AbstractKafkaSubcriber {
       MessageLogger msgLog) {
     super(
         configuration,
+        consumerFactory,
         keyDeserializer,
         valueDeserializer,
         eventRouter,

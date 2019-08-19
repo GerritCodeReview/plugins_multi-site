@@ -35,17 +35,16 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.errors.WakeupException;
-import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.Deserializer;
 
 public abstract class AbstractKafkaSubcriber implements Runnable {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private final KafkaConsumer<byte[], byte[]> consumer;
+  private final Consumer<byte[], byte[]> consumer;
   private final ForwardedEventRouter eventRouter;
   private final DynamicSet<DroppedEventListener> droppedEventListeners;
   private final Gson gson;
@@ -58,6 +57,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
 
   public AbstractKafkaSubcriber(
       KafkaConfiguration configuration,
+      KafkaConsumerFactory consumerFactory,
       Deserializer<byte[]> keyDeserializer,
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
       ForwardedEventRouter eventRouter,
@@ -76,11 +76,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
     final ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
     try {
       Thread.currentThread().setContextClassLoader(AbstractKafkaSubcriber.class.getClassLoader());
-      this.consumer =
-          new KafkaConsumer<>(
-              configuration.kafkaSubscriber().initPropsWith(instanceId),
-              keyDeserializer,
-              new ByteArrayDeserializer());
+      this.consumer = consumerFactory.create(keyDeserializer, instanceId);
     } finally {
       Thread.currentThread().setContextClassLoader(previousClassLoader);
     }

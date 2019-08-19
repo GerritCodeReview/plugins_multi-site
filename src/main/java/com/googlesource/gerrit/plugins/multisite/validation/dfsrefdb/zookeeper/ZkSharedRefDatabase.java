@@ -80,11 +80,6 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   }
 
   @Override
-  public boolean compareAndRemove(String project, Ref oldRef) throws IOException {
-    return compareAndPut(project, oldRef, ObjectId.zeroId());
-  }
-
-  @Override
   public void removeProject(String project) throws IOException {
     try {
       client.delete().deletingChildrenIfNeeded().forPath("/" + project);
