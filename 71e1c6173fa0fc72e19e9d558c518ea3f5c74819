@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f014074b_15bb9272",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-08-20T18:45:20Z",
+      "side": 1,
+      "message": "\"Topic\" is very much associated with Kafka. What about \u0027queue\u0027/\u0027sink\u0027?",
+      "range": {
+        "startLine": 30,
+        "startChar": 22,
+        "endLine": 30,
+        "endChar": 27
+      },
+      "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1fced24b_5be428b6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-08-20T18:45:20Z",
+      "side": 1,
+      "message": "\u0027queue\u0027/\u0027source\u0027",
+      "range": {
+        "startLine": 38,
+        "startChar": 26,
+        "endLine": 38,
+        "endChar": 31
+      },
+      "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c21524c6_45c804cf",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerSession.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-08-20T18:45:20Z",
+      "side": 1,
+      "message": "These two methods seem a bit out of place. In my view the BrokerSession should just handle/check the connectivity to the broker, ie. isOpen, connect and disconnect.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 60
+      },
+      "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d4c4c6d_59cd0e32",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-08-20T18:45:20Z",
+      "side": 1,
+      "message": "Correct me if I\u0027m wrong... The topic name here needs to match the ones defined in the EventFamily otherwise \u0027fromTopic(topic)\u0027 will return null.\nWhat happens if the user configures different topic names?",
+      "range": {
+        "startLine": 89,
+        "startChar": 37,
+        "endLine": 89,
+        "endChar": 49
+      },
+      "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b306a19_940f8db9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-08-20T18:45:20Z",
+      "side": 1,
+      "message": "Same as above, these two methods seem out of place",
+      "range": {
+        "startLine": 83,
+        "startChar": 2,
+        "endLine": 89,
+        "endChar": 36
+      },
+      "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58bb4e52_86c22b20",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventFamily.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-08-20T18:45:20Z",
+      "side": 1,
+      "message": "This is mapping the event types to the topic names should it be called \u0027EventFamilyDataAccess\u0027?",
+      "range": {
+        "startLine": 19,
+        "startChar": 12,
+        "endLine": 19,
+        "endChar": 23
+      },
+      "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
