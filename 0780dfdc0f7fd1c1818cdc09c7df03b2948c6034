@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bd23d6f0_c508b8f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-20T00:03:08Z",
+      "side": 1,
+      "message": "Do we really need a \"subscriber\" API? Why not just introducing a Broker API?",
+      "range": {
+        "startLine": 7,
+        "startChar": 13,
+        "endLine": 7,
+        "endChar": 23
+      },
+      "revId": "0780dfdc0f7fd1c1818cdc09c7df03b2948c6034",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "839923c0_180b9a28",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-20T00:03:08Z",
+      "side": 1,
+      "message": "abstract",
+      "range": {
+        "startLine": 9,
+        "startChar": 7,
+        "endLine": 9,
+        "endChar": 28
+      },
+      "revId": "0780dfdc0f7fd1c1818cdc09c7df03b2948c6034",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9609aceb_b09544fa",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/subscriber/EventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-20T00:03:08Z",
+      "side": 1,
+      "message": "This is Kafka-specific.",
+      "range": {
+        "startLine": 18,
+        "startChar": 49,
+        "endLine": 18,
+        "endChar": 87
+      },
+      "revId": "0780dfdc0f7fd1c1818cdc09c7df03b2948c6034",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8970f431_d6a2d643",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/subscriber/EventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-20T00:03:08Z",
+      "side": 1,
+      "message": "EventFamily? Do we really need this abstraction? Why?",
+      "range": {
+        "startLine": 22,
+        "startChar": 17,
+        "endLine": 22,
+        "endChar": 28
+      },
+      "revId": "0780dfdc0f7fd1c1818cdc09c7df03b2948c6034",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "15e263ac_9011c8f6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/subscriber/EventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-20T00:03:08Z",
+      "side": 1,
+      "message": "Why do we need a shutdown?",
+      "range": {
+        "startLine": 24,
+        "startChar": 2,
+        "endLine": 24,
+        "endChar": 18
+      },
+      "revId": "0780dfdc0f7fd1c1818cdc09c7df03b2948c6034",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
