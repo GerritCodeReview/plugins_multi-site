@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1b4a8527_cac4b481",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-20T22:58:37Z",
+      "side": 1,
+      "message": "\u003e \"Topic\" is very much associated with Kafka. What about \u0027queue\u0027/\u0027sink\u0027?\n\nNope, this isn\u0027t a queueing system but a broker.\n\nSee https://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern where the topic is explicitly mentioned.",
+      "parentUuid": "f014074b_15bb9272",
+      "range": {
+        "startLine": 30,
+        "startChar": 22,
+        "endLine": 30,
+        "endChar": 27
+      },
+      "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1fced24b_5be428b6",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApi.java",
         "patchSetId": 1
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "96b096af_1209b597",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-20T22:58:37Z",
+      "side": 1,
+      "message": "Same as above. Topic isn\u0027t a Kafka-specific term at all.",
+      "parentUuid": "1fced24b_5be428b6",
+      "range": {
+        "startLine": 38,
+        "startChar": 26,
+        "endLine": 38,
+        "endChar": 31
+      },
+      "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c21524c6_45c804cf",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerSession.java",
         "patchSetId": 1
@@ -68,6 +116,30 @@
       "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c778d2d_27c5b09d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerSession.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-20T22:58:37Z",
+      "side": 1,
+      "message": "BrokerSession isn\u0027t part of the generic interface and it will eventually disappear altogether. In this change, I had to use different names and not the Java overloading because, otherwise, most of the tests using mocks would have failed.",
+      "parentUuid": "c21524c6_45c804cf",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 60
+      },
+      "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +189,54 @@
     },
     {
       "key": {
+        "uuid": "7c7006eb_ba9b4103",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-20T22:58:37Z",
+      "side": 1,
+      "message": "See the same comment already made.",
+      "parentUuid": "2b306a19_940f8db9",
+      "range": {
+        "startLine": 83,
+        "startChar": 2,
+        "endLine": 89,
+        "endChar": 36
+      },
+      "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1d6dfedc_067900b8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-20T22:58:37Z",
+      "side": 1,
+      "message": "This is already managed downstream in the code: the topics renaming just works they are remapped if configured differently.",
+      "parentUuid": "9d4c4c6d_59cd0e32",
+      "range": {
+        "startLine": 89,
+        "startChar": 37,
+        "endLine": 89,
+        "endChar": 49
+      },
+      "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "58bb4e52_86c22b20",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventFamily.java",
         "patchSetId": 1
@@ -137,6 +257,30 @@
       "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60f38e86_3ae4857b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventFamily.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-20T22:58:37Z",
+      "side": 1,
+      "message": "It should just be called EventTopics. Follow-up change? It is a bit out of scope of the current one.",
+      "parentUuid": "58bb4e52_86c22b20",
+      "range": {
+        "startLine": 19,
+        "startChar": 12,
+        "endLine": 19,
+        "endChar": 23
+      },
+      "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
