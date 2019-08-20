@@ -14,13 +14,26 @@
 
 package com.googlesource.gerrit.plugins.multisite.broker;
 
-public interface BrokerSession {
+import com.google.gerrit.server.events.Event;
+import java.util.function.Consumer;
 
-  boolean isOpen();
+/** API for sending/receiving events through a message Broker. */
+public interface BrokerApi {
 
-  void connect();
+  /**
+   * Send an event to a topic.
+   *
+   * @param topic
+   * @param event
+   * @return true if the event was successfully sent. False otherwise.
+   */
+  boolean send(String topic, Event event);
 
-  void disconnect();
-
-  boolean publish(String topic, String payload);
+  /**
+   * Receive asynchronously events from a topic.
+   *
+   * @param topic
+   * @param eventConsumer
+   */
+  void receiveAync(String topic, Consumer<Event> eventConsumer);
 }

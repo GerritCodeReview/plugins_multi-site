@@ -12,24 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
+package com.googlesource.gerrit.plugins.multisite.kafka;
 
+import com.google.gerrit.extensions.restapi.NotImplementedException;
+import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
-import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
+import java.util.function.Consumer;
 
-public class BrokerIndexEventForwarder implements IndexEventForwarder {
+public class KafkaBrokerApi implements BrokerApi {
+
   private final BrokerPublisher publisher;
 
   @Inject
-  BrokerIndexEventForwarder(BrokerPublisher publisher) {
+  public KafkaBrokerApi(BrokerPublisher publisher) {
     this.publisher = publisher;
   }
 
   @Override
-  public boolean index(IndexEvent event) {
-    return publisher.publish(EventFamily.INDEX_EVENT.topic(), event);
+  public boolean send(String topic, Event event) {
+    return publisher.publish(topic, event);
+  }
+
+  @Override
+  public void receiveAync(String topic, Consumer<Event> eventConsumer) {
+    throw new NotImplementedException();
   }
 }

@@ -81,8 +81,8 @@ public class KafkaSession implements BrokerSession {
   }
 
   @Override
-  public boolean publishEvent(EventFamily eventType, String payload) {
-    return publishToTopic(properties.getKafka().getTopic(eventType), payload);
+  public boolean publish(String topic, String payload) {
+    return publishToTopic(properties.getKafka().getTopic(EventFamily.fromTopic(topic)), payload);
   }
 
   private boolean publishToTopic(String topic, String payload) {
