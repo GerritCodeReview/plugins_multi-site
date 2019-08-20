@@ -70,12 +70,16 @@ public class BrokerPublisher implements LifecycleListener {
   }
 
   public boolean publishEvent(EventFamily eventType, Event event) {
+    return publishEventToTopic(eventType.topic(), event);
+  }
+
+  public boolean publishEventToTopic(String topic, Event event) {
     if (Context.isForwardedEvent()) {
       return true;
     }
 
     SourceAwareEventWrapper brokerEvent = toBrokerEvent(event);
-    Boolean eventPublished = session.publishEvent(eventType, getPayload(brokerEvent));
+    Boolean eventPublished = session.publishEventToTopic(topic, getPayload(brokerEvent));
     if (eventPublished) {
       msgLog.log(Direction.PUBLISH, brokerEvent);
       brokerMetrics.incrementBrokerPublishedMessage();

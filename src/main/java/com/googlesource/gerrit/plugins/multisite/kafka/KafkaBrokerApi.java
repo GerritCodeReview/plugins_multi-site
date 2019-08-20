@@ -12,26 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
+package com.googlesource.gerrit.plugins.multisite.kafka;
 
+import com.google.gerrit.extensions.restapi.NotImplementedException;
+import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
-import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
+import java.util.function.Consumer;
 
-@Singleton
-public class BrokerCacheEvictionForwarder implements CacheEvictionForwarder {
-  private final BrokerApi broker;
+public class KafkaBrokerApi implements BrokerApi {
+
+  private final BrokerPublisher publisher;
 
   @Inject
-  BrokerCacheEvictionForwarder(BrokerApi broker) {
-    this.broker = broker;
+  public KafkaBrokerApi(BrokerPublisher publisher) {
+    this.publisher = publisher;
   }
 
   @Override
-  public boolean evict(CacheEvictionEvent event) {
-    return broker.send(EventFamily.CACHE_EVENT.topic(), event);
+  public boolean send(String topic, Event event) {
+    return publisher.publishEventToTopic(topic, event);
+  }
+
+  @Override
+  public void receiveAync(String topic, Consumer<Event> eventConsumer) {
+    throw new NotImplementedException();
   }
 }

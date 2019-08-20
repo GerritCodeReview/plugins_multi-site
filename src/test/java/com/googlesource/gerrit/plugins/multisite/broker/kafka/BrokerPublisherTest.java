@@ -128,7 +128,7 @@ public class BrokerPublisherTest {
   @Test
   public void shouldIncrementBrokerMetricCounterWhenMessagePublished() {
     Event event = createSampleEvent();
-    when(session.publishEvent(any(), any())).thenReturn(true);
+    when(session.publishEventToTopic(any(), any())).thenReturn(true);
     publisher.publishEvent(EventFamily.INDEX_EVENT, event);
     verify(brokerMetrics, only()).incrementBrokerPublishedMessage();
   }
@@ -136,7 +136,7 @@ public class BrokerPublisherTest {
   @Test
   public void shouldIncrementBrokerFailedMetricCounterWhenMessagePublished() {
     Event event = createSampleEvent();
-    when(session.publishEvent(any(), any())).thenReturn(false);
+    when(session.publishEventToTopic(any(), any())).thenReturn(false);
 
     publisher.publishEvent(EventFamily.INDEX_EVENT, event);
     verify(brokerMetrics, only()).incrementBrokerFailedToPublishMessage();
@@ -145,8 +145,7 @@ public class BrokerPublisherTest {
   @Test
   public void shouldLogEventPublishedMessageWhenPublishingSucceed() {
     Event event = createSampleEvent();
-    when(session.publishEvent(any(), any())).thenReturn(true);
-
+    when(session.publishEventToTopic(any(), any())).thenReturn(true);
     publisher.publishEvent(EventFamily.INDEX_EVENT, event);
     verify(msgLog, only()).log(any(), any());
   }
@@ -154,7 +153,7 @@ public class BrokerPublisherTest {
   @Test
   public void shouldSkipEventPublishedLoggingWhenMessagePublishigFailed() {
     Event event = createSampleEvent();
-    when(session.publishEvent(any(), any())).thenReturn(false);
+    when(session.publishEventToTopic(any(), any())).thenReturn(false);
 
     publisher.publishEvent(EventFamily.INDEX_EVENT, event);
     verify(msgLog, never()).log(any(), any());
