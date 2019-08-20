@@ -85,6 +85,11 @@ public class KafkaSession implements BrokerSession {
     return publishToTopic(properties.getKafka().getTopic(eventType), payload);
   }
 
+  @Override
+  public boolean publishEventToTopic(String topic, String payload) {
+    return publishToTopic(properties.getKafka().getTopic(EventFamily.fromTopic(topic)), payload);
+  }
+
   private boolean publishToTopic(String topic, String payload) {
     Future<RecordMetadata> future =
         producer.send(new ProducerRecord<>(topic, instanceId.toString(), payload));

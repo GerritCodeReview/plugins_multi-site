@@ -33,6 +33,6 @@ public class BrokerProjectListUpdateForwarder implements ProjectListUpdateForwar
 
   @Override
   public boolean updateProjectList(ProjectListUpdateEvent event) {
-    return publisher.publishEvent(PROJECT_LIST_EVENT, event);
+    return publisher.publish(PROJECT_LIST_EVENT.topic(), event);
   }
 }

@@ -25,7 +25,6 @@ import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.SourceAwareEventWrapper;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -69,13 +68,13 @@ public class BrokerPublisher implements LifecycleListener {
     }
   }
 
-  public boolean publishEvent(EventFamily eventType, Event event) {
+  public boolean publish(String topic, Event event) {
     if (Context.isForwardedEvent()) {
       return true;
     }
 
     SourceAwareEventWrapper brokerEvent = toBrokerEvent(event);
-    Boolean eventPublished = session.publishEvent(eventType, getPayload(brokerEvent));
+    Boolean eventPublished = session.publishEventToTopic(topic, getPayload(brokerEvent));
     if (eventPublished) {
       msgLog.log(Direction.PUBLISH, brokerEvent);
       brokerMetrics.incrementBrokerPublishedMessage();

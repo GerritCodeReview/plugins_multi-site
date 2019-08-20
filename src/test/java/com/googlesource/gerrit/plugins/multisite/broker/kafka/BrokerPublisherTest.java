@@ -128,35 +128,34 @@ public class BrokerPublisherTest {
   @Test
   public void shouldIncrementBrokerMetricCounterWhenMessagePublished() {
     Event event = createSampleEvent();
-    when(session.publishEvent(any(), any())).thenReturn(true);
-    publisher.publishEvent(EventFamily.INDEX_EVENT, event);
+    when(session.publishEventToTopic(any(), any())).thenReturn(true);
+    publisher.publish(EventFamily.INDEX_EVENT.topic(), event);
     verify(brokerMetrics, only()).incrementBrokerPublishedMessage();
   }
 
   @Test
   public void shouldIncrementBrokerFailedMetricCounterWhenMessagePublished() {
     Event event = createSampleEvent();
-    when(session.publishEvent(any(), any())).thenReturn(false);
+    when(session.publishEventToTopic(any(), any())).thenReturn(false);
 
-    publisher.publishEvent(EventFamily.INDEX_EVENT, event);
+    publisher.publish(EventFamily.INDEX_EVENT.topic(), event);
     verify(brokerMetrics, only()).incrementBrokerFailedToPublishMessage();
   }
 
   @Test
   public void shouldLogEventPublishedMessageWhenPublishingSucceed() {
     Event event = createSampleEvent();
-    when(session.publishEvent(any(), any())).thenReturn(true);
-
-    publisher.publishEvent(EventFamily.INDEX_EVENT, event);
+    when(session.publishEventToTopic(any(), any())).thenReturn(true);
+    publisher.publish(EventFamily.INDEX_EVENT.topic(), event);
     verify(msgLog, only()).log(any(), any());
   }
 
   @Test
   public void shouldSkipEventPublishedLoggingWhenMessagePublishigFailed() {
     Event event = createSampleEvent();
-    when(session.publishEvent(any(), any())).thenReturn(false);
+    when(session.publishEventToTopic(any(), any())).thenReturn(false);
 
-    publisher.publishEvent(EventFamily.INDEX_EVENT, event);
+    publisher.publish(EventFamily.INDEX_EVENT.topic(), event);
     verify(msgLog, never()).log(any(), any());
   }
 
