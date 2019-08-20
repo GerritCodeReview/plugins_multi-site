@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "751c289c_356d7d82",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-20T08:14:00Z",
+      "side": 1,
+      "message": "We can have a single API for publishing and consuming but it will require similar amount of changes. For producer we have nice class hierarchy BrokerSession, BrokerPublisher etc. But for consuming we don\u0027t have that, all code is in the AbstractKafkaSubscriber and it\u0027s a bit of spaghetti code it is consuming, parsing, filtering and routing messages. To move it to the common Broker API we need to extract consuming and parsing part to some other class like KafkaEventSubscriber(similar to what I did) and then we can use it in the BrokerAPI, or we can extract it directly to the KafkaBrokerAPI class but than this class will be a mess, BrokerPublisher plus some consumer code.\n\nAnother thing is that we have different scopes for producer and consumers. Currently we have one producer(BrokerPublisher is a singleton) but we have consumer per event family (IndexEventSubscriber class, KafkaCacheEvictionEventSubscriber class etc extends AbstractKafkaSubcriber) we have to handle it in the BrokerAPI so BrokerAPI cannot be in singleton scope but BrokerPublisher must be. We are ending up with a lot of hidden logic which will be unclear.\n\nWith single api we are also encouraging people to implement broker api as a single class, let\u0027s say someone will implement ActiveMQBrokerAPI with all the logic inside. Than we will get standard issues like: what to do when  consumer part will throw \u0027connection lost\u0027 exception should we reconnect just consumer or producer as well? there are maintained in the same class but used by different parts of the system. With separate consumer and producer api we are naturally forcing them to split the logic.\n\nTo summarise it\u0027s fine to have single API and it\u0027s easy to implement it as well(it has to be on top of part of changes I did here) but we have to have in mind above points and we have to agree that we are fine with them.",
+      "parentUuid": "bd23d6f0_c508b8f4",
+      "range": {
+        "startLine": 7,
+        "startChar": 13,
+        "endLine": 7,
+        "endChar": 23
+      },
+      "revId": "0780dfdc0f7fd1c1818cdc09c7df03b2948c6034",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "839923c0_180b9a28",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
