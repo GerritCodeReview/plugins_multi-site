@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fa0d534f_30cde870",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-20T09:13:01Z",
+      "side": 1,
+      "message": "I\u0027m testing if AbstractKafkaSubcriber is calling metrics when needed. To instantiate AbstractKafkaSubcriber I need to mock a lot of Kafka classes. Tbh I was a bit surprised because AbstractKafkaSubcriber contains a lot of logic but it\u0027s not tested with unit tests",
+      "parentUuid": "516daa29_07eb6a99",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 29
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7aade46e_d81c17fb",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
         "patchSetId": 7
@@ -36,6 +60,30 @@
       "writtenOn": "2019-08-19T12:04:11Z",
       "side": 1,
       "message": "Why only catching KafkaException and not Exception instead?",
+      "range": {
+        "startLine": 109,
+        "startChar": 13,
+        "endLine": 109,
+        "endChar": 27
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89e4bb18_c9590f54",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-20T09:13:01Z",
+      "side": 1,
+      "message": "I can catch Exception it\u0027s fine but I want to increment only when it\u0027s needed I\u0027ve checked the implementation and reply in a comment to previous patch set:\nfrom consumer.poll we can get multiple exceptions but all are subtypes of KafkaException, only those are not but I thought that we shouldn\u0027t log them in metrics because they should appear at the beginning of consuming:\n@throws java.lang.IllegalArgumentException if the timeout value is negative\n@throws java.lang.IllegalStateException if the consumer is not subscribed to any topics or manually assigned any partitions to consume from\n@throws java.lang.ArithmeticException if the timeout is greater than {@link Long#MAX_VALUE} milliseconds.",
+      "parentUuid": "7aade46e_d81c17fb",
       "range": {
         "startLine": 109,
         "startChar": 13,
@@ -65,6 +113,24 @@
     },
     {
       "key": {
+        "uuid": "8cde0c7f_8cc20b52",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-20T09:13:01Z",
+      "side": 1,
+      "message": ":) I\u0027ve removed it from here in the latest patch set because you suggested in previous patch set that this is related to permissions and shouldn\u0027t be incremented. I can bring it back should I?\n\nI even commented it for previous patch set:\nI\u0027m fine with removing this line but I thought that we want to inform about all issues even when they are permissions related. WDYT?",
+      "parentUuid": "c122bbdd_b9204551",
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "309c1cf1_6511253f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/IndexEventSubscriber.java",
         "patchSetId": 7
@@ -85,6 +151,30 @@
       "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16519415_9ca9700a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/IndexEventSubscriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-20T09:13:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "309c1cf1_6511253f",
+      "range": {
+        "startLine": 46,
+        "startChar": 24,
+        "endLine": 46,
+        "endChar": 46
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -111,6 +201,30 @@
     },
     {
       "key": {
+        "uuid": "7eaa04a1_b64e4713",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaCacheEvictionEventSubscriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-20T09:13:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36fd1433_69ab920e",
+      "range": {
+        "startLine": 46,
+        "startChar": 24,
+        "endLine": 46,
+        "endChar": 46
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a190fba3_15625472",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/ProjectUpdateEventSubscriber.java",
         "patchSetId": 7
@@ -131,6 +245,30 @@
       "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2aa33555_1bf2f0fe",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/ProjectUpdateEventSubscriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-20T09:13:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a190fba3_15625472",
+      "range": {
+        "startLine": 46,
+        "startChar": 24,
+        "endLine": 46,
+        "endChar": 46
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -157,6 +295,30 @@
     },
     {
       "key": {
+        "uuid": "86bfdc3d_afa5e87b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/StreamEventSubscriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-20T09:13:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86fdc9ee_e1c6f319",
+      "range": {
+        "startLine": 46,
+        "startChar": 24,
+        "endLine": 46,
+        "endChar": 46
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "72a166b9_af87e856",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaSubscriberTest.java",
         "patchSetId": 7
@@ -168,6 +330,24 @@
       "writtenOn": "2019-08-19T12:04:11Z",
       "side": 1,
       "message": "If you are really testing only the metrics, why making it dependant from Kafka? I believe the metrics code would stay the same also when Kafka will go away.",
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e22684dd_f67e8d1c",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaSubscriberTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-20T09:13:01Z",
+      "side": 1,
+      "message": "I\u0027m testing if AbstractKafkaSubscriber is calling metrics when it\u0027s needed. AbstractKafkaSubscriber is heavily based on Kafka  that\u0027s why to instantiate it I need to mock a lot of kafka classes. It will go away when we will finish subscriber api change",
+      "parentUuid": "72a166b9_af87e856",
       "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
