@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "5f467728_8215978d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-21T10:36:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "842bca84_e20c60a6",
+      "range": {
+        "startLine": 109,
+        "startChar": 13,
+        "endLine": 109,
+        "endChar": 27
+      },
+      "revId": "1058d01f0a2a60c68e7bea9f725b921f7a089eea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "35ee99b9_a347c338",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
         "patchSetId": 4
