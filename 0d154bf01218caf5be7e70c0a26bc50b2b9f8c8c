@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "c39b394e_9209e339",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-21T22:03:15Z",
+      "side": 1,
+      "message": "I found the culprit: actually, kafka-client is already included in the plugin\u0027s dependencies. However, Bazel forbids to refer to indirect dependencies and requires this to be listed here also.",
+      "parentUuid": "1466615c_f19d7dd0",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 29
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7aade46e_d81c17fb",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
         "patchSetId": 7
@@ -519,6 +543,24 @@
       "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "61fb2947_c302e281",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaSubscriberTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-21T22:03:15Z",
+      "side": 1,
+      "message": "It\u0027s gonna be a pain anyway in terms of maintenance and, as I said, it is going to be short-lived and thus pretty much ineffective as effort.\n\nI would drop this test and merge the change, that overall looks really good.",
+      "parentUuid": "f2be77cc_06b1f2c0",
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

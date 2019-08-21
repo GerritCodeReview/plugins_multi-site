@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dd2ef7fc_d854a8b0",
+        "filename": "BUILD",
+        "patchSetId": 10
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-21T22:03:15Z",
+      "side": 1,
+      "message": "This isn\u0027t needed.",
+      "range": {
+        "startLine": 49,
+        "startChar": 8,
+        "endLine": 49,
+        "endChar": 32
+      },
+      "revId": "af0a91630755237279db375f4876630c6751a027",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
