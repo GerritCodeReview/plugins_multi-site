@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "1466615c_f19d7dd0",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-21T10:35:54Z",
+      "side": 1,
+      "message": "I believe curator-client brings only Zookeeper libraries: https://mvnrepository.com/artifact/org.apache.curator/curator-client/4.2.0",
+      "parentUuid": "ffb3265e_1607ec41",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 29
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7aade46e_d81c17fb",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
         "patchSetId": 7
@@ -144,6 +168,30 @@
     },
     {
       "key": {
+        "uuid": "f2158719_d8e294c6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-21T10:35:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2966e479_1dab6378",
+      "range": {
+        "startLine": 109,
+        "startChar": 13,
+        "endLine": 109,
+        "endChar": 27
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c122bbdd_b9204551",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
         "patchSetId": 7
@@ -194,6 +242,24 @@
       "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7a38eb4_37ca7e16",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-21T10:35:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ce6b99b_e3ada89b",
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -432,6 +498,24 @@
       "side": 1,
       "message": "\u003e I\u0027m testing if AbstractKafkaSubscriber is calling metrics when it\u0027s needed. AbstractKafkaSubscriber is heavily based on Kafka  that\u0027s why to instantiate it I need to mock a lot of kafka classes. It will go away when we will finish subscriber api change\n\nPoint taken, however, it is worth the pain then? Writing all this code and mocks and then removing it in a few days?",
       "parentUuid": "e22684dd_f67e8d1c",
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2be77cc_06b1f2c0",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaSubscriberTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-21T10:35:54Z",
+      "side": 1,
+      "message": "This code was written some time ago when we haven\u0027t started working on NoOp for kafka I believe initial implementation was done during the last hackhaton. Review was postponed for many reasons like merges or working on split brain issues",
+      "parentUuid": "5924bba5_285db393",
       "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
