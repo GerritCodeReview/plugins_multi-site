@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "31c645b3_107555c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-21T09:18:23Z",
+      "side": 1,
+      "message": "\u003e We can have a single API for publishing and consuming but it will require similar amount of changes. For producer we have nice class hierarchy BrokerSession, BrokerPublisher etc. But for consuming we don\u0027t have that, all code is in the AbstractKafkaSubscriber and it\u0027s a bit of spaghetti code it is consuming, parsing, filtering and routing messages. To move it to the common Broker API we need to extract consuming and parsing part to some other class like KafkaEventSubscriber(similar to what I did) and then we can use it in the BrokerAPI, or we can extract it directly to the KafkaBrokerAPI class but than this class will be a mess, BrokerPublisher plus some consumer code.\n\nI agree, at the moment is a whole \"spaghetti-style\" blog and that needs to change.\nIf we introduce a clean-API, we are making the first step to untangle the spaghetti.\nIf we don\u0027t and we just put a DynamicItem\u003cSpaghetti\u003e, we will be stuck with it forever.\n\n \n\u003e Another thing is that we have different scopes for producer and consumers. Currently we have one producer(BrokerPublisher is a singleton) but we have consumer per event family (IndexEventSubscriber class, KafkaCacheEvictionEventSubscriber class etc extends AbstractKafkaSubcriber) we have to handle it in the BrokerAPI so BrokerAPI cannot be in singleton scope but BrokerPublisher must be. We are ending up with a lot of hidden logic which will be unclear.\n\nWe\u0027ll need to keep different event subscribers, but they will all use the same simple API. What\u0027s the problem with that?\n\n\u003e With single api we are also encouraging people to implement broker api as a single class, let\u0027s say someone will implement ActiveMQBrokerAPI with all the logic inside. Than we will get standard issues like: what to do when  consumer part will throw \u0027connection lost\u0027 exception should we reconnect just consumer or producer as well? there are maintained in the same class but used by different parts of the system. With separate consumer and producer api we are naturally forcing them to split the logic.\n\nYou are talking about the implementation of the API, which is not the focus of the multi-site plugin. The separation of interface and implementation assures that the user of the API should be completely free from any details of how the implementation of those API is done. Having the API structure \"driving\" the implementation in terms of classes is wrong because they would then create \"artificial\" structures that make sense for Kafka but could be out of context for other implementations.\n\n\n\u003e To summarise it\u0027s fine to have single API and it\u0027s easy to implement it as well(it has to be on top of part of changes I did here) but we have to have in mind above points and we have to agree that we are fine with them.\n\nWe want to:\n- untangle the spaghetti-kafka implementation\n- free the multi-site plugin from all kafka-specifics\n- make the future implementation of brokers easier and clearer\n\nIf we agree on the above points, we can proceed and abandon this change, that isn\u0027t achieving any of them.",
+      "parentUuid": "751c289c_356d7d82",
+      "range": {
+        "startLine": 7,
+        "startChar": 13,
+        "endLine": 7,
+        "endChar": 23
+      },
+      "revId": "0780dfdc0f7fd1c1818cdc09c7df03b2948c6034",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "839923c0_180b9a28",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
