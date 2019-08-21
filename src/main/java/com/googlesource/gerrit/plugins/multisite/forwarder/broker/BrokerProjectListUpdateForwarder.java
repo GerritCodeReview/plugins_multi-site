@@ -18,21 +18,21 @@ import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFa
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 
 @Singleton
 public class BrokerProjectListUpdateForwarder implements ProjectListUpdateForwarder {
-  private final BrokerPublisher publisher;
+  private final BrokerApi broker;
 
   @Inject
-  BrokerProjectListUpdateForwarder(BrokerPublisher publisher) {
-    this.publisher = publisher;
+  BrokerProjectListUpdateForwarder(BrokerApi broker) {
+    this.broker = broker;
   }
 
   @Override
   public boolean updateProjectList(ProjectListUpdateEvent event) {
-    return publisher.publish(PROJECT_LIST_EVENT.topic(), event);
+    return broker.send(PROJECT_LIST_EVENT.topic(), event);
   }
 }
