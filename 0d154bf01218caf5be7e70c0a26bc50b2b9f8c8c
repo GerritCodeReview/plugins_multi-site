@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "ffb3265e_1607ec41",
+        "filename": "BUILD",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-21T09:11:45Z",
+      "side": 1,
+      "message": "Kafka client should be already in because of the curator-client, isn\u0027t it? Otherwise, how the plugin could even work?",
+      "parentUuid": "fa0d534f_30cde870",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 29
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7aade46e_d81c17fb",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
         "patchSetId": 7
@@ -96,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "2966e479_1dab6378",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-21T09:11:45Z",
+      "side": 1,
+      "message": "What about if another exception is thrown (lower-level network exception or other) and we fail to receive messages? In the current change, they won\u0027t be logged in metrics and that\u0027s a problem.",
+      "parentUuid": "89e4bb18_c9590f54",
+      "range": {
+        "startLine": 109,
+        "startChar": 13,
+        "endLine": 109,
+        "endChar": 27
+      },
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c122bbdd_b9204551",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
         "patchSetId": 7
@@ -125,6 +173,24 @@
       "side": 1,
       "message": ":) I\u0027ve removed it from here in the latest patch set because you suggested in previous patch set that this is related to permissions and shouldn\u0027t be incremented. I can bring it back should I?\n\nI even commented it for previous patch set:\nI\u0027m fine with removing this line but I thought that we want to inform about all issues even when they are permissions related. WDYT?",
       "parentUuid": "c122bbdd_b9204551",
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ce6b99b_e3ada89b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-21T09:11:45Z",
+      "side": 1,
+      "message": "I believe your answer was correct, you were right and I was wrong :-)\nDon\u0027t take the comments as \"orders to change stuff\", they are just comments and you are fully entitled to answer and disagree :-)",
+      "parentUuid": "8cde0c7f_8cc20b52",
       "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -348,6 +414,24 @@
       "side": 1,
       "message": "I\u0027m testing if AbstractKafkaSubscriber is calling metrics when it\u0027s needed. AbstractKafkaSubscriber is heavily based on Kafka  that\u0027s why to instantiate it I need to mock a lot of kafka classes. It will go away when we will finish subscriber api change",
       "parentUuid": "72a166b9_af87e856",
+      "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5924bba5_285db393",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaSubscriberTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-21T09:11:45Z",
+      "side": 1,
+      "message": "\u003e I\u0027m testing if AbstractKafkaSubscriber is calling metrics when it\u0027s needed. AbstractKafkaSubscriber is heavily based on Kafka  that\u0027s why to instantiate it I need to mock a lot of kafka classes. It will go away when we will finish subscriber api change\n\nPoint taken, however, it is worth the pain then? Writing all this code and mocks and then removing it in a few days?",
+      "parentUuid": "e22684dd_f67e8d1c",
       "revId": "0d154bf01218caf5be7e70c0a26bc50b2b9f8c8c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
