@@ -358,6 +358,30 @@
     },
     {
       "key": {
+        "uuid": "a42f4860_cb668efe",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/kafka/KafkaSession.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-08-21T23:53:55Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1d6dfedc_067900b8",
+      "range": {
+        "startLine": 89,
+        "startChar": 37,
+        "endLine": 89,
+        "endChar": 49
+      },
+      "revId": "71e1c6173fa0fc72e19e9d558c518ea3f5c74819",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "58bb4e52_86c22b20",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventFamily.java",
         "patchSetId": 1
