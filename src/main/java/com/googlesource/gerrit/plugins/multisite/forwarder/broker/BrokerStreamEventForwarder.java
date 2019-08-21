@@ -17,21 +17,21 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 
 @Singleton
 public class BrokerStreamEventForwarder implements StreamEventForwarder {
-  private final BrokerPublisher publisher;
+  private final BrokerApi broker;
 
   @Inject
-  BrokerStreamEventForwarder(BrokerPublisher publisher) {
-    this.publisher = publisher;
+  BrokerStreamEventForwarder(BrokerApi broker) {
+    this.broker = broker;
   }
 
   @Override
   public boolean send(Event event) {
-    return publisher.publish(EventFamily.STREAM_EVENT.topic(), event);
+    return broker.send(EventFamily.STREAM_EVENT.topic(), event);
   }
 }
