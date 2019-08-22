@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d29507e3_216c7654",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T23:18:26Z",
+      "side": 1,
+      "message": "Apparently, I get an NPE if I specify SINGLETON, which is surprising :-O\n\nI did a bit of investigation and the problem is the following:\njava.util.ConcurrentModificationException: KafkaConsumer is not safe for multi-threaded access\n\tat org.apache.kafka.clients.consumer.KafkaConsumer.acquire(KafkaConsumer.java:2201)\n\tat org.apache.kafka.clients.consumer.KafkaConsumer.close(KafkaConsumer.java:2090)\n\tat org.apache.kafka.clients.consumer.KafkaConsumer.close(KafkaConsumer.java:2045)\n\tat com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaEventSubscriber.subscribe(KafkaEventSubscriber.java:102)\n\tat com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerApi.receiveAync(KafkaBrokerApi.java:46)\n\tat com.googlesource.gerrit.plugins.multisite.consumer.AbstractSubcriber.run(AbstractSubcriber.java:64)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)",
+      "range": {
+        "startLine": 124,
+        "startChar": 72,
+        "endLine": 124,
+        "endChar": 93
+      },
+      "revId": "8fc96fe1934f3191277aaf1c968b396755277354",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
