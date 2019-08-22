@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gson.Gson;
@@ -27,6 +28,7 @@ import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerModule;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
@@ -118,10 +120,10 @@ public class Module extends LifecycleModule {
       install(new IndexModule());
     }
 
-    bind(BrokerApi.class).to(KafkaBrokerApi.class).in(Scopes.SINGLETON);
+    install(new BrokerModule());
+    DynamicItem.bind(binder(), BrokerApi.class).to(KafkaBrokerApi.class).in(Scopes.SINGLETON);
 
     install(kafkaForwardedEventRouterModule);
-
     install(kafkaBrokerForwarderModule);
 
     install(

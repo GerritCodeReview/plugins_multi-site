@@ -12,27 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
+package com.googlesource.gerrit.plugins.multisite.broker;
 
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
-import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
+import java.util.function.Consumer;
 
-@Singleton
-public class BrokerStreamEventForwarder implements StreamEventForwarder {
-  private final BrokerApi broker;
+public class BrokerApiWrapper implements BrokerApi {
+  private final DynamicItem<BrokerApi> apiDelegate;
 
   @Inject
-  BrokerStreamEventForwarder(BrokerApiWrapper broker) {
-    this.broker = broker;
+  public BrokerApiWrapper(DynamicItem<BrokerApi> apiDelegate) {
+    this.apiDelegate = apiDelegate;
   }
 
   @Override
-  public boolean send(Event event) {
-    return broker.send(EventTopic.STREAM_EVENT_TOPIC.topic(), event);
+  public boolean send(String topic, Event event) {
+    return apiDelegate.get().send(topic, event);
+  }
+
+  @Override
+  public void receiveAync(String topic, Consumer<Event> eventConsumer) {
+    apiDelegate.get().receiveAync(topic, eventConsumer);
   }
 }
