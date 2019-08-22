@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1197ccab_c8e1c2b5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:34:02Z",
+      "side": 1,
+      "message": "Yes, I saw the logic and it isn\u0027t Kafka-specific.\nI\u0027ll address this in a follow-up change.",
+      "parentUuid": "a0426373_883c6265",
+      "range": {
+        "startLine": 31,
+        "startChar": 29,
+        "endLine": 31,
+        "endChar": 34
+      },
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6bd48c95_e4cedc4c",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
         "patchSetId": 1
@@ -41,6 +65,76 @@
         "startChar": 22,
         "endLine": 49,
         "endChar": 23
+      },
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6845b0a3_05d56079",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:34:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6bd48c95_e4cedc4c",
+      "range": {
+        "startLine": 49,
+        "startChar": 22,
+        "endLine": 49,
+        "endChar": 23
+      },
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d851c5de_2cfd789f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:34:02Z",
+      "side": 1,
+      "message": "This isn\u0027t Kafka-related: remove the keyword and move outside the Kafka package.",
+      "range": {
+        "startLine": 46,
+        "startChar": 17,
+        "endLine": 46,
+        "endChar": 22
+      },
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d45ba2e_2487ce97",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:34:02Z",
+      "side": 1,
+      "message": "This method can go all together.",
+      "range": {
+        "startLine": 95,
+        "startChar": 2,
+        "endLine": 95,
+        "endChar": 27
       },
       "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
@@ -65,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "70cf71e0_39509e5c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/IndexEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:34:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01d8afbe_f289bdd9",
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "806fb9b8_ee4fd272",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaCacheEvictionEventSubscriber.java",
         "patchSetId": 1
@@ -79,6 +191,24 @@
       "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "786f24ac_5b09abc8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaCacheEvictionEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:34:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "806fb9b8_ee4fd272",
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -128,6 +258,54 @@
     },
     {
       "key": {
+        "uuid": "069a1ece_1f38d723",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaCacheEvictionEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:34:02Z",
+      "side": 1,
+      "message": "Found it: the AbstractKafkaSubscriber isn\u0027t related to Kafka at all :-)",
+      "parentUuid": "15d9f27d_e68b46ba",
+      "range": {
+        "startLine": 31,
+        "startChar": 55,
+        "endLine": 31,
+        "endChar": 77
+      },
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0908e7a3_0eb25592",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaCacheEvictionEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:34:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0970820_190b7236",
+      "range": {
+        "startLine": 31,
+        "startChar": 13,
+        "endLine": 31,
+        "endChar": 18
+      },
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9a8bcca4_898ca79f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/ProjectUpdateEventSubscriber.java",
         "patchSetId": 1
@@ -145,6 +323,24 @@
     },
     {
       "key": {
+        "uuid": "01eee590_9d64b25f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/ProjectUpdateEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:34:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a8bcca4_898ca79f",
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "766924d3_a0a3e612",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/StreamEventSubscriber.java",
         "patchSetId": 1
@@ -159,6 +355,24 @@
       "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf1aa0ef_1bf03ec5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/StreamEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:34:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "766924d3_a0a3e612",
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
