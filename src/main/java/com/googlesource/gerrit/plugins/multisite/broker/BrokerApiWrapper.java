@@ -21,15 +21,27 @@ import java.util.function.Consumer;
 
 public class BrokerApiWrapper implements BrokerApi {
   private final DynamicItem<BrokerApi> apiDelegate;
+  private final BrokerMetrics metrics;
 
   @Inject
-  public BrokerApiWrapper(DynamicItem<BrokerApi> apiDelegate) {
+  public BrokerApiWrapper(DynamicItem<BrokerApi> apiDelegate, BrokerMetrics metrics) {
     this.apiDelegate = apiDelegate;
+    this.metrics = metrics;
   }
 
   @Override
   public boolean send(String topic, Event event) {
-    return apiDelegate.get().send(topic, event);
+    boolean succeeded = false;
+    try {
+      succeeded = apiDelegate.get().send(topic, event);
+    } finally {
+      if (succeeded) {
+        metrics.incrementBrokerPublishedMessage();
+      } else {
+        metrics.incrementBrokerFailedToPublishMessage();
+      }
+    }
+    return succeeded;
   }
 
   @Override
