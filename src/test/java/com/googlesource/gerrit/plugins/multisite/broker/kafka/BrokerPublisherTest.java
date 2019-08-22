@@ -72,7 +72,7 @@ public class BrokerPublisherTest {
 
   @Before
   public void setUp() {
-    publisher = new BrokerPublisher(session, gson, UUID.randomUUID(), msgLog, brokerMetrics);
+    publisher = new BrokerPublisher(session, gson, UUID.randomUUID(), msgLog);
   }
 
   @Test
@@ -122,23 +122,6 @@ public class BrokerPublisherTest {
         gson.fromJson(expectedSerializedCommentEvent, JsonElement.class).getAsJsonObject();
 
     assertThat(publisher.eventToJson(event).equals(expectedCommentEventJsonObject)).isTrue();
-  }
-
-  @Test
-  public void shouldIncrementBrokerMetricCounterWhenMessagePublished() {
-    Event event = createSampleEvent();
-    when(session.publish(any(), any())).thenReturn(true);
-    publisher.publish(EventTopic.INDEX_TOPIC.topic(), event);
-    verify(brokerMetrics, only()).incrementBrokerPublishedMessage();
-  }
-
-  @Test
-  public void shouldIncrementBrokerFailedMetricCounterWhenMessagePublished() {
-    Event event = createSampleEvent();
-    when(session.publish(any(), any())).thenReturn(false);
-
-    publisher.publish(EventTopic.INDEX_TOPIC.topic(), event);
-    verify(brokerMetrics, only()).incrementBrokerFailedToPublishMessage();
   }
 
   @Test
