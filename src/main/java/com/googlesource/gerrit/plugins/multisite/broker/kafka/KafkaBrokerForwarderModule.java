@@ -27,7 +27,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerCacheEvi
 import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerIndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerStreamEventForwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 
 public class KafkaBrokerForwarderModule extends LifecycleModule {
@@ -44,18 +44,18 @@ public class KafkaBrokerForwarderModule extends LifecycleModule {
       listener().to(BrokerPublisher.class);
       bind(BrokerSession.class).to(KafkaSession.class);
 
-      if (config.kafkaPublisher().enabledEvent(EventFamily.INDEX_EVENT)) {
+      if (config.kafkaPublisher().enabledEvent(EventTopic.INDEX_TOPIC)) {
         DynamicSet.bind(binder(), IndexEventForwarder.class).to(BrokerIndexEventForwarder.class);
       }
-      if (config.kafkaPublisher().enabledEvent(EventFamily.CACHE_EVENT)) {
+      if (config.kafkaPublisher().enabledEvent(EventTopic.CACHE_TOPIC)) {
         DynamicSet.bind(binder(), CacheEvictionForwarder.class)
             .to(BrokerCacheEvictionForwarder.class);
       }
-      if (config.kafkaPublisher().enabledEvent(EventFamily.PROJECT_LIST_EVENT)) {
+      if (config.kafkaPublisher().enabledEvent(EventTopic.PROJECT_LIST_TOPIC)) {
         DynamicSet.bind(binder(), ProjectListUpdateForwarder.class)
             .to(BrokerProjectListUpdateForwarder.class);
       }
-      if (config.kafkaPublisher().enabledEvent(EventFamily.STREAM_EVENT)) {
+      if (config.kafkaPublisher().enabledEvent(EventTopic.STREAM_EVENT_TOPIC)) {
         DynamicSet.bind(binder(), StreamEventForwarder.class).to(BrokerStreamEventForwarder.class);
       }
     }

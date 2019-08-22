@@ -28,7 +28,7 @@ import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberMetrics;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedEventRouter;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 import java.io.IOException;
@@ -92,10 +92,9 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
   @Override
   public void run() {
     try {
-      final String topic = configuration.getKafka().getTopic(getEventFamily());
+      final String topic = configuration.getKafka().getTopicAlias(getTopic());
       logger.atInfo().log(
-          "Kafka consumer subscribing to topic [%s] for event family [%s]",
-          topic, getEventFamily());
+          "Kafka consumer subscribing to topic alias [%s] for event topic [%s]", topic, getTopic());
       consumer.subscribe(Collections.singleton(topic));
       while (!closed.get()) {
         ConsumerRecords<byte[], byte[]> consumerRecords =
@@ -113,7 +112,7 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
     }
   }
 
-  protected abstract EventFamily getEventFamily();
+  protected abstract EventTopic getTopic();
 
   private void processRecord(ConsumerRecord<byte[], byte[]> consumerRecord) {
     try (ManualRequestContext ctx = oneOffCtx.open()) {

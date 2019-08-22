@@ -16,15 +16,15 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
 import com.google.common.base.CaseFormat;
 
-public enum EventFamily {
-  INDEX_EVENT("GERRIT.EVENT.INDEX"),
-  CACHE_EVENT("GERRIT.EVENT.CACHE"),
-  PROJECT_LIST_EVENT("GERRIT.EVENT.PROJECT.LIST"),
-  STREAM_EVENT("GERRIT.EVENT.STREAM");
+public enum EventTopic {
+  INDEX_TOPIC("GERRIT.EVENT.INDEX"),
+  CACHE_TOPIC("GERRIT.EVENT.CACHE"),
+  PROJECT_LIST_TOPIC("GERRIT.EVENT.PROJECT.LIST"),
+  STREAM_EVENT_TOPIC("GERRIT.EVENT.STREAM");
 
   private final String topic;
 
-  private EventFamily(String topic) {
+  private EventTopic(String topic) {
     this.topic = topic;
   }
 
@@ -36,11 +36,11 @@ public enum EventFamily {
     return topic;
   }
 
-  public static EventFamily fromTopic(String topic) {
-    EventFamily[] eventFamilies = EventFamily.values();
-    for (EventFamily eventFamily : eventFamilies) {
-      if (eventFamily.topic.equals(topic)) {
-        return eventFamily;
+  public static EventTopic of(String topicString) {
+    EventTopic[] topics = EventTopic.values();
+    for (EventTopic topic : topics) {
+      if (topic.topic.equals(topicString)) {
+        return topic;
       }
     }
     return null;

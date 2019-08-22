@@ -17,7 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.broker.kafka;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -82,7 +82,7 @@ public class KafkaSession implements BrokerSession {
 
   @Override
   public boolean publish(String topic, String payload) {
-    return publishToTopic(properties.getKafka().getTopic(EventFamily.fromTopic(topic)), payload);
+    return publishToTopic(properties.getKafka().getTopicAlias(EventTopic.of(topic)), payload);
   }
 
   private boolean publishToTopic(String topic, String payload) {

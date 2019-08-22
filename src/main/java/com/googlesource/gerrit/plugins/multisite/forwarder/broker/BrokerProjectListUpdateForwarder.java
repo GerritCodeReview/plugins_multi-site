@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
-import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.PROJECT_LIST_EVENT;
+import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic.PROJECT_LIST_TOPIC;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -33,6 +33,6 @@ public class BrokerProjectListUpdateForwarder implements ProjectListUpdateForwar
 
   @Override
   public boolean updateProjectList(ProjectListUpdateEvent event) {
-    return broker.send(PROJECT_LIST_EVENT.topic(), event);
+    return broker.send(PROJECT_LIST_TOPIC.topic(), event);
   }
 }
