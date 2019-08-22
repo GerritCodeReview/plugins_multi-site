@@ -122,6 +122,7 @@ public class Module extends LifecycleModule {
 
     install(new BrokerModule());
     DynamicItem.bind(binder(), BrokerApi.class).to(KafkaBrokerApi.class).in(Scopes.SINGLETON);
+    listener().to(KafkaBrokerApi.class);
 
     install(kafkaForwardedEventRouterModule);
     install(kafkaBrokerForwarderModule);
