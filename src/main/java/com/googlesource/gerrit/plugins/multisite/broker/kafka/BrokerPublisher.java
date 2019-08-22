@@ -25,7 +25,6 @@ import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerMetrics;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.SourceAwareEventWrapper;
@@ -41,20 +40,17 @@ public class BrokerPublisher implements LifecycleListener {
   private final Gson gson;
   private final UUID instanceId;
   private final MessageLogger msgLog;
-  private final BrokerMetrics brokerMetrics;
 
   @Inject
   public BrokerPublisher(
       BrokerSession session,
       @BrokerGson Gson gson,
       @InstanceId UUID instanceId,
-      MessageLogger msgLog,
-      BrokerMetrics brokerMetrics) {
+      MessageLogger msgLog) {
     this.session = session;
     this.gson = gson;
     this.instanceId = instanceId;
     this.msgLog = msgLog;
-    this.brokerMetrics = brokerMetrics;
   }
 
   @Override
@@ -80,9 +76,6 @@ public class BrokerPublisher implements LifecycleListener {
     Boolean eventPublished = session.publish(topic, getPayload(brokerEvent));
     if (eventPublished) {
       msgLog.log(Direction.PUBLISH, brokerEvent);
-      brokerMetrics.incrementBrokerPublishedMessage();
-    } else {
-      brokerMetrics.incrementBrokerFailedToPublishMessage();
     }
     return eventPublished;
   }
