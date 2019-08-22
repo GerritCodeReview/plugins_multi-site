@@ -19,18 +19,19 @@ import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.consumer.AbstractSubcriber;
 import java.util.concurrent.Executor;
 
 @Singleton
 public class MultiSiteKafkaConsumerRunner implements LifecycleListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private final DynamicSet<AbstractKafkaSubcriber> consumers;
+  private final DynamicSet<AbstractSubcriber> consumers;
   private final Executor executor;
 
   @Inject
   public MultiSiteKafkaConsumerRunner(
-      @ConsumerExecutor Executor executor, DynamicSet<AbstractKafkaSubcriber> consumers) {
+      @ConsumerExecutor Executor executor, DynamicSet<AbstractSubcriber> consumers) {
     this.consumers = consumers;
     this.executor = executor;
   }
@@ -44,6 +45,6 @@ public class MultiSiteKafkaConsumerRunner implements LifecycleListener {
   @Override
   public void stop() {
     logger.atInfo().log("shutting down consumers");
-    this.consumers.forEach(c -> c.shutdown());
+    // FIXME: Shutdown the receiving threads
   }
 }

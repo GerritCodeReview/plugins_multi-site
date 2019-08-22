@@ -23,7 +23,6 @@ import com.google.inject.CreationException;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.ProvisionException;
-import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
@@ -121,7 +120,7 @@ public class Module extends LifecycleModule {
     }
 
     install(new BrokerModule());
-    DynamicItem.bind(binder(), BrokerApi.class).to(KafkaBrokerApi.class).in(Scopes.SINGLETON);
+    DynamicItem.bind(binder(), BrokerApi.class).to(KafkaBrokerApi.class);
 
     install(kafkaForwardedEventRouterModule);
     install(kafkaBrokerForwarderModule);
