@@ -18,7 +18,7 @@ import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.MultiSiteEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 import java.util.concurrent.Executor;
@@ -44,22 +44,22 @@ public class KafkaConsumerModule extends LifecycleModule {
 
     bind(Executor.class)
         .annotatedWith(ConsumerExecutor.class)
-        .toInstance(Executors.newFixedThreadPool(EventFamily.values().length));
+        .toInstance(Executors.newFixedThreadPool(EventTopic.values().length));
     listener().to(MultiSiteKafkaConsumerRunner.class);
 
     DynamicSet.setOf(binder(), AbstractKafkaSubcriber.class);
 
-    if (config.kafkaSubscriber().enabledEvent(EventFamily.INDEX_EVENT)) {
+    if (config.kafkaSubscriber().enabledEvent(EventTopic.INDEX_TOPIC)) {
       DynamicSet.bind(binder(), AbstractKafkaSubcriber.class).to(IndexEventSubscriber.class);
     }
-    if (config.kafkaSubscriber().enabledEvent(EventFamily.STREAM_EVENT)) {
+    if (config.kafkaSubscriber().enabledEvent(EventTopic.STREAM_EVENT_TOPIC)) {
       DynamicSet.bind(binder(), AbstractKafkaSubcriber.class).to(StreamEventSubscriber.class);
     }
-    if (config.kafkaSubscriber().enabledEvent(EventFamily.CACHE_EVENT)) {
+    if (config.kafkaSubscriber().enabledEvent(EventTopic.CACHE_TOPIC)) {
       DynamicSet.bind(binder(), AbstractKafkaSubcriber.class)
           .to(KafkaCacheEvictionEventSubscriber.class);
     }
-    if (config.kafkaSubscriber().enabledEvent(EventFamily.PROJECT_LIST_EVENT)) {
+    if (config.kafkaSubscriber().enabledEvent(EventTopic.PROJECT_LIST_TOPIC)) {
       DynamicSet.bind(binder(), AbstractKafkaSubcriber.class)
           .to(ProjectUpdateEventSubscriber.class);
     }

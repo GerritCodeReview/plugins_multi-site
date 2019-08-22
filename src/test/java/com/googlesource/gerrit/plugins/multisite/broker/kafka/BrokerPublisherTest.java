@@ -38,7 +38,7 @@ import com.googlesource.gerrit.plugins.multisite.broker.BrokerMetrics;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
@@ -129,7 +129,7 @@ public class BrokerPublisherTest {
   public void shouldIncrementBrokerMetricCounterWhenMessagePublished() {
     Event event = createSampleEvent();
     when(session.publish(any(), any())).thenReturn(true);
-    publisher.publish(EventFamily.INDEX_EVENT.topic(), event);
+    publisher.publish(EventTopic.INDEX_TOPIC.topic(), event);
     verify(brokerMetrics, only()).incrementBrokerPublishedMessage();
   }
 
@@ -138,7 +138,7 @@ public class BrokerPublisherTest {
     Event event = createSampleEvent();
     when(session.publish(any(), any())).thenReturn(false);
 
-    publisher.publish(EventFamily.INDEX_EVENT.topic(), event);
+    publisher.publish(EventTopic.INDEX_TOPIC.topic(), event);
     verify(brokerMetrics, only()).incrementBrokerFailedToPublishMessage();
   }
 
@@ -146,7 +146,7 @@ public class BrokerPublisherTest {
   public void shouldLogEventPublishedMessageWhenPublishingSucceed() {
     Event event = createSampleEvent();
     when(session.publish(any(), any())).thenReturn(true);
-    publisher.publish(EventFamily.INDEX_EVENT.topic(), event);
+    publisher.publish(EventTopic.INDEX_TOPIC.topic(), event);
     verify(msgLog, only()).log(any(), any());
   }
 
@@ -155,7 +155,7 @@ public class BrokerPublisherTest {
     Event event = createSampleEvent();
     when(session.publish(any(), any())).thenReturn(false);
 
-    publisher.publish(EventFamily.INDEX_EVENT.topic(), event);
+    publisher.publish(EventTopic.INDEX_TOPIC.topic(), event);
     verify(msgLog, never()).log(any(), any());
   }
 

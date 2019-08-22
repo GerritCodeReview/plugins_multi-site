@@ -22,7 +22,7 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ProjectListUpdateRouter;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 import java.util.UUID;
@@ -56,7 +56,7 @@ public class ProjectUpdateEventSubscriber extends AbstractKafkaSubcriber {
   }
 
   @Override
-  protected EventFamily getEventFamily() {
-    return EventFamily.PROJECT_LIST_EVENT;
+  protected EventTopic getTopic() {
+    return EventTopic.PROJECT_LIST_TOPIC;
   }
 }

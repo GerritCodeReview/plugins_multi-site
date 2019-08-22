@@ -19,7 +19,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 
 @Singleton
 public class BrokerStreamEventForwarder implements StreamEventForwarder {
@@ -32,6 +32,6 @@ public class BrokerStreamEventForwarder implements StreamEventForwarder {
 
   @Override
   public boolean send(Event event) {
-    return broker.send(EventFamily.STREAM_EVENT.topic(), event);
+    return broker.send(EventTopic.STREAM_EVENT_TOPIC.topic(), event);
   }
 }
