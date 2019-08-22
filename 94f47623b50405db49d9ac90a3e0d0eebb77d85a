@@ -1,0 +1,141 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a0426373_883c6265",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApi.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:07:33Z",
+      "side": 1,
+      "message": "Should we also change this to SourceAwareEventWrapper?",
+      "range": {
+        "startLine": 31,
+        "startChar": 29,
+        "endLine": 31,
+        "endChar": 34
+      },
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6bd48c95_e4cedc4c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:07:33Z",
+      "side": 1,
+      "message": "good catch, but it should be a separate change IMHO.",
+      "range": {
+        "startLine": 49,
+        "startChar": 22,
+        "endLine": 49,
+        "endChar": 23
+      },
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01d8afbe_f289bdd9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/IndexEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:07:33Z",
+      "side": 1,
+      "message": "This should move outside the kafka package, because it is not specific to Kafka anymore.",
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "806fb9b8_ee4fd272",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaCacheEvictionEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:07:33Z",
+      "side": 1,
+      "message": "This should move outside the kafka package, because it is not specific to Kafka anymore.",
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0970820_190b7236",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaCacheEvictionEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:07:33Z",
+      "side": 1,
+      "message": "Remove the Kafka keyword: it is not broker-independent.",
+      "range": {
+        "startLine": 31,
+        "startChar": 13,
+        "endLine": 31,
+        "endChar": 18
+      },
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a8bcca4_898ca79f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/ProjectUpdateEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:07:33Z",
+      "side": 1,
+      "message": "This should move outside the kafka package, because it is not specific to Kafka anymore.",
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "766924d3_a0a3e612",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/StreamEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:07:33Z",
+      "side": 1,
+      "message": "This should move outside the kafka package, because it is not specific to Kafka anymore.",
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

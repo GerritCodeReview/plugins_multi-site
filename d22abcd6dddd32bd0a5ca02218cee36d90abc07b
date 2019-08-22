@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "e85ae1e8_866db672",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:07:33Z",
+      "side": 0,
+      "message": "Why SINGLETON has been removed?",
+      "range": {
+        "startLine": 124,
+        "startChar": 72,
+        "endLine": 124,
+        "endChar": 93
+      },
+      "revId": "d22abcd6dddd32bd0a5ca02218cee36d90abc07b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "61f916ab_d8ec0a44",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
         "patchSetId": 1
@@ -22,6 +45,30 @@
       "revId": "d22abcd6dddd32bd0a5ca02218cee36d90abc07b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "020af76a_2dd7d267",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/AbstractKafkaSubcriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:07:33Z",
+      "side": 0,
+      "message": "Shutdown is part of the Kafka implementation and NOT the interface.\nThe Kafka plugin will call this method directly, whilst the multi-site plugin doesn\u0027t even have know that it exists.",
+      "parentUuid": "61f916ab_d8ec0a44",
+      "range": {
+        "startLine": 95,
+        "startChar": 4,
+        "endLine": 95,
+        "endChar": 26
+      },
+      "revId": "d22abcd6dddd32bd0a5ca02218cee36d90abc07b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
