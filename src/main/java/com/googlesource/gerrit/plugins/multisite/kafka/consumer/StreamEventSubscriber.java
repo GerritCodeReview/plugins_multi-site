@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberMetrics;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
@@ -30,7 +31,7 @@ import java.util.UUID;
 public class StreamEventSubscriber extends AbstractKafkaSubcriber {
   @Inject
   public StreamEventSubscriber(
-      KafkaEventSubscriber subscriber,
+      BrokerApi brokerApi,
       StreamEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
       @BrokerGson Gson gson,
@@ -38,13 +39,7 @@ public class StreamEventSubscriber extends AbstractKafkaSubcriber {
       MessageLogger msgLog,
       SubscriberMetrics subscriberMetrics) {
     super(
-        subscriber,
-        eventRouter,
-        droppedEventListeners,
-        gson,
-        instanceId,
-        msgLog,
-        subscriberMetrics);
+        brokerApi, eventRouter, droppedEventListeners, gson, instanceId, msgLog, subscriberMetrics);
   }
 
   @Override

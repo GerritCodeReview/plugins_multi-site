@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.broker;
 
 import com.google.gerrit.server.events.Event;
+import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
 import java.util.function.Consumer;
 
 /** API for sending/receiving events through a message Broker. */
@@ -35,5 +36,5 @@ public interface BrokerApi {
    * @param topic
    * @param eventConsumer
    */
-  void receiveAync(String topic, Consumer<Event> eventConsumer);
+  void receiveAsync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer);
 }
