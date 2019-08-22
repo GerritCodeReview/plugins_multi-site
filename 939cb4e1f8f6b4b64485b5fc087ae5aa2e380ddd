@@ -22,6 +22,30 @@
       "revId": "939cb4e1f8f6b4b64485b5fc087ae5aa2e380ddd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b5b318a2_d24ea5f3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerProjectListUpdateForwarder.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T19:17:37Z",
+      "side": 1,
+      "message": "Yes, it is part of the EventFamily, look at L17.",
+      "parentUuid": "2333b658_67fe9a6b",
+      "range": {
+        "startLine": 36,
+        "startChar": 29,
+        "endLine": 36,
+        "endChar": 47
+      },
+      "revId": "939cb4e1f8f6b4b64485b5fc087ae5aa2e380ddd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
