@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
+package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gson.Gson;
@@ -20,28 +20,28 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
-import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberMetrics;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRouter;
 import java.util.UUID;
 
 @Singleton
-public class StreamEventSubscriber extends AbstractKafkaSubcriber {
+public class CacheEvictionEventSubscriber extends AbstractSubcriber {
   @Inject
-  public StreamEventSubscriber(
-      KafkaEventSubscriber subscriber,
+  public CacheEvictionEventSubscriber(
+      BrokerApi brokerApi,
       StreamEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
-      @BrokerGson Gson gson,
+      @BrokerGson Gson gsonProvider,
       @InstanceId UUID instanceId,
       MessageLogger msgLog,
       SubscriberMetrics subscriberMetrics) {
     super(
-        subscriber,
+        brokerApi,
         eventRouter,
         droppedEventListeners,
-        gson,
+        gsonProvider,
         instanceId,
         msgLog,
         subscriberMetrics);
@@ -49,6 +49,6 @@ public class StreamEventSubscriber extends AbstractKafkaSubcriber {
 
   @Override
   protected EventTopic getTopic() {
-    return EventTopic.STREAM_EVENT_TOPIC;
+    return EventTopic.CACHE_TOPIC;
   }
 }

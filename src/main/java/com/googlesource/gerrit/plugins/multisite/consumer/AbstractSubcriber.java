@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
+package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
@@ -22,19 +22,19 @@ import com.google.gwtorm.server.OrmException;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
-import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
-import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberMetrics;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedEventRouter;
+
 import java.io.IOException;
 import java.util.UUID;
 
-public abstract class AbstractKafkaSubcriber implements Runnable {
+public abstract class AbstractSubcriber implements Runnable {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private final KafkaEventSubscriber subscriber;
+  private final BrokerApi brokerApi;
   private final ForwardedEventRouter eventRouter;
   private final DynamicSet<DroppedEventListener> droppedEventListeners;
   private final Gson gson;
@@ -42,8 +42,8 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
   private final MessageLogger msgLog;
   private SubscriberMetrics subscriberMetrics;
 
-  public AbstractKafkaSubcriber(
-      KafkaEventSubscriber subscriber,
+  public AbstractSubcriber(
+      BrokerApi brokerApi,
       ForwardedEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
       @BrokerGson Gson gson,
@@ -56,12 +56,12 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
     this.instanceId = instanceId;
     this.msgLog = msgLog;
     this.subscriberMetrics = subscriberMetrics;
-    this.subscriber = subscriber;
+    this.brokerApi = brokerApi;
   }
 
   @Override
   public void run() {
-    subscriber.subscribe(getTopic(), this::processRecord);
+    brokerApi.receiveAync(getTopic().topic(), this::processRecord);
   }
 
   protected abstract EventTopic getTopic();
@@ -88,10 +88,5 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
         subscriberMetrics.incrementSubscriberFailedToConsumeMessage();
       }
     }
-  }
-
-  // Shutdown hook which can be called from a separate thread
-  public void shutdown() {
-    subscriber.shutdown();
   }
 }
