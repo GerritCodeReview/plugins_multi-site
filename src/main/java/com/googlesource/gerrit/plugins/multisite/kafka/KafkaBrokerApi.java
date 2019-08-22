@@ -14,20 +14,31 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka;
 
-import com.google.gerrit.extensions.restapi.NotImplementedException;
+import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.kafka.BrokerPublisher;
+import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
+import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaEventSubscriber;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
-public class KafkaBrokerApi implements BrokerApi {
+public class KafkaBrokerApi implements BrokerApi, LifecycleListener {
 
   private final BrokerPublisher publisher;
+  private final Provider<KafkaEventSubscriber> subscriberProvider;
+  private List<KafkaEventSubscriber> subscribers;
 
   @Inject
-  public KafkaBrokerApi(BrokerPublisher publisher) {
+  public KafkaBrokerApi(
+      BrokerPublisher publisher, Provider<KafkaEventSubscriber> subscriberProvider) {
     this.publisher = publisher;
+    this.subscriberProvider = subscriberProvider;
+    subscribers = new ArrayList<>();
   }
 
   @Override
@@ -36,7 +47,21 @@ public class KafkaBrokerApi implements BrokerApi {
   }
 
   @Override
-  public void receiveAync(String topic, Consumer<Event> eventConsumer) {
-    throw new NotImplementedException();
+  public void receiveAync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer) {
+    KafkaEventSubscriber subscriber = subscriberProvider.get();
+    synchronized (subscribers) {
+      subscribers.add(subscriber);
+    }
+    subscriber.subscribe(EventTopic.of(topic), eventConsumer);
+  }
+
+  @Override
+  public void start() {}
+
+  @Override
+  public void stop() {
+    for (KafkaEventSubscriber subscriber : subscribers) {
+      subscriber.shutdown();
+    }
   }
 }
