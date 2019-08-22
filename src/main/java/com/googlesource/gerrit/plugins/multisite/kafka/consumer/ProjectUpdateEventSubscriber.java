@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -25,35 +24,25 @@ import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberMetrics;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ProjectListUpdateRouter;
-import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 import java.util.UUID;
-import org.apache.kafka.common.serialization.Deserializer;
 
 @Singleton
 public class ProjectUpdateEventSubscriber extends AbstractKafkaSubcriber {
   @Inject
   public ProjectUpdateEventSubscriber(
-      KafkaConfiguration configuration,
-      KafkaConsumerFactory consumerFactory,
-      Deserializer<byte[]> keyDeserializer,
-      Deserializer<SourceAwareEventWrapper> valueDeserializer,
+      KafkaEventSubscriber subscriber,
       ProjectListUpdateRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
       @BrokerGson Gson gson,
       @InstanceId UUID instanceId,
-      OneOffRequestContext oneOffCtx,
       MessageLogger msgLog,
       SubscriberMetrics subscriberMetrics) {
     super(
-        configuration,
-        consumerFactory,
-        keyDeserializer,
-        valueDeserializer,
+        subscriber,
         eventRouter,
         droppedEventListeners,
         gson,
         instanceId,
-        oneOffCtx,
         msgLog,
         subscriberMetrics);
   }
