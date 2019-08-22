@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
+package com.googlesource.gerrit.plugins.multisite.consumer;
 
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-import com.google.inject.BindingAnnotation;
-import java.lang.annotation.Retention;
-
-@Retention(RUNTIME)
-@BindingAnnotation
-@interface ConsumerExecutor {}
+public interface DroppedEventListener {
+  /**
+   * Invoked when any event is dropped.
+   *
+   * @param event information about the event.
+   */
+  void onEventDropped(SourceAwareEventWrapper event);
+}

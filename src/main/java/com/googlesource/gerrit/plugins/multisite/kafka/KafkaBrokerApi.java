@@ -14,20 +14,24 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka;
 
-import com.google.gerrit.extensions.restapi.NotImplementedException;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.kafka.BrokerPublisher;
+import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
+import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaEventSubscriber;
 import java.util.function.Consumer;
 
 public class KafkaBrokerApi implements BrokerApi {
 
   private final BrokerPublisher publisher;
+  private final KafkaEventSubscriber subscriber;
 
   @Inject
-  public KafkaBrokerApi(BrokerPublisher publisher) {
+  public KafkaBrokerApi(BrokerPublisher publisher, KafkaEventSubscriber subscriber) {
     this.publisher = publisher;
+    this.subscriber = subscriber;
   }
 
   @Override
@@ -36,7 +40,7 @@ public class KafkaBrokerApi implements BrokerApi {
   }
 
   @Override
-  public void receiveAync(String topic, Consumer<Event> eventConsumer) {
-    throw new NotImplementedException();
+  public void receiveAync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer) {
+    subscriber.subscribe(EventTopic.of(topic), eventConsumer);
   }
 }
