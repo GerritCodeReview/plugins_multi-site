@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
+package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gson.Gson;
@@ -20,35 +20,29 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
-import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberMetrics;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.IndexEventRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRouter;
 import java.util.UUID;
 
 @Singleton
-public class IndexEventSubscriber extends AbstractKafkaSubcriber {
+public class StreamEventSubscriber extends AbstractSubcriber {
   @Inject
-  public IndexEventSubscriber(
-      KafkaEventSubscriber subscriber,
-      IndexEventRouter eventRouter,
+  public StreamEventSubscriber(
+      BrokerApi brokerApi,
+      StreamEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
-      @BrokerGson Gson gsonProvider,
+      @BrokerGson Gson gson,
       @InstanceId UUID instanceId,
       MessageLogger msgLog,
       SubscriberMetrics subscriberMetrics) {
     super(
-        subscriber,
-        eventRouter,
-        droppedEventListeners,
-        gsonProvider,
-        instanceId,
-        msgLog,
-        subscriberMetrics);
+        brokerApi, eventRouter, droppedEventListeners, gson, instanceId, msgLog, subscriberMetrics);
   }
 
   @Override
   protected EventTopic getTopic() {
-    return EventTopic.INDEX_TOPIC;
+    return EventTopic.STREAM_EVENT_TOPIC;
   }
 }
