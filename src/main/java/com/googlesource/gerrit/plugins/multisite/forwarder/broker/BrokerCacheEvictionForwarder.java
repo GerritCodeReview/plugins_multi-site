@@ -19,7 +19,7 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 
 @Singleton
 public class BrokerCacheEvictionForwarder implements CacheEvictionForwarder {
@@ -32,6 +32,6 @@ public class BrokerCacheEvictionForwarder implements CacheEvictionForwarder {
 
   @Override
   public boolean evict(CacheEvictionEvent event) {
-    return broker.send(EventFamily.CACHE_EVENT.topic(), event);
+    return broker.send(EventTopic.CACHE_TOPIC.topic(), event);
   }
 }

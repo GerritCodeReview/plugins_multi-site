@@ -24,7 +24,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -106,14 +106,14 @@ public class KafkaConfiguration {
     return defaultValue;
   }
 
-  private static Map<EventFamily, Boolean> eventsEnabled(
+  private static Map<EventTopic, Boolean> eventsEnabled(
       Supplier<Config> config, String subsection) {
-    Map<EventFamily, Boolean> eventsEnabled = new HashMap<>();
-    for (EventFamily eventFamily : EventFamily.values()) {
-      String enabledConfigKey = eventFamily.lowerCamelName() + "Enabled";
+    Map<EventTopic, Boolean> eventsEnabled = new HashMap<>();
+    for (EventTopic topic : EventTopic.values()) {
+      String enabledConfigKey = topic.lowerCamelName() + "Enabled";
 
       eventsEnabled.put(
-          eventFamily,
+          topic,
           config
               .get()
               .getBoolean(KAFKA_SECTION, subsection, enabledConfigKey, DEFAULT_ENABLE_PROCESSING));
@@ -144,18 +144,18 @@ public class KafkaConfiguration {
   }
 
   public static class Kafka {
-    private final Map<EventFamily, String> eventTopics;
+    private final Map<EventTopic, String> eventTopics;
     private final String bootstrapServers;
 
-    private static final ImmutableMap<EventFamily, String> EVENT_TOPICS =
+    private static final ImmutableMap<EventTopic, String> EVENT_TOPICS =
         ImmutableMap.of(
-            EventFamily.INDEX_EVENT,
+            EventTopic.INDEX_TOPIC,
             "GERRIT.EVENT.INDEX",
-            EventFamily.STREAM_EVENT,
+            EventTopic.STREAM_EVENT_TOPIC,
             "GERRIT.EVENT.STREAM",
-            EventFamily.CACHE_EVENT,
+            EventTopic.CACHE_TOPIC,
             "GERRIT.EVENT.CACHE",
-            EventFamily.PROJECT_LIST_EVENT,
+            EventTopic.PROJECT_LIST_TOPIC,
             "GERRIT.EVENT.PROJECT.LIST");
 
     Kafka(Supplier<Config> config) {
@@ -164,7 +164,7 @@ public class KafkaConfiguration {
               config, KAFKA_SECTION, null, "bootstrapServers", DEFAULT_KAFKA_BOOTSTRAP_SERVERS);
 
       this.eventTopics = new HashMap<>();
-      for (Map.Entry<EventFamily, String> topicDefault : EVENT_TOPICS.entrySet()) {
+      for (Map.Entry<EventTopic, String> topicDefault : EVENT_TOPICS.entrySet()) {
         String topicConfigKey = topicDefault.getKey().lowerCamelName() + "Topic";
         eventTopics.put(
             topicDefault.getKey(),
@@ -172,7 +172,7 @@ public class KafkaConfiguration {
       }
     }
 
-    public String getTopic(EventFamily eventType) {
+    public String getTopicAlias(EventTopic eventType) {
       return eventTopics.get(eventType);
     }
 
@@ -199,7 +199,7 @@ public class KafkaConfiguration {
     public static final boolean DEFAULT_BROKER_ENABLED = false;
 
     private final boolean enabled;
-    private final Map<EventFamily, Boolean> eventsEnabled;
+    private final Map<EventTopic, Boolean> eventsEnabled;
 
     private KafkaPublisher(Supplier<Config> cfg) {
       enabled =
@@ -230,7 +230,7 @@ public class KafkaConfiguration {
       return enabled;
     }
 
-    public boolean enabledEvent(EventFamily eventType) {
+    public boolean enabledEvent(EventTopic eventType) {
       return eventsEnabled.get(eventType);
     }
   }
@@ -242,7 +242,7 @@ public class KafkaConfiguration {
 
     private final boolean enabled;
     private final Integer pollingInterval;
-    private Map<EventFamily, Boolean> eventsEnabled;
+    private Map<EventTopic, Boolean> eventsEnabled;
     private final Config cfg;
 
     public KafkaSubscriber(Supplier<Config> configSupplier) {
@@ -268,8 +268,8 @@ public class KafkaConfiguration {
       return enabled;
     }
 
-    public boolean enabledEvent(EventFamily eventFamily) {
-      return eventsEnabled.get(eventFamily);
+    public boolean enabledEvent(EventTopic topic) {
+      return eventsEnabled.get(topic);
     }
 
     public Properties initPropsWith(UUID instanceId) {
