@@ -105,6 +105,29 @@
     },
     {
       "key": {
+        "uuid": "15d9f27d_e68b46ba",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaCacheEvictionEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-22T22:12:43Z",
+      "side": 1,
+      "message": "This is still bad: why are we still referring to Kafka?",
+      "range": {
+        "startLine": 31,
+        "startChar": 55,
+        "endLine": 31,
+        "endChar": 77
+      },
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9a8bcca4_898ca79f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/ProjectUpdateEventSubscriber.java",
         "patchSetId": 1
