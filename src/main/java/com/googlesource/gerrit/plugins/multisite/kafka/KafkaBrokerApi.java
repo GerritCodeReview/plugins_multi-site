@@ -18,7 +18,7 @@ import com.google.gerrit.extensions.restapi.NotImplementedException;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
+import com.googlesource.gerrit.plugins.multisite.broker.kafka.BrokerPublisher;
 import java.util.function.Consumer;
 
 public class KafkaBrokerApi implements BrokerApi {
