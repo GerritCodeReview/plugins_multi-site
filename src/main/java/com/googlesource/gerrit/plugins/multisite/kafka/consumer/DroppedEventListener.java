@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
+import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
+
 public interface DroppedEventListener {
   /**
    * Invoked when any event is dropped.
