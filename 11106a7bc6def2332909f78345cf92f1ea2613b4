@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c792fb71_6e0c3617",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/router/RouterModule.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-23T10:27:19Z",
+      "side": 1,
+      "message": "I\u0027ve noticed that ForwardedCacheEvictionEventRouter and CacheEvictionEventRouter are never used",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 85
+      },
+      "revId": "11106a7bc6def2332909f78345cf92f1ea2613b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
