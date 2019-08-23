@@ -15,21 +15,22 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 
 public class BrokerIndexEventForwarder implements IndexEventForwarder {
-  private final BrokerPublisher publisher;
+  private final BrokerApi broker;
 
   @Inject
-  BrokerIndexEventForwarder(BrokerPublisher publisher) {
-    this.publisher = publisher;
+  BrokerIndexEventForwarder(BrokerApiWrapper broker) {
+    this.broker = broker;
   }
 
   @Override
   public boolean index(IndexEvent event) {
-    return publisher.publishEvent(EventFamily.INDEX_EVENT, event);
+    return broker.send(EventTopic.INDEX_TOPIC.topic(), event);
   }
 }

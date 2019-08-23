@@ -14,8 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.broker;
 
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
-
 public interface BrokerSession {
 
   boolean isOpen();
@@ -24,5 +22,5 @@ public interface BrokerSession {
 
   void disconnect();
 
-  boolean publishEvent(EventFamily eventFamily, String payload);
+  boolean publish(String topic, String payload);
 }
