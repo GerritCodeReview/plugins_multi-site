@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b6581687_155c174b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-23T07:45:22Z",
+      "side": 1,
+      "message": "it\u0027s not surprising :) that\u0027s why I have removed singleton scope. I have mentioned it in my comment to the abandoned change:\"Currently we have one producer(BrokerPublisher is a singleton) but we have consumer per event family (IndexEventSubscriber class, KafkaCacheEvictionEventSubscriber class etc extends AbstractKafkaSubcriber) we have to handle it in the BrokerAPI so BrokerAPI cannot be in singleton scope but BrokerPublisher must be. We are ending up with a lot of hidden logic which will be unclear.\"\n\nSo we cannot have BrokerApi in singleton mode because we cannot share KafkaEventSubscriber so every class which extends AbtractKafkaSubscriber will get new instance of BrokerApi and KafkaEventSubscriber. It\u0027s still fine for publisher because we have BrokerPublisher in singleton scope so we have one publisher and multiple counsumers",
+      "parentUuid": "d29507e3_216c7654",
+      "range": {
+        "startLine": 124,
+        "startChar": 72,
+        "endLine": 124,
+        "endChar": 93
+      },
+      "revId": "8fc96fe1934f3191277aaf1c968b396755277354",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "33e94433_1397832e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaBrokerApi.java",
         "patchSetId": 5
@@ -36,6 +60,30 @@
       "writtenOn": "2019-08-22T23:25:09Z",
       "side": 1,
       "message": "This is wrong: previously there was one subscriber per receiver whilst now it is one across all receivers, causing concurrency issues.",
+      "range": {
+        "startLine": 29,
+        "startChar": 2,
+        "endLine": 29,
+        "endChar": 48
+      },
+      "revId": "8fc96fe1934f3191277aaf1c968b396755277354",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f82b449c_74ed937c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaBrokerApi.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-23T07:45:22Z",
+      "side": 1,
+      "message": "More explanation is the comment below. We can handle it in two ways, removing singleton scope from BrokerApi or creating subscriber factory. WDYT which way is better?",
+      "parentUuid": "33e94433_1397832e",
       "range": {
         "startLine": 29,
         "startChar": 2,
