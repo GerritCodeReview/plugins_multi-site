@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.broker;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
+import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
 
 public class BrokerModule extends AbstractModule {
 
@@ -25,5 +26,7 @@ public class BrokerModule extends AbstractModule {
     DynamicItem.itemOf(binder(), BrokerApi.class);
 
     bind(BrokerApiWrapper.class).in(Scopes.SINGLETON);
+
+    install(new SubscriberModule());
   }
 }
