@@ -20,18 +20,13 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.consumer.AbstractSubcriber;
 import com.googlesource.gerrit.plugins.multisite.consumer.CacheEvictionEventSubscriber;
-import com.googlesource.gerrit.plugins.multisite.consumer.ConsumerExecutor;
 import com.googlesource.gerrit.plugins.multisite.consumer.DroppedEventListener;
 import com.googlesource.gerrit.plugins.multisite.consumer.IndexEventSubscriber;
-import com.googlesource.gerrit.plugins.multisite.consumer.MultiSiteConsumerRunner;
 import com.googlesource.gerrit.plugins.multisite.consumer.ProjectUpdateEventSubscriber;
 import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
 import com.googlesource.gerrit.plugins.multisite.consumer.StreamEventSubscriber;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.MultiSiteEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.kafka.common.serialization.Deserializer;
 
@@ -46,17 +41,10 @@ public class KafkaConsumerModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-    MultiSiteEvent.registerEventTypes();
+
     bind(new TypeLiteral<Deserializer<byte[]>>() {}).toInstance(new ByteArrayDeserializer());
     bind(new TypeLiteral<Deserializer<SourceAwareEventWrapper>>() {})
         .to(KafkaEventDeserializer.class);
-
-    bind(ExecutorService.class)
-        .annotatedWith(ConsumerExecutor.class)
-        .toInstance(Executors.newFixedThreadPool(EventTopic.values().length));
-    listener().to(MultiSiteConsumerRunner.class);
-
-    DynamicSet.setOf(binder(), AbstractSubcriber.class);
 
     if (config.kafkaSubscriber().enabledEvent(EventTopic.INDEX_TOPIC)) {
       DynamicSet.bind(binder(), AbstractSubcriber.class).to(IndexEventSubscriber.class);
