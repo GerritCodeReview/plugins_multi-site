@@ -34,6 +34,7 @@ import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForward
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerApi;
 import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
@@ -123,6 +124,8 @@ public class Module extends LifecycleModule {
     install(new BrokerModule());
     DynamicItem.bind(binder(), BrokerApi.class).to(KafkaBrokerApi.class).in(Scopes.SINGLETON);
     listener().to(KafkaBrokerApi.class);
+
+    install(new RouterModule());
 
     install(kafkaForwardedEventRouterModule);
     install(kafkaBrokerForwarderModule);
