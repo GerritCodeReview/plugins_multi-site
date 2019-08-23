@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -24,58 +23,53 @@ import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gson.Gson;
+import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedEventRouter;
+import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
+import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberMetrics;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.kafka.clients.consumer.Consumer;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.errors.WakeupException;
 import org.apache.kafka.common.serialization.Deserializer;
 
-public abstract class AbstractKafkaSubcriber implements Runnable {
+public class KafkaEventSubscriber {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final Consumer<byte[], byte[]> consumer;
-  private final ForwardedEventRouter eventRouter;
-  private final DynamicSet<DroppedEventListener> droppedEventListeners;
-  private final Gson gson;
-  private final UUID instanceId;
+  private final OneOffRequestContext oneOffCtx;
   private final AtomicBoolean closed = new AtomicBoolean(false);
+
   private final Deserializer<SourceAwareEventWrapper> valueDeserializer;
   private final KafkaConfiguration configuration;
-  private final OneOffRequestContext oneOffCtx;
-  private final MessageLogger msgLog;
+  private final SubscriberMetrics subscriberMetrics;
 
-  public AbstractKafkaSubcriber(
+  @Inject
+  public KafkaEventSubscriber(
       KafkaConfiguration configuration,
       KafkaConsumerFactory consumerFactory,
       Deserializer<byte[]> keyDeserializer,
       Deserializer<SourceAwareEventWrapper> valueDeserializer,
-      ForwardedEventRouter eventRouter,
-      DynamicSet<DroppedEventListener> droppedEventListeners,
-      @EventGson Gson gson,
       @InstanceId UUID instanceId,
       OneOffRequestContext oneOffCtx,
-      MessageLogger msgLog) {
+      SubscriberMetrics subscriberMetrics) {
+
     this.configuration = configuration;
-    this.eventRouter = eventRouter;
-    this.droppedEventListeners = droppedEventListeners;
-    this.gson = gson;
-    this.instanceId = instanceId;
     this.oneOffCtx = oneOffCtx;
-    this.msgLog = msgLog;
+    this.subscriberMetrics = subscriberMetrics;
+
     final ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
     try {
-      Thread.currentThread().setContextClassLoader(AbstractKafkaSubcriber.class.getClassLoader());
+      Thread.currentThread().setContextClassLoader(KafkaEventSubscriber.class.getClassLoader());
       this.consumer = consumerFactory.create(keyDeserializer, instanceId);
     } finally {
       Thread.currentThread().setContextClassLoader(previousClassLoader);
@@ -83,59 +77,41 @@ public abstract class AbstractKafkaSubcriber implements Runnable {
     this.valueDeserializer = valueDeserializer;
   }
 
-  @Override
-  public void run() {
+  public void subscribe(
+      EventTopic evenTopic, java.util.function.Consumer<SourceAwareEventWrapper> messageProcessor) {
     try {
-      final String topic = configuration.getKafka().getTopic(getEventFamily());
+      final String topic = configuration.getKafka().getTopicAlias(evenTopic);
       logger.atInfo().log(
-          "Kafka consumer subscribing to topic [%s] for event family [%s]",
-          topic, getEventFamily());
+          "Kafka consumer subscribing to topic alias [%s] for event topic [%s]", topic, evenTopic);
       consumer.subscribe(Collections.singleton(topic));
       while (!closed.get()) {
         ConsumerRecords<byte[], byte[]> consumerRecords =
             consumer.poll(Duration.ofMillis(configuration.kafkaSubscriber().getPollingInterval()));
-        consumerRecords.forEach(this::processRecord);
+        consumerRecords.forEach(
+            consumerRecord -> {
+              try (ManualRequestContext ctx = oneOffCtx.open()) {
+                SourceAwareEventWrapper event =
+                    valueDeserializer.deserialize(consumerRecord.topic(), consumerRecord.value());
+                messageProcessor.accept(event);
+              } catch (Exception e) {
+                logger.atSevere().withCause(e).log(
+                    "Malformed event '%s': [Exception: %s]",
+                    new String(consumerRecord.value(), UTF_8));
+                subscriberMetrics.incrementSubscriberFailedToConsumeMessage();
+              }
+            });
       }
     } catch (WakeupException e) {
       // Ignore exception if closing
       if (!closed.get()) throw e;
+    } catch (Exception e) {
+      subscriberMetrics.incrementSubscriberFailedToPollMessages();
+      throw e;
     } finally {
       consumer.close();
     }
   }
 
-  protected abstract EventFamily getEventFamily();
-
-  private void processRecord(ConsumerRecord<byte[], byte[]> consumerRecord) {
-    try (ManualRequestContext ctx = oneOffCtx.open()) {
-
-      SourceAwareEventWrapper event =
-          valueDeserializer.deserialize(consumerRecord.topic(), consumerRecord.value());
-
-      if (event.getHeader().getSourceInstanceId().equals(instanceId)) {
-        logger.atFiner().log(
-            "Dropping event %s produced by our instanceId %s",
-            event.toString(), instanceId.toString());
-        droppedEventListeners.forEach(l -> l.onEventDropped(event));
-      } else {
-        try {
-          msgLog.log(Direction.CONSUME, event);
-          eventRouter.route(event.getEventBody(gson));
-        } catch (IOException e) {
-          logger.atSevere().withCause(e).log(
-              "Malformed event '%s': [Exception: %s]", event.getHeader().getEventType());
-        } catch (PermissionBackendException | StorageException e) {
-          logger.atSevere().withCause(e).log(
-              "Cannot handle message %s: [Exception: %s]", event.getHeader().getEventType());
-        }
-      }
-    } catch (Exception e) {
-      logger.atSevere().withCause(e).log(
-          "Malformed event '%s': [Exception: %s]", new String(consumerRecord.value(), UTF_8));
-    }
-  }
-
-  // Shutdown hook which can be called from a separate thread
   public void shutdown() {
     closed.set(true);
     consumer.wakeup();

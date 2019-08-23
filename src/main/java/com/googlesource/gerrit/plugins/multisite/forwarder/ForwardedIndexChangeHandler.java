@@ -29,6 +29,7 @@ import com.googlesource.gerrit.plugins.multisite.index.ChangeChecker;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeCheckerImpl;
 import com.googlesource.gerrit.plugins.multisite.index.ForwardedIndexExecutor;
 import java.util.Optional;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -127,17 +128,19 @@ public class ForwardedIndexChangeHandler
         retryCount,
         id,
         retryInterval);
-    indexExecutor.schedule(
-        () -> {
-          try (ManualRequestContext ctx = oneOffCtx.open()) {
-            Context.setForwardedEvent(true);
-            doIndex(id, indexEvent, retryCount);
-          } catch (Exception e) {
-            log.warn("Change {} could not be indexed", id, e);
-          }
-        },
-        retryInterval,
-        TimeUnit.MILLISECONDS);
+    @SuppressWarnings("unused")
+    Future<?> possiblyIgnoredError =
+        indexExecutor.schedule(
+            () -> {
+              try (ManualRequestContext ctx = oneOffCtx.open()) {
+                Context.setForwardedEvent(true);
+                doIndex(id, indexEvent, retryCount);
+              } catch (Exception e) {
+                log.warn("Change {} could not be indexed", id, e);
+              }
+            },
+            retryInterval,
+            TimeUnit.MILLISECONDS);
     return true;
   }
 

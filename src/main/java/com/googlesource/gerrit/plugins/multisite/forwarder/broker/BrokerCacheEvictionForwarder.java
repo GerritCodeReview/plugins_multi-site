@@ -16,22 +16,23 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 
 @Singleton
 public class BrokerCacheEvictionForwarder implements CacheEvictionForwarder {
-  private final BrokerPublisher publisher;
+  private final BrokerApi broker;
 
   @Inject
-  BrokerCacheEvictionForwarder(BrokerPublisher publisher) {
-    this.publisher = publisher;
+  BrokerCacheEvictionForwarder(BrokerApiWrapper broker) {
+    this.broker = broker;
   }
 
   @Override
   public boolean evict(CacheEvictionEvent event) {
-    return publisher.publishEvent(EventFamily.CACHE_EVENT, event);
+    return broker.send(EventTopic.CACHE_TOPIC.topic(), event);
   }
 }
