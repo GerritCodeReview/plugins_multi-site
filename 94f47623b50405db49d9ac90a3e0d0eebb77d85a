@@ -267,6 +267,24 @@
     },
     {
       "key": {
+        "uuid": "e5e79d19_761a1a6a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/IndexEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-23T10:41:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4ea8361c_329f150a",
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "806fb9b8_ee4fd272",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaCacheEvictionEventSubscriber.java",
         "patchSetId": 1
@@ -314,6 +332,24 @@
       "side": 1,
       "message": "Same as above: I wanted to do it in separate change to not make this one to large",
       "parentUuid": "786f24ac_5b09abc8",
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2079c4f2_e5a817e0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/KafkaCacheEvictionEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-23T10:41:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b3fd7cc4_2158e1f5",
       "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -515,6 +551,24 @@
     },
     {
       "key": {
+        "uuid": "79d5b98b_97e08f2a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/ProjectUpdateEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-23T10:41:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "976a7e49_6ec95b9c",
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "766924d3_a0a3e612",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/StreamEventSubscriber.java",
         "patchSetId": 1
@@ -544,6 +598,24 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "766924d3_a0a3e612",
+      "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8e50692d_bfc65629",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/StreamEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-23T10:41:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bf1aa0ef_1bf03ec5",
       "revId": "94f47623b50405db49d9ac90a3e0d0eebb77d85a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false

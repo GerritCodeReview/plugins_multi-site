@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "64aec1f6_7d6cad16",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaBrokerApi.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-23T10:41:02Z",
+      "side": 1,
+      "message": "This access to subscribers should be synchronized.",
+      "revId": "4a5191b171e3727c7e60f47819ca2d778196c6e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
