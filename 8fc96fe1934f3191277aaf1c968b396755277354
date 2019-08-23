@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "dacd96ac_7186ee58",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-23T10:37:37Z",
+      "side": 1,
+      "message": "The singleton should stay, otherwise we\u0027ll create one instance per invocation. The problem was on the listener sides that needed to be one per topic.\n\nFixed in the latest PS.",
+      "parentUuid": "d29507e3_216c7654",
+      "range": {
+        "startLine": 124,
+        "startChar": 72,
+        "endLine": 124,
+        "endChar": 93
+      },
+      "revId": "8fc96fe1934f3191277aaf1c968b396755277354",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "33e94433_1397832e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaBrokerApi.java",
         "patchSetId": 5
@@ -96,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "4db4608b_c0805af1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaBrokerApi.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-23T10:37:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33e94433_1397832e",
+      "range": {
+        "startLine": 29,
+        "startChar": 2,
+        "endLine": 29,
+        "endChar": 48
+      },
+      "revId": "8fc96fe1934f3191277aaf1c968b396755277354",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba5080db_8360e8cb",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaBrokerApi.java",
         "patchSetId": 5
@@ -119,6 +167,30 @@
     },
     {
       "key": {
+        "uuid": "4b7fc6b2_c94160d1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaBrokerApi.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-23T10:37:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba5080db_8360e8cb",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 33
+      },
+      "revId": "8fc96fe1934f3191277aaf1c968b396755277354",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f65bd9c4_f350a2ef",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaBrokerApi.java",
         "patchSetId": 5
@@ -139,6 +211,30 @@
       "revId": "8fc96fe1934f3191277aaf1c968b396755277354",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d004a4f0_6dc5b8c6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaBrokerApi.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-23T10:37:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f65bd9c4_f350a2ef",
+      "range": {
+        "startLine": 44,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 62
+      },
+      "revId": "8fc96fe1934f3191277aaf1c968b396755277354",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
