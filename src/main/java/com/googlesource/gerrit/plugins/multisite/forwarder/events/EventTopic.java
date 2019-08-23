@@ -16,13 +16,33 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
 import com.google.common.base.CaseFormat;
 
-public enum EventFamily {
-  INDEX_EVENT,
-  CACHE_EVENT,
-  PROJECT_LIST_EVENT,
-  STREAM_EVENT;
+public enum EventTopic {
+  INDEX_TOPIC("GERRIT.EVENT.INDEX"),
+  CACHE_TOPIC("GERRIT.EVENT.CACHE"),
+  PROJECT_LIST_TOPIC("GERRIT.EVENT.PROJECT.LIST"),
+  STREAM_EVENT_TOPIC("GERRIT.EVENT.STREAM");
+
+  private final String topic;
+
+  private EventTopic(String topic) {
+    this.topic = topic;
+  }
 
   public String lowerCamelName() {
     return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, name());
+  }
+
+  public String topic() {
+    return topic;
+  }
+
+  public static EventTopic of(String topicString) {
+    EventTopic[] topics = EventTopic.values();
+    for (EventTopic topic : topics) {
+      if (topic.topic.equals(topicString)) {
+        return topic;
+      }
+    }
+    return null;
   }
 }

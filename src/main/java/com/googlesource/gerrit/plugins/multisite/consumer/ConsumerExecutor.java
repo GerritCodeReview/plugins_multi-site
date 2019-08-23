@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite;
+package com.googlesource.gerrit.plugins.multisite.consumer;
 
-import com.googlesource.gerrit.plugins.multisite.kafka.consumer.SourceAwareEventWrapper;
-import org.junit.Ignore;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Ignore
-public class DisabledMessageLogger implements MessageLogger {
+import com.google.inject.BindingAnnotation;
+import java.lang.annotation.Retention;
 
-  @Override
-  public void log(Direction direction, SourceAwareEventWrapper event) {}
-}
+@Retention(RUNTIME)
+@BindingAnnotation
+public @interface ConsumerExecutor {}

@@ -14,25 +14,26 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
-import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily.PROJECT_LIST_EVENT;
+import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic.PROJECT_LIST_TOPIC;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 
 @Singleton
 public class BrokerProjectListUpdateForwarder implements ProjectListUpdateForwarder {
-  private final BrokerPublisher publisher;
+  private final BrokerApi broker;
 
   @Inject
-  BrokerProjectListUpdateForwarder(BrokerPublisher publisher) {
-    this.publisher = publisher;
+  BrokerProjectListUpdateForwarder(BrokerApiWrapper broker) {
+    this.broker = broker;
   }
 
   @Override
   public boolean updateProjectList(ProjectListUpdateEvent event) {
-    return publisher.publishEvent(PROJECT_LIST_EVENT, event);
+    return broker.send(PROJECT_LIST_TOPIC.topic(), event);
   }
 }

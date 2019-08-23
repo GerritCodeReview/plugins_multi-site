@@ -19,6 +19,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.google.gson.Gson;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
+import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;

@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.broker.kafka;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,13 +33,11 @@ import com.google.gerrit.server.util.time.TimeUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.googlesource.gerrit.plugins.multisite.DisabledMessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerMetrics;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerPublisher;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,9 +50,9 @@ public class BrokerPublisherTest {
 
   @Mock private BrokerMetrics brokerMetrics;
   @Mock private BrokerSession session;
+  @Mock private MessageLogger msgLog;
   private BrokerPublisher publisher;
 
-  private MessageLogger NO_MSG_LOG = new DisabledMessageLogger();
   private Gson gson = new GsonProvider().get();
 
   private String accountName = "Foo Bar";
@@ -73,7 +72,7 @@ public class BrokerPublisherTest {
 
   @Before
   public void setUp() {
-    publisher = new BrokerPublisher(session, gson, UUID.randomUUID(), NO_MSG_LOG, brokerMetrics);
+    publisher = new BrokerPublisher(session, gson, UUID.randomUUID(), msgLog);
   }
 
   @Test
@@ -126,20 +125,20 @@ public class BrokerPublisherTest {
   }
 
   @Test
-  public void shouldIncrementBrokerMetricCounterWhenMessagePublished() {
+  public void shouldLogEventPublishedMessageWhenPublishingSucceed() {
     Event event = createSampleEvent();
-    when(session.publishEvent(any(), any())).thenReturn(true);
-    publisher.publishEvent(EventFamily.INDEX_EVENT, event);
-    verify(brokerMetrics, only()).incrementBrokerPublishedMessage();
+    when(session.publish(any(), any())).thenReturn(true);
+    publisher.publish(EventTopic.INDEX_TOPIC.topic(), event);
+    verify(msgLog, only()).log(any(), any());
   }
 
   @Test
-  public void shouldIncrementBrokerFailedMetricCounterWhenMessagePublished() {
+  public void shouldSkipEventPublishedLoggingWhenMessagePublishigFailed() {
     Event event = createSampleEvent();
-    when(session.publishEvent(any(), any())).thenReturn(false);
+    when(session.publish(any(), any())).thenReturn(false);
 
-    publisher.publishEvent(EventFamily.INDEX_EVENT, event);
-    verify(brokerMetrics, only()).incrementBrokerFailedToPublishMessage();
+    publisher.publish(EventTopic.INDEX_TOPIC.topic(), event);
+    verify(msgLog, never()).log(any(), any());
   }
 
   private Event createSampleEvent() {

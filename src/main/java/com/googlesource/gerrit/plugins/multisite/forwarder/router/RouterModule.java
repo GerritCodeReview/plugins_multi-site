@@ -12,13 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
+package com.googlesource.gerrit.plugins.multisite.forwarder.router;
 
-public interface DroppedEventListener {
-  /**
-   * Invoked when any event is dropped.
-   *
-   * @param event information about the event.
-   */
-  void onEventDropped(SourceAwareEventWrapper event);
+import com.google.inject.AbstractModule;
+
+public class RouterModule extends AbstractModule {
+  @Override
+  protected void configure() {
+    bind(ForwardedIndexEventRouter.class).to(IndexEventRouter.class);
+    bind(ForwardedCacheEvictionEventRouter.class).to(CacheEvictionEventRouter.class);
+    bind(ForwardedProjectListUpdateRouter.class).to(ProjectListUpdateRouter.class);
+    bind(ForwardedStreamEventRouter.class).to(StreamEventRouter.class);
+  }
 }
