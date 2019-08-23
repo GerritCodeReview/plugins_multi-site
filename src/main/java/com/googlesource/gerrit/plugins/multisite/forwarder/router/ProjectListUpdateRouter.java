@@ -21,7 +21,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpd
 import java.io.IOException;
 
 @Singleton
-public class ProjectListUpdateRouter implements ForwardedProjectListUpdateRouter {
+public class ProjectListUpdateRouter implements ForwardedEventRouter<ProjectListUpdateEvent> {
   ForwardedProjectListUpdateHandler projectListUpdateHandler;
 
   @Inject
