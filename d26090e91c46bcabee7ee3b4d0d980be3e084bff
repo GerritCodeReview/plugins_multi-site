@@ -45,6 +45,75 @@
       "revId": "d26090e91c46bcabee7ee3b4d0d980be3e084bff",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6edbf7b_790407b8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/PluginModule.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-23T17:43:22Z",
+      "side": 1,
+      "message": "It would be best to aggregate them into a single KafkaBrokerModule",
+      "range": {
+        "startLine": 40,
+        "startChar": 6,
+        "endLine": 41,
+        "endChar": 54
+      },
+      "revId": "d26090e91c46bcabee7ee3b4d0d980be3e084bff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b9296f34_5a59370c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerModule.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-23T17:43:22Z",
+      "side": 1,
+      "message": "Why is this needed? Injection happens only once and thus, in any case, it will be a singleton.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 10
+      },
+      "revId": "d26090e91c46bcabee7ee3b4d0d980be3e084bff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e6b7a07_d7dd71a2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerModule.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-23T17:43:22Z",
+      "side": 1,
+      "message": ".in(Scopes.SCOPE_SINGLETON)",
+      "range": {
+        "startLine": 29,
+        "startChar": 71,
+        "endLine": 29,
+        "endChar": 72
+      },
+      "revId": "d26090e91c46bcabee7ee3b4d0d980be3e084bff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
