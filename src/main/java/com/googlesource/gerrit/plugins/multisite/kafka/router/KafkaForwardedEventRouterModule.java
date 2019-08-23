@@ -16,14 +16,6 @@ package com.googlesource.gerrit.plugins.multisite.kafka.router;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.CacheEvictionEventRouter;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedCacheEvictionEventRouter;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedIndexEventRouter;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedProjectListUpdateRouter;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedStreamEventRouter;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.IndexEventRouter;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.ProjectListUpdateRouter;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRouter;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaConsumerModule;
 
@@ -41,11 +33,6 @@ public class KafkaForwardedEventRouterModule extends AbstractModule {
   @Override
   protected void configure() {
     if (kafkaConfig.kafkaSubscriber().enabled()) {
-      bind(ForwardedIndexEventRouter.class).to(IndexEventRouter.class);
-      bind(ForwardedCacheEvictionEventRouter.class).to(CacheEvictionEventRouter.class);
-      bind(ForwardedProjectListUpdateRouter.class).to(ProjectListUpdateRouter.class);
-      bind(ForwardedStreamEventRouter.class).to(StreamEventRouter.class);
-
       install(kafkaConsumerModule);
     }
   }
