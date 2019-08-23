@@ -14,20 +14,17 @@
 
 package com.googlesource.gerrit.plugins.multisite.broker;
 
-import com.google.gerrit.extensions.registration.DynamicItem;
-import com.google.inject.AbstractModule;
-import com.google.inject.Scopes;
-import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
+import com.google.gerrit.server.events.Event;
+import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
+import java.util.function.Consumer;
 
-public class BrokerModule extends AbstractModule {
+public class BrokerApiNoOp implements BrokerApi {
 
   @Override
-  protected void configure() {
-    DynamicItem.itemOf(binder(), BrokerApi.class);
-    DynamicItem.bind(binder(), BrokerApi.class).to(BrokerApiNoOp.class).in(Scopes.SINGLETON);
-
-    bind(BrokerApiWrapper.class).in(Scopes.SINGLETON);
-
-    install(new SubscriberModule());
+  public boolean send(String topic, Event event) {
+    return true;
   }
+
+  @Override
+  public void receiveAync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer) {}
 }
