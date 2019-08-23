@@ -12,16 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite;
+package com.googlesource.gerrit.plugins.multisite.broker;
 
+import com.google.gerrit.server.events.Event;
 import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
+import java.util.function.Consumer;
 
-public interface MessageLogger {
+/** API for sending/receiving events through a message Broker. */
+public interface BrokerApi {
 
-  public enum Direction {
-    PUBLISH,
-    CONSUME;
-  }
+  /**
+   * Send an event to a topic.
+   *
+   * @param topic
+   * @param event
+   * @return true if the event was successfully sent. False otherwise.
+   */
+  boolean send(String topic, Event event);
 
-  public void log(Direction direction, SourceAwareEventWrapper event);
+  /**
+   * Receive asynchronously events from a topic.
+   *
+   * @param topic
+   * @param eventConsumer
+   */
+  void receiveAync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer);
 }

@@ -12,16 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite;
+package com.googlesource.gerrit.plugins.multisite.broker;
 
-import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
+import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
+import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
 
-public interface MessageLogger {
+public class BrokerModule extends AbstractModule {
 
-  public enum Direction {
-    PUBLISH,
-    CONSUME;
+  @Override
+  protected void configure() {
+    DynamicItem.itemOf(binder(), BrokerApi.class);
+
+    bind(BrokerApiWrapper.class).in(Scopes.SINGLETON);
+
+    install(new SubscriberModule());
   }
-
-  public void log(Direction direction, SourceAwareEventWrapper event);
 }

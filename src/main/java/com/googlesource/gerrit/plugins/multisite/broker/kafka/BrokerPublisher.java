@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.broker;
+package com.googlesource.gerrit.plugins.multisite.broker.kafka;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.extensions.events.LifecycleListener;
@@ -25,9 +25,9 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
+import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
-import com.googlesource.gerrit.plugins.multisite.kafka.consumer.SourceAwareEventWrapper;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,20 +40,17 @@ public class BrokerPublisher implements LifecycleListener {
   private final Gson gson;
   private final UUID instanceId;
   private final MessageLogger msgLog;
-  private final BrokerMetrics brokerMetrics;
 
   @Inject
   public BrokerPublisher(
       BrokerSession session,
       @EventGson Gson gson,
       @InstanceId UUID instanceId,
-      MessageLogger msgLog,
-      BrokerMetrics brokerMetrics) {
+      MessageLogger msgLog) {
     this.session = session;
     this.gson = gson;
     this.instanceId = instanceId;
     this.msgLog = msgLog;
-    this.brokerMetrics = brokerMetrics;
   }
 
   @Override
@@ -70,18 +67,15 @@ public class BrokerPublisher implements LifecycleListener {
     }
   }
 
-  public boolean publishEvent(EventFamily eventType, Event event) {
+  public boolean publish(String topic, Event event) {
     if (Context.isForwardedEvent()) {
       return true;
     }
 
     SourceAwareEventWrapper brokerEvent = toBrokerEvent(event);
-    msgLog.log(Direction.PUBLISH, brokerEvent);
-    Boolean eventPublished = session.publishEvent(eventType, getPayload(brokerEvent));
+    Boolean eventPublished = session.publish(topic, getPayload(brokerEvent));
     if (eventPublished) {
-      brokerMetrics.incrementBrokerPublishedMessage();
-    } else {
-      brokerMetrics.incrementBrokerFailedToPublishMessage();
+      msgLog.log(Direction.PUBLISH, brokerEvent);
     }
     return eventPublished;
   }

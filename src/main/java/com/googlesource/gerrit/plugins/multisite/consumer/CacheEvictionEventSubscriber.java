@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
+package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.events.EventGson;
@@ -22,41 +22,35 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventFamily;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.ProjectListUpdateRouter;
-import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRouter;
 import java.util.UUID;
-import org.apache.kafka.common.serialization.Deserializer;
 
 @Singleton
-public class ProjectUpdateEventSubscriber extends AbstractKafkaSubcriber {
+public class CacheEvictionEventSubscriber extends AbstractSubcriber {
   @Inject
-  public ProjectUpdateEventSubscriber(
-      KafkaConfiguration configuration,
-      KafkaConsumerFactory consumerFactory,
-      Deserializer<byte[]> keyDeserializer,
-      Deserializer<SourceAwareEventWrapper> valueDeserializer,
-      ProjectListUpdateRouter eventRouter,
+  public CacheEvictionEventSubscriber(
+      BrokerApi brokerApi,
+      StreamEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
-      @EventGson Gson gson,
+      @EventGson Gson gsonProvider,
       @InstanceId UUID instanceId,
-      OneOffRequestContext oneOffCtx,
-      MessageLogger msgLog) {
+      MessageLogger msgLog,
+      SubscriberMetrics subscriberMetrics) {
     super(
-        configuration,
-        consumerFactory,
-        keyDeserializer,
-        valueDeserializer,
+        brokerApi,
         eventRouter,
         droppedEventListeners,
-        gson,
+        gsonProvider,
         instanceId,
-        oneOffCtx,
-        msgLog);
+        msgLog,
+        subscriberMetrics);
   }
 
   @Override
-  protected EventFamily getEventFamily() {
-    return EventFamily.PROJECT_LIST_EVENT;
+  protected EventTopic getTopic() {
+    return EventTopic.CACHE_TOPIC;
   }
 }
