@@ -47,13 +47,12 @@ import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerModule;
-import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.consumer.DroppedEventListener;
 import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
 import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
-import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -136,10 +135,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
           new PluginModule(
               multiSiteConfig,
               new ZkValidationModule(multiSiteConfig),
-              new KafkaForwardedEventRouterModule(
-                  new KafkaConfiguration(multiSiteConfig),
-                  new KafkaConsumerModule(new KafkaConfiguration(multiSiteConfig))),
-              new KafkaBrokerForwarderModule(new KafkaConfiguration(multiSiteConfig)));
+              new KafkaBrokerModule(new KafkaConfiguration(multiSiteConfig)));
     }
 
     @Override
