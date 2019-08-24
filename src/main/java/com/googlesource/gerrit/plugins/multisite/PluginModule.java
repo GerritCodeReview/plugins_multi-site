@@ -20,9 +20,8 @@ import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Inject;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
-import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerApi;
-import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
+import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerModule;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 
 public class PluginModule extends LifecycleModule {
@@ -30,19 +29,16 @@ public class PluginModule extends LifecycleModule {
 
   private Configuration config;
   private ZkValidationModule zkValidationModule;
-  private KafkaForwardedEventRouterModule kafkaForwardedEventRouterModule;
-  private KafkaBrokerForwarderModule kafkaBrokerForwarderModule;
+  private KafkaBrokerModule kafkaBrokerModule;
 
   @Inject
   public PluginModule(
       Configuration config,
       ZkValidationModule zkValidationModule,
-      KafkaForwardedEventRouterModule forwardedEeventRouterModule,
-      KafkaBrokerForwarderModule brokerForwarderModule) {
+      KafkaBrokerModule kafkaBrokerModule) {
     this.config = config;
     this.zkValidationModule = zkValidationModule;
-    this.kafkaForwardedEventRouterModule = forwardedEeventRouterModule;
-    this.kafkaBrokerForwarderModule = brokerForwarderModule;
+    this.kafkaBrokerModule = kafkaBrokerModule;
   }
 
   @Override
@@ -55,7 +51,6 @@ public class PluginModule extends LifecycleModule {
     DynamicItem.bind(binder(), BrokerApi.class).to(KafkaBrokerApi.class).in(Scopes.SINGLETON);
     listener().to(KafkaBrokerApi.class);
 
-    install(kafkaForwardedEventRouterModule);
-    install(kafkaBrokerForwarderModule);
+    install(kafkaBrokerModule);
   }
 }
