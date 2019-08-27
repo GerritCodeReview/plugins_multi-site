@@ -22,6 +22,30 @@
       "revId": "d7aa0e0fc4ff0b566c5811cabbe8d7f92d11bd18",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1079fc75_25aefaab",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaConfiguration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-08-27T21:27:26Z",
+      "side": 1,
+      "message": "No, I don\u0027t think so. Removing it. I thought that there is a bigger logic behind it like we don\u0027t want to expose all event topics or something like this",
+      "parentUuid": "5a7e9ef4_f6905b00",
+      "range": {
+        "startLine": 150,
+        "startChar": 58,
+        "endLine": 150,
+        "endChar": 70
+      },
+      "revId": "d7aa0e0fc4ff0b566c5811cabbe8d7f92d11bd18",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
