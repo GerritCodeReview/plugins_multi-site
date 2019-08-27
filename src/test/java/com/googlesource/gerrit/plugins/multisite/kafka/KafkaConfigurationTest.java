@@ -22,6 +22,7 @@ import static com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration
 import static com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration.KafkaSubscriber.KAFKA_SUBSCRIBER_SUBSECTION;
 
 import com.googlesource.gerrit.plugins.multisite.Configuration;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
@@ -120,5 +121,80 @@ public class KafkaConfigurationTest {
     final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
 
     assertThat(property).isNull();
+  }
+
+  @Test
+  public void shouldReturnKafkaTopicAliasForIndexTopic() {
+    setKafkaTopicAlias("indexEventTopic", "gerrit_index");
+    final String property = getConfiguration().getKafka().getTopicAlias(EventTopic.INDEX_TOPIC);
+
+    assertThat(property).isEqualTo("gerrit_index");
+  }
+
+  @Test
+  public void shouldReturnKafkaTopicAliasForStreamEventTopic() {
+    setKafkaTopicAlias("streamEventTopic", "gerrit_stream_events");
+    final String property =
+        getConfiguration().getKafka().getTopicAlias(EventTopic.STREAM_EVENT_TOPIC);
+
+    assertThat(property).isEqualTo("gerrit_stream_events");
+  }
+
+  @Test
+  public void shouldReturnKafkaTopicAliasForProjectListEventTopic() {
+    setKafkaTopicAlias("projectListEventTopic", "gerrit_project_list");
+    final String property =
+        getConfiguration().getKafka().getTopicAlias(EventTopic.PROJECT_LIST_TOPIC);
+
+    assertThat(property).isEqualTo("gerrit_project_list");
+  }
+
+  @Test
+  public void shouldReturnKafkaTopicAliasForCacheEventTopic() {
+    setKafkaTopicAlias("cacheEventTopic", "gerrit_cache");
+    final String property = getConfiguration().getKafka().getTopicAlias(EventTopic.CACHE_TOPIC);
+
+    assertThat(property).isEqualTo("gerrit_cache");
+  }
+
+  @Test
+  public void shouldReturnKafkaTopicEnabledForCacheEventTopic() {
+    setKafkaTopicEnabled("cacheEventEnabled", false);
+    final Boolean property =
+        getConfiguration().kafkaPublisher().enabledEvent(EventTopic.CACHE_TOPIC);
+    assertThat(property).isFalse();
+  }
+
+  @Test
+  public void shouldReturnKafkaTopicEnabledForIndexTopic() {
+    setKafkaTopicEnabled("indexEventEnabled", false);
+    final Boolean property =
+        getConfiguration().kafkaPublisher().enabledEvent(EventTopic.INDEX_TOPIC);
+    assertThat(property).isFalse();
+  }
+
+  @Test
+  public void shouldReturnKafkaTopicEnabledForStreamEventTopic() {
+    setKafkaTopicEnabled("streamEventEnabled", false);
+    final Boolean property =
+        getConfiguration().kafkaPublisher().enabledEvent(EventTopic.STREAM_EVENT_TOPIC);
+    assertThat(property).isFalse();
+  }
+
+  @Test
+  public void shouldReturnKafkaTopicEnabledForProjectListEventTopic() {
+    setKafkaTopicEnabled("projectListEventEnabled", false);
+    final Boolean property =
+        getConfiguration().kafkaPublisher().enabledEvent(EventTopic.PROJECT_LIST_TOPIC);
+    assertThat(property).isFalse();
+  }
+
+  private void setKafkaTopicAlias(String topicKey, String topic) {
+    globalPluginConfig.setString(KAFKA_SECTION, null, topicKey, topic);
+  }
+
+  private void setKafkaTopicEnabled(String topicEnabledKey, Boolean isEnabled) {
+    globalPluginConfig.setBoolean(
+        KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, topicEnabledKey, isEnabled);
   }
 }
