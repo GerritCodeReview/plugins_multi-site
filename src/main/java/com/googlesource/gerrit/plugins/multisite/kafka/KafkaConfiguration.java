@@ -110,7 +110,7 @@ public class KafkaConfiguration {
       Supplier<Config> config, String subsection) {
     Map<EventTopic, Boolean> eventsEnabled = new HashMap<>();
     for (EventTopic topic : EventTopic.values()) {
-      String enabledConfigKey = topic.lowerCamelName() + "Enabled";
+      String enabledConfigKey = topic.enabledKey();
 
       eventsEnabled.put(
           topic,
@@ -150,13 +150,13 @@ public class KafkaConfiguration {
     private static final ImmutableMap<EventTopic, String> EVENT_TOPICS =
         ImmutableMap.of(
             EventTopic.INDEX_TOPIC,
-            "GERRIT.EVENT.INDEX",
+            EventTopic.INDEX_TOPIC.topic(),
             EventTopic.STREAM_EVENT_TOPIC,
-            "GERRIT.EVENT.STREAM",
+            EventTopic.STREAM_EVENT_TOPIC.topic(),
             EventTopic.CACHE_TOPIC,
-            "GERRIT.EVENT.CACHE",
+            EventTopic.CACHE_TOPIC.topic(),
             EventTopic.PROJECT_LIST_TOPIC,
-            "GERRIT.EVENT.PROJECT.LIST");
+            EventTopic.PROJECT_LIST_TOPIC.topic());
 
     Kafka(Supplier<Config> config) {
       this.bootstrapServers =
@@ -165,7 +165,7 @@ public class KafkaConfiguration {
 
       this.eventTopics = new HashMap<>();
       for (Map.Entry<EventTopic, String> topicDefault : EVENT_TOPICS.entrySet()) {
-        String topicConfigKey = topicDefault.getKey().lowerCamelName() + "Topic";
+        String topicConfigKey = topicDefault.getKey().topicAliasKey();
         eventTopics.put(
             topicDefault.getKey(),
             getString(config, KAFKA_SECTION, null, topicConfigKey, topicDefault.getValue()));
