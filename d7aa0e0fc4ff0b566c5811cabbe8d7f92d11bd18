@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a7e9ef4_f6905b00",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaConfiguration.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-08-27T20:59:57Z",
+      "side": 1,
+      "message": "Do we even need this map now?",
+      "range": {
+        "startLine": 150,
+        "startChar": 58,
+        "endLine": 150,
+        "endChar": 70
+      },
+      "revId": "d7aa0e0fc4ff0b566c5811cabbe8d7f92d11bd18",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
