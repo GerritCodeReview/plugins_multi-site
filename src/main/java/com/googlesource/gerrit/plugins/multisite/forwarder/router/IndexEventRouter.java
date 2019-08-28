@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Singleton
-public class IndexEventRouter implements ForwardedIndexEventRouter {
+public class IndexEventRouter implements ForwardedEventRouter<IndexEvent> {
   private final ForwardedIndexAccountHandler indexAccountHandler;
   private final ForwardedIndexChangeHandler indexChangeHandler;
   private final ForwardedIndexGroupHandler indexGroupHandler;
