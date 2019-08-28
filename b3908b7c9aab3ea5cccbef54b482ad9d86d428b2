@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "67fc5a10_e0bb7813",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaConfiguration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-28T07:28:19Z",
+      "side": 1,
+      "message": "nit: you could inline this as we did for eventTopic.topic()",
+      "range": {
+        "startLine": 156,
+        "startChar": 15,
+        "endLine": 156,
+        "endChar": 29
+      },
+      "revId": "b3908b7c9aab3ea5cccbef54b482ad9d86d428b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f17c409b_94d1222a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaConfigurationTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-08-28T07:28:19Z",
+      "side": 1,
+      "message": "nit: to document the full behaviour, we could also add a test where we test the default is used when topic configuration is not present.",
+      "revId": "b3908b7c9aab3ea5cccbef54b482ad9d86d428b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
