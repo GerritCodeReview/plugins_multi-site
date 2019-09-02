@@ -15,8 +15,13 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Inject;
+import com.google.inject.Scopes;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
+import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerApi;
+import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerModule;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 
 public class PluginModule extends LifecycleModule {
@@ -24,11 +29,16 @@ public class PluginModule extends LifecycleModule {
 
   private Configuration config;
   private ZkValidationModule zkValidationModule;
+  private KafkaBrokerModule kafkaBrokerModule;
 
   @Inject
-  public PluginModule(Configuration config, ZkValidationModule zkValidationModule) {
+  public PluginModule(
+      Configuration config,
+      ZkValidationModule zkValidationModule,
+      KafkaBrokerModule kafkaBrokerModule) {
     this.config = config;
     this.zkValidationModule = zkValidationModule;
+    this.kafkaBrokerModule = kafkaBrokerModule;
   }
 
   @Override
@@ -39,5 +49,10 @@ public class PluginModule extends LifecycleModule {
       logger.atInfo().log("Shared ref-db engine: Zookeeper");
       install(zkValidationModule);
     }
+
+    DynamicItem.bind(binder(), BrokerApi.class).to(KafkaBrokerApi.class).in(Scopes.SINGLETON);
+    listener().to(KafkaBrokerApi.class);
+
+    install(kafkaBrokerModule);
   }
 }
