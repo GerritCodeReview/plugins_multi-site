@@ -14,9 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicItem;
-import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gson.Gson;
@@ -26,19 +24,14 @@ import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerModule;
 import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
-import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaBrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
-import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerApi;
-import com.googlesource.gerrit.plugins.multisite.kafka.router.KafkaForwardedEventRouterModule;
-import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.NoopSharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import java.io.BufferedReader;
@@ -55,17 +48,12 @@ import org.slf4j.LoggerFactory;
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private Configuration config;
-  private KafkaForwardedEventRouterModule kafkaForwardedEventRouterModule;
-  private KafkaBrokerForwarderModule kafkaBrokerForwarderModule;
+  private BrokerModule brokerModule;
 
   @Inject
-  public Module(
-      Configuration config,
-      KafkaForwardedEventRouterModule forwardedEeventRouterModule,
-      KafkaBrokerForwarderModule brokerForwarderModule) {
+  public Module(Configuration config, BrokerModule brokerModule) {
     this.config = config;
-    this.kafkaForwardedEventRouterModule = forwardedEeventRouterModule;
-    this.kafkaBrokerForwarderModule = brokerForwarderModule;
+    this.brokerModule = brokerModule;
   }
 
   @Override
@@ -97,19 +85,9 @@ public class Module extends LifecycleModule {
       install(new IndexModule());
     }
 
-    install(new BrokerModule());
-    DynamicItem.bind(binder(), BrokerApi.class).to(KafkaBrokerApi.class).in(Scopes.SINGLETON);
-    listener().to(KafkaBrokerApi.class);
+    install(brokerModule);
 
     install(new RouterModule());
-
-    install(kafkaForwardedEventRouterModule);
-    install(kafkaBrokerForwarderModule);
-
-    if (config.getSharedRefDb().isEnabled()) {
-      DynamicSet.bind(binder(), ProjectDeletedListener.class)
-          .to(ProjectDeletedSharedDbCleanup.class);
-    }
 
     bind(Gson.class)
         .annotatedWith(BrokerGson.class)
