@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "c7c6ebd2_e9f37ad8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/PluginModule.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-02T07:14:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "111efb55_15c87902",
+      "range": {
+        "startLine": 40,
+        "startChar": 6,
+        "endLine": 41,
+        "endChar": 54
+      },
+      "revId": "d26090e91c46bcabee7ee3b4d0d980be3e084bff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b9296f34_5a59370c",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerModule.java",
         "patchSetId": 3

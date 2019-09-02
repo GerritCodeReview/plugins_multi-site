@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8395e882_122f4f67",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-02T07:14:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38684e32_97d93788",
+      "range": {
+        "startLine": 7,
+        "startChar": 36,
+        "endLine": 7,
+        "endChar": 42
+      },
+      "revId": "90a5247188394b4d014568d80b719672d745e126",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c3df24e7_56d1c532",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerModule.java",
         "patchSetId": 4
@@ -45,6 +69,30 @@
       "revId": "90a5247188394b4d014568d80b719672d745e126",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a1120bf_34676496",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerModule.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-02T07:14:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3df24e7_56d1c532",
+      "range": {
+        "startLine": 27,
+        "startChar": 71,
+        "endLine": 27,
+        "endChar": 93
+      },
+      "revId": "90a5247188394b4d014568d80b719672d745e126",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
