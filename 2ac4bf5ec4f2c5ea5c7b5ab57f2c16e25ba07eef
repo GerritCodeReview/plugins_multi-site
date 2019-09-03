@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "83b9f407_8e292126",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-09-03T22:21:29Z",
+      "side": 0,
+      "message": "I believe that this one should stay.",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 5
+      },
+      "revId": "2ac4bf5ec4f2c5ea5c7b5ab57f2c16e25ba07eef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
