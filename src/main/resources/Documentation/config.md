@@ -12,6 +12,20 @@ File '@PLUGIN@.config'
 ## Sample configuration.
 
 ```
+[broker "publisher"]
+  enabled = true
+  indexEventEnabled = true
+  cacheEventEnabled = true
+  projectListEventEnabled = true
+  streamEventEnabled = true
+
+[broker "subscriber"]
+  enabled = true
+  indexEventEnabled = true
+  cacheEventEnabled = true
+  projectListEventEnabled = true
+  streamEventEnabled = true
+
 [kafka]
   bootstrapServers = kafka-1:9092,kafka-2:9092,kafka-3:9092
 
@@ -21,28 +35,15 @@ File '@PLUGIN@.config'
   projectListEventTopic = gerrit_project_list
 
 [kafka "publisher"]
-  enabled = true
-
-  indexEventEnabled = true
-  cacheEventEnabled = true
-  projectListEventEnabled = true
-  streamEventEnabled = true
-
   KafkaProp-compressionType = none
   KafkaProp-deliveryTimeoutMs = 60000
 
 [kafka "subscriber"]
-  enabled = true
   pollingIntervalMs = 1000
 
   KafkaProp-enableAutoCommit = true
   KafkaProp-autoCommitIntervalMs = 1000
   KafkaProp-autoCommitIntervalMs = 5000
-
-  indexEventEnabled = true
-  cacheEventEnabled = true
-  projectListEventEnabled = true
-  streamEventEnabled = true
 
 [ref-database "zookeeper"]
   connectString = "localhost:2181"
@@ -59,6 +60,62 @@ File '@PLUGIN@.config'
 ```
 
 ## Configuration parameters
+
+```broker.publisher.enabled```
+:   Enable publishing events to broker
+    Defaults: false
+
+```broker.publisher.indexEventEnabled```
+:   Enable publication of index events, ignored when `broker.publisher.enabled`
+    is false
+
+    Defaults: true
+
+```broker.publisher.cacheEventEnabled```
+:   Enable publication of cache events, ignored when `broker.publisher.enabled`
+    is false
+
+    Defaults: true
+
+```broker.publisher.projectListEventEnabled```
+:   Enable publication of project list events, ignored when `broker.publisher.enabled`
+    is false
+
+    Defaults: true
+
+```broker.publisher.streamEventEnabled```
+:   Enable publication of stream events, ignored when `broker.publisher.enabled`
+    is false
+
+    Defaults: true
+
+```broker.subscriber.enabled```
+:   Enable consuming of events from broker
+    Defaults: false
+
+```broker.subscriber.indexEventEnabled```
+:   Enable consumption of index events, ignored when `broker.subscriber.enabled`
+    is false
+
+    Defaults: true
+
+```broker.subscriber.cacheEventEnabled```
+:   Enable consumption of cache events, ignored when `broker.subscriber.enabled`
+    is false
+
+    Defaults: true
+
+```broker.subscriber.projectListEventEnabled```
+:   Enable consumption of project list events, ignored when `broker.subscriber.enabled`
+    is false
+
+    Defaults: true
+
+```broker.subscriber.streamEventEnabled```
+:   Enable consumption of stream events, ignored when `broker.subscriber.enabled`
+    is false
+
+    Defaults: true
 
 ```cache.synchronize```
 :   Whether to synchronize cache evictions.
@@ -125,58 +182,6 @@ File '@PLUGIN@.config'
 ```kafka.projectListEventTopic```
 :   Name of the Kafka topic to use for publishing cache eviction events
     Defaults to GERRIT.EVENT.PROJECT.LIST
-
-```kafka.publisher.indexEventEnabled```
-:   Enable publication of index events, ignored when `kafka.publisher.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.publisher.cacheEventEnabled```
-:   Enable publication of cache events, ignored when `kafka.publisher.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.publisher.projectListEventEnabled```
-:   Enable publication of project list events, ignored when `kafka.publisher.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.publisher.streamEventEnabled```
-:   Enable publication of stream events, ignored when `kafka.publisher.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.subscriber.enabled```
-:   Enable consuming of events from Kafka
-    Defaults: false
-
-```kafka.subscriber.indexEventEnabled```
-:   Enable consumption of index events, ignored when `kafka.subscriber.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.subscriber.cacheEventEnabled```
-:   Enable consumption of cache events, ignored when `kafka.subscriber.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.subscriber.projectListEventEnabled```
-:   Enable consumption of project list events, ignored when `kafka.subscriber.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.subscriber.streamEventEnabled```
-:   Enable consumption of stream events, ignored when `kafka.subscriber.enabled`
-    is false
-
-    Defaults: true
 
 ```kafka.subscriber.pollingIntervalMs```
 :   Polling interval in milliseconds for checking incoming events

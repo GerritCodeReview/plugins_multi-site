@@ -26,12 +26,16 @@ import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
@@ -44,12 +48,13 @@ public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
   public static final String PLUGIN_NAME = "multi-site";
+  public static final String BROKER_SECTION = "broker";
   public static final String MULTI_SITE_CONFIG = PLUGIN_NAME + ".config";
+  public static final String ENABLE_KEY = "enabled";
 
   static final String INSTANCE_ID_FILE = "instanceId.data";
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
-  static final String ENABLE_KEY = "enabled";
 
   private static final String REPLICATION_CONFIG = "replication.config";
   // common parameters to cache and index sections
@@ -57,11 +62,14 @@ public class Configuration {
   private static final int DEFAULT_INDEX_RETRY_INTERVAL = 30000;
   private static final String NUM_STRIPED_LOCKS = "numStripedLocks";
   private static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
+  private static final boolean DEFAULT_ENABLE_PROCESSING = true;
 
   private final Supplier<Cache> cache;
   private final Supplier<Event> event;
   private final Supplier<Index> index;
   private final Supplier<SharedRefDatabase> sharedRefDb;
+  private final Supplier<BrokerPublisher> brokerPublisher;
+  private final Supplier<BrokerSubscriber> brokerSubscriber;
   private final Supplier<Collection<Message>> replicationConfigValidation;
   private final Config multiSiteConfig;
 
@@ -79,6 +87,8 @@ public class Configuration {
     event = memoize(() -> new Event(lazyMultiSiteCfg));
     index = memoize(() -> new Index(lazyMultiSiteCfg));
     sharedRefDb = memoize(() -> new SharedRefDatabase(lazyMultiSiteCfg));
+    brokerPublisher = memoize(() -> new BrokerPublisher(lazyMultiSiteCfg));
+    brokerSubscriber = memoize(() -> new BrokerSubscriber(lazyMultiSiteCfg));
   }
 
   public Config getMultiSiteConfig() {
@@ -87,6 +97,14 @@ public class Configuration {
 
   public SharedRefDatabase getSharedRefDb() {
     return sharedRefDb.get();
+  }
+
+  public BrokerPublisher getBrokerPublisher() {
+    return brokerPublisher.get();
+  }
+
+  public BrokerSubscriber getBrokerSubscriber() {
+    return brokerSubscriber.get();
   }
 
   public Cache cache() {
@@ -189,6 +207,72 @@ public class Configuration {
         Supplier<Config> cfg, String section, String subsection, String name) {
       return ImmutableList.copyOf(cfg.get().getStringList(section, subsection, name));
     }
+  }
+
+  public static class BrokerPublisher extends Properties {
+    private static final long serialVersionUID = 0L;
+
+    public static final String PUBLISHER_SUBSECTION = "publisher";
+    public static final boolean DEFAULT_BROKER_ENABLED = false;
+
+    private final boolean enabled;
+    private final Map<EventTopic, Boolean> eventsEnabled;
+
+    private BrokerPublisher(Supplier<Config> cfg) {
+      enabled =
+          cfg.get()
+              .getBoolean(BROKER_SECTION, PUBLISHER_SUBSECTION, ENABLE_KEY, DEFAULT_BROKER_ENABLED);
+
+      eventsEnabled = eventsEnabled(cfg, PUBLISHER_SUBSECTION);
+    }
+
+    public boolean enabled() {
+      return enabled;
+    }
+
+    public boolean enabledEvent(EventTopic eventType) {
+      return eventsEnabled.get(eventType);
+    }
+  }
+
+  public static class BrokerSubscriber extends Properties {
+    private static final long serialVersionUID = 1L;
+
+    public static final String SUBSCRIBER_SUBSECTION = "subscriber";
+
+    private final boolean enabled;
+    private Map<EventTopic, Boolean> eventsEnabled;
+    private final Config cfg;
+
+    public BrokerSubscriber(Supplier<Config> configSupplier) {
+      this.cfg = configSupplier.get();
+
+      enabled = cfg.getBoolean(BROKER_SECTION, SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
+
+      eventsEnabled = eventsEnabled(configSupplier, SUBSCRIBER_SUBSECTION);
+    }
+
+    public boolean enabled() {
+      return enabled;
+    }
+
+    public boolean enabledEvent(EventTopic topic) {
+      return eventsEnabled.get(topic);
+    }
+  }
+
+  private static Map<EventTopic, Boolean> eventsEnabled(
+      Supplier<Config> config, String subsection) {
+    Map<EventTopic, Boolean> eventsEnabled = new HashMap<>();
+    for (EventTopic topic : EventTopic.values()) {
+      eventsEnabled.put(
+          topic,
+          config
+              .get()
+              .getBoolean(
+                  BROKER_SECTION, subsection, topic.enabledKey(), DEFAULT_ENABLE_PROCESSING));
+    }
+    return eventsEnabled;
   }
 
   /** Common parameters to cache, event, index */

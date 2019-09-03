@@ -67,18 +67,20 @@ Here is an example of minimal @PLUGIN@.config:
 For all the masters on all the sites:
 
 ```
+[broker "publisher"]
+  enable = true
+[broker "subscriber"]
+  enable = true
 [kafka]
   bootstrapServers = kafka-1:9092,kafka-2:9092,kafka-3:9092
   eventTopic = gerrit_index
 
 [kafka "publisher"]
-  enable = true
   indexEventTopic = gerrit_index
   streamEventTopic = gerrit_stream
   cacheEvictionEventTopic = gerrit_cache_eviction
 
 [kafka "subscriber"]
-  enable = true
   pollingIntervalMs = 1000
   autoCommitIntervalMs = 1000
 ```
