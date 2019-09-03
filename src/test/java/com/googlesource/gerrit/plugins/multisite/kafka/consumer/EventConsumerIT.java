@@ -52,7 +52,6 @@ import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrappe
 import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerModule;
-import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -121,8 +120,6 @@ public class EventConsumerIT extends AbstractDaemonTest {
       this.config =
           new FileBasedConfig(
               sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile(), FS.DETECTED);
-      config.setBoolean("kafka", "publisher", "enabled", true);
-      config.setBoolean("kafka", "subscriber", "enabled", true);
       config.setBoolean("ref-database", null, "enabled", false);
       config.save();
 
@@ -130,9 +127,7 @@ public class EventConsumerIT extends AbstractDaemonTest {
       this.multiSiteModule = new Module(multiSiteConfig, new TestBrokerModule());
       this.pluginModule =
           new PluginModule(
-              multiSiteConfig,
-              new ZkValidationModule(multiSiteConfig),
-              new KafkaBrokerModule(new KafkaConfiguration(multiSiteConfig)));
+              multiSiteConfig, new ZkValidationModule(multiSiteConfig), new KafkaBrokerModule());
       this.gitModule = new GitModule(multiSiteConfig);
     }
 
