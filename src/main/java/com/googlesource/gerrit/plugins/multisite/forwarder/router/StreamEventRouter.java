@@ -21,7 +21,7 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;
 
 @Singleton
-public class StreamEventRouter implements ForwardedStreamEventRouter {
+public class StreamEventRouter implements ForwardedEventRouter<Event> {
   private final ForwardedEventHandler streamEventHandler;
 
   @Inject

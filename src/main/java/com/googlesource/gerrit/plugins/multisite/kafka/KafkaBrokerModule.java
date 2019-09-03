@@ -12,12 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.broker.kafka;
+package com.googlesource.gerrit.plugins.multisite.kafka;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
+import com.googlesource.gerrit.plugins.multisite.broker.kafka.BrokerPublisher;
+import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaSession;
+import com.googlesource.gerrit.plugins.multisite.consumer.AbstractSubcriber;
+import com.googlesource.gerrit.plugins.multisite.consumer.CacheEvictionEventSubscriber;
+import com.googlesource.gerrit.plugins.multisite.consumer.IndexEventSubscriber;
+import com.googlesource.gerrit.plugins.multisite.consumer.ProjectUpdateEventSubscriber;
+import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
+import com.googlesource.gerrit.plugins.multisite.consumer.StreamEventSubscriber;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
@@ -27,18 +36,39 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerIndexEve
 import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerStreamEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
-import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
+import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaEventDeserializer;
+import org.apache.kafka.common.serialization.ByteArrayDeserializer;
+import org.apache.kafka.common.serialization.Deserializer;
 
-public class KafkaBrokerForwarderModule extends LifecycleModule {
-  private final KafkaConfiguration config;
+public class KafkaBrokerModule extends LifecycleModule {
+  private KafkaConfiguration config;
 
   @Inject
-  public KafkaBrokerForwarderModule(KafkaConfiguration config) {
+  public KafkaBrokerModule(KafkaConfiguration config) {
     this.config = config;
   }
 
   @Override
   protected void configure() {
+    if (config.kafkaSubscriber().enabled()) {
+      bind(new TypeLiteral<Deserializer<byte[]>>() {}).toInstance(new ByteArrayDeserializer());
+      bind(new TypeLiteral<Deserializer<SourceAwareEventWrapper>>() {})
+          .to(KafkaEventDeserializer.class);
+
+      if (config.kafkaSubscriber().enabledEvent(EventTopic.INDEX_TOPIC)) {
+        DynamicSet.bind(binder(), AbstractSubcriber.class).to(IndexEventSubscriber.class);
+      }
+      if (config.kafkaSubscriber().enabledEvent(EventTopic.STREAM_EVENT_TOPIC)) {
+        DynamicSet.bind(binder(), AbstractSubcriber.class).to(StreamEventSubscriber.class);
+      }
+      if (config.kafkaSubscriber().enabledEvent(EventTopic.CACHE_TOPIC)) {
+        DynamicSet.bind(binder(), AbstractSubcriber.class).to(CacheEvictionEventSubscriber.class);
+      }
+      if (config.kafkaSubscriber().enabledEvent(EventTopic.PROJECT_LIST_TOPIC)) {
+        DynamicSet.bind(binder(), AbstractSubcriber.class).to(ProjectUpdateEventSubscriber.class);
+      }
+    }
+
     if (config.kafkaPublisher().enabled()) {
       listener().to(BrokerPublisher.class);
       bind(BrokerSession.class).to(KafkaSession.class);
