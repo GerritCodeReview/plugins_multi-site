@@ -36,10 +36,6 @@ public enum EventTopic {
     return aliasKey + "Topic";
   }
 
-  public String enabledKey() {
-    return aliasKey + "Enabled";
-  }
-
   public static EventTopic of(String topicString) {
     EventTopic[] topics = EventTopic.values();
     for (EventTopic topic : topics) {
