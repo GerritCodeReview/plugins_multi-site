@@ -20,7 +20,6 @@ import static com.google.common.base.Suppliers.ofInstance;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
-import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -110,13 +109,12 @@ public class KafkaConfiguration {
       Supplier<Config> config, String subsection) {
     Map<EventTopic, Boolean> eventsEnabled = new HashMap<>();
     for (EventTopic topic : EventTopic.values()) {
-      String enabledConfigKey = topic.lowerCamelName() + "Enabled";
-
       eventsEnabled.put(
           topic,
           config
               .get()
-              .getBoolean(KAFKA_SECTION, subsection, enabledConfigKey, DEFAULT_ENABLE_PROCESSING));
+              .getBoolean(
+                  KAFKA_SECTION, subsection, topic.enabledKey(), DEFAULT_ENABLE_PROCESSING));
     }
     return eventsEnabled;
   }
@@ -147,28 +145,16 @@ public class KafkaConfiguration {
     private final Map<EventTopic, String> eventTopics;
     private final String bootstrapServers;
 
-    private static final ImmutableMap<EventTopic, String> EVENT_TOPICS =
-        ImmutableMap.of(
-            EventTopic.INDEX_TOPIC,
-            "GERRIT.EVENT.INDEX",
-            EventTopic.STREAM_EVENT_TOPIC,
-            "GERRIT.EVENT.STREAM",
-            EventTopic.CACHE_TOPIC,
-            "GERRIT.EVENT.CACHE",
-            EventTopic.PROJECT_LIST_TOPIC,
-            "GERRIT.EVENT.PROJECT.LIST");
-
     Kafka(Supplier<Config> config) {
       this.bootstrapServers =
           getString(
               config, KAFKA_SECTION, null, "bootstrapServers", DEFAULT_KAFKA_BOOTSTRAP_SERVERS);
 
       this.eventTopics = new HashMap<>();
-      for (Map.Entry<EventTopic, String> topicDefault : EVENT_TOPICS.entrySet()) {
-        String topicConfigKey = topicDefault.getKey().lowerCamelName() + "Topic";
+      for (EventTopic eventTopic : EventTopic.values()) {
         eventTopics.put(
-            topicDefault.getKey(),
-            getString(config, KAFKA_SECTION, null, topicConfigKey, topicDefault.getValue()));
+            eventTopic,
+            getString(config, KAFKA_SECTION, null, eventTopic.topicAliasKey(), eventTopic.topic()));
       }
     }
 

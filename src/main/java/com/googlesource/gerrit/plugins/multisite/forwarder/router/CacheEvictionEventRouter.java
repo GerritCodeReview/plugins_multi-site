@@ -23,7 +23,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.GsonParser;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 
 @Singleton
-public class CacheEvictionEventRouter implements ForwardedCacheEvictionEventRouter {
+public class CacheEvictionEventRouter implements ForwardedEventRouter<CacheEvictionEvent> {
   private final ForwardedCacheEvictionHandler cacheEvictionHanlder;
   private final GsonParser gsonParser;
 

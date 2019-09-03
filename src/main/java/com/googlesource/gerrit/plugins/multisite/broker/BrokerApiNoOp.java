@@ -12,8 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.forwarder.router;
+package com.googlesource.gerrit.plugins.multisite.broker;
 
 import com.google.gerrit.server.events.Event;
+import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
+import java.util.function.Consumer;
 
-public interface ForwardedStreamEventRouter extends ForwardedEventRouter<Event> {}
+public class BrokerApiNoOp implements BrokerApi {
+
+  @Override
+  public boolean send(String topic, Event event) {
+    return true;
+  }
+
+  @Override
+  public void receiveAync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer) {}
+}

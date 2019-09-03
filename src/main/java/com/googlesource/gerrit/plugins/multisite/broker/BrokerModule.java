@@ -24,6 +24,7 @@ public class BrokerModule extends AbstractModule {
   @Override
   protected void configure() {
     DynamicItem.itemOf(binder(), BrokerApi.class);
+    DynamicItem.bind(binder(), BrokerApi.class).to(BrokerApiNoOp.class).in(Scopes.SINGLETON);
 
     bind(BrokerApiWrapper.class).in(Scopes.SINGLETON);
 

@@ -84,7 +84,7 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
   }
 
   private String changePrefix(String changeRef) {
-    if (!changeRef.startsWith("refs/changes")) {
+    if (changeRef == null || !changeRef.startsWith("refs/changes")) {
       return changeRef;
     }
     if (changeRef.endsWith(REF_META_SUFFIX)) {
