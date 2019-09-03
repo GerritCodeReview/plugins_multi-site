@@ -71,6 +71,13 @@ For all the masters on all the sites:
   enable = true
 [broker "subscriber"]
   enable = true
+```
+
+Here is an example of minimal kafka.config:
+
+For all the masters on all the sites:
+
+```
 [kafka]
   bootstrapServers = kafka-1:9092,kafka-2:9092,kafka-3:9092
   eventTopic = gerrit_index
@@ -84,7 +91,6 @@ For all the masters on all the sites:
   pollingIntervalMs = 1000
   autoCommitIntervalMs = 1000
 ```
-
 
 For further information and supported options, refer to [config](config.md)
 documentation.
