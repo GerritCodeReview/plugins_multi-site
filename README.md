@@ -89,12 +89,6 @@ following basic settings:
 [kafka]
   bootstrapServers = <kafka-host>:<kafka-port>
 
-[kafka "publisher"]
-  enabled = true
-
-[kafka "subscriber"]
-  enabled = true
-
 [ref-database]
   enabled = true
 
