@@ -72,17 +72,14 @@ For all the masters on all the sites:
   eventTopic = gerrit_index
 
 [kafka "publisher"]
-  enable = true
   indexEventTopic = gerrit_index
   streamEventTopic = gerrit_stream
   cacheEvictionEventTopic = gerrit_cache_eviction
 
 [kafka "subscriber"]
-  enable = true
   pollingIntervalMs = 1000
   autoCommitIntervalMs = 1000
 ```
-
 
 For further information and supported options, refer to [config](config.md)
 documentation.

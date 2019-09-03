@@ -21,28 +21,15 @@ File '@PLUGIN@.config'
   projectListEventTopic = gerrit_project_list
 
 [kafka "publisher"]
-  enabled = true
-
-  indexEventEnabled = true
-  cacheEventEnabled = true
-  projectListEventEnabled = true
-  streamEventEnabled = true
-
   KafkaProp-compressionType = none
   KafkaProp-deliveryTimeoutMs = 60000
 
 [kafka "subscriber"]
-  enabled = true
   pollingIntervalMs = 1000
 
   KafkaProp-enableAutoCommit = true
   KafkaProp-autoCommitIntervalMs = 1000
   KafkaProp-autoCommitIntervalMs = 5000
-
-  indexEventEnabled = true
-  cacheEventEnabled = true
-  projectListEventEnabled = true
-  streamEventEnabled = true
 
 [ref-database "zookeeper"]
   connectString = "localhost:2181"
@@ -125,58 +112,6 @@ File '@PLUGIN@.config'
 ```kafka.projectListEventTopic```
 :   Name of the Kafka topic to use for publishing cache eviction events
     Defaults to GERRIT.EVENT.PROJECT.LIST
-
-```kafka.publisher.indexEventEnabled```
-:   Enable publication of index events, ignored when `kafka.publisher.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.publisher.cacheEventEnabled```
-:   Enable publication of cache events, ignored when `kafka.publisher.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.publisher.projectListEventEnabled```
-:   Enable publication of project list events, ignored when `kafka.publisher.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.publisher.streamEventEnabled```
-:   Enable publication of stream events, ignored when `kafka.publisher.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.subscriber.enabled```
-:   Enable consuming of events from Kafka
-    Defaults: false
-
-```kafka.subscriber.indexEventEnabled```
-:   Enable consumption of index events, ignored when `kafka.subscriber.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.subscriber.cacheEventEnabled```
-:   Enable consumption of cache events, ignored when `kafka.subscriber.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.subscriber.projectListEventEnabled```
-:   Enable consumption of project list events, ignored when `kafka.subscriber.enabled`
-    is false
-
-    Defaults: true
-
-```kafka.subscriber.streamEventEnabled```
-:   Enable consumption of stream events, ignored when `kafka.subscriber.enabled`
-    is false
-
-    Defaults: true
 
 ```kafka.subscriber.pollingIntervalMs```
 :   Polling interval in milliseconds for checking incoming events
@@ -298,3 +233,8 @@ The complete list of available settings can be found directly in the kafka websi
 
 * **Publisher**: https://kafka.apache.org/documentation/#producerconfigs
 * **Subscriber**: https://kafka.apache.org/documentation/#consumerconfigs
+
+#### Notes:
+* From version 3.0 publisher and subscribers cannot be disabled independently anymore.
+* From version 3.0 disabling the management of certain cache invalidations or re-indexing
+is not available anymore.
