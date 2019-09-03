@@ -44,12 +44,13 @@ public class Configuration {
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
   public static final String PLUGIN_NAME = "multi-site";
+  public static final String BROKER_SECTION = "broker";
   public static final String MULTI_SITE_CONFIG = PLUGIN_NAME + ".config";
+  public static final String ENABLE_KEY = "enabled";
 
   static final String INSTANCE_ID_FILE = "instanceId.data";
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
-  static final String ENABLE_KEY = "enabled";
 
   private static final String REPLICATION_CONFIG = "replication.config";
   // common parameters to cache and index sections
