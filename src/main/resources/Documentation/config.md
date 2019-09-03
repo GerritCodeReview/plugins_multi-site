@@ -4,7 +4,8 @@
 
 The @PLUGIN@ plugin must be installed as a library module in the
 `$GERRIT_SITE/lib` folder of all the instances and the following fields should
-be specified in the `$site_path/etc/@PLUGIN@.config` file:
+be specified in the `$site_path/etc/@PLUGIN@.config` 
+and `$site_path/etc/kafka.config` files:
 
 File '@PLUGIN@.config'
 --------------------
@@ -25,25 +26,6 @@ File '@PLUGIN@.config'
   cacheEventEnabled = true
   projectListEventEnabled = true
   streamEventEnabled = true
-
-[kafka]
-  bootstrapServers = kafka-1:9092,kafka-2:9092,kafka-3:9092
-
-  indexEventTopic = gerrit_index
-  streamEventTopic = gerrit_stream
-  cacheEventTopic = gerrit_cache_eviction
-  projectListEventTopic = gerrit_project_list
-
-[kafka "publisher"]
-  KafkaProp-compressionType = none
-  KafkaProp-deliveryTimeoutMs = 60000
-
-[kafka "subscriber"]
-  pollingIntervalMs = 1000
-
-  KafkaProp-enableAutoCommit = true
-  KafkaProp-autoCommitIntervalMs = 1000
-  KafkaProp-autoCommitIntervalMs = 5000
 
 [ref-database "zookeeper"]
   connectString = "localhost:2181"
@@ -162,31 +144,6 @@ File '@PLUGIN@.config'
 ```index.retryInterval```
 :   The time interval in milliseconds between subsequent auto-retries.
     Defaults to 30000 (30 seconds).
-
-```kafka.bootstrapServers```
-:	  List of Kafka broker hosts (host:port) to use for publishing events to the message
-    broker
-
-```kafka.indexEventTopic```
-:   Name of the Kafka topic to use for publishing indexing events
-    Defaults to GERRIT.EVENT.INDEX
-
-```kafka.streamEventTopic```
-:   Name of the Kafka topic to use for publishing stream events
-    Defaults to GERRIT.EVENT.STREAM
-
-```kafka.cacheEventTopic```
-:   Name of the Kafka topic to use for publishing cache eviction events
-    Defaults to GERRIT.EVENT.CACHE
-
-```kafka.projectListEventTopic```
-:   Name of the Kafka topic to use for publishing cache eviction events
-    Defaults to GERRIT.EVENT.PROJECT.LIST
-
-```kafka.subscriber.pollingIntervalMs```
-:   Polling interval in milliseconds for checking incoming events
-
-    Defaults: 1000
 
 ```ref-database.enabled```
 :   Enable the use of a shared ref-database

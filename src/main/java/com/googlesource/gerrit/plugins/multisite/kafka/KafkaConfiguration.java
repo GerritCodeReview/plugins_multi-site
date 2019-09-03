@@ -17,9 +17,11 @@ package com.googlesource.gerrit.plugins.multisite.kafka;
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Suppliers.ofInstance;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
+import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -33,6 +35,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
+import org.eclipse.jgit.util.FS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +45,7 @@ public class KafkaConfiguration {
   private static final Logger log = LoggerFactory.getLogger(KafkaConfiguration.class);
   static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
   static final String KAFKA_SECTION = "kafka";
+  private static final String KAFKA_CONFIG = "kafka.config";
   private static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
   private static final int DEFAULT_POLLING_INTERVAL_MS = 1000;
 
@@ -51,11 +55,16 @@ public class KafkaConfiguration {
   private Supplier<Config> lazyCfg;
 
   @Inject
-  public KafkaConfiguration(Configuration configuration) {
-    lazyCfg = lazyLoad(configuration.getMultiSiteConfig());
+  public KafkaConfiguration(SitePaths sitePaths, Configuration configuration) {
+    this(getConfigFile(sitePaths, KAFKA_CONFIG), configuration);
+  }
+
+  @VisibleForTesting
+  public KafkaConfiguration(Config kafkaConfig, Configuration multiSiteConfig) {
+    lazyCfg = lazyLoad(kafkaConfig);
     kafka = memoize(() -> new Kafka(lazyCfg));
-    publisher = memoize(() -> new KafkaPublisher(configuration, lazyCfg));
-    subscriber = memoize(() -> new KafkaSubscriber(configuration, lazyCfg));
+    publisher = memoize(() -> new KafkaPublisher(multiSiteConfig, lazyCfg));
+    subscriber = memoize(() -> new KafkaSubscriber(multiSiteConfig, lazyCfg));
   }
 
   public Kafka getKafka() {
@@ -64,6 +73,10 @@ public class KafkaConfiguration {
 
   public KafkaSubscriber kafkaSubscriber() {
     return subscriber.get();
+  }
+
+  private static FileBasedConfig getConfigFile(SitePaths sitePaths, String configFileName) {
+    return new FileBasedConfig(sitePaths.etc_dir.resolve(configFileName).toFile(), FS.DETECTED);
   }
 
   private static void applyKafkaConfig(
