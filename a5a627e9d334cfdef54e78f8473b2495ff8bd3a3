@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b511b3ce_3c16d642",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-04T11:52:12Z",
+      "side": 1,
+      "message": "we still have our implementation specific properties like: \u0027pollingIntervalMs\u0027 or \u0027bootstrapServers\u0027 I\u0027m not sure why they are not following Kafka naming convention. We can change that in following change",
+      "parentUuid": "c625cf93_17f0280d",
+      "range": {
+        "startLine": 38,
+        "startChar": 2,
+        "endLine": 38,
+        "endChar": 12
+      },
+      "revId": "a5a627e9d334cfdef54e78f8473b2495ff8bd3a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9c3ac4a0_5d2391f1",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2019-09-04T11:46:00Z",
       "side": 1,
       "message": "Same here",
+      "range": {
+        "startLine": 44,
+        "startChar": 2,
+        "endLine": 44,
+        "endChar": 12
+      },
+      "revId": "a5a627e9d334cfdef54e78f8473b2495ff8bd3a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "beb31ad2_8ca4caaf",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-04T11:52:12Z",
+      "side": 1,
+      "message": "Same as above: We can change that in following change",
+      "parentUuid": "9c3ac4a0_5d2391f1",
       "range": {
         "startLine": 44,
         "startChar": 2,
