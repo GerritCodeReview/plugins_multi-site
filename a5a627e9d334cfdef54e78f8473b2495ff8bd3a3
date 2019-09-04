@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "d1787b43_7dce90ab",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1065251
+      },
+      "writtenOn": "2019-09-04T12:01:32Z",
+      "side": 1,
+      "message": "Agree, could be addressed in the following change.\n\nThe prefixed ones get renamed, ie compressionType to compression.type\nGiven that from now on only Kafka properties will be under the Kafka section, I believe the prefix became redundant.",
+      "parentUuid": "b511b3ce_3c16d642",
+      "range": {
+        "startLine": 38,
+        "startChar": 2,
+        "endLine": 38,
+        "endChar": 12
+      },
+      "revId": "a5a627e9d334cfdef54e78f8473b2495ff8bd3a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9c3ac4a0_5d2391f1",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 1
