@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2d37da19_6bd30d8b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-09-04T08:27:23Z",
+      "side": 1,
+      "message": "Can you give a link to an existing issue?\nOr can you file a new one on GerritCodeReview/issues for the plugins\u003emulti-site component?",
+      "range": {
+        "startLine": 7,
+        "startChar": 4,
+        "endLine": 7,
+        "endChar": 41
+      },
+      "revId": "fae64923f1559a03a9e21a1443df30481b42c973",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
