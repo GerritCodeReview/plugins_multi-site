@@ -15,24 +15,21 @@
 package com.googlesource.gerrit.plugins.multisite.kafka;
 
 import static com.google.common.base.Suppliers.memoize;
-import static com.google.common.base.Suppliers.ofInstance;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
+import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
-import org.eclipse.jgit.storage.file.FileBasedConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,11 +47,11 @@ public class KafkaConfiguration {
   private final Supplier<KafkaPublisher> publisher;
 
   @Inject
-  public KafkaConfiguration(Configuration configuration) {
-    Supplier<Config> lazyCfg = lazyLoad(configuration.getMultiSiteConfig());
-    kafka = memoize(() -> new Kafka(lazyCfg));
-    publisher = memoize(() -> new KafkaPublisher(lazyCfg));
-    subscriber = memoize(() -> new KafkaSubscriber(lazyCfg));
+  public KafkaConfiguration(PluginConfigFactory configFactory, @PluginName String pluginName) {
+    Config cfg = configFactory.getGlobalPluginConfig(pluginName);
+    kafka = memoize(() -> new Kafka(cfg));
+    publisher = memoize(() -> new KafkaPublisher(cfg));
+    subscriber = memoize(() -> new KafkaSubscriber(cfg));
   }
 
   public Kafka getKafka() {
@@ -66,8 +63,7 @@ public class KafkaConfiguration {
   }
 
   private static void applyKafkaConfig(
-      Supplier<Config> configSupplier, String subsectionName, Properties target) {
-    Config config = configSupplier.get();
+      Config config, String subsectionName, Properties target) {
     for (String section : config.getSubsections(KAFKA_SECTION)) {
       if (section.equals(subsectionName)) {
         for (String name : config.getNames(KAFKA_SECTION, section, true)) {
@@ -87,7 +83,7 @@ public class KafkaConfiguration {
     target.put(
         "bootstrap.servers",
         getString(
-            configSupplier,
+            config,
             KAFKA_SECTION,
             null,
             "bootstrapServers",
@@ -95,8 +91,8 @@ public class KafkaConfiguration {
   }
 
   private static String getString(
-      Supplier<Config> cfg, String section, String subsection, String name, String defaultValue) {
-    String value = cfg.get().getString(section, subsection, name);
+      Config cfg, String section, String subsection, String name, String defaultValue) {
+    String value = cfg.getString(section, subsection, name);
     if (!Strings.isNullOrEmpty(value)) {
       return value;
     }
@@ -107,29 +103,11 @@ public class KafkaConfiguration {
     return publisher.get();
   }
 
-  private Supplier<Config> lazyLoad(Config config) {
-    if (config instanceof FileBasedConfig) {
-      return memoize(
-          () -> {
-            FileBasedConfig fileConfig = (FileBasedConfig) config;
-            String fileConfigFileName = fileConfig.getFile().getPath();
-            try {
-              log.info("Loading configuration from {}", fileConfigFileName);
-              fileConfig.load();
-            } catch (IOException | ConfigInvalidException e) {
-              log.error("Unable to load configuration from " + fileConfigFileName, e);
-            }
-            return fileConfig;
-          });
-    }
-    return ofInstance(config);
-  }
-
   public static class Kafka {
     private final Map<EventTopic, String> eventTopics;
     private final String bootstrapServers;
 
-    Kafka(Supplier<Config> config) {
+    Kafka(Config config) {
       this.bootstrapServers =
           getString(
               config, KAFKA_SECTION, null, "bootstrapServers", DEFAULT_KAFKA_BOOTSTRAP_SERVERS);
@@ -151,8 +129,8 @@ public class KafkaConfiguration {
     }
 
     private static String getString(
-        Supplier<Config> cfg, String section, String subsection, String name, String defaultValue) {
-      String value = cfg.get().getString(section, subsection, name);
+        Config cfg, String section, String subsection, String name, String defaultValue) {
+      String value = cfg.getString(section, subsection, name);
       if (!Strings.isNullOrEmpty(value)) {
         return value;
       }
@@ -166,7 +144,7 @@ public class KafkaConfiguration {
     public static final String KAFKA_STRING_SERIALIZER = StringSerializer.class.getName();
     public static final String KAFKA_PUBLISHER_SUBSECTION = "publisher";
 
-    private KafkaPublisher(Supplier<Config> kafkaConfig) {
+    private KafkaPublisher(Config kafkaConfig) {
       setDefaults();
       applyKafkaConfig(kafkaConfig, KAFKA_PUBLISHER_SUBSECTION, this);
     }
@@ -191,8 +169,8 @@ public class KafkaConfiguration {
     private final Integer pollingInterval;
     private final Config cfg;
 
-    public KafkaSubscriber(Supplier<Config> kafkaCfg) {
-      this.cfg = kafkaCfg.get();
+    public KafkaSubscriber(Config kafkaCfg) {
+      this.cfg = kafkaCfg;
 
       this.pollingInterval =
           cfg.getInt(
