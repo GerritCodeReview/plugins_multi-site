@@ -35,25 +35,27 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class KafkaConfigurationTest {
 
-  private Config globalPluginConfig;
-  private Configuration multiSiteConfig;
+  private Config kafkaConfig;
+  private Config multiSiteConfig;
+  private Configuration multiSiteConfiguration;
 
   @Before
   public void setup() {
-    globalPluginConfig = new Config();
-    multiSiteConfig = new Configuration(globalPluginConfig, new Config());
+    kafkaConfig = new Config();
+    multiSiteConfig = new Config();
+    multiSiteConfiguration = new Configuration(multiSiteConfig, new Config());
   }
 
   private KafkaConfiguration getConfiguration() {
-    return new KafkaConfiguration(multiSiteConfig);
+    return new KafkaConfiguration(kafkaConfig, multiSiteConfiguration);
   }
 
   @Test
   public void kafkaSubscriberPropertiesAreSetWhenSectionIsEnabled() {
     final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
     final String kafkaPropertyValue = "aValue";
-    globalPluginConfig.setBoolean(BROKER_SECTION, SUBSCRIBER_SUBSECTION, ENABLE_KEY, true);
-    globalPluginConfig.setString(
+    multiSiteConfig.setBoolean(BROKER_SECTION, SUBSCRIBER_SUBSECTION, ENABLE_KEY, true);
+    kafkaConfig.setString(
         KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
 
     final String property = getConfiguration().kafkaSubscriber().getProperty("foo.bar.baz");
@@ -65,8 +67,8 @@ public class KafkaConfigurationTest {
   public void kafkaSubscriberPropertiesAreNotSetWhenSectionIsDisabled() {
     final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
     final String kafkaPropertyValue = "aValue";
-    globalPluginConfig.setBoolean(BROKER_SECTION, SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
-    globalPluginConfig.setString(
+    multiSiteConfig.setBoolean(BROKER_SECTION, SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
+    kafkaConfig.setString(
         KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
 
     final String property = getConfiguration().kafkaSubscriber().getProperty("foo.bar.baz");
@@ -78,8 +80,8 @@ public class KafkaConfigurationTest {
   public void kafkaSubscriberPropertiesAreIgnoredWhenPrefixIsNotSet() {
     final String kafkaPropertyName = "fooBarBaz";
     final String kafkaPropertyValue = "aValue";
-    globalPluginConfig.setBoolean(BROKER_SECTION, SUBSCRIBER_SUBSECTION, ENABLE_KEY, true);
-    globalPluginConfig.setString(
+    multiSiteConfig.setBoolean(BROKER_SECTION, SUBSCRIBER_SUBSECTION, ENABLE_KEY, true);
+    kafkaConfig.setString(
         KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
 
     final String property = getConfiguration().kafkaSubscriber().getProperty("foo.bar.baz");
@@ -91,8 +93,8 @@ public class KafkaConfigurationTest {
   public void kafkaPublisherPropertiesAreSetWhenSectionIsEnabled() {
     final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
     final String kafkaPropertyValue = "aValue";
-    globalPluginConfig.setBoolean(BROKER_SECTION, PUBLISHER_SUBSECTION, ENABLE_KEY, true);
-    globalPluginConfig.setString(
+    multiSiteConfig.setBoolean(BROKER_SECTION, PUBLISHER_SUBSECTION, ENABLE_KEY, true);
+    kafkaConfig.setString(
         KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
 
     final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
@@ -104,8 +106,8 @@ public class KafkaConfigurationTest {
   public void kafkaPublisherPropertiesAreIgnoredWhenPrefixIsNotSet() {
     final String kafkaPropertyName = "fooBarBaz";
     final String kafkaPropertyValue = "aValue";
-    globalPluginConfig.setBoolean(BROKER_SECTION, PUBLISHER_SUBSECTION, ENABLE_KEY, true);
-    globalPluginConfig.setString(
+    multiSiteConfig.setBoolean(BROKER_SECTION, PUBLISHER_SUBSECTION, ENABLE_KEY, true);
+    kafkaConfig.setString(
         KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
 
     final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
@@ -117,8 +119,8 @@ public class KafkaConfigurationTest {
   public void kafkaPublisherPropertiesAreNotSetWhenSectionIsDisabled() {
     final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
     final String kafkaPropertyValue = "aValue";
-    globalPluginConfig.setBoolean(BROKER_SECTION, PUBLISHER_SUBSECTION, ENABLE_KEY, false);
-    globalPluginConfig.setString(
+    multiSiteConfig.setBoolean(BROKER_SECTION, PUBLISHER_SUBSECTION, ENABLE_KEY, false);
+    kafkaConfig.setString(
         KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
 
     final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
@@ -164,7 +166,7 @@ public class KafkaConfigurationTest {
   public void shouldReturnKafkaTopicEnabledForCacheEventTopic() {
     setKafkaTopicEnabled("cacheEventEnabled", false);
     final Boolean property =
-        multiSiteConfig.getBrokerPublisher().enabledEvent(EventTopic.CACHE_TOPIC);
+        multiSiteConfiguration.getBrokerPublisher().enabledEvent(EventTopic.CACHE_TOPIC);
     assertThat(property).isFalse();
   }
 
@@ -172,7 +174,7 @@ public class KafkaConfigurationTest {
   public void shouldReturnKafkaTopicEnabledForIndexTopic() {
     setKafkaTopicEnabled("indexEventEnabled", false);
     final Boolean property =
-        multiSiteConfig.getBrokerPublisher().enabledEvent(EventTopic.INDEX_TOPIC);
+        multiSiteConfiguration.getBrokerPublisher().enabledEvent(EventTopic.INDEX_TOPIC);
     assertThat(property).isFalse();
   }
 
@@ -180,7 +182,7 @@ public class KafkaConfigurationTest {
   public void shouldReturnKafkaTopicEnabledForStreamEventTopic() {
     setKafkaTopicEnabled("streamEventEnabled", false);
     final Boolean property =
-        multiSiteConfig.getBrokerPublisher().enabledEvent(EventTopic.STREAM_EVENT_TOPIC);
+        multiSiteConfiguration.getBrokerPublisher().enabledEvent(EventTopic.STREAM_EVENT_TOPIC);
     assertThat(property).isFalse();
   }
 
@@ -188,15 +190,15 @@ public class KafkaConfigurationTest {
   public void shouldReturnKafkaTopicEnabledForProjectListEventTopic() {
     setKafkaTopicEnabled("projectListEventEnabled", false);
     final Boolean property =
-        multiSiteConfig.getBrokerPublisher().enabledEvent(EventTopic.PROJECT_LIST_TOPIC);
+        multiSiteConfiguration.getBrokerPublisher().enabledEvent(EventTopic.PROJECT_LIST_TOPIC);
     assertThat(property).isFalse();
   }
 
   private void setKafkaTopicAlias(String topicKey, String topic) {
-    globalPluginConfig.setString(KAFKA_SECTION, null, topicKey, topic);
+    kafkaConfig.setString(KAFKA_SECTION, null, topicKey, topic);
   }
 
   private void setKafkaTopicEnabled(String topicEnabledKey, Boolean isEnabled) {
-    globalPluginConfig.setBoolean(BROKER_SECTION, PUBLISHER_SUBSECTION, topicEnabledKey, isEnabled);
+    multiSiteConfig.setBoolean(BROKER_SECTION, PUBLISHER_SUBSECTION, topicEnabledKey, isEnabled);
   }
 }
