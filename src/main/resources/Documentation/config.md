@@ -21,15 +21,15 @@ File '@PLUGIN@.config'
   projectListEventTopic = gerrit_project_list
 
 [kafka "publisher"]
-  KafkaProp-compressionType = none
-  KafkaProp-deliveryTimeoutMs = 60000
+  compressionType = none
+  deliveryTimeoutMs = 60000
 
 [kafka "subscriber"]
   pollingIntervalMs = 1000
 
-  KafkaProp-enableAutoCommit = true
-  KafkaProp-autoCommitIntervalMs = 1000
-  KafkaProp-autoCommitIntervalMs = 5000
+  enableAutoCommit = true
+  autoCommitIntervalMs = 1000
+  autoCommitIntervalMs = 5000
 
 [ref-database "zookeeper"]
   connectString = "localhost:2181"
@@ -219,11 +219,6 @@ File '@PLUGIN@.config'
 
 In addition to the above settings, custom Kafka properties can be explicitly set
 for `publisher` and `subscriber`.
-In order to be acknowledged, these properties need to be prefixed with the
-`KafkaProp-` prefix and be formatted using camel case, as follows: `KafkaProp-yourPropertyValue`
-
-For example, if you want to set the `auto.commit.interval.ms` property for
-consumers, you need to configure this property as `KafkaProp-autoCommitIntervalMs`.
 
 The complete list of available settings can be found directly in the kafka website:
 
