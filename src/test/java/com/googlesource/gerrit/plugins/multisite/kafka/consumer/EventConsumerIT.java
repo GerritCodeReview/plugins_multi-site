@@ -52,6 +52,7 @@ import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrappe
 import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerModule;
+import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -151,10 +152,12 @@ public class EventConsumerIT extends AbstractDaemonTest {
       KafkaContainer kafkaContainer = new KafkaContainer();
       kafkaContainer.start();
 
-      config.setString("kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
-      config.save();
-      Configuration multiSiteConfig = new Configuration(config, new Config());
-      bind(Configuration.class).toInstance(multiSiteConfig);
+      Config kafkaConfig = new Config();
+      kafkaConfig.setString(
+          "kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
+
+      KafkaConfiguration kafkaConfiguration = new KafkaConfiguration(kafkaConfig);
+      bind(KafkaConfiguration.class).toInstance(kafkaConfiguration);
 
       listener().toInstance(new KafkaStopAtShutdown(kafkaContainer));
 
