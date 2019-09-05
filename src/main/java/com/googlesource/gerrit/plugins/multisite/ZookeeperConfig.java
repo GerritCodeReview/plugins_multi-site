@@ -18,9 +18,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Suppliers.ofInstance;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.gerrit.server.config.SitePaths;
+import com.google.inject.Inject;
 import java.io.IOException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.curator.RetryPolicy;
@@ -82,6 +84,12 @@ public class ZookeeperConfig {
 
   private CuratorFramework build;
 
+  @Inject
+  ZookeeperConfig(SitePaths sitePaths) {
+    this(getConfigFile(sitePaths, Configuration.MULTI_SITE_CONFIG));
+  }
+
+  @VisibleForTesting
   public ZookeeperConfig(Config zkCfg) {
     Supplier<Config> lazyZkConfig = lazyLoad(zkCfg);
     connectionString =
@@ -223,17 +231,6 @@ public class ZookeeperConfig {
           });
     }
     return ofInstance(config);
-  }
-
-  private boolean getBoolean(
-      Supplier<Config> cfg, String section, String subsection, String name, boolean defaultValue) {
-    try {
-      return cfg.get().getBoolean(section, subsection, name, defaultValue);
-    } catch (IllegalArgumentException e) {
-      log.error("invalid value for {}; using default value {}", name, defaultValue);
-      log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
-      return defaultValue;
-    }
   }
 
   private String getString(
