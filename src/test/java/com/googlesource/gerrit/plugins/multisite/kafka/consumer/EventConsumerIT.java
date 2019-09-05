@@ -16,6 +16,8 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.stream.Collectors.toSet;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.google.gerrit.acceptance.AbstractDaemonTest;
 import com.google.gerrit.acceptance.GerritConfig;
@@ -27,6 +29,7 @@ import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.data.PatchSetAttribute;
 import com.google.gerrit.server.events.CommentAddedEvent;
@@ -52,6 +55,7 @@ import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrappe
 import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerModule;
+import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -151,10 +155,14 @@ public class EventConsumerIT extends AbstractDaemonTest {
       KafkaContainer kafkaContainer = new KafkaContainer();
       kafkaContainer.start();
 
-      config.setString("kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
-      config.save();
-      Configuration multiSiteConfig = new Configuration(config, new Config());
-      bind(Configuration.class).toInstance(multiSiteConfig);
+      Config kafkaConfig = new Config();
+      kafkaConfig.setString(
+          "kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
+
+      PluginConfigFactory configFactory = mock(PluginConfigFactory.class);
+      when(configFactory.getGlobalPluginConfig("multi-site")).thenReturn(kafkaConfig);
+      KafkaConfiguration kafkaConfiguration = new KafkaConfiguration(configFactory, "multi-site");
+      bind(KafkaConfiguration.class).toInstance(kafkaConfiguration);
 
       listener().toInstance(new KafkaStopAtShutdown(kafkaContainer));
 

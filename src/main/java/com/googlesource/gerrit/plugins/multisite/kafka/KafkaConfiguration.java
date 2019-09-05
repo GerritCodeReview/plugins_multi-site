@@ -20,9 +20,10 @@ import static com.google.common.base.Suppliers.ofInstance;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
+import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import java.io.IOException;
 import java.util.HashMap;
@@ -50,8 +51,8 @@ public class KafkaConfiguration {
   private final Supplier<KafkaPublisher> publisher;
 
   @Inject
-  public KafkaConfiguration(Configuration configuration) {
-    Supplier<Config> lazyCfg = lazyLoad(configuration.getMultiSiteConfig());
+  public KafkaConfiguration(PluginConfigFactory configFactory, @PluginName String pluginName) {
+    Supplier<Config> lazyCfg = lazyLoad(configFactory.getGlobalPluginConfig(pluginName));
     kafka = memoize(() -> new Kafka(lazyCfg));
     publisher = memoize(() -> new KafkaPublisher(lazyCfg));
     subscriber = memoize(() -> new KafkaSubscriber(lazyCfg));
