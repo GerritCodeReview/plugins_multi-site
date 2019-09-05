@@ -18,9 +18,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Suppliers.ofInstance;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.gerrit.server.config.SitePaths;
+import com.google.inject.Inject;
 import java.io.IOException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.curator.RetryPolicy;
@@ -39,6 +41,7 @@ public class ZookeeperConfig {
   public static final int defaultSessionTimeoutMs;
   public static final int defaultConnectionTimeoutMs;
   public static final String DEFAULT_ZK_CONNECT = "localhost:2181";
+  private static final String ZOOKEEPER_CONFIG = "zookeeper.config";
   private final int DEFAULT_RETRY_POLICY_BASE_SLEEP_TIME_MS = 1000;
   private final int DEFAULT_RETRY_POLICY_MAX_SLEEP_TIME_MS = 3000;
   private final int DEFAULT_RETRY_POLICY_MAX_RETRIES = 3;
@@ -82,6 +85,12 @@ public class ZookeeperConfig {
 
   private CuratorFramework build;
 
+  @Inject
+  ZookeeperConfig(SitePaths sitePaths) {
+    this(getConfigFile(sitePaths, ZOOKEEPER_CONFIG));
+  }
+
+  @VisibleForTesting
   public ZookeeperConfig(Config zkCfg) {
     Supplier<Config> lazyZkConfig = lazyLoad(zkCfg);
     connectionString =
@@ -223,17 +232,6 @@ public class ZookeeperConfig {
           });
     }
     return ofInstance(config);
-  }
-
-  private boolean getBoolean(
-      Supplier<Config> cfg, String section, String subsection, String name, boolean defaultValue) {
-    try {
-      return cfg.get().getBoolean(section, subsection, name, defaultValue);
-    } catch (IllegalArgumentException e) {
-      log.error("invalid value for {}; using default value {}", name, defaultValue);
-      log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
-      return defaultValue;
-    }
   }
 
   private String getString(

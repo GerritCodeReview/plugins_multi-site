@@ -4,7 +4,8 @@
 
 The @PLUGIN@ plugin must be installed as a library module in the
 `$GERRIT_SITE/lib` folder of all the instances and the following fields should
-be specified in the `$site_path/etc/@PLUGIN@.config` file:
+be specified in the `$site_path/etc/@PLUGIN@.config`
+and `$site_path/etc/zookeeper.config` files:
 
 File '@PLUGIN@.config'
 --------------------
@@ -43,19 +44,6 @@ File '@PLUGIN@.config'
   cacheEventEnabled = true
   projectListEventEnabled = true
   streamEventEnabled = true
-
-[ref-database "zookeeper"]
-  connectString = "localhost:2181"
-  rootNode = "/gerrit/multi-site"
-  sessionTimeoutMs = 1000
-  connectionTimeoutMs = 1000
-  retryPolicyBaseSleepTimeMs = 1000
-  retryPolicyMaxSleepTimeMs = 3000
-  retryPolicyMaxRetries = 3
-  casRetryPolicyBaseSleepTimeMs = 100
-  casRetryPolicyMaxSleepTimeMs = 100
-  casRetryPolicyMaxRetries = 3
-  transactionLockTimeoutMs = 1000
 ```
 
 ## Configuration parameters
@@ -214,6 +202,27 @@ File '@PLUGIN@.config'
     Relax the alignment with the shared ref-database for AProject on refs/heads/feature.
 
     Defaults: No rules = All projects are REQUIRED to be consistent on all refs.
+
+File 'zookeeper.config'
+--------------------
+
+## Sample configuration.
+
+```
+[ref-database "zookeeper"]
+  connectString = "localhost:2181"
+  rootNode = "/gerrit/multi-site"
+  sessionTimeoutMs = 1000
+  connectionTimeoutMs = 1000
+  retryPolicyBaseSleepTimeMs = 1000
+  retryPolicyMaxSleepTimeMs = 3000
+  retryPolicyMaxRetries = 3
+  casRetryPolicyBaseSleepTimeMs = 100
+  casRetryPolicyMaxSleepTimeMs = 100
+  casRetryPolicyMaxRetries = 3
+  transactionLockTimeoutMs = 1000
+```
+## Configuration parameters
 
 ```ref-database.zookeeper.connectString```
 :   Connection string to Zookeeper
