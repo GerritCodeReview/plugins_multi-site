@@ -17,9 +17,11 @@ package com.googlesource.gerrit.plugins.multisite.kafka;
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Suppliers.ofInstance;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
+import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -33,6 +35,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
+import org.eclipse.jgit.util.FS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,8 +53,13 @@ public class KafkaConfiguration {
   private final Supplier<KafkaPublisher> publisher;
 
   @Inject
-  public KafkaConfiguration(Configuration configuration) {
-    Supplier<Config> lazyCfg = lazyLoad(configuration.getMultiSiteConfig());
+  public KafkaConfiguration(SitePaths sitePaths) {
+    this(getConfigFile(sitePaths, Configuration.MULTI_SITE_CONFIG));
+  }
+
+  @VisibleForTesting
+  public KafkaConfiguration(Config configuration) {
+    Supplier<Config> lazyCfg = lazyLoad(configuration);
     kafka = memoize(() -> new Kafka(lazyCfg));
     publisher = memoize(() -> new KafkaPublisher(lazyCfg));
     subscriber = memoize(() -> new KafkaSubscriber(lazyCfg));
@@ -63,6 +71,10 @@ public class KafkaConfiguration {
 
   public KafkaSubscriber kafkaSubscriber() {
     return subscriber.get();
+  }
+
+  private static FileBasedConfig getConfigFile(SitePaths sitePaths, String configFileName) {
+    return new FileBasedConfig(sitePaths.etc_dir.resolve(configFileName).toFile(), FS.DETECTED);
   }
 
   private static void applyKafkaConfig(

@@ -19,7 +19,6 @@ import static com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration
 import static com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration.KafkaPublisher.KAFKA_PUBLISHER_SUBSECTION;
 import static com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration.KafkaSubscriber.KAFKA_SUBSCRIBER_SUBSECTION;
 
-import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
@@ -30,24 +29,22 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class KafkaConfigurationTest {
 
-  private Config globalPluginConfig;
-  private Configuration multiSiteConfig;
+  private Config kafkaConfig;
 
   @Before
   public void setup() {
-    globalPluginConfig = new Config();
-    multiSiteConfig = new Configuration(globalPluginConfig, new Config());
+    kafkaConfig = new Config();
   }
 
   private KafkaConfiguration getConfiguration() {
-    return new KafkaConfiguration(multiSiteConfig);
+    return new KafkaConfiguration(kafkaConfig);
   }
 
   @Test
   public void kafkaSubscriberPropertiesAreIgnoredWhenPrefixIsNotSet() {
     final String kafkaPropertyName = "fooBarBaz";
     final String kafkaPropertyValue = "aValue";
-    globalPluginConfig.setString(
+    kafkaConfig.setString(
         KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
 
     final String property = getConfiguration().kafkaSubscriber().getProperty("foo.bar.baz");
@@ -59,7 +56,7 @@ public class KafkaConfigurationTest {
   public void kafkaPublisherPropertiesAreIgnoredWhenPrefixIsNotSet() {
     final String kafkaPropertyName = "fooBarBaz";
     final String kafkaPropertyValue = "aValue";
-    globalPluginConfig.setString(
+    kafkaConfig.setString(
         KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
 
     final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
@@ -102,6 +99,6 @@ public class KafkaConfigurationTest {
   }
 
   private void setKafkaTopicAlias(String topicKey, String topic) {
-    globalPluginConfig.setString(KAFKA_SECTION, null, topicKey, topic);
+    kafkaConfig.setString(KAFKA_SECTION, null, topicKey, topic);
   }
 }
