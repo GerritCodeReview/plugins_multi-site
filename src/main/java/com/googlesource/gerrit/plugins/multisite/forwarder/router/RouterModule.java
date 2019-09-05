@@ -15,13 +15,14 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder.router;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
 
 public class RouterModule extends AbstractModule {
   @Override
   protected void configure() {
-    bind(IndexEventRouter.class);
-    bind(CacheEvictionEventRouter.class);
-    bind(ProjectListUpdateRouter.class);
-    bind(StreamEventRouter.class);
+    bind(IndexEventRouter.class).in(Scopes.SINGLETON);
+    bind(CacheEvictionEventRouter.class).in(Scopes.SINGLETON);
+    bind(ProjectListUpdateRouter.class).in(Scopes.SINGLETON);
+    bind(StreamEventRouter.class).in(Scopes.SINGLETON);
   }
 }
