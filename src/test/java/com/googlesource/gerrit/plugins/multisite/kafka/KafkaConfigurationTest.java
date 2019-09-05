@@ -19,7 +19,6 @@ import static com.googlesource.gerrit.plugins.multisite.Configuration.BROKER_SEC
 import static com.googlesource.gerrit.plugins.multisite.Configuration.BrokerPublisher.PUBLISHER_SUBSECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.BrokerSubscriber.SUBSCRIBER_SUBSECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.ENABLE_KEY;
-import static com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration.KAFKA_PROPERTY_PREFIX;
 import static com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration.KAFKA_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration.KafkaPublisher.KAFKA_PUBLISHER_SUBSECTION;
 import static com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration.KafkaSubscriber.KAFKA_SUBSCRIBER_SUBSECTION;
@@ -52,7 +51,7 @@ public class KafkaConfigurationTest {
 
   @Test
   public void kafkaSubscriberPropertiesAreSetWhenSectionIsEnabled() {
-    final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
+    final String kafkaPropertyName = "fooBarBaz";
     final String kafkaPropertyValue = "aValue";
     multiSiteConfig.setBoolean(BROKER_SECTION, SUBSCRIBER_SUBSECTION, ENABLE_KEY, true);
     kafkaConfig.setString(
@@ -65,7 +64,7 @@ public class KafkaConfigurationTest {
 
   @Test
   public void kafkaSubscriberPropertiesAreNotSetWhenSectionIsDisabled() {
-    final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
+    final String kafkaPropertyName = "fooBarBaz";
     final String kafkaPropertyValue = "aValue";
     multiSiteConfig.setBoolean(BROKER_SECTION, SUBSCRIBER_SUBSECTION, ENABLE_KEY, false);
     kafkaConfig.setString(
@@ -77,21 +76,8 @@ public class KafkaConfigurationTest {
   }
 
   @Test
-  public void kafkaSubscriberPropertiesAreIgnoredWhenPrefixIsNotSet() {
-    final String kafkaPropertyName = "fooBarBaz";
-    final String kafkaPropertyValue = "aValue";
-    multiSiteConfig.setBoolean(BROKER_SECTION, SUBSCRIBER_SUBSECTION, ENABLE_KEY, true);
-    kafkaConfig.setString(
-        KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
-
-    final String property = getConfiguration().kafkaSubscriber().getProperty("foo.bar.baz");
-
-    assertThat(property).isNull();
-  }
-
-  @Test
   public void kafkaPublisherPropertiesAreSetWhenSectionIsEnabled() {
-    final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
+    final String kafkaPropertyName = "fooBarBaz";
     final String kafkaPropertyValue = "aValue";
     multiSiteConfig.setBoolean(BROKER_SECTION, PUBLISHER_SUBSECTION, ENABLE_KEY, true);
     kafkaConfig.setString(
@@ -103,21 +89,8 @@ public class KafkaConfigurationTest {
   }
 
   @Test
-  public void kafkaPublisherPropertiesAreIgnoredWhenPrefixIsNotSet() {
-    final String kafkaPropertyName = "fooBarBaz";
-    final String kafkaPropertyValue = "aValue";
-    multiSiteConfig.setBoolean(BROKER_SECTION, PUBLISHER_SUBSECTION, ENABLE_KEY, true);
-    kafkaConfig.setString(
-        KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
-
-    final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
-
-    assertThat(property).isNull();
-  }
-
-  @Test
   public void kafkaPublisherPropertiesAreNotSetWhenSectionIsDisabled() {
-    final String kafkaPropertyName = KAFKA_PROPERTY_PREFIX + "fooBarBaz";
+    final String kafkaPropertyName = "fooBarBaz";
     final String kafkaPropertyValue = "aValue";
     multiSiteConfig.setBoolean(BROKER_SECTION, PUBLISHER_SUBSECTION, ENABLE_KEY, false);
     kafkaConfig.setString(

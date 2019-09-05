@@ -43,7 +43,6 @@ import org.slf4j.LoggerFactory;
 public class KafkaConfiguration {
 
   private static final Logger log = LoggerFactory.getLogger(KafkaConfiguration.class);
-  static final String KAFKA_PROPERTY_PREFIX = "KafkaProp-";
   static final String KAFKA_SECTION = "kafka";
   private static final String DEFAULT_KAFKA_BOOTSTRAP_SERVERS = "localhost:9092";
   private static final int DEFAULT_POLLING_INTERVAL_MS = 1000;
@@ -84,16 +83,11 @@ public class KafkaConfiguration {
     for (String section : config.getSubsections(KAFKA_SECTION)) {
       if (section.equals(subsectionName)) {
         for (String name : config.getNames(KAFKA_SECTION, section, true)) {
-          if (name.startsWith(KAFKA_PROPERTY_PREFIX)) {
-            Object value = config.getString(KAFKA_SECTION, subsectionName, name);
-            String configProperty = name.replaceFirst(KAFKA_PROPERTY_PREFIX, "");
-            String propName =
-                CaseFormat.LOWER_CAMEL
-                    .to(CaseFormat.LOWER_HYPHEN, configProperty)
-                    .replaceAll("-", ".");
-            log.info("[{}] Setting kafka property: {} = {}", subsectionName, propName, value);
-            target.put(propName, value);
-          }
+          Object value = config.getString(KAFKA_SECTION, subsectionName, name);
+          String propName =
+              CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, name).replaceAll("-", ".");
+          log.info("[{}] Setting kafka property: {} = {}", subsectionName, propName, value);
+          target.put(propName, value);
         }
       }
     }
