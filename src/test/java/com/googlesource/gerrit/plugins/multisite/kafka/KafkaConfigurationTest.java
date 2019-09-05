@@ -16,8 +16,6 @@ package com.googlesource.gerrit.plugins.multisite.kafka;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration.KAFKA_SECTION;
-import static com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration.KafkaPublisher.KAFKA_PUBLISHER_SUBSECTION;
-import static com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration.KafkaSubscriber.KAFKA_SUBSCRIBER_SUBSECTION;
 import static org.mockito.Mockito.when;
 
 import com.google.gerrit.server.config.PluginConfigFactory;
@@ -43,30 +41,6 @@ public class KafkaConfigurationTest {
 
   private KafkaConfiguration getConfiguration() {
     return new KafkaConfiguration(configFactory, "multi-site");
-  }
-
-  @Test
-  public void kafkaSubscriberPropertiesAreIgnoredWhenPrefixIsNotSet() {
-    final String kafkaPropertyName = "fooBarBaz";
-    final String kafkaPropertyValue = "aValue";
-    kafkaConfig.setString(
-        KAFKA_SECTION, KAFKA_SUBSCRIBER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
-
-    final String property = getConfiguration().kafkaSubscriber().getProperty("foo.bar.baz");
-
-    assertThat(property).isNull();
-  }
-
-  @Test
-  public void kafkaPublisherPropertiesAreIgnoredWhenPrefixIsNotSet() {
-    final String kafkaPropertyName = "fooBarBaz";
-    final String kafkaPropertyValue = "aValue";
-    kafkaConfig.setString(
-        KAFKA_SECTION, KAFKA_PUBLISHER_SUBSECTION, kafkaPropertyName, kafkaPropertyValue);
-
-    final String property = getConfiguration().kafkaPublisher().getProperty("foo.bar.baz");
-
-    assertThat(property).isNull();
   }
 
   @Test
