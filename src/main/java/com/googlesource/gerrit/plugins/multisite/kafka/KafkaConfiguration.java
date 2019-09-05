@@ -203,7 +203,7 @@ public class KafkaConfiguration {
 
     private void setDefaults() {
       put("acks", "all");
-      put("retries", 0);
+      put("retries", 10);
       put("batch.size", 16384);
       put("linger.ms", 1);
       put("buffer.memory", 33554432);

@@ -19,7 +19,6 @@ import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndex
 
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
@@ -33,7 +32,6 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEv
 import java.io.IOException;
 import java.util.Optional;
 
-@Singleton
 public class IndexEventRouter implements ForwardedEventRouter<IndexEvent> {
   private final ForwardedIndexAccountHandler indexAccountHandler;
   private final ForwardedIndexChangeHandler indexChangeHandler;

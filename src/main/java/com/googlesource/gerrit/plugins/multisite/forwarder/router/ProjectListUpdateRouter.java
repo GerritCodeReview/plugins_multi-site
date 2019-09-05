@@ -15,12 +15,10 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder.router;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedProjectListUpdateHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import java.io.IOException;
 
-@Singleton
 public class ProjectListUpdateRouter implements ForwardedEventRouter<ProjectListUpdateEvent> {
   ForwardedProjectListUpdateHandler projectListUpdateHandler;
 
