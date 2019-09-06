@@ -16,6 +16,24 @@
       "revId": "f42a1e7c8eb7b196b3e998e2af6e5231fcc3e83b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1cd8073c_25c68bb5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ZookeeperConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-06T14:05:42Z",
+      "side": 1,
+      "message": "But the new constructor is reading the file so we would have to have config file per test which is not really helpful. This is exactly the same pattern as we have in Configuration class",
+      "parentUuid": "4cb26a4f_c5983ff6",
+      "revId": "f42a1e7c8eb7b196b3e998e2af6e5231fcc3e83b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
