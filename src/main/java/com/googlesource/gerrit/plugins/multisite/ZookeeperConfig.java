@@ -233,17 +233,6 @@ public class ZookeeperConfig {
     return ofInstance(config);
   }
 
-  private boolean getBoolean(
-      Supplier<Config> cfg, String section, String subsection, String name, boolean defaultValue) {
-    try {
-      return cfg.get().getBoolean(section, subsection, name, defaultValue);
-    } catch (IllegalArgumentException e) {
-      log.error("invalid value for {}; using default value {}", name, defaultValue);
-      log.debug("Failed to retrieve boolean value: {}", e.getMessage(), e);
-      return defaultValue;
-    }
-  }
-
   private String getString(
       Supplier<Config> cfg, String section, String subsection, String name, String defaultValue) {
     String value = cfg.get().getString(section, subsection, name);
