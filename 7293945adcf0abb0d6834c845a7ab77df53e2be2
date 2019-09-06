@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bad90408_696c4851",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaConfiguration.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-09-06T23:44:12Z",
+      "side": 1,
+      "message": "This is not the way a plugin should read its configuration.\nUse PluginConfigFactory instead.",
+      "range": {
+        "startLine": 76,
+        "startChar": 2,
+        "endLine": 78,
+        "endChar": 3
+      },
+      "revId": "7293945adcf0abb0d6834c845a7ab77df53e2be2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
