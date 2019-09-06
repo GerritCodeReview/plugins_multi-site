@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4cb26a4f_c5983ff6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ZookeeperConfig.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-09-06T12:50:16Z",
+      "side": 1,
+      "message": "Should we not adapt the tests to use the new constructor and remove this alltogether?\nOr is this not possible?",
+      "revId": "f42a1e7c8eb7b196b3e998e2af6e5231fcc3e83b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
