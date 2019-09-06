@@ -46,6 +46,30 @@
       "revId": "14ff60a58a3d0abae9cccf3da0bfbb4a63d0bdf4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c85a01fb_108510b3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ZookeeperConfig.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-09-06T15:17:05Z",
+      "side": 1,
+      "message": "\u003e Should we also change the way we are reading multi-site.config in Coonfiguration.class? I was following the code from there\n\nNope, because the way you read configuration from plugins and libModules is very different.\nZookeeper is now fully loaded as a plugin and thus should not rely anymore on the Gerrit internals.",
+      "parentUuid": "2995b2b0_e49a7c91",
+      "range": {
+        "startLine": 89,
+        "startChar": 4,
+        "endLine": 89,
+        "endChar": 68
+      },
+      "revId": "14ff60a58a3d0abae9cccf3da0bfbb4a63d0bdf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
