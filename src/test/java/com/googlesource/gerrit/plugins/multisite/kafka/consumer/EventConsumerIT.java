@@ -16,6 +16,8 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.stream.Collectors.toSet;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.google.gerrit.acceptance.AbstractDaemonTest;
 import com.google.gerrit.acceptance.GerritConfig;
@@ -27,6 +29,7 @@ import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.data.PatchSetAttribute;
 import com.google.gerrit.server.events.CommentAddedEvent;
@@ -43,6 +46,7 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.GitModule;
 import com.googlesource.gerrit.plugins.multisite.Module;
 import com.googlesource.gerrit.plugins.multisite.PluginModule;
+import com.googlesource.gerrit.plugins.multisite.ZookeeperConfig;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
@@ -127,11 +131,16 @@ public class EventConsumerIT extends AbstractDaemonTest {
       config.save();
 
       Configuration multiSiteConfig = new Configuration(config, new Config());
+
+      PluginConfigFactory cfgFactory = mock(PluginConfigFactory.class);
+      when(cfgFactory.getGlobalPluginConfig("multi-site")).thenReturn(config);
+
+      ZookeeperConfig zookeeperConfig = new ZookeeperConfig(cfgFactory, "multi-site");
       this.multiSiteModule = new Module(multiSiteConfig, new TestBrokerModule());
       this.pluginModule =
           new PluginModule(
               multiSiteConfig,
-              new ZkValidationModule(multiSiteConfig),
+              new ZkValidationModule(zookeeperConfig),
               new KafkaBrokerModule(new KafkaConfiguration(multiSiteConfig)));
       this.gitModule = new GitModule(multiSiteConfig);
     }

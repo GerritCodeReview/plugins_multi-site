@@ -15,24 +15,17 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Suppliers.memoize;
-import static com.google.common.base.Suppliers.ofInstance;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
-import com.google.common.base.Supplier;
-import com.google.gerrit.server.config.SitePaths;
+import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
-import java.io.IOException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.BoundedExponentialBackoffRetry;
-import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
-import org.eclipse.jgit.storage.file.FileBasedConfig;
-import org.eclipse.jgit.util.FS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,29 +78,20 @@ public class ZookeeperConfig {
   private CuratorFramework build;
 
   @Inject
-  ZookeeperConfig(SitePaths sitePaths) {
-    this(getConfigFile(sitePaths, Configuration.MULTI_SITE_CONFIG));
-  }
-
-  @VisibleForTesting
-  public ZookeeperConfig(Config zkCfg) {
-    Supplier<Config> lazyZkConfig = lazyLoad(zkCfg);
+  public ZookeeperConfig(PluginConfigFactory cfgFactory, @PluginName String pluginName) {
+    Config zkConfig = cfgFactory.getGlobalPluginConfig(pluginName);
     connectionString =
-        getString(lazyZkConfig, SECTION, SUBSECTION, KEY_CONNECT_STRING, DEFAULT_ZK_CONNECT);
-    root = getString(lazyZkConfig, SECTION, SUBSECTION, KEY_ROOT_NODE, "gerrit/multi-site");
+        getString(zkConfig, SECTION, SUBSECTION, KEY_CONNECT_STRING, DEFAULT_ZK_CONNECT);
+    root = getString(zkConfig, SECTION, SUBSECTION, KEY_ROOT_NODE, "gerrit/multi-site");
     sessionTimeoutMs =
-        getInt(lazyZkConfig, SECTION, SUBSECTION, KEY_SESSION_TIMEOUT_MS, defaultSessionTimeoutMs);
+        getInt(zkConfig, SECTION, SUBSECTION, KEY_SESSION_TIMEOUT_MS, defaultSessionTimeoutMs);
     connectionTimeoutMs =
         getInt(
-            lazyZkConfig,
-            SECTION,
-            SUBSECTION,
-            KEY_CONNECTION_TIMEOUT_MS,
-            defaultConnectionTimeoutMs);
+            zkConfig, SECTION, SUBSECTION, KEY_CONNECTION_TIMEOUT_MS, defaultConnectionTimeoutMs);
 
     baseSleepTimeMs =
         getInt(
-            lazyZkConfig,
+            zkConfig,
             SECTION,
             SUBSECTION,
             KEY_RETRY_POLICY_BASE_SLEEP_TIME_MS,
@@ -115,7 +99,7 @@ public class ZookeeperConfig {
 
     maxSleepTimeMs =
         getInt(
-            lazyZkConfig,
+            zkConfig,
             SECTION,
             SUBSECTION,
             KEY_RETRY_POLICY_MAX_SLEEP_TIME_MS,
@@ -123,7 +107,7 @@ public class ZookeeperConfig {
 
     maxRetries =
         getInt(
-            lazyZkConfig,
+            zkConfig,
             SECTION,
             SUBSECTION,
             KEY_RETRY_POLICY_MAX_RETRIES,
@@ -131,7 +115,7 @@ public class ZookeeperConfig {
 
     casBaseSleepTimeMs =
         getInt(
-            lazyZkConfig,
+            zkConfig,
             SECTION,
             SUBSECTION,
             KEY_CAS_RETRY_POLICY_BASE_SLEEP_TIME_MS,
@@ -139,7 +123,7 @@ public class ZookeeperConfig {
 
     casMaxSleepTimeMs =
         getInt(
-            lazyZkConfig,
+            zkConfig,
             SECTION,
             SUBSECTION,
             KEY_CAS_RETRY_POLICY_MAX_SLEEP_TIME_MS,
@@ -147,7 +131,7 @@ public class ZookeeperConfig {
 
     casMaxRetries =
         getInt(
-            lazyZkConfig,
+            zkConfig,
             SECTION,
             SUBSECTION,
             KEY_CAS_RETRY_POLICY_MAX_RETRIES,
@@ -155,7 +139,7 @@ public class ZookeeperConfig {
 
     transactionLockTimeOut =
         getLong(
-            lazyZkConfig,
+            zkConfig,
             SECTION,
             SUBSECTION,
             TRANSACTION_LOCK_TIMEOUT_KEY,
@@ -189,14 +173,10 @@ public class ZookeeperConfig {
     return new BoundedExponentialBackoffRetry(casBaseSleepTimeMs, casMaxSleepTimeMs, casMaxRetries);
   }
 
-  private static FileBasedConfig getConfigFile(SitePaths sitePaths, String configFileName) {
-    return new FileBasedConfig(sitePaths.etc_dir.resolve(configFileName).toFile(), FS.DETECTED);
-  }
-
   private long getLong(
-      Supplier<Config> cfg, String section, String subSection, String name, long defaultValue) {
+      Config cfg, String section, String subSection, String name, long defaultValue) {
     try {
-      return cfg.get().getLong(section, subSection, name, defaultValue);
+      return cfg.getLong(section, subSection, name, defaultValue);
     } catch (IllegalArgumentException e) {
       log.error("invalid value for {}; using default value {}", name, defaultValue);
       log.debug("Failed to retrieve long value: {}", e.getMessage(), e);
@@ -204,10 +184,9 @@ public class ZookeeperConfig {
     }
   }
 
-  private int getInt(
-      Supplier<Config> cfg, String section, String subSection, String name, int defaultValue) {
+  private int getInt(Config cfg, String section, String subSection, String name, int defaultValue) {
     try {
-      return cfg.get().getInt(section, subSection, name, defaultValue);
+      return cfg.getInt(section, subSection, name, defaultValue);
     } catch (IllegalArgumentException e) {
       log.error("invalid value for {}; using default value {}", name, defaultValue);
       log.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
@@ -215,27 +194,9 @@ public class ZookeeperConfig {
     }
   }
 
-  private Supplier<Config> lazyLoad(Config config) {
-    if (config instanceof FileBasedConfig) {
-      return memoize(
-          () -> {
-            FileBasedConfig fileConfig = (FileBasedConfig) config;
-            String fileConfigFileName = fileConfig.getFile().getPath();
-            try {
-              log.info("Loading configuration from {}", fileConfigFileName);
-              fileConfig.load();
-            } catch (IOException | ConfigInvalidException e) {
-              log.error("Unable to load configuration from " + fileConfigFileName, e);
-            }
-            return fileConfig;
-          });
-    }
-    return ofInstance(config);
-  }
-
   private String getString(
-      Supplier<Config> cfg, String section, String subsection, String name, String defaultValue) {
-    String value = cfg.get().getString(section, subsection, name);
+      Config cfg, String section, String subsection, String name, String defaultValue) {
+    String value = cfg.getString(section, subsection, name);
     if (!Strings.isNullOrEmpty(value)) {
       return value;
     }
