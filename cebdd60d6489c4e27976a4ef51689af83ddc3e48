@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "d5a06eb3_1d9fe514",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-09T09:30:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1f25576_302d585e",
+      "revId": "cebdd60d6489c4e27976a4ef51689af83ddc3e48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "866e794d_22ff6922",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "cebdd60d6489c4e27976a4ef51689af83ddc3e48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98a8a793_efae2a6f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-09T09:30:32Z",
+      "side": 1,
+      "message": "It\u0027s still used by shared-refdb. In this change I will move it to SharedRefDatabase class and we can remove it in a separate change",
+      "parentUuid": "866e794d_22ff6922",
+      "revId": "cebdd60d6489c4e27976a4ef51689af83ddc3e48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
