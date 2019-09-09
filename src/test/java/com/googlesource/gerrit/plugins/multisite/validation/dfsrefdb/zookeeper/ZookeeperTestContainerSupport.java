@@ -16,7 +16,10 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase.pathFor;
 import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase.writeObjectId;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.googlesource.gerrit.plugins.multisite.ZookeeperConfig;
 import org.apache.curator.framework.CuratorFramework;
 import org.eclipse.jgit.lib.Config;
@@ -64,7 +67,10 @@ public class ZookeeperTestContainerSupport {
         ZookeeperConfig.KEY_CONNECT_STRING,
         connectString);
 
-    configuration = new ZookeeperConfig(sharedRefDbConfig);
+    PluginConfigFactory cfgFactory = mock(PluginConfigFactory.class);
+    when(cfgFactory.getGlobalPluginConfig("multi-site")).thenReturn(sharedRefDbConfig);
+
+    configuration = new ZookeeperConfig(cfgFactory, "multi-site");
     this.curator = configuration.buildCurator();
   }
 

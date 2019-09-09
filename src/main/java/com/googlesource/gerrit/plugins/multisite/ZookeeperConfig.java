@@ -18,11 +18,13 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Suppliers.ofInstance;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
+import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.io.IOException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.curator.RetryPolicy;
@@ -36,6 +38,7 @@ import org.eclipse.jgit.util.FS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 public class ZookeeperConfig {
   private static final Logger log = LoggerFactory.getLogger(ZookeeperConfig.class);
   public static final int defaultSessionTimeoutMs;
@@ -85,13 +88,8 @@ public class ZookeeperConfig {
   private CuratorFramework build;
 
   @Inject
-  ZookeeperConfig(SitePaths sitePaths) {
-    this(getConfigFile(sitePaths, Configuration.MULTI_SITE_CONFIG));
-  }
-
-  @VisibleForTesting
-  public ZookeeperConfig(Config zkCfg) {
-    Supplier<Config> lazyZkConfig = lazyLoad(zkCfg);
+  public ZookeeperConfig(PluginConfigFactory cfgFactory, @PluginName String pluginName) {
+    Supplier<Config> lazyZkConfig = lazyLoad(cfgFactory.getGlobalPluginConfig(pluginName));
     connectionString =
         getString(lazyZkConfig, SECTION, SUBSECTION, KEY_CONNECT_STRING, DEFAULT_ZK_CONNECT);
     root = getString(lazyZkConfig, SECTION, SUBSECTION, KEY_ROOT_NODE, "gerrit/multi-site");
