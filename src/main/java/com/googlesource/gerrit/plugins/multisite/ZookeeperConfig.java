@@ -18,11 +18,12 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Suppliers.ofInstance;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
-import com.google.gerrit.server.config.SitePaths;
+import com.google.gerrit.extensions.annotations.PluginName;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.io.IOException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.curator.RetryPolicy;
@@ -32,10 +33,10 @@ import org.apache.curator.retry.BoundedExponentialBackoffRetry;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
-import org.eclipse.jgit.util.FS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 public class ZookeeperConfig {
   private static final Logger log = LoggerFactory.getLogger(ZookeeperConfig.class);
   public static final int defaultSessionTimeoutMs;
@@ -85,13 +86,8 @@ public class ZookeeperConfig {
   private CuratorFramework build;
 
   @Inject
-  ZookeeperConfig(SitePaths sitePaths) {
-    this(getConfigFile(sitePaths, Configuration.MULTI_SITE_CONFIG));
-  }
-
-  @VisibleForTesting
-  public ZookeeperConfig(Config zkCfg) {
-    Supplier<Config> lazyZkConfig = lazyLoad(zkCfg);
+  public ZookeeperConfig(PluginConfigFactory cfgFactory, @PluginName String pluginName) {
+    Supplier<Config> lazyZkConfig = lazyLoad(cfgFactory.getGlobalPluginConfig(pluginName));
     connectionString =
         getString(lazyZkConfig, SECTION, SUBSECTION, KEY_CONNECT_STRING, DEFAULT_ZK_CONNECT);
     root = getString(lazyZkConfig, SECTION, SUBSECTION, KEY_ROOT_NODE, "gerrit/multi-site");
@@ -187,10 +183,6 @@ public class ZookeeperConfig {
 
   public RetryPolicy buildCasRetryPolicy() {
     return new BoundedExponentialBackoffRetry(casBaseSleepTimeMs, casMaxSleepTimeMs, casMaxRetries);
-  }
-
-  private static FileBasedConfig getConfigFile(SitePaths sitePaths, String configFileName) {
-    return new FileBasedConfig(sitePaths.etc_dir.resolve(configFileName).toFile(), FS.DETECTED);
   }
 
   private long getLong(
