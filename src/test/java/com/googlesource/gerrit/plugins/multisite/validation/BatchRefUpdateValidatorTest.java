@@ -14,27 +14,24 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import static junit.framework.TestCase.assertFalse;
 import static org.eclipse.jgit.transport.ReceiveCommand.Type.UPDATE;
 
-import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
-import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.metrics.DisabledMetricMaker;
+import com.google.gerrit.reviewdb.client.Project;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZookeeperTestContainerSupport;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.curator.retry.RetryNTimes;
 import org.eclipse.jgit.internal.storage.file.RefDirectory;
 import org.eclipse.jgit.junit.LocalDiskRepositoryTestCase;
 import org.eclipse.jgit.junit.TestRepository;
 import org.eclipse.jgit.lib.BatchRefUpdate;
 import org.eclipse.jgit.lib.NullProgressMonitor;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -43,7 +40,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase implements RefFixture {
   @Rule public TestName nameRule = new TestName();
 
@@ -53,15 +55,13 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
   private RevCommit A;
   private RevCommit B;
 
-  ZookeeperTestContainerSupport zookeeperContainer;
-  SharedRefDatabaseWrapper zkSharedRefDatabase;
+  @Mock SharedRefDatabaseWrapper sharedRefDatabase;
 
   @Before
   public void setup() throws Exception {
     super.setUp();
 
     gitRepoSetup();
-    zookeeperAndPolicyEnforcementSetup();
   }
 
   private void gitRepoSetup() throws Exception {
@@ -70,24 +70,6 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
     repo = new TestRepository<>(diskRepo);
     A = repo.commit().create();
     B = repo.commit(repo.getRevWalk().parseCommit(A));
-  }
-
-  private void zookeeperAndPolicyEnforcementSetup() {
-    zookeeperContainer = new ZookeeperTestContainerSupport(false);
-    int SLEEP_BETWEEN_RETRIES_MS = 30;
-    long TRANSACTION_LOCK_TIMEOUT = 1000l;
-    int NUMBER_OF_RETRIES = 5;
-
-    zkSharedRefDatabase =
-        new SharedRefDatabaseWrapper(
-            DynamicItem.itemOf(
-                GlobalRefDatabase.class,
-                new ZkSharedRefDatabase(
-                    zookeeperContainer.getCurator(),
-                    new ZkConnectionConfig(
-                        new RetryNTimes(NUMBER_OF_RETRIES, SLEEP_BETWEEN_RETRIES_MS),
-                        TRANSACTION_LOCK_TIMEOUT))),
-            new DisabledSharedRefLogger());
   }
 
   @Test
@@ -102,7 +84,11 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
     BatchRefUpdateValidator.executeBatchUpdateWithValidation(
         batchRefUpdate, () -> execute(batchRefUpdate));
 
-    assertFalse(zkSharedRefDatabase.exists(A_TEST_PROJECT_NAME_KEY, AN_IMMUTABLE_REF));
+    Mockito.verify(sharedRefDatabase, Mockito.never())
+        .compareAndPut(
+            Mockito.any(Project.NameKey.class),
+            Mockito.any(Ref.class),
+            Mockito.any(ObjectId.class));
   }
 
   @Test
@@ -116,7 +102,8 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
     BatchRefUpdateValidator.executeBatchUpdateWithValidation(
         batchRefUpdate, () -> execute(batchRefUpdate));
 
-    assertFalse(zkSharedRefDatabase.exists(A_TEST_PROJECT_NAME_KEY, DRAFT_COMMENT));
+    Mockito.verify(sharedRefDatabase, Mockito.never())
+        .compareAndPut(A_TEST_PROJECT_NAME_KEY, newRef(DRAFT_COMMENT, A.getId()), B.getId());
   }
 
   private BatchRefUpdateValidator newDefaultValidator(String projectName) {
@@ -126,7 +113,7 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
   private BatchRefUpdateValidator getRefValidatorForEnforcement(
       String projectName, SharedRefEnforcement sharedRefEnforcement) {
     return new BatchRefUpdateValidator(
-        zkSharedRefDatabase,
+        sharedRefDatabase,
         new ValidationMetrics(new DisabledMetricMaker()),
         sharedRefEnforcement,
         new DummyLockWrapper(),
