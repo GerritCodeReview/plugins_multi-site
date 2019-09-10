@@ -399,4 +399,9 @@ public class MultiSiteRepository extends Repository {
   public void autoGC(ProgressMonitor monitor) {
     repository.autoGC(monitor);
   }
+
+  @Override
+  public String getIdentifier() {
+    return repository.getIdentifier();
+  }
 }
