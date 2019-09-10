@@ -328,6 +328,11 @@ else
 	echo "Without the websession-flatfile; user login via haproxy will fail."
 fi
 
+echo "Downloading zookeeper plugin stable 3.0"
+	wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-zookeeper-gh-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/zookeeper/zookeeper.jar \
+	-O $DEPLOYMENT_LOCATION/zookeeper.jar || { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Abort\
+ing"; exit 1; }
+
 if [ "$REPLICATION_TYPE" = "ssh" ];then
 	echo "Using 'SSH' replication type"
 	echo "Make sure ~/.ssh/authorized_keys and ~/.ssh/known_hosts are configured correctly"
@@ -363,6 +368,9 @@ if [ $NEW_INSTALLATION = "true" ]; then
 
 	echo "Copy healthcheck plugin"
 	cp -f $DEPLOYMENT_LOCATION/healthcheck.jar $LOCATION_TEST_SITE_1/plugins/healthcheck.jar
+	
+	echo "Copy zookeeper plugin"
+	cp -f $DEPLOYMENT_LOCATION/zookeeper.jar $LOCATION_TEST_SITE_1/plugins/zookeeper.jar
 
 	echo "Re-indexing"
 	java -jar $DEPLOYMENT_LOCATION/gerrit.war reindex -d $LOCATION_TEST_SITE_1

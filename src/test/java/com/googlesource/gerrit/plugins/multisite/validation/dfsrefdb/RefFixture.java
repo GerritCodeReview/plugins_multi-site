@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
+package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.client.RefNames;

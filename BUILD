@@ -17,11 +17,7 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@curator-client//jar",
-        "@curator-framework//jar",
-        "@curator-recipes//jar",
         "@kafka-client//jar",
-        "@zookeeper//jar",
         "@global-refdb//jar",
         "//plugins/replication",
     ],
@@ -50,11 +46,6 @@ java_library(
         "@kafka-client//jar",
         "@testcontainers-kafka//jar",
         "//lib/testcontainers",
-        "@curator-framework//jar",
-        "@curator-recipes//jar",
-        "@curator-test//jar",
-        "@curator-client//jar",
-        "@zookeeper//jar",
         "@global-refdb//jar",
     ],
 )

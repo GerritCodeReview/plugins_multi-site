@@ -17,7 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.lib.RefUpdate;
 import org.junit.Rule;
