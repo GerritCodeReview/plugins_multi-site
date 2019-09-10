@@ -12,12 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
+package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import org.eclipse.jgit.lib.Ref;
 import org.junit.Test;
