@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
@@ -25,22 +24,14 @@ import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerApi;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerModule;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 
 public class PluginModule extends LifecycleModule {
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-
   private Configuration config;
-  private ZkValidationModule zkValidationModule;
   private KafkaBrokerModule kafkaBrokerModule;
 
   @Inject
-  public PluginModule(
-      Configuration config,
-      ZkValidationModule zkValidationModule,
-      KafkaBrokerModule kafkaBrokerModule) {
+  public PluginModule(Configuration config, KafkaBrokerModule kafkaBrokerModule) {
     this.config = config;
-    this.zkValidationModule = zkValidationModule;
     this.kafkaBrokerModule = kafkaBrokerModule;
   }
 
@@ -48,15 +39,11 @@ public class PluginModule extends LifecycleModule {
   protected void configure() {
     if (config.getSharedRefDb().isEnabled()) {
       listener().to(PluginStartup.class);
-      logger.atInfo().log("Shared ref-db engine: Zookeeper");
-      install(zkValidationModule);
       DynamicSet.bind(binder(), ProjectDeletedListener.class)
           .to(ProjectDeletedSharedDbCleanup.class);
     }
-
     DynamicItem.bind(binder(), BrokerApi.class).to(KafkaBrokerApi.class).in(Scopes.SINGLETON);
     listener().to(KafkaBrokerApi.class);
-
     install(kafkaBrokerModule);
   }
 }
