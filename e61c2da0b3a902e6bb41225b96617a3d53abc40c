@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "db9c7752_edb13b25",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-10T16:18:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfeb91da_434b60be",
+      "range": {
+        "startLine": 9,
+        "startChar": 47,
+        "endLine": 9,
+        "endChar": 58
+      },
+      "revId": "e61c2da0b3a902e6bb41225b96617a3d53abc40c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b297e686_dc2a671c",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ZookeeperConfig.java",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "6deb1d7e_542ad76f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ZookeeperConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-10T16:18:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b297e686_dc2a671c",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 10
+      },
+      "revId": "e61c2da0b3a902e6bb41225b96617a3d53abc40c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "89dd62de_06691235",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ZookeeperConfig.java",
         "patchSetId": 2
@@ -68,6 +116,30 @@
       "revId": "e61c2da0b3a902e6bb41225b96617a3d53abc40c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2ac0664_8640a89a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ZookeeperConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-10T16:18:18Z",
+      "side": 1,
+      "message": "Good catch this was a dead code we were always calling line 225",
+      "parentUuid": "89dd62de_06691235",
+      "range": {
+        "startLine": 211,
+        "startChar": 4,
+        "endLine": 211,
+        "endChar": 42
+      },
+      "revId": "e61c2da0b3a902e6bb41225b96617a3d53abc40c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
