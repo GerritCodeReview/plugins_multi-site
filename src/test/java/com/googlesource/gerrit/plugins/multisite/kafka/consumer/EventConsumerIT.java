@@ -46,7 +46,6 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.GitModule;
 import com.googlesource.gerrit.plugins.multisite.Module;
 import com.googlesource.gerrit.plugins.multisite.PluginModule;
-import com.googlesource.gerrit.plugins.multisite.ZookeeperConfig;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
@@ -57,7 +56,6 @@ import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerModule;
 import com.googlesource.gerrit.plugins.multisite.kafka.KafkaConfiguration;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkValidationModule;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -133,11 +131,8 @@ public class EventConsumerIT extends AbstractDaemonTest {
       PluginConfigFactory cfgFactory = mock(PluginConfigFactory.class);
       when(cfgFactory.getGlobalPluginConfig("multi-site")).thenReturn(config);
 
-      ZookeeperConfig zookeeperConfig = new ZookeeperConfig(cfgFactory, "multi-site");
       this.multiSiteModule = new Module(multiSiteConfig, new TestBrokerModule());
-      this.pluginModule =
-          new PluginModule(
-              multiSiteConfig, new ZkValidationModule(zookeeperConfig), new KafkaBrokerModule());
+      this.pluginModule = new PluginModule(multiSiteConfig, new KafkaBrokerModule());
       this.gitModule = new GitModule(multiSiteConfig);
     }
 
