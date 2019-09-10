@@ -16,7 +16,6 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
