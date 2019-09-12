@@ -16,6 +16,24 @@
       "revId": "027671cba23d72889a336b50a4b9077bd9ee9b88",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ecfc85f2_9fa0fb93",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaConfiguration.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-12T11:51:15Z",
+      "side": 1,
+      "message": "My understating was that we reading the config file when we were using config for the first time see line 118 we are calling load method. Now with the factory we are reading the config file when we call getGlobalPluginConfig so there is no point for lazy loading code",
+      "parentUuid": "b35cafb1_0dafa76f",
+      "revId": "027671cba23d72889a336b50a4b9077bd9ee9b88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
