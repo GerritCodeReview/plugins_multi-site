@@ -22,6 +22,30 @@
       "revId": "7a2a42b7e9ce0b796b7fc30821085f463ee942ad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "43d97795_b3087c41",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-09-12T12:28:44Z",
+      "side": 1,
+      "message": "I think the extraction of the kafka implementation into a separate plugin should be done with no (minimum number of) functional changes, so that the current and the new implementations are the same.\nIf this change is needed at some point (I think it is, because the KafkaProp prefix is counter-intuitive and redundant now), I think it should be done here rather than elsewhere as this will allow to track it as a \"change\" in git.\n\nAre you worried about breaking back-compatibility with the current multi-site.config?",
+      "parentUuid": "575248b6_3bf0b834",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 0
+      },
+      "revId": "7a2a42b7e9ce0b796b7fc30821085f463ee942ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
