@@ -46,6 +46,30 @@
       "revId": "7a2a42b7e9ce0b796b7fc30821085f463ee942ad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e87cb3b5_8031a9a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-09-12T12:35:05Z",
+      "side": 1,
+      "message": "\u003e I think the extraction of the kafka implementation into a separate plugin should be done with no (minimum number of) functional changes, so that the current and the new implementations are the same.\n\nAs a first step yes. Then, the plugin can evolve at its own pace, without any dependency from the multi-site plugin.\n\n\u003e If this change is needed at some point (I think it is, because the KafkaProp prefix is counter-intuitive and redundant now)\n\nSounds good, however, I do not believe this is our priority right now.\nWe do this decoupling NOT because we want to make the Kafka plugin easier or simpler, but rather because we want to have *other* PubSub mechanisms (AWS Kinesis, GCloud PubSub, anything else).\n\n\u003e I think it should be done here rather than elsewhere as this will allow to track it as a \"change\" in git.\n\nI do not see the point of breaking multi-site backward compatibility just for a \"nicer property name\", which is possibly not our focus anyway.\n\n\u003e Are you worried about breaking back-compatibility with the current multi-site.config?\n\nYes, and without a \"good enough\" reason also rather than an unpleasant name.",
+      "parentUuid": "43d97795_b3087c41",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 0
+      },
+      "revId": "7a2a42b7e9ce0b796b7fc30821085f463ee942ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
