@@ -70,6 +70,30 @@
       "revId": "7a2a42b7e9ce0b796b7fc30821085f463ee942ad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40216c45_17483f64",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-09-12T13:07:35Z",
+      "side": 1,
+      "message": "Ok I see your point, let\u0027s not waste anymore time on this and let\u0027s abandon this change.",
+      "parentUuid": "e87cb3b5_8031a9a0",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 0
+      },
+      "revId": "7a2a42b7e9ce0b796b7fc30821085f463ee942ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
