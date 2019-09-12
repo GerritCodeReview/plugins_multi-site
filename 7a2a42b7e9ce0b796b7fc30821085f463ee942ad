@@ -94,6 +94,30 @@
       "revId": "7a2a42b7e9ce0b796b7fc30821085f463ee942ad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8cd2bf3_c7e46511",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-12T13:11:04Z",
+      "side": 1,
+      "message": "I don\u0027t mind to abandon this change here, as Tiago suggested I thought it would be nice to refactor as much as we can before moving this code to a separate plugin. But it\u0027s fine this code is super easy to migrate later to the separate plugin",
+      "parentUuid": "40216c45_17483f64",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 0
+      },
+      "revId": "7a2a42b7e9ce0b796b7fc30821085f463ee942ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
