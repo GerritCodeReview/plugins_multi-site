@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b35cafb1_0dafa76f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/kafka/KafkaConfiguration.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-09-12T11:41:26Z",
+      "side": 1,
+      "message": "out of curiosity, why did we need a lazy loading of configuration before and we don\u0027t need it now anymore?",
+      "revId": "027671cba23d72889a336b50a4b9077bd9ee9b88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
