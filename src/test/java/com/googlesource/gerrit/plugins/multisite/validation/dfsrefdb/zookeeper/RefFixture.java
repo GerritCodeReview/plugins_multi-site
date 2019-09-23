@@ -17,6 +17,8 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.client.RefNames;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectIdRef;
+import org.eclipse.jgit.lib.Ref;
 import org.junit.Ignore;
 
 @Ignore
@@ -40,5 +42,13 @@ public interface RefFixture {
 
   default String testBranch() {
     return "aTestBranch";
+  }
+
+  default Ref newRef(String refName, ObjectId objectId) {
+    return new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, refName, objectId);
+  }
+
+  default Ref nullRef(String refName) {
+    return newRef(refName, ObjectId.zeroId());
   }
 }

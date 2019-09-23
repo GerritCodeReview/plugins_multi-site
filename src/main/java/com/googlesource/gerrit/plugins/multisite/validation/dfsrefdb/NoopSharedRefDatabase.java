@@ -14,30 +14,36 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
+import com.google.gerrit.reviewdb.client.Project.NameKey;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 
-public class NoopSharedRefDatabase implements SharedRefDatabase {
-  @Override
-  public boolean isUpToDate(String project, Ref ref) {
-    return true;
-  }
+public class NoopSharedRefDatabase implements GlobalRefDatabase {
 
   @Override
-  public boolean compareAndPut(String project, Ref currRef, ObjectId newRefValue) {
-    return true;
-  }
-
-  @Override
-  public AutoCloseable lockRef(String project, String refName) {
-    return () -> {};
-  }
-
-  @Override
-  public boolean exists(String project, String refName) {
+  public boolean isUpToDate(NameKey project, Ref ref) throws GlobalRefDbLockException {
     return false;
   }
 
   @Override
-  public void removeProject(String project) {}
+  public boolean compareAndPut(NameKey project, Ref currRef, ObjectId newRefValue)
+      throws GlobalRefDbSystemError {
+    return false;
+  }
+
+  @Override
+  public AutoCloseable lockRef(NameKey project, String refName) throws GlobalRefDbLockException {
+    return () -> {};
+  }
+
+  @Override
+  public boolean exists(NameKey project, String refName) {
+    return false;
+  }
+
+  @Override
+  public void remove(NameKey project) throws GlobalRefDbSystemError {}
 }

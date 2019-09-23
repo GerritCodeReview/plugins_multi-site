@@ -16,12 +16,13 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedLockException;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
@@ -32,7 +33,7 @@ import org.apache.curator.framework.recipes.locks.Locker;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 
-public class ZkSharedRefDatabase implements SharedRefDatabase {
+public class ZkSharedRefDatabase implements GlobalRefDatabase {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final CuratorFramework client;
@@ -48,7 +49,7 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   }
 
   @Override
-  public boolean isUpToDate(String project, Ref ref) throws SharedLockException {
+  public boolean isUpToDate(Project.NameKey project, Ref ref) throws GlobalRefDbLockException {
     if (!exists(project, ref.getName())) {
       return true;
     }
@@ -75,21 +76,22 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
 
       return isUpToDate;
     } catch (Exception e) {
-      throw new SharedLockException(project, ref.getName(), e);
+      throw new GlobalRefDbLockException(project.get(), ref.getName(), e);
     }
   }
 
   @Override
-  public void removeProject(String project) throws IOException {
+  public void remove(Project.NameKey project) throws GlobalRefDbSystemError {
     try {
       client.delete().deletingChildrenIfNeeded().forPath("/" + project);
     } catch (Exception e) {
-      throw new IOException(String.format("Not able to delete project '%s'", project), e);
+      throw new GlobalRefDbSystemError(
+          String.format("Not able to delete project '%s'", project), e);
     }
   }
 
   @Override
-  public boolean exists(String project, String refName) throws ZookeeperRuntimeException {
+  public boolean exists(Project.NameKey project, String refName) throws GlobalRefDbSystemError {
     try {
       return client.checkExists().forPath(pathFor(project, refName)) != null;
     } catch (Exception e) {
@@ -98,25 +100,26 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
   }
 
   @Override
-  public Locker lockRef(String project, String refName) throws SharedLockException {
+  public Locker lockRef(Project.NameKey project, String refName) throws GlobalRefDbLockException {
     InterProcessMutex refPathMutex =
         new InterProcessMutex(client, "/locks" + pathFor(project, refName));
     try {
       return new Locker(refPathMutex, transactionLockTimeOut, MILLISECONDS);
     } catch (Exception e) {
-      throw new SharedLockException(project, refName, e);
+      throw new GlobalRefDbLockException(project.get(), refName, e);
     }
   }
 
   @Override
-  public boolean compareAndPut(String projectName, Ref oldRef, ObjectId newRefValue)
-      throws IOException {
+  public boolean compareAndPut(Project.NameKey projectName, Ref oldRef, ObjectId newRefValue)
+      throws GlobalRefDbSystemError {
 
     final DistributedAtomicValue distributedRefValue =
         new DistributedAtomicValue(client, pathFor(projectName, oldRef), retryPolicy);
 
     try {
-      if (oldRef == NULL_REF) {
+      if ((oldRef.getObjectId() == null || oldRef.getObjectId().equals(ObjectId.zeroId()))
+          && !distributedRefValue.get().succeeded()) {
         return distributedRefValue.initialize(writeObjectId(newRefValue));
       }
       final ObjectId newValue = newRefValue == null ? ObjectId.zeroId() : newRefValue;
@@ -132,20 +135,20 @@ public class ZkSharedRefDatabase implements SharedRefDatabase {
     } catch (Exception e) {
       logger.atWarning().withCause(e).log(
           "Error trying to perform CAS at path %s", pathFor(projectName, oldRef));
-      throw new IOException(
+      throw new GlobalRefDbSystemError(
           String.format("Error trying to perform CAS at path %s", pathFor(projectName, oldRef)), e);
     }
   }
 
-  private boolean refNotInZk(String projectName, Ref oldRef) throws Exception {
+  private boolean refNotInZk(Project.NameKey projectName, Ref oldRef) throws Exception {
     return client.checkExists().forPath(pathFor(projectName, oldRef)) == null;
   }
 
-  static String pathFor(String projectName, Ref oldRef) {
+  static String pathFor(Project.NameKey projectName, Ref oldRef) {
     return pathFor(projectName, oldRef.getName());
   }
 
-  static String pathFor(String projectName, String refName) {
+  static String pathFor(Project.NameKey projectName, String refName) {
     return "/" + projectName + "/" + refName;
   }
 

@@ -17,16 +17,17 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.mock;
 
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
 import com.google.gerrit.extensions.api.changes.NotifyHandling;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.gerrit.reviewdb.client.Project.NameKey;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationMetrics;
 import com.googlesource.gerrit.plugins.multisite.validation.ZkConnectionConfig;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import org.apache.curator.retry.RetryNTimes;
 import org.eclipse.jgit.lib.ObjectId;
@@ -57,7 +58,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
     zkSharedRefDatabase =
         new SharedRefDatabaseWrapper(
             DynamicItem.itemOf(
-                SharedRefDatabase.class,
+                GlobalRefDatabase.class,
                 new ZkSharedRefDatabase(
                     zookeeperContainer.getCurator(),
                     new ZkConnectionConfig(
@@ -77,11 +78,11 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   public void shouldCompareAndPutSuccessfully() throws Exception {
     Ref oldRef = refOf(AN_OBJECT_ID_1);
     Ref newRef = refOf(AN_OBJECT_ID_2);
-    String projectName = A_TEST_PROJECT_NAME;
+    NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
 
-    zookeeperContainer.createRefInZk(projectName, oldRef);
+    zookeeperContainer.createRefInZk(projectNameKey, oldRef);
 
-    assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRef, newRef.getObjectId()))
+    assertThat(zkSharedRefDatabase.compareAndPut(projectNameKey, oldRef, newRef.getObjectId()))
         .isTrue();
   }
 
@@ -89,59 +90,55 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   public void shouldFetchLatestObjectIdInZk() throws Exception {
     Ref oldRef = refOf(AN_OBJECT_ID_1);
     Ref newRef = refOf(AN_OBJECT_ID_2);
-    String projectName = A_TEST_PROJECT_NAME;
+    NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
 
-    zookeeperContainer.createRefInZk(projectName, oldRef);
+    zookeeperContainer.createRefInZk(projectNameKey, oldRef);
 
-    assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRef, newRef.getObjectId()))
+    assertThat(zkSharedRefDatabase.compareAndPut(projectNameKey, oldRef, newRef.getObjectId()))
         .isTrue();
 
-    assertThat(zkSharedRefDatabase.isUpToDate(projectName, newRef)).isTrue();
-    assertThat(zkSharedRefDatabase.isUpToDate(projectName, oldRef)).isFalse();
+    assertThat(zkSharedRefDatabase.isUpToDate(projectNameKey, newRef)).isTrue();
+    assertThat(zkSharedRefDatabase.isUpToDate(projectNameKey, oldRef)).isFalse();
   }
 
   @Test
   public void shouldCompareAndPutWithNullOldRefSuccessfully() throws Exception {
     Ref oldRef = refOf(null);
     Ref newRef = refOf(AN_OBJECT_ID_2);
-    String projectName = A_TEST_PROJECT_NAME;
+    NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
 
-    zookeeperContainer.createRefInZk(projectName, oldRef);
+    zookeeperContainer.createRefInZk(projectNameKey, oldRef);
 
-    assertThat(zkSharedRefDatabase.compareAndPut(projectName, oldRef, newRef.getObjectId()))
+    assertThat(zkSharedRefDatabase.compareAndPut(projectNameKey, oldRef, newRef.getObjectId()))
         .isTrue();
   }
 
   @Test
   public void compareAndPutShouldFailIfTheObjectionHasNotTheExpectedValue() throws Exception {
-    String projectName = A_TEST_PROJECT_NAME;
+    NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
 
     Ref oldRef = refOf(AN_OBJECT_ID_1);
     Ref expectedRef = refOf(AN_OBJECT_ID_2);
 
-    zookeeperContainer.createRefInZk(projectName, oldRef);
+    zookeeperContainer.createRefInZk(projectNameKey, oldRef);
 
-    assertThat(zkSharedRefDatabase.compareAndPut(projectName, expectedRef, AN_OBJECT_ID_3))
+    assertThat(zkSharedRefDatabase.compareAndPut(projectNameKey, expectedRef, AN_OBJECT_ID_3))
         .isFalse();
-  }
-
-  private Ref refOf(ObjectId objectId) {
-    return SharedRefDatabase.newRef(aBranchRef(), objectId);
   }
 
   @Test
   public void removeProjectShouldRemoveTheWholePathInZk() throws Exception {
-    String projectName = A_TEST_PROJECT_NAME;
+    NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
     Ref someRef = refOf(AN_OBJECT_ID_1);
 
-    zookeeperContainer.createRefInZk(projectName, someRef);
+    zookeeperContainer.createRefInZk(projectNameKey, someRef);
 
-    assertThat(zookeeperContainer.readRefValueFromZk(projectName, someRef))
+    assertThat(zookeeperContainer.readRefValueFromZk(projectNameKey, someRef))
         .isEqualTo(AN_OBJECT_ID_1);
 
     assertThat(getNumChildrenForPath("/")).isEqualTo(1);
 
-    zkSharedRefDatabase.removeProject(projectName);
+    zkSharedRefDatabase.remove(projectNameKey);
 
     assertThat(getNumChildrenForPath("/")).isEqualTo(0);
   }
@@ -149,6 +146,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   @Test
   public void aDeleteProjectEventShouldCleanupProjectFromZk() throws Exception {
     String projectName = A_TEST_PROJECT_NAME;
+    NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
     Ref someRef = refOf(AN_OBJECT_ID_1);
     ProjectDeletedSharedDbCleanup projectDeletedSharedDbCleanup =
         new ProjectDeletedSharedDbCleanup(zkSharedRefDatabase, mockValidationMetrics);
@@ -166,7 +164,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
           }
         };
 
-    zookeeperContainer.createRefInZk(projectName, someRef);
+    zookeeperContainer.createRefInZk(projectNameKey, someRef);
 
     assertThat(getNumChildrenForPath("/")).isEqualTo(1);
 
@@ -186,5 +184,9 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
         .checkExists()
         .forPath(String.format(path))
         .getNumChildren();
+  }
+
+  private Ref refOf(ObjectId objectId) {
+    return newRef(aBranchRef(), objectId);
   }
 }

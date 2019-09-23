@@ -14,19 +14,20 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedLockException;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
-import java.io.IOException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 
-public class SharedRefDatabaseWrapper implements SharedRefDatabase {
+public class SharedRefDatabaseWrapper implements GlobalRefDatabase {
 
   @Inject(optional = true)
-  private DynamicItem<SharedRefDatabase> sharedRefDbDynamicItem;
+  private DynamicItem<GlobalRefDatabase> sharedRefDbDynamicItem;
 
   private final SharedRefLogger sharedRefLogger;
 
@@ -37,45 +38,46 @@ public class SharedRefDatabaseWrapper implements SharedRefDatabase {
 
   @VisibleForTesting
   public SharedRefDatabaseWrapper(
-      DynamicItem<SharedRefDatabase> sharedRefDbDynamicItem, SharedRefLogger sharedRefLogger) {
+      DynamicItem<GlobalRefDatabase> sharedRefDbDynamicItem, SharedRefLogger sharedRefLogger) {
     this.sharedRefLogger = sharedRefLogger;
     this.sharedRefDbDynamicItem = sharedRefDbDynamicItem;
   }
 
   @Override
-  public boolean isUpToDate(String project, Ref ref) throws SharedLockException {
+  public boolean isUpToDate(Project.NameKey project, Ref ref) throws GlobalRefDbLockException {
     return sharedRefDb().isUpToDate(project, ref);
   }
 
   @Override
-  public boolean compareAndPut(String project, Ref currRef, ObjectId newRefValue)
-      throws IOException {
+  public boolean compareAndPut(Project.NameKey project, Ref currRef, ObjectId newRefValue)
+      throws GlobalRefDbSystemError {
     boolean succeeded = sharedRefDb().compareAndPut(project, currRef, newRefValue);
     if (succeeded) {
-      sharedRefLogger.logRefUpdate(project, currRef, newRefValue);
+      sharedRefLogger.logRefUpdate(project.get(), currRef, newRefValue);
     }
     return succeeded;
   }
 
   @Override
-  public AutoCloseable lockRef(String project, String refName) throws SharedLockException {
+  public AutoCloseable lockRef(Project.NameKey project, String refName)
+      throws GlobalRefDbLockException {
     AutoCloseable locker = sharedRefDb().lockRef(project, refName);
-    sharedRefLogger.logLockAcquisition(project, refName);
+    sharedRefLogger.logLockAcquisition(project.get(), refName);
     return locker;
   }
 
   @Override
-  public boolean exists(String project, String refName) {
+  public boolean exists(Project.NameKey project, String refName) {
     return sharedRefDb().exists(project, refName);
   }
 
   @Override
-  public void removeProject(String project) throws IOException {
-    sharedRefDb().removeProject(project);
-    sharedRefLogger.logProjectDelete(project);
+  public void remove(Project.NameKey project) throws GlobalRefDbSystemError {
+    sharedRefDb().remove(project);
+    sharedRefLogger.logProjectDelete(project.get());
   }
 
-  private SharedRefDatabase sharedRefDb() {
+  private GlobalRefDatabase sharedRefDb() {
     return sharedRefDbDynamicItem.get();
   }
 }

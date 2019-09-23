@@ -19,7 +19,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.googlesource.gerrit.plugins.multisite.LockWrapper;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
@@ -29,6 +28,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.eclipse.jgit.lib.BatchRefUpdate;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectIdRef;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.transport.ReceiveCommand;
 
@@ -124,7 +125,7 @@ public class BatchRefUpdateValidator extends RefUpdateValidator {
     try {
       switch (command.getType()) {
         case CREATE:
-          return new RefPair(SharedRefDatabase.nullRef(command.getRefName()), getNewRef(command));
+          return new RefPair(nullRef(command.getRefName()), getNewRef(command));
 
         case UPDATE:
         case UPDATE_NONFASTFORWARD:
@@ -154,5 +155,9 @@ public class BatchRefUpdateValidator extends RefUpdateValidator {
       latestRefsToUpdate.add(compareAndGetLatestLocalRef(refPair, locks));
     }
     return latestRefsToUpdate;
+  }
+
+  private static final Ref nullRef(String refName) {
+    return new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, refName, ObjectId.zeroId());
   }
 }

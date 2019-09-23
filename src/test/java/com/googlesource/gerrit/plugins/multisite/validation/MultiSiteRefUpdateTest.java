@@ -65,10 +65,10 @@ public class MultiSiteRefUpdateTest implements RefFixture {
   @Test
   public void newUpdateShouldValidateAndSucceed() throws Exception {
 
-    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, oldRef);
+    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
     doReturn(true)
         .when(sharedRefDb)
-        .compareAndPut(A_TEST_PROJECT_NAME, oldRef, newRef.getObjectId());
+        .compareAndPut(A_TEST_PROJECT_NAME_KEY, oldRef, newRef.getObjectId());
 
     RefUpdate refUpdate = RefUpdateStub.forSuccessfulUpdate(oldRef, newRef.getObjectId());
 
@@ -82,7 +82,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
   @Test(expected = Exception.class)
   public void newUpdateShouldValidateAndFailWithIOException() throws Exception {
 
-    doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, oldRef);
+    doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
 
     RefUpdate refUpdate = RefUpdateStub.forSuccessfulUpdate(oldRef, newRef.getObjectId());
 
@@ -94,7 +94,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
   @Test
   public void newUpdateShouldIncreaseRefUpdateFailureCountWhenFailing() throws IOException {
 
-    doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, oldRef);
+    doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
 
     RefUpdate refUpdate = RefUpdateStub.forSuccessfulUpdate(oldRef, newRef.getObjectId());
 
@@ -113,10 +113,10 @@ public class MultiSiteRefUpdateTest implements RefFixture {
   public void newUpdateShouldNotIncreaseSplitBrainPreventedCounterIfFailingSharedDbPostUpdate()
       throws IOException {
 
-    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, oldRef);
+    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
     doReturn(false)
         .when(sharedRefDb)
-        .compareAndPut(A_TEST_PROJECT_NAME, oldRef, newRef.getObjectId());
+        .compareAndPut(A_TEST_PROJECT_NAME_KEY, oldRef, newRef.getObjectId());
 
     RefUpdate refUpdate = RefUpdateStub.forSuccessfulUpdate(oldRef, newRef.getObjectId());
 
@@ -135,10 +135,10 @@ public class MultiSiteRefUpdateTest implements RefFixture {
   public void newUpdateShouldtIncreaseSplitBrainCounterIfFailingSharedDbPostUpdate()
       throws IOException {
 
-    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, oldRef);
+    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
     doReturn(false)
         .when(sharedRefDb)
-        .compareAndPut(A_TEST_PROJECT_NAME, oldRef, newRef.getObjectId());
+        .compareAndPut(A_TEST_PROJECT_NAME_KEY, oldRef, newRef.getObjectId());
 
     RefUpdate refUpdate = RefUpdateStub.forSuccessfulUpdate(oldRef, newRef.getObjectId());
 
@@ -155,9 +155,11 @@ public class MultiSiteRefUpdateTest implements RefFixture {
 
   @Test
   public void deleteShouldValidateAndSucceed() throws IOException {
-    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, oldRef);
+    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
 
-    doReturn(true).when(sharedRefDb).compareAndPut(A_TEST_PROJECT_NAME, oldRef, ObjectId.zeroId());
+    doReturn(true)
+        .when(sharedRefDb)
+        .compareAndPut(A_TEST_PROJECT_NAME_KEY, oldRef, ObjectId.zeroId());
 
     RefUpdate refUpdate = RefUpdateStub.forSuccessfulDelete(oldRef);
 
@@ -171,7 +173,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
   @Test
   public void deleteShouldIncreaseRefUpdateFailureCountWhenFailing() throws IOException {
 
-    doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, oldRef);
+    doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
 
     RefUpdate refUpdate = RefUpdateStub.forSuccessfulDelete(oldRef);
 

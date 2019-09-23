@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase.newRef;
 
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Configuration.SharedRefDatabase;

@@ -110,13 +110,13 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
     setMockRequiredReturnValues();
 
     // When compareAndPut against sharedDb succeeds
-    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, oldRef);
+    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
     doReturn(true)
         .when(sharedRefDb)
-        .compareAndPut(eq(A_TEST_PROJECT_NAME), refEquals(oldRef), eq(newRef.getObjectId()));
+        .compareAndPut(eq(A_TEST_PROJECT_NAME_KEY), refEquals(oldRef), eq(newRef.getObjectId()));
     multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
     verify(sharedRefDb)
-        .compareAndPut(eq(A_TEST_PROJECT_NAME), refEquals(oldRef), eq(newRef.getObjectId()));
+        .compareAndPut(eq(A_TEST_PROJECT_NAME_KEY), refEquals(oldRef), eq(newRef.getObjectId()));
   }
 
   private Ref refEquals(Ref oldRef) {
@@ -126,8 +126,8 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
   @Test
   public void executeAndFailsWithExceptions() throws IOException {
     setMockRequiredReturnValues();
-    doReturn(true).when(sharedRefDb).exists(A_TEST_PROJECT_NAME, A_TEST_REF_NAME);
-    doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, oldRef);
+    doReturn(true).when(sharedRefDb).exists(A_TEST_PROJECT_NAME_KEY, A_TEST_REF_NAME);
+    doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
     try {
       multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
       fail("Expecting an IOException to be thrown");

@@ -18,6 +18,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Ref.Storage;
 import org.junit.Rule;
@@ -38,7 +39,7 @@ public class RefSharedDatabaseTest implements RefFixture {
     ObjectId objectId = AN_OBJECT_ID_1;
     String refName = aBranchRef();
 
-    Ref aNewRef = SharedRefDatabase.newRef(refName, objectId);
+    Ref aNewRef = new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, refName, objectId);
 
     assertThat(aNewRef.getName()).isEqualTo(refName);
     assertThat(aNewRef.getObjectId()).isEqualTo(objectId);

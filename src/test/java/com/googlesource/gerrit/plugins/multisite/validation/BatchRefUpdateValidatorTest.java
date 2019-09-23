@@ -18,11 +18,12 @@ import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.assertFalse;
 import static org.eclipse.jgit.transport.ReceiveCommand.Type.UPDATE;
 
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.metrics.DisabledMetricMaker;
+import com.google.gerrit.reviewdb.client.Project;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase;
@@ -83,7 +84,7 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
     zkSharedRefDatabase =
         new SharedRefDatabaseWrapper(
             DynamicItem.itemOf(
-                SharedRefDatabase.class,
+                GlobalRefDatabase.class,
                 new ZkSharedRefDatabase(
                     zookeeperContainer.getCurator(),
                     new ZkConnectionConfig(
@@ -104,13 +105,14 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
     BatchRefUpdateValidator.executeBatchUpdateWithValidation(
         batchRefUpdate, () -> execute(batchRefUpdate));
 
-    assertFalse(zkSharedRefDatabase.exists(A_TEST_PROJECT_NAME, AN_IMMUTABLE_REF));
+    assertFalse(zkSharedRefDatabase.exists(A_TEST_PROJECT_NAME_KEY, AN_IMMUTABLE_REF));
   }
 
   @Test
   public void compareAndPutShouldSucceedIfTheObjectionHasNotTheExpectedValueWithDesiredEnforcement()
       throws Exception {
     String projectName = "All-Users";
+    Project.NameKey projectNameKey = new Project.NameKey("All-Users");
     String externalIds = "refs/meta/external-ids";
 
     List<ReceiveCommand> cmds = Arrays.asList(new ReceiveCommand(A, B, externalIds, UPDATE));
@@ -118,13 +120,13 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
     BatchRefUpdate batchRefUpdate = newBatchUpdate(cmds);
     BatchRefUpdateValidator batchRefUpdateValidator = newDefaultValidator(projectName);
 
-    Ref zkExistingRef = SharedRefDatabase.newRef(externalIds, B.getId());
-    zookeeperContainer.createRefInZk(projectName, zkExistingRef);
+    Ref zkExistingRef = newRef(externalIds, B.getId());
+    zookeeperContainer.createRefInZk(projectNameKey, zkExistingRef);
 
     batchRefUpdateValidator.executeBatchUpdateWithValidation(
         batchRefUpdate, () -> execute(batchRefUpdate));
 
-    assertThat(zookeeperContainer.readRefValueFromZk(projectName, zkExistingRef)).isEqualTo(B);
+    assertThat(zookeeperContainer.readRefValueFromZk(projectNameKey, zkExistingRef)).isEqualTo(B);
   }
 
   @Test
@@ -138,7 +140,7 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
     BatchRefUpdateValidator.executeBatchUpdateWithValidation(
         batchRefUpdate, () -> execute(batchRefUpdate));
 
-    assertFalse(zkSharedRefDatabase.exists(A_TEST_PROJECT_NAME, DRAFT_COMMENT));
+    assertFalse(zkSharedRefDatabase.exists(A_TEST_PROJECT_NAME_KEY, DRAFT_COMMENT));
   }
 
   private BatchRefUpdateValidator newDefaultValidator(String projectName) {

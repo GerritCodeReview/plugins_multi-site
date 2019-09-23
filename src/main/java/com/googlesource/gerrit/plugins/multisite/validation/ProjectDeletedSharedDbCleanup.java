@@ -14,11 +14,12 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
-import java.io.IOException;
 
 public class ProjectDeletedSharedDbCleanup implements ProjectDeletedListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -41,8 +42,8 @@ public class ProjectDeletedSharedDbCleanup implements ProjectDeletedListener {
         "Deleting project '%s'. Will perform a cleanup in Shared-Ref database.", projectName);
 
     try {
-      sharedDb.removeProject(projectName);
-    } catch (IOException e) {
+      sharedDb.remove(new Project.NameKey(projectName));
+    } catch (GlobalRefDbSystemError e) {
       validationMetrics.incrementSplitBrain();
       logger.atSevere().withCause(e).log(
           "Project '%s' deleted from GIT but it was not able to cleanup"

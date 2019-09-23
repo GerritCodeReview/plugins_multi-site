@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
@@ -33,7 +34,6 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.NoopSharedRefDatabase;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -64,8 +64,8 @@ public class Module extends LifecycleModule {
       throw new CreationException(validationErrors);
     }
 
-    DynamicItem.itemOf(binder(), SharedRefDatabase.class);
-    DynamicItem.bind(binder(), SharedRefDatabase.class)
+    DynamicItem.itemOf(binder(), GlobalRefDatabase.class);
+    DynamicItem.bind(binder(), GlobalRefDatabase.class)
         .to(NoopSharedRefDatabase.class)
         .in(Scopes.SINGLETON);
     log.info("Shared ref-db engine: none");

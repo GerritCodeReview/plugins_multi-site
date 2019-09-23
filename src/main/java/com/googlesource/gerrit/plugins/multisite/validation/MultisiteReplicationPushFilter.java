@@ -14,16 +14,18 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedLockException;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.eclipse.jgit.lib.ObjectIdRef;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,13 +54,15 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
                   String ref = refUpdate.getSrcRef();
                   try {
                     if (sharedRefDb.isUpToDate(
-                        projectName, SharedRefDatabase.newRef(ref, refUpdate.getNewObjectId()))) {
+                        new Project.NameKey(projectName),
+                        new ObjectIdRef.Unpeeled(
+                            Ref.Storage.NETWORK, ref, refUpdate.getNewObjectId()))) {
                       return true;
                     }
                     repLog.warn(
                         "{} is not up-to-date with the shared-refdb and thus will NOT BE replicated",
                         refUpdate);
-                  } catch (SharedLockException e) {
+                  } catch (GlobalRefDbLockException e) {
                     repLog.warn(
                         "{} is locked on shared-refdb and thus will NOT BE replicated", refUpdate);
                   }
