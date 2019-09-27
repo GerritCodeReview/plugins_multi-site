@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c202b196_af61cf25",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidatorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-09-27T15:29:42Z",
+      "side": 1,
+      "message": "I need some help with this test I\u0027m not sure if it is correct, maybe I\u0027m not seeing something",
+      "range": {
+        "startLine": 112,
+        "startChar": 4,
+        "endLine": 112,
+        "endChar": 93
+      },
+      "revId": "ca867336e8e555fb7bfff3acddb3a6b467ff2e75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
