@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "8e5f19b1_587654d0",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidatorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2019-10-01T08:01:03Z",
+      "side": 1,
+      "message": "We want to test interaction with sharedRefDatabase and we want to simulate behaviour of sharedRefDatabase. It is possible to do in with NoOp implementation but is going to be more complex and harder to understand, specially when we want to check if there was no interaction with sharedRefDatabase. But the biggesto problem is the my following comment I need some review if the test which is failing have any sense if to doesn\u0027t I will remove it and clean up this code",
+      "parentUuid": "3e015e23_3289b4b9",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 41
+      },
+      "revId": "ca867336e8e555fb7bfff3acddb3a6b467ff2e75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c202b196_af61cf25",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidatorTest.java",
         "patchSetId": 2
