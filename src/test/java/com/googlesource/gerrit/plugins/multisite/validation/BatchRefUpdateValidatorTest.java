@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.assertFalse;
 import static org.eclipse.jgit.transport.ReceiveCommand.Type.UPDATE;
 
@@ -36,7 +35,6 @@ import org.eclipse.jgit.junit.LocalDiskRepositoryTestCase;
 import org.eclipse.jgit.junit.TestRepository;
 import org.eclipse.jgit.lib.BatchRefUpdate;
 import org.eclipse.jgit.lib.NullProgressMonitor;
-import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -105,26 +103,6 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
         batchRefUpdate, () -> execute(batchRefUpdate));
 
     assertFalse(zkSharedRefDatabase.exists(A_TEST_PROJECT_NAME, AN_IMMUTABLE_REF));
-  }
-
-  @Test
-  public void compareAndPutShouldSucceedIfTheObjectionHasNotTheExpectedValueWithDesiredEnforcement()
-      throws Exception {
-    String projectName = "All-Users";
-    String externalIds = "refs/meta/external-ids";
-
-    List<ReceiveCommand> cmds = Arrays.asList(new ReceiveCommand(A, B, externalIds, UPDATE));
-
-    BatchRefUpdate batchRefUpdate = newBatchUpdate(cmds);
-    BatchRefUpdateValidator batchRefUpdateValidator = newDefaultValidator(projectName);
-
-    Ref zkExistingRef = SharedRefDatabase.newRef(externalIds, B.getId());
-    zookeeperContainer.createRefInZk(projectName, zkExistingRef);
-
-    batchRefUpdateValidator.executeBatchUpdateWithValidation(
-        batchRefUpdate, () -> execute(batchRefUpdate));
-
-    assertThat(zookeeperContainer.readRefValueFromZk(projectName, zkExistingRef)).isEqualTo(B);
   }
 
   @Test
