@@ -72,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "1624a4a4_bec19855",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidatorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2019-10-01T09:31:43Z",
+      "side": 1,
+      "message": "I\u0027ll try to have a look @marcin",
+      "parentUuid": "8e5f19b1_587654d0",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 41
+      },
+      "revId": "ca867336e8e555fb7bfff3acddb3a6b467ff2e75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c202b196_af61cf25",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidatorTest.java",
         "patchSetId": 2
