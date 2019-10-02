@@ -14,10 +14,10 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase.nullRef;
-
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
 import com.google.common.base.MoreObjects;
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.googlesource.gerrit.plugins.multisite.LockWrapper;
@@ -25,12 +25,12 @@ import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.OutOfSyncException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedDbSplitBrainException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedLockException;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
 import java.util.HashMap;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.lib.RefUpdate;
@@ -144,8 +144,10 @@ public class RefUpdateValidator {
             projectName, refPair.getName(), refPair.putValue);
     boolean succeeded;
     try {
-      succeeded = sharedRefDb.compareAndPut(projectName, refPair.compareRef, refPair.putValue);
-    } catch (IOException e) {
+      succeeded =
+          sharedRefDb.compareAndPut(
+               Project.nameKey(projectName), refPair.compareRef, refPair.putValue);
+    } catch (GlobalRefDbSystemError e) {
       throw new SharedDbSplitBrainException(errorMessage, e);
     }
 
@@ -166,14 +168,17 @@ public class RefUpdateValidator {
         String.format("%s-%s", projectName, refName),
         () ->
             lockWrapperFactory.create(
-                projectName, refName, sharedRefDb.lockRef(projectName, refName)));
+                projectName,
+                refName,
+                sharedRefDb.lockRef(Project.nameKey(projectName), refName)));
 
     RefPair latestRefPair = getLatestLocalRef(refPair);
-    if (sharedRefDb.isUpToDate(projectName, latestRefPair.compareRef)) {
+    if (sharedRefDb.isUpToDate(Project.nameKey(projectName), latestRefPair.compareRef)) {
       return latestRefPair;
     }
 
-    if (isNullRef(latestRefPair.compareRef) || sharedRefDb.exists(projectName, refName)) {
+    if (isNullRef(latestRefPair.compareRef)
+        || sharedRefDb.exists(Project.nameKey(projectName), refName)) {
       validationMetrics.incrementSplitBrainPrevention();
 
       softFailBasedOnEnforcement(
@@ -191,6 +196,10 @@ public class RefUpdateValidator {
     Ref latestRef = refDb.exactRef(refPair.getName());
     return new RefPair(
         latestRef == null ? nullRef(refPair.getName()) : latestRef, refPair.putValue);
+  }
+
+  private Ref nullRef(String name) {
+    return new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, name, ObjectId.zeroId());
   }
 
   protected boolean isSuccessful(RefUpdate.Result result) {
@@ -219,7 +228,7 @@ public class RefUpdateValidator {
   }
 
   protected Ref getCurrentRef(String refName) throws IOException {
-    return MoreObjects.firstNonNull(refDb.getRef(refName), SharedRefDatabase.nullRef(refName));
+    return MoreObjects.firstNonNull(refDb.getRef(refName), nullRef(refName));
   }
 
   public static class CloseableSet<T extends AutoCloseable> implements AutoCloseable {

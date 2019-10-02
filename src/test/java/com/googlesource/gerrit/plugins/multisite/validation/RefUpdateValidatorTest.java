@@ -16,20 +16,18 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
+import com.google.gerrit.reviewdb.client.Project;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.OutOfSyncException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedDbSplitBrainException;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
 import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.lib.RefUpdate;
@@ -86,15 +84,18 @@ public class RefUpdateValidatorTest implements RefFixture {
 
   @Test
   public void validationShouldSucceedWhenLocalRefDbIsUpToDate() throws Exception {
-    lenient().doReturn(false).when(sharedRefDb).isUpToDate(anyString(), any(Ref.class));
-    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, localRef);
     lenient()
         .doReturn(false)
         .when(sharedRefDb)
-        .compareAndPut(anyString(), any(Ref.class), any(ObjectId.class));
+        .isUpToDate(any(Project.NameKey.class), any(Ref.class));
+    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, localRef);
+    lenient()
+        .doReturn(false)
+        .when(sharedRefDb)
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
     doReturn(true)
         .when(sharedRefDb)
-        .compareAndPut(A_TEST_PROJECT_NAME, localRef, newUpdateRef.getObjectId());
+        .compareAndPut(A_TEST_PROJECT_NAME_KEY, localRef, newUpdateRef.getObjectId());
 
     Result result = refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
 
@@ -104,14 +105,14 @@ public class RefUpdateValidatorTest implements RefFixture {
   @Test
   public void sharedRefDbShouldBeUpdatedWithRefDeleted() throws Exception {
     doReturn(ObjectId.zeroId()).when(refUpdate).getNewObjectId();
-    doReturn(true).when(sharedRefDb).isUpToDate(anyString(), any(Ref.class));
+    doReturn(true).when(sharedRefDb).isUpToDate(any(Project.NameKey.class), any(Ref.class));
     lenient()
         .doReturn(false)
         .when(sharedRefDb)
-        .compareAndPut(anyString(), any(Ref.class), any(ObjectId.class));
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
     doReturn(true)
         .when(sharedRefDb)
-        .compareAndPut(A_TEST_PROJECT_NAME, localRef, ObjectId.zeroId());
+        .compareAndPut(A_TEST_PROJECT_NAME_KEY, localRef, ObjectId.zeroId());
     doReturn(localRef).doReturn(null).when(localRefDb).getRef(refName);
 
     Result result = refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.FORCED);
@@ -121,16 +122,16 @@ public class RefUpdateValidatorTest implements RefFixture {
 
   @Test
   public void sharedRefDbShouldBeUpdatedWithNewRefCreated() throws Exception {
-    Ref localNullRef = SharedRefDatabase.nullRef(refName);
+    Ref localNullRef = nullRef(refName);
 
-    doReturn(true).when(sharedRefDb).isUpToDate(anyString(), any(Ref.class));
+    doReturn(true).when(sharedRefDb).isUpToDate(any(Project.NameKey.class), any(Ref.class));
     lenient()
         .doReturn(false)
         .when(sharedRefDb)
-        .compareAndPut(anyString(), any(Ref.class), any(ObjectId.class));
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
     doReturn(true)
         .when(sharedRefDb)
-        .compareAndPut(A_TEST_PROJECT_NAME, localNullRef, newUpdateRef.getObjectId());
+        .compareAndPut(A_TEST_PROJECT_NAME_KEY, localNullRef, newUpdateRef.getObjectId());
     doReturn(localNullRef).doReturn(newUpdateRef).when(localRefDb).getRef(refName);
 
     Result result = refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
@@ -140,9 +141,12 @@ public class RefUpdateValidatorTest implements RefFixture {
 
   @Test(expected = OutOfSyncException.class)
   public void validationShouldFailWhenLocalRefDbIsNotUpToDate() throws Exception {
-    lenient().doReturn(true).when(sharedRefDb).isUpToDate(anyString(), any(Ref.class));
-    doReturn(true).when(sharedRefDb).exists(A_TEST_PROJECT_NAME, refName);
-    doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, localRef);
+    lenient()
+        .doReturn(true)
+        .when(sharedRefDb)
+        .isUpToDate(any(Project.NameKey.class), any(Ref.class));
+    doReturn(true).when(sharedRefDb).exists(A_TEST_PROJECT_NAME_KEY, refName);
+    doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, localRef);
 
     refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
   }
@@ -150,32 +154,35 @@ public class RefUpdateValidatorTest implements RefFixture {
   @Test(expected = SharedDbSplitBrainException.class)
   public void shouldTrowSplitBrainWhenLocalRefDbIsUpToDateButFinalCompareAndPutIsFailing()
       throws Exception {
-    lenient().doReturn(false).when(sharedRefDb).isUpToDate(anyString(), any(Ref.class));
-    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, localRef);
+    lenient()
+        .doReturn(false)
+        .when(sharedRefDb)
+        .isUpToDate(any(Project.NameKey.class), any(Ref.class));
+    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, localRef);
     lenient()
         .doReturn(true)
         .when(sharedRefDb)
-        .compareAndPut(anyString(), any(Ref.class), any(ObjectId.class));
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
     doReturn(false)
         .when(sharedRefDb)
-        .compareAndPut(A_TEST_PROJECT_NAME, localRef, newUpdateRef.getObjectId());
+        .compareAndPut(A_TEST_PROJECT_NAME_KEY, localRef, newUpdateRef.getObjectId());
 
     refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
   }
 
   @Test
   public void shouldNotUpdateSharedRefDbWhenFinalCompareAndPutIsFailing() throws Exception {
-    lenient().doReturn(false).when(sharedRefDb).isUpToDate(anyString(), any(Ref.class));
-    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME, localRef);
+    lenient()
+        .doReturn(false)
+        .when(sharedRefDb)
+        .isUpToDate(any(Project.NameKey.class), any(Ref.class));
+    doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, localRef);
 
     Result result =
         refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.LOCK_FAILURE);
 
-    verify(sharedRefDb, never()).compareAndPut(anyString(), any(Ref.class), any(ObjectId.class));
+    verify(sharedRefDb, never())
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
     assertThat(result).isEqualTo(RefUpdate.Result.LOCK_FAILURE);
-  }
-
-  private Ref newRef(String refName, ObjectId objectId) {
-    return new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, refName, objectId);
   }
 }

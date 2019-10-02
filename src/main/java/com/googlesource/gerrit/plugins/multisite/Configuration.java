@@ -49,7 +49,6 @@ public class Configuration {
   static final String INSTANCE_ID_FILE = "instanceId.data";
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
-  static final String ENABLE_KEY = "enabled";
 
   private static final String REPLICATION_CONFIG = "replication.config";
   // common parameters to cache and index sections
@@ -162,6 +161,7 @@ public class Configuration {
 
   public static class SharedRefDatabase {
     public static final String SECTION = "ref-database";
+    public static final String ENABLE_KEY = "enabled";
     public static final String SUBSECTION_ENFORCEMENT_RULES = "enforcementRules";
 
     private final boolean enabled;

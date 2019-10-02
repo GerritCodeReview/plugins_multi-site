@@ -19,7 +19,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
 import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.reviewdb.client.Project.NameKey;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.MultisiteReplicationPushFilter;
@@ -43,12 +48,13 @@ public class MultisiteReplicationPushFilterTest {
   @Mock SharedRefDatabaseWrapper sharedRefDatabaseMock;
 
   String project = "fooProject";
+  NameKey projectName = Project.nameKey(project);
 
   @Test
   public void shouldReturnAllRefUpdatesWhenAllUpToDate() throws Exception {
     List<RemoteRefUpdate> refUpdates =
         Arrays.asList(refUpdate("refs/heads/foo"), refUpdate("refs/heads/bar"));
-    doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(project), any());
+    doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
 
     MultisiteReplicationPushFilter pushFilter =
         new MultisiteReplicationPushFilter(sharedRefDatabaseMock);
@@ -92,35 +98,37 @@ public class MultisiteReplicationPushFilterTest {
     Set<String> rejectedSet = new HashSet<>();
     rejectedSet.addAll(Arrays.asList(rejectedRefs));
 
-    SharedRefDatabase sharedRefDatabase =
-        new SharedRefDatabase() {
+    GlobalRefDatabase sharedRefDatabase =
+        new GlobalRefDatabase() {
 
           @Override
-          public void removeProject(String project) throws IOException {}
-
-          @Override
-          public AutoCloseable lockRef(String project, String refName) throws SharedLockException {
-            return null;
-          }
-
-          @Override
-          public boolean isUpToDate(String project, Ref ref) throws SharedLockException {
+          public boolean isUpToDate(Project.NameKey project, Ref ref)
+              throws GlobalRefDbLockException {
             return !rejectedSet.contains(ref.getName());
           }
 
           @Override
-          public boolean exists(String project, String refName) {
+          public boolean exists(Project.NameKey project, String refName) {
             return true;
           }
 
           @Override
-          public boolean compareAndPut(String project, Ref currRef, ObjectId newRefValue)
-              throws IOException {
+          public boolean compareAndPut(NameKey project, Ref currRef, ObjectId newRefValue)
+              throws GlobalRefDbSystemError {
             return false;
           }
+
+          @Override
+          public AutoCloseable lockRef(NameKey project, String refName)
+              throws GlobalRefDbLockException {
+            return null;
+          }
+
+          @Override
+          public void remove(NameKey project) throws GlobalRefDbSystemError {}
         };
     return new SharedRefDatabaseWrapper(
-        DynamicItem.itemOf(SharedRefDatabase.class, sharedRefDatabase),
+        DynamicItem.itemOf(GlobalRefDatabase.class, sharedRefDatabase),
         new DisabledSharedRefLogger());
   }
 

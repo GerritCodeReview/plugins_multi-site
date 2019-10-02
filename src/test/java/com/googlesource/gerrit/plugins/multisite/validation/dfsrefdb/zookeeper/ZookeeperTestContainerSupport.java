@@ -16,7 +16,11 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper;
 
 import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase.pathFor;
 import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.ZkSharedRefDatabase.writeObjectId;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.googlesource.gerrit.plugins.multisite.ZookeeperConfig;
 import org.apache.curator.framework.CuratorFramework;
 import org.eclipse.jgit.lib.Config;
@@ -64,7 +68,10 @@ public class ZookeeperTestContainerSupport {
         ZookeeperConfig.KEY_CONNECT_STRING,
         connectString);
 
-    configuration = new ZookeeperConfig(sharedRefDbConfig);
+    PluginConfigFactory cfgFactory = mock(PluginConfigFactory.class);
+    when(cfgFactory.getGlobalPluginConfig("multi-site")).thenReturn(sharedRefDbConfig);
+
+    configuration = new ZookeeperConfig(cfgFactory, "multi-site");
     this.curator = configuration.buildCurator();
   }
 
@@ -73,12 +80,12 @@ public class ZookeeperTestContainerSupport {
     this.container.stop();
   }
 
-  public ObjectId readRefValueFromZk(String projectName, Ref ref) throws Exception {
+  public ObjectId readRefValueFromZk(Project.NameKey projectName, Ref ref) throws Exception {
     final byte[] bytes = curator.getData().forPath(pathFor(projectName, ref));
     return ZkSharedRefDatabase.readObjectId(bytes);
   }
 
-  public void createRefInZk(String projectName, Ref ref) throws Exception {
+  public void createRefInZk(Project.NameKey projectName, Ref ref) throws Exception {
     curator
         .create()
         .creatingParentContainersIfNeeded()

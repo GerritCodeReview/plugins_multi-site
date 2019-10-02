@@ -22,6 +22,7 @@ gerrit_plugin(
         "@curator-recipes//jar",
         "@kafka-client//jar",
         "@zookeeper//jar",
+        "@global-refdb//jar",
         "//plugins/replication",
     ],
 )
@@ -54,5 +55,6 @@ java_library(
         "@curator-test//jar",
         "@curator-client//jar",
         "@zookeeper//jar",
+        "@global-refdb//jar",
     ],
 )

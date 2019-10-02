@@ -16,6 +16,8 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.stream.Collectors.toSet;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.google.gerrit.acceptance.AbstractDaemonTest;
 import com.google.gerrit.acceptance.GerritConfig;
@@ -27,6 +29,7 @@ import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.gerrit.server.data.PatchSetAttribute;
 import com.google.gerrit.server.events.CommentAddedEvent;
@@ -44,6 +47,7 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.GitModule;
 import com.googlesource.gerrit.plugins.multisite.Module;
 import com.googlesource.gerrit.plugins.multisite.PluginModule;
+import com.googlesource.gerrit.plugins.multisite.ZookeeperConfig;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerModule;
@@ -120,18 +124,19 @@ public class EventConsumerIT extends AbstractDaemonTest {
       this.config =
           new FileBasedConfig(
               sitePaths.etc_dir.resolve(Configuration.MULTI_SITE_CONFIG).toFile(), FS.DETECTED);
-      config.setBoolean("kafka", "publisher", "enabled", true);
-      config.setBoolean("kafka", "subscriber", "enabled", true);
       config.setBoolean("ref-database", null, "enabled", false);
       config.save();
 
       Configuration multiSiteConfig = new Configuration(config, new Config());
+
+      PluginConfigFactory cfgFactory = mock(PluginConfigFactory.class);
+      when(cfgFactory.getGlobalPluginConfig("multi-site")).thenReturn(config);
+
+      ZookeeperConfig zookeeperConfig = new ZookeeperConfig(cfgFactory, "multi-site");
       this.multiSiteModule = new Module(multiSiteConfig, new TestBrokerModule());
       this.pluginModule =
           new PluginModule(
-              multiSiteConfig,
-              new ZkValidationModule(multiSiteConfig),
-              new KafkaBrokerModule(new KafkaConfiguration(multiSiteConfig)));
+              multiSiteConfig, new ZkValidationModule(zookeeperConfig), new KafkaBrokerModule());
       this.gitModule = new GitModule(multiSiteConfig);
     }
 
@@ -155,10 +160,14 @@ public class EventConsumerIT extends AbstractDaemonTest {
       KafkaContainer kafkaContainer = new KafkaContainer();
       kafkaContainer.start();
 
-      config.setString("kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
-      config.save();
-      Configuration multiSiteConfig = new Configuration(config, new Config());
-      bind(Configuration.class).toInstance(multiSiteConfig);
+      Config kafkaConfig = new Config();
+      kafkaConfig.setString(
+          "kafka", null, "bootstrapServers", kafkaContainer.getBootstrapServers());
+
+      PluginConfigFactory configFactory = mock(PluginConfigFactory.class);
+      when(configFactory.getGlobalPluginConfig("multi-site")).thenReturn(kafkaConfig);
+      KafkaConfiguration kafkaConfiguration = new KafkaConfiguration(configFactory, "multi-site");
+      bind(KafkaConfiguration.class).toInstance(kafkaConfiguration);
 
       listener().toInstance(new KafkaStopAtShutdown(kafkaContainer));
 
