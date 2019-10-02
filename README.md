@@ -31,7 +31,7 @@ as of the Gerrit Code Review project.
 
 ## How to build
 
-The multi-site plugin is built like any other Gerrit plugin in tree mode, by cloning
+The multi-site plugin can only be built in tree mode, by cloning
 Gerrit and the multi-site plugin code, and checking them out on the desired branch.
 
 Example of cloning Gerrit and multi-site for a stable-2.16 build:

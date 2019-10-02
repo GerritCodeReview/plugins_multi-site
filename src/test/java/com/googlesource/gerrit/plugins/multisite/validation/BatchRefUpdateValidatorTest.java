@@ -14,14 +14,12 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import static com.google.common.truth.Truth.assertThat;
 import static junit.framework.TestCase.assertFalse;
 import static org.eclipse.jgit.transport.ReceiveCommand.Type.UPDATE;
 
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.metrics.DisabledMetricMaker;
-import com.google.gerrit.reviewdb.client.Project;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
@@ -37,7 +35,6 @@ import org.eclipse.jgit.junit.LocalDiskRepositoryTestCase;
 import org.eclipse.jgit.junit.TestRepository;
 import org.eclipse.jgit.lib.BatchRefUpdate;
 import org.eclipse.jgit.lib.NullProgressMonitor;
-import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
@@ -106,27 +103,6 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
         batchRefUpdate, () -> execute(batchRefUpdate));
 
     assertFalse(zkSharedRefDatabase.exists(A_TEST_PROJECT_NAME_KEY, AN_IMMUTABLE_REF));
-  }
-
-  @Test
-  public void compareAndPutShouldSucceedIfTheObjectionHasNotTheExpectedValueWithDesiredEnforcement()
-      throws Exception {
-    String projectName = "All-Users";
-    Project.NameKey projectNameKey = new Project.NameKey("All-Users");
-    String externalIds = "refs/meta/external-ids";
-
-    List<ReceiveCommand> cmds = Arrays.asList(new ReceiveCommand(A, B, externalIds, UPDATE));
-
-    BatchRefUpdate batchRefUpdate = newBatchUpdate(cmds);
-    BatchRefUpdateValidator batchRefUpdateValidator = newDefaultValidator(projectName);
-
-    Ref zkExistingRef = newRef(externalIds, B.getId());
-    zookeeperContainer.createRefInZk(projectNameKey, zkExistingRef);
-
-    batchRefUpdateValidator.executeBatchUpdateWithValidation(
-        batchRefUpdate, () -> execute(batchRefUpdate));
-
-    assertThat(zookeeperContainer.readRefValueFromZk(projectNameKey, zkExistingRef)).isEqualTo(B);
   }
 
   @Test
