@@ -25,13 +25,13 @@ public class NoopSharedRefDatabase implements GlobalRefDatabase {
 
   @Override
   public boolean isUpToDate(NameKey project, Ref ref) throws GlobalRefDbLockException {
-    return false;
+    return true;
   }
 
   @Override
   public boolean compareAndPut(NameKey project, Ref currRef, ObjectId newRefValue)
       throws GlobalRefDbSystemError {
-    return false;
+    return true;
   }
 
   @Override
