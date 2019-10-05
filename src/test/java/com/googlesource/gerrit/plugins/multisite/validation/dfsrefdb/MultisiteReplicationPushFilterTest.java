@@ -24,7 +24,6 @@ import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.reviewdb.client.Project;
-import com.google.gerrit.reviewdb.client.Project.NameKey;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.MultisiteReplicationPushFilter;
@@ -48,7 +47,7 @@ public class MultisiteReplicationPushFilterTest {
   @Mock SharedRefDatabaseWrapper sharedRefDatabaseMock;
 
   String project = "fooProject";
-  NameKey projectName = Project.nameKey(project);
+  Project.NameKey projectName = Project.nameKey(project);
 
   @Test
   public void shouldReturnAllRefUpdatesWhenAllUpToDate() throws Exception {
@@ -113,19 +112,19 @@ public class MultisiteReplicationPushFilterTest {
           }
 
           @Override
-          public boolean compareAndPut(NameKey project, Ref currRef, ObjectId newRefValue)
+          public boolean compareAndPut(Project.NameKey project, Ref currRef, ObjectId newRefValue)
               throws GlobalRefDbSystemError {
             return false;
           }
 
           @Override
-          public AutoCloseable lockRef(NameKey project, String refName)
+          public AutoCloseable lockRef(Project.NameKey project, String refName)
               throws GlobalRefDbLockException {
             return null;
           }
 
           @Override
-          public void remove(NameKey project) throws GlobalRefDbSystemError {}
+          public void remove(Project.NameKey project) throws GlobalRefDbSystemError {}
         };
     return new SharedRefDatabaseWrapper(
         DynamicItem.itemOf(GlobalRefDatabase.class, sharedRefDatabase),

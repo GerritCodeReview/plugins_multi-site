@@ -21,7 +21,7 @@ import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
 import com.google.gerrit.extensions.api.changes.NotifyHandling;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicItem;
-import com.google.gerrit.reviewdb.client.Project.NameKey;
+import com.google.gerrit.reviewdb.client.Project;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
@@ -78,7 +78,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   public void shouldCompareAndPutSuccessfully() throws Exception {
     Ref oldRef = refOf(AN_OBJECT_ID_1);
     Ref newRef = refOf(AN_OBJECT_ID_2);
-    NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
+    Project.NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
 
     zookeeperContainer.createRefInZk(projectNameKey, oldRef);
 
@@ -90,7 +90,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   public void shouldFetchLatestObjectIdInZk() throws Exception {
     Ref oldRef = refOf(AN_OBJECT_ID_1);
     Ref newRef = refOf(AN_OBJECT_ID_2);
-    NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
+    Project.NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
 
     zookeeperContainer.createRefInZk(projectNameKey, oldRef);
 
@@ -105,7 +105,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   public void shouldCompareAndPutWithNullOldRefSuccessfully() throws Exception {
     Ref oldRef = refOf(null);
     Ref newRef = refOf(AN_OBJECT_ID_2);
-    NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
+    Project.NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
 
     zookeeperContainer.createRefInZk(projectNameKey, oldRef);
 
@@ -115,7 +115,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
 
   @Test
   public void compareAndPutShouldFailIfTheObjectionHasNotTheExpectedValue() throws Exception {
-    NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
+    Project.NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
 
     Ref oldRef = refOf(AN_OBJECT_ID_1);
     Ref expectedRef = refOf(AN_OBJECT_ID_2);
@@ -128,7 +128,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
 
   @Test
   public void removeProjectShouldRemoveTheWholePathInZk() throws Exception {
-    NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
+    Project.NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
     Ref someRef = refOf(AN_OBJECT_ID_1);
 
     zookeeperContainer.createRefInZk(projectNameKey, someRef);
@@ -146,7 +146,7 @@ public class ZkSharedRefDatabaseTest implements RefFixture {
   @Test
   public void aDeleteProjectEventShouldCleanupProjectFromZk() throws Exception {
     String projectName = A_TEST_PROJECT_NAME;
-    NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
+    Project.NameKey projectNameKey = A_TEST_PROJECT_NAME_KEY;
     Ref someRef = refOf(AN_OBJECT_ID_1);
     ProjectDeletedSharedDbCleanup projectDeletedSharedDbCleanup =
         new ProjectDeletedSharedDbCleanup(zkSharedRefDatabase, mockValidationMetrics);
