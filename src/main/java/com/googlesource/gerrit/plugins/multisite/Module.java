@@ -14,8 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
+import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;

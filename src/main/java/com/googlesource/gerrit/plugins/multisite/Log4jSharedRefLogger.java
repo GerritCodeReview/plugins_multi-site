@@ -59,8 +59,7 @@ public class Log4jSharedRefLogger extends LibModuleLogFile implements SharedRefL
   @Override
   public void logRefUpdate(String project, Ref currRef, ObjectId newRefValue) {
     if (!ObjectId.zeroId().equals(newRefValue)) {
-      try (Repository repository =
-              gitRepositoryManager.openRepository(Project.nameKey(project));
+      try (Repository repository = gitRepositoryManager.openRepository(Project.nameKey(project));
           RevWalk walk = new RevWalk(repository)) {
         GitPerson committer = null;
         String commitMessage = null;

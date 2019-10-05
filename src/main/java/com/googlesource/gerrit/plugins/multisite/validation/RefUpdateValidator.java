@@ -146,7 +146,7 @@ public class RefUpdateValidator {
     try {
       succeeded =
           sharedRefDb.compareAndPut(
-               Project.nameKey(projectName), refPair.compareRef, refPair.putValue);
+              Project.nameKey(projectName), refPair.compareRef, refPair.putValue);
     } catch (GlobalRefDbSystemError e) {
       throw new SharedDbSplitBrainException(errorMessage, e);
     }
@@ -168,9 +168,7 @@ public class RefUpdateValidator {
         String.format("%s-%s", projectName, refName),
         () ->
             lockWrapperFactory.create(
-                projectName,
-                refName,
-                sharedRefDb.lockRef(Project.nameKey(projectName), refName)));
+                projectName, refName, sharedRefDb.lockRef(Project.nameKey(projectName), refName)));
 
     RefPair latestRefPair = getLatestLocalRef(refPair);
     if (sharedRefDb.isUpToDate(Project.nameKey(projectName), latestRefPair.compareRef)) {
