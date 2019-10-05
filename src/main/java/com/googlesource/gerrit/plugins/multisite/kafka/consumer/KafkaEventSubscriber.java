@@ -16,12 +16,8 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.google.common.flogger.FluentLogger;
-import com.google.gerrit.exceptions.StorageException;
-import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
-import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
