@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "9fa75db4_c0c35788",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidatorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-10-07T20:26:55Z",
+      "side": 1,
+      "message": "Got the description below, ack.",
+      "parentUuid": "bd733f08_0a7292bb",
+      "range": {
+        "startLine": 58,
+        "startChar": 3,
+        "endLine": 58,
+        "endChar": 7
+      },
+      "revId": "ca867336e8e555fb7bfff3acddb3a6b467ff2e75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3e015e23_3289b4b9",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidatorTest.java",
         "patchSetId": 2
@@ -96,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "3923b08e_6e4f1bd6",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidatorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-10-07T20:26:55Z",
+      "side": 1,
+      "message": "The whole code is gone, so I guess this comment is resolved.",
+      "parentUuid": "1624a4a4_bec19855",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 41
+      },
+      "revId": "ca867336e8e555fb7bfff3acddb3a6b467ff2e75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c202b196_af61cf25",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidatorTest.java",
         "patchSetId": 2
@@ -116,6 +164,30 @@
       "revId": "ca867336e8e555fb7bfff3acddb3a6b467ff2e75",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "176e56d5_88fd2b04",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidatorTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-10-07T20:26:55Z",
+      "side": 1,
+      "message": "The whole test is gone.",
+      "parentUuid": "c202b196_af61cf25",
+      "range": {
+        "startLine": 112,
+        "startChar": 4,
+        "endLine": 112,
+        "endChar": 93
+      },
+      "revId": "ca867336e8e555fb7bfff3acddb3a6b467ff2e75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
