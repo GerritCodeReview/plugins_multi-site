@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.broker;
 
+import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;

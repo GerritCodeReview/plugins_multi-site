@@ -19,6 +19,7 @@ gerrit_plugin(
     deps = [
         "@kafka-client//jar",
         "@global-refdb//jar",
+        "@events-broker//jar",
         "//plugins/replication",
     ],
 )
@@ -47,5 +48,6 @@ java_library(
         "@testcontainers-kafka//jar",
         "//lib/testcontainers",
         "@global-refdb//jar",
+        "@events-broker//jar",
     ],
 )

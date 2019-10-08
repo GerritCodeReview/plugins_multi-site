@@ -14,11 +14,11 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
+import com.gerritforge.gerrit.eventbroker.SourceAwareEventWrapper;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
-import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
 import java.util.Map;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;

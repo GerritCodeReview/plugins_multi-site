@@ -14,10 +14,11 @@
 
 package com.googlesource.gerrit.plugins.multisite.broker;
 
+import com.gerritforge.gerrit.eventbroker.BrokerApi;
+import com.gerritforge.gerrit.eventbroker.SourceAwareEventWrapper;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
 import java.util.function.Consumer;
 
 public class BrokerApiWrapper implements BrokerApi {
@@ -46,7 +47,7 @@ public class BrokerApiWrapper implements BrokerApi {
   }
 
   @Override
-  public void receiveAync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer) {
-    apiDelegate.get().receiveAync(topic, eventConsumer);
+  public void receiveAsync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer) {
+    apiDelegate.get().receiveAsync(topic, eventConsumer);
   }
 }

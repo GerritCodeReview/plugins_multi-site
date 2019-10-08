@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.gerritforge.gerrit.eventbroker.BrokerApi;
+import com.gerritforge.gerrit.eventbroker.SourceAwareEventWrapper;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.permissions.PermissionBackendException;
@@ -21,7 +23,6 @@ import com.google.gson.Gson;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
@@ -60,7 +61,7 @@ public abstract class AbstractSubcriber implements Runnable {
 
   @Override
   public void run() {
-    brokerApi.receiveAync(getTopic().topic(), this::processRecord);
+    brokerApi.receiveAsync(getTopic().topic(), this::processRecord);
   }
 
   protected abstract EventTopic getTopic();
