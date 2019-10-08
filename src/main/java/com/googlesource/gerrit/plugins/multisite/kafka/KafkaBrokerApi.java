@@ -14,13 +14,13 @@
 
 package com.googlesource.gerrit.plugins.multisite.kafka;
 
+import com.gerritforge.gerrit.eventbroker.BrokerApi;
+import com.gerritforge.gerrit.eventbroker.SourceAwareEventWrapper;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
 import com.googlesource.gerrit.plugins.multisite.broker.kafka.BrokerPublisher;
-import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.kafka.consumer.KafkaEventSubscriber;
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class KafkaBrokerApi implements BrokerApi, LifecycleListener {
   }
 
   @Override
-  public void receiveAync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer) {
+  public void receiveAsync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer) {
     KafkaEventSubscriber subscriber = subscriberProvider.get();
     synchronized (subscribers) {
       subscribers.add(subscriber);

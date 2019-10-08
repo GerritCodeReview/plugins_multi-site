@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.gerritforge.gerrit.eventbroker.SourceAwareEventWrapper;
+
 public interface DroppedEventListener {
   /**
    * Invoked when any event is dropped.
