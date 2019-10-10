@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
+package com.googlesource.gerrit.plugins.multisite.event;
 
 import static org.mockito.Mockito.verify;
 
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedProjectListUpdateHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.ProjectListUpdateRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEntry;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedCacheEvictionHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.CacheEvictionEventRouter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,21 +27,21 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProjectListUpdateRouterTest {
+public class CacheEvictionEventRouterTest {
 
-  private ProjectListUpdateRouter router;
-  @Mock private ForwardedProjectListUpdateHandler projectListUpdateHandler;
+  private CacheEvictionEventRouter router;
+  @Mock private ForwardedCacheEvictionHandler cacheEvictionHandler;
 
   @Before
   public void setUp() {
-    router = new ProjectListUpdateRouter(projectListUpdateHandler);
+    router = new CacheEvictionEventRouter(cacheEvictionHandler);
   }
 
   @Test
-  public void routerShouldSendEventsToTheAppropriateHandler_ProjectListUpdate() throws Exception {
-    final ProjectListUpdateEvent event = new ProjectListUpdateEvent("project", false);
+  public void routerShouldSendEventsToTheAppropriateHandler_CacheEviction() throws Exception {
+    final CacheEvictionEvent event = new CacheEvictionEvent("cache", "key");
     router.route(event);
 
-    verify(projectListUpdateHandler).update(event);
+    verify(cacheEvictionHandler).evict(CacheEntry.from(event.cacheName, event.key));
   }
 }
