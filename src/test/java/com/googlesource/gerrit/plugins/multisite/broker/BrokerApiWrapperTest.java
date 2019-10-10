@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +19,7 @@ public class BrokerApiWrapperTest {
   @Mock private BrokerMetrics brokerMetrics;
   @Mock private BrokerApi brokerApi;
   @Mock Event event;
+  private String topic = "index";
 
   private BrokerApiWrapper objectUnderTest;
 
@@ -32,14 +32,14 @@ public class BrokerApiWrapperTest {
   @Test
   public void shouldIncrementBrokerMetricCounterWhenMessagePublished() {
     when(brokerApi.send(any(), any())).thenReturn(true);
-    objectUnderTest.send(EventTopic.INDEX_TOPIC.topic(), event);
+    objectUnderTest.send(topic, event);
     verify(brokerMetrics, only()).incrementBrokerPublishedMessage();
   }
 
   @Test
   public void shouldIncrementBrokerFailedMetricCounterWhenMessagePublishingFailed() {
     when(brokerApi.send(any(), any())).thenReturn(false);
-    objectUnderTest.send(EventTopic.INDEX_TOPIC.topic(), event);
+    objectUnderTest.send(topic, event);
     verify(brokerMetrics, only()).incrementBrokerFailedToPublishMessage();
   }
 
@@ -48,7 +48,7 @@ public class BrokerApiWrapperTest {
     when(brokerApi.send(any(), any()))
         .thenThrow(new RuntimeException("Unexpected runtime exception"));
     try {
-      objectUnderTest.send(EventTopic.INDEX_TOPIC.topic(), event);
+      objectUnderTest.send(topic, event);
     } catch (RuntimeException e) {
       // expected
     }

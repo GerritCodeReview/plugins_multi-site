@@ -37,6 +37,6 @@ public class Log4jMessageLogger extends PluginLogFile implements MessageLogger {
 
   @Override
   public void log(Direction direction, SourceAwareEventWrapper event) {
-    msgLog.info("{} Header[{}] Body[{}]", direction, event.getHeader(), event.getBody());
+    msgLog.info("{} {}", direction, event);
   }
 }

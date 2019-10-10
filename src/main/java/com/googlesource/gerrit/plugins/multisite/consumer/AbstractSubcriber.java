@@ -19,12 +19,11 @@ import com.gerritforge.gerrit.eventbroker.SourceAwareEventWrapper;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.permissions.PermissionBackendException;
-import com.google.gson.Gson;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedEventRouter;
@@ -37,31 +36,31 @@ public abstract class AbstractSubcriber implements Runnable {
   private final BrokerApi brokerApi;
   private final ForwardedEventRouter eventRouter;
   private final DynamicSet<DroppedEventListener> droppedEventListeners;
-  private final Gson gson;
   private final UUID instanceId;
   private final MessageLogger msgLog;
   private SubscriberMetrics subscriberMetrics;
+  private final Configuration cfg;
 
   public AbstractSubcriber(
       BrokerApiWrapper brokerApi,
       ForwardedEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
-      @BrokerGson Gson gson,
       @InstanceId UUID instanceId,
       MessageLogger msgLog,
-      SubscriberMetrics subscriberMetrics) {
+      SubscriberMetrics subscriberMetrics,
+      Configuration cfg) {
     this.eventRouter = eventRouter;
     this.droppedEventListeners = droppedEventListeners;
-    this.gson = gson;
     this.instanceId = instanceId;
     this.msgLog = msgLog;
     this.subscriberMetrics = subscriberMetrics;
     this.brokerApi = brokerApi;
+    this.cfg = cfg;
   }
 
   @Override
   public void run() {
-    brokerApi.receiveAsync(getTopic().topic(), this::processRecord);
+    brokerApi.receiveAsync(getTopic().topic(cfg), this::processRecord);
   }
 
   protected abstract EventTopic getTopic();
@@ -76,7 +75,7 @@ public abstract class AbstractSubcriber implements Runnable {
     } else {
       try {
         msgLog.log(Direction.CONSUME, event);
-        eventRouter.route(event.getEventBody(gson));
+        eventRouter.route(event.getEvent());
         subscriberMetrics.incrementSubscriberConsumedMessage();
       } catch (IOException e) {
         logger.atSevere().withCause(e).log(

@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
@@ -23,14 +24,16 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 
 public class BrokerIndexEventForwarder implements IndexEventForwarder {
   private final BrokerApi broker;
+  private final Configuration cfg;
 
   @Inject
-  BrokerIndexEventForwarder(BrokerApiWrapper broker) {
+  BrokerIndexEventForwarder(BrokerApiWrapper broker, Configuration cfg) {
     this.broker = broker;
+    this.cfg = cfg;
   }
 
   @Override
   public boolean index(IndexEvent event) {
-    return broker.send(EventTopic.INDEX_TOPIC.topic(), event);
+    return broker.send(EventTopic.INDEX_TOPIC.topic(cfg), event);
   }
 }
