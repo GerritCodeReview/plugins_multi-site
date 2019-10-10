@@ -16,7 +16,9 @@ package com.googlesource.gerrit.plugins.multisite.broker;
 
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.gerritforge.gerrit.eventbroker.SourceAwareEventWrapper;
+import com.gerritforge.gerrit.eventbroker.TopicSubscriber;
 import com.google.gerrit.server.events.Event;
+import java.util.Collection;
 import java.util.function.Consumer;
 
 public class BrokerApiNoOp implements BrokerApi {
@@ -27,5 +29,25 @@ public class BrokerApiNoOp implements BrokerApi {
   }
 
   @Override
-  public void receiveAsync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer) {}
+  public TopicSubscriber receiveAsync(
+      String topic, Consumer<SourceAwareEventWrapper> eventConsumer) {
+    return new TopicSubscriber() {
+
+      @Override
+      public String getTopic() {
+        return topic;
+      }
+
+      @Override
+      public Consumer<SourceAwareEventWrapper> getConsumer() {
+        return eventConsumer;
+      }
+    };
+  }
+
+  @Override
+  public void connect(Collection<TopicSubscriber> topicSubscribers) {}
+
+  @Override
+  public void disconnect() {}
 }
