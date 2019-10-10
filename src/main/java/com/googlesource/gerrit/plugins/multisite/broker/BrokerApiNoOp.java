@@ -16,10 +16,20 @@ package com.googlesource.gerrit.plugins.multisite.broker;
 
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.gerritforge.gerrit.eventbroker.SourceAwareEventWrapper;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.gerrit.server.events.Event;
+import com.google.inject.Inject;
 import java.util.function.Consumer;
 
 public class BrokerApiNoOp implements BrokerApi {
+  private final Multimap<String, Consumer<SourceAwareEventWrapper>> consumersMap;
+
+  @Inject
+  public BrokerApiNoOp() {
+    consumersMap = HashMultimap.create();
+  }
 
   @Override
   public boolean send(String topic, Event event) {
@@ -27,5 +37,17 @@ public class BrokerApiNoOp implements BrokerApi {
   }
 
   @Override
-  public void receiveAsync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer) {}
+  public void receiveAsync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer) {
+    consumersMap.put(topic, eventConsumer);
+  }
+
+  @Override
+  public void disconnect() {
+    consumersMap.clear();
+  }
+
+  @Override
+  public Multimap<String, Consumer<SourceAwareEventWrapper>> consumersMap() {
+    return ImmutableMultimap.copyOf(consumersMap);
+  }
 }
