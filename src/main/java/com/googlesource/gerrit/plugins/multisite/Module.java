@@ -18,19 +18,17 @@ import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
-import com.google.gson.Gson;
 import com.google.inject.CreationException;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerModule;
-import com.googlesource.gerrit.plugins.multisite.broker.GsonProvider;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
+import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.NoopSharedRefDatabase;
@@ -73,7 +71,10 @@ public class Module extends LifecycleModule {
     listener().to(Log4jMessageLogger.class);
     bind(MessageLogger.class).to(Log4jMessageLogger.class);
 
+    install(brokerModule);
+
     install(new ForwarderModule());
+    install(new BrokerForwarderModule());
 
     if (config.cache().synchronize()) {
       install(new CacheModule());
@@ -85,14 +86,7 @@ public class Module extends LifecycleModule {
       install(new IndexModule());
     }
 
-    install(brokerModule);
-
     install(new RouterModule());
-
-    bind(Gson.class)
-        .annotatedWith(BrokerGson.class)
-        .toProvider(GsonProvider.class)
-        .in(Singleton.class);
   }
 
   @Provides
