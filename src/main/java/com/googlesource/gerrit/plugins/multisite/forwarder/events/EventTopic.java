@@ -15,25 +15,19 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
 public enum EventTopic {
-  INDEX_TOPIC("GERRIT.EVENT.INDEX", "indexEvent"),
-  CACHE_TOPIC("GERRIT.EVENT.CACHE", "cacheEvent"),
-  PROJECT_LIST_TOPIC("GERRIT.EVENT.PROJECT.LIST", "projectListEvent"),
-  STREAM_EVENT_TOPIC("GERRIT.EVENT.STREAM", "streamEvent");
+  INDEX_TOPIC("GERRIT.EVENT.INDEX"),
+  CACHE_TOPIC("GERRIT.EVENT.CACHE"),
+  PROJECT_LIST_TOPIC("GERRIT.EVENT.PROJECT.LIST"),
+  STREAM_EVENT_TOPIC("GERRIT.EVENT.STREAM");
 
   private final String topic;
-  private final String aliasKey;
 
-  private EventTopic(String topic, String aliasKey) {
+  private EventTopic(String topic) {
     this.topic = topic;
-    this.aliasKey = aliasKey;
   }
 
   public String topic() {
     return topic;
-  }
-
-  public String topicAliasKey() {
-    return aliasKey + "Topic";
   }
 
   public static EventTopic of(String topicString) {

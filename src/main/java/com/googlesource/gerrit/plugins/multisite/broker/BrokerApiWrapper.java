@@ -19,6 +19,7 @@ import com.gerritforge.gerrit.eventbroker.SourceAwareEventWrapper;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import java.util.function.Consumer;
 
 public class BrokerApiWrapper implements BrokerApi {
@@ -33,6 +34,9 @@ public class BrokerApiWrapper implements BrokerApi {
 
   @Override
   public boolean send(String topic, Event event) {
+    if (Context.isForwardedEvent()) {
+      return true;
+    }
     boolean succeeded = false;
     try {
       succeeded = apiDelegate.get().send(topic, event);
