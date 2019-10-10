@@ -15,13 +15,12 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRouter;
 import java.util.UUID;
@@ -33,12 +32,12 @@ public class StreamEventSubscriber extends AbstractSubcriber {
       BrokerApiWrapper brokerApi,
       StreamEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
-      @BrokerGson Gson gson,
       @InstanceId UUID instanceId,
       MessageLogger msgLog,
-      SubscriberMetrics subscriberMetrics) {
+      SubscriberMetrics subscriberMetrics,
+      Configuration cfg) {
     super(
-        brokerApi, eventRouter, droppedEventListeners, gson, instanceId, msgLog, subscriberMetrics);
+        brokerApi, eventRouter, droppedEventListeners, instanceId, msgLog, subscriberMetrics, cfg);
   }
 
   @Override

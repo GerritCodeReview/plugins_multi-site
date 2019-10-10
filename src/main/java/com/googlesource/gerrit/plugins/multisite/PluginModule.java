@@ -14,25 +14,18 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
-import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Inject;
-import com.google.inject.Scopes;
-import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerApi;
-import com.googlesource.gerrit.plugins.multisite.kafka.KafkaBrokerModule;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
 
 public class PluginModule extends LifecycleModule {
   private Configuration config;
-  private KafkaBrokerModule kafkaBrokerModule;
 
   @Inject
-  public PluginModule(Configuration config, KafkaBrokerModule kafkaBrokerModule) {
+  public PluginModule(Configuration config) {
     this.config = config;
-    this.kafkaBrokerModule = kafkaBrokerModule;
   }
 
   @Override
@@ -42,8 +35,5 @@ public class PluginModule extends LifecycleModule {
       DynamicSet.bind(binder(), ProjectDeletedListener.class)
           .to(ProjectDeletedSharedDbCleanup.class);
     }
-    DynamicItem.bind(binder(), BrokerApi.class).to(KafkaBrokerApi.class).in(Scopes.SINGLETON);
-    listener().to(KafkaBrokerApi.class);
-    install(kafkaBrokerModule);
   }
 }

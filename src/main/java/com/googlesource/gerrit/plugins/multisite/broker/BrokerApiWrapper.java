@@ -15,29 +15,51 @@
 package com.googlesource.gerrit.plugins.multisite.broker;
 
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
-import com.gerritforge.gerrit.eventbroker.SourceAwareEventWrapper;
+import com.gerritforge.gerrit.eventbroker.EventMessage;
+import com.google.common.collect.Multimap;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.InstanceId;
+import com.googlesource.gerrit.plugins.multisite.MessageLogger;
+import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
+import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class BrokerApiWrapper implements BrokerApi {
   private final DynamicItem<BrokerApi> apiDelegate;
   private final BrokerMetrics metrics;
+  private final MessageLogger msgLog;
+  private final UUID instanceId;
 
   @Inject
-  public BrokerApiWrapper(DynamicItem<BrokerApi> apiDelegate, BrokerMetrics metrics) {
+  public BrokerApiWrapper(
+      DynamicItem<BrokerApi> apiDelegate,
+      BrokerMetrics metrics,
+      MessageLogger msgLog,
+      @InstanceId UUID instanceId) {
     this.apiDelegate = apiDelegate;
     this.metrics = metrics;
+    this.msgLog = msgLog;
+    this.instanceId = instanceId;
+  }
+
+  public boolean send(String topic, Event event) {
+    return send(topic, apiDelegate.get().newMessage(instanceId, event));
   }
 
   @Override
-  public boolean send(String topic, Event event) {
+  public boolean send(String topic, EventMessage message) {
+    if (Context.isForwardedEvent()) {
+      return true;
+    }
     boolean succeeded = false;
     try {
-      succeeded = apiDelegate.get().send(topic, event);
+      succeeded = apiDelegate.get().send(topic, message);
     } finally {
       if (succeeded) {
+        msgLog.log(Direction.PUBLISH, topic, message);
         metrics.incrementBrokerPublishedMessage();
       } else {
         metrics.incrementBrokerFailedToPublishMessage();
@@ -47,7 +69,17 @@ public class BrokerApiWrapper implements BrokerApi {
   }
 
   @Override
-  public void receiveAsync(String topic, Consumer<SourceAwareEventWrapper> eventConsumer) {
-    apiDelegate.get().receiveAsync(topic, eventConsumer);
+  public void receiveAsync(String topic, Consumer<EventMessage> messageConsumer) {
+    apiDelegate.get().receiveAsync(topic, messageConsumer);
+  }
+
+  @Override
+  public void disconnect() {
+    apiDelegate.get().disconnect();
+  }
+
+  @Override
+  public Multimap<String, Consumer<EventMessage>> consumersMap() {
+    return apiDelegate.get().consumersMap();
   }
 }
