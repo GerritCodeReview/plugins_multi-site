@@ -14,25 +14,27 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
-import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 
 @Singleton
 public class BrokerStreamEventForwarder implements StreamEventForwarder {
-  private final BrokerApi broker;
+  private final BrokerApiWrapper broker;
+  private final Configuration cfg;
 
   @Inject
-  BrokerStreamEventForwarder(BrokerApiWrapper broker) {
+  BrokerStreamEventForwarder(BrokerApiWrapper broker, Configuration cfg) {
     this.broker = broker;
+    this.cfg = cfg;
   }
 
   @Override
   public boolean send(Event event) {
-    return broker.send(EventTopic.STREAM_EVENT_TOPIC.topic(), event);
+    return broker.send(EventTopic.STREAM_EVENT_TOPIC.topic(cfg), event);
   }
 }

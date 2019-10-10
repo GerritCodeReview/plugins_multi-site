@@ -26,12 +26,9 @@ public class SubscriberMetrics {
   private static final String SUBSCRIBER_SUCCESS_COUNTER = "subscriber_msg_consumer_counter";
   private static final String SUBSCRIBER_FAILURE_COUNTER =
       "subscriber_msg_consumer_failure_counter";
-  private static final String SUBSCRIBER_POLL_FAILURE_COUNTER =
-      "subscriber_msg_consumer_poll_failure_counter";
 
   private final Counter1<String> subscriberSuccessCounter;
   private final Counter1<String> subscriberFailureCounter;
-  private final Counter1<String> subscriberPollFailureCounter;
 
   @Inject
   public SubscriberMetrics(MetricMaker metricMaker) {
@@ -51,15 +48,6 @@ public class SubscriberMetrics {
                 .setUnit("errors"),
             Field.ofString(
                 SUBSCRIBER_FAILURE_COUNTER, "Subscriber failed to consume messages count"));
-
-    this.subscriberPollFailureCounter =
-        metricMaker.newCounter(
-            "multi_site/subscriber/subscriber_message_consumer_poll_failure_counter",
-            new Description("Number of failed attempts to poll messages by the subscriber")
-                .setRate()
-                .setUnit("errors"),
-            Field.ofString(
-                SUBSCRIBER_POLL_FAILURE_COUNTER, "Subscriber failed to poll messages count"));
   }
 
   public void incrementSubscriberConsumedMessage() {
@@ -68,9 +56,5 @@ public class SubscriberMetrics {
 
   public void incrementSubscriberFailedToConsumeMessage() {
     subscriberFailureCounter.increment(SUBSCRIBER_FAILURE_COUNTER);
-  }
-
-  public void incrementSubscriberFailedToPollMessages() {
-    subscriberPollFailureCounter.increment(SUBSCRIBER_POLL_FAILURE_COUNTER);
   }
 }

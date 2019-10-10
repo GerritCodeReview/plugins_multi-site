@@ -18,6 +18,7 @@ import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Suppliers.ofInstance;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
@@ -62,6 +63,7 @@ public class Configuration {
   private final Supplier<Index> index;
   private final Supplier<SharedRefDatabase> sharedRefDb;
   private final Supplier<Collection<Message>> replicationConfigValidation;
+  private final Supplier<Broker> broker;
   private final Config multiSiteConfig;
 
   @Inject
@@ -78,6 +80,7 @@ public class Configuration {
     event = memoize(() -> new Event(lazyMultiSiteCfg));
     index = memoize(() -> new Index(lazyMultiSiteCfg));
     sharedRefDb = memoize(() -> new SharedRefDatabase(lazyMultiSiteCfg));
+    broker = memoize(() -> new Broker(lazyMultiSiteCfg));
   }
 
   public Config getMultiSiteConfig() {
@@ -98,6 +101,10 @@ public class Configuration {
 
   public Index index() {
     return index.get();
+  }
+
+  public Broker broker() {
+    return broker.get();
   }
 
   public Collection<Message> validate() {
@@ -275,6 +282,19 @@ public class Configuration {
 
     public int numStripedLocks() {
       return numStripedLocks;
+    }
+  }
+
+  public static class Broker {
+    static final String BROKER_SECTION = "broker";
+    private final Config cfg;
+
+    Broker(Supplier<Config> cfgSupplier) {
+      cfg = cfgSupplier.get();
+    }
+
+    public String getTopic(String topicKey, String defValue) {
+      return MoreObjects.firstNonNull(cfg.getString(BROKER_SECTION, null, topicKey), defValue);
     }
   }
 

@@ -1,22 +1,10 @@
-load("//tools/bzl:maven_jar.bzl", "maven_jar")
+load("//tools/bzl:maven_jar.bzl", "MAVEN_LOCAL", "maven_jar")
 
 def external_plugin_deps():
     maven_jar(
         name = "wiremock",
         artifact = "com.github.tomakehurst:wiremock-standalone:2.23.2",
         sha1 = "4a920d6c04fd2444c7bc94880adc8313f5b31ba3",
-    )
-
-    maven_jar(
-        name = "kafka-client",
-        artifact = "org.apache.kafka:kafka-clients:2.1.0",
-        sha1 = "34d9983705c953b97abb01e1cd04647f47272fe5",
-    )
-
-    maven_jar(
-        name = "testcontainers-kafka",
-        artifact = "org.testcontainers:kafka:1.11.3",
-        sha1 = "932d1baa2541f218b1b44a0546ae83d530011468",
     )
 
     maven_jar(
@@ -27,6 +15,6 @@ def external_plugin_deps():
 
     maven_jar(
         name = "events-broker",
-        artifact = "com.gerritforge:events-broker:3.0.0",
-        sha1 = "8957403a97df5400cf9bd49b3979049dde4b3435",
+        artifact = "com.gerritforge:events-broker:3.0.3",
+        sha1 = "efdc5bf6897563e2f6f85bfc1b8a5d65e3393424",
     )

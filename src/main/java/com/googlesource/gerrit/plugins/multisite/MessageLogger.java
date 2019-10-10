@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.gerritforge.gerrit.eventbroker.SourceAwareEventWrapper;
+import com.gerritforge.gerrit.eventbroker.EventMessage;
 
 public interface MessageLogger {
 
@@ -23,5 +23,5 @@ public interface MessageLogger {
     CONSUME;
   }
 
-  public void log(Direction direction, SourceAwareEventWrapper event);
+  public void log(Direction direction, String topic, EventMessage event);
 }
