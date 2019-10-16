@@ -4,7 +4,6 @@
 /.settings/
 /.primary_build_tool
 /bazel-bin
-/bazel-genfiles
 /bazel-out
 /bazel-reviewers
 /bazel-testlogs
