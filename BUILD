@@ -17,8 +17,8 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@global-refdb//jar",
-        "@events-broker//jar",
+        "//modules/events-broker",
+        "//modules/global-refdb",
         "//plugins/replication",
     ],
 )
@@ -43,8 +43,7 @@ java_library(
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":multi-site__plugin",
         "@wiremock//jar",
-        "//lib/testcontainers",
-        "@global-refdb//jar",
-        "@events-broker//jar",
+        "//modules/events-broker",
+        "//modules/global-refdb",
     ],
 )
