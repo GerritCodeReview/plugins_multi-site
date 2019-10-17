@@ -16,9 +16,9 @@ package com.googlesource.gerrit.plugins.multisite.kafka.consumer;
 
 import static org.mockito.Mockito.verify;
 
-import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.BranchNameKey;
-import com.google.gerrit.reviewdb.client.Change;
+import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.BranchNameKey;
+import com.google.gerrit.entities.Change;
 import com.google.gerrit.server.events.CommentAddedEvent;
 import com.google.gerrit.server.util.time.TimeUtil;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;

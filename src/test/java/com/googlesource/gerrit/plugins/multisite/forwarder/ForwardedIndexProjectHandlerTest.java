@@ -21,8 +21,8 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.index.project.ProjectIndexer;
-import com.google.gerrit.reviewdb.client.Project;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
 import com.googlesource.gerrit.plugins.multisite.index.ProjectChecker;

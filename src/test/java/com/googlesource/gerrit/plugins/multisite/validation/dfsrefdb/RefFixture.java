@@ -14,8 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
-import com.google.gerrit.reviewdb.client.Project;
-import com.google.gerrit.reviewdb.client.RefNames;
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.RefNames;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;

@@ -16,8 +16,8 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.gerrit.reviewdb.client.Account;
-import com.google.gerrit.reviewdb.client.AccountGroup;
+import com.google.gerrit.entities.Account;
+import com.google.gerrit.entities.AccountGroup;
 import com.google.gerrit.server.events.EventGsonProvider;
 import com.google.gson.Gson;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
