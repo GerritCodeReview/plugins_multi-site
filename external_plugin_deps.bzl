@@ -18,9 +18,3 @@ def external_plugin_deps():
         artifact = "org.testcontainers:kafka:1.11.3",
         sha1 = "932d1baa2541f218b1b44a0546ae83d530011468",
     )
-
-    maven_jar(
-        name = "global-refdb",
-        artifact = "com.gerritforge:global-refdb:0.1.1",
-        sha1 = "d6ab59906db7b20a52c8994502780b2a6ab23872",
-    )
