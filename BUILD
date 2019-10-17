@@ -18,8 +18,8 @@ gerrit_plugin(
     resources = glob(["src/main/resources/**/*"]),
     deps = [
         ":replication-neverlink",
-        "@events-broker//jar",
-        "@global-refdb//jar",
+        "//modules/events-broker",
+        "//modules/global-refdb",
     ],
 )
 
@@ -48,8 +48,8 @@ java_library(
     visibility = ["//visibility:public"],
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":multi-site__plugin",
-        "@global-refdb//jar",
-        "@events-broker//jar",
+        "//modules/events-broker",
+        "//modules/global-refdb",
         "//plugins/replication",
     ],
 )
