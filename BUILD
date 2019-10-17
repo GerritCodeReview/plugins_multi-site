@@ -46,6 +46,6 @@ java_library(
         "@kafka-client//jar",
         "@testcontainers-kafka//jar",
         "//lib/testcontainers",
-        "@global-refdb//jar",
+        "@global-refdb",
     ],
 )
