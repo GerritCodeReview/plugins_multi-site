@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
-import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.entities.Project;
 
 /** Encapsulates the logic of verifying the up-to-date status of a project. */
 public interface ProjectChecker {

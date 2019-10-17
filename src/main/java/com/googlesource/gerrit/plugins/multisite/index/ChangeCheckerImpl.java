@@ -14,9 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
+import com.google.gerrit.entities.Change;
+import com.google.gerrit.entities.Comment;
 import com.google.gerrit.exceptions.StorageException;
-import com.google.gerrit.reviewdb.client.Change;
-import com.google.gerrit.reviewdb.client.Comment;
 import com.google.gerrit.server.CommentsUtil;
 import com.google.gerrit.server.change.ChangeFinder;
 import com.google.gerrit.server.git.GitRepositoryManager;
