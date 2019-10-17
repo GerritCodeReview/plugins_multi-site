@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
-import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.entities.Account;
 import com.google.gerrit.server.index.account.AccountIndexer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
