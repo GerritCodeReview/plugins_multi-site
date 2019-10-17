@@ -20,8 +20,8 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 import com.google.common.cache.Cache;
+import com.google.gerrit.entities.Account;
 import com.google.gerrit.extensions.registration.DynamicMap;
-import com.google.gerrit.reviewdb.client.Account;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 import org.junit.Before;
 import org.junit.Rule;
