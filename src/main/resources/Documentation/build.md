@@ -12,6 +12,13 @@ the Gerrit /plugins directory, replacing the existing empty one.
   ln -s @PLUGIN@/external_plugin_deps.bzl .
 ```
 
+Clone global-refdb into modules directory:
+
+```
+  cd gerrit/modules
+  git clone https://review.gerrithub.io/GerritForge/global-refdb
+```
+
 From the Gerrit source tree issue the command:
 
 ```
