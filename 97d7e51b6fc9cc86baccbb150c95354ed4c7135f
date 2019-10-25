@@ -34,6 +34,24 @@
       "revId": "97d7e51b6fc9cc86baccbb150c95354ed4c7135f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "719806ba_ca5ee094",
+        "filename": "BUILD",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-10-25T13:55:12Z",
+      "side": 1,
+      "message": "global-refdb will (hopefully) become part of either Gerrit or JGit. Google has it already in their fork, so I am hoping that in 2 weeks time the ESC would have made a decision about it.\n\nThere is no point in making the CI even more complicated :-) WDYT?",
+      "parentUuid": "c49b3460_79aac536",
+      "revId": "97d7e51b6fc9cc86baccbb150c95354ed4c7135f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
