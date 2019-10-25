@@ -52,6 +52,24 @@
       "revId": "97d7e51b6fc9cc86baccbb150c95354ed4c7135f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71ccac7d_33afe881",
+        "filename": "BUILD",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-10-25T14:13:24Z",
+      "side": 1,
+      "message": "\u003e There is no point in making the CI even more complicated :-) WDYT?\n\nTotally disagree. To take Maven route for 20 Lines Of Codes, that\u0027s what is making the life of a developer more complicated.\n\nToday, to build this plugin locally and on the CI you HAVE TO CLONE gerrit already and link this plugin in the plugins directory. Given that this plugin currently depends on replication plugin as well you would also have to clone replication plugin as well. Luckily you don\u0027t have to, because the replication plugin is already a core plugin and is provided through the git submodule.\n\nExactly like you clone gerrit to build the plugin on the CI, you clone other dozen of modules requires to build the plugin, done (and you can throw the whole Maven build tool chain out of the window).\n\nRemember what the founder of JGit and Gerrit Code Review said once: \"Friends, don\u0027t let friends use Maven.\"",
+      "parentUuid": "719806ba_ca5ee094",
+      "revId": "97d7e51b6fc9cc86baccbb150c95354ed4c7135f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
