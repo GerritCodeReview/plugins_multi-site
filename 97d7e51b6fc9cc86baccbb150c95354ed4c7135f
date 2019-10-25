@@ -70,6 +70,24 @@
       "revId": "97d7e51b6fc9cc86baccbb150c95354ed4c7135f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a21f41a1_46d06b5b",
+        "filename": "BUILD",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-10-25T15:09:58Z",
+      "side": 1,
+      "message": "\u003e \u003e There is no point in making the CI even more complicated :-) WDYT?\n\u003e \n\u003e Totally disagree. To take Maven route for 20 Lines Of Codes, that\u0027s what is making the life of a developer more complicated.\n\nI totally agree that Maven is complicated and I don\u0027t like it. I want to kill the global-refdb library as soon as I can :-) possibly in two weeks time.\n\n\u003e Remember what the founder of JGit and Gerrit Code Review said once: \"Friends, don\u0027t let friends use Maven.\"\n\n+2 to that",
+      "parentUuid": "71ccac7d_33afe881",
+      "revId": "97d7e51b6fc9cc86baccbb150c95354ed4c7135f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
