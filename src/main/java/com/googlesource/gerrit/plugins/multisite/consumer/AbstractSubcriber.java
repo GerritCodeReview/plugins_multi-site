@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
-import com.gerritforge.gerrit.eventbroker.BrokerApi;
+import com.gerritforge.gerrit.eventbroker.EventConsumer;
 import com.gerritforge.gerrit.eventbroker.SourceAwareEventWrapper;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
@@ -23,18 +23,16 @@ import com.google.gson.Gson;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerGson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedEventRouter;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-public abstract class AbstractSubcriber implements Runnable {
+public abstract class AbstractSubcriber implements EventConsumer {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private final BrokerApi brokerApi;
   private final ForwardedEventRouter eventRouter;
   private final DynamicSet<DroppedEventListener> droppedEventListeners;
   private final Gson gson;
@@ -43,7 +41,6 @@ public abstract class AbstractSubcriber implements Runnable {
   private SubscriberMetrics subscriberMetrics;
 
   public AbstractSubcriber(
-      BrokerApiWrapper brokerApi,
       ForwardedEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
       @BrokerGson Gson gson,
@@ -56,15 +53,15 @@ public abstract class AbstractSubcriber implements Runnable {
     this.instanceId = instanceId;
     this.msgLog = msgLog;
     this.subscriberMetrics = subscriberMetrics;
-    this.brokerApi = brokerApi;
   }
 
   @Override
-  public void run() {
-    brokerApi.receiveAsync(getTopic().topic(), this::processRecord);
-  }
+  public abstract String getTopic();
 
-  protected abstract EventTopic getTopic();
+  @Override
+  public Consumer<SourceAwareEventWrapper> getConsumer() {
+    return this::processRecord;
+  }
 
   private void processRecord(SourceAwareEventWrapper event) {
 

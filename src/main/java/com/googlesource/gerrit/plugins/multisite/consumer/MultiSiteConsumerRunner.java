@@ -14,36 +14,36 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.gerritforge.gerrit.eventbroker.BrokerApi;
+import com.gerritforge.gerrit.eventbroker.EventConsumer;
+import com.google.common.collect.Lists;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.events.LifecycleListener;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import java.util.concurrent.ExecutorService;
 
 @Singleton
 public class MultiSiteConsumerRunner implements LifecycleListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private final DynamicSet<AbstractSubcriber> consumers;
-  private final ExecutorService executor;
+  private final DynamicSet<EventConsumer> consumers;
+  private DynamicItem<BrokerApi> brokerApi;
 
   @Inject
   public MultiSiteConsumerRunner(
-      @ConsumerExecutor ExecutorService executor, DynamicSet<AbstractSubcriber> consumers) {
+      DynamicItem<BrokerApi> brokerApi, DynamicSet<EventConsumer> consumers) {
     this.consumers = consumers;
-    this.executor = executor;
+    this.brokerApi = brokerApi;
   }
 
   @Override
   public void start() {
     logger.atInfo().log("starting consumers");
-    consumers.forEach(c -> executor.execute(c));
+    brokerApi.get().reconnect(Lists.newArrayList(consumers.iterator()));
   }
 
   @Override
-  public void stop() {
-    logger.atInfo().log("shutting down consumers");
-    executor.shutdown();
-  }
+  public void stop() {}
 }

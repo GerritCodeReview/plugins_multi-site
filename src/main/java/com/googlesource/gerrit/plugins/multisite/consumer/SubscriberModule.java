@@ -14,29 +14,24 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.gerritforge.gerrit.eventbroker.EventConsumer;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.MultiSiteEvent;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class SubscriberModule extends LifecycleModule {
 
   @Override
   protected void configure() {
     MultiSiteEvent.registerEventTypes();
-    bind(ExecutorService.class)
-        .annotatedWith(ConsumerExecutor.class)
-        .toInstance(Executors.newFixedThreadPool(EventTopic.values().length));
+
+    DynamicSet.setOf(binder(), EventConsumer.class);
+    DynamicSet.setOf(binder(), DroppedEventListener.class);
     listener().to(MultiSiteConsumerRunner.class);
 
-    DynamicSet.setOf(binder(), AbstractSubcriber.class);
-    DynamicSet.setOf(binder(), DroppedEventListener.class);
-
-    DynamicSet.bind(binder(), AbstractSubcriber.class).to(IndexEventSubscriber.class);
-    DynamicSet.bind(binder(), AbstractSubcriber.class).to(StreamEventSubscriber.class);
-    DynamicSet.bind(binder(), AbstractSubcriber.class).to(CacheEvictionEventSubscriber.class);
-    DynamicSet.bind(binder(), AbstractSubcriber.class).to(ProjectUpdateEventSubscriber.class);
+    DynamicSet.bind(binder(), EventConsumer.class).to(IndexEventSubscriber.class);
+    DynamicSet.bind(binder(), EventConsumer.class).to(StreamEventSubscriber.class);
+    DynamicSet.bind(binder(), EventConsumer.class).to(CacheEvictionEventSubscriber.class);
+    DynamicSet.bind(binder(), EventConsumer.class).to(ProjectUpdateEventSubscriber.class);
   }
 }
