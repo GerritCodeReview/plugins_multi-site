@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e5b78cce_4ccf3991",
+        "filename": "setup_local_env/configs/multi-site.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-11-01T09:04:05Z",
+      "side": 0,
+      "message": "topic names should stay here, possibly moved into another section?",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 40
+      },
+      "revId": "4cdd9c75ad404a3c92fb0beabbfc65aa52984be9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "94181751_395f0e94",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventTopic.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-11-01T09:04:05Z",
+      "side": 0,
+      "message": "configuration of topic names and aliases should stay in multi-site.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 0
+      },
+      "revId": "4cdd9c75ad404a3c92fb0beabbfc65aa52984be9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

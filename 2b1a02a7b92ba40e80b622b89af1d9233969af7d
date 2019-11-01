@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c001ec89_d58b27ea",
+        "filename": "setup_local_env/configs/kafka-events.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-11-01T09:04:05Z",
+      "side": 1,
+      "message": "Kafka settings should go into gerrit.config under the [plugin \"kafka-events\"] section.",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 29
+      },
+      "revId": "2b1a02a7b92ba40e80b622b89af1d9233969af7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d0ddf74_bedfcb94",
+        "filename": "setup_local_env/configs/kafka-events.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-11-01T09:04:05Z",
+      "side": 1,
+      "message": "This should stay in the multi-site plugin",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 40
+      },
+      "revId": "2b1a02a7b92ba40e80b622b89af1d9233969af7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "766ccc7a_57b16fe9",
+        "filename": "setup_local_env/configs/kafka-events.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-11-01T09:04:05Z",
+      "side": 1,
+      "message": "these should go to gerrit.config under the [plugin \"kafka-events\"] section",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 35
+      },
+      "revId": "2b1a02a7b92ba40e80b622b89af1d9233969af7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
