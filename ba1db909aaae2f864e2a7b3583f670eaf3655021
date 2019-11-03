@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "13b8363e_bc502b03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-11-03T13:03:32Z",
+      "side": 1,
+      "message": "It\u0027s not clear to me why it is not needed any more. We removed rest based forwarding, right? So that message broker is the only way to forward the events to the other nodes. IOW, after that change, if I have not replaced  no-op binding, how the plugin supposed to work?\n\nShould it refuse to start at all, and should throw ProvisionException(\"No message broker implementation was bound\")? We do something similar in gerrit if OAUTH auth scheme was selected, but there wasn\u0027t any OAuth provider bound.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 71
+      },
+      "revId": "ba1db909aaae2f864e2a7b3583f670eaf3655021",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2a093e63_4f9c5904",
         "filename": "BUILD",
         "patchSetId": 8
