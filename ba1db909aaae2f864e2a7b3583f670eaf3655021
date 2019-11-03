@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "86517600_2b7dbf5f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-11-03T16:41:03Z",
+      "side": 1,
+      "message": "\u003e The idea of the no-op implementation is allowing it to start even if you don\u0027t have one.\n\nBut what for? Can this plugin be useful with no-op BrokreApi implementation? How? Given that the REST API forwarding was removed, that we borrowed from high-availability, this plugin in its current state cannot operate without Borker API implementation bound, and consequently it must not be able to start without binding a real implementation, in which case you can remove no-op BrokerApi altogether.\n\nI don\u0027t see how it would be useful to report giant warning, and I don\u0027t see how it is useful to offer no-op Broker-API implementation.\n\nI would suggest to borrow the design from OAuth authentication scheme in gerrit plugin API:\n\n* 1. Set auth.type \u003d OAUTH in gerrit.config\n* 2. Remove any oauth-provider plugins\n* 3. Gerrit would *not* start\n\nIf gerrit would start in that state, with or without giant warning, how should anyone be able to login?!",
+      "parentUuid": "b7b073c2_eaf46de9",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 71
+      },
+      "revId": "ba1db909aaae2f864e2a7b3583f670eaf3655021",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2a093e63_4f9c5904",
         "filename": "BUILD",
         "patchSetId": 8
@@ -107,6 +131,30 @@
       "writtenOn": "2019-11-03T15:16:53Z",
       "side": 1,
       "message": "3.0.1-SNAPSHOT isn\u0027t in maven central.\n\n- It should be 3.0.1\n- SHA1 should be e11161a212b98cf6bc5f4954480abbe92f1e201a",
+      "range": {
+        "startLine": 18,
+        "startChar": 50,
+        "endLine": 18,
+        "endChar": 64
+      },
+      "revId": "ba1db909aaae2f864e2a7b3583f670eaf3655021",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8646ef22_450fadad",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-11-03T16:41:03Z",
+      "side": 1,
+      "message": "Well, I don\u0027t use Maven. I am trying to verify that change with Bazel, with the change that I have uploaded on top of that change.\n\nI checkout gerrit on stable-3.0 branch, and also link global-refdb and events-broker, both from stable-3.0 branch, to modules directory and it doesn\u0027t build. What am I missing?",
+      "parentUuid": "a5e82076_671e2ae0",
       "range": {
         "startLine": 18,
         "startChar": 50,
