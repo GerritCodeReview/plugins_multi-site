@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b7b073c2_eaf46de9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-11-03T15:16:53Z",
+      "side": 1,
+      "message": "\u003e It\u0027s not clear to me why it is not needed any more. We removed rest based forwarding, right? So that message broker is the only way to forward the events to the other nodes. IOW, after that change, if I have not replaced  no-op binding, how the plugin supposed to work?\n\nThe whole multi-site setup has multiple components, this plugin is one of them, but not the only one.\n\nWe\u0027re just making it pluggable as Kafka is not the right solution for everyone: if you have  already Kafka in-house, possibly yes, if you have something else, possibly not.\n\n\u003e Should it refuse to start at all, and should throw ProvisionException(\"No message broker implementation was bound\")? We do something similar in gerrit if OAUTH auth scheme was selected, but there wasn\u0027t any OAuth provider bound.\n\nThe idea of the no-op implementation is allowing it to start even if you don\u0027t have one.\nBut possibly a super-giant warning would be useful.",
+      "parentUuid": "13b8363e_bc502b03",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 71
+      },
+      "revId": "ba1db909aaae2f864e2a7b3583f670eaf3655021",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2a093e63_4f9c5904",
         "filename": "BUILD",
         "patchSetId": 8
@@ -41,6 +65,53 @@
         "startChar": 8,
         "endLine": 46,
         "endChar": 31
+      },
+      "revId": "ba1db909aaae2f864e2a7b3583f670eaf3655021",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9402daba_5d5bebbd",
+        "filename": "BUILD",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-11-03T15:16:53Z",
+      "side": 1,
+      "message": "Agreed, this isn\u0027t needed anymore.",
+      "parentUuid": "2a093e63_4f9c5904",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 31
+      },
+      "revId": "ba1db909aaae2f864e2a7b3583f670eaf3655021",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5e82076_671e2ae0",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-11-03T15:16:53Z",
+      "side": 1,
+      "message": "3.0.1-SNAPSHOT isn\u0027t in maven central.\n\n- It should be 3.0.1\n- SHA1 should be e11161a212b98cf6bc5f4954480abbe92f1e201a",
+      "range": {
+        "startLine": 18,
+        "startChar": 50,
+        "endLine": 18,
+        "endChar": 64
       },
       "revId": "ba1db909aaae2f864e2a7b3583f670eaf3655021",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
