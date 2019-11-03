@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2a093e63_4f9c5904",
+        "filename": "BUILD",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-11-03T12:57:56Z",
+      "side": 1,
+      "message": "Not used (as kafka testcontainers was the only JUnit test that used docker) and can be removed?",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 46,
+        "endChar": 31
+      },
+      "revId": "ba1db909aaae2f864e2a7b3583f670eaf3655021",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
