@@ -42,7 +42,7 @@ public class SharedRefLogEntry {
         String projectName,
         String refName,
         String oldId,
-        String newId,
+        @Nullable String newId,
         @Nullable GitPerson committer,
         @Nullable String comment) {
       this.type = Type.UPDATE_REF;
