@@ -14,76 +14,73 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.gerrit.server.events.EventGson;
 import com.google.gerrit.server.permissions.PermissionBackendException;
-import com.google.gson.Gson;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApi;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedEventRouter;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-public abstract class AbstractSubcriber implements Runnable {
+public abstract class AbstractSubcriber {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private final BrokerApi brokerApi;
   private final ForwardedEventRouter eventRouter;
   private final DynamicSet<DroppedEventListener> droppedEventListeners;
-  private final Gson gson;
   private final UUID instanceId;
   private final MessageLogger msgLog;
   private SubscriberMetrics subscriberMetrics;
+  private final Configuration cfg;
+  private final String topic;
 
   public AbstractSubcriber(
-      BrokerApiWrapper brokerApi,
       ForwardedEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
-      @EventGson Gson gson,
       @InstanceId UUID instanceId,
       MessageLogger msgLog,
-      SubscriberMetrics subscriberMetrics) {
+      SubscriberMetrics subscriberMetrics,
+      Configuration cfg) {
     this.eventRouter = eventRouter;
     this.droppedEventListeners = droppedEventListeners;
-    this.gson = gson;
     this.instanceId = instanceId;
     this.msgLog = msgLog;
     this.subscriberMetrics = subscriberMetrics;
-    this.brokerApi = brokerApi;
-  }
-
-  @Override
-  public void run() {
-    brokerApi.receiveAync(getTopic().topic(), this::processRecord);
+    this.cfg = cfg;
+    this.topic = getTopic().topic(cfg);
   }
 
   protected abstract EventTopic getTopic();
 
-  private void processRecord(SourceAwareEventWrapper event) {
+  public Consumer<EventMessage> getConsumer() {
+    return this::processRecord;
+  }
 
-    if (event.getHeader().getSourceInstanceId().equals(instanceId)) {
+  private void processRecord(EventMessage event) {
+
+    if (event.getHeader().sourceInstanceId.equals(instanceId)) {
       logger.atFiner().log(
           "Dropping event %s produced by our instanceId %s",
           event.toString(), instanceId.toString());
       droppedEventListeners.forEach(l -> l.onEventDropped(event));
     } else {
       try {
-        msgLog.log(Direction.CONSUME, event);
-        eventRouter.route(event.getEventBody(gson));
+        msgLog.log(Direction.CONSUME, topic, event);
+        eventRouter.route(event.getEvent());
         subscriberMetrics.incrementSubscriberConsumedMessage();
       } catch (IOException e) {
         logger.atSevere().withCause(e).log(
-            "Malformed event '%s': [Exception: %s]", event.getHeader().getEventType());
+            "Malformed event '%s': [Exception: %s]", event.getHeader());
         subscriberMetrics.incrementSubscriberFailedToConsumeMessage();
       } catch (PermissionBackendException | CacheNotFoundException e) {
         logger.atSevere().withCause(e).log(
-            "Cannot handle message %s: [Exception: %s]", event.getHeader().getEventType());
+            "Cannot handle message %s: [Exception: %s]", event.getHeader());
         subscriberMetrics.incrementSubscriberFailedToConsumeMessage();
       }
     }

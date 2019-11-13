@@ -63,17 +63,19 @@ public class Log4jSharedRefLogger extends LibModuleLogFile implements SharedRefL
           RevWalk walk = new RevWalk(repository)) {
         GitPerson committer = null;
         String commitMessage = null;
-        int objectType = walk.parseAny(newRefValue).getType();
-        switch (objectType) {
-          case OBJ_COMMIT:
-            RevCommit commit = walk.parseCommit(newRefValue);
-            committer = CommonConverters.toGitPerson(commit.getCommitterIdent());
-            commitMessage = commit.getShortMessage();
-            break;
-          case OBJ_BLOB:
-            break;
-          default:
-            throw new IncorrectObjectTypeException(newRefValue, Constants.typeString(objectType));
+        if (newRefValue != null) {
+          int objectType = walk.parseAny(newRefValue).getType();
+          switch (objectType) {
+            case OBJ_COMMIT:
+              RevCommit commit = walk.parseCommit(newRefValue);
+              committer = CommonConverters.toGitPerson(commit.getCommitterIdent());
+              commitMessage = commit.getShortMessage();
+              break;
+            case OBJ_BLOB:
+              break;
+            default:
+              throw new IncorrectObjectTypeException(newRefValue, Constants.typeString(objectType));
+          }
         }
         sharedRefDBLog.info(
             gson.toJson(
@@ -81,7 +83,7 @@ public class Log4jSharedRefLogger extends LibModuleLogFile implements SharedRefL
                     project,
                     currRef.getName(),
                     currRef.getObjectId().getName(),
-                    newRefValue.getName(),
+                    newRefValue == null ? ObjectId.zeroId().name() : newRefValue.getName(),
                     committer,
                     commitMessage)));
       } catch (IOException e) {

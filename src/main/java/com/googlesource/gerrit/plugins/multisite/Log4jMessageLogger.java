@@ -14,12 +14,14 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.gerritforge.gerrit.eventbroker.EventGsonProvider;
+import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.google.gerrit.extensions.systemstatus.ServerInformation;
 import com.google.gerrit.server.util.PluginLogFile;
 import com.google.gerrit.server.util.SystemLog;
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.consumer.SourceAwareEventWrapper;
 import org.apache.log4j.PatternLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,15 +30,18 @@ import org.slf4j.LoggerFactory;
 public class Log4jMessageLogger extends PluginLogFile implements MessageLogger {
   private static final String LOG_NAME = "message_log";
   private final Logger msgLog;
+  private final Gson gson;
 
   @Inject
-  public Log4jMessageLogger(SystemLog systemLog, ServerInformation serverInfo) {
+  public Log4jMessageLogger(
+      SystemLog systemLog, ServerInformation serverInfo, EventGsonProvider gsonProvider) {
     super(systemLog, serverInfo, LOG_NAME, new PatternLayout("[%d{ISO8601}] [%t] %-5p : %m%n"));
-    msgLog = LoggerFactory.getLogger(LOG_NAME);
+    this.msgLog = LoggerFactory.getLogger(LOG_NAME);
+    this.gson = gsonProvider.get();
   }
 
   @Override
-  public void log(Direction direction, SourceAwareEventWrapper event) {
-    msgLog.info("{} Header[{}] Body[{}]", direction, event.getHeader(), event.getBody());
+  public void log(Direction direction, String topic, EventMessage event) {
+    msgLog.info("{} {} {}", direction, topic, gson.toJson(event));
   }
 }

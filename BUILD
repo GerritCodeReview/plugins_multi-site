@@ -17,8 +17,8 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@kafka-client//jar",
         "@global-refdb//jar",
+        "@events-broker//jar",
         "//plugins/replication",
     ],
 )
@@ -43,9 +43,7 @@ java_library(
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":multi-site__plugin",
         "@wiremock//jar",
-        "@kafka-client//jar",
-        "@testcontainers-kafka//jar",
-        "//lib/testcontainers",
         "@global-refdb//jar",
+        "@events-broker//jar",
     ],
 )

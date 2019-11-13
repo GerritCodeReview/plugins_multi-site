@@ -5,9 +5,11 @@ import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
+import com.googlesource.gerrit.plugins.multisite.MessageLogger;
+import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,26 +21,30 @@ public class BrokerApiWrapperTest {
   @Mock private BrokerMetrics brokerMetrics;
   @Mock private BrokerApi brokerApi;
   @Mock Event event;
+  @Mock MessageLogger msgLog;
+  private UUID instanceId = UUID.randomUUID();
+  private String topic = "index";
 
   private BrokerApiWrapper objectUnderTest;
 
   @Before
   public void setUp() {
     objectUnderTest =
-        new BrokerApiWrapper(DynamicItem.itemOf(BrokerApi.class, brokerApi), brokerMetrics);
+        new BrokerApiWrapper(
+            DynamicItem.itemOf(BrokerApi.class, brokerApi), brokerMetrics, msgLog, instanceId);
   }
 
   @Test
   public void shouldIncrementBrokerMetricCounterWhenMessagePublished() {
     when(brokerApi.send(any(), any())).thenReturn(true);
-    objectUnderTest.send(EventTopic.INDEX_TOPIC.topic(), event);
+    objectUnderTest.send(topic, event);
     verify(brokerMetrics, only()).incrementBrokerPublishedMessage();
   }
 
   @Test
   public void shouldIncrementBrokerFailedMetricCounterWhenMessagePublishingFailed() {
     when(brokerApi.send(any(), any())).thenReturn(false);
-    objectUnderTest.send(EventTopic.INDEX_TOPIC.topic(), event);
+    objectUnderTest.send(topic, event);
     verify(brokerMetrics, only()).incrementBrokerFailedToPublishMessage();
   }
 
@@ -47,7 +53,7 @@ public class BrokerApiWrapperTest {
     when(brokerApi.send(any(), any()))
         .thenThrow(new RuntimeException("Unexpected runtime exception"));
     try {
-      objectUnderTest.send(EventTopic.INDEX_TOPIC.topic(), event);
+      objectUnderTest.send(topic, event);
     } catch (RuntimeException e) {
       // expected
     }

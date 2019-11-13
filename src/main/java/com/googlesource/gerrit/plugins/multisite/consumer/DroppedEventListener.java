@@ -14,11 +14,13 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.gerritforge.gerrit.eventbroker.EventMessage;
+
 public interface DroppedEventListener {
   /**
    * Invoked when any event is dropped.
    *
    * @param event information about the event.
    */
-  void onEventDropped(SourceAwareEventWrapper event);
+  void onEventDropped(EventMessage event);
 }
