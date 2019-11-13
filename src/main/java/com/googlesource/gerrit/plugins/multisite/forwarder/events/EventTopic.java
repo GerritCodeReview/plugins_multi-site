@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
+import com.googlesource.gerrit.plugins.multisite.Configuration;
+
 public enum EventTopic {
   INDEX_TOPIC("GERRIT.EVENT.INDEX", "indexEvent"),
   CACHE_TOPIC("GERRIT.EVENT.CACHE", "cacheEvent"),
@@ -28,8 +30,8 @@ public enum EventTopic {
     this.aliasKey = aliasKey;
   }
 
-  public String topic() {
-    return topic;
+  public String topic(Configuration config) {
+    return config.broker().getTopic(topicAliasKey(), topic);
   }
 
   public String topicAliasKey() {
