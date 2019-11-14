@@ -324,7 +324,7 @@ if [ $DOWNLOAD_WEBSESSION_FLATFILE = "true" ];then
 	wget https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-websession-flatfile-bazel-master-master/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-flatfile/websession-flatfile.jar \
 	-O $DEPLOYMENT_LOCATION/websession-flatfile.jar || { echo >&2 "Cannot download websession-flatfile plugin: Check internet connection. Abort\
 ing"; exit 1; }
-	wget https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-healthcheck-bazel-master/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar \
+	wget https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-healthcheck-bazel-master-master/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar \
 	-O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
 ing"; exit 1; }
 else
