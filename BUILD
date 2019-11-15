@@ -17,13 +17,19 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
+        ":replication-neverlink",
         "@curator-client//jar",
         "@curator-framework//jar",
         "@curator-recipes//jar",
         "@kafka-client//jar",
         "@zookeeper//jar",
-        "//plugins/replication",
     ],
+)
+
+java_library(
+    name = "replication-neverlink",
+    neverlink = 1,
+    exports = ["//plugins/replication"],
 )
 
 junit_tests(
@@ -52,5 +58,6 @@ java_library(
         "@testcontainers-kafka//jar",
         "@wiremock//jar",
         "//lib/testcontainers",
+        "//plugins/replication",
     ],
 )
