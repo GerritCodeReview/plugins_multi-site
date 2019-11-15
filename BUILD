@@ -17,10 +17,16 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
+        ":replication-neverlink",
         "@global-refdb//jar",
         "@events-broker//jar",
-        "//plugins/replication",
     ],
+)
+
+java_library(
+    name = "replication-neverlink",
+    neverlink = 1,
+    exports = ["//plugins/replication"],
 )
 
 junit_tests(
@@ -45,5 +51,6 @@ java_library(
         "@wiremock//jar",
         "@global-refdb//jar",
         "@events-broker//jar",
+        "//plugins/replication",
     ],
 )
