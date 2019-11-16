@@ -336,6 +336,11 @@ echo "Downloading zookeeper plugin stable 3.1"
 	-O $DEPLOYMENT_LOCATION/zookeeper.jar || { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
+echo "Downloading kafka-events plugin stable 3.1"
+	wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.1/job/plugin-kafka-events-bazel-master-stable-3.1/lastSuccessfulBuild/artifact/bazel-bin/plugins/kafka-events/kafka-events.jar \
+	-O $DEPLOYMENT_LOCATION/kafka-events.jar || { echo >&2 "Cannot download kafka-events plugin: Check internet connection. Abort\
+ing"; exit 1; }
+
 if [ "$REPLICATION_TYPE" = "ssh" ];then
 	echo "Using 'SSH' replication type"
 	echo "Make sure ~/.ssh/authorized_keys and ~/.ssh/known_hosts are configured correctly"
