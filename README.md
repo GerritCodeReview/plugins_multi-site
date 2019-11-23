@@ -86,9 +86,6 @@ Create the `$GERRIT_SITE/etc/multi-site.config` on all Gerrit servers with the
 following basic settings:
 
 ```
-[kafka]
-  bootstrapServers = <kafka-host>:<kafka-port>
-
 [ref-database]
   enabled = true
 
