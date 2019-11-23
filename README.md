@@ -86,8 +86,12 @@ Create the `$GERRIT_SITE/etc/multi-site.config` on all Gerrit servers with the
 following basic settings:
 
 ```
-[kafka]
-  bootstrapServers = <kafka-host>:<kafka-port>
+
+[broker]
+        indexEventTopic = gerrit_index
+        streamEventTopic = gerrit_stream
+        projectListEventTopic = gerrit_list_project
+        cacheEventTopic = gerrit_cache_eviction
 
 [ref-database]
   enabled = true
