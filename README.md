@@ -96,8 +96,6 @@ following basic settings:
 [ref-database]
   enabled = true
 
-[ref-database "zookeeper"]
-  connectString = "localhost:2181"
 ```
 
 For more details on the configuration settings, please refer to the
