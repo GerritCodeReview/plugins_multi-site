@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d2c289d_84b62ff3",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-11-23T21:21:31Z",
+      "side": 1,
+      "message": "There are defaults that can be used. These are not needed in the simplest example.",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 47
+      },
+      "revId": "6b6bd95ee808b6c159a0c8e3b08c5440d70e71db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f35eb600_79830f87",
+        "filename": "src/main/resources/Documentation/about.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-11-23T21:21:31Z",
+      "side": 1,
+      "message": "These are not needed in the simplest example.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 47
+      },
+      "revId": "6b6bd95ee808b6c159a0c8e3b08c5440d70e71db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "057de288_74ca1fe6",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2019-11-23T21:21:31Z",
+      "side": 1,
+      "message": "These are not needed in the simplest example.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 47
+      },
+      "revId": "6b6bd95ee808b6c159a0c8e3b08c5440d70e71db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
