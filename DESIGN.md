@@ -510,6 +510,60 @@ This implementation will prevent the cluster to enter split brain but might resu
 set of refs in Read Only state across all the cluster if the RW node is failing after having
 sent the request to the Ref-DB but before persisting this request into its `git` layer.
 
+#### Geo located Gerrit master election
+
+Once you go multi-site multi-master you can improve the latency of your calls by
+serving traffic from the closest server to your user.
+
+Whether you are running your infrastructure in the cloud or on premise you have different solutions you can look at.
+
+##### AWS
+
+Route53 AWS DNS service offers the opportunity of doing [Geo Proximity](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html#routing-policy-geoproximity)
+routing using [Traffic Flow](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/traffic-flow.html).
+
+Traffic flow is a tool which allows the definition of traffic policies and rules via a UI. Traffic rules are of different types, among which *Geoproximity* rules.
+
+When creating geoproximity rules for your resources you can specify one of the following values for each rule:
+
+* If you're using AWS resources, the AWS Region that you created the resource in
+* If you're using non-AWS resources, the latitude and longitude of the resource.
+
+This allows you to have an hybrid cloud-on premise infrastructure.
+
+You can define quite complex failover rules to ensure high availability of your system ([here](https://pasteboard.co/ILFSd5Y.png) an example).
+
+Overall the service provided is pretty much a smart reverse-proxy, if you want more
+complex routing strategies you will still need a proper Load Balancer.
+
+##### GCE
+
+GCE [doesn't offer](https://cloud.google.com/docs/compare/aws/networking#dns) a Geographical based routing, but it implicitly has geo-located DNS entries
+when distributing your application among different zones.
+
+The Load Balancer will balance the traffic to the [nearest available instance](https://cloud.google.com/load-balancing/docs/backend-service#backend_services_and_regions)
+, but this is not configurable and the app server has to be in GC.
+
+Hybrid architectures are supported but would make things more complicated,
+hence this solution is probably worthy only when the Gerrit instances are running in GC.
+
+##### On premise
+
+If you are going for an on premise solution and using HAProxy as Load Balancer,
+it is easy to define static ACL based on IP ranges and use them to route your traffic.
+
+This [blogpost](https://icicimov.github.io/blog/devops/Haproxy-GeoIP/) explains how to achieve it.
+
+On top of that, you want to define a DNS entry per zone and use the ACLs you just defined to
+issue redirection of the calls to most appropiate zone.
+
+You will have to add to your frontend definition your redirection strategy, i.e.:
+
+```
+http-request redirect code 307 prefix https://review-eu.gerrithub.io if acl_EU
+http-request redirect code 307 prefix https://review-am.gerrithub.io if acl_NA
+```
+
 # Next steps in the roadmap
 
 ## Step-1: Fill the gaps in multi-site Stage #7 implementation:
