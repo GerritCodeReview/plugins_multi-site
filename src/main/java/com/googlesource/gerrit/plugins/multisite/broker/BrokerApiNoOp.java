@@ -49,4 +49,6 @@ public class BrokerApiNoOp implements BrokerApi {
   public Set<TopicSubscriber> topicSubscribers() {
     return topicSubscribers;
   }
+
+@Override public void replayAllEvents(String topic){}
 }
