@@ -331,8 +331,8 @@ else
 	echo "Without the websession-flatfile; user login via haproxy will fail."
 fi
 
-echo "Downloading zookeeper plugin stable 3.0"
-	wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-zookeeper-gh-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/zookeeper/zookeeper.jar \
+echo "Downloading zookeeper plugin master"
+	wget https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-zookeeper-gh-bazel-master/lastSuccessfulBuild/artifact/bazel-bin/plugins/zookeeper/zookeeper.jar \
 	-O $DEPLOYMENT_LOCATION/zookeeper.jar || { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
