@@ -14,9 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
-import static org.eclipse.jgit.lib.Constants.OBJ_COMMIT;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
@@ -39,6 +36,8 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.eclipse.jgit.lib.Constants.*;
 
 @Singleton
 public class Log4jSharedRefLogger extends LibModuleLogFile implements SharedRefLogger {
@@ -67,6 +66,7 @@ public class Log4jSharedRefLogger extends LibModuleLogFile implements SharedRefL
           int objectType = walk.parseAny(newRefValue).getType();
           switch (objectType) {
             case OBJ_COMMIT:
+            case OBJ_TAG:
               RevCommit commit = walk.parseCommit(newRefValue);
               committer = CommonConverters.toGitPerson(commit.getCommitterIdent());
               commitMessage = commit.getShortMessage();
