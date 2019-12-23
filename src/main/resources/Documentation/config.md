@@ -3,47 +3,8 @@
 =========================
 
 The @PLUGIN@ plugin must be installed as a library module in the
-`$GERRIT_SITE/lib` folder of all the instances and the following fields should
-be specified in the `$site_path/etc/@PLUGIN@.config` file:
-
-File '@PLUGIN@.config'
---------------------
-
-## Sample configuration.
-
-```
-[kafka]
-  bootstrapServers = kafka-1:9092,kafka-2:9092,kafka-3:9092
-
-  indexEventTopic = gerrit_index
-  streamEventTopic = gerrit_stream
-  cacheEventTopic = gerrit_cache_eviction
-  projectListEventTopic = gerrit_project_list
-
-[kafka "publisher"]
-  KafkaProp-compressionType = none
-  KafkaProp-deliveryTimeoutMs = 60000
-
-[kafka "subscriber"]
-  pollingIntervalMs = 1000
-
-  KafkaProp-enableAutoCommit = true
-  KafkaProp-autoCommitIntervalMs = 1000
-  KafkaProp-autoCommitIntervalMs = 5000
-
-[ref-database "zookeeper"]
-  connectString = "localhost:2181"
-  rootNode = "/gerrit/multi-site"
-  sessionTimeoutMs = 1000
-  connectionTimeoutMs = 1000
-  retryPolicyBaseSleepTimeMs = 1000
-  retryPolicyMaxSleepTimeMs = 3000
-  retryPolicyMaxRetries = 3
-  casRetryPolicyBaseSleepTimeMs = 100
-  casRetryPolicyMaxSleepTimeMs = 100
-  casRetryPolicyMaxRetries = 3
-  transactionLockTimeoutMs = 1000
-```
+`$GERRIT_SITE/lib` folder of all the instances. Configuration should
+be specified in the `$site_path/etc/@PLUGIN@.config` file.
 
 ## Configuration parameters
 
@@ -93,30 +54,21 @@ File '@PLUGIN@.config'
 :   The time interval in milliseconds between subsequent auto-retries.
     Defaults to 30000 (30 seconds).
 
-```kafka.bootstrapServers```
-:	  List of Kafka broker hosts (host:port) to use for publishing events to the message
-    broker
-
-```kafka.indexEventTopic```
-:   Name of the Kafka topic to use for publishing indexing events
+```broker.indexEventTopic```
+:   Name of the topic to use for publishing indexing events
     Defaults to GERRIT.EVENT.INDEX
 
-```kafka.streamEventTopic```
-:   Name of the Kafka topic to use for publishing stream events
+```broker.streamEventTopic```
+:   Name of the topic to use for publishing stream events
     Defaults to GERRIT.EVENT.STREAM
 
-```kafka.cacheEventTopic```
-:   Name of the Kafka topic to use for publishing cache eviction events
+```broker.cacheEventTopic```
+:   Name of the topic to use for publishing cache eviction events
     Defaults to GERRIT.EVENT.CACHE
 
-```kafka.projectListEventTopic```
-:   Name of the Kafka topic to use for publishing cache eviction events
+```broker.projectListEventTopic```
+:   Name of the topic to use for publishing cache eviction events
     Defaults to GERRIT.EVENT.PROJECT.LIST
-
-```kafka.subscriber.pollingIntervalMs```
-:   Polling interval in milliseconds for checking incoming events
-
-    Defaults: 1000
 
 ```ref-database.enabled```
 :   Enable the use of a shared ref-database
@@ -149,88 +101,3 @@ File '@PLUGIN@.config'
     Relax the alignment with the shared ref-database for AProject on refs/heads/feature.
 
     Defaults: No rules = All projects are REQUIRED to be consistent on all refs.
-
-```ref-database.zookeeper.connectString```
-:   Connection string to Zookeeper
-
-```ref-database.zookeeper.rootNode```
-:   Root node to use in Zookeeper to store/retrieve information
-
-    Defaults: "/gerrit/multi-site"
-
-
-```ref-database.zookeeper.sessionTimeoutMs```
-:   Zookeeper session timeout in milliseconds
-
-    Defaults: 1000
-
-```ref-database.zookeeper.connectionTimeoutMs```
-:   Zookeeper connection timeout in milliseconds
-
-    Defaults: 1000
-
-```ref-database.zookeeper.retryPolicyBaseSleepTimeMs```
-:   Configuration for the base sleep timeout in milliseconds of the
-    BoundedExponentialBackoffRetry policy used for the Zookeeper connection
-
-    Defaults: 1000
-
-```ref-database.zookeeper.retryPolicyMaxSleepTimeMs```
-:   Configuration for the maximum sleep timeout in milliseconds of the
-    BoundedExponentialBackoffRetry policy used for the Zookeeper connection
-
-    Defaults: 3000
-
-```ref-database.zookeeper.retryPolicyMaxRetries```
-:   Configuration for the maximum number of retries of the
-    BoundedExponentialBackoffRetry policy used for the Zookeeper connection
-
-    Defaults: 3
-
-```ref-database.zookeeper.casRetryPolicyBaseSleepTimeMs```
-:   Configuration for the base sleep timeout in milliseconds of the
-    BoundedExponentialBackoffRetry policy used for the Compare and Swap
-    operations on Zookeeper
-
-    Defaults: 1000
-
-```ref-database.zookeeper.casRetryPolicyMaxSleepTimeMs```
-:   Configuration for the maximum sleep timeout in milliseconds of the
-    BoundedExponentialBackoffRetry policy used for the Compare and Swap
-    operations on Zookeeper
-
-    Defaults: 3000
-
-```ref-database.zookeeper.casRetryPolicyMaxRetries```
-:   Configuration for the maximum number of retries of the
-    BoundedExponentialBackoffRetry policy used for the Compare and Swap
-    operations on Zookeeper
-
-    Defaults: 3
-
-```ref-database.zookeeper.transactionLockTimeoutMs```
-:   Configuration for the Zookeeper Lock timeout (in milliseconds) used when reading data
-    from Zookeeper, applying the git local changes and writing the new objectId
-    into Zookeeper
-
-    Defaults: 1000
-
-#### Custom kafka properties:
-
-In addition to the above settings, custom Kafka properties can be explicitly set
-for `publisher` and `subscriber`.
-In order to be acknowledged, these properties need to be prefixed with the
-`KafkaProp-` prefix and be formatted using camel case, as follows: `KafkaProp-yourPropertyValue`
-
-For example, if you want to set the `auto.commit.interval.ms` property for
-consumers, you need to configure this property as `KafkaProp-autoCommitIntervalMs`.
-
-The complete list of available settings can be found directly in the kafka website:
-
-* **Publisher**: https://kafka.apache.org/documentation/#producerconfigs
-* **Subscriber**: https://kafka.apache.org/documentation/#consumerconfigs
-
-#### Notes:
-* From version 3.0 publisher and subscribers cannot be disabled independently anymore.
-* From version 3.0 disabling the management of certain cache invalidations or re-indexing
-is not available anymore.
