@@ -82,20 +82,6 @@ Add the multi-site module to `$GERRIT_SITE/etc/gerrit.config` as follows:
   installModule = com.googlesource.gerrit.plugins.multisite.Module
 ```
 
-Create the `$GERRIT_SITE/etc/multi-site.config` on all Gerrit servers with the
-following basic settings:
-
-```
-[kafka]
-  bootstrapServers = <kafka-host>:<kafka-port>
-
-[ref-database]
-  enabled = true
-
-[ref-database "zookeeper"]
-  connectString = "localhost:2181"
-```
-
 For more details on the configuration settings, please refer to the
 [multi-site configuration documentation](src/main/resources/Documentation/config.md).
 
