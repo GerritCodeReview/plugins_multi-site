@@ -83,4 +83,9 @@ public class BrokerApiWrapper implements BrokerApi {
   public Set<TopicSubscriber> topicSubscribers() {
     return apiDelegate.get().topicSubscribers();
   }
+
+  @Override
+  public void replayAllEvents(String topic) {
+    apiDelegate.get().replayAllEvents(topic);
+  }
 }
