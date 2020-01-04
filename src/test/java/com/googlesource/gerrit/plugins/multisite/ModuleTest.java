@@ -17,7 +17,6 @@ package com.googlesource.gerrit.plugins.multisite;
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.gerrit.server.config.SitePaths;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerModule;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,15 +36,13 @@ public class ModuleTest {
   @Mock(answer = Answers.RETURNS_DEEP_STUBS)
   private Configuration configMock;
 
-  @Mock private BrokerModule brokerModule;
-
   @Rule public TemporaryFolder tempFolder = new TemporaryFolder();
 
   private Module module;
 
   @Before
   public void setup() {
-    module = new Module(configMock, brokerModule);
+    module = new Module(configMock);
   }
 
   @Test
