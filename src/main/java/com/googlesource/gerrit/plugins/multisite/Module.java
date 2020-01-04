@@ -24,11 +24,10 @@ import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerModule;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
+import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
-import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.NoopSharedRefDatabase;
@@ -46,12 +45,10 @@ import org.slf4j.LoggerFactory;
 public class Module extends LifecycleModule {
   private static final Logger log = LoggerFactory.getLogger(Module.class);
   private Configuration config;
-  private BrokerModule brokerModule;
 
   @Inject
-  public Module(Configuration config, BrokerModule brokerModule) {
+  public Module(Configuration config) {
     this.config = config;
-    this.brokerModule = brokerModule;
   }
 
   @Override
@@ -71,10 +68,9 @@ public class Module extends LifecycleModule {
     listener().to(Log4jMessageLogger.class);
     bind(MessageLogger.class).to(Log4jMessageLogger.class);
 
-    install(brokerModule);
+    install(new SubscriberModule());
 
     install(new ForwarderModule());
-    install(new BrokerForwarderModule());
 
     if (config.cache().synchronize()) {
       install(new CacheModule());
