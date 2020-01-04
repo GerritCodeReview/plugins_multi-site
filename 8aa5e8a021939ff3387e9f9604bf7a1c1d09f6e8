@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e05cbcda_e0faadf9",
+        "filename": "DESIGN.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-04T00:12:17Z",
+      "side": 1,
+      "message": "Why? How is that different from AWS? I believe that both AWS and GCE would require to have a reverse proxy in the cloud because they do not directly allow to have on-premises IP entries associated with their geo-located DNS.\n\nWith both you could still have Gerrit on-premises and have just a proxy on the cloud.\n\nWDYT?",
+      "range": {
+        "startLine": 548,
+        "startChar": 32,
+        "endLine": 548,
+        "endChar": 87
+      },
+      "revId": "8aa5e8a021939ff3387e9f9604bf7a1c1d09f6e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
