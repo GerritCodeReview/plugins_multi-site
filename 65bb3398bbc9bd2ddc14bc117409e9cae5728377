@@ -22,6 +22,53 @@
       "revId": "65bb3398bbc9bd2ddc14bc117409e9cae5728377",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b88fd43b_fb3cf19c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/PluginModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-04T20:44:42Z",
+      "side": 1,
+      "message": "Why would you like to bind it here? I believe it should be then the events-broker\u0027s responsibility to do it, correct?",
+      "parentUuid": "a8e43624_d91362c4",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 9
+      },
+      "revId": "65bb3398bbc9bd2ddc14bc117409e9cae5728377",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6440acc2_e70c70c3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/PluginModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-04T20:44:42Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be also in the events-broker?",
+      "range": {
+        "startLine": 44,
+        "startChar": 9,
+        "endLine": 44,
+        "endChar": 31
+      },
+      "revId": "65bb3398bbc9bd2ddc14bc117409e9cae5728377",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
