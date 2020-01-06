@@ -22,6 +22,30 @@
       "revId": "8aa5e8a021939ff3387e9f9604bf7a1c1d09f6e8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db9972e5_af327d69",
+        "filename": "DESIGN.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-06T10:43:31Z",
+      "side": 1,
+      "message": "In AWS you can have \"endpoints\" external to your AWS account (i.e.: you can have route pointing to review-1.gerrithub.io, review-2.gerrithub.io, etc).\n\nYou won\u0027t have to manage the reverse proxy at all, it is totally transparent.\n\nThe main difference is that with GCE you will have to handle the reverse proxy yourself.\n\nMakes sense?",
+      "parentUuid": "e05cbcda_e0faadf9",
+      "range": {
+        "startLine": 548,
+        "startChar": 32,
+        "endLine": 548,
+        "endChar": 87
+      },
+      "revId": "8aa5e8a021939ff3387e9f9604bf7a1c1d09f6e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
