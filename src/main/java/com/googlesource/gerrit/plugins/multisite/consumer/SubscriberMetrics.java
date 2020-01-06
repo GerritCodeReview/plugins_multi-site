@@ -14,24 +14,42 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.gerritforge.gerrit.eventbroker.EventMessage;
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.MetricMaker;
+import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
+import com.googlesource.gerrit.plugins.multisite.ReplicationStatusStore;
+import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Singleton
 public class SubscriberMetrics extends MultiSiteMetrics {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String SUBSCRIBER_SUCCESS_COUNTER = "subscriber_msg_consumer_counter";
   private static final String SUBSCRIBER_FAILURE_COUNTER =
       "subscriber_msg_consumer_failure_counter";
+  private static final String GLOBAL_LATENCY_METRIC = "global-latency-metric";
+  private Set<String> projectsWithMetrics;
+
+  private ReplicationStatusStore replicationStatusStore;
+  private MetricMaker metricMaker;
 
   private final Counter1<String> subscriberSuccessCounter;
   private final Counter1<String> subscriberFailureCounter;
 
   @Inject
-  public SubscriberMetrics(MetricMaker metricMaker) {
+  public SubscriberMetrics(MetricMaker metricMaker, ReplicationStatusStore replicationStatusStore) {
+
+    this.projectsWithMetrics = Collections.synchronizedSet(new HashSet<>());
+    this.replicationStatusStore = replicationStatusStore;
+    this.metricMaker = metricMaker;
 
     this.subscriberSuccessCounter =
         metricMaker.newCounter(
@@ -55,5 +73,59 @@ public class SubscriberMetrics extends MultiSiteMetrics {
 
   public void incrementSubscriberFailedToConsumeMessage() {
     subscriberFailureCounter.increment(SUBSCRIBER_FAILURE_COUNTER);
+  }
+
+  public void updateReplicationStatusMetrics(EventMessage eventMessage) {
+    Event event = eventMessage.getEvent();
+    if (event instanceof RefReplicatedEvent) {
+      RefReplicatedEvent refReplicatedEvent = (RefReplicatedEvent) event;
+      String projectName = refReplicatedEvent.getProjectNameKey().get();
+      logger.atInfo().log("Updating last replication time for %s", projectName);
+      replicationStatusStore.updateLastReplicationTime(projectName, event.eventCreatedOn);
+      upsertMertricForProject(projectName);
+    } else {
+      logger.atInfo().log("Not a ref-replicated-event event [%s], skipping", event.type);
+    }
+  }
+
+  private void upsertMertricForProject(String projectName) {
+
+    if (!projectsWithMetrics.contains(projectName)) {
+      addLatencyMetricFor(projectName);
+    } else {
+      logger.atInfo().log("Metric already exists for project " + projectName);
+    }
+    if (!projectsWithMetrics.contains(GLOBAL_LATENCY_METRIC)) {
+      addGlobalLatencyMetric();
+    } else {
+      logger.atInfo().log("Metric already exists for global project");
+    }
+  }
+
+  private void addGlobalLatencyMetric() {
+    String metricName = "multi_site/subscriber/replication_status_latest_replication_time_global";
+    metricMaker.newCallbackMetric(
+        metricName,
+        Long.class,
+        new Description(String.format("%s last replication timestamp (ms)", metricName))
+            .setGauge()
+            .setUnit(Description.Units.MILLISECONDS),
+        () -> replicationStatusStore.getGlobalLastReplicationTime());
+    projectsWithMetrics.add(GLOBAL_LATENCY_METRIC);
+    logger.atInfo().log("Added callback for Global Metric");
+  }
+
+  private void addLatencyMetricFor(String projectName) {
+    String metricName =
+        "multi_site/subscriber/replication_status_latest_replication_time_" + projectName;
+    metricMaker.newCallbackMetric(
+        metricName,
+        Long.class,
+        new Description(String.format("%s last replication timestamp (ms)", metricName))
+            .setGauge()
+            .setUnit(Description.Units.MILLISECONDS),
+        () -> replicationStatusStore.getLastReplicationTime(projectName).orElse(0L));
+    logger.atInfo().log("Added callback for " + projectName);
+    projectsWithMetrics.add(projectName);
   }
 }
