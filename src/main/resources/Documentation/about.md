@@ -90,3 +90,11 @@ documentation.
 * Subscriber failed to poll messages count
 
 `multi_site/subscriber/subscriber_message_consumer_poll_failure_counter/subscriber_msg_consumer_poll_failure_counter, type=com.codahale.metrics.Meter`
+
+* Subscriber replication status (latest replication Epoch time in seconds) per instance
+
+`multi_site/subscriber/instance_replication_status_latest_replication_epochtime_secs`
+
+* Subscriber replication status (latest replication Epoch time in seconds) per project
+
+`multi_site/subscriber/replication_status_latest_replication_epochtime_secs_<projectName>`

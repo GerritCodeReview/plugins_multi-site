@@ -74,6 +74,7 @@ public abstract class AbstractSubcriber {
         msgLog.log(Direction.CONSUME, topic, event);
         eventRouter.route(event.getEvent());
         subscriberMetrics.incrementSubscriberConsumedMessage();
+        subscriberMetrics.updateReplicationStatusMetrics(event);
       } catch (IOException e) {
         logger.atSevere().withCause(e).log(
             "Malformed event '%s': [Exception: %s]", event.getHeader());
