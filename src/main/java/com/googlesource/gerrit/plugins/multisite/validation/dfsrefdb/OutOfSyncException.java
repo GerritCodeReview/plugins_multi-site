@@ -25,7 +25,7 @@ public class OutOfSyncException extends IOException {
     super(
         localRef == null
             ? String.format(
-                "Local ref does exists locally for project %s but exists in the shared ref-db",
+                "Local ref doesn't exists locally for project %s but exists in the shared ref-db",
                 project)
             : String.format(
                 "Local ref %s (ObjectId=%s) on project %s is out of sync with the shared ref-db",
