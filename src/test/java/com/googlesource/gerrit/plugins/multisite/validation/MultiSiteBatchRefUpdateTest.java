@@ -15,10 +15,11 @@
 package com.googlesource.gerrit.plugins.multisite.validation;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -50,6 +51,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
 
   @Mock SharedRefDatabaseWrapper sharedRefDb;
   @Mock BatchRefUpdate batchRefUpdate;
+  @Mock BatchRefUpdateValidator batchRefUpdateValidator;
   @Mock RefDatabase refDatabase;
   @Mock RevWalk revWalk;
   @Mock ProgressMonitor progressMonitor;
@@ -123,17 +125,25 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
     return argThat(new RefMatcher(oldRef));
   }
 
-  @Test
+  @Test(expected = IOException.class)
   public void executeAndFailsWithExceptions() throws IOException {
+    multiSiteRefUpdate = getMultiSiteBatchRefUpdateWithMockedValidator();
+    doThrow(new IOException("IO Test Exception"))
+        .when(batchRefUpdateValidator)
+        .executeBatchUpdateWithValidation(any(), any());
+
+    multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
+  }
+
+  @Test
+  public void executeSuccessfullyWithNoExceptionsWhenOutOfSync() throws IOException {
     setMockRequiredReturnValues();
     doReturn(true).when(sharedRefDb).exists(A_TEST_PROJECT_NAME_KEY, A_TEST_REF_NAME);
     doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
-    try {
-      multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
-      fail("Expecting an IOException to be thrown");
-    } catch (IOException e) {
-      verify(validationMetrics).incrementSplitBrainPrevention();
-    }
+
+    multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
+
+    verify(validationMetrics).incrementSplitBrainPrevention();
   }
 
   @Test
@@ -158,6 +168,17 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
                 new DummyLockWrapper(),
                 projectName,
                 refDb);
+          }
+        };
+    return new MultiSiteBatchRefUpdate(batchRefValidatorFactory, A_TEST_PROJECT_NAME, refDatabase);
+  }
+
+  private MultiSiteBatchRefUpdate getMultiSiteBatchRefUpdateWithMockedValidator() {
+    BatchRefUpdateValidator.Factory batchRefValidatorFactory =
+        new BatchRefUpdateValidator.Factory() {
+          @Override
+          public BatchRefUpdateValidator create(String projectName, RefDatabase refDb) {
+            return batchRefUpdateValidator;
           }
         };
     return new MultiSiteBatchRefUpdate(batchRefValidatorFactory, A_TEST_PROJECT_NAME, refDatabase);
