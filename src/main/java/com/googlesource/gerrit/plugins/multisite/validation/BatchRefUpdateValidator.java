@@ -19,6 +19,8 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.googlesource.gerrit.plugins.multisite.LockWrapper;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.OutOfSyncException;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedDbSplitBrainException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
@@ -100,6 +102,13 @@ public class BatchRefUpdateValidator extends RefUpdateValidator {
       refsToUpdate = compareAndGetLatestLocalRefs(refsToUpdate, locks);
       delegateUpdate.invoke();
       updateSharedRefDb(batchRefUpdate.getCommands().stream(), refsToUpdate);
+    } catch (OutOfSyncException | SharedDbSplitBrainException e) {
+      List<ReceiveCommand> receiveCommands = batchRefUpdate.getCommands();
+      logger.atWarning().withCause(e).log(
+          String.format(
+              "Batch ref-update failing because node is out of sync. Set all commands Result to LOCK_FAILURE [%d]",
+              receiveCommands.size()));
+      receiveCommands.forEach((command) -> command.setResult(ReceiveCommand.Result.LOCK_FAILURE));
     }
   }
 

@@ -127,6 +127,12 @@ public class RefUpdateValidator {
         updateSharedDbOrThrowExceptionFor(refPairForUpdate);
       }
       return result;
+    } catch (OutOfSyncException | SharedDbSplitBrainException e) {
+      logger.atWarning().withCause(e).log(
+          String.format(
+              "Local node is out of sync with ref-db: %s", e.getMessage()));
+
+      return RefUpdate.Result.LOCK_FAILURE;
     }
   }
 
