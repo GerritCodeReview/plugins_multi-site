@@ -14,8 +14,10 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.eclipse.jgit.transport.ReceiveCommand.Type.UPDATE;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -27,6 +29,7 @@ import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.eclipse.jgit.internal.storage.file.RefDirectory;
 import org.eclipse.jgit.junit.LocalDiskRepositoryTestCase;
@@ -58,6 +61,8 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
   private RevCommit B;
 
   @Mock SharedRefDatabaseWrapper sharedRefDatabase;
+
+  @Mock SharedRefEnforcement tmpRefEnforcement;
 
   @Before
   public void setup() throws Exception {
@@ -103,6 +108,31 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
 
     verify(sharedRefDatabase, never())
         .compareAndPut(A_TEST_PROJECT_NAME_KEY, newRef(DRAFT_COMMENT, A.getId()), B.getId());
+  }
+
+  @Test
+  public void validationShouldFailWhenLocalRefDbIsOutOfSync() throws Exception {
+    String AN_OUT_OF_SYNC_REF = "refs/changes/01/1/1";
+    BatchRefUpdate batchRefUpdate =
+        newBatchUpdate(
+            Collections.singletonList(new ReceiveCommand(A, B, AN_OUT_OF_SYNC_REF, UPDATE)));
+    BatchRefUpdateValidator batchRefUpdateValidator =
+        getRefValidatorForEnforcement(A_TEST_PROJECT_NAME, tmpRefEnforcement);
+
+    doReturn(SharedRefEnforcement.EnforcePolicy.REQUIRED)
+        .when(batchRefUpdateValidator.refEnforcement)
+        .getPolicy(A_TEST_PROJECT_NAME, AN_OUT_OF_SYNC_REF);
+    doReturn(false)
+        .when(sharedRefDatabase)
+        .isUpToDate(A_TEST_PROJECT_NAME_KEY, newRef(AN_OUT_OF_SYNC_REF, AN_OBJECT_ID_1));
+
+    batchRefUpdateValidator.executeBatchUpdateWithValidation(
+        batchRefUpdate, () -> execute(batchRefUpdate));
+
+    final List<ReceiveCommand> commands = batchRefUpdate.getCommands();
+    assertThat(commands.size()).isEqualTo(1);
+    commands.forEach(
+        (command) -> assertThat(command.getResult()).isEqualTo(ReceiveCommand.Result.LOCK_FAILURE));
   }
 
   private BatchRefUpdateValidator newDefaultValidator(String projectName) {
