@@ -139,16 +139,18 @@ public class RefUpdateValidatorTest implements RefFixture {
     assertThat(result).isEqualTo(RefUpdate.Result.NEW);
   }
 
-  @Test(expected = OutOfSyncException.class)
-  public void validationShouldFailWhenLocalRefDbIsNotUpToDate() throws Exception {
+  @Test
+  public void validationShouldFailWhenLocalRefDbIsOutOfSync() throws Exception {
     lenient()
-        .doReturn(true)
-        .when(sharedRefDb)
-        .isUpToDate(any(Project.NameKey.class), any(Ref.class));
+            .doReturn(true)
+            .when(sharedRefDb)
+            .isUpToDate(any(Project.NameKey.class), any(Ref.class));
     doReturn(true).when(sharedRefDb).exists(A_TEST_PROJECT_NAME_KEY, refName);
     doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, localRef);
 
-    refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
+    Result result = refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
+
+    assertThat(result).isEqualTo(Result.REJECTED_OTHER_REASON);
   }
 
   @Test(expected = SharedDbSplitBrainException.class)
