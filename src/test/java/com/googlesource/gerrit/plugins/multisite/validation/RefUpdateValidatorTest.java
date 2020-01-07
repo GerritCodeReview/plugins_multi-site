@@ -24,7 +24,6 @@ import static org.mockito.Mockito.verify;
 import com.google.gerrit.entities.Project;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.OutOfSyncException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedDbSplitBrainException;
 import org.eclipse.jgit.lib.ObjectId;
@@ -139,8 +138,8 @@ public class RefUpdateValidatorTest implements RefFixture {
     assertThat(result).isEqualTo(RefUpdate.Result.NEW);
   }
 
-  @Test(expected = OutOfSyncException.class)
-  public void validationShouldFailWhenLocalRefDbIsNotUpToDate() throws Exception {
+  @Test
+  public void validationShouldFailWhenLocalRefDbIsOutOfSync() throws Exception {
     lenient()
         .doReturn(true)
         .when(sharedRefDb)
@@ -148,7 +147,9 @@ public class RefUpdateValidatorTest implements RefFixture {
     doReturn(true).when(sharedRefDb).exists(A_TEST_PROJECT_NAME_KEY, refName);
     doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, localRef);
 
-    refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
+    Result result = refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
+
+    assertThat(result).isEqualTo(Result.LOCK_FAILURE);
   }
 
   @Test(expected = SharedDbSplitBrainException.class)
