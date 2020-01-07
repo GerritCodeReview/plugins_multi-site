@@ -127,6 +127,11 @@ public class RefUpdateValidator {
         updateSharedDbOrThrowExceptionFor(refPairForUpdate);
       }
       return result;
+    } catch (OutOfSyncException outOfSyncException) {
+      logger.atWarning().withCause(outOfSyncException).log(
+          String.format("Local node is out of sync with ref-db: %s", outOfSyncException.getMessage()));
+
+      return RefUpdate.Result.LOCK_FAILURE;
     }
   }
 
