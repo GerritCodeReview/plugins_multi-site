@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "bae71de3_9bd1c5b0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-07T10:03:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1acdb489_6283abdd",
+      "range": {
+        "startLine": 91,
+        "startChar": 21,
+        "endLine": 91,
+        "endChar": 28
+      },
+      "revId": "77a13d2f0b91bb7092a3f4439805c13a91ee2989",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "38887f8b_65ffd511",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
         "patchSetId": 4
@@ -36,6 +60,24 @@
       "writtenOn": "2020-01-07T00:15:07Z",
       "side": 1,
       "message": "how much memory do metrics for e.g. 50k projects allocate?",
+      "revId": "77a13d2f0b91bb7092a3f4439805c13a91ee2989",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "778ea3f9_374cae83",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-07T10:03:09Z",
+      "side": 1,
+      "message": "I have generated 100K metrics at startup and, when hitting the first time the metrics endpoint I can see the memory going up of ~200MB. Roughly I\u0027d say ~2MB per metric.",
+      "parentUuid": "38887f8b_65ffd511",
       "revId": "77a13d2f0b91bb7092a3f4439805c13a91ee2989",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
