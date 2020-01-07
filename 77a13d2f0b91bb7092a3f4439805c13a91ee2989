@@ -81,6 +81,24 @@
       "revId": "77a13d2f0b91bb7092a3f4439805c13a91ee2989",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fbf0fbb1_872182b2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-01-07T22:48:47Z",
+      "side": 1,
+      "message": "ack, though 200MB/100k \u003d 2k ?",
+      "parentUuid": "778ea3f9_374cae83",
+      "revId": "77a13d2f0b91bb7092a3f4439805c13a91ee2989",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
