@@ -69,6 +69,30 @@
       "revId": "65bb3398bbc9bd2ddc14bc117409e9cae5728377",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b220ccf0_f6008303",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/PluginModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-01-07T09:07:13Z",
+      "side": 1,
+      "message": "I was thinking about that, but BrokerApiWrapper contains some multi-site internal functionalities like using InstanceId to produce message or Context.isForwardedEvent() to prevent message processing loop. Code can be refactored and this class can be moved but I thought that it would be better to do it in a following change.",
+      "parentUuid": "6440acc2_e70c70c3",
+      "range": {
+        "startLine": 44,
+        "startChar": 9,
+        "endLine": 44,
+        "endChar": 31
+      },
+      "revId": "65bb3398bbc9bd2ddc14bc117409e9cae5728377",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
