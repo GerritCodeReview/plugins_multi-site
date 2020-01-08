@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "9196da78_2bb575d9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/PluginModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-01-08T09:27:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b88fd43b_fb3cf19c",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 9
+      },
+      "revId": "65bb3398bbc9bd2ddc14bc117409e9cae5728377",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6440acc2_e70c70c3",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/PluginModule.java",
         "patchSetId": 1
