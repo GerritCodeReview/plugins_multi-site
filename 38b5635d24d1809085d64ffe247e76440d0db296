@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8f2e4698_cf11b2df",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-08T21:15:58Z",
+      "side": 1,
+      "message": "This is the *real* split-brain and we should not return a LOCK_FAILURE in that case. Correct?\nRetrying wouldn\u0027t help.",
+      "range": {
+        "startLine": 105,
+        "startChar": 34,
+        "endLine": 105,
+        "endChar": 63
+      },
+      "revId": "38b5635d24d1809085d64ffe247e76440d0db296",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3daa217f_63577182",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-08T21:15:58Z",
+      "side": 1,
+      "message": "out of sync with the shared ref-db.",
+      "range": {
+        "startLine": 109,
+        "startChar": 56,
+        "endLine": 109,
+        "endChar": 67
+      },
+      "revId": "38b5635d24d1809085d64ffe247e76440d0db296",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bc4a124_37c66611",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-08T21:15:58Z",
+      "side": 1,
+      "message": "This is the *real* split-brain situation, correct? Retrying wouldn\u0027t help and we should not return LOCK_FAILURE IMHO.",
+      "range": {
+        "startLine": 130,
+        "startChar": 32,
+        "endLine": 130,
+        "endChar": 63
+      },
+      "revId": "38b5635d24d1809085d64ffe247e76440d0db296",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
