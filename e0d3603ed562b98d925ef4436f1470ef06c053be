@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1eed54fe_49d49959",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-01-08T18:01:54Z",
+      "side": 1,
+      "message": "I\u0027ve also noticed that this method can trow SharedDbSplitBrainException which extends IOException as well. Should we handle it here?",
+      "range": {
+        "startLine": 103,
+        "startChar": 6,
+        "endLine": 103,
+        "endChar": 23
+      },
+      "revId": "e0d3603ed562b98d925ef4436f1470ef06c053be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e202e9c2_d5817851",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-01-08T18:01:54Z",
+      "side": 1,
+      "message": "This method can throw SharedDbSplitBrainException which is IOException, should we handle it here?",
+      "range": {
+        "startLine": 127,
+        "startChar": 8,
+        "endLine": 127,
+        "endChar": 41
+      },
+      "revId": "e0d3603ed562b98d925ef4436f1470ef06c053be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
