@@ -22,6 +22,30 @@
       "revId": "65e686b507f558c652a2982ec6fbe23df1dc93ee",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea79fca5_b9cceda5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-08T11:23:24Z",
+      "side": 1,
+      "message": "The batch ref-update has one status per update operation. Just set the lock failure to all of them.",
+      "parentUuid": "a42b9388_de35bd57",
+      "range": {
+        "startLine": 130,
+        "startChar": 4,
+        "endLine": 137,
+        "endChar": 5
+      },
+      "revId": "65e686b507f558c652a2982ec6fbe23df1dc93ee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
