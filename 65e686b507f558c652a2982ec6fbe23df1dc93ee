@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a42b9388_de35bd57",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-08T10:41:19Z",
+      "side": 1,
+      "message": "If we want to handle cases where, for example, the CI fails to post a review because the node is out of sync I don\u0027t this this would work.\n\nWhen using an SSH or HTTP command to post a review the \"MultiSiteBatchRefUpdate\" is called, not the ref-update.\n\nMultiSiteBatchRefUpdate extends the JGit BatchRefUpdate which has the following signature, which just throws a generic IOException:\n\npublic void execute(RevWalk walk, ProgressMonitor monitor, List\u003cString\u003e options) throws IOException {...}\n\nAny idea on how we can return something more meaningful when a command fails?",
+      "range": {
+        "startLine": 130,
+        "startChar": 4,
+        "endLine": 137,
+        "endChar": 5
+      },
+      "revId": "65e686b507f558c652a2982ec6fbe23df1dc93ee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
