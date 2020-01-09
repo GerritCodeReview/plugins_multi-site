@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "12fb66f5_508d0245",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-09T10:09:19Z",
+      "side": 1,
+      "message": "I think both exceptions might highlight a real split-brain:\n- OutOfSyncException is thrown when, doing a ref-update, we find out that we are not in sync with the shared-ref. It is definitively worth retry since the node might just be behind a bit.\n- SharedDbSplitBrainException is a generic RuntimeException thrown by the Shared RefDB implementation. It could be worth retrying, it really depends on why the exception was raised. I think though that maybe the retry mechanism in this case shouldn\u0027t be done by the client, but by the multi-site plugin, hence I am going to remove the catching of the exception from here.\n\nAs a side note I think we should review the alert we have on the metrics we collect. At the moment we only have alerts generated from \"OutOfSynceException\"",
+      "parentUuid": "8f2e4698_cf11b2df",
+      "range": {
+        "startLine": 105,
+        "startChar": 34,
+        "endLine": 105,
+        "endChar": 63
+      },
+      "revId": "38b5635d24d1809085d64ffe247e76440d0db296",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3daa217f_63577182",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
         "patchSetId": 9
@@ -45,6 +69,30 @@
       "revId": "38b5635d24d1809085d64ffe247e76440d0db296",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e033416_be92654c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/BatchRefUpdateValidator.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-09T10:09:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3daa217f_63577182",
+      "range": {
+        "startLine": 109,
+        "startChar": 56,
+        "endLine": 109,
+        "endChar": 67
+      },
+      "revId": "38b5635d24d1809085d64ffe247e76440d0db296",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -92,6 +140,30 @@
       "revId": "38b5635d24d1809085d64ffe247e76440d0db296",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd508e6c_419bc47b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-09T10:09:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a89dfc7d_aad042f7",
+      "range": {
+        "startLine": 130,
+        "startChar": 32,
+        "endLine": 130,
+        "endChar": 63
+      },
+      "revId": "38b5635d24d1809085d64ffe247e76440d0db296",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
