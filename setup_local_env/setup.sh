@@ -336,6 +336,11 @@ echo "Downloading zookeeper plugin stable 3.0"
   -O $DEPLOYMENT_LOCATION/zookeeper.jar || { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
+echo "Downloading events-broker library stable 3.0"
+  wget https://repo1.maven.org/maven2/com/gerritforge/events-broker/3.0.5/events-broker-3.0.5.jar \
+  -O $DEPLOYMENT_LOCATION/events-broker.jar || { echo >&2 "Cannot download events-broker library: Check internet connection. Abort\
+ing"; exit 1; }
+
 echo "Downloading kafka-events plugin stable 3.0"
   wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-kafka-events-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/kafka-events/kafka-events.jar \
   -O $DEPLOYMENT_LOCATION/kafka-events.jar || { echo >&2 "Cannot download kafka-events plugin: Check internet connection. Abort\
@@ -379,6 +384,9 @@ if [ $NEW_INSTALLATION = "true" ]; then
 
   echo "Copy zookeeper plugin"
   cp -f $DEPLOYMENT_LOCATION/zookeeper.jar $LOCATION_TEST_SITE_1/plugins/zookeeper.jar
+
+  echo "Copy events broker library"
+  cp -f $DEPLOYMENT_LOCATION/events-broker.jar $LOCATION_TEST_SITE_1/lib/events-broker.jar
 
   echo "Copy kafka events plugin"
   cp -f $DEPLOYMENT_LOCATION/kafka-events.jar $LOCATION_TEST_SITE_1/plugins/kafka-events.jar
