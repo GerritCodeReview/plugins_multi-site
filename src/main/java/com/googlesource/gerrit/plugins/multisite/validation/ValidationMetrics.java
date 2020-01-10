@@ -14,23 +14,38 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import com.codahale.metrics.MetricFilter;
+import com.codahale.metrics.MetricRegistry;
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.Field;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.LocalStatusStore;
 
 @Singleton
 public class ValidationMetrics {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String GIT_UPDATE_SPLIT_BRAIN_PREVENTED = "git_update_split_brain_prevented";
   private static final String GIT_UPDATE_SPLIT_BRAIN = "git_update_split_brain";
+  private static final String PROJECT_REF_UPDATED_TIME_METRIC_PREFIX = "multi_site/producer/producer_ref_updated/ref_updated_epochtime_secs_";
 
   private final Counter1<String> splitBrainPreventionCounter;
   private final Counter1<String> splitBrainCounter;
 
+  private LocalStatusStore localStatusStore;
+  private MetricMaker metricMaker;
+  private MetricRegistry metricRegistry;
+
   @Inject
-  public ValidationMetrics(MetricMaker metricMaker) {
+  public ValidationMetrics(MetricMaker metricMaker, MetricRegistry metricRegistry, LocalStatusStore localStatusStore) {
+
+    this.localStatusStore = localStatusStore;
+    this.metricMaker = metricMaker;
+    this.metricRegistry = metricRegistry;
+
     this.splitBrainPreventionCounter =
         metricMaker.newCounter(
             "multi_site/validation/git_update_split_brain_prevented",
@@ -46,6 +61,25 @@ public class ValidationMetrics {
             Field.ofString(
                 GIT_UPDATE_SPLIT_BRAIN,
                 "Ref-update operation left node in a split-brain scenario"));
+
+
+  }
+
+  public void updateRefUpdatedStatusMetricsFor(String projectName) {
+    localStatusStore.updateRefUpdatedTimeFor(projectName);
+    String metricName = PROJECT_REF_UPDATED_TIME_METRIC_PREFIX + projectName;
+    if (metricRegistry.getGauges(MetricFilter.contains(metricName)).isEmpty()) {
+      metricMaker.newCallbackMetric(
+              metricName,
+              Long.class,
+              new Description(String.format("%s ref-updated timestamp (ms)", metricName))
+                      .setGauge()
+                      .setUnit(Description.Units.MILLISECONDS),
+              () -> localStatusStore.getLastReplicationTime(projectName).orElse(0L));
+      logger.atInfo().log("Added ref-updated timestamp callback metric for " + projectName);
+    } else {
+      logger.atInfo().log("Don't add ref-updated metric since it already exists for project " + projectName);
+    }
   }
 
   public void incrementSplitBrainPrevention() {

@@ -91,7 +91,9 @@ public class RefUpdateValidator {
     }
 
     try {
-      return doExecuteRefUpdate(refUpdate, refUpdateFunction);
+      RefUpdate.Result result = doExecuteRefUpdate(refUpdate, refUpdateFunction);
+
+      return result;
     } catch (SharedDbSplitBrainException e) {
       validationMetrics.incrementSplitBrain();
 
