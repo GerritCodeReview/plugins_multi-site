@@ -152,7 +152,7 @@ case "$1" in
     echo "[--multisite-lib-file]          Location to lib multi-site.jar file"
     echo
     echo "[--new-deployment]              Cleans up previous gerrit deployment and re-installs it. default true"
-    echo "[--get-websession-plugin]       Download websession-flatfile plugin from CI lastSuccessfulBuild; default true"
+    echo "[--get-websession-plugin]       Download websession-broker plugin from CI lastSuccessfulBuild; default true"
     echo "[--deployment-location]         Base location for the test deployment; default /tmp"
     echo
     echo "[--gerrit-canonical-host]       The default host for Gerrit to be accessed through; default localhost"
@@ -182,7 +182,7 @@ case "$1" in
     shift
   ;;
   "--get-websession-plugin")
-    DOWNLOAD_WEBSESSION_FLATFILE=$2
+    DOWNLOAD_WEBSESSION_PLUGIN=$2
     shift
     shift
   ;;
@@ -274,7 +274,7 @@ check_application_requirements
 
 # Defaults
 NEW_INSTALLATION=${NEW_INSTALLATION:-"true"}
-DOWNLOAD_WEBSESSION_FLATFILE=${DOWNLOAD_WEBSESSION_FLATFILE:-"true"}
+DOWNLOAD_WEBSESSION_PLUGIN=${DOWNLOAD_WEBSESSION_PLUGIN:-"true"}
 DEPLOYMENT_LOCATION=${DEPLOYMENT_LOCATION:-"/tmp"}
 export GERRIT_CANONICAL_HOSTNAME=${GERRIT_CANONICAL_HOSTNAME:-"localhost"}
 export GERRIT_CANONICAL_PORT=${GERRIT_CANONICAL_PORT:-"8080"}
@@ -319,16 +319,16 @@ if [ -z $MULTISITE_LIB_LOCATION ];then
 else
   cp -f $MULTISITE_LIB_LOCATION $DEPLOYMENT_LOCATION/multi-site.jar  >/dev/null 2>&1 || { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 fi
-if [ $DOWNLOAD_WEBSESSION_FLATFILE = "true" ];then
-  echo "Downloading websession-flatfile plugin stable 3.0"
-  wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-websession-flatfile-bazel-master-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-flatfile/websession-flatfile.jar \
-  -O $DEPLOYMENT_LOCATION/websession-flatfile.jar || { echo >&2 "Cannot download websession-flatfile plugin: Check internet connection. Abort\
+if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
+  echo "Downloading websession-broker plugin stable 3.0"
+  wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-websession-broker-gh-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-broker/websession-broker.jar \
+  -O $DEPLOYMENT_LOCATION/websession-broker.jar || { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
 ing"; exit 1; }
   wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-healthcheck-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar \
   -O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
 ing"; exit 1; }
 else
-  echo "Without the websession-flatfile; user login via haproxy will fail."
+  echo "Without the websession-broker; user login via haproxy will fail."
 fi
 
 echo "Downloading zookeeper plugin stable 3.0"
@@ -376,8 +376,8 @@ if [ $NEW_INSTALLATION = "true" ]; then
   echo "Copy multi-site library to lib directory"
   cp -f $DEPLOYMENT_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/lib/multi-site.jar
 
-  echo "Copy websession-flatfile plugin"
-  cp -f $DEPLOYMENT_LOCATION/websession-flatfile.jar $LOCATION_TEST_SITE_1/plugins/websession-flatfile.jar
+  echo "Copy websession-broker plugin"
+  cp -f $DEPLOYMENT_LOCATION/websession-broker.jar $LOCATION_TEST_SITE_1/plugins/websession-broker.jar
 
   echo "Copy healthcheck plugin"
   cp -f $DEPLOYMENT_LOCATION/healthcheck.jar $LOCATION_TEST_SITE_1/plugins/healthcheck.jar
