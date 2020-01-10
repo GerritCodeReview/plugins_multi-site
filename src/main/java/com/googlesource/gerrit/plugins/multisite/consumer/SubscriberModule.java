@@ -26,7 +26,6 @@ public class SubscriberModule extends LifecycleModule {
 
     DynamicSet.setOf(binder(), AbstractSubcriber.class);
     DynamicSet.setOf(binder(), DroppedEventListener.class);
-    listener().to(MultiSiteConsumerRunner.class);
 
     DynamicSet.bind(binder(), AbstractSubcriber.class).to(IndexEventSubscriber.class);
     DynamicSet.bind(binder(), AbstractSubcriber.class).to(StreamEventSubscriber.class);

@@ -8,6 +8,8 @@ message broker for aligning with the other masters over different sites.
 
 The masters must be:
 
+* events-broker library must be installed as a library module in the
+  `$GERRIT_SITE/lib` directory of all the masters
 * connected to the same message broker
 * behind a load balancer (e.g., HAProxy)
 

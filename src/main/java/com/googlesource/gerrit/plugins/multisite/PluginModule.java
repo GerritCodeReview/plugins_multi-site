@@ -18,6 +18,10 @@ import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Inject;
+import com.google.inject.Scopes;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
+import com.googlesource.gerrit.plugins.multisite.consumer.MultiSiteConsumerRunner;
+import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
 
 public class PluginModule extends LifecycleModule {
@@ -30,6 +34,10 @@ public class PluginModule extends LifecycleModule {
 
   @Override
   protected void configure() {
+    bind(BrokerApiWrapper.class).in(Scopes.SINGLETON);
+    install(new BrokerForwarderModule());
+    listener().to(MultiSiteConsumerRunner.class);
+
     if (config.getSharedRefDb().isEnabled()) {
       listener().to(PluginStartup.class);
       DynamicSet.bind(binder(), ProjectDeletedListener.class)
