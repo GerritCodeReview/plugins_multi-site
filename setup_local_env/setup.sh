@@ -336,8 +336,8 @@ echo "Downloading zookeeper plugin master"
   -O $DEPLOYMENT_LOCATION/zookeeper.jar || { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
-echo "Downloading events-broker library stable 3.0"
-  wget https://repo1.maven.org/maven2/com/gerritforge/events-broker/3.0.5/events-broker-3.0.5.jar \
+echo "Downloading events-broker library stable 3.1"
+  wget https://repo1.maven.org/maven2/com/gerritforge/events-broker/3.1.4/events-broker-3.1.4.jar \
   -O $DEPLOYMENT_LOCATION/events-broker.jar || { echo >&2 "Cannot download events-broker library: Check internet connection. Abort\
 ing"; exit 1; }
 
