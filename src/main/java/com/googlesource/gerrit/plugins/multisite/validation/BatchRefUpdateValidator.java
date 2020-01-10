@@ -75,6 +75,10 @@ public class BatchRefUpdateValidator extends RefUpdateValidator {
     }
   }
 
+  public void updateRefUpdateMetrics() {
+    validationMetrics.updateRefUpdatedStatusMetricsFor(projectName);
+  }
+
   private void doExecuteBatchUpdate(
       BatchRefUpdate batchRefUpdate, NoParameterVoidFunction delegateUpdate) throws IOException {
 
