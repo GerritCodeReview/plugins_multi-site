@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9c082b90_02b5c852",
+        "filename": "setup_local_env/configs/gerrit.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-10T14:08:21Z",
+      "side": 1,
+      "message": "Is this part of this change?",
+      "range": {
+        "startLine": 44,
+        "startChar": 26,
+        "endLine": 44,
+        "endChar": 27
+      },
+      "revId": "7436ce6169a09a40f4c4b76f5d0cc5408dd7b52a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
