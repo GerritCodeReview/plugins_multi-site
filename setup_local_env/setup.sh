@@ -342,7 +342,7 @@ echo "Downloading events-broker library stable 3.1"
 ing"; exit 1; }
 
 echo "Downloading kafka-events plugin master"
-  wget https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-kafka-events-bazel-master-master/lastSuccessfulBuild/artifact/bazel-bin/plugins/kafka-events/kafka-events.jar \
+  wget https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-kafka-events-bazel-master/lastSuccessfulBuild/artifact/bazel-bin/plugins/kafka-events/kafka-events.jar \
   -O $DEPLOYMENT_LOCATION/kafka-events.jar || { echo >&2 "Cannot download kafka-events plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
