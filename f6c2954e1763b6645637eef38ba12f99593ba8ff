@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5e84c0bf_93fb4862",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-14T21:25:22Z",
+      "side": 1,
+      "message": "This is how I have added the versioning of the repo. This means that we will also have to transform the MultiSiteRefUpdate in  MultiSiteBatchRefUpdate, correct? Can you think if any case where the RefUpdate shouldn\u0027t add the versioning command?",
+      "range": {
+        "startLine": 173,
+        "startChar": 3,
+        "endLine": 179,
+        "endChar": 5
+      },
+      "revId": "f6c2954e1763b6645637eef38ba12f99593ba8ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
