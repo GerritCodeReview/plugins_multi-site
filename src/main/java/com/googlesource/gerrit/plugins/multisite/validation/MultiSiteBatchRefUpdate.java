@@ -14,11 +14,13 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import org.eclipse.jgit.lib.BatchRefUpdate;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.ProgressMonitor;
@@ -31,6 +33,7 @@ import org.eclipse.jgit.util.time.ProposedTimestamp;
 public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
 
   private final BatchRefUpdate batchRefUpdate;
+  private final GitRepositoryManager gitRepositoryManager;
   private final String project;
   private final BatchRefUpdateValidator.Factory batchRefValidatorFactory;
   private final RefDatabase refDb;
@@ -42,6 +45,7 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
   @Inject
   public MultiSiteBatchRefUpdate(
       BatchRefUpdateValidator.Factory batchRefValidatorFactory,
+      GitRepositoryManager gitRepositoryManager,
       @Assisted String project,
       @Assisted RefDatabase refDb) {
     super(refDb);
@@ -49,6 +53,11 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     this.project = project;
     this.batchRefUpdate = refDb.newBatchUpdate();
     this.batchRefValidatorFactory = batchRefValidatorFactory;
+    this.gitRepositoryManager = gitRepositoryManager;
+  }
+
+  public GitRepositoryManager getGitRepositoryManager() {
+    return this.gitRepositoryManager;
   }
 
   @Override
@@ -164,6 +173,15 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
   @Override
   public void execute(RevWalk walk, ProgressMonitor monitor, List<String> options)
       throws IOException {
+
+    Optional<ReceiveCommand> optionalReceiveCommand =
+        RefUpdateUtils.getVersioningCommand(gitRepositoryManager, project);
+    if (!optionalReceiveCommand.isPresent()) {
+      throw new IOException("Cannot create versioning command");
+    } else {
+      batchRefUpdate.addCommand(optionalReceiveCommand.get());
+    }
+
     batchRefValidatorFactory
         .create(project, refDb)
         .executeBatchUpdateWithValidation(
@@ -172,6 +190,15 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
 
   @Override
   public void execute(RevWalk walk, ProgressMonitor monitor) throws IOException {
+
+    Optional<ReceiveCommand> optionalReceiveCommand =
+        RefUpdateUtils.getVersioningCommand(gitRepositoryManager, project);
+    if (!optionalReceiveCommand.isPresent()) {
+      throw new IOException("Cannot create versioning command");
+    } else {
+      batchRefUpdate.addCommand(optionalReceiveCommand.get());
+    }
+
     batchRefValidatorFactory
         .create(project, refDb)
         .executeBatchUpdateWithValidation(
