@@ -1,0 +1,196 @@
+// Copyright (C) 2020 The Android Open Source Project
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package com.googlesource.gerrit.plugins.multisite.validation;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
+
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
+import com.google.common.collect.ImmutableList;
+import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.EventListener;
+import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
+import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
+import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import org.eclipse.jgit.lib.*;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
+
+public class ProjectVersionRefUpdate implements EventListener {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+  public static final String MULTI_SITE_VERSIONING_REF = "refs/multi-site/project-version";
+  private static final Ref NULL_PROJECT_VERSION_REF = new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId());
+  private static final List<RefUpdate.Result> successfulResults =
+      ImmutableList.copyOf(
+          new ArrayList<RefUpdate.Result>(
+              Arrays.asList(
+                  RefUpdate.Result.NEW, RefUpdate.Result.FORCED, RefUpdate.Result.NO_CHANGE)));
+
+  protected final SharedRefDatabaseWrapper sharedRefDb;
+  GitRepositoryManager gitRepositoryManager;
+
+  @Inject
+  public ProjectVersionRefUpdate(GitRepositoryManager gitRepositoryManager, SharedRefDatabaseWrapper sharedRefDb) {
+    this.gitRepositoryManager = gitRepositoryManager;
+    this.sharedRefDb = sharedRefDb;
+  }
+
+  private RefUpdate getProjectVersionRefUpdate(Repository repository, Long version)
+      throws IOException {
+    RefUpdate refUpdate = repository.getRefDatabase().newUpdate(MULTI_SITE_VERSIONING_REF, false);
+    refUpdate.setNewObjectId(getNewId(repository, version));
+    refUpdate.setForceUpdate(true);
+    return refUpdate;
+  }
+
+  private ObjectId getNewId(Repository repository, Long version) throws IOException {
+    ObjectInserter ins = repository.newObjectInserter();
+    ObjectId newId = ins.insert(OBJ_BLOB, Long.toString(version).getBytes(UTF_8));
+    ins.flush();
+    return newId;
+  }
+
+  private Ref getCurrentProjectVersionRef(Project.NameKey projectNameKey) throws LocalProjectVersionUpdateException {
+    try (Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
+      Ref ref =  repository.findRef(MULTI_SITE_VERSIONING_REF) ;
+      return ref != null ? ref : NULL_PROJECT_VERSION_REF;
+    } catch (IOException e) {
+      String message = String.format(
+              "Error while getting current version for %s",
+              projectNameKey.get());
+      logger.atSevere().withCause(e).log(message);
+      throw new LocalProjectVersionUpdateException(message);
+    }
+  }
+
+  @Override
+  public void onEvent(Event event) {
+    logger.atFine().log("Processing event type: " + event.type);
+    // Producer of the Event use RefUpdatedEvent to trigger the version update
+    if (!Context.isForwardedEvent() && event instanceof RefUpdatedEvent) {
+      updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
+    }
+
+    // Consumers of the Event use RefReplicatedEvent to trigger the version update
+    if (Context.isForwardedEvent() && event instanceof RefReplicatedEvent) {
+      updateConsumerProjectVersion((RefReplicatedEvent) event);
+    }
+  }
+
+  private void updateConsumerProjectVersion(RefReplicatedEvent refReplicatedEvent) {
+    try {
+      Long lastRefUpdatedTimestamp =
+              getLastRefUpdatedTimestamp(
+                      refReplicatedEvent.getProjectNameKey(), refReplicatedEvent.getRefName());
+        updateLocalProjectVersion(
+                refReplicatedEvent.getProjectNameKey(), lastRefUpdatedTimestamp);
+    } catch (LocalProjectVersionUpdateException e) {
+      logger.atSevere().withCause(e).log("Issue encountered when updating version for project " + refReplicatedEvent.getProjectNameKey());
+    }
+  }
+
+  private void updateProducerProjectVersionUpdate(RefUpdatedEvent refUpdatedEvent) {
+    try {
+      Project.NameKey projectNameKey = refUpdatedEvent.getProjectNameKey();
+      Ref currentProjectVersionRef = getCurrentProjectVersionRef(refUpdatedEvent.getProjectNameKey());
+      Long lastRefUpdatedTimestamp =
+              getLastRefUpdatedTimestamp(projectNameKey
+                      , refUpdatedEvent.getRefName());
+      ObjectId newProjectVersionObjectId = updateLocalProjectVersion(
+              projectNameKey, lastRefUpdatedTimestamp);
+      updateSharedProjectVersion(projectNameKey, currentProjectVersionRef, newProjectVersionObjectId);
+    } catch (LocalProjectVersionUpdateException | SharedProjectVersionUpdateException e) {
+      logger.atSevere().withCause(e).log("Issue encountered when updating version for project " + refUpdatedEvent.getProjectNameKey());
+    }
+  }
+
+  private Long getLastRefUpdatedTimestamp(
+      Project.NameKey projectNameKey, String refName) throws LocalProjectVersionUpdateException {
+    logger.atSevere().log(
+        String.format(
+            "Getting last ref updated time for project %s, ref %s", projectNameKey.get(), refName));
+    try (Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
+      Ref ref = repository.findRef(refName);
+      try (RevWalk walk = new RevWalk(repository)) {
+        RevCommit commit = walk.parseCommit(ref.getObjectId());
+        return Integer.toUnsignedLong(commit.getCommitTime());
+      }
+    } catch (IOException ioe) {
+      String message = String.format(
+              "Error while getting last ref updated time for project %s, ref %s",
+              projectNameKey.get(), refName);
+      logger.atSevere().withCause(ioe).log(message);
+      throw new LocalProjectVersionUpdateException(message);
+    }
+  }
+
+  private void updateSharedProjectVersion(Project.NameKey projectNameKey, Ref currentRef, ObjectId newObjectId) throws SharedProjectVersionUpdateException {
+    logger.atSevere().log(String.format("Updating shared project version for %s. Current value %s, new value: %s", projectNameKey.get(), currentRef.getObjectId(), newObjectId));
+    try {
+      sharedRefDb.compareAndPut(
+              projectNameKey, currentRef, newObjectId);
+    } catch (GlobalRefDbSystemError refDbSystemError) {
+      String message = String.format("Error while updating shared project version for %s. Current value %s, new value: %s. Error: %s", projectNameKey.get(), currentRef.getObjectId(), newObjectId, refDbSystemError.getMessage());
+      logger.atSevere().withCause(refDbSystemError).log(message);
+      throw new SharedProjectVersionUpdateException(message);
+    }
+  }
+
+  private ObjectId updateLocalProjectVersion(Project.NameKey projectNameKey, Long creationTimestamp) throws LocalProjectVersionUpdateException {
+    logger.atFine().log("Updating local version for project " + projectNameKey.get());
+    try (Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
+      RefUpdate refUpdate = getProjectVersionRefUpdate(repository, creationTimestamp);
+      RefUpdate.Result result = refUpdate.update();
+      if (!isSuccessful(result)) {
+        String message = String.format(
+                "RefUpdate failed for project %s, result: %s",
+                projectNameKey.get(), result.name());
+        logger.atSevere().log(message);
+        throw new LocalProjectVersionUpdateException(message);
+      }
+      return refUpdate.getNewObjectId();
+    } catch (IOException e) {
+      String message = "Cannot create versioning command for " + projectNameKey.get();
+      logger.atSevere().withCause(e).log(message);
+      throw new LocalProjectVersionUpdateException(message);
+    }
+  }
+
+  private Boolean isSuccessful(RefUpdate.Result result) {
+    return successfulResults.contains(result);
+  }
+
+  public static class LocalProjectVersionUpdateException extends Exception {
+    public LocalProjectVersionUpdateException(String projectName) {
+      super("Cannot update local project version of " + projectName);
+    }
+  }
+
+  public static class SharedProjectVersionUpdateException extends Exception {
+    public SharedProjectVersionUpdateException(String projectName) {
+      super("Cannot update local project version of " + projectName);
+    }
+  }
+}
