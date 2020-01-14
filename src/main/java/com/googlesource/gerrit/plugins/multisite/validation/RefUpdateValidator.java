@@ -86,7 +86,7 @@ public class RefUpdateValidator {
   public RefUpdate.Result executeRefUpdate(
       RefUpdate refUpdate, NoParameterFunction<RefUpdate.Result> refUpdateFunction)
       throws IOException {
-    if (refEnforcement.getPolicy(projectName) == EnforcePolicy.IGNORED) {
+    if (refEnforcement.getPolicy(projectName) == EnforcePolicy.IGNORED || refUpdate.getRef().getName() == ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF) {
       return refUpdateFunction.invoke();
     }
 
