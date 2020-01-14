@@ -14,21 +14,21 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import java.io.IOException;
-import org.eclipse.jgit.lib.AnyObjectId;
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.PersonIdent;
-import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.RefDatabase;
-import org.eclipse.jgit.lib.RefUpdate;
-import org.eclipse.jgit.lib.Repository;
+import java.util.Optional;
+
+import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.PushCertificate;
+import org.eclipse.jgit.transport.ReceiveCommand;
 
 public class MultiSiteRefUpdate extends RefUpdate {
 
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   protected final RefUpdate refUpdateBase;
   private final String projectName;
   private final RefUpdateValidator.Factory refValidatorFactory;
@@ -48,6 +48,7 @@ public class MultiSiteRefUpdate extends RefUpdate {
     refUpdateBase = refUpdate;
     this.projectName = projectName;
     this.refValidatorFactory = refValidatorFactory;
+
     refUpdateValidator = this.refValidatorFactory.create(this.projectName, refDb);
   }
 
@@ -92,11 +93,13 @@ public class MultiSiteRefUpdate extends RefUpdate {
 
   @Override
   public Result update() throws IOException {
+    logger.atInfo().log("Calling single RefUpdate for " + projectName);
     return refUpdateValidator.executeRefUpdate(refUpdateBase, refUpdateBase::update);
   }
 
   @Override
   public Result update(RevWalk rev) throws IOException {
+    logger.atInfo().log("Calling single RefUpdate with RevWalk for " + projectName);
     return refUpdateValidator.executeRefUpdate(refUpdateBase, () -> refUpdateBase.update(rev));
   }
 
