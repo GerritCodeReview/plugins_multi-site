@@ -14,9 +14,11 @@
 
 package com.googlesource.gerrit.plugins.multisite.event;
 
+import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.events.EventListener;
+import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import java.util.concurrent.Executor;
 
 public class EventModule extends LifecycleModule {
@@ -26,5 +28,6 @@ public class EventModule extends LifecycleModule {
     bind(Executor.class).annotatedWith(EventExecutor.class).toProvider(EventExecutorProvider.class);
     listener().to(EventExecutorProvider.class);
     DynamicSet.bind(binder(), EventListener.class).to(EventHandler.class);
+    DynamicSet.bind(binder(), GitReferenceUpdatedListener.class).to(ProjectVersionRefUpdate.class);
   }
 }
