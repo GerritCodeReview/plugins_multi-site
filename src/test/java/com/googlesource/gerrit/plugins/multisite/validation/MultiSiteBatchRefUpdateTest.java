@@ -23,11 +23,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.gerrit.testing.InMemoryRepositoryManager;
+import com.google.gerrit.testing.InMemoryTestEnvironment;
+import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import java.io.IOException;
 import java.util.Collections;
+
+import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
+import org.eclipse.jgit.junit.TestRepository;
 import org.eclipse.jgit.lib.BatchRefUpdate;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
@@ -37,6 +45,7 @@ import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.ReceiveCommand;
 import org.eclipse.jgit.transport.ReceiveCommand.Result;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -48,12 +57,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MultiSiteBatchRefUpdateTest implements RefFixture {
 
+  @Rule public InMemoryTestEnvironment testEnvironment = new InMemoryTestEnvironment();
   @Mock SharedRefDatabaseWrapper sharedRefDb;
   @Mock BatchRefUpdate batchRefUpdate;
   @Mock RefDatabase refDatabase;
   @Mock RevWalk revWalk;
   @Mock ProgressMonitor progressMonitor;
   @Mock ValidationMetrics validationMetrics;
+  @Inject private InMemoryRepositoryManager repoManager;
 
   private final Ref oldRef =
       new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, A_TEST_REF_NAME, AN_OBJECT_ID_1);
@@ -83,6 +94,11 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
   private MultiSiteBatchRefUpdate multiSiteRefUpdate;
 
   @Rule public TestName nameRule = new TestName();
+
+  @Before
+  public void setUp() throws Exception {
+    repoManager.createRepository(A_TEST_PROJECT_NAME_KEY);
+  }
 
   @Override
   public String testBranch() {
@@ -160,7 +176,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
                 refDb);
           }
         };
-    return new MultiSiteBatchRefUpdate(batchRefValidatorFactory, A_TEST_PROJECT_NAME, refDatabase);
+    return new MultiSiteBatchRefUpdate(batchRefValidatorFactory, repoManager, A_TEST_PROJECT_NAME, refDatabase);
   }
 
   protected static class RefMatcher implements ArgumentMatcher<Ref> {
