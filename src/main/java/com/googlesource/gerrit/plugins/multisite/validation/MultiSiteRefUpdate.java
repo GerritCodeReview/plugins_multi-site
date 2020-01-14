@@ -14,25 +14,26 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import java.io.IOException;
-import org.eclipse.jgit.lib.AnyObjectId;
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.PersonIdent;
-import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.RefDatabase;
-import org.eclipse.jgit.lib.RefUpdate;
-import org.eclipse.jgit.lib.Repository;
+import java.util.Optional;
+
+import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.PushCertificate;
+import org.eclipse.jgit.transport.ReceiveCommand;
 
 public class MultiSiteRefUpdate extends RefUpdate {
 
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   protected final RefUpdate refUpdateBase;
   private final String projectName;
   private final RefUpdateValidator.Factory refValidatorFactory;
   private final RefUpdateValidator refUpdateValidator;
+  private final MultiSiteBatchRefUpdate.Factory multiSiteBatchRefUpdateFactory;
 
   public interface Factory {
     MultiSiteRefUpdate create(String projectName, RefUpdate refUpdate, RefDatabase refDb);
@@ -41,6 +42,7 @@ public class MultiSiteRefUpdate extends RefUpdate {
   @Inject
   public MultiSiteRefUpdate(
       RefUpdateValidator.Factory refValidatorFactory,
+      MultiSiteBatchRefUpdate.Factory multiSiteBatchRefUpdateFactory,
       @Assisted String projectName,
       @Assisted RefUpdate refUpdate,
       @Assisted RefDatabase refDb) {
@@ -48,6 +50,9 @@ public class MultiSiteRefUpdate extends RefUpdate {
     refUpdateBase = refUpdate;
     this.projectName = projectName;
     this.refValidatorFactory = refValidatorFactory;
+    this.multiSiteBatchRefUpdateFactory = multiSiteBatchRefUpdateFactory;
+
+
     refUpdateValidator = this.refValidatorFactory.create(this.projectName, refDb);
   }
 
@@ -92,12 +97,38 @@ public class MultiSiteRefUpdate extends RefUpdate {
 
   @Override
   public Result update() throws IOException {
-    return refUpdateValidator.executeRefUpdate(refUpdateBase, refUpdateBase::update);
+    logger.atInfo().log("Calling single RefUpdate for " + projectName);
+    MultiSiteBatchRefUpdate multiSiteBatchRefUpdate = multiSiteBatchRefUpdateFactory.create(projectName, refUpdateValidator.refDb);
+
+    multiSiteBatchRefUpdate.addCommand(getReceiveCmdFromRefUpdate());
+    Repository repository = multiSiteBatchRefUpdate.getGitRepositoryManager().openRepository(Project.nameKey(projectName));
+    RevWalk rev = new RevWalk(repository);
+
+    try {
+      multiSiteBatchRefUpdate.execute(rev, NullProgressMonitor.INSTANCE);
+      //XXX Need to understand the right result to return
+      return Result.NEW;
+    } catch (Exception e) {
+      //XXX Need to understand the right result to return
+      return Result.REJECTED_OTHER_REASON;
+    }
   }
 
   @Override
   public Result update(RevWalk rev) throws IOException {
-    return refUpdateValidator.executeRefUpdate(refUpdateBase, () -> refUpdateBase.update(rev));
+    logger.atInfo().log("Calling single RefUpdate with RevWalk for " + projectName);
+    logger.atSevere().log("=>> Calling single update...with RevWalk");
+    MultiSiteBatchRefUpdate multiSiteBatchRefUpdate = multiSiteBatchRefUpdateFactory.create(projectName, refUpdateValidator.refDb);
+    multiSiteBatchRefUpdate.addCommand(getReceiveCmdFromRefUpdate());
+
+    try {
+      multiSiteBatchRefUpdate.execute(rev, NullProgressMonitor.INSTANCE);
+      //XXX Need to understand the right result to return
+      return Result.NEW;
+    } catch (Exception e) {
+      //XXX Need to understand the right result to return
+      return Result.REJECTED_OTHER_REASON;
+    }
   }
 
   @Override
@@ -233,5 +264,9 @@ public class MultiSiteRefUpdate extends RefUpdate {
   @Override
   public void setCheckConflicting(boolean check) {
     refUpdateBase.setCheckConflicting(check);
+  }
+
+  public ReceiveCommand getReceiveCmdFromRefUpdate() {
+    return new ReceiveCommand(refUpdateBase.getOldObjectId(), refUpdateBase.getNewObjectId(), refUpdateBase.getRef().getName());
   }
 }
