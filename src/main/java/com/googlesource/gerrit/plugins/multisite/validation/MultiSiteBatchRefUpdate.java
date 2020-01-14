@@ -14,6 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.extensions.events.GitReferenceUpdatedListener;
+import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import java.io.IOException;
@@ -28,12 +31,16 @@ import org.eclipse.jgit.transport.PushCertificate;
 import org.eclipse.jgit.transport.ReceiveCommand;
 import org.eclipse.jgit.util.time.ProposedTimestamp;
 
-public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
+public class MultiSiteBatchRefUpdate extends BatchRefUpdate implements GitReferenceUpdatedListener {
 
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private final BatchRefUpdate batchRefUpdate;
+  private final GitRepositoryManager gitRepositoryManager;
   private final String project;
   private final BatchRefUpdateValidator.Factory batchRefValidatorFactory;
   private final RefDatabase refDb;
+
+
 
   public static interface Factory {
     MultiSiteBatchRefUpdate create(String project, RefDatabase refDb);
@@ -42,6 +49,7 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
   @Inject
   public MultiSiteBatchRefUpdate(
       BatchRefUpdateValidator.Factory batchRefValidatorFactory,
+      GitRepositoryManager gitRepositoryManager,
       @Assisted String project,
       @Assisted RefDatabase refDb) {
     super(refDb);
@@ -49,6 +57,11 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     this.project = project;
     this.batchRefUpdate = refDb.newBatchUpdate();
     this.batchRefValidatorFactory = batchRefValidatorFactory;
+    this.gitRepositoryManager = gitRepositoryManager;
+  }
+
+  public GitRepositoryManager getGitRepositoryManager() {
+    return this.gitRepositoryManager;
   }
 
   @Override
@@ -164,6 +177,7 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
   @Override
   public void execute(RevWalk walk, ProgressMonitor monitor, List<String> options)
       throws IOException {
+
     batchRefValidatorFactory
         .create(project, refDb)
         .executeBatchUpdateWithValidation(
@@ -172,6 +186,7 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
 
   @Override
   public void execute(RevWalk walk, ProgressMonitor monitor) throws IOException {
+
     batchRefValidatorFactory
         .create(project, refDb)
         .executeBatchUpdateWithValidation(
@@ -181,5 +196,10 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
   @Override
   public String toString() {
     return batchRefUpdate.toString();
+  }
+
+  @Override
+  public void onGitReferenceUpdated(Event event) {
+    logger.atInfo().log("Intercepted ref update " + event.getRefName() + " for project " + event.getProjectName());
   }
 }
