@@ -22,6 +22,29 @@
       "revId": "f6c2954e1763b6645637eef38ba12f99593ba8ff",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "28aba781_a239a725",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateUtils.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-01-15T07:56:13Z",
+      "side": 1,
+      "message": "why we cannot inject instance of this class instead of using static method?",
+      "range": {
+        "startLine": 31,
+        "startChar": 13,
+        "endLine": 31,
+        "endChar": 27
+      },
+      "revId": "f6c2954e1763b6645637eef38ba12f99593ba8ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
