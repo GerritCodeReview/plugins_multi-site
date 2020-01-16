@@ -21,6 +21,7 @@ import com.google.inject.Inject;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.consumer.MultiSiteConsumerRunner;
+import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectDeletedSharedDbCleanup;
 
@@ -35,6 +36,8 @@ public class PluginModule extends LifecycleModule {
   @Override
   protected void configure() {
     bind(BrokerApiWrapper.class).in(Scopes.SINGLETON);
+    install(new SubscriberModule());
+
     install(new BrokerForwarderModule());
     listener().to(MultiSiteConsumerRunner.class);
 
