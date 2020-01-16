@@ -25,7 +25,6 @@ import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
-import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
@@ -67,8 +66,6 @@ public class Module extends LifecycleModule {
 
     listener().to(Log4jMessageLogger.class);
     bind(MessageLogger.class).to(Log4jMessageLogger.class);
-
-    install(new SubscriberModule());
 
     install(new ForwarderModule());
 
