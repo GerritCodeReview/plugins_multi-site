@@ -46,6 +46,30 @@
       "revId": "5c6541b923a3b885dbe141b6d004178367324adc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "25c39ea6_a7675b02",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefUpdate.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-20T08:55:14Z",
+      "side": 1,
+      "message": "Mmm..not sure it will work since the update of the ref and the version need to be transactional. `onGitReferenceUpdated` is only triggered when the ref update as already happened as fare as I can tell.",
+      "parentUuid": "faebdb7f_0467108e",
+      "range": {
+        "startLine": 100,
+        "startChar": 4,
+        "endLine": 114,
+        "endChar": 5
+      },
+      "revId": "5c6541b923a3b885dbe141b6d004178367324adc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
