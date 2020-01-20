@@ -94,6 +94,30 @@
       "revId": "5c6541b923a3b885dbe141b6d004178367324adc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b9cc4654_6fc85eae",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteRefUpdate.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-20T12:05:58Z",
+      "side": 1,
+      "message": "By transactional I meant that in a BatchRefUpdate if an update fails, the whole batch of commands is marked a failed. I believe it is important that the ref update and its version update happens transactionally.",
+      "parentUuid": "2951a7fc_893f5ee0",
+      "range": {
+        "startLine": 100,
+        "startChar": 4,
+        "endLine": 114,
+        "endChar": 5
+      },
+      "revId": "5c6541b923a3b885dbe141b6d004178367324adc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
