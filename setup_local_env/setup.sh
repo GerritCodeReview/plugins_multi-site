@@ -324,7 +324,7 @@ if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
   wget https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-websession-broker-gh-bazel-master/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-broker/websession-broker.jar \
   -O $DEPLOYMENT_LOCATION/websession-broker.jar || { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
 ing"; exit 1; }
-  wget https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-healthcheck-bazel-master-master/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar \
+  wget https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-healthcheck-bazel-master/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar \
   -O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
 ing"; exit 1; }
 else
