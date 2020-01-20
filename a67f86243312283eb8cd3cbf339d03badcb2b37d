@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb61fbfd_c7a9819f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteBatchRefUpdate.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-20T21:54:38Z",
+      "side": 1,
+      "message": "Do not hijack the MultiSiteBatchRefUpdate for the sole purpose of listing to ref-update events. It is best to have a specific listener for the job and have that listener to fire the new operation.",
+      "range": {
+        "startLine": 34,
+        "startChar": 60,
+        "endLine": 34,
+        "endChar": 98
+      },
+      "revId": "a67f86243312283eb8cd3cbf339d03badcb2b37d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
