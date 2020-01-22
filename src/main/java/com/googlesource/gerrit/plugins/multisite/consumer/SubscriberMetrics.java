@@ -96,11 +96,11 @@ public class SubscriberMetrics {
     if (event instanceof RefReplicatedEvent) {
       RefReplicatedEvent refReplicatedEvent = (RefReplicatedEvent) event;
       String projectName = refReplicatedEvent.getProjectNameKey().get();
-      logger.atInfo().log("Updating last replication time for %s", projectName);
+      logger.atFine().log("Updating last replication time for %s", projectName);
       replicationStatusStore.updateLastReplicationTime(projectName, event.eventCreatedOn);
       upsertMetricsForProject(projectName);
     } else {
-      logger.atInfo().log("Not a ref-replicated-event event [%s], skipping", event.type);
+      logger.atFine().log("Not a ref-replicated-event event [%s], skipping", event.type);
     }
   }
 
@@ -114,9 +114,9 @@ public class SubscriberMetrics {
               .setGauge()
               .setUnit(Description.Units.MILLISECONDS),
           () -> replicationStatusStore.getLastReplicationTime(projectName).orElse(0L));
-      logger.atInfo().log("Added last replication timestamp callback metric for " + projectName);
+      logger.atFine().log("Added last replication timestamp callback metric for " + projectName);
     } else {
-      logger.atInfo().log("Don't add metric since it already exists for project " + projectName);
+      logger.atFine().log("Don't add metric since it already exists for project " + projectName);
     }
   }
 }
