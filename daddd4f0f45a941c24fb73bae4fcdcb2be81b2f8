@@ -1,0 +1,245 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4667aea9_c6bad05d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-23T15:49:52Z",
+      "side": 1,
+      "message": "possibly just \u0027version\u0027 is enough, as this is the ref space of a project.",
+      "range": {
+        "startLine": 10,
+        "startChar": 55,
+        "endLine": 10,
+        "endChar": 63
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3dbaa6f2_a49ee14b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-23T15:49:52Z",
+      "side": 1,
+      "message": "version",
+      "range": {
+        "startLine": 33,
+        "startChar": 74,
+        "endLine": 33,
+        "endChar": 89
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1aec497_306b37ab",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-23T15:49:52Z",
+      "side": 1,
+      "message": "You should check the ref-name and avoid to respond to the ref-updates of refs/multi-site/version, otherwise you\u0027ll end up in a loop.",
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f010ef5_886fdeec",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-23T15:49:52Z",
+      "side": 1,
+      "message": "A single RefUpdate would be enough: you have a single ref right?",
+      "range": {
+        "startLine": 51,
+        "startChar": 6,
+        "endLine": 51,
+        "endChar": 20
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e596036_f576a034",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-23T15:49:52Z",
+      "side": 1,
+      "message": "Do we need to go over the String and then getting it as byte array?\nWhy not just storing it as Long? (8 bytes)",
+      "range": {
+        "startLine": 69,
+        "startChar": 34,
+        "endLine": 69,
+        "endChar": 88
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad13cf72_482f1be5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-23T15:49:52Z",
+      "side": 1,
+      "message": "It\u0027s a forced push anyway: we don\u0027t need to get the old id: just set to ObjectId.zeros()",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 3
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "53bf3b39_7a751d89",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-23T15:49:52Z",
+      "side": 1,
+      "message": "How do you make sure to avoid the shared-refdb check?\nWe need here to update the local versioning we see, regardless of what is in the shared refdb. A node that is outdate won\u0027t be able to catch-up otherwise.",
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c8cacb0a_8e123d00",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-23T15:49:52Z",
+      "side": 1,
+      "message": "We should assert also the value, right?",
+      "range": {
+        "startLine": 71,
+        "startChar": 6,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f95eae46_917b2edf",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-23T15:49:52Z",
+      "side": 1,
+      "message": "Not needed",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 5
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48a5a619_1a4c3cd7",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-23T15:49:52Z",
+      "side": 1,
+      "message": "Not sure this is a valid use-case anyway: if there is no project then the ref-update event won\u0027t be triggered anyway.",
+      "range": {
+        "startLine": 78,
+        "startChar": 14,
+        "endLine": 78,
+        "endChar": 67
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "98b69e22_25c41157",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-23T15:49:52Z",
+      "side": 1,
+      "message": "Not needed.",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 5
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
