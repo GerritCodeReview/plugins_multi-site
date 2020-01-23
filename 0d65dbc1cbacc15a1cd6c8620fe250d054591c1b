@@ -212,6 +212,30 @@
       "revId": "0d65dbc1cbacc15a1cd6c8620fe250d054591c1b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f872d283_167c7fe0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-23T15:58:24Z",
+      "side": 1,
+      "message": "Actually, you should store the *timestamp* of the ref-update event and not getting the Instant.now(). Storing the same SHA1 of the the ref-update event instead isn\u0027t good for two reasons:\na) It is expensive and potentially impossible to calculate the metrics of \"how behind is my project\"\nb) You may not have that SHA1 BLOB anyway, if you are behind.\n\nJust use as you already did a single BLOB with the timestamp, but use the timestamp of the event and NOT Instance.now().",
+      "parentUuid": "ff1a6b3b_a8c2f1ce",
+      "range": {
+        "startLine": 61,
+        "startChar": 27,
+        "endLine": 61,
+        "endChar": 69
+      },
+      "revId": "0d65dbc1cbacc15a1cd6c8620fe250d054591c1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
