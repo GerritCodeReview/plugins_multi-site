@@ -134,6 +134,30 @@
     },
     {
       "key": {
+        "uuid": "26d58af4_33a9d667",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-23T22:48:59Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ad13cf72_482f1be5",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 3
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "53bf3b39_7a751d89",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 15
@@ -174,6 +198,30 @@
     },
     {
       "key": {
+        "uuid": "9d49efe0_9388712c",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-23T22:48:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8cacb0a_8e123d00",
+      "range": {
+        "startLine": 71,
+        "startChar": 6,
+        "endLine": 71,
+        "endChar": 34
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f95eae46_917b2edf",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
         "patchSetId": 15
@@ -197,6 +245,30 @@
     },
     {
       "key": {
+        "uuid": "455c9ec3_33c3148f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-23T22:48:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f95eae46_917b2edf",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 5
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "48a5a619_1a4c3cd7",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
         "patchSetId": 15
@@ -208,6 +280,30 @@
       "writtenOn": "2020-01-23T15:49:52Z",
       "side": 1,
       "message": "Not sure this is a valid use-case anyway: if there is no project then the ref-update event won\u0027t be triggered anyway.",
+      "range": {
+        "startLine": 78,
+        "startChar": 14,
+        "endLine": 78,
+        "endChar": 67
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be2578ba_6c09babf",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-23T22:48:59Z",
+      "side": 1,
+      "message": "I know...still I think it won\u0027t hurt. I\u0027m happy to remove it if you think it just create confusion.",
+      "parentUuid": "48a5a619_1a4c3cd7",
       "range": {
         "startLine": 78,
         "startChar": 14,
@@ -240,6 +336,30 @@
       "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "357a37ae_b5627017",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-23T22:48:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98b69e22_25c41157",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 5
+      },
+      "revId": "daddd4f0f45a941c24fb73bae4fcdcb2be81b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
