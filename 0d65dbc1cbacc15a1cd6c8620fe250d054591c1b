@@ -25,6 +25,54 @@
     },
     {
       "key": {
+        "uuid": "bb43ac27_bb02e63f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-23T15:22:15Z",
+      "side": 1,
+      "message": "yep, good point",
+      "parentUuid": "ae33763b_c745b24d",
+      "range": {
+        "startLine": 45,
+        "startChar": 11,
+        "endLine": 45,
+        "endChar": 17
+      },
+      "revId": "0d65dbc1cbacc15a1cd6c8620fe250d054591c1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "240453cf_76ee9321",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-23T15:22:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae33763b_c745b24d",
+      "range": {
+        "startLine": 45,
+        "startChar": 11,
+        "endLine": 45,
+        "endChar": 17
+      },
+      "revId": "0d65dbc1cbacc15a1cd6c8620fe250d054591c1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4eae13aa_97811797",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 14
@@ -48,6 +96,54 @@
     },
     {
       "key": {
+        "uuid": "252ee23d_b0b5814a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-23T15:22:15Z",
+      "side": 1,
+      "message": "good catch",
+      "parentUuid": "4eae13aa_97811797",
+      "range": {
+        "startLine": 49,
+        "startChar": 6,
+        "endLine": 49,
+        "endChar": 16
+      },
+      "revId": "0d65dbc1cbacc15a1cd6c8620fe250d054591c1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "121b15a1_5d2bb6b7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-23T15:22:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4eae13aa_97811797",
+      "range": {
+        "startLine": 49,
+        "startChar": 6,
+        "endLine": 49,
+        "endChar": 16
+      },
+      "revId": "0d65dbc1cbacc15a1cd6c8620fe250d054591c1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f88a47df_4e305a2a",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 14
@@ -59,6 +155,30 @@
       "writtenOn": "2020-01-22T08:28:23Z",
       "side": 1,
       "message": "Is that correct? I don\u0027t see the place where you are storing object id which is coming from the Event object(new object id). Maybe I do not understand the concept but I thought that we want to store the object id of the last ref-update so we can see if all nodes are up to date. Instead we are generating new ref with timestamp. But all nodes are gonna have different timestamps so we will know when was the last update on each node but we will not be able to correlate for which ref.",
+      "range": {
+        "startLine": 61,
+        "startChar": 27,
+        "endLine": 61,
+        "endChar": 69
+      },
+      "revId": "0d65dbc1cbacc15a1cd6c8620fe250d054591c1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c753a7b_5a17735c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-23T15:22:15Z",
+      "side": 1,
+      "message": "Damn...you are right..I don\u0027t think it would work this way.\n\nI have tried to draw an alternative solution based on the **createdOn** timestamp of the Events: https://pasteboard.co/IRjnU45.png\n\nThis is just the happy path and only shows the processing of a single Event. I think this solution will work ONLY if the replication plugin enforce a chronological order to the Events to replicate.\n\nIf that is the case, the consumption lag of a consumer node, would be calculated this way:\n\"current version of the repo in the sharedRefDb\" - \"createOn timestamp of the Event I\u0027m currently consuming\"\n\nHowever, having a look at the replication plugin code, I don\u0027t think the order is enforced at all...correct me if I am wrong.\n\nWDYT? Can you think of any alternative way of getting this metric?",
+      "parentUuid": "f88a47df_4e305a2a",
       "range": {
         "startLine": 61,
         "startChar": 27,
