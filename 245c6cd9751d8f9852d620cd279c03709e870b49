@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "3b03eead_2105ac39",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-27T23:15:02Z",
+      "side": 1,
+      "message": "Why do we need to react to ChangeEvents? The update of a change meta-data is already part of the L70 because it is a ref-update on the \u0027/meta\u0027 ref, isn\u0027t it?",
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3d6fc151_f7dc44b2",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 18
@@ -41,6 +58,70 @@
         "startChar": 42,
         "endLine": 87,
         "endChar": 48
+      },
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee74683f_e2b93764",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-27T23:15:02Z",
+      "side": 1,
+      "message": "mmm ... would that break the consistency of the Git repository then?\nCan we do the same that Gerrit does with All-Projects (refs/meta/version) instead?\n\nI believe it is: refs/meta/version \u003d\u003e ObjectId \u003d\u003e BLOB, where BLOB contains the version number.",
+      "parentUuid": "fc9bb3de_77db8243",
+      "range": {
+        "startLine": 87,
+        "startChar": 42,
+        "endLine": 87,
+        "endChar": 48
+      },
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c744815_7c248abc",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-27T23:15:02Z",
+      "side": 1,
+      "message": "Can also be useful to trace what was the timestamp we were trying to update on the refs/multi-site/version.",
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c718339_fd752ed2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-27T23:15:02Z",
+      "side": 1,
+      "message": "This can be static final and defined at the top of the class.",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 192
       },
       "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
