@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a94aeacc_cebaf24e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-28T21:39:26Z",
+      "side": 1,
+      "message": "After digging in the code and having a better understanding of it, I believe this metric is wrong for the following reasons:\n\n1) RefReplicated events are created upon a successful ref replication to a node. Even if each RefReplicated event is tight to a node, they are broadcasted to all the nodes. All the replication nodes will get the RefReplicated events of all the other peers. The metric is updating every time a RefReplicated is received without checking if the event belong to the node.\n\n2) We are using the \"event.eventCreatedOn\" timestamp, which is the time the RefReplicated event was created.\n\n3) This metric, as it is, is telling us when was the last time a RefReplicated event was created in the whole system, which I believe it is not a really useful metric. Even if it was meaningful, we should have expose it in all the nodes, while, now, we are just exposing it in the replica nodes and not the \"master\" node where the ref was updated.\n\nFor those reasons I believe we should rollback this change since it might just create confusion and instead finalise \"Issue 12163\" to expose a more meaningful metric.\n\nWDYT?",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 104,
+        "endChar": 5
+      },
+      "revId": "fee8fce70b09a2d48fa002eacde5634adceee6bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
