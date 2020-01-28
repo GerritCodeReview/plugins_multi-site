@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "f4970da5_3073a5ca",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-28T13:48:51Z",
+      "side": 1,
+      "message": "Yes, sorry you are right, no need of reacting on ChangeEvent. Still there is a little problem:\n\n* These are the events streamed when a new change is created: ref-updated, ref-replication-scheduled, comment-added, ref-replicated (ref has been replicated on a particular node), ref-replication-done (ref has been replicated on all the nodes)\n\n* On the node producing the change we can easily update the local version when intercepting ref-updated events\n\n* On the replica node, we could update the local version when intercepting ref-replicated events. RefReplicatedEvent has a targetNode method (example of value: \"/tmp/gerrit_setup/instance-2/git/myrepo.git\" ) which we could use, BUT the replica node should know its own node name (again the  instance ID would be useful here). Maybe we could somehow use the Gerrit \"serverName\"?\n\n* Unfortunately GitReferenceUpdatedListener.onGitReferenceUpdated is not triggered when the consumer node is updated so it cannot be used.\n\nWDYT? How can we neatly add the concept of node name in each instance?",
+      "parentUuid": "3b03eead_2105ac39",
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3d6fc151_f7dc44b2",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 18
