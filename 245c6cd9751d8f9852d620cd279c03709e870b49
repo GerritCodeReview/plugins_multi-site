@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "2231e809_afb317d8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-28T23:38:19Z",
+      "side": 1,
+      "message": "\u003e I believe this could lead to problems. Imagine you have nodes A, B, C.\n\u003e * \"Node A\" updates refs/changes/XX/YYY/meta \u003d\u003e Created RefUpdated(ref\u003drefs/changes/XX/YYY/meta, createdOn\u003d123456)\n\u003e * Tries to replicate to Node B and C\n\u003e * Node B replication \u003d\u003e OK\n\u003e * Node C replication \u003d\u003e Failed\n\u003e * Node B and C will both receive RefReplicatedEvent(ref\u003drefs/changes/XX/YYY/meta, targetNode\u003d\"Node B\", createdOn\u003d123555)\n\u003e * Both Node B and C will update them version, setting it to RefUpdated.createdOn (somehow we will have to link RefReplicatedEvent to RefUpdated)\n\nNope, the Node B and C will need to manage the \u0027ref-replicated\u0027 event only as a trigger, but then use the same logic of the ref-update: reading the ref from the local repository and setting the timestamp to the value of the commit time they actually have received.\n\nIn your example, if Node C the ref-replicated (associated with Node B) event BUT replication to Node C failed, the commit time of the local ref will still be outdated and thus the version will be kept outdated as well.",
+      "parentUuid": "0403b9ec_d545e2b8",
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3d6fc151_f7dc44b2",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 18
