@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "f3a20576_25cfe40b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-28T22:33:46Z",
+      "side": 1,
+      "message": "\u003e Yes, sorry you are right, no need of reacting on ChangeEvent. Still there is a little problem:\n\u003e \n\u003e * These are the events streamed when a new change is created: ref-updated, ref-replication-scheduled, comment-added, ref-replicated (ref has been replicated on a particular node), ref-replication-done (ref has been replicated on all the nodes)\n\nYep, I believe only ref-updated is useful in the producing node, as you said.\n\n\u003e * On the node producing the change we can easily update the local version when intercepting ref-updated events\n\u003e \n\u003e * On the replica node, we could update the local version when intercepting ref-replicated events. RefReplicatedEvent has a targetNode method (example of value: \"/tmp/gerrit_setup/instance-2/git/myrepo.git\" ) which we could use, BUT the replica node should know its own node name (again the  instance ID would be useful here). Maybe we could somehow use the Gerrit \"serverName\"?\n\nAt the moment, the receiving node just doesn\u0027t know. What it could do is to update its version every time it sees a \"ref-replicated\". Nodes will update their version more time than needed, but it should be harmless.\n\nMakes sense?",
+      "parentUuid": "f4970da5_3073a5ca",
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3d6fc151_f7dc44b2",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 18
@@ -48,6 +66,30 @@
       "writtenOn": "2020-01-27T16:11:34Z",
       "side": 1,
       "message": "The idea behind this implementation is that:\n* if we are the the node producing the event (i.e.:!Context.isForwardedEvent()), as soon as a RefUpdatedEvent is intercepted, \n* if we are a replica node (i.e.:Context.isForwardedEvent()), as soon as we intercept a ChangeEvent, the refs/multi-site/project-version gets updated\n\nUpdate of the version skips the checks in the shared-ref db: https://gerrit-review.googlesource.com/c/plugins/multi-site/+/250392/18/src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidator.java#89",
+      "range": {
+        "startLine": 70,
+        "startChar": 3,
+        "endLine": 79,
+        "endChar": 5
+      },
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f0ba663_c6741429",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-28T22:33:46Z",
+      "side": 1,
+      "message": "\u003e The idea behind this implementation is that:\n\u003e * if we are the the node producing the event (i.e.:!Context.isForwardedEvent()), as soon as a RefUpdatedEvent is intercepted, \n\u003e * if we are a replica node (i.e.:Context.isForwardedEvent()), as soon as we intercept a ChangeEvent, the refs/multi-site/project-version gets updated\n\nI still do not understand why we need to react on ChangeEvent though: it is already covered by ref-updated right?",
+      "parentUuid": "3d6fc151_f7dc44b2",
       "range": {
         "startLine": 70,
         "startChar": 3,
@@ -95,6 +137,30 @@
       "side": 1,
       "message": "mmm ... would that break the consistency of the Git repository then?\nCan we do the same that Gerrit does with All-Projects (refs/meta/version) instead?\n\nI believe it is: refs/meta/version \u003d\u003e ObjectId \u003d\u003e BLOB, where BLOB contains the version number.",
       "parentUuid": "fc9bb3de_77db8243",
+      "range": {
+        "startLine": 87,
+        "startChar": 42,
+        "endLine": 87,
+        "endChar": 48
+      },
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d46c60ad_d1291cc3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-28T22:33:46Z",
+      "side": 1,
+      "message": "On the shared ref-db, we should also record the BLOB value, which would contain the timestamp. That is needed because a node that is outdated needs to know what is the BLOB value of the latest version. Because is outdated, its local BLOB does not contain that information.",
+      "parentUuid": "ee74683f_e2b93764",
       "range": {
         "startLine": 87,
         "startChar": 42,
