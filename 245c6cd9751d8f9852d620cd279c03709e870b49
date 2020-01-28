@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "0403b9ec_d545e2b8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-28T22:45:58Z",
+      "side": 1,
+      "message": "I believe this could lead to problems. Imagine you have nodes A, B, C.\n* \"Node A\" updates refs/changes/XX/YYY/meta \u003d\u003e Created RefUpdated(ref\u003drefs/changes/XX/YYY/meta, createdOn\u003d123456)\n* Tries to replicate to Node B and C\n* Node B replication \u003d\u003e OK\n* Node C replication \u003d\u003e Failed\n* Node B and C will both receive RefReplicatedEvent(ref\u003drefs/changes/XX/YYY/meta, targetNode\u003d\"Node B\", createdOn\u003d123555)\n* Both Node B and C will update them version, setting it to RefUpdated.createdOn (somehow we will have to link RefReplicatedEvent to RefUpdated)",
+      "parentUuid": "f3a20576_25cfe40b",
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3d6fc151_f7dc44b2",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 18
