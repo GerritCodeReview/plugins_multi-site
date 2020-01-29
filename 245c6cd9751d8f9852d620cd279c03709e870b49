@@ -91,6 +91,24 @@
     },
     {
       "key": {
+        "uuid": "791a3b09_1b6bae76",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-29T20:11:22Z",
+      "side": 1,
+      "message": "I have updated a new PS to implement it that way. Still a WIP since I need to test is properly, but it should give you the idea of the implementation.",
+      "parentUuid": "2231e809_afb317d8",
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3d6fc151_f7dc44b2",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 18
@@ -135,6 +153,30 @@
       "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a286ccae_2a9ed70c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-29T20:11:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f0ba663_c6741429",
+      "range": {
+        "startLine": 70,
+        "startChar": 3,
+        "endLine": 79,
+        "endChar": 5
+      },
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -209,6 +251,30 @@
     },
     {
       "key": {
+        "uuid": "ad97b9a2_e1f90030",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-29T20:11:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d46c60ad_d1291cc3",
+      "range": {
+        "startLine": 87,
+        "startChar": 42,
+        "endLine": 87,
+        "endChar": 48
+      },
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9c744815_7c248abc",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 18
@@ -246,6 +312,30 @@
       "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2654d168_55b3913e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-29T20:11:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c718339_fd752ed2",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 192
+      },
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
