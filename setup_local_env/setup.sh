@@ -321,7 +321,7 @@ else
 fi
 if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
   echo "Downloading websession-broker plugin stable 3.0"
-  wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-websession-broker-gh-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-broker/websession-broker.jar \
+  wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-websession-broker-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-broker/websession-broker.jar \
   -O $DEPLOYMENT_LOCATION/websession-broker.jar || { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
 ing"; exit 1; }
   wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-healthcheck-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar \
