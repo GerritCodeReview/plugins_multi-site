@@ -16,6 +16,24 @@
       "revId": "ef6fb92fa872208d7af1ed8dae427e62cc7535d2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "521bb711_8821ed1e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-30T14:01:30Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "dce76bcd_559b5f9e",
+      "revId": "ef6fb92fa872208d7af1ed8dae427e62cc7535d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
