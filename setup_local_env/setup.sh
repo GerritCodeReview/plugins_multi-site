@@ -320,11 +320,11 @@ else
   cp -f $MULTISITE_LIB_LOCATION $DEPLOYMENT_LOCATION/multi-site.jar  >/dev/null 2>&1 || { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 fi
 if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
-  echo "Downloading websession-broker plugin master"
-  wget https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-websession-broker-gh-bazel-master/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-broker/websession-broker.jar \
+  echo "Downloading websession-broker plugin stable 3.1"
+  wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.1/job/plugin-websession-broker-bazel-stable-3.1/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-broker/websession-broker.jar \
   -O $DEPLOYMENT_LOCATION/websession-broker.jar || { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
 ing"; exit 1; }
-  wget https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-healthcheck-bazel-master-master/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar \
+  wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.1/job/plugin-healthcheck-bazel-stable-3.1/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar \
   -O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
 ing"; exit 1; }
 else

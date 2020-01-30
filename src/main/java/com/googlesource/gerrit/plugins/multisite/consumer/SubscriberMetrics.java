@@ -14,47 +14,24 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
-import com.codahale.metrics.MetricFilter;
-import com.codahale.metrics.MetricRegistry;
-import com.gerritforge.gerrit.eventbroker.EventMessage;
-import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.MetricMaker;
-import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
-import com.googlesource.gerrit.plugins.multisite.ReplicationStatusStore;
-import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
 
 @Singleton
 public class SubscriberMetrics extends MultiSiteMetrics {
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String SUBSCRIBER_SUCCESS_COUNTER = "subscriber_msg_consumer_counter";
   private static final String SUBSCRIBER_FAILURE_COUNTER =
       "subscriber_msg_consumer_failure_counter";
-  private static final String INSTANCE_LATEST_REPLICATION_TIME_METRIC =
-      "multi_site/subscriber/subscriber_replication_status/instance_latest_replication_epochtime_secs";
-  private static final String PROJECT_LATEST_REPLICATION_TIME_METRIC_PREFIX =
-      "multi_site/subscriber/subscriber_replication_status/latest_replication_epochtime_secs_";
-
-  private ReplicationStatusStore replicationStatusStore;
-  private MetricMaker metricMaker;
-  private MetricRegistry metricRegistry;
 
   private final Counter1<String> subscriberSuccessCounter;
   private final Counter1<String> subscriberFailureCounter;
 
   @Inject
-  public SubscriberMetrics(
-      MetricMaker metricMaker,
-      MetricRegistry metricRegistry,
-      ReplicationStatusStore replicationStatusStore) {
-
-    this.replicationStatusStore = replicationStatusStore;
-    this.metricMaker = metricMaker;
-    this.metricRegistry = metricRegistry;
+  public SubscriberMetrics(MetricMaker metricMaker) {
 
     this.subscriberSuccessCounter =
         metricMaker.newCounter(
@@ -70,16 +47,6 @@ public class SubscriberMetrics extends MultiSiteMetrics {
                 .setRate()
                 .setUnit("errors"),
             stringField(SUBSCRIBER_FAILURE_COUNTER, "Subscriber failed to consume messages count"));
-
-    metricMaker.newCallbackMetric(
-        INSTANCE_LATEST_REPLICATION_TIME_METRIC,
-        Long.class,
-        new Description(
-                String.format(
-                    "%s last replication timestamp (ms)", INSTANCE_LATEST_REPLICATION_TIME_METRIC))
-            .setGauge()
-            .setUnit(Description.Units.MILLISECONDS),
-        () -> replicationStatusStore.getGlobalLastReplicationTime());
   }
 
   public void incrementSubscriberConsumedMessage() {
@@ -88,34 +55,5 @@ public class SubscriberMetrics extends MultiSiteMetrics {
 
   public void incrementSubscriberFailedToConsumeMessage() {
     subscriberFailureCounter.increment(SUBSCRIBER_FAILURE_COUNTER);
-  }
-
-  public void updateReplicationStatusMetrics(EventMessage eventMessage) {
-    Event event = eventMessage.getEvent();
-    if (event instanceof RefReplicatedEvent) {
-      RefReplicatedEvent refReplicatedEvent = (RefReplicatedEvent) event;
-      String projectName = refReplicatedEvent.getProjectNameKey().get();
-      logger.atInfo().log("Updating last replication time for %s", projectName);
-      replicationStatusStore.updateLastReplicationTime(projectName, event.eventCreatedOn);
-      upsertMetricsForProject(projectName);
-    } else {
-      logger.atInfo().log("Not a ref-replicated-event event [%s], skipping", event.type);
-    }
-  }
-
-  private void upsertMetricsForProject(String projectName) {
-    String metricName = PROJECT_LATEST_REPLICATION_TIME_METRIC_PREFIX + projectName;
-    if (metricRegistry.getGauges(MetricFilter.contains(metricName)).isEmpty()) {
-      metricMaker.newCallbackMetric(
-          metricName,
-          Long.class,
-          new Description(String.format("%s last replication timestamp (ms)", metricName))
-              .setGauge()
-              .setUnit(Description.Units.MILLISECONDS),
-          () -> replicationStatusStore.getLastReplicationTime(projectName).orElse(0L));
-      logger.atInfo().log("Added last replication timestamp callback metric for " + projectName);
-    } else {
-      logger.atInfo().log("Don't add metric since it already exists for project " + projectName);
-    }
   }
 }
