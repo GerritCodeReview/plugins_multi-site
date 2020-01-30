@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "89b3a5cc_56e968e6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 23
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-30T09:13:02Z",
+      "side": 1,
+      "message": "Cannot extract timestamp from BLOB, hence skipping. Sequence per se is already a versioning of the All-Projects repo. Iw we wanted to, we could expose a metric to show the difference between the ref sequence of each node and the one in the shared ref DB.",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 78,
+        "endChar": 5
+      },
+      "revId": "8621f4a575f0b1663171581596b14a86d49eaa45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
