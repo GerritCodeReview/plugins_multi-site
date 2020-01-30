@@ -25,6 +25,98 @@
     },
     {
       "key": {
+        "uuid": "d8a510af_ad5a0a7a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-30T23:34:54Z",
+      "side": 1,
+      "message": "Set?",
+      "range": {
+        "startLine": 52,
+        "startChar": 23,
+        "endLine": 52,
+        "endChar": 27
+      },
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce7d6a00_aae87c8d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-30T23:34:54Z",
+      "side": 1,
+      "message": "ImmutableSet?",
+      "range": {
+        "startLine": 53,
+        "startChar": 6,
+        "endLine": 53,
+        "endChar": 19
+      },
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b10f09f_0b432eae",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-30T23:34:54Z",
+      "side": 1,
+      "message": "private final",
+      "range": {
+        "startLine": 59,
+        "startChar": 2,
+        "endLine": 59,
+        "endChar": 22
+      },
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "504d66de_1d297210",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-30T23:34:54Z",
+      "side": 1,
+      "message": "Local?",
+      "range": {
+        "startLine": 139,
+        "startChar": 17,
+        "endLine": 139,
+        "endChar": 24
+      },
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "05d6c8a3_cd585c5d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 29
@@ -36,6 +128,47 @@
       "writtenOn": "2020-01-30T19:19:25Z",
       "side": 1,
       "message": "Commit time is in seconds since the Unix epoch.\nHence there\u0027s a chance that multiple ref updates occur in the same second.\n\nIf the RefUpdate is replicated is there any case where timestamps created on different nodes are compared with each other ?",
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aaa3bdb5_4906f137",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-30T23:34:54Z",
+      "side": 1,
+      "message": "\u003e Commit time is in seconds since the Unix epoch.\n\u003e Hence there\u0027s a chance that multiple ref updates occur in the same second.\n\u003e \n\u003e If the RefUpdate is replicated is there any case where timestamps created on different nodes are compared with each other ?\n\nIf two commits on the same repo happen in the same second, they will have the same timestamp BUT different SHA1. They will not be confused by the same version, even though the node won\u0027t be considered \"behind\" from a metrics perspective.",
+      "parentUuid": "05d6c8a3_cd585c5d",
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7551e400_de0b71e3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-01-30T23:34:54Z",
+      "side": 1,
+      "message": "We should also get the boolean return value and, in case it failed, log a warning saying that the shared project version update failed and, possibly, throw an exception.\n\nWith regards to the value, we should store not only the SHA1 but also the timestamp value. Possibly a simple ObjectId isn\u0027t enough in this case, we would need to extend the interface of the global-refdb.",
+      "range": {
+        "startLine": 181,
+        "startChar": 18,
+        "endLine": 181,
+        "endChar": 31
+      },
       "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
