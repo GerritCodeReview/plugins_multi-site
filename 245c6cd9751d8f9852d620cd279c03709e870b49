@@ -292,6 +292,24 @@
     },
     {
       "key": {
+        "uuid": "c7198b33_fa8fe3d3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-30T08:20:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c744815_7c248abc",
+      "revId": "245c6cd9751d8f9852d620cd279c03709e870b49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8c718339_fd752ed2",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 18
