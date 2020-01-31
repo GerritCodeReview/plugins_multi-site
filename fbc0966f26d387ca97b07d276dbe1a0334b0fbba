@@ -292,6 +292,30 @@
       "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ca75875_e1d648eb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-31T13:03:54Z",
+      "side": 1,
+      "message": "Added check for return value. Still need to amend the shared-databse interface with the new methods.",
+      "parentUuid": "7551e400_de0b71e3",
+      "range": {
+        "startLine": 181,
+        "startChar": 18,
+        "endLine": 181,
+        "endChar": 31
+      },
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
