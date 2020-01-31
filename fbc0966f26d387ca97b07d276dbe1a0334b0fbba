@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "80e7d9c4_e71f464c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 29
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-31T12:57:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6b4f22d_e23f478e",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 9
+      },
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d8a510af_ad5a0a7a",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 29
@@ -45,6 +69,30 @@
       "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b01d3060_e46e72c7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-31T12:57:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8a510af_ad5a0a7a",
+      "range": {
+        "startLine": 52,
+        "startChar": 23,
+        "endLine": 52,
+        "endChar": 27
+      },
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "4847d4af_0af70296",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-31T12:57:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce7d6a00_aae87c8d",
+      "range": {
+        "startLine": 53,
+        "startChar": 6,
+        "endLine": 53,
+        "endChar": 19
+      },
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b10f09f_0b432eae",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 29
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "a446c901_2e7a487c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-31T12:57:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b10f09f_0b432eae",
+      "range": {
+        "startLine": 59,
+        "startChar": 2,
+        "endLine": 59,
+        "endChar": 22
+      },
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "504d66de_1d297210",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 29
@@ -114,6 +210,30 @@
       "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f612569_dbe9ea9b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-01-31T12:57:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "504d66de_1d297210",
+      "range": {
+        "startLine": 139,
+        "startChar": 17,
+        "endLine": 139,
+        "endChar": 24
+      },
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
