@@ -15,7 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.index;
 
 import com.google.gerrit.entities.Change;
-import com.google.gerrit.entities.Comment;
+import com.google.gerrit.entities.HumanComment;
 import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.server.CommentsUtil;
 import com.google.gerrit.server.change.ChangeFinder;
@@ -148,7 +148,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
     Change change = notes.getChange();
     Timestamp changeTs = change.getLastUpdatedOn();
     try {
-      for (Comment comment : commentsUtil.draftByChange(changeNotes.get())) {
+      for (HumanComment comment : commentsUtil.draftByChange(changeNotes.get())) {
         Timestamp commentTs = comment.writtenOn;
         changeTs = commentTs.after(changeTs) ? commentTs : changeTs;
       }
