@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1777e1c9_243464c9",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-04T11:12:38Z",
+      "side": 1,
+      "message": "True",
+      "parentUuid": "26f9371f_0835fb06",
+      "range": {
+        "startLine": 323,
+        "startChar": 2,
+        "endLine": 324,
+        "endChar": 199
+      },
+      "revId": "39ead8e3dab48c0304ebce99846ddae70bf08225",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6a67d17d_d86a944c",
         "filename": "setup_local_env/setup.sh",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2020-02-04T11:09:16Z",
       "side": 1,
       "message": "this should come from master",
+      "range": {
+        "startLine": 327,
+        "startChar": 2,
+        "endLine": 327,
+        "endChar": 181
+      },
+      "revId": "39ead8e3dab48c0304ebce99846ddae70bf08225",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "544344cb_b6669fbc",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-04T11:12:38Z",
+      "side": 1,
+      "message": "Yep",
+      "parentUuid": "6a67d17d_d86a944c",
       "range": {
         "startLine": 327,
         "startChar": 2,
