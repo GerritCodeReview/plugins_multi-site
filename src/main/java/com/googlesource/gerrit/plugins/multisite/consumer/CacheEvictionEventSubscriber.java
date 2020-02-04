@@ -21,14 +21,14 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
-import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.CacheEvictionEventRouter;
 import java.util.UUID;
 
 @Singleton
 public class CacheEvictionEventSubscriber extends AbstractSubcriber {
   @Inject
   public CacheEvictionEventSubscriber(
-      StreamEventRouter eventRouter,
+      CacheEvictionEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
       @InstanceId UUID instanceId,
       MessageLogger msgLog,
