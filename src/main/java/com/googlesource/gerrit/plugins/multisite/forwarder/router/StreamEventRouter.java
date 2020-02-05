@@ -19,17 +19,33 @@ import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;
+import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
+import java.io.IOException;
 
 public class StreamEventRouter implements ForwardedEventRouter<Event> {
   private final ForwardedEventHandler streamEventHandler;
+  private final IndexEventRouter indexEventRouter;
 
   @Inject
-  public StreamEventRouter(ForwardedEventHandler streamEventHandler) {
+  public StreamEventRouter(
+      ForwardedEventHandler streamEventHandler, IndexEventRouter indexEventRouter) {
     this.streamEventHandler = streamEventHandler;
+    this.indexEventRouter = indexEventRouter;
   }
 
   @Override
-  public void route(Event sourceEvent) throws OrmException, PermissionBackendException {
+  public void route(Event sourceEvent)
+      throws OrmException, PermissionBackendException, IOException {
+    if (sourceEvent.getType().equals("ref-replicated")) {
+      /* TODO: We currently explicitly ignore the status and result of the replication
+       * event because there isn't a reliable way to understand if the current node was
+       * the replication target.
+       *
+       * It is better to risk to reindex once more rather than missing a reindexing event.
+       */
+      indexEventRouter.onRefReplicated((RefReplicatedEvent) sourceEvent);
+    }
+
     streamEventHandler.dispatch(sourceEvent);
   }
 }
