@@ -22,6 +22,7 @@ import com.googlesource.gerrit.plugins.multisite.broker.BrokerSession;
 import com.googlesource.gerrit.plugins.multisite.broker.kafka.BrokerPublisher;
 import com.googlesource.gerrit.plugins.multisite.broker.kafka.KafkaSession;
 import com.googlesource.gerrit.plugins.multisite.consumer.AbstractSubcriber;
+import com.googlesource.gerrit.plugins.multisite.consumer.BatchIndexEventSubscriber;
 import com.googlesource.gerrit.plugins.multisite.consumer.CacheEvictionEventSubscriber;
 import com.googlesource.gerrit.plugins.multisite.consumer.IndexEventSubscriber;
 import com.googlesource.gerrit.plugins.multisite.consumer.ProjectUpdateEventSubscriber;
@@ -57,6 +58,9 @@ public class KafkaBrokerModule extends LifecycleModule {
 
       if (config.kafkaSubscriber().enabledEvent(EventTopic.INDEX_TOPIC)) {
         DynamicSet.bind(binder(), AbstractSubcriber.class).to(IndexEventSubscriber.class);
+      }
+      if (config.kafkaSubscriber().enabledEvent(EventTopic.BATCH_INDEX_TOPIC)) {
+        DynamicSet.bind(binder(), AbstractSubcriber.class).to(BatchIndexEventSubscriber.class);
       }
       if (config.kafkaSubscriber().enabledEvent(EventTopic.STREAM_EVENT_TOPIC)) {
         DynamicSet.bind(binder(), AbstractSubcriber.class).to(StreamEventSubscriber.class);

@@ -98,10 +98,17 @@ class IndexEventHandler
   private void executeIndexChangeTask(String projectName, int id) {
     if (!Context.isForwardedEvent()) {
       ChangeChecker checker = changeChecker.create(projectName + "~" + id);
+
       try {
         checker
             .newIndexEvent(projectName, id, false)
-            .map(event -> new IndexChangeTask(event))
+            .map(
+                event -> {
+                  if (Thread.currentThread().getName().contains("Batch")) {
+                    return new BatchIndexChangeTask(event);
+                  }
+                  return new IndexChangeTask(event);
+                })
             .ifPresent(
                 task -> {
                   if (queuedTasks.add(task)) {
@@ -143,6 +150,37 @@ class IndexEventHandler
     @Override
     public void execute() {
       forwarders.forEach(f -> f.index(changeIndexEvent));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+      IndexChangeTask that = (IndexChangeTask) o;
+      return Objects.equal(changeIndexEvent, that.changeIndexEvent);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hashCode(changeIndexEvent);
+    }
+
+    @Override
+    public String toString() {
+      return String.format("Index change %s in target instance", changeIndexEvent.changeId);
+    }
+  }
+
+  class BatchIndexChangeTask extends IndexTask {
+    private final ChangeIndexEvent changeIndexEvent;
+
+    BatchIndexChangeTask(ChangeIndexEvent changeIndexEvent) {
+      this.changeIndexEvent = changeIndexEvent;
+    }
+
+    @Override
+    public void execute() {
+      forwarders.forEach(f -> f.batchIndex(changeIndexEvent));
     }
 
     @Override
