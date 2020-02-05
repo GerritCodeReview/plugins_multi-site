@@ -16,11 +16,14 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.server.index.account.AccountIndexer;
+import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -33,11 +36,13 @@ import java.util.Optional;
 public class ForwardedIndexAccountHandler
     extends ForwardedIndexingHandler<Account.Id, AccountIndexEvent> {
   private final AccountIndexer indexer;
+  private final HashMap<Account.Id, Operation> accountsToIndex;
 
   @Inject
   ForwardedIndexAccountHandler(AccountIndexer indexer, Configuration config) {
     super(config.index().numStripedLocks());
     this.indexer = indexer;
+    this.accountsToIndex = new HashMap<>();
   }
 
   @Override
@@ -49,5 +54,16 @@ public class ForwardedIndexAccountHandler
   @Override
   protected void doDelete(Account.Id id, Optional<AccountIndexEvent> event) {
     throw new UnsupportedOperationException("Delete from account index not supported");
+  }
+
+  public synchronized void indexAsync(Account.Id id, Operation operation) {
+    accountsToIndex.put(id, operation);
+  }
+
+  public synchronized void flush() throws IOException, OrmException {
+    for (Map.Entry<Account.Id, Operation> account : accountsToIndex.entrySet()) {
+      index(account.getKey(), account.getValue(), Optional.empty());
+    }
+    accountsToIndex.clear();
   }
 }

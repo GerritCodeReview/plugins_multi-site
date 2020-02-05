@@ -18,6 +18,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.server.config.AllUsersName;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
@@ -29,6 +31,8 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEven
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.IndexEventRouter;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRouter;
+import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
 import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Before;
@@ -45,12 +49,18 @@ public class IndexEventRouterTest {
   @Mock private ForwardedIndexChangeHandler indexChangeHandler;
   @Mock private ForwardedIndexGroupHandler indexGroupHandler;
   @Mock private ForwardedIndexProjectHandler indexProjectHandler;
+  @Mock private ForwardedEventHandler forwardedEventHandler;
+  private AllUsersName allUsersName = new AllUsersName("All-Users");
 
   @Before
   public void setUp() {
     router =
         new IndexEventRouter(
-            indexAccountHandler, indexChangeHandler, indexGroupHandler, indexProjectHandler);
+            indexAccountHandler,
+            indexChangeHandler,
+            indexGroupHandler,
+            indexProjectHandler,
+            allUsersName);
   }
 
   @Test
@@ -59,12 +69,27 @@ public class IndexEventRouterTest {
     router.route(event);
 
     verify(indexAccountHandler)
-        .index(
-            new Account.Id(event.accountId),
-            ForwardedIndexingHandler.Operation.INDEX,
-            Optional.of(event));
+        .indexAsync(new Account.Id(event.accountId), ForwardedIndexingHandler.Operation.INDEX);
 
     verifyZeroInteractions(indexChangeHandler, indexGroupHandler, indexProjectHandler);
+  }
+
+  @Test
+  public void streamEventRouterShouldTriggerAccountIndexFlush() throws Exception {
+
+    StreamEventRouter streamEventRouter = new StreamEventRouter(forwardedEventHandler, router);
+
+    final AccountIndexEvent event = new AccountIndexEvent(1);
+    router.route(event);
+
+    verify(indexAccountHandler)
+        .indexAsync(new Account.Id(event.accountId), ForwardedIndexingHandler.Operation.INDEX);
+
+    verifyZeroInteractions(indexChangeHandler, indexGroupHandler, indexProjectHandler);
+
+    streamEventRouter.route(new RefReplicationDoneEvent(allUsersName.get(), "refs/any", 1));
+
+    verify(indexAccountHandler).flush();
   }
 
   @Test
