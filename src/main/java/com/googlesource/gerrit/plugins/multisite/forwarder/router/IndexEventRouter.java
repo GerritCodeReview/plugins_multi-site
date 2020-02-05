@@ -17,7 +17,10 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.router;
 import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.DELETE;
 import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.INDEX;
 
+import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.reviewdb.client.Account.Id;
 import com.google.gerrit.server.config.AllUsersName;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
@@ -34,8 +37,11 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEv
 import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.Set;
 
-public class IndexEventRouter implements ForwardedEventRouter<IndexEvent> {
+public class IndexEventRouter implements ForwardedEventRouter<IndexEvent>, LifecycleListener {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
   private final ForwardedIndexAccountHandler indexAccountHandler;
   private final ForwardedIndexChangeHandler indexChangeHandler;
   private final ForwardedIndexGroupHandler indexGroupHandler;
@@ -90,6 +96,25 @@ public class IndexEventRouter implements ForwardedEventRouter<IndexEvent> {
       } else {
         indexAccountHandler.doAsyncIndex();
       }
+    }
+  }
+
+  @Override
+  public void start() {}
+
+  @Override
+  public void stop() {
+    Set<Id> accountsToIndex = indexAccountHandler.pendingAccountsToIndex();
+    if (!accountsToIndex.isEmpty()) {
+      logger.atWarning().log("Forcing reindex of accounts %s upon shutdown", accountsToIndex);
+      indexAccountHandler.doAsyncIndex();
+    }
+
+    Set<Id> accountsIndexFailed = indexAccountHandler.pendingAccountsToIndex();
+    if (!accountsIndexFailed.isEmpty()) {
+      logger.atSevere().log(
+          "The accounts %s failed to be indexed and their Lucene index is stale",
+          accountsIndexFailed);
     }
   }
 }
