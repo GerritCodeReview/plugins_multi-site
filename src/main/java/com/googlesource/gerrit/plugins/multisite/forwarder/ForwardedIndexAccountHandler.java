@@ -16,12 +16,16 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.server.index.account.AccountIndexer;
+import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Index an account using {@link AccountIndexer}. This class is meant to be used on the receiving
@@ -32,12 +36,15 @@ import java.util.Optional;
 @Singleton
 public class ForwardedIndexAccountHandler
     extends ForwardedIndexingHandler<Account.Id, AccountIndexEvent> {
+
   private final AccountIndexer indexer;
+  private Map<Account.Id, Operation> accountsToIndex;
 
   @Inject
   ForwardedIndexAccountHandler(AccountIndexer indexer, Configuration config) {
     super(config.index().numStripedLocks());
     this.indexer = indexer;
+    this.accountsToIndex = new HashMap<>();
   }
 
   @Override
@@ -49,5 +56,26 @@ public class ForwardedIndexAccountHandler
   @Override
   protected void doDelete(Account.Id id, Optional<AccountIndexEvent> event) {
     throw new UnsupportedOperationException("Delete from account index not supported");
+  }
+
+  public synchronized void indexAsync(Account.Id id, Operation operation) {
+    accountsToIndex.put(id, operation);
+  }
+
+  public synchronized void doAsyncIndex() {
+    accountsToIndex =
+        accountsToIndex.entrySet().stream()
+            .filter(e -> !checkedIndex(e))
+            .collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+  }
+
+  private boolean checkedIndex(Map.Entry<Account.Id, Operation> account) {
+    try {
+      index(account.getKey(), account.getValue(), Optional.empty());
+      return true;
+    } catch (IOException | OrmException e) {
+      log.error("Account {} index failed", account.getKey(), e);
+      return false;
+    }
   }
 }
