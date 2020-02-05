@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "4be757ad_ac98b86e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-05T07:33:05Z",
+      "side": 1,
+      "message": "Yes, let me add it.",
+      "parentUuid": "58954f2c_95784439",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 72
+      },
+      "revId": "ad1cf46ef74b715212e74c49c3ce2f77825a080f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bc7f05be_3e71f0f8",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2020-02-05T04:48:59Z",
       "side": 1,
       "message": "Is this a TODO or simply a NOTE?\nIf is a TODO, should be captured by a ticket/CR?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 42
+      },
+      "revId": "ad1cf46ef74b715212e74c49c3ce2f77825a080f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c38f760e_755af92a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-05T07:33:05Z",
+      "side": 1,
+      "message": "I\u0027ll amend to \"Future work\". It\u0027s not a TODO for this change, but definitely something to look for in the near future. It may require a change in the replication plugin though.",
+      "parentUuid": "bc7f05be_3e71f0f8",
       "range": {
         "startLine": 11,
         "startChar": 0,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "b6036fbc_6c3bccea",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexAccountHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-05T07:33:05Z",
+      "side": 1,
+      "message": "runAsyncIndexAndFlush?",
+      "parentUuid": "7c8c6cb3_e074b68e",
+      "range": {
+        "startLine": 63,
+        "startChar": 27,
+        "endLine": 63,
+        "endChar": 32
+      },
+      "revId": "ad1cf46ef74b715212e74c49c3ce2f77825a080f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b919c14d_569ab5b7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexAccountHandler.java",
         "patchSetId": 2
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "ccee4757_8384a2e3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexAccountHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-05T07:33:05Z",
+      "side": 1,
+      "message": "\u003e What happens when an indexing fails after some succeeded?\n\u003e Should we not update the map as each index is fired?\n\u003e so that already indexed accounts are removed from the queue even in case of a subsequent failure?\n\nGood catch, we should log the failure and keep on indexing the others.",
+      "parentUuid": "b919c14d_569ab5b7",
+      "range": {
+        "startLine": 65,
+        "startChar": 2,
+        "endLine": 65,
+        "endChar": 68
+      },
+      "revId": "ad1cf46ef74b715212e74c49c3ce2f77825a080f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b60a70da_bda860bb",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/router/IndexEventRouter.java",
         "patchSetId": 2
@@ -105,6 +201,30 @@
       "writtenOn": "2020-02-05T04:48:59Z",
       "side": 1,
       "message": "I am not sure I understand this logic:\nWhen would `accountId` be null?\nAnd why do we trigger the indexing of buffered accounts when we received a replication event that doesn\u0027t carry any account information?\n\nCould you clarify which events are expected to be associated to which actions?",
+      "range": {
+        "startLine": 88,
+        "startChar": 1,
+        "endLine": 92,
+        "endChar": 7
+      },
+      "revId": "ad1cf46ef74b715212e74c49c3ce2f77825a080f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d31950fa_bd038536",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/router/IndexEventRouter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-05T07:33:05Z",
+      "side": 1,
+      "message": "\u003e I am not sure I understand this logic:\n\u003e When would `accountId` be null?\n\nAccording to the fromRef() method, this is when the ref-name is not specific to any account.\n\n\u003e And why do we trigger the indexing of buffered accounts when we received a replication event that doesn\u0027t carry any account information?\n\nBecause we have no clue of *what* has changed (e.g. refs/meta/external-ids) and thus the only thing that it can be possibly have changed are the accounts to be reindexed.\n\n\u003e Could you clarify which events are expected to be associated to which actions?\n\nThere is no clue at the moment carried over by this ref-replication-done: this is because the All-Users.git design have put *ALL* accounts into a single ref, which was not a scalable design for the multi-site use-case.\n\nAt the moment, this is all we can do with the current design: \"guessing\" what to do :-(",
+      "parentUuid": "b60a70da_bda860bb",
       "range": {
         "startLine": 88,
         "startChar": 1,
