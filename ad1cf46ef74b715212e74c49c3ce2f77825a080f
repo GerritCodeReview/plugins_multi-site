@@ -214,6 +214,30 @@
     },
     {
       "key": {
+        "uuid": "7592eda3_30e8869c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexAccountHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-05T20:41:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccee4757_8384a2e3",
+      "range": {
+        "startLine": 65,
+        "startChar": 2,
+        "endLine": 65,
+        "endChar": 68
+      },
+      "revId": "ad1cf46ef74b715212e74c49c3ce2f77825a080f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b60a70da_bda860bb",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/router/IndexEventRouter.java",
         "patchSetId": 2
@@ -273,6 +297,30 @@
       "side": 1,
       "message": "If I understand this correctly we will only be triggering the account reindexes (i.e. the flush), *if* we receive a message that doesn\u0027t carry any specific account information (e.g. refs/meta/external-ids has changed).\n\nIs that message ever guaranteed to arrive?\nwhat if that message never arrives, can accounts to be reindexed grow unbound?\n\nShould we have a safe mechanism, where we trigger the flush anyway after a certain condition is met?",
       "parentUuid": "d31950fa_bd038536",
+      "range": {
+        "startLine": 88,
+        "startChar": 1,
+        "endLine": 92,
+        "endChar": 7
+      },
+      "revId": "ad1cf46ef74b715212e74c49c3ce2f77825a080f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "21f02189_f6940a9d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/router/IndexEventRouter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-05T20:41:26Z",
+      "side": 1,
+      "message": "\u003e If I understand this correctly we will only be triggering the account reindexes (i.e. the flush), *if* we receive a message that doesn\u0027t carry any specific account information (e.g. refs/meta/external-ids has changed).\n\u003e \n\u003e Is that message ever guaranteed to arrive?\n\nWe receive that message through Kafka, so it *will arrive*.\nHowever, the problem is that if one of the nodes is unreachable, the message is not coming through until all the nodes are back online.\n\n\u003e what if that message never arrives, can accounts to be reindexed grow unbound?\n\nNever, NO. Eventually, yes.\nThe problem is that this list is kept in memory, so if Gerrit restarts *before* it gets the replication-done event, the list of accounts to reindex is lost.\n\n\u003e Should we have a safe mechanism, where we trigger the flush anyway after a certain condition is met?\n\nYes, good idea.\nWhat would be the conditions?\n\n- Timeout?\n- Before shutdown?",
+      "parentUuid": "aa283622_596b5bd1",
       "range": {
         "startLine": 88,
         "startChar": 1,
