@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a8a5b5a6_41139f63",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexAccountHandler.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-05T09:46:23Z",
+      "side": 1,
+      "message": "Yes, it is catched at L68",
+      "parentUuid": "ed7cec38_74289cc9",
+      "range": {
+        "startLine": 19,
+        "startChar": 18,
+        "endLine": 19,
+        "endChar": 24
+      },
+      "revId": "00503ff6b1c89c644e97b56c4d04011ba119e5ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f86fdc9c_31e82fe9",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexAccountHandler.java",
         "patchSetId": 3
