@@ -402,6 +402,30 @@
       "revId": "ad1cf46ef74b715212e74c49c3ce2f77825a080f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4642c82f_a70b1a57",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/router/IndexEventRouter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-05T20:59:18Z",
+      "side": 1,
+      "message": "Yep, let get this merged and I can have a separate change on exposing this list externally.",
+      "parentUuid": "126dbad7_de49021a",
+      "range": {
+        "startLine": 88,
+        "startChar": 1,
+        "endLine": 92,
+        "endChar": 7
+      },
+      "revId": "ad1cf46ef74b715212e74c49c3ce2f77825a080f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
