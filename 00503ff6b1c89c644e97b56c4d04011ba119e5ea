@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f86fdc9c_31e82fe9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexAccountHandler.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-05T09:30:37Z",
+      "side": 1,
+      "message": "Is there any other operation when indexing? It seems like the only operation we are passing when calling \"indexAsync\" is the INDEX operation.\n\nGiven the name of the method the operation parameter seems redundant.",
+      "range": {
+        "startLine": 60,
+        "startChar": 53,
+        "endLine": 60,
+        "endChar": 72
+      },
+      "revId": "00503ff6b1c89c644e97b56c4d04011ba119e5ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd5ad4c3_d8512fe4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexAccountHandler.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-05T09:30:37Z",
+      "side": 1,
+      "message": "Where is the \"flush\" happening?",
+      "range": {
+        "startLine": 64,
+        "startChar": 42,
+        "endLine": 64,
+        "endChar": 47
+      },
+      "revId": "00503ff6b1c89c644e97b56c4d04011ba119e5ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4db721a9_b4c8ea56",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexAccountHandler.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-05T09:30:37Z",
+      "side": 1,
+      "message": "We are clearing the whole map here, this implies to remove an account even if we failed to index it. Is that correct?",
+      "range": {
+        "startLine": 72,
+        "startChar": 4,
+        "endLine": 72,
+        "endChar": 28
+      },
+      "revId": "00503ff6b1c89c644e97b56c4d04011ba119e5ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96c65bb5_55b7634e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/kafka/consumer/StreamEventRouterTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-05T09:30:37Z",
+      "side": 1,
+      "message": "nit: Should we add a similar test to check the indexEventRouter has been triggered?",
+      "range": {
+        "startLine": 45,
+        "startChar": 2,
+        "endLine": 50,
+        "endChar": 3
+      },
+      "revId": "00503ff6b1c89c644e97b56c4d04011ba119e5ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
