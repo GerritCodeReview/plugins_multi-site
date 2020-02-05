@@ -25,4 +25,6 @@ public interface IndexEventForwarder {
    * @return true if successful, otherwise false.
    */
   boolean index(IndexEvent event);
+
+  boolean batchIndex(IndexEvent event);
 }
