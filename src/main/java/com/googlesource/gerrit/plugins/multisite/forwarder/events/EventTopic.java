@@ -18,6 +18,7 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 
 public enum EventTopic {
   INDEX_TOPIC("GERRIT.EVENT.INDEX", "indexEvent"),
+  BATCH_INDEX_TOPIC("GERRIT.EVENT.BATCH.INDEX", "batchIndexEvent"),
   CACHE_TOPIC("GERRIT.EVENT.CACHE", "cacheEvent"),
   PROJECT_LIST_TOPIC("GERRIT.EVENT.PROJECT.LIST", "projectListEvent"),
   STREAM_EVENT_TOPIC("GERRIT.EVENT.STREAM", "streamEvent");

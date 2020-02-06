@@ -18,6 +18,7 @@ import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndex
 import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.INDEX;
 
 import com.google.gerrit.entities.Account;
+import com.google.gerrit.server.config.AllUsersName;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
@@ -29,6 +30,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEve
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -37,17 +39,20 @@ public class IndexEventRouter implements ForwardedEventRouter<IndexEvent> {
   private final ForwardedIndexChangeHandler indexChangeHandler;
   private final ForwardedIndexGroupHandler indexGroupHandler;
   private final ForwardedIndexProjectHandler indexProjectHandler;
+  private final AllUsersName allUsersName;
 
   @Inject
   public IndexEventRouter(
       ForwardedIndexAccountHandler indexAccountHandler,
       ForwardedIndexChangeHandler indexChangeHandler,
       ForwardedIndexGroupHandler indexGroupHandler,
-      ForwardedIndexProjectHandler indexProjectHandler) {
+      ForwardedIndexProjectHandler indexProjectHandler,
+      AllUsersName allUsersName) {
     this.indexAccountHandler = indexAccountHandler;
     this.indexChangeHandler = indexChangeHandler;
     this.indexGroupHandler = indexGroupHandler;
     this.indexProjectHandler = indexProjectHandler;
+    this.allUsersName = allUsersName;
   }
 
   @Override
@@ -61,8 +66,7 @@ public class IndexEventRouter implements ForwardedEventRouter<IndexEvent> {
           Optional.of(changeIndexEvent));
     } else if (sourceEvent instanceof AccountIndexEvent) {
       AccountIndexEvent accountIndexEvent = (AccountIndexEvent) sourceEvent;
-      indexAccountHandler.index(
-          Account.id(accountIndexEvent.accountId), INDEX, Optional.of(accountIndexEvent));
+      indexAccountHandler.indexAsync(Account.id(accountIndexEvent.accountId), INDEX);
     } else if (sourceEvent instanceof GroupIndexEvent) {
       GroupIndexEvent groupIndexEvent = (GroupIndexEvent) sourceEvent;
       indexGroupHandler.index(groupIndexEvent.groupUUID, INDEX, Optional.of(groupIndexEvent));
@@ -73,6 +77,17 @@ public class IndexEventRouter implements ForwardedEventRouter<IndexEvent> {
     } else {
       throw new UnsupportedOperationException(
           String.format("Cannot route event %s", sourceEvent.getType()));
+    }
+  }
+
+  public void onRefReplicated(RefReplicationDoneEvent replicationEvent) throws IOException {
+    if (replicationEvent.getProjectNameKey().equals(allUsersName)) {
+      Account.Id accountId = Account.Id.fromRef(replicationEvent.getRefName());
+      if (accountId != null) {
+        indexAccountHandler.index(accountId, INDEX, Optional.empty());
+      } else {
+        indexAccountHandler.doAsyncIndex();
+      }
     }
   }
 }
