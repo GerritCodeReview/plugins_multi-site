@@ -22,6 +22,7 @@ import com.google.gerrit.entities.Change;
 import com.google.gerrit.server.events.CommentAddedEvent;
 import com.google.gerrit.server.util.time.TimeUtil;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.router.IndexEventRouter;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRouter;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,10 +35,11 @@ public class StreamEventRouterTest {
 
   private StreamEventRouter router;
   @Mock private ForwardedEventHandler streamEventHandler;
+  @Mock private IndexEventRouter indexEventRouter;
 
   @Before
   public void setUp() {
-    router = new StreamEventRouter(streamEventHandler);
+    router = new StreamEventRouter(streamEventHandler, indexEventRouter);
   }
 
   @Test

@@ -18,17 +18,32 @@ import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;
+import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
+import java.io.IOException;
 
 public class StreamEventRouter implements ForwardedEventRouter<Event> {
   private final ForwardedEventHandler streamEventHandler;
+  private final IndexEventRouter indexEventRouter;
 
   @Inject
-  public StreamEventRouter(ForwardedEventHandler streamEventHandler) {
+  public StreamEventRouter(
+      ForwardedEventHandler streamEventHandler, IndexEventRouter indexEventRouter) {
     this.streamEventHandler = streamEventHandler;
+    this.indexEventRouter = indexEventRouter;
   }
 
   @Override
-  public void route(Event sourceEvent) throws PermissionBackendException {
+  public void route(Event sourceEvent) throws PermissionBackendException, IOException {
+    if (RefReplicationDoneEvent.TYPE.equals(sourceEvent.getType())) {
+      /* TODO: We currently explicitly ignore the status and result of the replication
+       * event because there isn't a reliable way to understand if the current node was
+       * the replication target and was successful or not.
+       *
+       * It is better to risk to reindex once more rather than missing a reindexing event.
+       */
+      indexEventRouter.onRefReplicated((RefReplicationDoneEvent) sourceEvent);
+    }
+
     streamEventHandler.dispatch(sourceEvent);
   }
 }
