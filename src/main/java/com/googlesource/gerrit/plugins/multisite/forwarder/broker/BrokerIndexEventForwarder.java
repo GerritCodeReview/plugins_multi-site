@@ -35,4 +35,9 @@ public class BrokerIndexEventForwarder implements IndexEventForwarder {
   public boolean index(IndexEvent event) {
     return broker.send(EventTopic.INDEX_TOPIC.topic(cfg), event);
   }
+
+  @Override
+  public boolean batchIndex(IndexEvent event) {
+    return broker.send(EventTopic.BATCH_INDEX_TOPIC.topic(cfg), event);
+  }
 }
