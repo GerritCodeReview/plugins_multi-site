@@ -19,10 +19,18 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 public interface IndexEventForwarder {
 
   /**
-   * Publish an indexing event to the broker.
+   * Publish an indexing event to the broker using interactive topic.
    *
    * @param event the details of the index event.
    * @return true if successful, otherwise false.
    */
   boolean index(IndexEvent event);
+
+  /**
+   * Publish an indexing event to the broker using batch topic.
+   *
+   * @param event the details of the index event.
+   * @return true if successful, otherwise false.
+   */
+  boolean batchIndex(IndexEvent event);
 }
