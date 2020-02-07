@@ -272,6 +272,24 @@
     },
     {
       "key": {
+        "uuid": "76c1af9b_8c59bd91",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-07T15:05:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aaa3bdb5_4906f137",
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7551e400_de0b71e3",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 29
@@ -307,6 +325,30 @@
       "side": 1,
       "message": "Added check for return value. Still need to amend the shared-databse interface with the new methods.",
       "parentUuid": "7551e400_de0b71e3",
+      "range": {
+        "startLine": 181,
+        "startChar": 18,
+        "endLine": 181,
+        "endChar": 31
+      },
+      "revId": "fbc0966f26d387ca97b07d276dbe1a0334b0fbba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "45781d04_612ca90a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-07T15:05:12Z",
+      "side": 1,
+      "message": "Currently in NoteDB we are extracting integer values from the ObjectIds this way:\n\n Optional\u003cIntBlob\u003e blob \u003d IntBlob.parse(repo, refName);\n\nWe are doing it with Sequences:\nhttps://github.com/GerritCodeReview/gerrit/blob/8b2b42086fe7e935e2b93bec6311c37e27ab62d0/java/com/google/gerrit/server/notedb/RepoSequence.java#L324 \n\nWe can implement our parser for Long, similarly to this one: https://github.com/GerritCodeReview/gerrit/blob/cda97ddca72f404a6c3007edf3e4f1b244e1780c/java/com/google/gerrit/server/notedb/IntBlob.java#L56\n\n...or we can use the NoteDB IntBlob parser and we will have time until 2038 before changing it.\n\nHowever I don\u0027t think there will be need to store the timestamp value.\n\nWDYT?",
+      "parentUuid": "1ca75875_e1d648eb",
       "range": {
         "startLine": 181,
         "startChar": 18,
