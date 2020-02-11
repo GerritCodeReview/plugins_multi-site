@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
@@ -118,6 +119,13 @@ public class MultisiteReplicationPushFilterTest {
           }
 
           @Override
+          public <T> boolean compareAndPut(
+              Project.NameKey project, String refName, T currValue, T newValue)
+              throws GlobalRefDbSystemError {
+            return false;
+          }
+
+          @Override
           public AutoCloseable lockRef(Project.NameKey project, String refName)
               throws GlobalRefDbLockException {
             return null;
@@ -125,6 +133,12 @@ public class MultisiteReplicationPushFilterTest {
 
           @Override
           public void remove(Project.NameKey project) throws GlobalRefDbSystemError {}
+
+          @Override
+          public <T> Optional<T> get(Project.NameKey project, String refName, Class<T> clazz)
+              throws GlobalRefDbSystemError {
+            return Optional.empty();
+          }
         };
     return new SharedRefDatabaseWrapper(
         DynamicItem.itemOf(GlobalRefDatabase.class, sharedRefDatabase),

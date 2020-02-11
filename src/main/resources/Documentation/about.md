@@ -93,10 +93,6 @@ documentation.
 
 `metric=plugins/multi-site/multi_site/subscriber/subscriber_message_consumer_failure_counter/subscriber_msg_consumer_poll_failure_counter, type=com.codahale.metrics.Meter`
 
-* Subscriber replication status (latest replication Epoch time in seconds) per instance
+* Subscriber replication status per project (ms behind the producer)
 
-`metric=plugins/multi-site/multi_site/subscriber/subscriber_replication_status/instance_latest_replication_epochtime_secs, type=com.google.gerrit.metrics.dropwizard.CallbackMetricImpl`
-
-* Subscriber replication status (latest replication Epoch time in seconds) per project
-
-`metric=plugins/multi-site/multi_site/subscriber/subscriber_replication_status/latest_replication_epochtime_secs_<projectName>, type=com.google.gerrit.metrics.dropwizard.CallbackMetricImpl`
+`metric=site/multi_site/subscriber/subscriber_replication_status/ms_behind_for_<projectName>, type=com.google.gerrit.metrics.dropwizard.CallbackMetricImpl`
