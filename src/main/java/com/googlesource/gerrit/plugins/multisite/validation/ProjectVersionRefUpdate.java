@@ -18,29 +18,30 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
 
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
+import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
+import com.google.common.primitives.Ints;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.gerrit.server.notedb.IntBlob;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectIdRef;
-import org.eclipse.jgit.lib.ObjectInserter;
-import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.RefUpdate;
-import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
 
+@Singleton
 public class ProjectVersionRefUpdate implements EventListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   public static final String MULTI_SITE_VERSIONING_REF = "refs/multi-site/version";
@@ -191,6 +192,56 @@ public class ProjectVersionRefUpdate implements EventListener {
               refDbSystemError.getMessage());
       logger.atSevere().withCause(refDbSystemError).log(message);
       throw new SharedProjectVersionUpdateException(message);
+    }
+  }
+
+  public Optional<Long> getProjectLocalVersion(String projectName) {
+    try (Repository repository =
+        gitRepositoryManager.openRepository(Project.NameKey.parse(projectName))) {
+      Optional<IntBlob> blob = IntBlob.parse(repository, MULTI_SITE_VERSIONING_REF);
+      if (blob.isPresent()) {
+        Long repoVersion = Integer.toUnsignedLong(blob.get().value());
+        logger.atInfo().log("Local project '%s' has version %d", projectName, repoVersion);
+        return Optional.of(repoVersion);
+      }
+    } catch (IOException e) {
+      logger.atSevere().withCause(e).log("Cannot read local project '%s' version", projectName);
+    }
+    return Optional.empty();
+  }
+
+  public Optional<Long> getProjectRemoteVersion(String projectName) {
+    Optional<ObjectId> remoteObjectId =
+        sharedRefDb.get(
+            Project.NameKey.parse(projectName), MULTI_SITE_VERSIONING_REF, ObjectId.class);
+    if (remoteObjectId.isPresent()) {
+      return getLongFromObjectId(projectName, remoteObjectId.get());
+    } else {
+      logger.atSevere().log("Didn't find remote version for %s", projectName);
+      return Optional.empty();
+    }
+  }
+
+  private Optional<Long> getLongFromObjectId(String projectName, ObjectId objectId) {
+    try (Repository repository =
+        gitRepositoryManager.openRepository(Project.NameKey.parse(projectName))) {
+      ObjectReader or = repository.newObjectReader();
+      ObjectLoader ol = or.open(objectId, OBJ_BLOB);
+      if (ol.getType() != OBJ_BLOB) {
+        // In theory this should be thrown by open but not all implementations may do it properly
+        // (certainly InMemoryRepository doesn't).
+        logger.atSevere().log("Incorrect object type loaded for objectId %s", objectId.toString());
+        return Optional.empty();
+      }
+      String str = CharMatcher.whitespace().trimFrom(new String(ol.getCachedBytes(), UTF_8));
+      Integer value = Ints.tryParse(str);
+      logger.atInfo().log(
+          "Found remote version for project %s, value: %s - %d",
+          projectName, objectId.toString(), value);
+      return Optional.of(Integer.toUnsignedLong(value));
+    } catch (IOException e) {
+      logger.atSevere().withCause(e).log("Cannot parse objectId %s", objectId.toString());
+      return Optional.empty();
     }
   }
 
