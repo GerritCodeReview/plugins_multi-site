@@ -21,6 +21,8 @@ import com.google.gerrit.reviewdb.client.Project;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 
+import java.util.Optional;
+
 public class NoopSharedRefDatabase implements GlobalRefDatabase {
 
   @Override
@@ -32,6 +34,11 @@ public class NoopSharedRefDatabase implements GlobalRefDatabase {
   public boolean compareAndPut(Project.NameKey project, Ref currRef, ObjectId newRefValue)
       throws GlobalRefDbSystemError {
     return true;
+  }
+
+  @Override
+  public <T> boolean compareAndPut(Project.NameKey project, String refName, T currValue, T newValue) throws GlobalRefDbSystemError {
+    return false;
   }
 
   @Override
@@ -47,4 +54,9 @@ public class NoopSharedRefDatabase implements GlobalRefDatabase {
 
   @Override
   public void remove(Project.NameKey project) throws GlobalRefDbSystemError {}
+
+  @Override
+  public <T> Optional <T> get(Project.NameKey project, String refName, Class <T> clazz) throws GlobalRefDbSystemError {
+    return Optional.empty();
+  }
 }

@@ -18,29 +18,32 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
 
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
+import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
+import com.google.common.primitives.Ints;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.gerrit.server.notedb.IntBlob;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Set;
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectIdRef;
-import org.eclipse.jgit.lib.ObjectInserter;
-import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.RefUpdate;
-import org.eclipse.jgit.lib.Repository;
+
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
+import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
 
+@Singleton
 public class ProjectVersionRefUpdate implements EventListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   public static final String MULTI_SITE_VERSIONING_REF = "refs/multi-site/version";
@@ -130,7 +133,7 @@ public class ProjectVersionRefUpdate implements EventListener {
     return newId;
   }
 
-  private Ref getLocalProjectVersionRef(Project.NameKey projectNameKey)
+  public Ref getLocalProjectVersionRef(Project.NameKey projectNameKey)
       throws LocalProjectVersionUpdateException {
     try (Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
       Ref ref = repository.findRef(MULTI_SITE_VERSIONING_REF);
@@ -143,7 +146,7 @@ public class ProjectVersionRefUpdate implements EventListener {
     }
   }
 
-  private Long getLastRefUpdatedTimestamp(Project.NameKey projectNameKey, String refName)
+  public Long getLastRefUpdatedTimestamp(Project.NameKey projectNameKey, String refName)
       throws LocalProjectVersionUpdateException {
     logger.atFine().log(
         String.format(
@@ -191,6 +194,49 @@ public class ProjectVersionRefUpdate implements EventListener {
               refDbSystemError.getMessage());
       logger.atSevere().withCause(refDbSystemError).log(message);
       throw new SharedProjectVersionUpdateException(message);
+    }
+  }
+
+  public Long getRepositoryLocalVersion(String projectName) {
+    try (Repository repository = gitRepositoryManager.openRepository(Project.NameKey.parse(projectName))) {
+      Optional <IntBlob> blob = IntBlob.parse(repository, MULTI_SITE_VERSIONING_REF);
+      Long repoVersion = Integer.toUnsignedLong(blob.get().value());
+      logger.atSevere().log("Repository version %d ", repoVersion);
+      return repoVersion;
+    } catch (Exception e) {
+      logger.atSevere().withCause(e).log("Error!!!!");
+      return 0L;
+    }
+  }
+
+  public Long getRepositoryRemoteVersion(String projectName) {
+    Optional<ObjectId> remoteObjectId = sharedRefDb.get(Project.NameKey.parse(projectName), MULTI_SITE_VERSIONING_REF, ObjectId.class);
+    if (remoteObjectId.isPresent()) {
+      Long remoteVersion = getIntFromObjectId(projectName,remoteObjectId.get());
+      logger.atSevere().log("Found remote value for %s, value: %s - %d", projectName, remoteObjectId.get(), remoteVersion);
+      return remoteVersion + 5L;
+    }
+    else {
+      logger.atSevere().log("Didn't find remote version for %s", projectName);
+      return 0L;
+    }
+  }
+
+  private Long getIntFromObjectId(String projectName, ObjectId objectId) {
+    try (Repository repository = gitRepositoryManager.openRepository(Project.NameKey.parse(projectName))) {
+      ObjectReader or = repository.newObjectReader();
+      ObjectLoader ol = or.open(objectId ,OBJ_BLOB);
+      if (ol.getType() != OBJ_BLOB) {
+        // In theory this should be thrown by open but not all implementations may do it properly
+        // (certainly InMemoryRepository doesn't).
+        throw new IncorrectObjectTypeException(objectId, OBJ_BLOB);
+      }
+      String str = CharMatcher.whitespace().trimFrom(new String(ol.getCachedBytes(), UTF_8));
+      Integer value = Ints.tryParse(str);
+      return Integer.toUnsignedLong(value);
+    } catch (Exception e) {
+      logger.atSevere().log("Cannot parse objecID %s", objectId.toString());
+      return 0L;
     }
   }
 
