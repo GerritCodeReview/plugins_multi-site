@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.validation;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -31,6 +32,8 @@ import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
 import com.googlesource.gerrit.plugins.replication.ReplicationState;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
+
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
@@ -86,7 +89,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
     new ProjectVersionRefUpdate(repoManager, sharedRefDb).onEvent(refUpdatedEvent);
 
-    Ref ref = repo.getRepository().findRef(ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF);
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
 
     verify(sharedRefDb, atMost(1))
         .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
@@ -107,7 +110,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
     new ProjectVersionRefUpdate(repoManager, sharedRefDb).onEvent(refUpdatedEvent);
 
-    Ref ref = repo.getRepository().findRef(ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF);
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
     assertThat(ref).isNull();
   }
 
@@ -120,7 +123,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
     new ProjectVersionRefUpdate(repoManager, sharedRefDb).onEvent(refUpdatedEvent);
 
-    Ref ref = repo.getRepository().findRef(ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF);
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
     assertThat(ref).isNull();
   }
 
@@ -137,7 +140,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
     new ProjectVersionRefUpdate(repoManager, sharedRefDb).onEvent(refReplicatedEvent);
 
-    Ref ref = repo.getRepository().findRef(ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF);
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
     assertThat(ref).isNotNull();
 
     verify(sharedRefDb, never())
@@ -163,7 +166,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
     new ProjectVersionRefUpdate(repoManager, sharedRefDb).onEvent(refReplicatedEvent);
 
-    Ref ref = repo.getRepository().findRef(ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF);
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
     assertThat(ref).isNull();
   }
 
@@ -181,7 +184,42 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
     new ProjectVersionRefUpdate(repoManager, sharedRefDb).onEvent(refReplicatedEvent);
 
-    Ref ref = repo.getRepository().findRef(ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF);
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
     assertThat(ref).isNull();
+  }
+
+  @Test
+  public void getRemoteProjectVersionShouldReturnCorrectValue() throws IOException {
+    updateLocalVersion();
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
+    when(sharedRefDb.get(A_TEST_PROJECT_NAME_KEY, MULTI_SITE_VERSIONING_REF, ObjectId.class)).thenReturn(Optional.of(ref.getObjectId()));
+
+    Optional<Long> version = new ProjectVersionRefUpdate(repoManager, sharedRefDb).getProjectRemoteVersion(A_TEST_PROJECT_NAME);
+
+    assertThat(version.isPresent()).isTrue();
+    assertThat(version.get()).isEqualTo(masterCommit.getCommitTime());
+  }
+
+  @Test
+  public void getLocalProjectVersionShouldReturnCorrectValue() throws IOException {
+    updateLocalVersion();
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
+
+    Optional<Long> version = new ProjectVersionRefUpdate(repoManager, sharedRefDb).getProjectLocalVersion(A_TEST_PROJECT_NAME);
+
+    assertThat(version.isPresent()).isTrue();
+    assertThat(version.get()).isEqualTo(masterCommit.getCommitTime());
+  }
+
+  private void updateLocalVersion() {
+    Context.setForwardedEvent(true);
+    RefReplicatedEvent refReplicatedEvent =
+            new RefReplicatedEvent(
+                    A_TEST_PROJECT_NAME,
+                    A_TEST_REF_NAME,
+                    "targetNode",
+                    ReplicationState.RefPushResult.SUCCEEDED,
+                    RemoteRefUpdate.Status.OK);
+    new ProjectVersionRefUpdate(repoManager, sharedRefDb).onEvent(refReplicatedEvent);
   }
 }
