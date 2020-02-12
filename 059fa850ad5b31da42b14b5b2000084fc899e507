@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0eba13f2_809eb333",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefDatabaseWrapper.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-12T15:51:29Z",
+      "side": 1,
+      "message": "Since this is not used in this change I would leave the implementation of the method for a follow up change.",
+      "range": {
+        "startLine": 62,
+        "startChar": 1,
+        "endLine": 67,
+        "endChar": 0
+      },
+      "revId": "059fa850ad5b31da42b14b5b2000084fc899e507",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
