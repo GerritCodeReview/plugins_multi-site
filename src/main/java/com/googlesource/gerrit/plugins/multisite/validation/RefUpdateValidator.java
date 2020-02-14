@@ -86,7 +86,8 @@ public class RefUpdateValidator {
   public RefUpdate.Result executeRefUpdate(
       RefUpdate refUpdate, NoParameterFunction<RefUpdate.Result> refUpdateFunction)
       throws IOException {
-    if (refEnforcement.getPolicy(projectName) == EnforcePolicy.IGNORED) {
+    if (isProjectVersionUpdate(refUpdate.getName())
+        || refEnforcement.getPolicy(projectName) == EnforcePolicy.IGNORED) {
       return refUpdateFunction.invoke();
     }
 
@@ -103,6 +104,13 @@ public class RefUpdateValidator {
       }
     }
     return null;
+  }
+
+  private Boolean isProjectVersionUpdate(String refName) {
+    Boolean isProjectVersionUpdate =
+        refName.equals(ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF);
+    logger.atFine().log("Is project version update? " + isProjectVersionUpdate);
+    return isProjectVersionUpdate;
   }
 
   private <T extends Throwable> void softFailBasedOnEnforcement(T e, EnforcePolicy policy)
@@ -255,7 +263,9 @@ public class RefUpdateValidator {
 
     @Override
     public void close() {
-      elements.values().stream()
+      elements
+          .values()
+          .stream()
           .forEach(
               closeable -> {
                 try {
