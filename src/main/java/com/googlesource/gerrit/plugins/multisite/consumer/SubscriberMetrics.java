@@ -22,6 +22,7 @@ import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.Field;
 import com.google.gerrit.metrics.MetricMaker;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -30,6 +31,7 @@ import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import org.eclipse.jgit.transport.RemoteRefUpdate;
 
 @Singleton
 public class SubscriberMetrics {
@@ -87,6 +89,14 @@ public class SubscriberMetrics {
     Event event = eventMessage.getEvent();
     if (event instanceof RefReplicatedEvent) {
       RefReplicatedEvent refReplicatedEvent = (RefReplicatedEvent) event;
+      Project.NameKey projectNameKey = refReplicatedEvent.getProjectNameKey();
+      if (!refReplicatedEvent.refStatus.equals(RemoteRefUpdate.Status.OK)) {
+        logger.atFine().log(
+            String.format(
+                "Skipping metric update for '%s'. RefReplicatedEvent failed with %s",
+                projectNameKey.get(), refReplicatedEvent.refStatus));
+        return;
+      }
       String projectName = refReplicatedEvent.getProjectNameKey().get();
       logger.atFine().log("Updating replication lag for %s", projectName);
       Optional<Long> remoteVersion = projectVersionRefUpdate.getProjectRemoteVersion(projectName);
