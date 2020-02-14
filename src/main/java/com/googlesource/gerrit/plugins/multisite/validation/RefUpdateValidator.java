@@ -146,6 +146,11 @@ public class RefUpdateValidator {
     try {
       succeeded = sharedRefDb.compareAndPut(projectName, refPair.compareRef, refPair.putValue);
     } catch (IOException e) {
+      logger.atWarning().withCause(e).log(
+          "Not able to persist the data in Zookeeper for project '{}' and ref '{}', message: {}",
+          projectName,
+          refPair.getName(),
+          e.getMessage());
       throw new SharedDbSplitBrainException(errorMessage, e);
     }
 
