@@ -161,6 +161,11 @@ public class RefUpdateValidator {
           sharedRefDb.compareAndPut(
               new Project.NameKey(projectName), refPair.compareRef, refPair.putValue);
     } catch (GlobalRefDbSystemError e) {
+      logger.atWarning().withCause(e).log(
+          "Not able to persist the data in Zookeeper for project '{}' and ref '{}', message: {}",
+          projectName,
+          refPair.getName(),
+          e.getMessage());
       throw new SharedDbSplitBrainException(errorMessage, e);
     }
 
@@ -265,9 +270,7 @@ public class RefUpdateValidator {
 
     @Override
     public void close() {
-      elements
-          .values()
-          .stream()
+      elements.values().stream()
           .forEach(
               closeable -> {
                 try {
