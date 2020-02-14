@@ -29,7 +29,7 @@ public interface RefFixture {
   static final String ALLOWED_NAME_CHARS =
       ALLOWED_CHARS + ALLOWED_CHARS.toUpperCase() + ALLOWED_DIGITS;
   static final String A_TEST_PROJECT_NAME = "A_TEST_PROJECT_NAME";
-  static final Project.NameKey A_TEST_PROJECT_NAME_KEY = Project.nameKey(A_TEST_PROJECT_NAME);
+  static final Project.NameKey A_TEST_PROJECT_NAME_KEY = Project.NameKey.parse(A_TEST_PROJECT_NAME);
   static final ObjectId AN_OBJECT_ID_1 = new ObjectId(1, 2, 3, 4, 5);
   static final ObjectId AN_OBJECT_ID_2 = new ObjectId(1, 2, 3, 4, 6);
   static final ObjectId AN_OBJECT_ID_3 = new ObjectId(1, 2, 3, 4, 7);
