@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
-import com.google.common.base.Strings;
+import com.google.common.base.MoreObjects;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.AccountGroup;
 import com.google.gerrit.server.events.EventGson;
@@ -31,31 +31,43 @@ public final class GsonParser {
     this.gson = gson;
   }
 
-  public Object fromJson(String cacheName, String jsonString) {
-    JsonElement json = gson.fromJson(Strings.nullToEmpty(jsonString), JsonElement.class);
+  @SuppressWarnings("cast")
+  public Object fromJson(String cacheName, Object json) {
     Object key;
     // Need to add a case for 'adv_bases'
     switch (cacheName) {
       case Constants.ACCOUNTS:
-        key = Account.id(json.getAsJsonObject().get("id").getAsInt());
+        key = Account.id(jsonElement(json).getAsJsonObject().get("id").getAsInt());
         break;
       case Constants.GROUPS:
-        key = AccountGroup.id(json.getAsJsonObject().get("id").getAsInt());
+        key = AccountGroup.id(jsonElement(json).getAsJsonObject().get("id").getAsInt());
         break;
       case Constants.GROUPS_BYINCLUDE:
       case Constants.GROUPS_MEMBERS:
-        key = AccountGroup.uuid(json.getAsJsonObject().get("uuid").getAsString());
+        key = AccountGroup.uuid(jsonElement(json).getAsJsonObject().get("uuid").getAsString());
         break;
       case Constants.PROJECT_LIST:
-        key = gson.fromJson(json, Object.class);
+        key = gson.fromJson(nullToEmpty(json).toString(), Object.class);
         break;
       default:
-        try {
-          key = gson.fromJson(json, String.class);
-        } catch (Exception e) {
-          key = gson.fromJson(json, Object.class);
+        if (json instanceof String) {
+          key = (String) json;
+        } else {
+          try {
+            key = gson.fromJson(nullToEmpty(json).toString().trim(), String.class);
+          } catch (Exception e) {
+            key = gson.fromJson(nullToEmpty(json).toString(), Object.class);
+          }
         }
     }
     return key;
+  }
+
+  private JsonElement jsonElement(Object json) {
+    return gson.fromJson(nullToEmpty(json), JsonElement.class);
+  }
+
+  private static String nullToEmpty(Object value) {
+    return MoreObjects.firstNonNull(value, "").toString().trim();
   }
 }

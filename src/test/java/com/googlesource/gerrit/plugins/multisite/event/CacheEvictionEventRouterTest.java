@@ -46,4 +46,13 @@ public class CacheEvictionEventRouterTest {
 
     verify(cacheEvictionHandler).evict(CacheEntry.from(event.cacheName, event.key));
   }
+
+  @Test
+  public void routerShouldSendEventsToTheAppropriateHandler_ProjectCacheEvictionWithSlash()
+      throws Exception {
+    final CacheEvictionEvent event = new CacheEvictionEvent("cache", "some/project");
+    router.route(event);
+
+    verify(cacheEvictionHandler).evict(CacheEntry.from(event.cacheName, event.key));
+  }
 }
