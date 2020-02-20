@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ee98956d_1779c153",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-20T10:48:20Z",
+      "side": 1,
+      "message": "This is bad, it would cause a metrics explosion. We have already a *huge* payload on the metrics (128k) and 924 metrics. With an additional 44k metrics we may ramp up to a 6MBytes payload which is really unbearable.\n\nWhy can\u0027t we use a single metrics and just have labels inside?",
+      "range": {
+        "startLine": 110,
+        "startChar": 24,
+        "endLine": 110,
+        "endChar": 71
+      },
+      "revId": "806db1dc090faa220cff96afe2c740e740abf78a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
