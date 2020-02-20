@@ -32,7 +32,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
+import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
@@ -46,7 +46,6 @@ import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
-import org.eclipse.jgit.transport.RemoteRefUpdate;
 
 @Singleton
 public class ProjectVersionRefUpdate implements EventListener {
@@ -76,27 +75,21 @@ public class ProjectVersionRefUpdate implements EventListener {
       updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
     }
 
-    // Consumers of the Event use RefReplicatedEvent to trigger the version update
-    if (Context.isForwardedEvent() && event instanceof RefReplicatedEvent) {
-      updateConsumerProjectVersion((RefReplicatedEvent) event);
+    // Consumers of the Event use RefReplicationDoneEvent to trigger the version update
+    if (Context.isForwardedEvent() && event instanceof RefReplicationDoneEvent) {
+      updateConsumerProjectVersion((RefReplicationDoneEvent) event);
     }
   }
 
-  private void updateConsumerProjectVersion(RefReplicatedEvent refReplicatedEvent) {
-    Project.NameKey projectNameKey = refReplicatedEvent.getProjectNameKey();
-    if (!refReplicatedEvent.refStatus.equals(RemoteRefUpdate.Status.OK)) {
-      logger.atFine().log(
-          String.format(
-              "Skipping version update for %s. RefReplicatedEvent failed with %s",
-              projectNameKey.get(), refReplicatedEvent.refStatus));
-      return;
-    }
-    if (refReplicatedEvent.getRefName().startsWith(SEQUENCE_REF_PREFIX)) {
+  private void updateConsumerProjectVersion(RefReplicationDoneEvent refReplicationDoneEvent) {
+    Project.NameKey projectNameKey = refReplicationDoneEvent.getProjectNameKey();
+
+    if (refReplicationDoneEvent.getRefName().startsWith(SEQUENCE_REF_PREFIX)) {
       logger.atFine().log("Found Sequence ref, skipping update for " + projectNameKey.get());
       return;
     }
     try {
-      updateLocalProjectVersion(projectNameKey, refReplicatedEvent.getRefName());
+      updateLocalProjectVersion(projectNameKey, refReplicationDoneEvent.getRefName());
     } catch (LocalProjectVersionUpdateException e) {
       logger.atSevere().withCause(e).log(
           "Issue encountered when updating version for project " + projectNameKey);
@@ -112,10 +105,17 @@ public class ProjectVersionRefUpdate implements EventListener {
     try {
       Project.NameKey projectNameKey = refUpdatedEvent.getProjectNameKey();
       Ref currentProjectVersionRef = getLocalProjectVersionRef(refUpdatedEvent.getProjectNameKey());
-      ObjectId newProjectVersionObjectId =
+      Optional<ObjectId> newProjectVersionObjectId =
           updateLocalProjectVersion(projectNameKey, refUpdatedEvent.getRefName());
-      updateSharedProjectVersion(
-          projectNameKey, currentProjectVersionRef, newProjectVersionObjectId);
+
+      if (newProjectVersionObjectId.isPresent()) {
+        updateSharedProjectVersion(
+            projectNameKey, currentProjectVersionRef, newProjectVersionObjectId.get());
+      } else {
+        logger.atWarning().log(
+            "Ref %s not found on projet %s: skipping project version update",
+            refUpdatedEvent.getRefName(), projectNameKey);
+      }
     } catch (LocalProjectVersionUpdateException | SharedProjectVersionUpdateException e) {
       logger.atSevere().withCause(e).log(
           "Issue encountered when updating version for project "
@@ -151,16 +151,20 @@ public class ProjectVersionRefUpdate implements EventListener {
     }
   }
 
-  private Long getLastRefUpdatedTimestamp(Project.NameKey projectNameKey, String refName)
+  private Optional<Long> getLastRefUpdatedTimestamp(Project.NameKey projectNameKey, String refName)
       throws LocalProjectVersionUpdateException {
     logger.atFine().log(
         String.format(
             "Getting last ref updated time for project %s, ref %s", projectNameKey.get(), refName));
     try (Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
       Ref ref = repository.findRef(refName);
+      if (ref == null) {
+        logger.atWarning().log("Unable to find ref " + refName + " in project " + projectNameKey);
+        return Optional.empty();
+      }
       try (RevWalk walk = new RevWalk(repository)) {
         RevCommit commit = walk.parseCommit(ref.getObjectId());
-        return Integer.toUnsignedLong(commit.getCommitTime());
+        return Optional.of(Integer.toUnsignedLong(commit.getCommitTime()));
       }
     } catch (IOException ioe) {
       String message =
@@ -252,22 +256,26 @@ public class ProjectVersionRefUpdate implements EventListener {
     }
   }
 
-  private ObjectId updateLocalProjectVersion(Project.NameKey projectNameKey, String refName)
-      throws LocalProjectVersionUpdateException {
-    Long lastRefUpdatedTimestamp = getLastRefUpdatedTimestamp(projectNameKey, refName);
+  private Optional<ObjectId> updateLocalProjectVersion(
+      Project.NameKey projectNameKey, String refName) throws LocalProjectVersionUpdateException {
+    Optional<Long> lastRefUpdatedTimestamp = getLastRefUpdatedTimestamp(projectNameKey, refName);
+    if (!lastRefUpdatedTimestamp.isPresent()) {
+      return Optional.empty();
+    }
+
     logger.atFine().log("Updating local version for project " + projectNameKey.get());
     try (Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
-      RefUpdate refUpdate = getProjectVersionRefUpdate(repository, lastRefUpdatedTimestamp);
+      RefUpdate refUpdate = getProjectVersionRefUpdate(repository, lastRefUpdatedTimestamp.get());
       RefUpdate.Result result = refUpdate.update();
       if (!isSuccessful(result)) {
         String message =
             String.format(
                 "RefUpdate failed with result %s for: project=%s, version=%d",
-                result.name(), projectNameKey.get(), lastRefUpdatedTimestamp);
+                result.name(), projectNameKey.get(), lastRefUpdatedTimestamp.get());
         logger.atSevere().log(message);
         throw new LocalProjectVersionUpdateException(message);
       }
-      return refUpdate.getNewObjectId();
+      return Optional.of(refUpdate.getNewObjectId());
     } catch (IOException e) {
       String message = "Cannot create versioning command for " + projectNameKey.get();
       logger.atSevere().withCause(e).log(message);

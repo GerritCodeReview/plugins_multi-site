@@ -29,6 +29,7 @@ import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
+import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
 import com.googlesource.gerrit.plugins.replication.ReplicationState;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -126,15 +127,10 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   }
 
   @Test
-  public void consumerShouldUpdateProjectVersionUponRefReplicatedEvent() throws IOException {
+  public void consumerShouldUpdateProjectVersionUponRefReplicationDoneEvent() throws IOException {
     Context.setForwardedEvent(true);
-    RefReplicatedEvent refReplicatedEvent =
-        new RefReplicatedEvent(
-            A_TEST_PROJECT_NAME,
-            A_TEST_REF_NAME,
-            "targetNode",
-            ReplicationState.RefPushResult.SUCCEEDED,
-            RemoteRefUpdate.Status.OK);
+    RefReplicationDoneEvent refReplicatedEvent =
+        new RefReplicationDoneEvent(A_TEST_PROJECT_NAME, A_TEST_REF_NAME, 1);
 
     new ProjectVersionRefUpdate(repoManager, sharedRefDb).onEvent(refReplicatedEvent);
 
@@ -205,6 +201,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   public void getLocalProjectVersionShouldReturnCorrectValue() throws IOException {
     updateLocalVersion();
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
+    assertThat(ref).isNotNull();
 
     Optional<Long> version =
         new ProjectVersionRefUpdate(repoManager, sharedRefDb)
@@ -216,13 +213,8 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
   private void updateLocalVersion() {
     Context.setForwardedEvent(true);
-    RefReplicatedEvent refReplicatedEvent =
-        new RefReplicatedEvent(
-            A_TEST_PROJECT_NAME,
-            A_TEST_REF_NAME,
-            "targetNode",
-            ReplicationState.RefPushResult.SUCCEEDED,
-            RemoteRefUpdate.Status.OK);
+    RefReplicationDoneEvent refReplicatedEvent =
+        new RefReplicationDoneEvent(A_TEST_PROJECT_NAME, A_TEST_REF_NAME, 1);
     new ProjectVersionRefUpdate(repoManager, sharedRefDb).onEvent(refReplicatedEvent);
   }
 }
