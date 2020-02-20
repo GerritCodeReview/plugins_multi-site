@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9fcba646_6701ba33",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-02-20T23:38:09Z",
+      "side": 0,
+      "message": "Did you remove this because now the RefReplicationDone event cannot be in a failed status?\nAs in, RefReplicationDone is always successful?",
+      "range": {
+        "startLine": 87,
+        "startChar": 1,
+        "endLine": 93,
+        "endChar": 5
+      },
+      "revId": "9cbf1b1788dbcd2c70544a69d00ae8634054b113",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
