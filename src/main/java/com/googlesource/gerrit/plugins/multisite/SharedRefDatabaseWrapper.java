@@ -21,6 +21,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.inject.Inject;
+import java.util.Optional;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 
@@ -59,6 +60,12 @@ public class SharedRefDatabaseWrapper implements GlobalRefDatabase {
   }
 
   @Override
+  public <T> boolean compareAndPut(Project.NameKey project, String refName, T currValue, T newValue)
+      throws GlobalRefDbSystemError {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public AutoCloseable lockRef(Project.NameKey project, String refName)
       throws GlobalRefDbLockException {
     AutoCloseable locker = sharedRefDb().lockRef(project, refName);
@@ -75,6 +82,12 @@ public class SharedRefDatabaseWrapper implements GlobalRefDatabase {
   public void remove(Project.NameKey project) throws GlobalRefDbSystemError {
     sharedRefDb().remove(project);
     sharedRefLogger.logProjectDelete(project.get());
+  }
+
+  @Override
+  public <T> Optional<T> get(Project.NameKey nameKey, String s, Class<T> clazz)
+      throws GlobalRefDbSystemError {
+    return sharedRefDb().get(nameKey, s, clazz);
   }
 
   private GlobalRefDatabase sharedRefDb() {
