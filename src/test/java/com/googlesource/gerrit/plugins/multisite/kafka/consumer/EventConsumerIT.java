@@ -19,7 +19,6 @@ import static java.util.stream.Collectors.toSet;
 
 import com.google.gerrit.acceptance.AbstractDaemonTest;
 import com.google.gerrit.acceptance.GerritConfig;
-import com.google.gerrit.acceptance.LogThreshold;
 import com.google.gerrit.acceptance.NoHttpd;
 import com.google.gerrit.acceptance.UseLocalDisk;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
@@ -73,7 +72,6 @@ import org.junit.Test;
 import org.testcontainers.containers.KafkaContainer;
 
 @NoHttpd
-@LogThreshold(level = "INFO")
 @UseLocalDisk
 public class EventConsumerIT extends AbstractDaemonTest {
   public static final String GERRIT_CONFIG_KEY = "gerrit.installModule";

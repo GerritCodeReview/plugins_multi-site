@@ -75,7 +75,11 @@ public final class GsonParser {
         break;
       case Constants.PROJECT_LIST:
       default:
-        json = gson.toJson(key);
+        if (key instanceof String) {
+          json = (String) key;
+        } else {
+          json = gson.toJson(key);
+        }
     }
     return json;
   }
