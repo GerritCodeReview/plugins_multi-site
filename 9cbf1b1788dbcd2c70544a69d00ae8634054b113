@@ -22,6 +22,30 @@
       "revId": "9cbf1b1788dbcd2c70544a69d00ae8634054b113",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1baea9b_25c4653a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-20T23:43:03Z",
+      "side": 0,
+      "message": "Yep, done \u003d success and thus you don\u0027t have the status.",
+      "parentUuid": "9fcba646_6701ba33",
+      "range": {
+        "startLine": 87,
+        "startChar": 1,
+        "endLine": 93,
+        "endChar": 5
+      },
+      "revId": "9cbf1b1788dbcd2c70544a69d00ae8634054b113",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
