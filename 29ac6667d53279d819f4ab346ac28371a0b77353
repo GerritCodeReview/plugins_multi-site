@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d0655709_dc65321a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-20T22:55:56Z",
+      "side": 1,
+      "message": "I believe we should keep on storing in memory the replication lag per project, and then the global one is the max of all projects, correct?\n\nWhen updating the individual replication lag of a project, we update it unconditionally.",
+      "range": {
+        "startLine": 92,
+        "startChar": 36,
+        "endLine": 92,
+        "endChar": 70
+      },
+      "revId": "29ac6667d53279d819f4ab346ac28371a0b77353",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
