@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
-import com.google.common.base.Strings;
+import com.google.common.base.MoreObjects;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gson.Gson;
@@ -25,29 +25,34 @@ public final class GsonParser {
 
   private GsonParser() {}
 
-  public static Object fromJson(String cacheName, String json) {
+  @SuppressWarnings("cast")
+  public static Object fromJson(String cacheName, Object json) {
     Gson gson = new GsonBuilder().create();
     Object key;
     // Need to add a case for 'adv_bases'
     switch (cacheName) {
       case Constants.ACCOUNTS:
-        key = gson.fromJson(Strings.nullToEmpty(json).trim(), Account.Id.class);
+        key = gson.fromJson(nullToEmpty(json).toString().trim(), Account.Id.class);
         break;
       case Constants.GROUPS:
-        key = gson.fromJson(Strings.nullToEmpty(json).trim(), AccountGroup.Id.class);
+        key = gson.fromJson(nullToEmpty(json).toString().trim(), AccountGroup.Id.class);
         break;
       case Constants.GROUPS_BYINCLUDE:
       case Constants.GROUPS_MEMBERS:
-        key = gson.fromJson(Strings.nullToEmpty(json).trim(), AccountGroup.UUID.class);
+        key = gson.fromJson(nullToEmpty(json).toString().trim(), AccountGroup.UUID.class);
         break;
       case Constants.PROJECT_LIST:
-        key = gson.fromJson(Strings.nullToEmpty(json), Object.class);
+        key = gson.fromJson(nullToEmpty(json).toString(), Object.class);
         break;
       default:
-        try {
-          key = gson.fromJson(Strings.nullToEmpty(json).trim(), String.class);
-        } catch (Exception e) {
-          key = gson.fromJson(Strings.nullToEmpty(json), Object.class);
+        if (json instanceof String) {
+          key = (String) json;
+        } else {
+          try {
+            key = gson.fromJson(nullToEmpty(json).toString().trim(), String.class);
+          } catch (Exception e) {
+            key = gson.fromJson(nullToEmpty(json).toString(), Object.class);
+          }
         }
     }
     return key;
@@ -70,8 +75,16 @@ public final class GsonParser {
         break;
       case Constants.PROJECT_LIST:
       default:
-        json = gson.toJson(key);
+        if (key instanceof String) {
+          json = (String) key;
+        } else {
+          json = gson.toJson(key);
+        }
     }
     return json;
+  }
+
+  private static Object nullToEmpty(Object value) {
+    return MoreObjects.firstNonNull(value, "");
   }
 }
