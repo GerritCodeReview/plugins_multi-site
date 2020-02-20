@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b3db0c99_048e9c9d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-02-20T19:51:41Z",
+      "side": 1,
+      "message": "It\u0027s unfortunate that it wasn\u0027t discovered earlier: [1]. multi-site plugin is available on Zoekt: [2] so not sure, why it wasn\u0027t discovered?\n\n[1] https://cs.bazel.build/search?q\u003dr%3Agerrit+LogThreshold\u0026num\u003d50\n[2] https://cs.bazel.build/search?q\u003dr%3Agerrit+multi-site\u0026num\u003d50",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 42
+      },
+      "revId": "54c3c81e58fcb94367988be315db8998baf1610b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
