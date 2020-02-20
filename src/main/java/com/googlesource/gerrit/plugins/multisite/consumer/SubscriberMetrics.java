@@ -101,7 +101,7 @@ public class SubscriberMetrics extends MultiSiteMetrics {
             projectName, localVersion.isPresent(), remoteVersion.isPresent());
       }
     } else {
-      logger.atInfo().log("Not a ref-replicated-event event [%s], skipping", event.type);
+      logger.atFine().log("Not a ref-replicated-event event [%s], skipping", event.type);
     }
   }
 
