@@ -53,8 +53,7 @@ public class GsonParserTest {
   @Test
   public void stringParse() {
     String key = "key";
-    String json = gson.toJson(key);
-    assertThat(key).isEqualTo(gsonParser.fromJson(Constants.PROJECTS, json));
+    assertThat(key).isEqualTo(gsonParser.fromJson(Constants.PROJECTS, key));
   }
 
   @Test
