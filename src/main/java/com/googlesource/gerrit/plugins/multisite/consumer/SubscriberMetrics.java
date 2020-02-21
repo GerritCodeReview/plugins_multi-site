@@ -25,6 +25,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
+import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -90,9 +92,9 @@ public class SubscriberMetrics {
 
   public void updateReplicationStatusMetrics(EventMessage eventMessage) {
     Event event = eventMessage.getEvent();
-    if (event instanceof RefReplicatedEvent) {
-      RefReplicatedEvent refReplicatedEvent = (RefReplicatedEvent) event;
-      String projectName = refReplicatedEvent.getProjectNameKey().get();
+    if (event instanceof RefReplicationDoneEvent) {
+      RefReplicationDoneEvent refReplicationDoneEvent = (RefReplicationDoneEvent) event;
+      String projectName = refReplicationDoneEvent.getProjectNameKey().get();
       logger.atFine().log("Updating replication lag for %s", projectName);
       Optional<Long> remoteVersion = projectVersionRefUpdate.getProjectRemoteVersion(projectName);
       Optional<Long> localVersion = projectVersionRefUpdate.getProjectLocalVersion(projectName);
