@@ -93,20 +93,19 @@ public class SubscriberMetrics {
     if (event instanceof RefReplicationDoneEvent) {
       RefReplicationDoneEvent refReplicationDoneEvent = (RefReplicationDoneEvent) event;
       String projectName = refReplicationDoneEvent.getProjectNameKey().get();
-      logger.atFine().log("Updating replication lag for %s", projectName);
       Optional<Long> remoteVersion = projectVersionRefUpdate.getProjectRemoteVersion(projectName);
       Optional<Long> localVersion = projectVersionRefUpdate.getProjectLocalVersion(projectName);
       if (remoteVersion.isPresent() && localVersion.isPresent()) {
         long lag = remoteVersion.get() - localVersion.get();
-        logger.atFine().log("Calculated lag for project '%s' [%d]", projectName, lag);
+        logger.atFine().log(
+            "Published replication lag metric for project '%s' of %d sec(s) [local-ref=%d global-ref=%d]",
+            projectName, lag, localVersion.get(), remoteVersion.get());
         replicationStatusPerProject.put(projectName, lag);
       } else {
         logger.atFine().log(
-            "Didn't update metric for %s. Local [%b] or remote [%b] version is not defined",
-            projectName, localVersion.isPresent(), remoteVersion.isPresent());
+            "Did not publish replication lag metric for %s because the %s version is not defined",
+            projectName, localVersion.isPresent() ? "remote" : "local");
       }
-    } else {
-      logger.atFine().log("Not a ref-replicated-event event [%s], skipping", event.type);
     }
   }
 }
