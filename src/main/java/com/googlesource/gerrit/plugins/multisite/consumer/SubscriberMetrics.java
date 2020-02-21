@@ -96,7 +96,7 @@ public class SubscriberMetrics extends MultiSiteMetrics {
         replicationStatusPerProject.put(projectName, lag);
         upsertMetricsForProject(projectName);
       } else {
-        logger.atWarning().log(
+        logger.atFine().log(
             "Didn't update metric for %s. Local [%b] or remote [%b] version is not defined",
             projectName, localVersion.isPresent(), remoteVersion.isPresent());
       }
