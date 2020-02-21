@@ -14,8 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
-import com.codahale.metrics.MetricFilter;
-import com.codahale.metrics.MetricRegistry;
 import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.metrics.Counter1;
@@ -27,6 +25,8 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -37,27 +37,21 @@ public class SubscriberMetrics extends MultiSiteMetrics {
   private static final String SUBSCRIBER_SUCCESS_COUNTER = "subscriber_msg_consumer_counter";
   private static final String SUBSCRIBER_FAILURE_COUNTER =
       "subscriber_msg_consumer_failure_counter";
-  private static final String PROJECT_REPLICATION_LAG_MS_PREFIX =
-      "multi_site/subscriber/subscriber_replication_status/ms_behind_for_";
+  private static final String REPLICATION_LAG_MS =
+      "multi_site/subscriber/subscriber_replication_status/ms_behind";
 
   private final Counter1<String> subscriberSuccessCounter;
   private final Counter1<String> subscriberFailureCounter;
 
-  private MetricRegistry metricRegistry;
-  private MetricMaker metricMaker;
   public Map<String, Long> replicationStatusPerProject = new HashMap<>();
 
   private ProjectVersionRefUpdate projectVersionRefUpdate;
 
   @Inject
   public SubscriberMetrics(
-      MetricMaker metricMaker,
-      MetricRegistry metricRegistry,
-      ProjectVersionRefUpdate projectVersionRefUpdate) {
+      MetricMaker metricMaker, ProjectVersionRefUpdate projectVersionRefUpdate) {
 
     this.projectVersionRefUpdate = projectVersionRefUpdate;
-    this.metricMaker = metricMaker;
-    this.metricRegistry = metricRegistry;
     this.subscriberSuccessCounter =
         metricMaker.newCounter(
             "multi_site/subscriber/subscriber_message_consumer_counter",
@@ -72,6 +66,17 @@ public class SubscriberMetrics extends MultiSiteMetrics {
                 .setRate()
                 .setUnit("errors"),
             stringField(SUBSCRIBER_FAILURE_COUNTER, "Subscriber failed to consume messages count"));
+    metricMaker.newCallbackMetric(
+        REPLICATION_LAG_MS,
+        Long.class,
+        new Description("Replication lag (ms)").setGauge().setUnit(Description.Units.MILLISECONDS),
+        () -> {
+          Collection<Long> lags = replicationStatusPerProject.values();
+          if (lags.isEmpty()) {
+            return 0L;
+          }
+          return Collections.max(lags);
+        });
   }
 
   public void incrementSubscriberConsumedMessage() {
@@ -91,33 +96,16 @@ public class SubscriberMetrics extends MultiSiteMetrics {
       Optional<Long> remoteVersion = projectVersionRefUpdate.getProjectRemoteVersion(projectName);
       Optional<Long> localVersion = projectVersionRefUpdate.getProjectLocalVersion(projectName);
       if (remoteVersion.isPresent() && localVersion.isPresent()) {
-        Long lag = remoteVersion.get() - localVersion.get();
+        long lag = remoteVersion.get() - localVersion.get();
         logger.atFine().log("Calculated lag for project '%s' [%d]", projectName, lag);
         replicationStatusPerProject.put(projectName, lag);
-        upsertMetricsForProject(projectName);
       } else {
-        logger.atWarning().log(
+        logger.atFine().log(
             "Didn't update metric for %s. Local [%b] or remote [%b] version is not defined",
             projectName, localVersion.isPresent(), remoteVersion.isPresent());
       }
     } else {
       logger.atFine().log("Not a ref-replicated-event event [%s], skipping", event.type);
-    }
-  }
-
-  private void upsertMetricsForProject(String projectName) {
-    String metricName = PROJECT_REPLICATION_LAG_MS_PREFIX + projectName;
-    if (metricRegistry.getGauges(MetricFilter.contains(metricName)).isEmpty()) {
-      metricMaker.newCallbackMetric(
-          metricName,
-          Long.class,
-          new Description(String.format("%s replication lag (ms)", metricName))
-              .setGauge()
-              .setUnit(Description.Units.MILLISECONDS),
-          () -> replicationStatusPerProject.get(projectName));
-      logger.atFine().log("Added last replication timestamp callback metric for '%s'", projectName);
-    } else {
-      logger.atFine().log("Don't add metric since it already exists for project '%s'", projectName);
     }
   }
 }

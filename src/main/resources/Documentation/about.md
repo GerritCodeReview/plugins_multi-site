@@ -93,6 +93,6 @@ documentation.
 
 `metric=plugins/multi-site/multi_site/subscriber/subscriber_message_consumer_failure_counter/subscriber_msg_consumer_poll_failure_counter, type=com.codahale.metrics.Meter`
 
-* Subscriber replication status per project (ms behind the producer)
+* Subscriber replication status (ms behind the producer)
 
-`metric=site/multi_site/subscriber/subscriber_replication_status/ms_behind_for_<projectName>, type=com.google.gerrit.metrics.dropwizard.CallbackMetricImpl`
+`metric=site/multi_site/subscriber/subscriber_replication_status/ms_behind, type=com.google.gerrit.metrics.dropwizard.CallbackMetricImpl`
