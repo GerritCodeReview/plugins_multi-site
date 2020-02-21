@@ -70,6 +70,30 @@
       "revId": "29ac6667d53279d819f4ab346ac28371a0b77353",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "af8b8c9f_d27d5f4d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-21T10:14:04Z",
+      "side": 1,
+      "message": "Ouch...that was a silly mistake :/",
+      "parentUuid": "e128a8aa_300e64d5",
+      "range": {
+        "startLine": 92,
+        "startChar": 36,
+        "endLine": 92,
+        "endChar": 70
+      },
+      "revId": "29ac6667d53279d819f4ab346ac28371a0b77353",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
