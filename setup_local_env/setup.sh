@@ -130,10 +130,10 @@ function deploy_config_files {
 function cleanup_environment {
   echo "Killing existing HA-PROXY setup"
   kill $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}') 2> /dev/null
-  echo "Stoping kafka and zk"
+  echo "Stopping kafka and zk"
   docker-compose -f $SCRIPT_DIR/docker-compose.kafka-broker.yaml down 2> /dev/null
 
-  echo "Stoping GERRIT instances"
+  echo "Stopping GERRIT instances"
   $1/bin/gerrit.sh stop 2> /dev/null
   $2/bin/gerrit.sh stop 2> /dev/null
 
