@@ -22,6 +22,7 @@ LAST_BUILD=lastSuccessfulBuild/artifact/bazel-bin/plugins
 
 function check_application_requirements {
   type haproxy >/dev/null 2>&1 || { echo >&2 "Require haproxy but it's not installed. Aborting."; exit 1; }
+  type prometheus >/dev/null 2>&1 || { echo >&2 "Require prometheus but it's not installed. Aborting."; exit 1; }
   type java >/dev/null 2>&1 || { echo >&2 "Require java but it's not installed. Aborting."; exit 1; }
   type docker >/dev/null 2>&1 || { echo >&2 "Require docker but it's not installed. Aborting."; exit 1; }
   type docker-compose >/dev/null 2>&1 || { echo >&2 "Require docker-compose but it's not installed. Aborting."; exit 1; }
@@ -73,6 +74,7 @@ function copy_config_files {
     cat $file | envsubst | sed 's/#{name}#/${name}/g' > $CONFIG_TEST_SITE/$file_name
   done
 }
+
 function start_ha_proxy {
 
   export HA_GERRIT_CANONICAL_HOSTNAME=$GERRIT_CANONICAL_HOSTNAME
@@ -94,6 +96,16 @@ function start_ha_proxy {
   echo "THE SCRIPT LOCATION $SCRIPT_DIR"
   echo "THE HA SCRIPT_LOCATION $HA_SCRIPT_DIR"
   haproxy -f $HA_PROXY_CONFIG_DIR/haproxy.cfg &
+}
+
+function start_prometheus {
+  mkdir -p $PROMETHEUS_CONFIG_DIR
+  cat $SCRIPT_DIR/prometheus-config/prometheus.yml | envsubst > $PROMETHEUS_CONFIG_DIR/prometheus.yml
+
+  echo "Starting Prometheus..."
+  echo "THE SCRIPT LOCATION $SCRIPT_DIR"
+  echo "THE HA SCRIPT_LOCATION $PROMETHEUS_SCRIPT_DIR"
+  prometheus --config.file $PROMETHEUS_CONFIG_DIR/prometheus.yml &
 }
 
 function deploy_config_files {
@@ -130,6 +142,8 @@ function deploy_config_files {
 function cleanup_environment {
   echo "Killing existing HA-PROXY setup"
   kill $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}') 2> /dev/null
+  echo "Killing existing Prometheus setup"
+  kill $(ps -ax | grep prometheus | grep "gerrit_setup/prometheus-config" | awk '{print $1}') 2> /dev/null
   echo "Stopping kafka and zk"
   docker-compose -f $SCRIPT_DIR/docker-compose.kafka-broker.yaml down 2> /dev/null
 
@@ -298,6 +312,7 @@ LOCATION_TEST_SITE_1=$COMMON_LOCATION/instance-1
 LOCATION_TEST_SITE_2=$COMMON_LOCATION/instance-2
 HA_PROXY_CONFIG_DIR=$COMMON_LOCATION/ha-proxy-config
 HA_PROXY_CERTIFICATES_DIR="$HA_PROXY_CONFIG_DIR/certificates"
+PROMETHEUS_CONFIG_DIR=$COMMON_LOCATION/prometheus-config
 
 RELEASE_WAR_FILE_LOCATION=${RELEASE_WAR_FILE_LOCATION:-bazel-bin/release.war}
 MULTISITE_LIB_LOCATION=${MULTISITE_LIB_LOCATION:-bazel-bin/plugins/multi-site/multi-site.jar}
@@ -349,6 +364,11 @@ echo "Downloading kafka-events plugin $GERRIT_BRANCH"
   -O $DEPLOYMENT_LOCATION/kafka-events.jar || { echo >&2 "Cannot download kafka-events plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
+echo "Downloading metrics-reporter-prometheus plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-metrics-reporter-prometheus-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/metrics-reporter-prometheus/metrics-reporter-prometheus.jar \
+  -O $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar || { echo >&2 "Cannot download metrics-reporter-prometheus plugin: Check internet connection. Abort\
+ing"; exit 1; }
+
 if [ "$REPLICATION_TYPE" = "ssh" ];then
   echo "Using 'SSH' replication type"
   echo "Make sure ~/.ssh/authorized_keys and ~/.ssh/known_hosts are configured correctly"
@@ -394,6 +414,9 @@ if [ $NEW_INSTALLATION = "true" ]; then
   echo "Copy kafka events plugin"
   cp -f $DEPLOYMENT_LOCATION/kafka-events.jar $LOCATION_TEST_SITE_1/plugins/kafka-events.jar
 
+  echo "Copy metrics-reporter-prometheus plugin"
+  cp -f $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar $LOCATION_TEST_SITE_1/plugins/metrics-reporter-prometheus.jar
+
   echo "Re-indexing"
   java -jar $DEPLOYMENT_LOCATION/gerrit.war reindex -d $LOCATION_TEST_SITE_1
   # Replicating environment
@@ -432,6 +455,11 @@ if [[ $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{prin
   start_ha_proxy
 fi
 
+if [[ $(ps -ax | grep promtheus | grep "gerrit_setup/prometheus-config" | awk '{print $1}' | wc -l) -lt 1 ]];then
+  echo "Starting prometheus"
+  start_prometheus
+fi
+
 echo "==============================="
 echo "Current gerrit multi-site setup"
 echo "==============================="
@@ -445,6 +473,7 @@ echo
 echo "GERRIT HA-PROXY: $GERRIT_CANONICAL_WEB_URL"
 echo "GERRIT-1: http://$GERRIT_1_HOSTNAME:$GERRIT_1_HTTPD_PORT"
 echo "GERRIT-2: http://$GERRIT_2_HOSTNAME:$GERRIT_2_HTTPD_PORT"
+echo "Prometheus: http://localhost:9090"
 echo
 echo "Site-1: $LOCATION_TEST_SITE_1"
 echo "Site-2: $LOCATION_TEST_SITE_2"
