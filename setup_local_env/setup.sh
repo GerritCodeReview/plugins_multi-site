@@ -16,6 +16,9 @@
 
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+GERRIT_BRANCH=stable-3.0
+GERRIT_CI=https://gerrit-ci.gerritforge.com/view/Plugins-$GERRIT_BRANCH/job
+LAST_BUILD=lastSuccessfulBuild/artifact/bazel-bin/plugins
 
 function check_application_requirements {
   type haproxy >/dev/null 2>&1 || { echo >&2 "Require haproxy but it's not installed. Aborting."; exit 1; }
@@ -321,10 +324,10 @@ else
 fi
 if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
   echo "Downloading websession-broker plugin stable 3.0"
-  wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-websession-broker-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-broker/websession-broker.jar \
+  wget $GERRIT_CI/plugin-websession-broker-bazel-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
   -O $DEPLOYMENT_LOCATION/websession-broker.jar || { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
 ing"; exit 1; }
-  wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-healthcheck-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar \
+  wget $GERRIT_CI/plugin-healthcheck-bazel-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
   -O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
 ing"; exit 1; }
 else
@@ -332,7 +335,7 @@ else
 fi
 
 echo "Downloading zookeeper plugin stable 3.0"
-  wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-zookeeper-gh-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/zookeeper/zookeeper.jar \
+  wget $GERRIT_CI/plugin-zookeeper-gh-bazel-$GERRIT_BRANCH/$LAST_BUILD/zookeeper/zookeeper.jar \
   -O $DEPLOYMENT_LOCATION/zookeeper.jar || { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
@@ -342,7 +345,7 @@ echo "Downloading events-broker library stable 3.0"
 ing"; exit 1; }
 
 echo "Downloading kafka-events plugin stable 3.0"
-  wget https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.0/job/plugin-kafka-events-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/kafka-events/kafka-events.jar \
+  wget $GERRIT_CI/plugin-kafka-events-bazel-$GERRIT_BRANCH/$LAST_BUILD/kafka-events/kafka-events.jar \
   -O $DEPLOYMENT_LOCATION/kafka-events.jar || { echo >&2 "Cannot download kafka-events plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
