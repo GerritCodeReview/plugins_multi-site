@@ -24,7 +24,6 @@ import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
-import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
 import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
 
 import java.util.Collection;
