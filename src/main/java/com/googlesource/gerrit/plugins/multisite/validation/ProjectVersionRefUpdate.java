@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 import com.google.common.primitives.Ints;
 import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.reviewdb.client.RefNames;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.events.RefUpdatedEvent;
@@ -50,16 +51,16 @@ import org.eclipse.jgit.revwalk.RevWalk;
 @Singleton
 public class ProjectVersionRefUpdate implements EventListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  public static final String MULTI_SITE_VERSIONING_REF = "refs/multi-site/version";
-  public static final String SEQUENCE_REF_PREFIX = "refs/sequences/";
-  public static final String STARRED_CHANGES = "refs/starred-changes/";
-  private static final Ref NULL_PROJECT_VERSION_REF =
-      new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId());
   private static final Set<RefUpdate.Result> SUCCESSFUL_RESULTS =
       ImmutableSet.of(RefUpdate.Result.NEW, RefUpdate.Result.FORCED, RefUpdate.Result.NO_CHANGE);
 
-  protected final SharedRefDatabaseWrapper sharedRefDb;
+  public static final String MULTI_SITE_VERSIONING_REF = "refs/multi-site/version";
+  public static final Ref NULL_PROJECT_VERSION_REF =
+      new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId());
+
   private final GitRepositoryManager gitRepositoryManager;
+
+  protected final SharedRefDatabaseWrapper sharedRefDb;
 
   @Inject
   public ProjectVersionRefUpdate(
@@ -100,7 +101,8 @@ public class ProjectVersionRefUpdate implements EventListener {
   }
 
   private boolean isSpecialRefName(String refName) {
-    return refName.startsWith(SEQUENCE_REF_PREFIX) || refName.startsWith(STARRED_CHANGES);
+    return refName.startsWith(RefNames.REFS_SEQUENCES)
+        || refName.startsWith(RefNames.REFS_STARRED_CHANGES);
   }
 
   private void updateProducerProjectVersionUpdate(RefUpdatedEvent refUpdatedEvent) {
