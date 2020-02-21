@@ -17,9 +17,13 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.reviewdb.client.RefNames;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.project.ProjectConfig;
 import com.google.gerrit.testing.InMemoryRepositoryManager;
@@ -28,9 +32,7 @@ import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
-import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
 import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
-import com.googlesource.gerrit.plugins.replication.ReplicationState;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -41,7 +43,6 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectLoader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -102,11 +103,23 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   }
 
   @Test
-  public void producerShouldNotUpdateProjectVersionUponSequenceRefUpdatedEvent()
-      throws IOException {
+  public void producerShouldNotUpdateProjectVersionUponSequenceRefUpdatedEvent() throws Exception {
+    producerShouldNotUpdateProjectVersionUponMagicRefUpdatedEvent(RefNames.REFS_SEQUENCES);
+  }
+
+  @Test
+  public void producerShouldNotUpdateProjectVersionUponStarredChangesRefUpdatedEvent()
+      throws Exception {
+    producerShouldNotUpdateProjectVersionUponMagicRefUpdatedEvent(RefNames.REFS_STARRED_CHANGES);
+  }
+
+  private void producerShouldNotUpdateProjectVersionUponMagicRefUpdatedEvent(String magicRefPrefix)
+      throws Exception {
+    String magicRefName = magicRefPrefix + "/foo";
     Context.setForwardedEvent(false);
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
-    when(refUpdatedEvent.getRefName()).thenReturn("refs/sequences/changes");
+    when(refUpdatedEvent.getRefName()).thenReturn(magicRefName);
+    repo.branch(magicRefName).commit().create();
 
     new ProjectVersionRefUpdate(repoManager, sharedRefDb).onEvent(refUpdatedEvent);
 
@@ -148,36 +161,27 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   }
 
   @Test
-  public void consumerShouldNotUpdateProjectVersionUponFailedRefReplicatedEvent()
-      throws IOException {
-    Context.setForwardedEvent(true);
-    RefReplicatedEvent refReplicatedEvent =
-        new RefReplicatedEvent(
-            A_TEST_PROJECT_NAME,
-            A_TEST_REF_NAME,
-            "targetNode",
-            ReplicationState.RefPushResult.SUCCEEDED,
-            RemoteRefUpdate.Status.REJECTED_OTHER_REASON);
-
-    new ProjectVersionRefUpdate(repoManager, sharedRefDb).onEvent(refReplicatedEvent);
-
-    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
-    assertThat(ref).isNull();
+  public void consumerShouldNotUpdateProjectVersionUponSequenceRefReplicationDoneEvent()
+      throws Exception {
+    consumerShouldNotUpdateProjectVersionUponMagicRefReplicationDoneEvent(RefNames.REFS_SEQUENCES);
   }
 
   @Test
-  public void consumerShouldNotUpdateProjectVersionUponSequenceRefReplicatedEvent()
-      throws IOException {
-    Context.setForwardedEvent(true);
-    RefReplicatedEvent refReplicatedEvent =
-        new RefReplicatedEvent(
-            A_TEST_PROJECT_NAME,
-            "refs/sequences/groups",
-            "targetNode",
-            ReplicationState.RefPushResult.SUCCEEDED,
-            RemoteRefUpdate.Status.OK);
+  public void consumerShouldNotUpdateProjectVersionUponStarredChangesRefReplicationDoneEvent()
+      throws Exception {
+    consumerShouldNotUpdateProjectVersionUponMagicRefReplicationDoneEvent(
+        RefNames.REFS_STARRED_CHANGES);
+  }
 
-    new ProjectVersionRefUpdate(repoManager, sharedRefDb).onEvent(refReplicatedEvent);
+  private void consumerShouldNotUpdateProjectVersionUponMagicRefReplicationDoneEvent(
+      String magicRefPrefix) throws Exception {
+    String magicRef = magicRefPrefix + "/foo";
+    Context.setForwardedEvent(true);
+    RefReplicationDoneEvent refReplicationDoneEvent =
+        new RefReplicationDoneEvent(A_TEST_PROJECT_NAME, magicRef, 1);
+    repo.branch(magicRef).commit().create();
+
+    new ProjectVersionRefUpdate(repoManager, sharedRefDb).onEvent(refReplicationDoneEvent);
 
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
     assertThat(ref).isNull();
