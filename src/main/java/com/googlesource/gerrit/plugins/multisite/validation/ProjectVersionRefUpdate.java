@@ -52,6 +52,7 @@ public class ProjectVersionRefUpdate implements EventListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   public static final String MULTI_SITE_VERSIONING_REF = "refs/multi-site/version";
   public static final String SEQUENCE_REF_PREFIX = "refs/sequences/";
+  public static final String STARRED_CHANGES = "refs/starred-changes/";
   private static final Ref NULL_PROJECT_VERSION_REF =
       new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId());
   private static final Set<RefUpdate.Result> SUCCESSFUL_RESULTS =
@@ -83,9 +84,11 @@ public class ProjectVersionRefUpdate implements EventListener {
 
   private void updateConsumerProjectVersion(RefReplicationDoneEvent refReplicationDoneEvent) {
     Project.NameKey projectNameKey = refReplicationDoneEvent.getProjectNameKey();
+    String refName = refReplicationDoneEvent.getRefName();
 
-    if (refReplicationDoneEvent.getRefName().startsWith(SEQUENCE_REF_PREFIX)) {
-      logger.atFine().log("Found Sequence ref, skipping update for " + projectNameKey.get());
+    if (isSpecialRefName(refName)) {
+      logger.atFine().log(
+          "Found a special ref name %s, skipping update for %s", refName, projectNameKey.get());
       return;
     }
     try {
@@ -96,10 +99,17 @@ public class ProjectVersionRefUpdate implements EventListener {
     }
   }
 
+  private boolean isSpecialRefName(String refName) {
+    return refName.startsWith(SEQUENCE_REF_PREFIX) || refName.startsWith(STARRED_CHANGES);
+  }
+
   private void updateProducerProjectVersionUpdate(RefUpdatedEvent refUpdatedEvent) {
-    if (refUpdatedEvent.getRefName().startsWith(SEQUENCE_REF_PREFIX)) {
+    String refName = refUpdatedEvent.getRefName();
+
+    if (isSpecialRefName(refName)) {
       logger.atFine().log(
-          "Found Sequence ref, skipping update for " + refUpdatedEvent.getProjectNameKey().get());
+          "Found a special ref name %s, skipping update for %s",
+          refName, refUpdatedEvent.getProjectNameKey().get());
       return;
     }
     try {
