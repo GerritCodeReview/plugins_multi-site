@@ -212,7 +212,7 @@ public class ProjectVersionRefUpdate implements EventListener {
       Optional<IntBlob> blob = IntBlob.parse(repository, MULTI_SITE_VERSIONING_REF);
       if (blob.isPresent()) {
         Long repoVersion = Integer.toUnsignedLong(blob.get().value());
-        logger.atInfo().log("Local project '%s' has version %d", projectName, repoVersion);
+        logger.atFine().log("Local project '%s' has version %d", projectName, repoVersion);
         return Optional.of(repoVersion);
       }
     } catch (IOException e) {
@@ -228,7 +228,7 @@ public class ProjectVersionRefUpdate implements EventListener {
     if (remoteObjectId.isPresent()) {
       return getLongFromObjectId(projectName, remoteObjectId.get());
     } else {
-      logger.atSevere().log("Didn't find remote version for %s", projectName);
+      logger.atFine().log("Didn't find remote version for %s", projectName);
       return Optional.empty();
     }
   }
