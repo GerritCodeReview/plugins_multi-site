@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF;
+import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.never;
@@ -188,18 +189,16 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   }
 
   @Test
-  public void getRemoteProjectVersionShouldReturnCorrectValue() throws IOException {
-    updateLocalVersion();
-    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
-    when(sharedRefDb.get(A_TEST_PROJECT_NAME_KEY, MULTI_SITE_VERSIONING_REF, ObjectId.class))
-        .thenReturn(Optional.of(ref.getObjectId()));
+  public void getRemoteProjectVersionShouldReturnCorrectValue() {
+    when(sharedRefDb.get(A_TEST_PROJECT_NAME_KEY, MULTI_SITE_VERSIONING_VALUE_REF, String.class))
+        .thenReturn(Optional.of("123"));
 
     Optional<Long> version =
         new ProjectVersionRefUpdate(repoManager, sharedRefDb)
             .getProjectRemoteVersion(A_TEST_PROJECT_NAME);
 
     assertThat(version.isPresent()).isTrue();
-    assertThat(version.get()).isEqualTo(masterCommit.getCommitTime());
+    assertThat(version.get()).isEqualTo(123L);
   }
 
   @Test

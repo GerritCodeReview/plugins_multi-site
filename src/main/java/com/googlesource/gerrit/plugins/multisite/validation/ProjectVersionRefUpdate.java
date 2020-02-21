@@ -55,6 +55,7 @@ public class ProjectVersionRefUpdate implements EventListener {
       ImmutableSet.of(RefUpdate.Result.NEW, RefUpdate.Result.FORCED, RefUpdate.Result.NO_CHANGE);
 
   public static final String MULTI_SITE_VERSIONING_REF = "refs/multi-site/version";
+  public static final String MULTI_SITE_VERSIONING_VALUE_REF = "refs/multi-site/version/value";
   public static final Ref NULL_PROJECT_VERSION_REF =
       new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId());
 
@@ -93,7 +94,8 @@ public class ProjectVersionRefUpdate implements EventListener {
       return;
     }
     try {
-      updateLocalProjectVersion(projectNameKey, refReplicationDoneEvent.getRefName());
+      updateLocalProjectVersion(
+          projectNameKey, getLastRefUpdatedTimestamp(projectNameKey, refName));
     } catch (LocalProjectVersionUpdateException e) {
       logger.atSevere().withCause(e).log(
           "Issue encountered when updating version for project " + projectNameKey);
@@ -117,12 +119,20 @@ public class ProjectVersionRefUpdate implements EventListener {
     try {
       Project.NameKey projectNameKey = refUpdatedEvent.getProjectNameKey();
       Ref currentProjectVersionRef = getLocalProjectVersionRef(refUpdatedEvent.getProjectNameKey());
+      Optional<Long> currentProjectVersionValue =
+          getLongFromObjectId(projectNameKey.get(), currentProjectVersionRef.getObjectId());
+
+      Optional<Long> lastRefUpdatedTimestamp = getLastRefUpdatedTimestamp(projectNameKey, refName);
       Optional<ObjectId> newProjectVersionObjectId =
-          updateLocalProjectVersion(projectNameKey, refUpdatedEvent.getRefName());
+          updateLocalProjectVersion(projectNameKey, lastRefUpdatedTimestamp);
 
       if (newProjectVersionObjectId.isPresent()) {
         updateSharedProjectVersion(
-            projectNameKey, currentProjectVersionRef, newProjectVersionObjectId.get());
+            projectNameKey,
+            currentProjectVersionRef,
+            newProjectVersionObjectId.get(),
+            currentProjectVersionValue,
+            lastRefUpdatedTimestamp);
       } else {
         logger.atWarning().log(
             "Ref %s not found on projet %s: skipping project version update",
@@ -157,7 +167,7 @@ public class ProjectVersionRefUpdate implements EventListener {
       return ref != null ? ref : NULL_PROJECT_VERSION_REF;
     } catch (IOException e) {
       String message =
-          String.format("Error while getting current version for %s", projectNameKey.get());
+          String.format("Error while getting current version ref for %s", projectNameKey.get());
       logger.atSevere().withCause(e).log(message);
       throw new LocalProjectVersionUpdateException(message);
     }
@@ -189,19 +199,38 @@ public class ProjectVersionRefUpdate implements EventListener {
   }
 
   private void updateSharedProjectVersion(
-      Project.NameKey projectNameKey, Ref currentRef, ObjectId newObjectId)
+      Project.NameKey projectNameKey,
+      Ref currentRef,
+      ObjectId newObjectId,
+      Optional<Long> currentVersion,
+      Optional<Long> newVersion)
       throws SharedProjectVersionUpdateException {
+
     logger.atFine().log(
         String.format(
             "Updating shared project version for %s. Current value %s, new value: %s",
             projectNameKey.get(), currentRef.getObjectId(), newObjectId));
     try {
       boolean success = sharedRefDb.compareAndPut(projectNameKey, currentRef, newObjectId);
-      String message =
-          String.format(
-              "Project version update failed for %s. Current value %s, new value: %s",
-              projectNameKey.get(), currentRef.getObjectId(), newObjectId);
       if (!success) {
+        String message =
+            String.format(
+                "Project version blob update failed for %s. Current value %s, new value: %s",
+                projectNameKey.get(), currentRef.getObjectId(), newObjectId);
+        logger.atSevere().log(message);
+        throw new SharedProjectVersionUpdateException(message);
+      }
+      success =
+          sharedRefDb.compareAndPut(
+              projectNameKey,
+              MULTI_SITE_VERSIONING_VALUE_REF,
+              currentVersion.map(Object::toString).orElse(null),
+              newVersion.map(Object::toString).orElse(null));
+      if (!success) {
+        String message =
+            String.format(
+                "Project version update failed for %s. Current value %s, new value: %s",
+                projectNameKey.get(), currentRef.getObjectId(), newObjectId);
         logger.atSevere().log(message);
         throw new SharedProjectVersionUpdateException(message);
       }
@@ -234,17 +263,26 @@ public class ProjectVersionRefUpdate implements EventListener {
   }
 
   public Optional<Long> getProjectRemoteVersion(String projectName) {
-    Optional<ObjectId> remoteObjectId =
+    Optional<String> globalVersion =
         sharedRefDb.get(
-            Project.NameKey.parse(projectName), MULTI_SITE_VERSIONING_REF, ObjectId.class);
-    if (remoteObjectId.isPresent()) {
-      return getLongFromObjectId(projectName, remoteObjectId.get());
+            Project.NameKey.parse(projectName), MULTI_SITE_VERSIONING_VALUE_REF, String.class);
+    return globalVersion.flatMap(longString -> getLongValueOf(longString));
+  }
+
+  private Optional<Long> getLongValueOf(String longString) {
+    try {
+      return Optional.ofNullable(Long.parseLong(longString));
+    } catch (NumberFormatException e) {
+      logger.atSevere().withCause(e).log(
+          "Unable to parse timestamp value %s into Long", longString);
+      return Optional.empty();
     }
-    logger.atFine().log("Didn't find remote version for %s", projectName);
-    return Optional.empty();
   }
 
   private Optional<Long> getLongFromObjectId(String projectName, ObjectId objectId) {
+    if (objectId.equals(ObjectId.zeroId())) {
+      return Optional.empty();
+    }
     try (Repository repository =
         gitRepositoryManager.openRepository(Project.NameKey.parse(projectName))) {
       ObjectReader or = repository.newObjectReader();
@@ -268,8 +306,8 @@ public class ProjectVersionRefUpdate implements EventListener {
   }
 
   private Optional<ObjectId> updateLocalProjectVersion(
-      Project.NameKey projectNameKey, String refName) throws LocalProjectVersionUpdateException {
-    Optional<Long> lastRefUpdatedTimestamp = getLastRefUpdatedTimestamp(projectNameKey, refName);
+      Project.NameKey projectNameKey, Optional<Long> lastRefUpdatedTimestamp)
+      throws LocalProjectVersionUpdateException {
     if (!lastRefUpdatedTimestamp.isPresent()) {
       return Optional.empty();
     }
