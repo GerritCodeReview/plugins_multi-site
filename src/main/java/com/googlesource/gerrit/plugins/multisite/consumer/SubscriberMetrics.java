@@ -25,7 +25,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,8 +37,8 @@ public class SubscriberMetrics {
   private static final String SUBSCRIBER_SUCCESS_COUNTER = "subscriber_msg_consumer_counter";
   private static final String SUBSCRIBER_FAILURE_COUNTER =
       "subscriber_msg_consumer_failure_counter";
-  private static final String REPLICATION_LAG_MS =
-      "multi_site/subscriber/subscriber_replication_status/ms_behind";
+  private static final String REPLICATION_LAG_SEC =
+      "multi_site/subscriber/subscriber_replication_status/sec_behind";
 
   private final Counter1<String> subscriberSuccessCounter;
   private final Counter1<String> subscriberFailureCounter;
@@ -69,9 +68,9 @@ public class SubscriberMetrics {
             Field.ofString(
                 SUBSCRIBER_FAILURE_COUNTER, "Subscriber failed to consume messages count"));
     metricMaker.newCallbackMetric(
-        REPLICATION_LAG_MS,
+        REPLICATION_LAG_SEC,
         Long.class,
-        new Description("Replication lag (ms)").setGauge().setUnit(Description.Units.MILLISECONDS),
+        new Description("Replication lag (sec)").setGauge().setUnit(Description.Units.SECONDS),
         () -> {
           Collection<Long> lags = replicationStatusPerProject.values();
           if (lags.isEmpty()) {
