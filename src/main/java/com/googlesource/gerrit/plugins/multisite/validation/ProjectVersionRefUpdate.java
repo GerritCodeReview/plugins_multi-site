@@ -238,8 +238,8 @@ public class ProjectVersionRefUpdate implements EventListener {
     if (remoteObjectId.isPresent()) {
       return getLongFromObjectId(projectName, remoteObjectId.get());
     }
-	logger.atFine().log("Didn't find remote version for %s", projectName);
-      return Optional.empty();
+    logger.atFine().log("Didn't find remote version for %s", projectName);
+    return Optional.empty();
   }
 
   private Optional<Long> getLongFromObjectId(String projectName, ObjectId objectId) {
@@ -297,12 +297,16 @@ public class ProjectVersionRefUpdate implements EventListener {
   }
 
   public static class LocalProjectVersionUpdateException extends Exception {
+    private static final long serialVersionUID = 7649956232401457023L;
+
     public LocalProjectVersionUpdateException(String projectName) {
       super("Cannot update local project version of " + projectName);
     }
   }
 
   public static class SharedProjectVersionUpdateException extends Exception {
+    private static final long serialVersionUID = -9153858177700286314L;
+
     public SharedProjectVersionUpdateException(String projectName) {
       super("Cannot update shared project version of " + projectName);
     }
