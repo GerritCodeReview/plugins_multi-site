@@ -237,10 +237,9 @@ public class ProjectVersionRefUpdate implements EventListener {
             Project.NameKey.parse(projectName), MULTI_SITE_VERSIONING_REF, ObjectId.class);
     if (remoteObjectId.isPresent()) {
       return getLongFromObjectId(projectName, remoteObjectId.get());
-    } else {
-      logger.atFine().log("Didn't find remote version for %s", projectName);
-      return Optional.empty();
     }
+	logger.atFine().log("Didn't find remote version for %s", projectName);
+      return Optional.empty();
   }
 
   private Optional<Long> getLongFromObjectId(String projectName, ObjectId objectId) {
