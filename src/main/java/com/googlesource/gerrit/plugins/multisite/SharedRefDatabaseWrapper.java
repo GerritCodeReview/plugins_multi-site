@@ -62,7 +62,11 @@ public class SharedRefDatabaseWrapper implements GlobalRefDatabase {
   @Override
   public <T> boolean compareAndPut(Project.NameKey project, String refName, T currValue, T newValue)
       throws GlobalRefDbSystemError {
-    throw new UnsupportedOperationException();
+    boolean succeeded = sharedRefDb().compareAndPut(project, refName, currValue, newValue);
+    if (succeeded) {
+      // TODO Add logging in sharedRefLogger
+    }
+    return succeeded;
   }
 
   @Override
