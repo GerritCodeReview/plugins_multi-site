@@ -19,12 +19,16 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.MetricMaker;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
+import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
+import com.googlesource.gerrit.plugins.replication.ReplicationScheduledEvent;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -37,8 +41,8 @@ public class SubscriberMetrics extends MultiSiteMetrics {
   private static final String SUBSCRIBER_SUCCESS_COUNTER = "subscriber_msg_consumer_counter";
   private static final String SUBSCRIBER_FAILURE_COUNTER =
       "subscriber_msg_consumer_failure_counter";
-  private static final String REPLICATION_LAG_MS =
-      "multi_site/subscriber/subscriber_replication_status/ms_behind";
+  private static final String REPLICATION_LAG_SEC =
+      "multi_site/subscriber/subscriber_replication_status/sec_behind";
 
   private final Counter1<String> subscriberSuccessCounter;
   private final Counter1<String> subscriberFailureCounter;
@@ -67,9 +71,9 @@ public class SubscriberMetrics extends MultiSiteMetrics {
                 .setUnit("errors"),
             stringField(SUBSCRIBER_FAILURE_COUNTER, "Subscriber failed to consume messages count"));
     metricMaker.newCallbackMetric(
-        REPLICATION_LAG_MS,
+        REPLICATION_LAG_SEC,
         Long.class,
-        new Description("Replication lag (ms)").setGauge().setUnit(Description.Units.MILLISECONDS),
+        new Description("Replication lag (sec)").setGauge().setUnit(Description.Units.SECONDS),
         () -> {
           Collection<Long> lags = replicationStatusPerProject.values();
           if (lags.isEmpty()) {
@@ -89,23 +93,36 @@ public class SubscriberMetrics extends MultiSiteMetrics {
 
   public void updateReplicationStatusMetrics(EventMessage eventMessage) {
     Event event = eventMessage.getEvent();
-    if (event instanceof RefReplicatedEvent) {
-      RefReplicatedEvent refReplicatedEvent = (RefReplicatedEvent) event;
-      String projectName = refReplicatedEvent.getProjectNameKey().get();
-      logger.atFine().log("Updating replication lag for %s", projectName);
-      Optional<Long> remoteVersion = projectVersionRefUpdate.getProjectRemoteVersion(projectName);
-      Optional<Long> localVersion = projectVersionRefUpdate.getProjectLocalVersion(projectName);
-      if (remoteVersion.isPresent() && localVersion.isPresent()) {
-        long lag = remoteVersion.get() - localVersion.get();
-        logger.atFine().log("Calculated lag for project '%s' [%d]", projectName, lag);
-        replicationStatusPerProject.put(projectName, lag);
-      } else {
-        logger.atFine().log(
-            "Didn't update metric for %s. Local [%b] or remote [%b] version is not defined",
-            projectName, localVersion.isPresent(), remoteVersion.isPresent());
-      }
+    if (event instanceof RefReplicationDoneEvent) {
+      RefReplicationDoneEvent replicationDone = (RefReplicationDoneEvent) event;
+      updateReplicationLagMetrics(
+          replicationDone.getProjectNameKey(), replicationDone.getRefName());
+    } else if (event instanceof RefReplicatedEvent) {
+      RefReplicatedEvent replicated = (RefReplicatedEvent) event;
+      updateReplicationLagMetrics(replicated.getProjectNameKey(), replicated.getRefName());
+    } else if (event instanceof ReplicationScheduledEvent) {
+      ReplicationScheduledEvent updated = (ReplicationScheduledEvent) event;
+      updateReplicationLagMetrics(updated.getProjectNameKey(), updated.getRefName());
+    } else if (event instanceof RefUpdatedEvent) {
+      RefUpdatedEvent updated = (RefUpdatedEvent) event;
+      updateReplicationLagMetrics(updated.getProjectNameKey(), updated.getRefName());
+    }
+  }
+
+  private void updateReplicationLagMetrics(Project.NameKey projectName, String ref) {
+    Optional<Long> remoteVersion =
+        projectVersionRefUpdate.getProjectRemoteVersion(projectName.get());
+    Optional<Long> localVersion = projectVersionRefUpdate.getProjectLocalVersion(projectName.get());
+    if (remoteVersion.isPresent() && localVersion.isPresent()) {
+      long lag = remoteVersion.get() - localVersion.get();
+      logger.atFine().log(
+          "Published replication lag metric for project '%s' of %d sec(s) [local-ref=%d global-ref=%d]",
+          projectName, lag, localVersion.get(), remoteVersion.get());
+      replicationStatusPerProject.put(projectName.get(), lag);
     } else {
-      logger.atFine().log("Not a ref-replicated-event event [%s], skipping", event.type);
+      logger.atFine().log(
+          "Did not publish replication lag metric for %s because the %s version is not defined",
+          projectName, localVersion.isPresent() ? "remote" : "local");
     }
   }
 }
