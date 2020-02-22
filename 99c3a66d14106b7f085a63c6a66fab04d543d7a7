@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "fbf8e8cd_fd51ccea",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-22T01:59:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e17350df_cd0f9d1c",
+      "range": {
+        "startLine": 109,
+        "startChar": 36,
+        "endLine": 109,
+        "endChar": 43
+      },
+      "revId": "99c3a66d14106b7f085a63c6a66fab04d543d7a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "122a572c_571c4c41",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 8
