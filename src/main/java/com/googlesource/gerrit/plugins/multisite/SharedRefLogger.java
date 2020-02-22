@@ -21,6 +21,8 @@ public interface SharedRefLogger {
 
   void logRefUpdate(String project, Ref currRef, ObjectId newRefValue);
 
+  <T> void logRefUpdate(String project, String refName, T currRef, T newRefValue);
+
   void logProjectDelete(String project);
 
   void logLockAcquisition(String project, String refName);
