@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "e17350df_cd0f9d1c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Log4jSharedRefLogger.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-22T01:55:02Z",
+      "side": 1,
+      "message": "Good catch.",
+      "parentUuid": "b0d9d3fe_762722cd",
+      "range": {
+        "startLine": 109,
+        "startChar": 36,
+        "endLine": 109,
+        "endChar": 43
+      },
+      "revId": "99c3a66d14106b7f085a63c6a66fab04d543d7a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "122a572c_571c4c41",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 8
@@ -45,6 +69,30 @@
       "revId": "99c3a66d14106b7f085a63c6a66fab04d543d7a7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "affa94e0_4db61cbc",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-22T01:55:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "122a572c_571c4c41",
+      "range": {
+        "startLine": 269,
+        "startChar": 47,
+        "endLine": 269,
+        "endChar": 62
+      },
+      "revId": "99c3a66d14106b7f085a63c6a66fab04d543d7a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
