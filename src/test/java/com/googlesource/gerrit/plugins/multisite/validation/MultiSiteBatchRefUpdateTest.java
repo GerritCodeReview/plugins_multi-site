@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static java.util.Arrays.asList;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
