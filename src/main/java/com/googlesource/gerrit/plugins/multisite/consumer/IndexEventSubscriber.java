@@ -34,8 +34,7 @@ public class IndexEventSubscriber extends AbstractSubcriber {
       MessageLogger msgLog,
       SubscriberMetrics subscriberMetrics,
       Configuration cfg) {
-    super(
-        eventRouter, droppedEventListeners, instanceId, msgLog, subscriberMetrics, cfg);
+    super(eventRouter, droppedEventListeners, instanceId, msgLog, subscriberMetrics, cfg);
   }
 
   @Override

@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
-import com.google.common.collect.Lists;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.registration.DynamicItem;
