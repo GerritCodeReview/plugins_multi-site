@@ -25,6 +25,7 @@ import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
 import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
@@ -46,14 +47,18 @@ public class SubscriberMetrics {
 
   private final Counter1<String> subscriberSuccessCounter;
   private final Counter1<String> subscriberFailureCounter;
+  private final ProjectVersionLogger verLogger;
 
-  public Map<String, Long> replicationStatusPerProject = new HashMap<>();
+  private final Map<String, Long> replicationStatusPerProject = new HashMap<>();
+  private final Map<String, Long> localVersionPerProject = new HashMap<>();
 
   private ProjectVersionRefUpdate projectVersionRefUpdate;
 
   @Inject
   public SubscriberMetrics(
-      MetricMaker metricMaker, ProjectVersionRefUpdate projectVersionRefUpdate) {
+      MetricMaker metricMaker,
+      ProjectVersionRefUpdate projectVersionRefUpdate,
+      ProjectVersionLogger verLogger) {
 
     this.projectVersionRefUpdate = projectVersionRefUpdate;
     this.subscriberSuccessCounter =
@@ -82,6 +87,8 @@ public class SubscriberMetrics {
           }
           return Collections.max(lags);
         });
+
+    this.verLogger = verLogger;
   }
 
   public void incrementSubscriberConsumedMessage() {
@@ -116,10 +123,16 @@ public class SubscriberMetrics {
     Optional<Long> localVersion = projectVersionRefUpdate.getProjectLocalVersion(projectName.get());
     if (remoteVersion.isPresent() && localVersion.isPresent()) {
       long lag = remoteVersion.get() - localVersion.get();
-      logger.atFine().log(
-          "Published replication lag metric for project '%s' of %d sec(s) [local-ref=%d global-ref=%d]",
-          projectName, lag, localVersion.get(), remoteVersion.get());
-      replicationStatusPerProject.put(projectName.get(), lag);
+
+      if (!localVersion.get().equals(localVersionPerProject.get(projectName.get()))
+          || lag != replicationStatusPerProject.get(projectName.get())) {
+        logger.atFine().log(
+            "Published replication lag metric for project '%s' of %d sec(s) [local-ref=%d global-ref=%d]",
+            projectName, lag, localVersion.get(), remoteVersion.get());
+        replicationStatusPerProject.put(projectName.get(), lag);
+        localVersionPerProject.put(projectName.get(), localVersion.get());
+        verLogger.log(projectName, localVersion.get(), lag);
+      }
     } else {
       logger.atFine().log(
           "Did not publish replication lag metric for %s because the %s version is not defined",
