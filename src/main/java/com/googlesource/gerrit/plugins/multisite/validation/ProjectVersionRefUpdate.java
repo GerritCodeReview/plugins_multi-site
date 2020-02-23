@@ -27,13 +27,13 @@ import com.google.gerrit.reviewdb.client.RefNames;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.IntBlob;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
@@ -60,14 +60,18 @@ public class ProjectVersionRefUpdate implements EventListener {
       new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId());
 
   private final GitRepositoryManager gitRepositoryManager;
+  private final GitReferenceUpdated gitReferenceUpdated;
 
   protected final SharedRefDatabaseWrapper sharedRefDb;
 
   @Inject
   public ProjectVersionRefUpdate(
-      GitRepositoryManager gitRepositoryManager, SharedRefDatabaseWrapper sharedRefDb) {
+      GitRepositoryManager gitRepositoryManager,
+      SharedRefDatabaseWrapper sharedRefDb,
+      GitReferenceUpdated gitReferenceUpdated) {
     this.gitRepositoryManager = gitRepositoryManager;
     this.sharedRefDb = sharedRefDb;
+    this.gitReferenceUpdated = gitReferenceUpdated;
   }
 
   @Override
@@ -77,34 +81,12 @@ public class ProjectVersionRefUpdate implements EventListener {
     if (!Context.isForwardedEvent() && event instanceof RefUpdatedEvent) {
       updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
     }
-
-    // Consumers of the Event use RefReplicationDoneEvent to trigger the version update
-    if (Context.isForwardedEvent() && event instanceof RefReplicationDoneEvent) {
-      updateConsumerProjectVersion((RefReplicationDoneEvent) event);
-    }
-  }
-
-  private void updateConsumerProjectVersion(RefReplicationDoneEvent refReplicationDoneEvent) {
-    Project.NameKey projectNameKey = refReplicationDoneEvent.getProjectNameKey();
-    String refName = refReplicationDoneEvent.getRefName();
-
-    if (isSpecialRefName(refName)) {
-      logger.atFine().log(
-          "Found a special ref name %s, skipping update for %s", refName, projectNameKey.get());
-      return;
-    }
-    try {
-      updateLocalProjectVersion(
-          projectNameKey, getLastRefUpdatedTimestamp(projectNameKey, refName));
-    } catch (LocalProjectVersionUpdateException e) {
-      logger.atSevere().withCause(e).log(
-          "Issue encountered when updating version for project " + projectNameKey);
-    }
   }
 
   private boolean isSpecialRefName(String refName) {
     return refName.startsWith(RefNames.REFS_SEQUENCES)
-        || refName.startsWith(RefNames.REFS_STARRED_CHANGES);
+        || refName.startsWith(RefNames.REFS_STARRED_CHANGES)
+        || refName.equals(MULTI_SITE_VERSIONING_REF);
   }
 
   private void updateProducerProjectVersionUpdate(RefUpdatedEvent refUpdatedEvent) {
@@ -324,6 +306,8 @@ public class ProjectVersionRefUpdate implements EventListener {
         logger.atSevere().log(message);
         throw new LocalProjectVersionUpdateException(message);
       }
+
+      gitReferenceUpdated.fire(projectNameKey, refUpdate, null);
       return Optional.of(refUpdate.getNewObjectId());
     } catch (IOException e) {
       String message = "Cannot create versioning command for " + projectNameKey.get();
