@@ -22,6 +22,30 @@
       "revId": "591727cfec5174368a7829f79741c41683d84c89",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44e2aa17_eb719ddc",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-23T20:23:00Z",
+      "side": 1,
+      "message": "This is needed to add the ref-update to the current replication queue, because the replication plugin is listening on GitReferenceUpdated.",
+      "parentUuid": "fec79540_71acf176",
+      "range": {
+        "startLine": 310,
+        "startChar": 6,
+        "endLine": 310,
+        "endChar": 64
+      },
+      "revId": "591727cfec5174368a7829f79741c41683d84c89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
