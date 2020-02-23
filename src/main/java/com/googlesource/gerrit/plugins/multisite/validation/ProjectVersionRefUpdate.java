@@ -32,6 +32,7 @@ import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.IntBlob;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import java.io.IOException;
@@ -61,6 +62,7 @@ public class ProjectVersionRefUpdate implements EventListener {
 
   private final GitRepositoryManager gitRepositoryManager;
   private final GitReferenceUpdated gitReferenceUpdated;
+  private final ProjectVersionLogger verLogger;
 
   protected final SharedRefDatabaseWrapper sharedRefDb;
 
@@ -68,10 +70,12 @@ public class ProjectVersionRefUpdate implements EventListener {
   public ProjectVersionRefUpdate(
       GitRepositoryManager gitRepositoryManager,
       SharedRefDatabaseWrapper sharedRefDb,
-      GitReferenceUpdated gitReferenceUpdated) {
+      GitReferenceUpdated gitReferenceUpdated,
+      ProjectVersionLogger verLogger) {
     this.gitRepositoryManager = gitRepositoryManager;
     this.sharedRefDb = sharedRefDb;
     this.gitReferenceUpdated = gitReferenceUpdated;
+    this.verLogger = verLogger;
   }
 
   @Override
@@ -109,6 +113,8 @@ public class ProjectVersionRefUpdate implements EventListener {
           updateLocalProjectVersion(projectNameKey, lastRefUpdatedTimestamp);
 
       if (newProjectVersionObjectId.isPresent()) {
+        verLogger.log(projectNameKey, lastRefUpdatedTimestamp.get(), 0L);
+
         updateSharedProjectVersion(
             projectNameKey,
             currentProjectVersionRef,
