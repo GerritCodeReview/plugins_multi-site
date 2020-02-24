@@ -129,7 +129,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
             A_TEST_PROJECT_NAME_KEY, ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF))
         .thenReturn(false);
 
-    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), isNull(), any(ObjectId.class)))
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
         .thenReturn(true);
     when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
         .thenReturn(true);
