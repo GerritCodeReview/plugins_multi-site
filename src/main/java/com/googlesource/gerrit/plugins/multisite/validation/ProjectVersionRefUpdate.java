@@ -27,16 +27,18 @@ import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.IntBlob;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.ObjectInserter;
@@ -60,14 +62,21 @@ public class ProjectVersionRefUpdate implements EventListener {
       new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId());
 
   private final GitRepositoryManager gitRepositoryManager;
+  private final GitReferenceUpdated gitReferenceUpdated;
+  private final ProjectVersionLogger verLogger;
 
   protected final SharedRefDatabaseWrapper sharedRefDb;
 
   @Inject
   public ProjectVersionRefUpdate(
-      GitRepositoryManager gitRepositoryManager, SharedRefDatabaseWrapper sharedRefDb) {
+      GitRepositoryManager gitRepositoryManager,
+      SharedRefDatabaseWrapper sharedRefDb,
+      GitReferenceUpdated gitReferenceUpdated,
+      ProjectVersionLogger verLogger) {
     this.gitRepositoryManager = gitRepositoryManager;
     this.sharedRefDb = sharedRefDb;
+    this.gitReferenceUpdated = gitReferenceUpdated;
+    this.verLogger = verLogger;
   }
 
   @Override
@@ -77,34 +86,12 @@ public class ProjectVersionRefUpdate implements EventListener {
     if (!Context.isForwardedEvent() && event instanceof RefUpdatedEvent) {
       updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
     }
-
-    // Consumers of the Event use RefReplicationDoneEvent to trigger the version update
-    if (Context.isForwardedEvent() && event instanceof RefReplicationDoneEvent) {
-      updateConsumerProjectVersion((RefReplicationDoneEvent) event);
-    }
-  }
-
-  private void updateConsumerProjectVersion(RefReplicationDoneEvent refReplicationDoneEvent) {
-    Project.NameKey projectNameKey = refReplicationDoneEvent.getProjectNameKey();
-    String refName = refReplicationDoneEvent.getRefName();
-
-    if (isSpecialRefName(refName)) {
-      logger.atFine().log(
-          "Found a special ref name %s, skipping update for %s", refName, projectNameKey.get());
-      return;
-    }
-    try {
-      updateLocalProjectVersion(
-          projectNameKey, getLastRefUpdatedTimestamp(projectNameKey, refName));
-    } catch (LocalProjectVersionUpdateException e) {
-      logger.atSevere().withCause(e).log(
-          "Issue encountered when updating version for project " + projectNameKey);
-    }
   }
 
   private boolean isSpecialRefName(String refName) {
     return refName.startsWith(RefNames.REFS_SEQUENCES)
-        || refName.startsWith(RefNames.REFS_STARRED_CHANGES);
+        || refName.startsWith(RefNames.REFS_STARRED_CHANGES)
+        || refName.equals(MULTI_SITE_VERSIONING_REF);
   }
 
   private void updateProducerProjectVersionUpdate(RefUpdatedEvent refUpdatedEvent) {
@@ -127,6 +114,8 @@ public class ProjectVersionRefUpdate implements EventListener {
           updateLocalProjectVersion(projectNameKey, lastRefUpdatedTimestamp);
 
       if (newProjectVersionObjectId.isPresent()) {
+        verLogger.log(projectNameKey, lastRefUpdatedTimestamp.get(), 0L);
+
         updateSharedProjectVersion(
             projectNameKey,
             currentProjectVersionRef,
@@ -256,6 +245,8 @@ public class ProjectVersionRefUpdate implements EventListener {
         logger.atFine().log("Local project '%s' has version %d", projectName, repoVersion);
         return Optional.of(repoVersion);
       }
+    } catch (RepositoryNotFoundException re) {
+      logger.atFine().log("Project '%s' not found", projectName);
     } catch (IOException e) {
       logger.atSevere().withCause(e).log("Cannot read local project '%s' version", projectName);
     }
@@ -324,6 +315,8 @@ public class ProjectVersionRefUpdate implements EventListener {
         logger.atSevere().log(message);
         throw new LocalProjectVersionUpdateException(message);
       }
+
+      gitReferenceUpdated.fire(projectNameKey, refUpdate, null);
       return Optional.of(refUpdate.getNewObjectId());
     } catch (IOException e) {
       String message = "Cannot create versioning command for " + projectNameKey.get();
