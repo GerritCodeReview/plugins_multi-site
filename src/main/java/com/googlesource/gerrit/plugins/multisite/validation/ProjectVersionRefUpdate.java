@@ -200,15 +200,23 @@ public class ProjectVersionRefUpdate implements EventListener {
             "Updating shared project version for %s. Current value %s, new value: %s",
             projectNameKey.get(), currentRef.getObjectId(), newObjectId));
     try {
+      if (!sharedRefDb.exists(projectNameKey, MULTI_SITE_VERSIONING_REF)) {
+        currentRef = null;
+      }
+      if (!sharedRefDb.exists(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF)) {
+        currentVersion = Optional.empty();
+      }
+
       boolean success = sharedRefDb.compareAndPut(projectNameKey, currentRef, newObjectId);
       if (!success) {
         String message =
             String.format(
                 "Project version blob update failed for %s. Current value %s, new value: %s",
-                projectNameKey.get(), currentRef.getObjectId(), newObjectId);
+                projectNameKey.get(), safeGetObjectId(currentRef), newObjectId);
         logger.atSevere().log(message);
         throw new SharedProjectVersionUpdateException(message);
       }
+
       success =
           sharedRefDb.compareAndPut(
               projectNameKey,
@@ -219,7 +227,7 @@ public class ProjectVersionRefUpdate implements EventListener {
         String message =
             String.format(
                 "Project version update failed for %s. Current value %s, new value: %s",
-                projectNameKey.get(), currentRef.getObjectId(), newObjectId);
+                projectNameKey.get(), safeGetObjectId(currentRef), newObjectId);
         logger.atSevere().log(message);
         throw new SharedProjectVersionUpdateException(message);
       }
@@ -258,6 +266,10 @@ public class ProjectVersionRefUpdate implements EventListener {
         sharedRefDb.get(
             Project.NameKey.parse(projectName), MULTI_SITE_VERSIONING_VALUE_REF, String.class);
     return globalVersion.flatMap(longString -> getLongValueOf(longString));
+  }
+
+  private Object safeGetObjectId(Ref currentRef) {
+    return currentRef == null ? "null" : currentRef.getObjectId();
   }
 
   private Optional<Long> getLongValueOf(String longString) {

@@ -18,6 +18,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF;
 import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -87,7 +88,15 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   @Test
   public void producerShouldUpdateProjectVersionUponRefUpdatedEvent() throws IOException {
     Context.setForwardedEvent(false);
+    when(sharedRefDb.exists(
+            A_TEST_PROJECT_NAME_KEY, ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF))
+        .thenReturn(true);
+    when(sharedRefDb.exists(
+            A_TEST_PROJECT_NAME_KEY, ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF))
+        .thenReturn(true);
     when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
+        .thenReturn(true);
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
         .thenReturn(true);
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
@@ -99,6 +108,41 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
     verify(sharedRefDb, atMost(1))
         .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+
+    assertThat(ref).isNotNull();
+
+    ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
+    String storedVersion = IOUtils.toString(loader.openStream(), StandardCharsets.UTF_8.name());
+    assertThat(Long.parseLong(storedVersion)).isEqualTo(masterCommit.getCommitTime());
+
+    verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, masterCommit.getCommitTime(), 0);
+  }
+
+  @Test
+  public void producerShouldCreateNewProjectVersionWhenMissingUponRefUpdatedEvent()
+      throws IOException {
+    Context.setForwardedEvent(false);
+    when(sharedRefDb.exists(
+            A_TEST_PROJECT_NAME_KEY, ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF))
+        .thenReturn(false);
+    when(sharedRefDb.exists(
+            A_TEST_PROJECT_NAME_KEY, ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF))
+        .thenReturn(false);
+
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), isNull(), any(ObjectId.class)))
+        .thenReturn(true);
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
+        .thenReturn(true);
+    when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
+    when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
+
+    new ProjectVersionRefUpdate(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
+        .onEvent(refUpdatedEvent);
+
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
+
+    verify(sharedRefDb, atMost(1))
+        .compareAndPut(any(Project.NameKey.class), isNull(), any(ObjectId.class));
 
     assertThat(ref).isNotNull();
 
