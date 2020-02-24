@@ -38,6 +38,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.ObjectInserter;
@@ -244,6 +245,8 @@ public class ProjectVersionRefUpdate implements EventListener {
         logger.atFine().log("Local project '%s' has version %d", projectName, repoVersion);
         return Optional.of(repoVersion);
       }
+    } catch (RepositoryNotFoundException re) {
+      logger.atFine().log("Project '%s' not found", projectName);
     } catch (IOException e) {
       logger.atSevere().withCause(e).log("Cannot read local project '%s' version", projectName);
     }
