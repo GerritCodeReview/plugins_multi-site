@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "632e7a9c_d011db7a",
+        "filename": "setup_local_env/configs/prometheus.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-28T21:10:45Z",
+      "side": 1,
+      "message": "If this is inside the container, it won\u0027t work because gerrit isn\u0027t inside the same container.",
+      "range": {
+        "startLine": 26,
+        "startChar": 17,
+        "endLine": 26,
+        "endChar": 54
+      },
+      "revId": "496c4dc1692f63fa4988af3c7fa93b48f6364ccf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
