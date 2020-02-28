@@ -22,7 +22,6 @@ LAST_BUILD=lastSuccessfulBuild/artifact/bazel-bin/plugins
 
 function check_application_requirements {
   type haproxy >/dev/null 2>&1 || { echo >&2 "Require haproxy but it's not installed. Aborting."; exit 1; }
-  type prometheus >/dev/null 2>&1 || { echo >&2 "Require prometheus but it's not installed. Aborting."; exit 1; }
   type java >/dev/null 2>&1 || { echo >&2 "Require java but it's not installed. Aborting."; exit 1; }
   type docker >/dev/null 2>&1 || { echo >&2 "Require docker but it's not installed. Aborting."; exit 1; }
   type docker-compose >/dev/null 2>&1 || { echo >&2 "Require docker-compose but it's not installed. Aborting."; exit 1; }
@@ -98,16 +97,6 @@ function start_ha_proxy {
   haproxy -f $HA_PROXY_CONFIG_DIR/haproxy.cfg &
 }
 
-function start_prometheus {
-  mkdir -p $PROMETHEUS_CONFIG_DIR
-  cat $SCRIPT_DIR/prometheus-config/prometheus.yml | envsubst > $PROMETHEUS_CONFIG_DIR/prometheus.yml
-
-  echo "Starting Prometheus..."
-  echo "THE SCRIPT LOCATION $SCRIPT_DIR"
-  echo "THE HA SCRIPT_LOCATION $PROMETHEUS_SCRIPT_DIR"
-  prometheus --config.file $PROMETHEUS_CONFIG_DIR/prometheus.yml &
-}
-
 function deploy_config_files {
   # KAFKA configuration
   export KAFKA_PORT=9092
@@ -138,14 +127,26 @@ function deploy_config_files {
   copy_config_files $CONFIG_TEST_SITE_2 $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE2_SSHD_PORT $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE2_REMOTE_DEBUG_PORT $GERRIT_SITE2_KAFKA_GROUP_ID
 }
 
+function is_docker_desktop {
+  echo $(docker info | grep "Operating System: Docker Desktop" | wc -l)
+}
+
+function docker_host_env {
+  IS_DOCKER_DESKTOP=$(is_docker_desktop)
+  if [ "$IS_DOCKER_DESKTOP" = "1" ];then
+    echo "mac"
+  else
+    echo "linux"
+  fi
+}
+
 
 function cleanup_environment {
   echo "Killing existing HA-PROXY setup"
   kill $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}') 2> /dev/null
-  echo "Killing existing Prometheus setup"
-  kill $(ps -ax | grep prometheus | grep "gerrit_setup/prometheus-config" | awk '{print $1}') 2> /dev/null
-  echo "Stopping kafka and zk"
-  docker-compose -f $SCRIPT_DIR/docker-compose.kafka-broker.yaml down 2> /dev/null
+
+  echo "Stopping docker containers"
+  docker-compose -f $SCRIPT_DIR/docker-compose.yaml down 2> /dev/null
 
   echo "Stopping GERRIT instances"
   $1/bin/gerrit.sh stop 2> /dev/null
@@ -307,7 +308,7 @@ export REPLICATION_DELAY_SEC=${REPLICATION_DELAY_SEC:-"5"}
 export SSH_ADVERTISED_PORT=${SSH_ADVERTISED_PORT:-"29418"}
 HTTPS_ENABLED=${HTTPS_ENABLED:-"false"}
 
-COMMON_LOCATION=$DEPLOYMENT_LOCATION/gerrit_setup
+export COMMON_LOCATION=$DEPLOYMENT_LOCATION/gerrit_setup
 LOCATION_TEST_SITE_1=$COMMON_LOCATION/instance-1
 LOCATION_TEST_SITE_2=$COMMON_LOCATION/instance-2
 HA_PROXY_CONFIG_DIR=$COMMON_LOCATION/ha-proxy-config
@@ -432,12 +433,23 @@ if [ $NEW_INSTALLATION = "true" ]; then
   ln -s $LOCATION_TEST_SITE_2/lib/multi-site.jar $LOCATION_TEST_SITE_2/plugins/multi-site.jar
 fi
 
+DOCKER_HOST_ENV=$(docker_host_env)
+echo "Docker host environment: $DOCKER_HOST_ENV"
+if [ "$DOCKER_HOST_ENV" = "mac" ];then
+  export GERRIT_SITE_HOST="host.docker.internal"
+  export NETWORK_MODE="bridge"
+else
+  export GERRIT_SITE_HOST="localhost"
+  export NETWORK_MODE="host"
+fi
+
+cat $SCRIPT_DIR/configs/prometheus.yml | envsubst | sed 's/#{name}#/${name}/g' > $COMMON_LOCATION/prometheus.yml
 
 IS_KAFKA_RUNNING=$(check_if_kafka_is_running)
 if [ $IS_KAFKA_RUNNING -lt 1 ];then
 
   echo "Starting zk and kafka"
-  docker-compose -f $SCRIPT_DIR/docker-compose.kafka-broker.yaml up -d
+  docker-compose -f $SCRIPT_DIR/docker-compose.yaml up -d
   echo "Waiting for kafka to start..."
   while [[ $(check_if_kafka_is_running) -lt 1 ]];do sleep 10s; done
 fi
@@ -453,11 +465,6 @@ $LOCATION_TEST_SITE_2/bin/gerrit.sh restart
 if [[ $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}' | wc -l) -lt 1 ]];then
   echo "Starting haproxy"
   start_ha_proxy
-fi
-
-if [[ $(ps -ax | grep promtheus | grep "gerrit_setup/prometheus-config" | awk '{print $1}' | wc -l) -lt 1 ]];then
-  echo "Starting prometheus"
-  start_prometheus
 fi
 
 echo "==============================="
