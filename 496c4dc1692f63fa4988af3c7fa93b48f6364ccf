@@ -46,6 +46,30 @@
       "revId": "496c4dc1692f63fa4988af3c7fa93b48f6364ccf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60ea7b7d_4e104b36",
+        "filename": "setup_local_env/configs/prometheus.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-28T21:13:54Z",
+      "side": 1,
+      "message": "That doesn\u0027t work on Mac though, as docker isn\u0027t running on the same host but rather on another virtualbox.",
+      "parentUuid": "b06783ed_2394843c",
+      "range": {
+        "startLine": 26,
+        "startChar": 17,
+        "endLine": 26,
+        "endChar": 54
+      },
+      "revId": "496c4dc1692f63fa4988af3c7fa93b48f6364ccf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
