@@ -22,7 +22,6 @@ LAST_BUILD=lastSuccessfulBuild/artifact/bazel-bin/plugins
 
 function check_application_requirements {
   type haproxy >/dev/null 2>&1 || { echo >&2 "Require haproxy but it's not installed. Aborting."; exit 1; }
-  type prometheus >/dev/null 2>&1 || { echo >&2 "Require prometheus but it's not installed. Aborting."; exit 1; }
   type java >/dev/null 2>&1 || { echo >&2 "Require java but it's not installed. Aborting."; exit 1; }
   type docker >/dev/null 2>&1 || { echo >&2 "Require docker but it's not installed. Aborting."; exit 1; }
   type docker-compose >/dev/null 2>&1 || { echo >&2 "Require docker-compose but it's not installed. Aborting."; exit 1; }
@@ -98,16 +97,6 @@ function start_ha_proxy {
   haproxy -f $HA_PROXY_CONFIG_DIR/haproxy.cfg &
 }
 
-function start_prometheus {
-  mkdir -p $PROMETHEUS_CONFIG_DIR
-  cat $SCRIPT_DIR/prometheus-config/prometheus.yml | envsubst > $PROMETHEUS_CONFIG_DIR/prometheus.yml
-
-  echo "Starting Prometheus..."
-  echo "THE SCRIPT LOCATION $SCRIPT_DIR"
-  echo "THE HA SCRIPT_LOCATION $PROMETHEUS_SCRIPT_DIR"
-  prometheus --config.file $PROMETHEUS_CONFIG_DIR/prometheus.yml &
-}
-
 function deploy_config_files {
   # KAFKA configuration
   export KAFKA_PORT=9092
@@ -142,10 +131,8 @@ function deploy_config_files {
 function cleanup_environment {
   echo "Killing existing HA-PROXY setup"
   kill $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}') 2> /dev/null
-  echo "Killing existing Prometheus setup"
-  kill $(ps -ax | grep prometheus | grep "gerrit_setup/prometheus-config" | awk '{print $1}') 2> /dev/null
   echo "Stopping kafka and zk"
-  docker-compose -f $SCRIPT_DIR/docker-compose.kafka-broker.yaml down 2> /dev/null
+  docker-compose -f $SCRIPT_DIR/docker-compose.yaml down 2> /dev/null
 
   echo "Stopping GERRIT instances"
   $1/bin/gerrit.sh stop 2> /dev/null
@@ -437,7 +424,7 @@ IS_KAFKA_RUNNING=$(check_if_kafka_is_running)
 if [ $IS_KAFKA_RUNNING -lt 1 ];then
 
   echo "Starting zk and kafka"
-  docker-compose -f $SCRIPT_DIR/docker-compose.kafka-broker.yaml up -d
+  docker-compose -f $SCRIPT_DIR/docker-compose.yaml up -d
   echo "Waiting for kafka to start..."
   while [[ $(check_if_kafka_is_running) -lt 1 ]];do sleep 10s; done
 fi
@@ -453,11 +440,6 @@ $LOCATION_TEST_SITE_2/bin/gerrit.sh restart
 if [[ $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}' | wc -l) -lt 1 ]];then
   echo "Starting haproxy"
   start_ha_proxy
-fi
-
-if [[ $(ps -ax | grep promtheus | grep "gerrit_setup/prometheus-config" | awk '{print $1}' | wc -l) -lt 1 ]];then
-  echo "Starting prometheus"
-  start_prometheus
 fi
 
 echo "==============================="

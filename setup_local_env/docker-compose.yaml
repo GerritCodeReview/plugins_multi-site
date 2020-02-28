@@ -13,3 +13,12 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  prometheus:
+    image: prom/prometheus
+    user: root
+    volumes:
+     - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    network_mode: "host"
+
