@@ -2,6 +2,52 @@
   "comments": [
     {
       "key": {
+        "uuid": "2ae0758f_105323a3",
+        "filename": "setup_local_env/configs/prometheus.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-29T16:56:35Z",
+      "side": 1,
+      "message": "seems like a leftover",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 18
+      },
+      "revId": "496c4dc1692f63fa4988af3c7fa93b48f6364ccf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "327d23f4_21463cdf",
+        "filename": "setup_local_env/configs/prometheus.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-29T16:56:35Z",
+      "side": 1,
+      "message": "leftover",
+      "range": {
+        "startLine": 12,
+        "startChar": 6,
+        "endLine": 12,
+        "endChar": 27
+      },
+      "revId": "496c4dc1692f63fa4988af3c7fa93b48f6364ccf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "632e7a9c_d011db7a",
         "filename": "setup_local_env/configs/prometheus.yml",
         "patchSetId": 1
@@ -90,6 +136,29 @@
         "startChar": 17,
         "endLine": 26,
         "endChar": 54
+      },
+      "revId": "496c4dc1692f63fa4988af3c7fa93b48f6364ccf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1059c188_8becf8ef",
+        "filename": "setup_local_env/docker-compose.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-29T16:56:35Z",
+      "side": 1,
+      "message": "Might be good  pinpointing it to a version",
+      "range": {
+        "startLine": 17,
+        "startChar": 11,
+        "endLine": 17,
+        "endChar": 26
       },
       "revId": "496c4dc1692f63fa4988af3c7fa93b48f6364ccf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
