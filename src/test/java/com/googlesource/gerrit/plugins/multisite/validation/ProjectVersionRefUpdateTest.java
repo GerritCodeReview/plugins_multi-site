@@ -88,12 +88,16 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   @Test
   public void producerShouldUpdateProjectVersionUponRefUpdatedEvent() throws IOException {
     Context.setForwardedEvent(false);
-    when(sharedRefDb.exists(
-            A_TEST_PROJECT_NAME_KEY, ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF))
-        .thenReturn(true);
-    when(sharedRefDb.exists(
-            A_TEST_PROJECT_NAME_KEY, ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF))
-        .thenReturn(true);
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+            String.class))
+        .thenReturn(Optional.of("26f7ee61bf0e470e8393c884526eec8a9b943a63"));
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)));
     when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
         .thenReturn(true);
     when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
@@ -122,12 +126,16 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   public void producerShouldCreateNewProjectVersionWhenMissingUponRefUpdatedEvent()
       throws IOException {
     Context.setForwardedEvent(false);
-    when(sharedRefDb.exists(
-            A_TEST_PROJECT_NAME_KEY, ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF))
-        .thenReturn(false);
-    when(sharedRefDb.exists(
-            A_TEST_PROJECT_NAME_KEY, ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF))
-        .thenReturn(false);
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+            String.class))
+        .thenReturn(Optional.empty());
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.empty());
 
     when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
         .thenReturn(true);
