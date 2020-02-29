@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b7eba360_7991345a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-29T16:47:29Z",
+      "side": 1,
+      "message": "Is this true? we are still doing a compareAndPut",
+      "range": {
+        "startLine": 10,
+        "startChar": 42,
+        "endLine": 11,
+        "endChar": 69
+      },
+      "revId": "db9a9c7df89d22209fea69127971343c72793388",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27becf4b_377da4ee",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-29T16:47:29Z",
+      "side": 1,
+      "message": "nit: it doesn\u0027t look like we are using the return value anywhere? shall we leave it as a void?",
+      "range": {
+        "startLine": 170,
+        "startChar": 10,
+        "endLine": 170,
+        "endChar": 17
+      },
+      "revId": "db9a9c7df89d22209fea69127971343c72793388",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e82d89e_a04b6402",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-29T16:47:29Z",
+      "side": 1,
+      "message": "IMO it reads easier with a normal IF, but it is just my preference 😊\n\nif (sharedVersion.isPresent() \u0026\u0026 sharedVersion.get() \u003e\u003d newVersion) {\n....\n}",
+      "range": {
+        "startLine": 190,
+        "startChar": 6,
+        "endLine": 190,
+        "endChar": 68
+      },
+      "revId": "db9a9c7df89d22209fea69127971343c72793388",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
