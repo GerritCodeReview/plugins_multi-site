@@ -290,7 +290,7 @@ public class ProjectVersionRefUpdate implements EventListener {
 
     logger.atFine().log("Updating local version for project " + projectNameKey.get());
     try (Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
-      RefUpdate refUpdate = getProjectVersionRefUpdate(repository, lastRefUpdatedTimestamp.get());
+      RefUpdate refUpdate = getProjectVersionRefUpdate(repository, getCurrentGlobalVersionNumber());
       RefUpdate.Result result = refUpdate.update();
       if (!isSuccessful(result)) {
         String message =
@@ -307,6 +307,10 @@ public class ProjectVersionRefUpdate implements EventListener {
       logger.atSevere().withCause(e).log(message);
       throw new LocalProjectVersionUpdateException(message);
     }
+  }
+
+  private long getCurrentGlobalVersionNumber() {
+    return System.currentTimeMillis() / 1000;
   }
 
   private Boolean isSuccessful(RefUpdate.Result result) {
