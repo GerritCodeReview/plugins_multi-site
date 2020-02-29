@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ee9366f_a766aa00",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-02-29T16:10:34Z",
+      "side": 1,
+      "message": "is this\nsleep needed at all ?",
+      "revId": "3fb1b9d64200e71589ba0cbfc5494a84b42863f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
