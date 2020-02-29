@@ -43,8 +43,6 @@ import org.eclipse.jgit.lib.ObjectInserter;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevWalk;
 
 @Singleton
 public class ProjectVersionRefUpdate implements EventListener {
@@ -101,18 +99,16 @@ public class ProjectVersionRefUpdate implements EventListener {
     }
     try {
       Project.NameKey projectNameKey = refUpdatedEvent.getProjectNameKey();
+      long newVersion = getCurrentGlobalVersionNumber();
 
-      Optional<Long> lastRefUpdatedTimestamp = getLastRefUpdatedTimestamp(projectNameKey, refName);
       Optional<RefUpdate> newProjectVersionRefUpdate =
-          updateLocalProjectVersion(projectNameKey, lastRefUpdatedTimestamp);
+          updateLocalProjectVersion(projectNameKey, newVersion);
 
-      if (newProjectVersionRefUpdate.isPresent() && lastRefUpdatedTimestamp.isPresent()) {
-        verLogger.log(projectNameKey, lastRefUpdatedTimestamp.get(), 0L);
+      if (newProjectVersionRefUpdate.isPresent()) {
+        verLogger.log(projectNameKey, newVersion, 0L);
 
         updateSharedProjectVersion(
-            projectNameKey,
-            newProjectVersionRefUpdate.get().getNewObjectId(),
-            lastRefUpdatedTimestamp.get());
+            projectNameKey, newProjectVersionRefUpdate.get().getNewObjectId(), newVersion);
 
         gitReferenceUpdated.fire(projectNameKey, newProjectVersionRefUpdate.get(), null);
       } else {
@@ -140,31 +136,6 @@ public class ProjectVersionRefUpdate implements EventListener {
     ObjectId newId = ins.insert(OBJ_BLOB, Long.toString(version).getBytes(UTF_8));
     ins.flush();
     return newId;
-  }
-
-  private Optional<Long> getLastRefUpdatedTimestamp(Project.NameKey projectNameKey, String refName)
-      throws LocalProjectVersionUpdateException {
-    logger.atFine().log(
-        String.format(
-            "Getting last ref updated time for project %s, ref %s", projectNameKey.get(), refName));
-    try (Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
-      Ref ref = repository.findRef(refName);
-      if (ref == null) {
-        logger.atWarning().log("Unable to find ref " + refName + " in project " + projectNameKey);
-        return Optional.empty();
-      }
-      try (RevWalk walk = new RevWalk(repository)) {
-        RevCommit commit = walk.parseCommit(ref.getObjectId());
-        return Optional.of(Integer.toUnsignedLong(commit.getCommitTime()));
-      }
-    } catch (IOException ioe) {
-      String message =
-          String.format(
-              "Error while getting last ref updated time for project %s, ref %s",
-              projectNameKey.get(), refName);
-      logger.atSevere().withCause(ioe).log(message);
-      throw new LocalProjectVersionUpdateException(message);
-    }
   }
 
   private boolean updateSharedProjectVersion(
@@ -282,21 +253,19 @@ public class ProjectVersionRefUpdate implements EventListener {
   }
 
   private Optional<RefUpdate> updateLocalProjectVersion(
-      Project.NameKey projectNameKey, Optional<Long> lastRefUpdatedTimestamp)
+      Project.NameKey projectNameKey, long newVersionNumber)
       throws LocalProjectVersionUpdateException {
-    if (!lastRefUpdatedTimestamp.isPresent()) {
-      return Optional.empty();
-    }
-
-    logger.atFine().log("Updating local version for project " + projectNameKey.get());
+    logger.atFine().log(
+        "Updating local version for project %s with version %d",
+        projectNameKey.get(), newVersionNumber);
     try (Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
-      RefUpdate refUpdate = getProjectVersionRefUpdate(repository, lastRefUpdatedTimestamp.get());
+      RefUpdate refUpdate = getProjectVersionRefUpdate(repository, newVersionNumber);
       RefUpdate.Result result = refUpdate.update();
       if (!isSuccessful(result)) {
         String message =
             String.format(
                 "RefUpdate failed with result %s for: project=%s, version=%d",
-                result.name(), projectNameKey.get(), lastRefUpdatedTimestamp.get());
+                result.name(), projectNameKey.get(), newVersionNumber);
         logger.atSevere().log(message);
         throw new LocalProjectVersionUpdateException(message);
       }
@@ -307,6 +276,10 @@ public class ProjectVersionRefUpdate implements EventListener {
       logger.atSevere().withCause(e).log(message);
       throw new LocalProjectVersionUpdateException(message);
     }
+  }
+
+  private long getCurrentGlobalVersionNumber() {
+    return System.currentTimeMillis() / 1000;
   }
 
   private Boolean isSuccessful(RefUpdate.Result result) {
