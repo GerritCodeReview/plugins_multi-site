@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5fa41650_81bfbdcb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-29T20:03:11Z",
+      "side": 1,
+      "message": "Yes, we do compareAndPut but using the existing global ref-db value and not the existing local SHA1.",
+      "parentUuid": "b7eba360_7991345a",
+      "range": {
+        "startLine": 10,
+        "startChar": 42,
+        "endLine": 11,
+        "endChar": 69
+      },
+      "revId": "db9a9c7df89d22209fea69127971343c72793388",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "27becf4b_377da4ee",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "5753df55_68736c52",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-29T20:03:11Z",
+      "side": 1,
+      "message": "Good catch, actually this needs to be checked by its caller because IF the local version is not up to date with the global ref-db, there is no point in triggering a replication event for it.",
+      "parentUuid": "27becf4b_377da4ee",
+      "range": {
+        "startLine": 170,
+        "startChar": 10,
+        "endLine": 170,
+        "endChar": 17
+      },
+      "revId": "db9a9c7df89d22209fea69127971343c72793388",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0e82d89e_a04b6402",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 3
@@ -68,6 +116,30 @@
       "revId": "db9a9c7df89d22209fea69127971343c72793388",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5cec8ce3_67784e86",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-29T20:03:11Z",
+      "side": 1,
+      "message": "True, it\u0027s more readable.",
+      "parentUuid": "0e82d89e_a04b6402",
+      "range": {
+        "startLine": 190,
+        "startChar": 6,
+        "endLine": 190,
+        "endChar": 68
+      },
+      "revId": "db9a9c7df89d22209fea69127971343c72793388",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
