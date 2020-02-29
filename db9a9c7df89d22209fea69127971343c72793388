@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "cead7192_adeb7dc0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-02-29T20:04:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5fa41650_81bfbdcb",
+      "range": {
+        "startLine": 10,
+        "startChar": 42,
+        "endLine": 11,
+        "endChar": 69
+      },
+      "revId": "db9a9c7df89d22209fea69127971343c72793388",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "27becf4b_377da4ee",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 3
