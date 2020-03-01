@@ -46,6 +46,30 @@
       "revId": "93ff9c2c115c9e4b917ac5a4cfc527e275c61336",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a4e09445_625e725a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-01T18:42:00Z",
+      "side": 1,
+      "message": "Ok..cool. Makes sense to me. I just wanted to double check.",
+      "parentUuid": "cc422826_9074506e",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 36
+      },
+      "revId": "93ff9c2c115c9e4b917ac5a4cfc527e275c61336",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
