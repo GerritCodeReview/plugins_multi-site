@@ -79,7 +79,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
   @Override
   public Optional<ChangeNotes> getChangeNotes() {
     try (ManualRequestContext ctx = oneOffReqCtx.open()) {
-      this.changeNotes = Optional.ofNullable(changeFinder.findOne(changeId));
+      this.changeNotes = changeFinder.findOne(changeId);
       return changeNotes;
     }
   }

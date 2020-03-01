@@ -88,12 +88,16 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   @Test
   public void producerShouldUpdateProjectVersionUponRefUpdatedEvent() throws IOException {
     Context.setForwardedEvent(false);
-    when(sharedRefDb.exists(
-            A_TEST_PROJECT_NAME_KEY, ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF))
-        .thenReturn(true);
-    when(sharedRefDb.exists(
-            A_TEST_PROJECT_NAME_KEY, ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF))
-        .thenReturn(true);
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+            String.class))
+        .thenReturn(Optional.of("26f7ee61bf0e470e8393c884526eec8a9b943a63"));
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)));
     when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
         .thenReturn(true);
     when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
@@ -112,22 +116,72 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     assertThat(ref).isNotNull();
 
     ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
-    String storedVersion = IOUtils.toString(loader.openStream(), StandardCharsets.UTF_8.name());
-    assertThat(Long.parseLong(storedVersion)).isEqualTo(masterCommit.getCommitTime());
+    long storedVersion =
+        Long.parseLong(IOUtils.toString(loader.openStream(), StandardCharsets.UTF_8.name()));
+    assertThat(storedVersion).isGreaterThan((long) masterCommit.getCommitTime());
 
-    verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, masterCommit.getCommitTime(), 0);
+    verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
+  }
+
+  @Test
+  public void producerShouldUpdateProjectVersionUponForcedPushRefUpdatedEvent() throws Exception {
+    Context.setForwardedEvent(false);
+
+    Thread.sleep(1000L);
+    RevCommit masterPlusOneCommit = repo.branch("master").commit().create();
+
+    Thread.sleep(1000L);
+    repo.branch("master").update(masterCommit);
+
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+            String.class))
+        .thenReturn(Optional.of("26f7ee61bf0e470e8393c884526eec8a9b943a63"));
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)));
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
+        .thenReturn(true);
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
+        .thenReturn(true);
+    when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
+    when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
+
+    new ProjectVersionRefUpdate(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
+        .onEvent(refUpdatedEvent);
+
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
+
+    verify(sharedRefDb, atMost(1))
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+
+    assertThat(ref).isNotNull();
+
+    ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
+    long storedVersion =
+        Long.parseLong(IOUtils.toString(loader.openStream(), StandardCharsets.UTF_8.name()));
+    assertThat(storedVersion).isGreaterThan((long) masterPlusOneCommit.getCommitTime());
+
+    verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
   }
 
   @Test
   public void producerShouldCreateNewProjectVersionWhenMissingUponRefUpdatedEvent()
       throws IOException {
     Context.setForwardedEvent(false);
-    when(sharedRefDb.exists(
-            A_TEST_PROJECT_NAME_KEY, ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF))
-        .thenReturn(false);
-    when(sharedRefDb.exists(
-            A_TEST_PROJECT_NAME_KEY, ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF))
-        .thenReturn(false);
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+            String.class))
+        .thenReturn(Optional.empty());
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.empty());
 
     when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
         .thenReturn(true);
@@ -147,10 +201,11 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     assertThat(ref).isNotNull();
 
     ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
-    String storedVersion = IOUtils.toString(loader.openStream(), StandardCharsets.UTF_8.name());
-    assertThat(Long.parseLong(storedVersion)).isEqualTo(masterCommit.getCommitTime());
+    long storedVersion =
+        Long.parseLong(IOUtils.toString(loader.openStream(), StandardCharsets.UTF_8.name()));
+    assertThat(storedVersion).isGreaterThan((long) masterCommit.getCommitTime());
 
-    verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, masterCommit.getCommitTime(), 0);
+    verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
   }
 
   @Test
