@@ -22,6 +22,30 @@
       "revId": "57534e4f383f15ae25ce0637709a7aee54da5835",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dee62900_ecbf1fd3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-01T18:37:08Z",
+      "side": 1,
+      "message": "Yes, because I need to make sure that masterPlusOneCommit is more recent that masterCommit by at least one second.",
+      "parentUuid": "0546d4f5_dc36891b",
+      "range": {
+        "startLine": 130,
+        "startChar": 5,
+        "endLine": 130,
+        "endChar": 24
+      },
+      "revId": "57534e4f383f15ae25ce0637709a7aee54da5835",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
