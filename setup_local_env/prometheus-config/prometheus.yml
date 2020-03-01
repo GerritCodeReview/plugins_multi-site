@@ -1,0 +1,14 @@
+# my global config
+global:
+  scrape_interval:     10s
+  evaluation_interval: 10s
+
+scrape_configs:
+  - job_name: gerrit
+    static_configs:
+      - targets: ['localhost:18080','localhost:18081']
+    metrics_path: '/plugins/metrics-reporter-prometheus/metrics'
+    params:
+      format: ['prometheus']
+    bearer_token: token
+
