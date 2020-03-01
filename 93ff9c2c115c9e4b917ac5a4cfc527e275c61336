@@ -22,6 +22,30 @@
       "revId": "93ff9c2c115c9e4b917ac5a4cfc527e275c61336",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc422826_9074506e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-01T18:40:02Z",
+      "side": 1,
+      "message": "If there is concurrency, you are right, one could succeed and the other would fail instead. The most important one though is the SHA1 because is the one that allows the replication to proceed. The value would have in a worst case scenario a temporary incorrect metrics exposed, but nothing else.",
+      "parentUuid": "b14d7118_a766d4b7",
+      "range": {
+        "startLine": 207,
+        "startChar": 0,
+        "endLine": 218,
+        "endChar": 36
+      },
+      "revId": "93ff9c2c115c9e4b917ac5a4cfc527e275c61336",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
