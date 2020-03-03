@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b079230e_53da889d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-03T17:56:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17c7015d_e41bfe1a",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 5
+      },
+      "revId": "4ba3320e92eee22907c5cae0f563cb700e832bf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c23c3b2a_89cd2ec2",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
         "patchSetId": 7
@@ -36,6 +60,30 @@
       "writtenOn": "2020-03-03T17:24:57Z",
       "side": 1,
       "message": "Why 1sec? Should that be configurable?",
+      "range": {
+        "startLine": 75,
+        "startChar": 22,
+        "endLine": 75,
+        "endChar": 52
+      },
+      "revId": "4ba3320e92eee22907c5cae0f563cb700e832bf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2621bae_1b5d0a9a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-03T17:56:14Z",
+      "side": 1,
+      "message": "See comment at line #86",
+      "parentUuid": "c23c3b2a_89cd2ec2",
       "range": {
         "startLine": 75,
         "startChar": 22,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "efa77064_6a934aa9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-03T17:56:14Z",
+      "side": 1,
+      "message": "It might take more than one sec. It is an attempt to mitigate the issue. We could insert a multiple retry to make sure we are even more aligned, but the idea was to start simple and see how much the situation will improve with a simple retry.\n\nOnce we will have more metrics from production we can decide if introduce a retry mechanism or something more sophisticated.",
+      "parentUuid": "88440e9b_b9916826",
+      "range": {
+        "startLine": 86,
+        "startChar": 19,
+        "endLine": 86,
+        "endChar": 65
+      },
+      "revId": "4ba3320e92eee22907c5cae0f563cb700e832bf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5b6e2e62_d7bd0924",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
         "patchSetId": 7
@@ -91,6 +163,30 @@
       "revId": "4ba3320e92eee22907c5cae0f563cb700e832bf7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aebb331c_135ee94f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-03T17:56:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b6e2e62_d7bd0924",
+      "range": {
+        "startLine": 100,
+        "startChar": 49,
+        "endLine": 100,
+        "endChar": 69
+      },
+      "revId": "4ba3320e92eee22907c5cae0f563cb700e832bf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
