@@ -15,8 +15,10 @@
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF;
+import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture.A_TEST_PROJECT_NAME;
+import static com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture.A_TEST_PROJECT_NAME_KEY;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doReturn;
 
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
@@ -24,31 +26,62 @@ import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.server.project.ProjectConfig;
+import com.google.gerrit.testing.InMemoryRepositoryManager;
+import com.google.gerrit.testing.InMemoryTestEnvironment;
+import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.DisabledSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.MultisiteReplicationPushFilter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
+import org.eclipse.jgit.junit.LocalDiskRepositoryTestCase;
+import org.eclipse.jgit.junit.TestRepository;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MultisiteReplicationPushFilterTest {
+public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestCase {
+
+  @Rule public InMemoryTestEnvironment testEnvironment = new InMemoryTestEnvironment();
 
   @Mock SharedRefDatabaseWrapper sharedRefDatabaseMock;
 
-  String project = "fooProject";
-  Project.NameKey projectName = new Project.NameKey(project);
+  @Inject private ProjectConfig.Factory projectConfigFactory;
+  @Inject private InMemoryRepositoryManager gitRepositoryManager;
+
+  String project = A_TEST_PROJECT_NAME;
+  Project.NameKey projectName = Project.nameKey(project);
+
+  private TestRepository<InMemoryRepository> repo;
+  private ProjectConfig projectConfig;
+  private RevCommit versionCommit;
+
+  @Before
+  public void setUp() throws Exception {
+      InMemoryRepository inMemoryRepo = gitRepositoryManager.createRepository(A_TEST_PROJECT_NAME_KEY);
+      projectConfig = projectConfigFactory.create(A_TEST_PROJECT_NAME_KEY);
+      projectConfig.load(inMemoryRepo);
+      repo = new TestRepository <>(inMemoryRepo);
+      versionCommit = repo.branch(MULTI_SITE_VERSIONING_REF).commit().create();
+  }
 
   @Test
   public void shouldReturnAllRefUpdatesWhenAllUpToDate() throws Exception {
@@ -57,7 +90,7 @@ public class MultisiteReplicationPushFilterTest {
     doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(sharedRefDatabaseMock);
+        new MultisiteReplicationPushFilter(sharedRefDatabaseMock, gitRepositoryManager);
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactlyElementsIn(refUpdates);
@@ -71,11 +104,39 @@ public class MultisiteReplicationPushFilterTest {
     SharedRefDatabaseWrapper sharedRefDatabase = newSharedRefDatabase(outdatedRef.getSrcRef());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(sharedRefDatabase);
+        new MultisiteReplicationPushFilter(sharedRefDatabase, gitRepositoryManager);
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactly(refUpToDate);
   }
+
+    @Test
+    public void shouldLoadLocalVersionAndNotFilter() throws Exception {
+        RemoteRefUpdate temporaryOutdated = refUpdate("refs/heads/temporaryOutdated");
+        List<RemoteRefUpdate> refUpdates = Collections.singletonList(temporaryOutdated);
+
+        doReturn(false).doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
+
+        MultisiteReplicationPushFilter pushFilter =
+                new MultisiteReplicationPushFilter(sharedRefDatabaseMock, gitRepositoryManager);
+        List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
+
+        assertThat(filteredRefUpdates).containsExactly(temporaryOutdated);
+    }
+
+    @Test
+    public void shouldLoadLocalVersionAndFilter() throws Exception {
+        RemoteRefUpdate temporaryOutdated = refUpdate("refs/heads/temporaryOutdated");
+        List<RemoteRefUpdate> refUpdates = Collections.singletonList(temporaryOutdated);
+
+        doReturn(false).doReturn(false).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
+
+        MultisiteReplicationPushFilter pushFilter =
+                new MultisiteReplicationPushFilter(sharedRefDatabaseMock, gitRepositoryManager);
+        List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
+
+        assertThat(filteredRefUpdates).isEmpty();
+    }
 
   @Test
   public void shouldFilterOutAllOutdatedChangesRef() throws Exception {
@@ -88,7 +149,7 @@ public class MultisiteReplicationPushFilterTest {
     SharedRefDatabaseWrapper sharedRefDatabase = newSharedRefDatabase(changeMetaRef.getSrcRef());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(sharedRefDatabase);
+        new MultisiteReplicationPushFilter(sharedRefDatabase, gitRepositoryManager);
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactly(refUpToDate, refChangeUpToDate);
