@@ -187,6 +187,29 @@
       "revId": "4ba3320e92eee22907c5cae0f563cb700e832bf7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a8487308_20c0279a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-03-03T20:54:02Z",
+      "side": 1,
+      "message": "run GJF 1.7",
+      "range": {
+        "startLine": 112,
+        "startChar": 8,
+        "endLine": 112,
+        "endChar": 17
+      },
+      "revId": "4ba3320e92eee22907c5cae0f563cb700e832bf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
