@@ -14,16 +14,24 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedLockException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefDatabase;
 import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectIdRef;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +43,13 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
   static final Logger repLog = LoggerFactory.getLogger(REPLICATION_LOG_NAME);
 
   private final SharedRefDatabaseWrapper sharedRefDb;
+  private final GitRepositoryManager gitRepositoryManager;
 
   @Inject
-  public MultisiteReplicationPushFilter(SharedRefDatabaseWrapper sharedRefDb) {
+  public MultisiteReplicationPushFilter(
+      SharedRefDatabaseWrapper sharedRefDb, GitRepositoryManager gitRepositoryManager) {
     this.sharedRefDb = sharedRefDb;
+    this.gitRepositoryManager = gitRepositoryManager;
   }
 
   @Override
@@ -50,9 +61,30 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
             .filter(
                 refUpdate -> {
                   String ref = refUpdate.getSrcRef();
-                  try {
+                  try (Repository repository =
+                      gitRepositoryManager.openRepository(Project.NameKey.parse(projectName))) {
                     if (sharedRefDb.isUpToDate(
                         projectName, SharedRefDatabase.newRef(ref, refUpdate.getNewObjectId()))) {
+                      return true;
+                    }
+                    // The ref coming from the event might be old compared to the local version.
+                    // Valid refs won't be replicated because of this misalignment.
+                    // Reading the local ref and re-trying the comparison, after a short sleep,
+                    // could mitigate the issue.
+                    int waitBeforeReloadLocalVersionMs = 1000;
+                    repLog.debug(
+                        "{} is not up-to-date with the shared-refdb. Reload local ref in '{} ms' and re-check",
+                        refUpdate,
+                        waitBeforeReloadLocalVersionMs);
+                    Thread.sleep(waitBeforeReloadLocalVersionMs);
+                    Optional<ObjectId> objectIdVersion =
+                        getProjectLocalObjectIdVersion(repository, ref);
+                    if (objectIdVersion.isPresent()
+                        && sharedRefDb.isUpToDate(
+                            projectName,
+                            new ObjectIdRef.Unpeeled(
+                                Ref.Storage.NETWORK, ref, objectIdVersion.get()))) {
+                      repLog.debug("{} is up-to-date after retrying", objectIdVersion);
                       return true;
                     }
                     repLog.warn(
@@ -61,6 +93,17 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
                   } catch (SharedLockException e) {
                     repLog.warn(
                         "{} is locked on shared-refdb and thus will NOT BE replicated", refUpdate);
+                  } catch (IOException ioe) {
+                    repLog.error(
+                        String.format(
+                            "Project '%s' not found. Error: %s", projectName, ioe.getMessage()));
+                    return false;
+                  } catch (InterruptedException ie) {
+                    repLog.error(
+                        String.format(
+                            "Error while waiting for next check for %s. Error: %s",
+                            projectName, ie.getMessage()));
+                    return false;
                   }
                   if (ref.endsWith(REF_META_SUFFIX)) {
                     outdatedChanges.add(getRootChangeRefPrefix(ref));
@@ -101,5 +144,14 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
     }
 
     return changeMetaRef;
+  }
+
+  private Optional<ObjectId> getProjectLocalObjectIdVersion(Repository repository, String ref) {
+    try {
+      return Optional.of(repository.findRef(ref).getObjectId());
+    } catch (IOException e) {
+      repLog.error((String.format("Cannot find ref '%s'. Error: %s", ref, e.getMessage())));
+    }
+    return Optional.empty();
   }
 }
