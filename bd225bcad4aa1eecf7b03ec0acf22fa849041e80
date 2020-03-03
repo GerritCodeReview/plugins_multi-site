@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "84fd6a0b_cdb70d9e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-03T16:19:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "880bf798_f5c5567d",
+      "range": {
+        "startLine": 66,
+        "startChar": 22,
+        "endLine": 66,
+        "endChar": 57
+      },
+      "revId": "bd225bcad4aa1eecf7b03ec0acf22fa849041e80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ff147136_9958ac65",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
         "patchSetId": 3
@@ -71,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "823a149b_1c8a4abc",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-03T16:19:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff147136_9958ac65",
+      "range": {
+        "startLine": 75,
+        "startChar": 20,
+        "endLine": 75,
+        "endChar": 31
+      },
+      "revId": "bd225bcad4aa1eecf7b03ec0acf22fa849041e80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8be4b83d_c7e487f3",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
         "patchSetId": 3
@@ -91,6 +139,30 @@
       "revId": "bd225bcad4aa1eecf7b03ec0acf22fa849041e80",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa454835_d1327b7d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-03T16:19:33Z",
+      "side": 1,
+      "message": "Nope, it is coming from the sleep",
+      "parentUuid": "8be4b83d_c7e487f3",
+      "range": {
+        "startLine": 93,
+        "startChar": 52,
+        "endLine": 93,
+        "endChar": 76
+      },
+      "revId": "bd225bcad4aa1eecf7b03ec0acf22fa849041e80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
