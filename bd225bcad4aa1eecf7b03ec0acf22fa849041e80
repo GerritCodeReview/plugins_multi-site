@@ -213,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "3e316e5c_9c259405",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-03T17:16:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e381c303_b3932ad6",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 82
+      },
+      "revId": "bd225bcad4aa1eecf7b03ec0acf22fa849041e80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2bc3dec6_9cd2fb6f",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/MultisiteReplicationPushFilterTest.java",
         "patchSetId": 3
@@ -233,6 +257,30 @@
       "revId": "bd225bcad4aa1eecf7b03ec0acf22fa849041e80",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ea7bd94_3e0b56cb",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/MultisiteReplicationPushFilterTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-03T17:16:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bc3dec6_9cd2fb6f",
+      "range": {
+        "startLine": 84,
+        "startChar": 32,
+        "endLine": 84,
+        "endChar": 57
+      },
+      "revId": "bd225bcad4aa1eecf7b03ec0acf22fa849041e80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
