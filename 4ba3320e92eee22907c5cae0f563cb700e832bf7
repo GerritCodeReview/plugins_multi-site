@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "17c7015d_e41bfe1a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-03-03T17:24:57Z",
+      "side": 1,
+      "message": "This should be try with resources to make sure that we are closing repo manager",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 5
+      },
+      "revId": "4ba3320e92eee22907c5cae0f563cb700e832bf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c23c3b2a_89cd2ec2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-03-03T17:24:57Z",
+      "side": 1,
+      "message": "Why 1sec? Should that be configurable?",
+      "range": {
+        "startLine": 75,
+        "startChar": 22,
+        "endLine": 75,
+        "endChar": 52
+      },
+      "revId": "4ba3320e92eee22907c5cae0f563cb700e832bf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88440e9b_b9916826",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-03-03T17:24:57Z",
+      "side": 1,
+      "message": "I\u0027m not sure if I understand what we want to achieve here. Why after I sec ref should appear in the local repo? Can this take more than one sec?",
+      "range": {
+        "startLine": 86,
+        "startChar": 19,
+        "endLine": 86,
+        "endChar": 65
+      },
+      "revId": "4ba3320e92eee22907c5cae0f563cb700e832bf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5b6e2e62_d7bd0924",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-03-03T17:24:57Z",
+      "side": 1,
+      "message": "We should be more explicit and distinguish between lock exception and InterruptedException",
+      "range": {
+        "startLine": 100,
+        "startChar": 49,
+        "endLine": 100,
+        "endChar": 69
+      },
+      "revId": "4ba3320e92eee22907c5cae0f563cb700e832bf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
