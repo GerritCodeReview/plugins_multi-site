@@ -16,31 +16,45 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
 import com.google.gerrit.reviewdb.client.Project;
+import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
+
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF;
+
 @Singleton
 public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String REF_META_SUFFIX = "/meta";
   static final String REPLICATION_LOG_NAME = "replication_log";
   static final Logger repLog = LoggerFactory.getLogger(REPLICATION_LOG_NAME);
 
   private final SharedRefDatabaseWrapper sharedRefDb;
+  private final GitRepositoryManager gitRepositoryManager;
 
   @Inject
-  public MultisiteReplicationPushFilter(SharedRefDatabaseWrapper sharedRefDb) {
+  public MultisiteReplicationPushFilter(SharedRefDatabaseWrapper sharedRefDb, GitRepositoryManager gitRepositoryManager) {
     this.sharedRefDb = sharedRefDb;
+    this.gitRepositoryManager = gitRepositoryManager;
   }
 
   @Override
@@ -53,6 +67,7 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
                 refUpdate -> {
                   String ref = refUpdate.getSrcRef();
                   try {
+                    Thread.sleep(1000);
                     if (sharedRefDb.isUpToDate(
                         new Project.NameKey(projectName),
                         new ObjectIdRef.Unpeeled(
@@ -60,9 +75,24 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
                       return true;
                     }
                     repLog.warn(
+                              "{} is not up-to-date with the shared-refdb...reload local ref and re-check",
+                              refUpdate);
+                    Thread.sleep(1000);
+                    Optional <ObjectId> oId =  getProjectLocalObjectIdVersion(projectName);
+                    // XXX: What is it is empty??
+                    if (sharedRefDb.isUpToDate(
+                              Project.nameKey(projectName),
+                              new ObjectIdRef.Unpeeled(
+                                      Ref.Storage.NETWORK, ref, oId.get()))) {
+                        repLog.warn(
+                                "{} is up-to-date after retrying",
+                                oId);
+                        return true;
+                    }
+                    repLog.warn(
                         "{} is not up-to-date with the shared-refdb and thus will NOT BE replicated",
                         refUpdate);
-                  } catch (GlobalRefDbLockException e) {
+                  } catch (GlobalRefDbLockException | InterruptedException e) {
                     repLog.warn(
                         "{} is locked on shared-refdb and thus will NOT BE replicated", refUpdate);
                   }
@@ -105,5 +135,17 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
     }
 
     return changeMetaRef;
+  }
+
+  private Optional<ObjectId> getProjectLocalObjectIdVersion(String projectName) {
+    try (Repository repository =
+                 gitRepositoryManager.openRepository(Project.NameKey.parse(projectName))) {
+      return Optional.of(repository.findRef(MULTI_SITE_VERSIONING_REF).getObjectId());
+    } catch (RepositoryNotFoundException re) {
+      logger.atFine().log("Project '%s' not found", projectName);
+    } catch (IOException e) {
+      logger.atSevere().withCause(e).log("Cannot read local project '%s' version", projectName);
+    }
+    return Optional.empty();
   }
 }
