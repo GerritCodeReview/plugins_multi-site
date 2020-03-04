@@ -22,6 +22,30 @@
       "revId": "1f0f56208b1edac4a738faa43ef1593a8348d723",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4a5b9a76_f2c59f13",
+        "filename": "setup_local_env/docker-compose-linux.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-03-04T19:13:07Z",
+      "side": 1,
+      "message": "You are right it will work in that case",
+      "parentUuid": "f2b9a054_f69bfe5d",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "1f0f56208b1edac4a738faa43ef1593a8348d723",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
