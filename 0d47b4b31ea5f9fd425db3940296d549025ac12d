@@ -1,0 +1,251 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4ceff03b_44b25298",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-04T15:53:02Z",
+      "side": 1,
+      "message": "Why opening and closing the repository for every ref?\nA replication event cannot be associated with more than one repository, it\u0027s worth opening only once.",
+      "range": {
+        "startLine": 64,
+        "startChar": 18,
+        "endLine": 65,
+        "endChar": 94
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64cad471_73e1252e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-04T15:53:02Z",
+      "side": 1,
+      "message": "This should be a constant and defined as static private final.\nAlternatively, you could make it configurable, but there\u0027s no need for now to do so.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 61
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "57b575b8_a6c78259",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-04T15:53:02Z",
+      "side": 1,
+      "message": "This is not useful, we should log:\n- project name\n- ref\n- local SHA1\n- global SHA1",
+      "range": {
+        "startLine": 77,
+        "startChar": 24,
+        "endLine": 77,
+        "endChar": 33
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bdc9bdfb_209f55b0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-04T15:53:02Z",
+      "side": 1,
+      "message": "This should be done with some random component IMHO.",
+      "range": {
+        "startLine": 79,
+        "startChar": 20,
+        "endLine": 79,
+        "endChar": 65
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac280190_033661bf",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-04T15:53:02Z",
+      "side": 1,
+      "message": "Exception should be logged with Flogger, so that includes also the stack trace.",
+      "range": {
+        "startLine": 99,
+        "startChar": 78,
+        "endLine": 99,
+        "endChar": 81
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a739d38_70f74927",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-04T15:53:02Z",
+      "side": 1,
+      "message": "IOException doesn\u0027t mean that the project was not found. If the project wasn\u0027t there, it could not have generated replication events on it.",
+      "range": {
+        "startLine": 99,
+        "startChar": 42,
+        "endLine": 99,
+        "endChar": 51
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "321545de_18e692c6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-04T15:53:02Z",
+      "side": 1,
+      "message": "Causes NPE if the ref was not found.\nUse Optional.ofNullable()",
+      "range": {
+        "startLine": 151,
+        "startChar": 22,
+        "endLine": 151,
+        "endChar": 24
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "faa10514_28b5419d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-04T15:53:02Z",
+      "side": 1,
+      "message": "Should be exactRef() because we know that this is coming from the system and is going to be the full ref name.",
+      "range": {
+        "startLine": 151,
+        "startChar": 36,
+        "endLine": 151,
+        "endChar": 43
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "54fc12bc_0fbeb065",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-04T15:53:02Z",
+      "side": 1,
+      "message": "We already manage IOExceptions in the caller, why not just re-throw it?",
+      "range": {
+        "startLine": 152,
+        "startChar": 13,
+        "endLine": 152,
+        "endChar": 26
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c17883c2_3cf22b7e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-04T15:53:02Z",
+      "side": 1,
+      "message": "This needs to be traced with Flogger.",
+      "range": {
+        "startLine": 152,
+        "startChar": 25,
+        "endLine": 152,
+        "endChar": 26
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1bdbf9dc_79cf5dbd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-04T15:53:02Z",
+      "side": 1,
+      "message": "Should also provide the project name.",
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
