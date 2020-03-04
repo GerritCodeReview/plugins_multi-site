@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6e0abc42_a4b8042b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-04T17:30:11Z",
+      "side": 1,
+      "message": "Damn, my bad. I put it at the very beginning of the method for this exact reason, and then moved it down here at some point...I am going to move it back.",
+      "parentUuid": "4ceff03b_44b25298",
+      "range": {
+        "startLine": 64,
+        "startChar": 18,
+        "endLine": 65,
+        "endChar": 94
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "64cad471_73e1252e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
         "patchSetId": 9
@@ -45,6 +69,30 @@
       "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c7a417b_dc7a07bf",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-04T17:30:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64cad471_73e1252e",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 61
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "913ba89a_2634ac3c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-04T17:30:11Z",
+      "side": 1,
+      "message": "Logged all the field but global SHA1, since we don\u0027t have it here.",
+      "parentUuid": "57b575b8_a6c78259",
+      "range": {
+        "startLine": 77,
+        "startChar": 24,
+        "endLine": 77,
+        "endChar": 33
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bdc9bdfb_209f55b0",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
         "patchSetId": 9
@@ -91,6 +163,30 @@
       "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d0b159f_95132e11",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-04T17:30:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdc9bdfb_209f55b0",
+      "range": {
+        "startLine": 79,
+        "startChar": 20,
+        "endLine": 79,
+        "endChar": 65
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -140,6 +236,54 @@
     },
     {
       "key": {
+        "uuid": "e5e023a4_8e23ad34",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-04T17:30:11Z",
+      "side": 1,
+      "message": "We use LoggerFactory everywhere in the module. I could add the stacktrace in the log. WDYT?",
+      "parentUuid": "ac280190_033661bf",
+      "range": {
+        "startLine": 99,
+        "startChar": 78,
+        "endLine": 99,
+        "endChar": 81
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1498d63_93c3c766",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-04T17:30:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a739d38_70f74927",
+      "range": {
+        "startLine": 99,
+        "startChar": 42,
+        "endLine": 99,
+        "endChar": 51
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "321545de_18e692c6",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
         "patchSetId": 9
@@ -183,6 +327,54 @@
       "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec300f70_37eef681",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-04T17:30:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "faa10514_28b5419d",
+      "range": {
+        "startLine": 151,
+        "startChar": 36,
+        "endLine": 151,
+        "endChar": 43
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9edf9ad4_cc2a7212",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-04T17:30:11Z",
+      "side": 1,
+      "message": "good catch. Done.",
+      "parentUuid": "321545de_18e692c6",
+      "range": {
+        "startLine": 151,
+        "startChar": 22,
+        "endLine": 151,
+        "endChar": 24
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -232,6 +424,54 @@
     },
     {
       "key": {
+        "uuid": "cfab5333_2cc755d8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-04T17:30:11Z",
+      "side": 1,
+      "message": "Not anymore, hence handling here.",
+      "parentUuid": "54fc12bc_0fbeb065",
+      "range": {
+        "startLine": 152,
+        "startChar": 13,
+        "endLine": 152,
+        "endChar": 26
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e854f42d_c924fd46",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-04T17:30:11Z",
+      "side": 1,
+      "message": "We use LoggerFactory everywhere in the module. I could add the stacktrace in the log. WDYT?",
+      "parentUuid": "c17883c2_3cf22b7e",
+      "range": {
+        "startLine": 152,
+        "startChar": 25,
+        "endLine": 152,
+        "endChar": 26
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1bdbf9dc_79cf5dbd",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
         "patchSetId": 9
@@ -246,6 +486,24 @@
       "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5175c27c_c6e1e1d7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-04T17:30:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bdbf9dc_79cf5dbd",
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
