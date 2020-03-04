@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f2b9a054_f69bfe5d",
+        "filename": "setup_local_env/docker-compose-linux.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-04T18:10:04Z",
+      "side": 1,
+      "message": "What about a unique docker compose file where we switch between \"bridge\" and \"host\" depending on the OS?",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "1f0f56208b1edac4a738faa43ef1593a8348d723",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
