@@ -308,6 +308,30 @@
     },
     {
       "key": {
+        "uuid": "b52cb5d4_16efdd51",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-05T13:22:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fe797e2_93f05702",
+      "range": {
+        "startLine": 99,
+        "startChar": 78,
+        "endLine": 99,
+        "endChar": 81
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "321545de_18e692c6",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
         "patchSetId": 9
