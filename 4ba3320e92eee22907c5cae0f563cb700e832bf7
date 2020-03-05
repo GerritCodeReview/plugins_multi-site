@@ -167,6 +167,30 @@
     },
     {
       "key": {
+        "uuid": "e745e48a_02daaff5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-05T13:30:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "efa77064_6a934aa9",
+      "range": {
+        "startLine": 86,
+        "startChar": 19,
+        "endLine": 86,
+        "endChar": 65
+      },
+      "revId": "4ba3320e92eee22907c5cae0f563cb700e832bf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5b6e2e62_d7bd0924",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
         "patchSetId": 7
