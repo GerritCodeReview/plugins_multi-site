@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "492f7580_43f75fc6",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 9
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-05T16:21:33Z",
+      "side": 1,
+      "message": "Why can\u0027t we use this mode for linux as well?",
+      "range": {
+        "startLine": 439,
+        "startChar": 0,
+        "endLine": 440,
+        "endChar": 30
+      },
+      "revId": "16172bc45c70dc712a4b75b02fa575e7b5ad1485",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
