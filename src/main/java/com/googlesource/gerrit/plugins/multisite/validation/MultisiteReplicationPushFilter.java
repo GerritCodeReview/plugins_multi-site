@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.server.git.GitRepositoryManager;
@@ -27,12 +28,10 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
@@ -68,57 +67,16 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
           remoteUpdatesList.stream()
               .filter(
                   refUpdate -> {
-                    String ref = refUpdate.getSrcRef();
-                    try {
-                      if (sharedRefDb.isUpToDate(
-                          projectName, SharedRefDatabase.newRef(ref, refUpdate.getNewObjectId()))) {
-                        return true;
-                      }
-                      // The ref coming from the event might be old compared to the local version.
-                      // Valid refs won't be replicated because of this misalignment.
-                      // Reading the local ref and re-trying the comparison, after a short sleep,
-                      // could mitigate the issue.
-                      int waitBeforeReloadLocalVersionMs =
-                          MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS
-                              + new Random().nextInt(RANDOM_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS);
-                      repLog.debug(
-                          String.format(
-                              "'%s' is not up-to-date for project '%s' [local='%s']. Reload local ref in '%d ms' and re-check",
-                              ref,
-                              projectName,
-                              refUpdate.getNewObjectId(),
-                              waitBeforeReloadLocalVersionMs));
-                      Thread.sleep(waitBeforeReloadLocalVersionMs);
-                      Optional<ObjectId> objectIdVersion =
-                          getProjectLocalObjectIdVersion(repository, projectName, ref);
-                      if (objectIdVersion.isPresent()
-                          && sharedRefDb.isUpToDate(
-                              projectName,
-                              new ObjectIdRef.Unpeeled(
-                                  Ref.Storage.NETWORK, ref, objectIdVersion.get()))) {
-                        repLog.debug("{} is up-to-date after retrying", objectIdVersion);
-                        return true;
-                      }
+                    boolean refUpToDate = isUpToDateWithRetry(projectName, repository, refUpdate);
+                    if (!refUpToDate) {
                       repLog.warn(
                           "{} is not up-to-date with the shared-refdb and thus will NOT BE replicated",
                           refUpdate);
-                    } catch (SharedLockException e) {
-                      repLog.warn(
-                          "{} is locked on shared-refdb and thus will NOT BE replicated",
-                          refUpdate);
-                    } catch (InterruptedException ie) {
-                      String message =
-                          String.format(
-                              "Error while waiting for next check for '%s', ref '%s'",
-                              projectName, ref);
-                      repLog.error(message);
-                      logger.atSevere().withCause(ie).log(message);
-                      return false;
+                      if (refUpdate.getSrcRef().endsWith(REF_META_SUFFIX)) {
+                        outdatedChanges.add(getRootChangeRefPrefix(refUpdate.getSrcRef()));
+                      }
                     }
-                    if (ref.endsWith(REF_META_SUFFIX)) {
-                      outdatedChanges.add(getRootChangeRefPrefix(ref));
-                    }
-                    return false;
+                    return refUpToDate;
                   })
               .collect(Collectors.toList());
 
@@ -143,6 +101,54 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
     }
   }
 
+  private boolean isUpToDateWithRetry(
+      String projectName, Repository repository, RemoteRefUpdate refUpdate) {
+    String ref = refUpdate.getSrcRef();
+    try {
+      if (sharedRefDb.isUpToDate(
+          projectName, SharedRefDatabase.newRef(ref, refUpdate.getNewObjectId()))) {
+        return true;
+      }
+
+      randomSleepForMitigatingConditionWhereLocalRefHaveJustBeenChanged(
+          projectName, refUpdate, ref);
+
+      return sharedRefDb.isUpToDate(
+          projectName, SharedRefDatabase.newRef(ref, getNotNullExactRef(repository, ref)));
+    } catch (SharedLockException sle) {
+      String message =
+          String.format("%s is locked on shared-refdb and thus will NOT BE replicated", ref);
+      repLog.error(message);
+      logger.atSevere().withCause(sle).log(message);
+      return false;
+    } catch (IOException ioe) {
+      String message =
+          String.format("Error while extracting ref '%s' for project '%s'", ref, projectName);
+      repLog.error(message);
+      logger.atSevere().withCause(ioe).log(message);
+      return false;
+    }
+  }
+
+  private void randomSleepForMitigatingConditionWhereLocalRefHaveJustBeenChanged(
+      String projectName, RemoteRefUpdate refUpdate, String ref) {
+    int randomSleepTimeMsec =
+        MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS
+            + new Random().nextInt(RANDOM_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS);
+    repLog.debug(
+        String.format(
+            "'%s' is not up-to-date for project '%s' [local='%s']. Reload local ref in '%d ms' and re-check",
+            ref, projectName, refUpdate.getNewObjectId(), randomSleepTimeMsec));
+    try {
+      Thread.sleep(randomSleepTimeMsec);
+    } catch (InterruptedException ie) {
+      String message =
+          String.format("Error while waiting for next check for '%s', ref '%s'", projectName, ref);
+      repLog.error(message);
+      logger.atWarning().withCause(ie).log(message);
+    }
+  }
+
   private String changePrefix(String changeRef) {
     if (changeRef == null || !changeRef.startsWith("refs/changes")) {
       return changeRef;
@@ -163,17 +169,9 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
     return changeMetaRef;
   }
 
-  private Optional<ObjectId> getProjectLocalObjectIdVersion(
-      Repository repository, String projectName, String ref) {
-    try {
-      return Optional.ofNullable(repository.exactRef(ref).getObjectId());
-
-    } catch (IOException ioe) {
-      String message =
-          String.format("Error while extracting ref '%s' for project '%s'", ref, projectName);
-      repLog.error(message);
-      logger.atSevere().withCause(ioe).log(message);
-    }
-    return Optional.empty();
+  private ObjectId getNotNullExactRef(Repository repository, String refName) throws IOException {
+    Ref ref = repository.exactRef(refName);
+    Preconditions.checkNotNull(ref);
+    return ref.getObjectId();
   }
 }
