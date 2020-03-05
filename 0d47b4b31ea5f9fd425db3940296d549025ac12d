@@ -284,6 +284,30 @@
     },
     {
       "key": {
+        "uuid": "4fe797e2_93f05702",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-05T09:37:37Z",
+      "side": 1,
+      "message": "Yes, using Flogger, in addition to the repLog.",
+      "parentUuid": "e5e023a4_8e23ad34",
+      "range": {
+        "startLine": 99,
+        "startChar": 78,
+        "endLine": 99,
+        "endChar": 81
+      },
+      "revId": "0d47b4b31ea5f9fd425db3940296d549025ac12d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "321545de_18e692c6",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
         "patchSetId": 9
