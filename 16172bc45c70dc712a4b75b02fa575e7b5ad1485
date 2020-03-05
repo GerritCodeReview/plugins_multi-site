@@ -22,6 +22,30 @@
       "revId": "16172bc45c70dc712a4b75b02fa575e7b5ad1485",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9ea0fbf_eb134528",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 9
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-03-05T20:00:54Z",
+      "side": 1,
+      "message": "\"host.docker.internal\" works only in docker desktop",
+      "parentUuid": "492f7580_43f75fc6",
+      "range": {
+        "startLine": 439,
+        "startChar": 0,
+        "endLine": 440,
+        "endChar": 30
+      },
+      "revId": "16172bc45c70dc712a4b75b02fa575e7b5ad1485",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
