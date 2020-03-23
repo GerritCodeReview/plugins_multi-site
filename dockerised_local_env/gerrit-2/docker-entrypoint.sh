@@ -11,6 +11,7 @@ if [[ $INIT == 1 ]]; then
 
   echo "Waiting for gerrit1 server to become available."
   sleep 120
+  ssh-keyscan -t rsa -p 29418 gerrit-1 > /var/gerrit/.ssh/known_hosts
   ssh -p 29418 admin@gerrit-1 replication start
   echo "Waiting for replication to complete."
   sleep 30
