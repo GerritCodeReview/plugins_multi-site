@@ -2,11 +2,17 @@
 
 ## Prerequisites
 
- * envsubst:
+* envsubst:
 
 ```bash
 brew install gettext
 brew link --force gettext
+```
+
+* wget:
+
+```bash
+brew install wget
 ```
 
 ## Instructions
