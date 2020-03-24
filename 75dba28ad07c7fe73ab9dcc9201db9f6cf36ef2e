@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "671439e3_05ded892",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-03-24T05:19:21Z",
+      "side": 1,
+      "message": "This is the VSCode specific plugin.  Note that the linter can also be run from the command line.\n\nhttps://github.com/markdownlint/markdownlint",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 53
+      },
+      "revId": "75dba28ad07c7fe73ab9dcc9201db9f6cf36ef2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
