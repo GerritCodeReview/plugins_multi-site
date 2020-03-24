@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ce7ac0be_d18f9600",
+        "filename": "dockerised_local_env/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-03-24T01:42:37Z",
+      "side": 1,
+      "message": "Unrelated to this change, but it looks like this document assumes the development is done on OSX. Maybe we should make it more generic so that it is also usable for Linux-based development?",
+      "revId": "85b48c269fedf164c1c355d653a407cb682dc6b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
