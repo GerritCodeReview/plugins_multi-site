@@ -93,6 +93,30 @@
       "revId": "1009a49f0414eb818235f350774a12db9ac582f9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a670cc3c_3bb11152",
+        "filename": "dockerised_local_env/Makefile",
+        "patchSetId": 3
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1012732
+      },
+      "writtenOn": "2020-03-24T22:10:37Z",
+      "side": 1,
+      "message": "\u003e \u003e Do we have top copy the jar twice? Can\u0027t we copy it only one and create symbolic link second time?\n\u003e \n\u003e Replacing these lines with the ones [1] below doesn\u0027t work. The links don\u0027t resolve to usable jar files it seems, from a class-loading perspective. Note that the resulting links can be used locally as files. They look like properly defined, just not getting the linked jar file loadable at runtime. -Still getting the missing class (at runtime). I then propose to stick to the above copy approach, which works and should be clean enough I think.\n\u003e \n\u003e [1] \u003c\u003d\u003e\n\u003e cp $(GERRIT_1_LIB_DIRECTORY)/multi-site.jar $(GERRIT_2_LIB_DIRECTORY)/multi-site.jar\n\u003e ln -s ../../$(GERRIT_1_PLUGINS_DIRECTORY)/replication.jar $(GERRIT_1_LIB_DIRECTORY)\n\u003e ln -s ../../$(GERRIT_2_PLUGINS_DIRECTORY)/replication.jar $(GERRIT_2_LIB_DIRECTORY)\n\nI\u0027m submitting the whole series since no further feedback on this thread. If anything, we can follow-up through subsequent changes.",
+      "parentUuid": "b86cfb07_bb4eb0b1",
+      "range": {
+        "startLine": 38,
+        "startChar": 1,
+        "endLine": 39,
+        "endChar": 61
+      },
+      "revId": "1009a49f0414eb818235f350774a12db9ac582f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
