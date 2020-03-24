@@ -35,7 +35,8 @@ plugin_websession_flatfile: prepare
 
 plugin_multi_site: prepare
 	$(WGET) $(CI_URL)/plugin-multi-site-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-bin/plugins/multi-site/multi-site.jar -P $(GERRIT_1_LIB_DIRECTORY)
-	cp $(GERRIT_1_LIB_DIRECTORY)/multi-site.jar $(GERRIT_2_LIB_DIRECTORY)/multi-site.jar
+	cp $(GERRIT_1_PLUGINS_DIRECTORY)/replication.jar $(GERRIT_1_LIB_DIRECTORY)
+	cp $(GERRIT_1_LIB_DIRECTORY)/*.jar $(GERRIT_2_LIB_DIRECTORY)
 
 plugin_healthcheck: prepare
 	$(WGET) $(CI_URL)/plugin-healthcheck-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar -P $(GERRIT_1_PLUGINS_DIRECTORY)
