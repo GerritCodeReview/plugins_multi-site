@@ -20,6 +20,7 @@ prepare:
 
 download: gerrit plugin_websession_flatfile \
 	plugin_healthcheck \
+	plugin_delete_project \
 	plugin_multi_site
 
 
@@ -41,6 +42,10 @@ plugin_multi_site: prepare
 plugin_healthcheck: prepare
 	$(WGET) $(CI_URL)/plugin-healthcheck-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar -P $(GERRIT_1_PLUGINS_DIRECTORY)
 	cp $(GERRIT_1_PLUGINS_DIRECTORY)/healthcheck.jar $(GERRIT_2_PLUGINS_DIRECTORY)/healthcheck.jar
+
+plugin_delete_project: prepare
+	$(WGET) $(CI_URL)/plugin-delete-project-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-bin/plugins/delete-project/delete-project.jar -P $(GERRIT_1_PLUGINS_DIRECTORY)
+	cp $(GERRIT_1_PLUGINS_DIRECTORY)/delete-project.jar $(GERRIT_2_PLUGINS_DIRECTORY)/delete-project.jar
 
 build:
 	docker build -t $(MYDIR) ./gerrit-1
