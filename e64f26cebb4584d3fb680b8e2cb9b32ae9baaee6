@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb379d3c_7085e0f0",
+        "filename": "dockerised_local_env/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-03-26T08:59:13Z",
+      "side": 1,
+      "message": "Gerrit mutli-site ?",
+      "range": {
+        "startLine": 57,
+        "startChar": 30,
+        "endLine": 57,
+        "endChar": 51
+      },
+      "revId": "e64f26cebb4584d3fb680b8e2cb9b32ae9baaee6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
