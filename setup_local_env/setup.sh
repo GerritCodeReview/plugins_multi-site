@@ -351,8 +351,8 @@ else
 fi
 
 echo "Downloading zookeeper plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-zookeeper-gh-bazel-$GERRIT_BRANCH/$LAST_BUILD/zookeeper/zookeeper.jar \
-  -O $DEPLOYMENT_LOCATION/zookeeper.jar || { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Abort\
+  wget $GERRIT_CI/plugin-zookeeper-refdb-bazel-$GERRIT_BRANCH/$LAST_BUILD/zookeeper-refdb/zookeeper-refdb.jar \
+  -O $DEPLOYMENT_LOCATION/zookeeper-refdb.jar || { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
 echo "Downloading events-broker library $GERRIT_BRANCH"
@@ -407,7 +407,7 @@ if [ $NEW_INSTALLATION = "true" ]; then
   cp -f $DEPLOYMENT_LOCATION/healthcheck.jar $LOCATION_TEST_SITE_1/plugins/healthcheck.jar
 
   echo "Copy zookeeper plugin"
-  cp -f $DEPLOYMENT_LOCATION/zookeeper.jar $LOCATION_TEST_SITE_1/plugins/zookeeper.jar
+  cp -f $DEPLOYMENT_LOCATION/zookeeper-refdb.jar $LOCATION_TEST_SITE_1/plugins/zookeeper-refdb.jar
 
   echo "Copy events broker library"
   cp -f $DEPLOYMENT_LOCATION/events-broker.jar $LOCATION_TEST_SITE_1/lib/events-broker.jar
