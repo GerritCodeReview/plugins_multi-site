@@ -24,5 +24,7 @@
 /gerrit-2/ssh/known_hosts
 /gerrit-2/tmp/
 
+/gerrit-common/shared-dir/
+
 /syslog-sidecar/logs/
 /syslog-sidecar/socket/
