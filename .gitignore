@@ -1,12 +1,17 @@
+# LC_COLLATE=C sort
+
 .DS_Store
+/.apt_generated/
 /.classpath
+/.primary_build_tool
 /.project
 /.settings/
-/.primary_build_tool
+
 /bazel-bin
+/bazel-genfiles
+/bazel-multi-site
 /bazel-out
 /bazel-reviewers
 /bazel-testlogs
-/bazel-multi-site
+
 /eclipse-out/
-/.apt_generated/
