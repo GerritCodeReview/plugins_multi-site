@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "82dcab9d_2d450c43",
+        "filename": "dockerised_local_env/.gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1012732
+      },
+      "writtenOn": "2020-03-31T15:25:49Z",
+      "side": 1,
+      "message": "\u003e Why do we need a shared directory for multi-site?\n\nUpon running the plugin e2e scenarios, it appears locally as untracked. I don\u0027t know why it gets made by the plugin. So we had to git-ignore it for now.",
+      "parentUuid": "c974a4b8_4b007b9f",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 26
+      },
+      "revId": "1c708e71298130794e1fb0b4c01f967705164d29",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fecba41f_54c0afe9",
         "filename": "src/test/README.md",
         "patchSetId": 1
@@ -42,6 +66,24 @@
     },
     {
       "key": {
+        "uuid": "c1097ba0_a3d813fa",
+        "filename": "src/test/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1012732
+      },
+      "writtenOn": "2020-03-31T15:25:49Z",
+      "side": 1,
+      "message": "\u003e Should we also point the where the instructions are for running this test? (see [2] mentioned in the commit msg).\n\u003e \n\u003e [2] https://gerrit-review.googlesource.com/c/gerrit/+/259212\n\nAlready done and included through the sibling dockerised_local_env/README.md, mentioned at line 3 above.",
+      "parentUuid": "fecba41f_54c0afe9",
+      "revId": "1c708e71298130794e1fb0b4c01f967705164d29",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "907cce42_dca30686",
         "filename": "src/test/scala/com/googlesource/gerrit/plugins/multisite/scenarios/CloneUsingMultiGerrit1.scala",
         "patchSetId": 1
@@ -53,6 +95,30 @@
       "writtenOn": "2020-03-31T12:45:41Z",
       "side": 1,
       "message": "Are those delays meant to wait for the replication to happen between the two nodes?",
+      "range": {
+        "startLine": 39,
+        "startChar": 6,
+        "endLine": 39,
+        "endChar": 28
+      },
+      "revId": "1c708e71298130794e1fb0b4c01f967705164d29",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20315120_e47cd1f9",
+        "filename": "src/test/scala/com/googlesource/gerrit/plugins/multisite/scenarios/CloneUsingMultiGerrit1.scala",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1012732
+      },
+      "writtenOn": "2020-03-31T15:25:49Z",
+      "side": 1,
+      "message": "\u003e Are those delays meant to wait for the replication to happen between the two nodes?\n\nYes.",
+      "parentUuid": "907cce42_dca30686",
       "range": {
         "startLine": 39,
         "startChar": 6,
