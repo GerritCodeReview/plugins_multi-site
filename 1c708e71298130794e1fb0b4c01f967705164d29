@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c974a4b8_4b007b9f",
+        "filename": "dockerised_local_env/.gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-31T12:45:41Z",
+      "side": 1,
+      "message": "Why do we need a shared directory for multi-site?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 26
+      },
+      "revId": "1c708e71298130794e1fb0b4c01f967705164d29",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fecba41f_54c0afe9",
+        "filename": "src/test/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-31T12:45:41Z",
+      "side": 1,
+      "message": "Should we also point the where the instructions are for running this test? (see [2] mentioned in the commit msg).\n\n[2] https://gerrit-review.googlesource.com/c/gerrit/+/259212",
+      "revId": "1c708e71298130794e1fb0b4c01f967705164d29",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "907cce42_dca30686",
+        "filename": "src/test/scala/com/googlesource/gerrit/plugins/multisite/scenarios/CloneUsingMultiGerrit1.scala",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-03-31T12:45:41Z",
+      "side": 1,
+      "message": "Are those delays meant to wait for the replication to happen between the two nodes?",
+      "range": {
+        "startLine": 39,
+        "startChar": 6,
+        "endLine": 39,
+        "endChar": 28
+      },
+      "revId": "1c708e71298130794e1fb0b4c01f967705164d29",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
