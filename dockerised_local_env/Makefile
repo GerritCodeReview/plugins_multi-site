@@ -1,4 +1,4 @@
-GERRIT_JOB=Gerrit-bazel-stable-2.16
+GERRIT_JOB=Gerrit-bazel-stable-3.0
 BUILD_NUM=377
 GERRIT_1_BIN_DIRECTORY=./gerrit-1/bin
 GERRIT_2_BIN_DIRECTORY=./gerrit-2/bin
@@ -20,7 +20,6 @@ prepare:
 
 download: gerrit plugin_websession_flatfile \
 	plugin_healthcheck \
-	plugin_delete_project \
 	plugin_multi_site
 
 
@@ -31,21 +30,17 @@ gerrit: prepare
 	cp $(GERRIT_1_PLUGINS_DIRECTORY)/*.jar $(GERRIT_2_PLUGINS_DIRECTORY)
 
 plugin_websession_flatfile: prepare
-	$(WGET) $(CI_URL)/plugin-websession-flatfile-bazel-master-stable-2.16/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-flatfile/websession-flatfile.jar -P $(GERRIT_1_PLUGINS_DIRECTORY)
+	$(WGET) $(CI_URL)/plugin-websession-flatfile-bazel-master-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-flatfile/websession-flatfile.jar -P $(GERRIT_1_PLUGINS_DIRECTORY)
 	cp $(GERRIT_1_PLUGINS_DIRECTORY)/websession-flatfile.jar $(GERRIT_2_PLUGINS_DIRECTORY)/websession-flatfile.jar
 
 plugin_multi_site: prepare
-	$(WGET) $(CI_URL)/plugin-multi-site-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-bin/plugins/multi-site/multi-site.jar -P $(GERRIT_1_LIB_DIRECTORY)
+	$(WGET) $(CI_URL)/plugin-multi-site-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/multi-site/multi-site.jar -P $(GERRIT_1_LIB_DIRECTORY)
 	cp $(GERRIT_1_PLUGINS_DIRECTORY)/replication.jar $(GERRIT_1_LIB_DIRECTORY)
 	cp $(GERRIT_1_LIB_DIRECTORY)/*.jar $(GERRIT_2_LIB_DIRECTORY)
 
 plugin_healthcheck: prepare
-	$(WGET) $(CI_URL)/plugin-healthcheck-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar -P $(GERRIT_1_PLUGINS_DIRECTORY)
+	$(WGET) $(CI_URL)/plugin-healthcheck-bazel-stable-3.0/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar -P $(GERRIT_1_PLUGINS_DIRECTORY)
 	cp $(GERRIT_1_PLUGINS_DIRECTORY)/healthcheck.jar $(GERRIT_2_PLUGINS_DIRECTORY)/healthcheck.jar
-
-plugin_delete_project: prepare
-	$(WGET) $(CI_URL)/plugin-delete-project-bazel-stable-2.16/lastSuccessfulBuild/artifact/bazel-bin/plugins/delete-project/delete-project.jar -P $(GERRIT_1_PLUGINS_DIRECTORY)
-	cp $(GERRIT_1_PLUGINS_DIRECTORY)/delete-project.jar $(GERRIT_2_PLUGINS_DIRECTORY)/delete-project.jar
 
 build:
 	docker build -t $(MYDIR) ./gerrit-1
