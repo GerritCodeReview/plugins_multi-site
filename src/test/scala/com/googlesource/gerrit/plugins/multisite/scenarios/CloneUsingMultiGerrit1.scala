@@ -22,7 +22,11 @@ import io.gatling.core.structure.ScenarioBuilder
 import scala.concurrent.duration._
 
 class CloneUsingMultiGerrit1 extends GitSimulation {
-  private val data: FileBasedFeederBuilder[Any]#F = jsonFile(resource).queue
+  private val data: FileBasedFeederBuilder[Any]#F#F = jsonFile(resource).convert(url).queue
+
+  override def replaceOverride(in: String): String = {
+    replaceProperty("http_port1", 8081, in)
+  }
 
   private val test: ScenarioBuilder = scenario(name)
     .feed(data)

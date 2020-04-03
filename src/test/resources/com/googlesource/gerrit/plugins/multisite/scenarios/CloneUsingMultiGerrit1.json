@@ -1,6 +1,6 @@
 [
   {
-    "url": "http://localhost:8081/loadtest-repo",
+    "url": "http://HOSTNAME:HTTP_PORT1/loadtest-repo",
     "cmd": "clone"
   }
 ]
