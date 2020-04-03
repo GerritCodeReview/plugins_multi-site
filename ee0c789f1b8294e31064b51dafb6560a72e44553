@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ffa887bb_aede1e75",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1012732
+      },
+      "writtenOn": "2020-04-03T17:34:57Z",
+      "side": 1,
+      "message": "\u003e Show an example how to define custom host and port values?\n\nSee [1] and [2].\n\n[1] https://gerrit-review.googlesource.com/c/gerrit/+/261872/1/Documentation/dev-e2e-tests.txt\n\n[2] https://gerrit-review.googlesource.com/c/gerrit/+/261993/1/Documentation/dev-e2e-tests.txt",
+      "parentUuid": "9f21f87a_ea510e6a",
+      "range": {
+        "startLine": 13,
+        "startChar": 54,
+        "endLine": 14,
+        "endChar": 66
+      },
+      "revId": "ee0c789f1b8294e31064b51dafb6560a72e44553",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "12bba3ff_4f16ab05",
         "filename": "src/test/scala/com/googlesource/gerrit/plugins/multisite/scenarios/CloneUsingMultiGerrit1.scala",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2020-04-03T17:19:50Z",
       "side": 1,
       "message": "Is it case sensitive? In JSON file it is HTTP_PORT1. Where is HOSTNAME substituted?",
+      "range": {
+        "startLine": 28,
+        "startChar": 21,
+        "endLine": 28,
+        "endChar": 31
+      },
+      "revId": "ee0c789f1b8294e31064b51dafb6560a72e44553",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "99a90199_105c04c0",
+        "filename": "src/test/scala/com/googlesource/gerrit/plugins/multisite/scenarios/CloneUsingMultiGerrit1.scala",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1012732
+      },
+      "writtenOn": "2020-04-03T17:34:57Z",
+      "side": 1,
+      "message": "\u003e Is it case sensitive? In JSON file it is HTTP_PORT1. Where is HOSTNAME substituted?\n\nSee [3] which shows how that replaceProperty method is implemented. This term gets converted to uppercase for json keyword matching purposes. And this lowercase version of that term is used elsewhere in the method (for other purposes). As for HOSTNAME, see [3] which also has the code that handles it; aka \u0027hostname\u0027.\n\n[3] https://gerrit-review.googlesource.com/c/gerrit/+/261993/1/e2e-tests/src/test/scala/com/google/gerrit/scenarios/GerritSimulation.scala",
+      "parentUuid": "12bba3ff_4f16ab05",
       "range": {
         "startLine": 28,
         "startChar": 21,
