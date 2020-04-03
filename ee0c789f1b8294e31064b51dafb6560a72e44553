@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9f21f87a_ea510e6a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-04-03T17:19:50Z",
+      "side": 1,
+      "message": "Show an example how to define custom host and port values?",
+      "range": {
+        "startLine": 13,
+        "startChar": 54,
+        "endLine": 14,
+        "endChar": 66
+      },
+      "revId": "ee0c789f1b8294e31064b51dafb6560a72e44553",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12bba3ff_4f16ab05",
+        "filename": "src/test/scala/com/googlesource/gerrit/plugins/multisite/scenarios/CloneUsingMultiGerrit1.scala",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-04-03T17:19:50Z",
+      "side": 1,
+      "message": "Is it case sensitive? In JSON file it is HTTP_PORT1. Where is HOSTNAME substituted?",
+      "range": {
+        "startLine": 28,
+        "startChar": 21,
+        "endLine": 28,
+        "endChar": 31
+      },
+      "revId": "ee0c789f1b8294e31064b51dafb6560a72e44553",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
