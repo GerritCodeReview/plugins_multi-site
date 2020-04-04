@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ec50e092_abd1ee36",
+        "filename": "src/test/resources/com/googlesource/gerrit/plugins/multisite/scenarios/CloneUsingMultiGerrit1.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-04-04T08:16:42Z",
+      "side": 1,
+      "message": "Is this underscore intentional?",
+      "range": {
+        "startLine": 3,
+        "startChar": 39,
+        "endLine": 3,
+        "endChar": 40
+      },
+      "revId": "1542a5405947b64df842111e24656a40d4c34d43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
