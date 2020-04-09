@@ -16,42 +16,36 @@ package com.googlesource.gerrit.plugins.multisite.scenarios
 
 import com.google.gerrit.scenarios.GitSimulation
 import io.gatling.core.Predef.{atOnceUsers, _}
-import io.gatling.core.feeder.FileBasedFeederBuilder
-import io.gatling.core.structure.ScenarioBuilder
 
 import scala.concurrent.duration._
 
-class CloneUsingMultiGerrit1 extends GitSimulation {
-  private val data: FileBasedFeederBuilder[Any]#F#F = jsonFile(resource).convert(url).queue
-  private var default: String = name
-
-  def this(default: String) {
-    this()
-    this.default = default
-  }
-
-  override def replaceOverride(in: String): String = {
-    val next = replaceProperty("http_port1", 8081, in)
-    replaceKeyWith("_project", default, next)
-  }
-
-  val test: ScenarioBuilder = scenario(name)
-    .feed(data)
-    .exec(gitRequest)
+class CreateProjectUsingMultiGerritTwice extends GitSimulation {
+  private val default: String = name
 
   private val createProject = new CreateProjectUsingMultiGerrit(default)
   private val deleteProject = new DeleteProjectUsingMultiGerrit(default)
+  private val createItAgain = new CreateProjectUsingMultiGerrit(default)
+  private val verifyProject = new CloneUsingMultiGerrit1(default)
+  private val deleteItAfter = new DeleteProjectUsingMultiGerrit(default)
 
   setUp(
     createProject.test.inject(
       atOnceUsers(1)
     ),
-    test.inject(
+    deleteProject.test.inject(
       nothingFor(21 seconds),
       atOnceUsers(1)
     ),
-    deleteProject.test.inject(
-      nothingFor(23 seconds),
+    createItAgain.test.inject(
+      nothingFor(43 seconds),
+      atOnceUsers(1)
+    ),
+    verifyProject.test.inject(
+      nothingFor(70 seconds),
+      atOnceUsers(1)
+    ),
+    deleteItAfter.test.inject(
+      nothingFor(72 seconds),
       atOnceUsers(1)
     ),
   ).protocols(gitProtocol, httpProtocol)
