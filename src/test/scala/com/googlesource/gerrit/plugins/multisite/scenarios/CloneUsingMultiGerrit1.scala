@@ -35,7 +35,7 @@ class CloneUsingMultiGerrit1 extends GitSimulation {
     replaceKeyWith("_project", default, next)
   }
 
-  val test: ScenarioBuilder = scenario(name)
+  val test: ScenarioBuilder = scenario(unique)
     .feed(data)
     .exec(gitRequest)
 
