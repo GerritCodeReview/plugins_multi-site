@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -76,5 +77,9 @@ public class ForwardedIndexAccountHandler
       log.error("Account {} index failed", account.getKey(), e);
       return false;
     }
+  }
+
+  public Set<Account.Id> pendingAccountsToIndex() {
+    return accountsToIndex.keySet();
   }
 }
