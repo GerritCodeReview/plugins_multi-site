@@ -27,7 +27,7 @@ class DeleteProjectUsingMultiGerrit extends ProjectSimulation {
     this.default = default
   }
 
-  val test: ScenarioBuilder = scenario(name)
+  val test: ScenarioBuilder = scenario(unique)
     .feed(data)
     .exec(httpRequest)
 
