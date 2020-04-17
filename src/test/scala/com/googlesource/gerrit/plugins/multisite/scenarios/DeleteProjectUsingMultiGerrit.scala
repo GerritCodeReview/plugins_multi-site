@@ -22,6 +22,8 @@ import io.gatling.core.structure.ScenarioBuilder
 class DeleteProjectUsingMultiGerrit extends ProjectSimulation {
   private val data: FileBasedFeederBuilder[Any]#F#F = jsonFile(resource).convert(keys).queue
 
+  override def relativeRuntimeWeight = 10
+
   def this(default: String) {
     this()
     this.default = default

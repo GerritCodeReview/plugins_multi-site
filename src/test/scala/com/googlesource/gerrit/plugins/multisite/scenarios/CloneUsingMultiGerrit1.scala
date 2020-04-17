@@ -44,14 +44,15 @@ class CloneUsingMultiGerrit1 extends GitSimulation {
 
   setUp(
     createProject.test.inject(
+      nothingFor(stepWaitTime(createProject) seconds),
       atOnceUsers(1)
     ),
     test.inject(
-      nothingFor(21 seconds),
+      nothingFor(stepWaitTime(this) seconds),
       atOnceUsers(1)
     ),
     deleteProject.test.inject(
-      nothingFor(23 seconds),
+      nothingFor(createProject.maxExecutionTime + maxExecutionTime seconds),
       atOnceUsers(1)
     ),
   ).protocols(gitProtocol, httpProtocol)
