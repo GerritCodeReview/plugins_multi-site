@@ -27,6 +27,10 @@ class CreateChangeUsingMultiGerrit extends GerritSimulation {
   private val default: String = name
   private val numberKey = "_number"
 
+  override def weight: Int = {
+    10
+  }
+
   val test: ScenarioBuilder = scenario(unique)
     .feed(data)
     .exec(httpRequest
@@ -46,15 +50,15 @@ class CreateChangeUsingMultiGerrit extends GerritSimulation {
       atOnceUsers(1)
     ),
     test.inject(
-      nothingFor(21 seconds),
+      nothingFor(createProject.max seconds),
       atOnceUsers(1)
     ),
     deleteChange.test.inject(
-      nothingFor(40 seconds),
+      nothingFor(createProject.max + max seconds),
       atOnceUsers(1)
     ),
     deleteProject.test.inject(
-      nothingFor(60 seconds),
+      nothingFor(createProject.max + max + deleteChange.max seconds),
       atOnceUsers(1)
     ),
   ).protocols(httpProtocol)

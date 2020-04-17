@@ -22,6 +22,10 @@ import io.gatling.core.structure.ScenarioBuilder
 class CreateProjectUsingMultiGerrit extends ProjectSimulation {
   private val data: FileBasedFeederBuilder[Any]#F#F = jsonFile(resource).convert(keys).queue
 
+  override def weight: Int = {
+    15
+  }
+
   def this(default: String) {
     this()
     this.default = default
