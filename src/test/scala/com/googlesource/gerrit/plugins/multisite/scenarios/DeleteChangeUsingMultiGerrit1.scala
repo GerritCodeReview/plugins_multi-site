@@ -14,25 +14,34 @@
 
 package com.googlesource.gerrit.plugins.multisite.scenarios
 
-import com.google.gerrit.scenarios.ProjectSimulation
-import io.gatling.core.Predef._
+import com.google.gerrit.scenarios.GerritSimulation
+import io.gatling.core.Predef.{atOnceUsers, _}
 import io.gatling.core.feeder.FileBasedFeederBuilder
 import io.gatling.core.structure.ScenarioBuilder
+import io.gatling.http.Predef.http
 
-class DeleteProjectUsingMultiGerrit extends ProjectSimulation {
+class DeleteChangeUsingMultiGerrit1 extends GerritSimulation {
   private val data: FileBasedFeederBuilder[Any]#F#F = jsonFile(resource).convert(keys).queue
+  var number: Option[Int] = None
 
-  def this(default: String) {
-    this()
-    this.default = default
+  override def replaceOverride(in: String): String = {
+    replaceProperty("http_port1", 8082, in)
   }
 
   val test: ScenarioBuilder = scenario(unique)
     .feed(data)
-    .exec(httpRequest)
+    .exec(session => {
+      if (number.nonEmpty) {
+        session.set("number", number.get)
+      } else {
+        session
+      }
+    })
+    .exec(http(unique).delete("${url}${number}"))
 
   setUp(
     test.inject(
       atOnceUsers(1)
-    )).protocols(httpProtocol)
+    ),
+  ).protocols(httpProtocol)
 }
