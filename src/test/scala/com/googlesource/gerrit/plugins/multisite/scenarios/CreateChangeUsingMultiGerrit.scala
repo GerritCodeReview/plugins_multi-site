@@ -14,33 +14,32 @@
 
 package com.googlesource.gerrit.plugins.multisite.scenarios
 
-import com.google.gerrit.scenarios.GitSimulation
+import com.google.gerrit.scenarios.GerritSimulation
 import io.gatling.core.Predef.{atOnceUsers, _}
 import io.gatling.core.feeder.FileBasedFeederBuilder
 import io.gatling.core.structure.ScenarioBuilder
+import io.gatling.http.Predef._
 
 import scala.concurrent.duration._
 
-class CloneUsingMultiGerrit1 extends GitSimulation {
+class CreateChangeUsingMultiGerrit extends GerritSimulation {
   private val data: FileBasedFeederBuilder[Any]#F#F = jsonFile(resource).convert(keys).queue
-  private var default: String = name
-
-  def this(default: String) {
-    this()
-    this.default = default
-  }
-
-  override def replaceOverride(in: String): String = {
-    val next = replaceProperty("http_port1", 8081, in)
-    replaceKeyWith("_project", default, next)
-  }
+  private val default: String = name
+  private val numberKey = "_number"
 
   val test: ScenarioBuilder = scenario(unique)
     .feed(data)
-    .exec(gitRequest)
+    .exec(httpRequest
+      .body(ElFileBody(body)).asJson
+      .check(regex("\"" + numberKey + "\":(\\d+),").saveAs(numberKey)))
+    .exec(session => {
+      deleteChange.number = Some(session(numberKey).as[Int])
+      session
+    })
 
   private val createProject = new CreateProjectUsingMultiGerrit(default)
   private val deleteProject = new DeleteProjectUsingMultiGerrit(default)
+  private val deleteChange = new DeleteChangeUsingMultiGerrit1
 
   setUp(
     createProject.test.inject(
@@ -50,9 +49,13 @@ class CloneUsingMultiGerrit1 extends GitSimulation {
       nothingFor(21 seconds),
       atOnceUsers(1)
     ),
-    deleteProject.test.inject(
-      nothingFor(23 seconds),
+    deleteChange.test.inject(
+      nothingFor(40 seconds),
       atOnceUsers(1)
     ),
-  ).protocols(gitProtocol, httpProtocol)
+    deleteProject.test.inject(
+      nothingFor(60 seconds),
+      atOnceUsers(1)
+    ),
+  ).protocols(httpProtocol)
 }
