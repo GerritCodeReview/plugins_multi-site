@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "70690083_171da35d",
+        "filename": "src/test/scala/com/googlesource/gerrit/plugins/multisite/scenarios/DeleteChangeUsingMultiGerrit1.scala",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1012732
+      },
+      "writtenOn": "2020-05-04T14:50:24Z",
+      "side": 1,
+      "message": "Should have been 8081. Will fix this through an upcoming follow-up.",
+      "range": {
+        "startLine": 28,
+        "startChar": 34,
+        "endLine": 28,
+        "endChar": 38
+      },
+      "revId": "4439647db9d9353685667596efcadbbb2538c2c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
