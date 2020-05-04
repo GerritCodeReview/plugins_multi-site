@@ -27,7 +27,7 @@ class DeleteChangeUsingMultiGerrit1 extends GerritSimulation {
   override def relativeRuntimeWeight = 10
 
   override def replaceOverride(in: String): String = {
-    replaceProperty("http_port1", 8082, in)
+    replaceProperty("http_port1", 8081, in)
   }
 
   val test: ScenarioBuilder = scenario(unique)
