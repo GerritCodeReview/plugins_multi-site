@@ -16,13 +16,13 @@ package com.googlesource.gerrit.plugins.multisite.scenarios
 
 import com.google.gerrit.scenarios.GitSimulation
 import io.gatling.core.Predef.{atOnceUsers, _}
-import io.gatling.core.feeder.FileBasedFeederBuilder
+import io.gatling.core.feeder.FeederBuilder
 import io.gatling.core.structure.ScenarioBuilder
 
 import scala.concurrent.duration._
 
 class CloneUsingMultiGerrit1 extends GitSimulation {
-  private val data: FileBasedFeederBuilder[Any]#F#F = jsonFile(resource).convert(keys).queue
+  private val data: FeederBuilder = jsonFile(resource).convert(keys).queue
   private var default: String = name
 
   def this(default: String) {
