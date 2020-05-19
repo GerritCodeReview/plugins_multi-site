@@ -16,14 +16,14 @@ package com.googlesource.gerrit.plugins.multisite.scenarios
 
 import com.google.gerrit.scenarios.GerritSimulation
 import io.gatling.core.Predef.{atOnceUsers, _}
-import io.gatling.core.feeder.FileBasedFeederBuilder
+import io.gatling.core.feeder.FeederBuilder
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef._
 
 import scala.concurrent.duration._
 
 class CreateChangeUsingMultiGerrit extends GerritSimulation {
-  private val data: FileBasedFeederBuilder[Any]#F#F = jsonFile(resource).convert(keys).queue
+  private val data: FeederBuilder = jsonFile(resource).convert(keys).queue
   private val default: String = name
   private val numberKey = "_number"
 
