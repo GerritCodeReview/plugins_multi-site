@@ -23,6 +23,7 @@ import static org.mockito.Mockito.verify;
 
 import com.google.gerrit.entities.Project;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
+import com.googlesource.gerrit.plugins.multisite.SharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedDbSplitBrainException;
@@ -43,6 +44,8 @@ public class RefUpdateValidatorTest implements RefFixture {
       new DefaultSharedRefEnforcement();
 
   @Mock SharedRefDatabaseWrapper sharedRefDb;
+
+  @Mock SharedRefLogger sharedRefLogger;
 
   @Mock RefDatabase localRefDb;
 
@@ -71,14 +74,17 @@ public class RefUpdateValidatorTest implements RefFixture {
     doReturn(refName).when(refUpdate).getName();
     lenient().doReturn(oldUpdateRef.getObjectId()).when(refUpdate).getOldObjectId();
 
-    refUpdateValidator =
-        new RefUpdateValidator(
-            sharedRefDb,
-            validationMetrics,
-            defaultRefEnforcement,
-            new DummyLockWrapper(),
-            A_TEST_PROJECT_NAME,
-            localRefDb);
+    refUpdateValidator = newRefUpdateValidator(sharedRefDb);
+  }
+
+  @Test
+  public void validationShouldSucceedWhenSharedRefDbIsNoop() throws Exception {
+    SharedRefDatabaseWrapper noopSharedRefDbWrapper = new SharedRefDatabaseWrapper(sharedRefLogger);
+
+    Result result =
+        newRefUpdateValidator(noopSharedRefDbWrapper)
+            .executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
+    assertThat(result).isEqualTo(RefUpdate.Result.NEW);
   }
 
   @Test
@@ -185,5 +191,15 @@ public class RefUpdateValidatorTest implements RefFixture {
     verify(sharedRefDb, never())
         .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
     assertThat(result).isEqualTo(RefUpdate.Result.LOCK_FAILURE);
+  }
+
+  private RefUpdateValidator newRefUpdateValidator(SharedRefDatabaseWrapper refDbWrapper) {
+    return new RefUpdateValidator(
+        refDbWrapper,
+        validationMetrics,
+        defaultRefEnforcement,
+        new DummyLockWrapper(),
+        A_TEST_PROJECT_NAME,
+        localRefDb);
   }
 }

@@ -21,11 +21,13 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.NoopSharedRefDatabase;
 import java.util.Optional;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 
 public class SharedRefDatabaseWrapper implements GlobalRefDatabase {
+  private static GlobalRefDatabase NOOP_REFDB = new NoopSharedRefDatabase();
 
   @Inject(optional = true)
   private DynamicItem<GlobalRefDatabase> sharedRefDbDynamicItem;
@@ -95,6 +97,6 @@ public class SharedRefDatabaseWrapper implements GlobalRefDatabase {
   }
 
   private GlobalRefDatabase sharedRefDb() {
-    return sharedRefDbDynamicItem.get();
+    return Optional.ofNullable(sharedRefDbDynamicItem).map(di -> di.get()).orElse(NOOP_REFDB);
   }
 }
