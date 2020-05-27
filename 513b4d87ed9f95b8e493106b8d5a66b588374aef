@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1316f1e8_1ef1f80b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/SharedRefDatabaseWrapper.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-05-27T03:19:27Z",
+      "side": 1,
+      "message": "static final",
+      "range": {
+        "startLine": 30,
+        "startChar": 10,
+        "endLine": 30,
+        "endChar": 16
+      },
+      "revId": "513b4d87ed9f95b8e493106b8d5a66b588374aef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
