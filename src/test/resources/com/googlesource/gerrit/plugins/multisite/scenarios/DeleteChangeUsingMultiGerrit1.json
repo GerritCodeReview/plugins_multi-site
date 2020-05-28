@@ -1,6 +1,6 @@
 [
   {
     "url": "http://HOSTNAME:HTTP_PORT1/a/changes/",
-    "number": "_NUMBER"
+    "number": "NUMBER"
   }
 ]
