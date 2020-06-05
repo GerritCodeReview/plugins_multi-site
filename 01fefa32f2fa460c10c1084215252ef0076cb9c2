@@ -6,11 +6,12 @@
       "updated": "2020-06-05T16:40:33Z"
     },
     "gerritforge:multi-site-format-47168e90078b0b3f11401610930e82830e76bff7": {
-      "state": "RUNNING",
+      "state": "SUCCESSFUL",
       "url": "https://gerrit-ci.gerritforge.com/job/plugin-multi-site-verifier/job/12%252F270412%252F1/1/console",
       "started": "2020-06-05T17:02:50Z",
+      "finished": "2020-06-05T17:03:00Z",
       "created": "2020-06-05T16:40:34Z",
-      "updated": "2020-06-05T17:02:50Z"
+      "updated": "2020-06-05T17:03:00Z"
     }
   }
 }
