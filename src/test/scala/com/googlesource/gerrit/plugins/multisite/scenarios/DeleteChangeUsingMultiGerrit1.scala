@@ -15,10 +15,12 @@
 package com.googlesource.gerrit.plugins.multisite.scenarios
 
 import com.google.gerrit.scenarios.GerritSimulation
+import com.typesafe.config.ConfigFactory
 import io.gatling.core.Predef.{atOnceUsers, _}
 import io.gatling.core.feeder.FeederBuilder
 import io.gatling.core.structure.ScenarioBuilder
 import io.gatling.http.Predef.http
+import io.gatling.http.protocol.HttpProtocolBuilder
 
 class DeleteChangeUsingMultiGerrit1 extends GerritSimulation {
   private val data: FeederBuilder = jsonFile(resource).convert(keys).queue
@@ -29,6 +31,10 @@ class DeleteChangeUsingMultiGerrit1 extends GerritSimulation {
   override def replaceOverride(in: String): String = {
     replaceProperty("http_port1", 8081, in)
   }
+
+  val httpForReplica: HttpProtocolBuilder = http.basicAuth(
+    conf.httpConfiguration.userName,
+    ConfigFactory.load().getString("http.password_replica"))
 
   val test: ScenarioBuilder = scenario(unique)
     .feed(data)
@@ -44,5 +50,5 @@ class DeleteChangeUsingMultiGerrit1 extends GerritSimulation {
   setUp(
     test.inject(
       atOnceUsers(1)
-    )).protocols(httpProtocol)
+    )).protocols(httpForReplica)
 }
