@@ -49,6 +49,6 @@ class DeleteChangeUsingMultiGerrit1 extends GerritSimulation {
 
   setUp(
     test.inject(
-      atOnceUsers(1)
+      atOnceUsers(single)
     )).protocols(httpForReplica)
 }

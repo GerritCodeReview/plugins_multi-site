@@ -31,23 +31,23 @@ class CreateProjectUsingMultiGerritTwice extends GitSimulation {
   setUp(
     createProject.test.inject(
       nothingFor(stepWaitTime(createProject) seconds),
-      atOnceUsers(1)
+      atOnceUsers(single)
     ),
     deleteProject.test.inject(
       nothingFor(stepWaitTime(deleteProject) seconds),
-      atOnceUsers(1)
+      atOnceUsers(single)
     ),
     createItAgain.test.inject(
       nothingFor(stepWaitTime(createItAgain) seconds),
-      atOnceUsers(1)
+      atOnceUsers(single)
     ),
     verifyProject.test.inject(
       nothingFor(stepWaitTime(verifyProject) seconds),
-      atOnceUsers(1)
+      atOnceUsers(single)
     ),
     deleteItAfter.test.inject(
       nothingFor(stepWaitTime(deleteItAfter) seconds),
-      atOnceUsers(1)
+      atOnceUsers(single)
     ),
   ).protocols(gitProtocol, httpProtocol)
 }
