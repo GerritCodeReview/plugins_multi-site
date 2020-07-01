@@ -46,19 +46,19 @@ class CreateChangeUsingMultiGerrit extends GerritSimulation {
   setUp(
     createProject.test.inject(
       nothingFor(stepWaitTime(createProject) seconds),
-      atOnceUsers(1)
+      atOnceUsers(single)
     ),
     test.inject(
       nothingFor(stepWaitTime(this) seconds),
-      atOnceUsers(1)
+      atOnceUsers(single)
     ),
     deleteChange.test.inject(
       nothingFor(stepWaitTime(deleteChange) seconds),
-      atOnceUsers(1)
+      atOnceUsers(single)
     ).protocols(deleteChange.httpForReplica),
     deleteProject.test.inject(
       nothingFor(stepWaitTime(deleteProject) seconds),
-      atOnceUsers(1)
+      atOnceUsers(single)
     ),
   ).protocols(httpProtocol)
 }
