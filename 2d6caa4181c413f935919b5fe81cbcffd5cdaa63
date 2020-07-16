@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5518bbe2_c7df8038",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1012732
+      },
+      "writtenOn": "2020-07-16T19:47:41Z",
+      "side": 1,
+      "message": "The reason for this manual VR override is in the base change.",
+      "revId": "2d6caa4181c413f935919b5fe81cbcffd5cdaa63",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
