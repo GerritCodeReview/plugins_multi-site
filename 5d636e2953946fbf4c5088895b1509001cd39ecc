@@ -34,6 +34,24 @@
       "revId": "5d636e2953946fbf4c5088895b1509001cd39ecc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b89e0d2a_4d42b2f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-16T19:44:32Z",
+      "side": 1,
+      "message": "Is a know issue. I upgraded Error Prone version in Bazel 3.4.1 and now it\u0027s mich more stricter. See this announcements: [1]:\n\n  Upgraded java_tools (to version 9.0) including a major Error Prone upgrade (to version 2.4.0).\n  This includes new checks and new diagnostics for existing checks.\n  As a result, you may see new compiler warnings or failures with this release (example fix).\n\nAnd this excuse: [2].\n\n[1] https://blog.bazel.build/2020/07/13/bazel-3-4.html \n[2] https://groups.google.com/d/topic/bazel-dev/3wRTg88r2II/discussion",
+      "parentUuid": "1a786682_dc59d082",
+      "revId": "5d636e2953946fbf4c5088895b1509001cd39ecc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
