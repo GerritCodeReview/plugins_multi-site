@@ -1,0 +1,10 @@
+{
+  "checks": {
+    "gerritforge:multi-site-format-47168e90078b0b3f11401610930e82830e76bff7": {
+      "state": "RUNNING",
+      "started": "2020-07-16T18:32:44Z",
+      "created": "2020-07-16T18:32:44Z",
+      "updated": "2020-07-16T18:32:44Z"
+    }
+  }
+}
