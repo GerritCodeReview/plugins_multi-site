@@ -52,6 +52,23 @@
       "revId": "5d636e2953946fbf4c5088895b1509001cd39ecc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7e479e73_0aa0f36c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-07-17T07:27:14Z",
+      "side": 1,
+      "message": "Let\u0027s merge this, but then I would stop any development on stable-3.2 branch, until it gets fixed.",
+      "revId": "5d636e2953946fbf4c5088895b1509001cd39ecc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
