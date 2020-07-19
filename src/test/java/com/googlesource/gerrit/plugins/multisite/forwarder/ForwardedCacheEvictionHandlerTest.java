@@ -15,14 +15,19 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
 
 import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheStats;
+import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ExecutionException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,19 +35,19 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ForwardedCacheEvictionHandlerTest {
 
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private DynamicMap<Cache<?, ?>> cacheMapMock;
-  @Mock private Cache<?, ?> cacheMock;
+  private Cache<Object, Object> cacheUnderTest;
   private ForwardedCacheEvictionHandler handler;
 
   @Before
   public void setUp() throws Exception {
     handler = new ForwardedCacheEvictionHandler(cacheMapMock);
+    cacheUnderTest = CacheBuilder.newBuilder().build();
   }
 
   @Test
@@ -58,57 +63,149 @@ public class ForwardedCacheEvictionHandlerTest {
   @Test
   public void testSuccessfulCacheEviction() throws Exception {
     CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, Account.id(123));
-    doReturn(cacheMock).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
+    cacheUnderTest.put(entry.getKey(), new Object());
+    doReturn(cacheUnderTest).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
 
     handler.evict(entry);
-    verify(cacheMock).invalidate(entry.getKey());
+    assertThat(cacheUnderTest.getIfPresent(entry.getKey())).isNull();
   }
 
   @Test
   public void testSuccessfulProjectListCacheEviction() throws Exception {
     CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.PROJECT_LIST, null);
-    doReturn(cacheMock).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
+    cacheUnderTest.put("foo", new Object());
+    cacheUnderTest.put("bar", new Object());
+    doReturn(cacheUnderTest).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
 
     handler.evict(entry);
-    verify(cacheMock).invalidateAll();
+    assertThat(cacheUnderTest.getIfPresent("foo")).isNull();
+    assertThat(cacheUnderTest.getIfPresent("bar")).isNull();
   }
 
   @Test
   public void shouldSetAndUnsetForwardedContext() throws Exception {
     CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, Account.id(456));
-    doReturn(cacheMock).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
+    doReturn(cacheUnderTest).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
 
-    // this doAnswer is to allow to assert that context is set to forwarded
-    // while cache eviction is called.
-    doAnswer(
-            (Answer<Void>)
-                invocation -> {
-                  assertThat(Context.isForwardedEvent()).isTrue();
-                  return null;
-                })
-        .when(cacheMock)
-        .invalidate(entry.getKey());
+    cacheUnderTest =
+        new Cache<Object, Object>() {
+
+          @Override
+          public Object getIfPresent(Object key) {
+            return null;
+          }
+
+          @Override
+          public Object get(Object key, Callable<? extends Object> loader)
+              throws ExecutionException {
+            return null;
+          }
+
+          @Override
+          public ImmutableMap<Object, Object> getAllPresent(Iterable<?> keys) {
+            return null;
+          }
+
+          @Override
+          public void put(Object key, Object value) {}
+
+          @Override
+          public void putAll(Map<? extends Object, ? extends Object> m) {}
+
+          @Override
+          public void invalidate(Object key) {
+            assertThat(Context.isForwardedEvent()).isTrue();
+          }
+
+          @Override
+          public void invalidateAll(Iterable<?> keys) {}
+
+          @Override
+          public void invalidateAll() {}
+
+          @Override
+          public long size() {
+            return 0;
+          }
+
+          @Override
+          public CacheStats stats() {
+            return null;
+          }
+
+          @Override
+          public ConcurrentMap<Object, Object> asMap() {
+            return null;
+          }
+
+          @Override
+          public void cleanUp() {}
+        };
 
     assertThat(Context.isForwardedEvent()).isFalse();
     handler.evict(entry);
     assertThat(Context.isForwardedEvent()).isFalse();
-
-    verify(cacheMock).invalidate(entry.getKey());
   }
 
   @Test
   public void shouldSetAndUnsetForwardedContextEvenIfExceptionIsThrown() throws Exception {
     CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, Account.id(789));
-    doReturn(cacheMock).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
+    cacheUnderTest =
+        new Cache<Object, Object>() {
 
-    doAnswer(
-            (Answer<Void>)
-                invocation -> {
-                  assertThat(Context.isForwardedEvent()).isTrue();
-                  throw new RuntimeException();
-                })
-        .when(cacheMock)
-        .invalidate(entry.getKey());
+          @Override
+          public Object getIfPresent(Object key) {
+            return null;
+          }
+
+          @Override
+          public Object get(Object key, Callable<? extends Object> loader)
+              throws ExecutionException {
+            return null;
+          }
+
+          @Override
+          public ImmutableMap<Object, Object> getAllPresent(Iterable<?> keys) {
+            return null;
+          }
+
+          @Override
+          public void put(Object key, Object value) {}
+
+          @Override
+          public void putAll(Map<? extends Object, ? extends Object> m) {}
+
+          @Override
+          public void invalidate(Object key) {
+            assertThat(Context.isForwardedEvent()).isTrue();
+            throw new RuntimeException();
+          }
+
+          @Override
+          public void invalidateAll(Iterable<?> keys) {}
+
+          @Override
+          public void invalidateAll() {}
+
+          @Override
+          public long size() {
+            return 0;
+          }
+
+          @Override
+          public CacheStats stats() {
+            return null;
+          }
+
+          @Override
+          public ConcurrentMap<Object, Object> asMap() {
+            return null;
+          }
+
+          @Override
+          public void cleanUp() {}
+        };
+    doReturn(cacheUnderTest).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
 
     assertThat(Context.isForwardedEvent()).isFalse();
     try {
@@ -116,7 +213,5 @@ public class ForwardedCacheEvictionHandlerTest {
     } catch (RuntimeException e) {
     }
     assertThat(Context.isForwardedEvent()).isFalse();
-
-    verify(cacheMock).invalidate(entry.getKey());
   }
 }
