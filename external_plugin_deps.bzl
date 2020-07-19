@@ -2,12 +2,6 @@ load("//tools/bzl:maven_jar.bzl", "maven_jar")
 
 def external_plugin_deps():
     maven_jar(
-        name = "wiremock",
-        artifact = "com.github.tomakehurst:wiremock-standalone:2.23.2",
-        sha1 = "4a920d6c04fd2444c7bc94880adc8313f5b31ba3",
-    )
-
-    maven_jar(
         name = "mockito",
         artifact = "org.mockito:mockito-core:2.27.0",
         sha1 = "835fc3283b481f4758b8ef464cd560c649c08b00",

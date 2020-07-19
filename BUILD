@@ -56,7 +56,6 @@ java_library(
         "@curator-test//jar",
         "@mockito//jar",
         "@testcontainers-kafka//jar",
-        "@wiremock//jar",
         "//lib/testcontainers",
         "//plugins/replication",
     ],
