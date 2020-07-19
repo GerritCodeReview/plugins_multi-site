@@ -17,9 +17,9 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
-        "@global-refdb//jar",
-        "@events-broker//jar",
         ":replication-neverlink",
+        "@events-broker//jar",
+        "@global-refdb//jar",
     ],
 )
 
