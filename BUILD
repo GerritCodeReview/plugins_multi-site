@@ -32,6 +32,7 @@ java_library(
 junit_tests(
     name = "multi_site_tests",
     srcs = glob(["src/test/java/**/*.java"]),
+    javacopts = ["-Xep:DoNotMock:OFF"],
     resources = glob(["src/test/resources/**/*"]),
     tags = [
         "local",
