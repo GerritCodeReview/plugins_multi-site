@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6b89efae_25ed9300",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-07-19T20:48:40Z",
+      "side": 1,
+      "message": "I just translated the same tests \"as-is\". This test can be redesigned or removed in a follow-up change, agreed.",
+      "parentUuid": "3c88f43c_ada51ba0",
+      "range": {
+        "startLine": 115,
+        "startChar": 10,
+        "endLine": 118,
+        "endChar": 11
+      },
+      "revId": "ff221f6ba904ad149b9f97849a28425a804cfed5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "edbe8778_8db006a8",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerTest.java",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "ff221f6ba904ad149b9f97849a28425a804cfed5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e36f20b_4fc9fcb5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-07-19T20:48:40Z",
+      "side": 1,
+      "message": "Same comment as before: I have no idea why this test exists and it can be possibly removed in a follow-up change, agreed.",
+      "parentUuid": "edbe8778_8db006a8",
+      "range": {
+        "startLine": 178,
+        "startChar": 10,
+        "endLine": 182,
+        "endChar": 11
+      },
+      "revId": "ff221f6ba904ad149b9f97849a28425a804cfed5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
