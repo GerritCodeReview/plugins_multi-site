@@ -4,6 +4,11 @@
       "state": "SCHEDULED",
       "created": "2020-07-19T12:22:11Z",
       "updated": "2020-07-19T12:22:11Z"
+    },
+    "gerritforge:multi-site-format-47168e90078b0b3f11401610930e82830e76bff7": {
+      "state": "SCHEDULED",
+      "created": "2020-07-19T12:22:12Z",
+      "updated": "2020-07-19T12:22:12Z"
     }
   }
 }
