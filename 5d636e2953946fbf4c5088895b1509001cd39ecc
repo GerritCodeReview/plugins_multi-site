@@ -105,6 +105,24 @@
       "revId": "5d636e2953946fbf4c5088895b1509001cd39ecc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "80841a0d_42981753",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-19T11:57:19Z",
+      "side": 1,
+      "message": "\u003e Another question is, why Bazel doesn\u0027t flag the mocked cache instance as invalid already in stable-3.1 branch?\n\nOK, I figured out why. On stable-3.1 the guava version is older, and doesn\u0027t include this commit, that was only added in 29.0-jre. This was added in this commit: [1].\n\n[1] https://github.com/google/guava/commit/4eea0f79c27864039a653ec4ca09ef7585e439fc",
+      "parentUuid": "25e75a8e_370179e4",
+      "revId": "5d636e2953946fbf4c5088895b1509001cd39ecc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
