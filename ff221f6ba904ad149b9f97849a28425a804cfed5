@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3c88f43c_ada51ba0",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-19T15:19:41Z",
+      "side": 1,
+      "message": "Is this really needed such a boiler plate to check that the context is forwarded? On master the plugin should use instance id facility, right? Can this test then be dropped?",
+      "range": {
+        "startLine": 115,
+        "startChar": 10,
+        "endLine": 118,
+        "endChar": 11
+      },
+      "revId": "ff221f6ba904ad149b9f97849a28425a804cfed5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "edbe8778_8db006a8",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-19T15:19:41Z",
+      "side": 1,
+      "message": "Same here. Why would invalidate() throw an exception in real code path?",
+      "range": {
+        "startLine": 178,
+        "startChar": 10,
+        "endLine": 182,
+        "endChar": 11
+      },
+      "revId": "ff221f6ba904ad149b9f97849a28425a804cfed5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
