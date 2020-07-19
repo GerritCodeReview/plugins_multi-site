@@ -48,7 +48,6 @@ java_library(
     visibility = ["//visibility:public"],
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":multi-site__plugin",
-        "@wiremock//jar",
         "@global-refdb//jar",
         "@events-broker//jar",
         "//plugins/replication",
