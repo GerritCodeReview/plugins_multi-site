@@ -16,6 +16,24 @@
       "revId": "e5f7e00eaed587bb5f7bddbde8a3ccb19a7432d4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b50a165_fcd03f09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-19T14:47:11Z",
+      "side": 1,
+      "message": "Of course the test code can be fixed. See for example, how I fixed quota plugin to not mock test instances: [1]. However, as pointed out in the commit message, it\u0027s not clear to me, how to force specific cache behavior to verify the mock. If I am not missing something very obvious, we can only put real stuff on the cache.\n\nHaving said that, the code is currently broken, and cannot be built by the CI and produce final artifact. So that there is kind of emergency to fix it ASAP.\n\n[1] https://gerrit-review.googlesource.com/c/plugins/quota/+/275913",
+      "parentUuid": "95274a77_23f163bd",
+      "revId": "e5f7e00eaed587bb5f7bddbde8a3ccb19a7432d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
