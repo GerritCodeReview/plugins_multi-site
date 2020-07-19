@@ -87,6 +87,24 @@
       "revId": "5d636e2953946fbf4c5088895b1509001cd39ecc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "25e75a8e_370179e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-19T10:38:16Z",
+      "side": 1,
+      "message": "Another question is, why Bazel doesn\u0027t flag the mocked cache instance as invalid already in stable-3.1 branch?",
+      "parentUuid": "c60e800d_24a81f46",
+      "revId": "5d636e2953946fbf4c5088895b1509001cd39ecc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
