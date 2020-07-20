@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8806dc90_bb294851",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1012732
+      },
+      "writtenOn": "2020-07-20T14:58:16Z",
+      "side": 1,
+      "message": "(Will need rebase on Ic6de322bf or so, once that solution is settled.)",
+      "revId": "b2c17224309b5064c0b0e416e50b646c1ca10a6d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
