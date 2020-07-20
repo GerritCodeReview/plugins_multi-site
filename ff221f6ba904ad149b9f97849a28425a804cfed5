@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "e3f8b498_a4571d63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-20T09:34:14Z",
+      "side": 1,
+      "message": "See related discussion about similar issue in quota plugin change 275913.",
+      "revId": "ff221f6ba904ad149b9f97849a28425a804cfed5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3c88f43c_ada51ba0",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerTest.java",
         "patchSetId": 1
