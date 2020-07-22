@@ -16,6 +16,24 @@
       "revId": "b2c17224309b5064c0b0e416e50b646c1ca10a6d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f5a6e8f4_492ecc69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-07-22T23:37:18Z",
+      "side": 1,
+      "message": "+1, let\u0027s fix stable-3.2 and then merge onto a green branch.",
+      "parentUuid": "8806dc90_bb294851",
+      "revId": "b2c17224309b5064c0b0e416e50b646c1ca10a6d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
