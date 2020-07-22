@@ -37,6 +37,23 @@
     },
     {
       "key": {
+        "uuid": "ea8bfa6d_dbb917ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-07-22T23:32:27Z",
+      "side": 1,
+      "message": "Friendly ping :-) ",
+      "revId": "ff221f6ba904ad149b9f97849a28425a804cfed5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3c88f43c_ada51ba0",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerTest.java",
         "patchSetId": 1
