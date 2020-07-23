@@ -92,7 +92,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
   }
 
   @Test
-  public void newUpdateShouldIncreaseRefUpdateFailureCountWhenFailing() throws IOException {
+  public void newUpdateShouldIncreaseRefUpdateFailureCountWhenFailing() {
 
     doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
 
@@ -106,8 +106,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
   }
 
   @Test
-  public void newUpdateShouldNotIncreaseSplitBrainPreventedCounterIfFailingSharedDbPostUpdate()
-      throws IOException {
+  public void newUpdateShouldNotIncreaseSplitBrainPreventedCounterIfFailingSharedDbPostUpdate() {
 
     doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
     doReturn(false)
@@ -124,8 +123,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
   }
 
   @Test
-  public void newUpdateShouldtIncreaseSplitBrainCounterIfFailingSharedDbPostUpdate()
-      throws IOException {
+  public void newUpdateShouldtIncreaseSplitBrainCounterIfFailingSharedDbPostUpdate() {
 
     doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
     doReturn(false)
@@ -159,7 +157,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
   }
 
   @Test
-  public void deleteShouldIncreaseRefUpdateFailureCountWhenFailing() throws IOException {
+  public void deleteShouldIncreaseRefUpdateFailureCountWhenFailing() {
 
     doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, oldRef);
 
