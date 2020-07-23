@@ -54,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "26c31422_1e26465f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-07-23T05:24:01Z",
+      "side": 1,
+      "message": "OK, Let\u0027s do it.",
+      "parentUuid": "f1024b80_f360db42",
+      "revId": "ff221f6ba904ad149b9f97849a28425a804cfed5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3c88f43c_ada51ba0",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerTest.java",
         "patchSetId": 1
