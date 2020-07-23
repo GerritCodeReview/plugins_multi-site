@@ -19,15 +19,9 @@ import static org.mockito.Mockito.doReturn;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheStats;
-import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.extensions.registration.DynamicMap;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ExecutionException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -80,138 +74,5 @@ public class ForwardedCacheEvictionHandlerTest {
     handler.evict(entry);
     assertThat(cacheUnderTest.getIfPresent("foo")).isNull();
     assertThat(cacheUnderTest.getIfPresent("bar")).isNull();
-  }
-
-  @Test
-  public void shouldSetAndUnsetForwardedContext() throws Exception {
-    CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, Account.id(456));
-    doReturn(cacheUnderTest).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
-
-    cacheUnderTest =
-        new Cache<Object, Object>() {
-
-          @Override
-          public Object getIfPresent(Object key) {
-            return null;
-          }
-
-          @Override
-          public Object get(Object key, Callable<? extends Object> loader)
-              throws ExecutionException {
-            return null;
-          }
-
-          @Override
-          public ImmutableMap<Object, Object> getAllPresent(Iterable<?> keys) {
-            return null;
-          }
-
-          @Override
-          public void put(Object key, Object value) {}
-
-          @Override
-          public void putAll(Map<? extends Object, ? extends Object> m) {}
-
-          @Override
-          public void invalidate(Object key) {
-            assertThat(Context.isForwardedEvent()).isTrue();
-          }
-
-          @Override
-          public void invalidateAll(Iterable<?> keys) {}
-
-          @Override
-          public void invalidateAll() {}
-
-          @Override
-          public long size() {
-            return 0;
-          }
-
-          @Override
-          public CacheStats stats() {
-            return null;
-          }
-
-          @Override
-          public ConcurrentMap<Object, Object> asMap() {
-            return null;
-          }
-
-          @Override
-          public void cleanUp() {}
-        };
-
-    assertThat(Context.isForwardedEvent()).isFalse();
-    handler.evict(entry);
-    assertThat(Context.isForwardedEvent()).isFalse();
-  }
-
-  @Test
-  public void shouldSetAndUnsetForwardedContextEvenIfExceptionIsThrown() throws Exception {
-    CacheEntry entry = new CacheEntry(Constants.GERRIT, Constants.ACCOUNTS, Account.id(789));
-    cacheUnderTest =
-        new Cache<Object, Object>() {
-
-          @Override
-          public Object getIfPresent(Object key) {
-            return null;
-          }
-
-          @Override
-          public Object get(Object key, Callable<? extends Object> loader)
-              throws ExecutionException {
-            return null;
-          }
-
-          @Override
-          public ImmutableMap<Object, Object> getAllPresent(Iterable<?> keys) {
-            return null;
-          }
-
-          @Override
-          public void put(Object key, Object value) {}
-
-          @Override
-          public void putAll(Map<? extends Object, ? extends Object> m) {}
-
-          @Override
-          public void invalidate(Object key) {
-            assertThat(Context.isForwardedEvent()).isTrue();
-            throw new RuntimeException();
-          }
-
-          @Override
-          public void invalidateAll(Iterable<?> keys) {}
-
-          @Override
-          public void invalidateAll() {}
-
-          @Override
-          public long size() {
-            return 0;
-          }
-
-          @Override
-          public CacheStats stats() {
-            return null;
-          }
-
-          @Override
-          public ConcurrentMap<Object, Object> asMap() {
-            return null;
-          }
-
-          @Override
-          public void cleanUp() {}
-        };
-    doReturn(cacheUnderTest).when(cacheMapMock).get(entry.getPluginName(), entry.getCacheName());
-
-    assertThat(Context.isForwardedEvent()).isFalse();
-    try {
-      handler.evict(entry);
-    } catch (RuntimeException e) {
-    }
-    assertThat(Context.isForwardedEvent()).isFalse();
   }
 }
