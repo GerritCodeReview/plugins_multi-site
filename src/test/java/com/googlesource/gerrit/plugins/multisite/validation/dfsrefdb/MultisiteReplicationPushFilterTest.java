@@ -68,7 +68,7 @@ public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestC
   private TestRepository<InMemoryRepository> repo;
 
   @Before
-  public void setUp() throws Exception {
+  public void setupTestRepo() throws Exception {
     InMemoryRepository inMemoryRepo =
         gitRepositoryManager.createRepository(A_TEST_PROJECT_NAME_KEY);
     repo = new TestRepository<>(inMemoryRepo);
