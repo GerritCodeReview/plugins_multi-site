@@ -244,7 +244,7 @@ public class RefUpdateValidator {
   }
 
   protected Ref getCurrentRef(String refName) throws IOException {
-    return MoreObjects.firstNonNull(refDb.getRef(refName), nullRef(refName));
+    return MoreObjects.firstNonNull(refDb.findRef(refName), nullRef(refName));
   }
 
   public static class CloseableSet<T extends AutoCloseable> implements AutoCloseable {
