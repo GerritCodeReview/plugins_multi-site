@@ -67,7 +67,7 @@ public class RefUpdateValidatorTest implements RefFixture {
     newUpdateRef = newRef(refName, AN_OBJECT_ID_2);
     localRef = newRef(refName, AN_OBJECT_ID_3);
 
-    doReturn(localRef).when(localRefDb).getRef(refName);
+    doReturn(localRef).when(localRefDb).findRef(refName);
     doReturn(localRef).when(localRefDb).exactRef(refName);
     doReturn(oldUpdateRef).when(refUpdate).getRef();
     doReturn(newUpdateRef.getObjectId()).when(refUpdate).getNewObjectId();
@@ -118,7 +118,7 @@ public class RefUpdateValidatorTest implements RefFixture {
     doReturn(true)
         .when(sharedRefDb)
         .compareAndPut(A_TEST_PROJECT_NAME_KEY, localRef, ObjectId.zeroId());
-    doReturn(localRef).doReturn(null).when(localRefDb).getRef(refName);
+    doReturn(localRef).doReturn(null).when(localRefDb).findRef(refName);
 
     Result result = refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.FORCED);
 
@@ -137,7 +137,7 @@ public class RefUpdateValidatorTest implements RefFixture {
     doReturn(true)
         .when(sharedRefDb)
         .compareAndPut(A_TEST_PROJECT_NAME_KEY, localNullRef, newUpdateRef.getObjectId());
-    doReturn(localNullRef).doReturn(newUpdateRef).when(localRefDb).getRef(refName);
+    doReturn(localNullRef).doReturn(newUpdateRef).when(localRefDb).findRef(refName);
 
     Result result = refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
 

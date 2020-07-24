@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.git.GitRepositoryManager;
@@ -33,8 +32,6 @@ import com.googlesource.gerrit.plugins.replication.ReplicationExtensionPointModu
 import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 
 public class ValidationModule extends FactoryModule {
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-
   private final Configuration cfg;
 
   public ValidationModule(Configuration cfg) {
