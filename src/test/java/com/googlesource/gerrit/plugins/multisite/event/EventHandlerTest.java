@@ -15,15 +15,20 @@
 package com.googlesource.gerrit.plugins.multisite.event;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 import com.google.common.util.concurrent.MoreExecutors;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.event.EventHandler.EventTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
@@ -39,10 +44,13 @@ public class EventHandlerTest {
   private EventHandler eventHandler;
 
   @Mock private StreamEventForwarder forwarder;
+  @Mock private ProjectsFilter projectsFilter;
 
   @Before
   public void setUp() {
-    eventHandler = new EventHandler(asDynamicSet(forwarder), MoreExecutors.directExecutor());
+    when(projectsFilter.matches(any(NameKey.class))).thenReturn(true);
+    eventHandler =
+        new EventHandler(asDynamicSet(forwarder), MoreExecutors.directExecutor(), projectsFilter);
   }
 
   private DynamicSet<StreamEventForwarder> asDynamicSet(StreamEventForwarder forwarder) {
@@ -53,7 +61,8 @@ public class EventHandlerTest {
 
   @Test
   public void shouldForwardAnyProjectEvent() throws Exception {
-    Event event = mock(ProjectEvent.class);
+    ProjectEvent event = mock(ProjectEvent.class);
+    when(event.getProjectNameKey()).thenReturn(NameKey.parse("test_project"));
     eventHandler.onEvent(event);
     verify(forwarder).send(event);
   }
@@ -70,6 +79,17 @@ public class EventHandlerTest {
     eventHandler.onEvent(mock(ProjectEvent.class));
     Context.unsetForwardedEvent();
     verifyZeroInteractions(forwarder);
+  }
+
+  @Test
+  public void shouldNotForwardIfFilteredOutByProjectName() throws Exception {
+    when(projectsFilter.matches(any(NameKey.class))).thenReturn(false);
+
+    ProjectEvent event = mock(ProjectEvent.class);
+    when(event.getProjectNameKey()).thenReturn(NameKey.parse("test_project"));
+
+    eventHandler.onEvent(event);
+    verify(forwarder, never()).send(event);
   }
 
   @Test

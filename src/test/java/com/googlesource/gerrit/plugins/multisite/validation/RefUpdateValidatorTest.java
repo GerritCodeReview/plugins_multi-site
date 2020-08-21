@@ -16,12 +16,15 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.google.gerrit.entities.Project;
+import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.SharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
@@ -53,6 +56,8 @@ public class RefUpdateValidatorTest implements RefFixture {
 
   @Mock RefUpdate refUpdate;
 
+  @Mock ProjectsFilter projectsFilter;
+
   String refName;
   Ref oldUpdateRef;
   Ref newUpdateRef;
@@ -73,6 +78,8 @@ public class RefUpdateValidatorTest implements RefFixture {
     doReturn(newUpdateRef.getObjectId()).when(refUpdate).getNewObjectId();
     doReturn(refName).when(refUpdate).getName();
     lenient().doReturn(oldUpdateRef.getObjectId()).when(refUpdate).getOldObjectId();
+
+    doReturn(true).when(projectsFilter).matches(anyString());
 
     refUpdateValidator = newRefUpdateValidator(sharedRefDb);
   }
@@ -193,12 +200,23 @@ public class RefUpdateValidatorTest implements RefFixture {
     assertThat(result).isEqualTo(RefUpdate.Result.LOCK_FAILURE);
   }
 
+  @Test
+  public void shouldNotUpdateSharedRefDbWhenProjectIsLocal() throws Exception {
+    when(projectsFilter.matches(anyString())).thenReturn(false);
+
+    refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
+
+    verify(sharedRefDb, never())
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+  }
+
   private RefUpdateValidator newRefUpdateValidator(SharedRefDatabaseWrapper refDbWrapper) {
     return new RefUpdateValidator(
         refDbWrapper,
         validationMetrics,
         defaultRefEnforcement,
         new DummyLockWrapper(),
+        projectsFilter,
         A_TEST_PROJECT_NAME,
         localRefDb);
   }
