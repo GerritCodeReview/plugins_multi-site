@@ -17,13 +17,16 @@ package com.googlesource.gerrit.plugins.multisite.broker;
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.gerritforge.gerrit.eventbroker.TopicSubscriber;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -33,25 +36,40 @@ public class BrokerApiWrapper implements BrokerApi {
   private final BrokerMetrics metrics;
   private final MessageLogger msgLog;
   private final UUID instanceId;
+  private final String gerritInstanceId;
 
   @Inject
   public BrokerApiWrapper(
       DynamicItem<BrokerApi> apiDelegate,
       BrokerMetrics metrics,
       MessageLogger msgLog,
-      @InstanceId UUID instanceId) {
+      @InstanceId UUID instanceId,
+      @Nullable @GerritInstanceId String gerritInstanceId) {
     this.apiDelegate = apiDelegate;
     this.metrics = metrics;
     this.msgLog = msgLog;
     this.instanceId = instanceId;
+    this.gerritInstanceId = gerritInstanceId;
   }
 
   public boolean send(String topic, Event event) {
     return send(topic, apiDelegate.get().newMessage(instanceId, event));
   }
 
+  private boolean isProducedByLocalInstance(Event event) {
+    return Objects.equals(event.instanceId, gerritInstanceId);
+  }
+
   @Override
   public boolean send(String topic, EventMessage message) {
+
+    // An event should not be dispatched when it is "forwarded".
+    // meaning, it was either produced somewhere else
+    if (!isProducedByLocalInstance(message.getEvent())) {
+      Context.setForwardedEvent(true);
+    }
+    // The event has been received a consumer and thus it should not be
+    // re-forwarded
     if (Context.isForwardedEvent()) {
       return true;
     }

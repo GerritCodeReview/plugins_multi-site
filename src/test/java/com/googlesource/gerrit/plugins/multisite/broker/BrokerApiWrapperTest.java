@@ -1,14 +1,18 @@
 package com.googlesource.gerrit.plugins.multisite.broker;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
+import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
+import com.googlesource.gerrit.plugins.multisite.util.TestEvent;
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,11 +31,25 @@ public class BrokerApiWrapperTest {
 
   private BrokerApiWrapper objectUnderTest;
 
+  private BrokerApiWrapper broker(@Nullable String gerritInstanceId) {
+    return new BrokerApiWrapper(
+        DynamicItem.itemOf(BrokerApi.class, brokerApi),
+        brokerMetrics,
+        msgLog,
+        instanceId,
+        gerritInstanceId);
+  }
+
+  private void mockNewMessageResponse(Event event) {
+    when(brokerApi.newMessage(any(), any()))
+        .thenReturn(objectUnderTest.newMessage(instanceId, event));
+  }
+
   @Before
   public void setUp() {
-    objectUnderTest =
-        new BrokerApiWrapper(
-            DynamicItem.itemOf(BrokerApi.class, brokerApi), brokerMetrics, msgLog, instanceId);
+    Context.unsetForwardedEvent();
+    objectUnderTest = broker(null);
+    mockNewMessageResponse(event);
   }
 
   @Test
@@ -58,5 +76,38 @@ public class BrokerApiWrapperTest {
       // expected
     }
     verify(brokerMetrics, only()).incrementBrokerFailedToPublishMessage();
+  }
+
+  @Test
+  public void shouldNotDispatchEventWhenEventInstanceIdIsDefinedButGerritInstanceIdIsNot() {
+    TestEvent testEvent = new TestEvent("some-other-gerrit");
+    mockNewMessageResponse(testEvent);
+
+    objectUnderTest.send(topic, testEvent);
+    verify(brokerApi, never()).send(any(), any());
+  }
+
+  @Test
+  public void shouldNotDispatchEventWhenInstanceIdsAreDifferent() {
+    TestEvent testEvent = new TestEvent("some-other-instance-id");
+
+    objectUnderTest = broker("gerrit-instance-Id");
+    mockNewMessageResponse(testEvent);
+
+    objectUnderTest.send(topic, testEvent);
+    verify(brokerApi, never()).send(any(), any());
+  }
+
+  @Test
+  public void shouldDispatchEventWhenInstanceIdsAreEquals() {
+    String gerritInstanceId = "gerrit-instance-Id";
+    TestEvent testEvent = new TestEvent(gerritInstanceId);
+
+    objectUnderTest = broker(gerritInstanceId);
+    when(brokerApi.send(any(), any())).thenReturn(true);
+    mockNewMessageResponse(testEvent);
+
+    objectUnderTest.send(topic, testEvent);
+    verify(brokerMetrics, only()).incrementBrokerPublishedMessage();
   }
 }
