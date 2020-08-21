@@ -27,6 +27,7 @@ import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -59,8 +60,21 @@ public class BrokerApiWrapper implements BrokerApi {
     return send(topic, apiDelegate.get().newMessage(instanceId, event));
   }
 
+  private boolean isProducedByLocalInstance(Event event) {
+    return Objects.equals(
+        event.instanceId, MoreObjects.firstNonNull(gerritInstanceId, instanceId.toString()));
+  }
+
   @Override
   public boolean send(String topic, EventMessage message) {
+
+    // An event should not be dispatched when it is "forwarded".
+    // meaning, it was either produced somewhere else
+    if (!isProducedByLocalInstance(message.getEvent())) {
+      Context.setForwardedEvent(true);
+    }
+    // The event has been received a consumer and thus it should not be
+    // re-forwarded
     if (Context.isForwardedEvent()) {
       return true;
     }
