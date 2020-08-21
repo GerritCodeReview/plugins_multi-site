@@ -16,14 +16,18 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.eclipse.jgit.transport.ReceiveCommand.Type.UPDATE;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.DisabledMetricMaker;
+import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
@@ -64,11 +68,12 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
   @Mock SharedRefDatabaseWrapper sharedRefDatabase;
 
   @Mock SharedRefEnforcement tmpRefEnforcement;
+  @Mock ProjectsFilter projectsFilter;
 
   @Before
   public void setup() throws Exception {
     super.setUp();
-
+    when(projectsFilter.matches(anyString())).thenReturn(true);
     gitRepoSetup();
   }
 
@@ -137,6 +142,24 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
         (command) -> assertThat(command.getResult()).isEqualTo(ReceiveCommand.Result.LOCK_FAILURE));
   }
 
+  @Test
+  public void shouldNotUpdateSharedRefDbWhenProjectIsLocal() throws Exception {
+    when(projectsFilter.matches(anyString())).thenReturn(true);
+
+    String AN_OUT_OF_SYNC_REF = "refs/changes/01/1/1";
+    BatchRefUpdate batchRefUpdate =
+        newBatchUpdate(
+            Collections.singletonList(new ReceiveCommand(A, B, AN_OUT_OF_SYNC_REF, UPDATE)));
+    BatchRefUpdateValidator batchRefUpdateValidator =
+        getRefValidatorForEnforcement(A_TEST_PROJECT_NAME, tmpRefEnforcement);
+
+    batchRefUpdateValidator.executeBatchUpdateWithValidation(
+        batchRefUpdate, () -> execute(batchRefUpdate));
+
+    verify(sharedRefDatabase, never())
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+  }
+
   private BatchRefUpdateValidator newDefaultValidator(String projectName) {
     return getRefValidatorForEnforcement(projectName, new DefaultSharedRefEnforcement());
   }
@@ -148,6 +171,7 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
         new ValidationMetrics(new DisabledMetricMaker()),
         sharedRefEnforcement,
         new DummyLockWrapper(),
+        projectsFilter,
         projectName,
         diskRepo.getRefDatabase());
   }
