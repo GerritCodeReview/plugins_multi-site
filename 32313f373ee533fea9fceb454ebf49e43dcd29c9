@@ -1,0 +1,268 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "17df2c98_2d1db3c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-21T21:48:31Z",
+      "side": 1,
+      "message": "I am also missing the case where the event is received asynchronously: we should start looking at the instanceId in the message.\n\nAs a follow-up, we\u0027ll be able to remove the instanceId from the outside envelope.",
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "db8b54ad_c8ad57f4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-21T21:48:31Z",
+      "side": 1,
+      "message": "@Nullable?",
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "52a56c34_136a8131",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-21T21:48:31Z",
+      "side": 1,
+      "message": "For multi-site, the instanceId is mandatory.",
+      "range": {
+        "startLine": 109,
+        "startChar": 2,
+        "endLine": 109,
+        "endChar": 12
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8cef17f5_0dce5282",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-21T21:48:31Z",
+      "side": 1,
+      "message": "+ and avoid infinite looping of events across the multi-site nodes",
+      "range": {
+        "startLine": 119,
+        "startChar": 9,
+        "endLine": 119,
+        "endChar": 28
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "03d1236a_928266f3",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-21T21:48:31Z",
+      "side": 1,
+      "message": "needed",
+      "range": {
+        "startLine": 122,
+        "startChar": 8,
+        "endLine": 122,
+        "endChar": 27
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "277dfc3d_b2c9c21d",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-21T21:48:31Z",
+      "side": 1,
+      "message": "+ or another Gerrit instance on a different site",
+      "range": {
+        "startLine": 123,
+        "startChar": 33,
+        "endLine": 123,
+        "endChar": 40
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be7c22dc_13741034",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-21T21:48:31Z",
+      "side": 1,
+      "message": "This is more an implementation detail, which is not relevant for the Gerrit admin configuring the system.",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 76
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8a18e2b_93baa957",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-21T21:48:31Z",
+      "side": 1,
+      "message": "This is repeated multiple times, it would be clearer if factored out in a self-explanatory helper method with a meaningful name. WDYT?",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 71
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7081b4d2_ec75e211",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-21T21:48:31Z",
+      "side": 1,
+      "message": "This is an inconsistent situation: the instanceId *IS* defined in the envelope of the message but not in the body?",
+      "range": {
+        "startLine": 96,
+        "startChar": 47,
+        "endLine": 96,
+        "endChar": 68
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2629b6e1_4336a3f1",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-21T21:48:31Z",
+      "side": 1,
+      "message": "this should be \"some-other-instance-id\" correct?",
+      "range": {
+        "startLine": 110,
+        "startChar": 47,
+        "endLine": 110,
+        "endChar": 57
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19dc9ccb_7fcc0cd1",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-21T21:48:31Z",
+      "side": 1,
+      "message": "this should be gerritInstanceId",
+      "range": {
+        "startLine": 125,
+        "startChar": 47,
+        "endLine": 125,
+        "endChar": 57
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e426569c_bc6616c3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/util/TestEvent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-21T21:48:31Z",
+      "side": 1,
+      "message": "Why not passing it as parameter in the constructor instead?",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 3
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
