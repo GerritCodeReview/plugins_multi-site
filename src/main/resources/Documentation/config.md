@@ -101,3 +101,26 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
     Relax the alignment with the shared ref-database for AProject on refs/heads/feature.
 
     Defaults: No rules = All projects are REQUIRED to be consistent on all refs.
+
+File 'gerrit.config'
+--------------------
+
+```gerrit.instanceId```
+: Optional identifier for this Gerrit instance.
+[[docs](https://gerrit-documentation.storage.googleapis.com/Documentation/3.2.0/config-gerrit.html#gerrit.instanceId)].
+
+Whilst this is not, specifically, a multi-site plugin configuration, it plays
+ an important role on which events are produced to the broker.
+
+If `instanceId` is set, events produced by that Gerrit instance will contain its
+origin in the `instanceId` field, allowing to track where they are coming from.
+
+The multi-site plugin will check the `instanceId` value to decide whether
+an event should be forwarded: events that originated from different Gerrit instances
+will not be forwarded.
+
+This is useful, for example, when an event has been consumed through a different
+channel (i.e. high-availability receiver) and it should not be re-forwarded.
+
+When neither `gerrit.instanceId` nor `event.instanceId` are set, it is not possible
+ to identify the origin of the event and thus the event is always forwarded.
