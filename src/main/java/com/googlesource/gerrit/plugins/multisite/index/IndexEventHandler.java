@@ -15,12 +15,14 @@
 package com.googlesource.gerrit.plugins.multisite.index;
 
 import com.google.common.base.Objects;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.extensions.events.AccountIndexedListener;
 import com.google.gerrit.extensions.events.ChangeIndexedListener;
 import com.google.gerrit.extensions.events.GroupIndexedListener;
 import com.google.gerrit.extensions.events.ProjectIndexedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
@@ -44,15 +46,18 @@ class IndexEventHandler
   private final DynamicSet<IndexEventForwarder> forwarders;
   private final Set<IndexTask> queuedTasks = Collections.newSetFromMap(new ConcurrentHashMap<>());
   private final ChangeCheckerImpl.Factory changeChecker;
+  private final ProjectsFilter projectsFilter;
 
   @Inject
   IndexEventHandler(
       @IndexExecutor Executor executor,
       DynamicSet<IndexEventForwarder> forwarders,
-      ChangeCheckerImpl.Factory changeChecker) {
+      ChangeCheckerImpl.Factory changeChecker,
+      ProjectsFilter projectsFilter) {
     this.forwarders = forwarders;
     this.executor = executor;
     this.changeChecker = changeChecker;
+    this.projectsFilter = projectsFilter;
   }
 
   @Override
@@ -87,7 +92,7 @@ class IndexEventHandler
 
   @Override
   public void onProjectIndexed(String projectName) {
-    if (!Context.isForwardedEvent()) {
+    if (!Context.isForwardedEvent() && projectsFilter.matches(NameKey.parse(projectName))) {
       IndexProjectTask task = new IndexProjectTask(new ProjectIndexEvent(projectName));
       if (queuedTasks.add(task)) {
         executor.execute(task);
@@ -96,7 +101,7 @@ class IndexEventHandler
   }
 
   private void executeIndexChangeTask(String projectName, int id) {
-    if (!Context.isForwardedEvent()) {
+    if (!Context.isForwardedEvent() && projectsFilter.matches(NameKey.parse(projectName))) {
       ChangeChecker checker = changeChecker.create(projectName + "~" + id);
 
       try {

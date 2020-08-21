@@ -101,3 +101,30 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
     Relax the alignment with the shared ref-database for AProject on refs/heads/feature.
 
     Defaults: No rules = All projects are REQUIRED to be consistent on all refs.
+
+```projects.pattern```
+:   Specifies which projects events should be send via broker. It can be provided more
+    than once, and supports three formats: regular expressions, wildcard matching, and single
+    project matching. All three formats match case-sensitive.
+
+    Values starting with a caret `^` are treated as regular
+    expressions. `^foo/(bar|baz)` would match the projects
+    `foo/bar`, and `foo/baz`. Regular expressions have to fully
+    match the project name. So the above example would not match
+    `foo/bar2`, while `^foo/(bar|baz).*` would.
+
+    Projects may be excluded from replication by using a regular
+    expression with inverse match. `^(?:(?!PATTERN).)*$` will
+    exclude any project that matches.
+
+    Values that are not regular expressions and end in `*` are
+    treated as wildcard matches. Wildcards match projects whose
+    name agrees from the beginning until the trailing `*`. So
+    `foo/b*` would match the projects `foo/b`, `foo/bar`, and
+    `foo/baz`, but neither `foobar`, nor `bar/foo/baz`.
+
+    Values that are neither regular expressions nor wildcards are
+    treated as single project matches. So `foo/bar` matches only
+    the project `foo/bar`, but no other project.
+
+    By default, all events for all projects are send.
