@@ -21,9 +21,10 @@ public class AccountIndexEvent extends IndexEvent {
 
   public int accountId;
 
-  public AccountIndexEvent(int accountId) {
+  public AccountIndexEvent(int accountId, String gerritInstanceId) {
     super(TYPE);
     this.accountId = accountId;
+    this.instanceId = gerritInstanceId;
   }
 
   @Override
@@ -31,11 +32,11 @@ public class AccountIndexEvent extends IndexEvent {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     AccountIndexEvent that = (AccountIndexEvent) o;
-    return accountId == that.accountId;
+    return accountId == that.accountId && Objects.equal(instanceId, that.instanceId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(accountId);
+    return Objects.hashCode(accountId, instanceId);
   }
 }
