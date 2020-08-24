@@ -21,9 +21,10 @@ public class ProjectIndexEvent extends IndexEvent {
 
   public String projectName;
 
-  public ProjectIndexEvent(String projectName) {
+  public ProjectIndexEvent(String projectName, String gerritInstanceId) {
     super(TYPE);
     this.projectName = projectName;
+    this.instanceId = gerritInstanceId;
   }
 
   @Override
@@ -31,11 +32,12 @@ public class ProjectIndexEvent extends IndexEvent {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ProjectIndexEvent that = (ProjectIndexEvent) o;
-    return Objects.equal(projectName, that.projectName);
+    return Objects.equal(projectName, that.projectName)
+        && Objects.equal(instanceId, that.instanceId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(projectName);
+    return Objects.hashCode(projectName, instanceId);
   }
 }

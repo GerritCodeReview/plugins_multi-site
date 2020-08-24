@@ -21,9 +21,10 @@ public class GroupIndexEvent extends IndexEvent {
 
   public String groupUUID;
 
-  public GroupIndexEvent(String groupUUID) {
+  public GroupIndexEvent(String groupUUID, String gerritInstanceId) {
     super(TYPE);
     this.groupUUID = groupUUID;
+    this.instanceId = gerritInstanceId;
   }
 
   @Override
@@ -31,11 +32,11 @@ public class GroupIndexEvent extends IndexEvent {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     GroupIndexEvent that = (GroupIndexEvent) o;
-    return Objects.equal(groupUUID, that.groupUUID);
+    return Objects.equal(groupUUID, that.groupUUID) && Objects.equal(instanceId, that.instanceId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(groupUUID);
+    return Objects.hashCode(groupUUID, instanceId);
   }
 }

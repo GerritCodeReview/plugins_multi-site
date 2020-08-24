@@ -28,16 +28,18 @@ public class ChangeIndexEvent extends IndexEvent {
   public String targetSha;
   public boolean deleted;
 
-  public ChangeIndexEvent(String projectName, int changeId, boolean deleted) {
+  public ChangeIndexEvent(
+      String projectName, int changeId, boolean deleted, String gerritInstanceId) {
     super(TYPE);
     this.projectName = projectName;
     this.changeId = changeId;
     this.deleted = deleted;
+    this.instanceId = gerritInstanceId;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(projectName, changeId, targetSha, deleted);
+    return Objects.hashCode(projectName, changeId, targetSha, deleted, instanceId);
   }
 
   @Override
@@ -48,12 +50,14 @@ public class ChangeIndexEvent extends IndexEvent {
     return changeId == that.changeId
         && deleted == that.deleted
         && Objects.equal(projectName, that.projectName)
-        && Objects.equal(targetSha, that.targetSha);
+        && Objects.equal(targetSha, that.targetSha)
+        && Objects.equal(instanceId, that.instanceId);
   }
 
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
+        .add("instanceId", instanceId)
         .add("eventCreatedOn", format(eventCreatedOn))
         .add("project", projectName)
         .add("changeId", changeId)
