@@ -30,12 +30,16 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
 
   private final DynamicSet<ProjectListUpdateForwarder> forwarders;
   private final Executor executor;
+  private final ProjectListUpdateEvent.Factory projectListUpdateEventFactory;
 
   @Inject
   public ProjectListUpdateHandler(
-      DynamicSet<ProjectListUpdateForwarder> forwarders, @CacheExecutor Executor executor) {
+      DynamicSet<ProjectListUpdateForwarder> forwarders,
+      @CacheExecutor Executor executor,
+      ProjectListUpdateEvent.Factory projectListUpdateEventFactory) {
     this.forwarders = forwarders;
     this.executor = executor;
+    this.projectListUpdateEventFactory = projectListUpdateEventFactory;
   }
 
   @Override
@@ -53,7 +57,8 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
   private void process(ProjectEvent event, boolean delete) {
     if (!Context.isForwardedEvent()) {
       executor.execute(
-          new ProjectListUpdateTask(new ProjectListUpdateEvent(event.getProjectName(), delete)));
+          new ProjectListUpdateTask(
+              projectListUpdateEventFactory.create(event.getProjectName(), delete)));
     }
   }
 

@@ -15,15 +15,26 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
 import com.google.common.base.Objects;
+import com.google.gerrit.common.Nullable;
+import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 public class ProjectIndexEvent extends IndexEvent {
   static final String TYPE = "project-index";
 
   public String projectName;
 
-  public ProjectIndexEvent(String projectName) {
+  public interface Factory {
+    ProjectIndexEvent create(String projectName);
+  }
+
+  @AssistedInject
+  public ProjectIndexEvent(
+      @Assisted String projectName, @Nullable @GerritInstanceId String gerritInstanceId) {
     super(TYPE);
     this.projectName = projectName;
+    this.instanceId = gerritInstanceId;
   }
 
   @Override
@@ -31,11 +42,12 @@ public class ProjectIndexEvent extends IndexEvent {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ProjectIndexEvent that = (ProjectIndexEvent) o;
-    return Objects.equal(projectName, that.projectName);
+    return Objects.equal(projectName, that.projectName)
+        && Objects.equal(instanceId, that.instanceId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(projectName);
+    return Objects.hashCode(projectName, instanceId);
   }
 }

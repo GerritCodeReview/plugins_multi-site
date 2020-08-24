@@ -27,6 +27,7 @@ import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventsModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.NoopSharedRefDatabase;
@@ -80,6 +81,7 @@ public class Module extends LifecycleModule {
     }
 
     install(new RouterModule());
+    install(new EventsModule());
   }
 
   @Provides

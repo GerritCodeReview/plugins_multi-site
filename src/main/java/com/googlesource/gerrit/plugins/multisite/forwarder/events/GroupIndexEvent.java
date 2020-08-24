@@ -15,15 +15,26 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
 import com.google.common.base.Objects;
+import com.google.gerrit.common.Nullable;
+import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 public class GroupIndexEvent extends IndexEvent {
   static final String TYPE = "group-index";
 
   public String groupUUID;
 
-  public GroupIndexEvent(String groupUUID) {
+  public interface Factory {
+    GroupIndexEvent create(String groupUUID);
+  }
+
+  @AssistedInject
+  public GroupIndexEvent(
+      @Assisted String groupUUID, @Nullable @GerritInstanceId String gerritInstanceId) {
     super(TYPE);
     this.groupUUID = groupUUID;
+    this.instanceId = gerritInstanceId;
   }
 
   @Override
@@ -31,11 +42,11 @@ public class GroupIndexEvent extends IndexEvent {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     GroupIndexEvent that = (GroupIndexEvent) o;
-    return Objects.equal(groupUUID, that.groupUUID);
+    return Objects.equal(groupUUID, that.groupUUID) && Objects.equal(instanceId, that.instanceId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(groupUUID);
+    return Objects.hashCode(groupUUID, instanceId);
   }
 }

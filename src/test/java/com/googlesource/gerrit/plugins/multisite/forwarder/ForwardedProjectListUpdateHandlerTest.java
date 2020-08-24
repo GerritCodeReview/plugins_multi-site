@@ -48,13 +48,13 @@ public class ForwardedProjectListUpdateHandlerTest {
 
   @Test
   public void testSuccessfulAdd() throws Exception {
-    handler.update(new ProjectListUpdateEvent(PROJECT_NAME, false));
+    handler.update(new ProjectListUpdateEvent(PROJECT_NAME, false, null));
     verify(projectCacheMock).onCreateProject(PROJECT_KEY);
   }
 
   @Test
   public void testSuccessfulRemove() throws Exception {
-    handler.update(new ProjectListUpdateEvent(PROJECT_NAME, true));
+    handler.update(new ProjectListUpdateEvent(PROJECT_NAME, true, null));
     verify(projectCacheMock).remove(PROJECT_KEY);
   }
 
@@ -72,7 +72,7 @@ public class ForwardedProjectListUpdateHandlerTest {
         .onCreateProject(PROJECT_KEY);
 
     assertThat(Context.isForwardedEvent()).isFalse();
-    handler.update(new ProjectListUpdateEvent(PROJECT_NAME, false));
+    handler.update(new ProjectListUpdateEvent(PROJECT_NAME, false, null));
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(projectCacheMock).onCreateProject(PROJECT_KEY);
@@ -92,7 +92,7 @@ public class ForwardedProjectListUpdateHandlerTest {
         .remove(PROJECT_KEY);
 
     assertThat(Context.isForwardedEvent()).isFalse();
-    handler.update(new ProjectListUpdateEvent(PROJECT_NAME, true));
+    handler.update(new ProjectListUpdateEvent(PROJECT_NAME, true, null));
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(projectCacheMock).remove(PROJECT_KEY);
@@ -113,7 +113,7 @@ public class ForwardedProjectListUpdateHandlerTest {
     RuntimeException thrown =
         assertThrows(
             RuntimeException.class,
-            () -> handler.update(new ProjectListUpdateEvent(PROJECT_NAME, false)));
+            () -> handler.update(new ProjectListUpdateEvent(PROJECT_NAME, false, null)));
     assertThat(thrown).hasMessageThat().isEqualTo(SOME_MESSAGE);
     assertThat(Context.isForwardedEvent()).isFalse();
 
@@ -135,7 +135,7 @@ public class ForwardedProjectListUpdateHandlerTest {
     RuntimeException thrown =
         assertThrows(
             RuntimeException.class,
-            () -> handler.update(new ProjectListUpdateEvent(PROJECT_NAME, true)));
+            () -> handler.update(new ProjectListUpdateEvent(PROJECT_NAME, true, null)));
     assertThat(thrown).hasMessageThat().isEqualTo(SOME_MESSAGE);
     assertThat(Context.isForwardedEvent()).isFalse();
 

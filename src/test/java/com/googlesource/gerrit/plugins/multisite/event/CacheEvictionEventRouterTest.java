@@ -41,7 +41,7 @@ public class CacheEvictionEventRouterTest {
 
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_CacheEviction() throws Exception {
-    final CacheEvictionEvent event = new CacheEvictionEvent("cache", "key");
+    final CacheEvictionEvent event = new CacheEvictionEvent("cache", "key", null);
     router.route(event);
 
     verify(cacheEvictionHandler).evict(CacheEntry.from(event.cacheName, event.key));
@@ -50,7 +50,7 @@ public class CacheEvictionEventRouterTest {
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_ProjectCacheEvictionWithSlash()
       throws Exception {
-    final CacheEvictionEvent event = new CacheEvictionEvent("cache", "some/project");
+    final CacheEvictionEvent event = new CacheEvictionEvent("cache", "some/project", null);
     router.route(event);
 
     verify(cacheEvictionHandler).evict(CacheEntry.from(event.cacheName, event.key));

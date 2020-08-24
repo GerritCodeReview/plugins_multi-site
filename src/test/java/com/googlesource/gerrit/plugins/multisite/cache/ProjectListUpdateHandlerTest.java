@@ -40,10 +40,15 @@ public class ProjectListUpdateHandlerTest {
   private ProjectListUpdateHandler handler;
 
   @Mock private ProjectListUpdateForwarder forwarder;
+  @Mock private ProjectListUpdateEvent.Factory projectListUpdateEventFactoryMock;
 
   @Before
   public void setUp() {
-    handler = new ProjectListUpdateHandler(asDynamicSet(forwarder), MoreExecutors.directExecutor());
+    handler =
+        new ProjectListUpdateHandler(
+            asDynamicSet(forwarder),
+            MoreExecutors.directExecutor(),
+            projectListUpdateEventFactoryMock);
   }
 
   private DynamicSet<ProjectListUpdateForwarder> asDynamicSet(
@@ -57,18 +62,26 @@ public class ProjectListUpdateHandlerTest {
   public void shouldForwardAddedProject() throws Exception {
     String projectName = "projectToAdd";
     NewProjectCreatedListener.Event event = mock(NewProjectCreatedListener.Event.class);
+    ProjectListUpdateEvent projectListUpdatedEvent =
+        new ProjectListUpdateEvent(projectName, false, null);
+    when(projectListUpdateEventFactoryMock.create(projectName, false))
+        .thenReturn(projectListUpdatedEvent);
     when(event.getProjectName()).thenReturn(projectName);
     handler.onNewProjectCreated(event);
-    verify(forwarder).updateProjectList(new ProjectListUpdateEvent(projectName, false));
+    verify(forwarder).updateProjectList(projectListUpdatedEvent);
   }
 
   @Test
   public void shouldForwardDeletedProject() throws Exception {
     String projectName = "projectToDelete";
     ProjectDeletedListener.Event event = mock(ProjectDeletedListener.Event.class);
+    ProjectListUpdateEvent projectListUpdatedEvent =
+        new ProjectListUpdateEvent(projectName, true, null);
+    when(projectListUpdateEventFactoryMock.create(projectName, true))
+        .thenReturn(projectListUpdatedEvent);
     when(event.getProjectName()).thenReturn(projectName);
     handler.onProjectDeleted(event);
-    verify(forwarder).updateProjectList(new ProjectListUpdateEvent(projectName, true));
+    verify(forwarder).updateProjectList(projectListUpdatedEvent);
   }
 
   @Test
@@ -84,11 +97,11 @@ public class ProjectListUpdateHandlerTest {
   public void testProjectUpdateTaskToString() throws Exception {
     String projectName = "someProjectName";
     ProjectListUpdateTask task =
-        handler.new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, false));
+        handler.new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, false, null));
     assertThat(task.toString())
         .isEqualTo(String.format("Update project list in target instance: add '%s'", projectName));
 
-    task = handler.new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, true));
+    task = handler.new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, true, null));
     assertThat(task.toString())
         .isEqualTo(
             String.format("Update project list in target instance: remove '%s'", projectName));

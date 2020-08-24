@@ -15,6 +15,10 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
 import com.google.common.base.Objects;
+import com.google.gerrit.common.Nullable;
+import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 public class CacheEvictionEvent extends MultiSiteEvent {
   static final String TYPE = "cache-eviction";
@@ -22,15 +26,24 @@ public class CacheEvictionEvent extends MultiSiteEvent {
   public String cacheName;
   public Object key;
 
-  public CacheEvictionEvent(String cacheName, Object key) {
+  public interface Factory {
+    CacheEvictionEvent create(String cacheName, Object key);
+  }
+
+  @AssistedInject
+  public CacheEvictionEvent(
+      @Assisted String cacheName,
+      @Assisted Object key,
+      @Nullable @GerritInstanceId String gerritInstanceId) {
     super(TYPE);
     this.cacheName = cacheName;
     this.key = key;
+    this.instanceId = gerritInstanceId;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(cacheName, key);
+    return Objects.hashCode(cacheName, key, instanceId);
   }
 
   @Override
@@ -38,6 +51,8 @@ public class CacheEvictionEvent extends MultiSiteEvent {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     CacheEvictionEvent that = (CacheEvictionEvent) o;
-    return Objects.equal(cacheName, that.cacheName) && Objects.equal(key, that.key);
+    return Objects.equal(cacheName, that.cacheName)
+        && Objects.equal(key, that.key)
+        && Objects.equal(instanceId, that.instanceId);
   }
 }

@@ -40,6 +40,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
   private final GitRepositoryManager gitRepoMgr;
   private final CommentsUtil commentsUtil;
   private final OneOffRequestContext oneOffReqCtx;
+  private final ChangeIndexEvent.Factory changeIndexEventFactory;
   private final String changeId;
   private final ChangeFinder changeFinder;
   private Optional<Long> computedChangeTs = Optional.empty();
@@ -55,11 +56,13 @@ public class ChangeCheckerImpl implements ChangeChecker {
       CommentsUtil commentsUtil,
       ChangeFinder changeFinder,
       OneOffRequestContext oneOffReqCtx,
+      ChangeIndexEvent.Factory changeIndexEventFactory,
       @Assisted String changeId) {
     this.changeFinder = changeFinder;
     this.gitRepoMgr = gitRepoMgr;
     this.commentsUtil = commentsUtil;
     this.oneOffReqCtx = oneOffReqCtx;
+    this.changeIndexEventFactory = changeIndexEventFactory;
     this.changeId = changeId;
   }
 
@@ -69,7 +72,8 @@ public class ChangeCheckerImpl implements ChangeChecker {
     return getComputedChangeTs()
         .map(
             ts -> {
-              ChangeIndexEvent event = new ChangeIndexEvent(projectName, changeId, deleted);
+              ChangeIndexEvent event =
+                  changeIndexEventFactory.create(projectName, changeId, deleted);
               event.eventCreatedOn = ts;
               event.targetSha = getBranchTargetSha();
               return event;

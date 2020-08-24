@@ -16,6 +16,10 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.gerrit.common.Nullable;
+import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -28,16 +32,26 @@ public class ChangeIndexEvent extends IndexEvent {
   public String targetSha;
   public boolean deleted;
 
-  public ChangeIndexEvent(String projectName, int changeId, boolean deleted) {
+  public interface Factory {
+    ChangeIndexEvent create(String projectName, int changeId, boolean deleted);
+  }
+
+  @AssistedInject
+  public ChangeIndexEvent(
+      @Assisted String projectName,
+      @Assisted int changeId,
+      @Assisted boolean deleted,
+      @Nullable @GerritInstanceId String gerritInstanceId) {
     super(TYPE);
     this.projectName = projectName;
     this.changeId = changeId;
     this.deleted = deleted;
+    this.instanceId = gerritInstanceId;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(projectName, changeId, targetSha, deleted);
+    return Objects.hashCode(projectName, changeId, targetSha, deleted, instanceId);
   }
 
   @Override
@@ -48,12 +62,14 @@ public class ChangeIndexEvent extends IndexEvent {
     return changeId == that.changeId
         && deleted == that.deleted
         && Objects.equal(projectName, that.projectName)
-        && Objects.equal(targetSha, that.targetSha);
+        && Objects.equal(targetSha, that.targetSha)
+        && Objects.equal(instanceId, that.instanceId);
   }
 
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
+        .add("instanceId", instanceId)
         .add("eventCreatedOn", format(eventCreatedOn))
         .add("project", projectName)
         .add("changeId", changeId)

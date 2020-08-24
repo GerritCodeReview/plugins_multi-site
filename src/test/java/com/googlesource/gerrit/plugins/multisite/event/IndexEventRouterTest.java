@@ -65,7 +65,7 @@ public class IndexEventRouterTest {
 
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_AccountIndex() throws Exception {
-    final AccountIndexEvent event = new AccountIndexEvent(1);
+    final AccountIndexEvent event = new AccountIndexEvent(1, null);
     router.route(event);
 
     verify(indexAccountHandler)
@@ -79,7 +79,7 @@ public class IndexEventRouterTest {
 
     StreamEventRouter streamEventRouter = new StreamEventRouter(forwardedEventHandler, router);
 
-    final AccountIndexEvent event = new AccountIndexEvent(1);
+    final AccountIndexEvent event = new AccountIndexEvent(1, null);
     router.route(event);
 
     verify(indexAccountHandler)
@@ -95,7 +95,7 @@ public class IndexEventRouterTest {
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_GroupIndex() throws Exception {
     final String groupId = "12";
-    final GroupIndexEvent event = new GroupIndexEvent(groupId);
+    final GroupIndexEvent event = new GroupIndexEvent(groupId, null);
     router.route(event);
 
     verify(indexGroupHandler)
@@ -107,7 +107,7 @@ public class IndexEventRouterTest {
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_ProjectIndex() throws Exception {
     final String projectName = "projectName";
-    final ProjectIndexEvent event = new ProjectIndexEvent(projectName);
+    final ProjectIndexEvent event = new ProjectIndexEvent(projectName, null);
     router.route(event);
 
     verify(indexProjectHandler)
@@ -118,7 +118,7 @@ public class IndexEventRouterTest {
 
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_ChangeIndex() throws Exception {
-    final ChangeIndexEvent event = new ChangeIndexEvent("projectName", 3, false);
+    final ChangeIndexEvent event = new ChangeIndexEvent("projectName", 3, false, null);
     router.route(event);
 
     verify(indexChangeHandler)
@@ -132,7 +132,7 @@ public class IndexEventRouterTest {
 
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_ChangeIndexDelete() throws Exception {
-    final ChangeIndexEvent event = new ChangeIndexEvent("projectName", 3, true);
+    final ChangeIndexEvent event = new ChangeIndexEvent("projectName", 3, true, null);
     router.route(event);
 
     verify(indexChangeHandler)
