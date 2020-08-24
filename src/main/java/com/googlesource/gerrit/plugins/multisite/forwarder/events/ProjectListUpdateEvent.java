@@ -15,6 +15,10 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
 import com.google.common.base.Objects;
+import com.google.gerrit.common.Nullable;
+import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 public class ProjectListUpdateEvent extends MultiSiteEvent {
   static final String TYPE = "project-list-update";
@@ -22,15 +26,24 @@ public class ProjectListUpdateEvent extends MultiSiteEvent {
   public String projectName;
   public boolean remove;
 
-  public ProjectListUpdateEvent(String projectName, boolean remove) {
+  public interface Factory {
+    ProjectListUpdateEvent create(String projectName, boolean remove);
+  }
+
+  @AssistedInject
+  public ProjectListUpdateEvent(
+      @Assisted String projectName,
+      @Assisted boolean remove,
+      @Nullable @GerritInstanceId String gerritInstanceId) {
     super(TYPE);
     this.projectName = projectName;
     this.remove = remove;
+    this.instanceId = gerritInstanceId;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(projectName, remove);
+    return Objects.hashCode(projectName, remove, instanceId);
   }
 
   @Override
@@ -38,6 +51,8 @@ public class ProjectListUpdateEvent extends MultiSiteEvent {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ProjectListUpdateEvent that = (ProjectListUpdateEvent) o;
-    return remove == that.remove && Objects.equal(projectName, that.projectName);
+    return remove == that.remove
+        && Objects.equal(projectName, that.projectName)
+        && Objects.equal(instanceId, that.instanceId);
   }
 }

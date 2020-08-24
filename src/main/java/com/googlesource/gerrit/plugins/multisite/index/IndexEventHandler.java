@@ -44,21 +44,33 @@ class IndexEventHandler
   private final DynamicSet<IndexEventForwarder> forwarders;
   private final Set<IndexTask> queuedTasks = Collections.newSetFromMap(new ConcurrentHashMap<>());
   private final ChangeCheckerImpl.Factory changeChecker;
+  private final AccountIndexEvent.Factory accountIndexEventFactory;
+  private final GroupIndexEvent.Factory groupIndexEventFactory;
+  private final ProjectIndexEvent.Factory projectIndexEventFactory;
+  private final ChangeIndexEvent.Factory changeIndexEventFactory;
 
   @Inject
   IndexEventHandler(
       @IndexExecutor Executor executor,
       DynamicSet<IndexEventForwarder> forwarders,
-      ChangeCheckerImpl.Factory changeChecker) {
+      ChangeCheckerImpl.Factory changeChecker,
+      AccountIndexEvent.Factory accountIndexEventFactory,
+      GroupIndexEvent.Factory groupIndexEventFactory,
+      ProjectIndexEvent.Factory projectIndexEventFactory,
+      ChangeIndexEvent.Factory changeIndexEventFactory) {
     this.forwarders = forwarders;
     this.executor = executor;
     this.changeChecker = changeChecker;
+    this.accountIndexEventFactory = accountIndexEventFactory;
+    this.groupIndexEventFactory = groupIndexEventFactory;
+    this.projectIndexEventFactory = projectIndexEventFactory;
+    this.changeIndexEventFactory = changeIndexEventFactory;
   }
 
   @Override
   public void onAccountIndexed(int id) {
     if (!Context.isForwardedEvent()) {
-      IndexAccountTask task = new IndexAccountTask(new AccountIndexEvent(id));
+      IndexAccountTask task = new IndexAccountTask(accountIndexEventFactory.create(id));
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }
@@ -78,7 +90,7 @@ class IndexEventHandler
   @Override
   public void onGroupIndexed(String groupUUID) {
     if (!Context.isForwardedEvent()) {
-      IndexGroupTask task = new IndexGroupTask(new GroupIndexEvent(groupUUID));
+      IndexGroupTask task = new IndexGroupTask(groupIndexEventFactory.create(groupUUID));
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }
@@ -88,7 +100,7 @@ class IndexEventHandler
   @Override
   public void onProjectIndexed(String projectName) {
     if (!Context.isForwardedEvent()) {
-      IndexProjectTask task = new IndexProjectTask(new ProjectIndexEvent(projectName));
+      IndexProjectTask task = new IndexProjectTask(projectIndexEventFactory.create(projectName));
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }
@@ -123,7 +135,7 @@ class IndexEventHandler
 
   private void executeDeleteChangeTask(int id) {
     if (!Context.isForwardedEvent()) {
-      IndexChangeTask task = new IndexChangeTask(new ChangeIndexEvent("", id, true));
+      IndexChangeTask task = new IndexChangeTask(changeIndexEventFactory.create("", id, true));
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }

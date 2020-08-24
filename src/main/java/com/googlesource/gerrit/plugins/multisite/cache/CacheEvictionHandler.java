@@ -27,21 +27,25 @@ class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
   private final Executor executor;
   private final DynamicSet<CacheEvictionForwarder> forwarders;
   private final CachePatternMatcher matcher;
+  private final CacheEvictionEvent.Factory cacheEvictionEventFactory;
 
   @Inject
   CacheEvictionHandler(
       DynamicSet<CacheEvictionForwarder> forwarders,
       @CacheExecutor Executor executor,
-      CachePatternMatcher matcher) {
+      CachePatternMatcher matcher,
+      CacheEvictionEvent.Factory cacheEvictionEventFactory) {
     this.forwarders = forwarders;
     this.executor = executor;
     this.matcher = matcher;
+    this.cacheEvictionEventFactory = cacheEvictionEventFactory;
   }
 
   @Override
   public void onRemoval(String plugin, String cache, RemovalNotification<K, V> notification) {
     if (!Context.isForwardedEvent() && !notification.wasEvicted() && matcher.matches(cache)) {
-      executor.execute(new CacheEvictionTask(new CacheEvictionEvent(cache, notification.getKey())));
+      executor.execute(
+          new CacheEvictionTask(cacheEvictionEventFactory.create(cache, notification.getKey())));
     }
   }
 

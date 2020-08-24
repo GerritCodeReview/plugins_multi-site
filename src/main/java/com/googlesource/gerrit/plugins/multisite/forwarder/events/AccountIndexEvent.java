@@ -15,15 +15,26 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
 import com.google.common.base.Objects;
+import com.google.gerrit.common.Nullable;
+import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 public class AccountIndexEvent extends IndexEvent {
   static final String TYPE = "account-index";
 
   public int accountId;
 
-  public AccountIndexEvent(int accountId) {
+  public interface Factory {
+    AccountIndexEvent create(int accountId);
+  }
+
+  @AssistedInject
+  public AccountIndexEvent(
+      @Assisted int accountId, @Nullable @GerritInstanceId String gerritInstanceId) {
     super(TYPE);
     this.accountId = accountId;
+    this.instanceId = gerritInstanceId;
   }
 
   @Override
@@ -31,11 +42,11 @@ public class AccountIndexEvent extends IndexEvent {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     AccountIndexEvent that = (AccountIndexEvent) o;
-    return accountId == that.accountId;
+    return accountId == that.accountId && Objects.equal(instanceId, that.instanceId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(accountId);
+    return Objects.hashCode(accountId, instanceId);
   }
 }

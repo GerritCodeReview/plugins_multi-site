@@ -14,11 +14,13 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.Comment;
 import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.server.CommentsUtil;
 import com.google.gerrit.server.change.ChangeFinder;
+import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.util.ManualRequestContext;
@@ -40,6 +42,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
   private final GitRepositoryManager gitRepoMgr;
   private final CommentsUtil commentsUtil;
   private final OneOffRequestContext oneOffReqCtx;
+  private final String gerritInstanceId;
   private final String changeId;
   private final ChangeFinder changeFinder;
   private Optional<Long> computedChangeTs = Optional.empty();
@@ -55,11 +58,13 @@ public class ChangeCheckerImpl implements ChangeChecker {
       CommentsUtil commentsUtil,
       ChangeFinder changeFinder,
       OneOffRequestContext oneOffReqCtx,
+      @Nullable @GerritInstanceId String gerritInstanceId,
       @Assisted String changeId) {
     this.changeFinder = changeFinder;
     this.gitRepoMgr = gitRepoMgr;
     this.commentsUtil = commentsUtil;
     this.oneOffReqCtx = oneOffReqCtx;
+    this.gerritInstanceId = gerritInstanceId;
     this.changeId = changeId;
   }
 
@@ -69,7 +74,8 @@ public class ChangeCheckerImpl implements ChangeChecker {
     return getComputedChangeTs()
         .map(
             ts -> {
-              ChangeIndexEvent event = new ChangeIndexEvent(projectName, changeId, deleted);
+              ChangeIndexEvent event =
+                  new ChangeIndexEvent(projectName, changeId, deleted, gerritInstanceId);
               event.eventCreatedOn = ts;
               event.targetSha = getBranchTargetSha();
               return event;
