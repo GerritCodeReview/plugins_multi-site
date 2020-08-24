@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "6d32642c_436371f2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-24T12:43:29Z",
+      "side": 1,
+      "message": "Good catch luca!",
+      "parentUuid": "db8b54ad_c8ad57f4",
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "52a56c34_136a8131",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 2
@@ -47,6 +65,30 @@
       "writtenOn": "2020-08-21T21:48:31Z",
       "side": 1,
       "message": "For multi-site, the instanceId is mandatory.",
+      "range": {
+        "startLine": 109,
+        "startChar": 2,
+        "endLine": 109,
+        "endChar": 12
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "295c1d5a_850c5af8",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-24T12:43:29Z",
+      "side": 1,
+      "message": "gerrit.instanceId is always optional\n\nmulti-site uses an instanceId generated in the multi-site/data directory and gets used to wrap the message, in the sourceInstanceId field[1]\nBut that\u0027s a different value, it is not the gerrit.instanceId.\n\nFor each EventMessage we are dealing with the following entities:\n\n- message.getHeader().sourceInstanceId - the `multi-site/data/instanceId.data` of the gerrit instance that produced this message (always exist)\n- message.getEvent().instanceId - the instanceId of the gerrit instance that produced this message (optional)\n- gerrit.instanceId - the instanceId of this gerrit (optional)\n- multi-site/data/instanceId.data - the *auto-generated* multi-site instanceId of this gerrit\n\nAt the moment we are testing the event.instanceId - gerrit.instanceId pair.\narguably we should/could check for message.instanceId - multi-site/data/instanceId.data pair too.\n\nWDYT?\n\n\n[1]https://github.com/GerritForge/events-broker/blob/stable-3.2/src/main/java/com/gerritforge/gerrit/eventbroker/EventMessage.java#L58",
+      "parentUuid": "52a56c34_136a8131",
       "range": {
         "startLine": 109,
         "startChar": 2,
@@ -82,6 +124,30 @@
     },
     {
       "key": {
+        "uuid": "275e38f2_a5ace390",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-24T12:43:29Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8cef17f5_0dce5282",
+      "range": {
+        "startLine": 119,
+        "startChar": 9,
+        "endLine": 119,
+        "endChar": 28
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "03d1236a_928266f3",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 2
@@ -102,6 +168,30 @@
       "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "12cfa45a_3a474bbc",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-24T12:43:29Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "03d1236a_928266f3",
+      "range": {
+        "startLine": 122,
+        "startChar": 8,
+        "endLine": 122,
+        "endChar": 27
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -128,6 +218,30 @@
     },
     {
       "key": {
+        "uuid": "32769adf_8f7a6683",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-24T12:43:29Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "277dfc3d_b2c9c21d",
+      "range": {
+        "startLine": 123,
+        "startChar": 33,
+        "endLine": 123,
+        "endChar": 40
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "be7c22dc_13741034",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 2
@@ -148,6 +262,30 @@
       "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6a9bbfa_42b46ca6",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-24T12:43:29Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "be7c22dc_13741034",
+      "range": {
+        "startLine": 125,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 76
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -197,6 +335,30 @@
     },
     {
       "key": {
+        "uuid": "1d746b3b_8a535758",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-24T12:43:29Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7081b4d2_ec75e211",
+      "range": {
+        "startLine": 96,
+        "startChar": 47,
+        "endLine": 96,
+        "endChar": 68
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2629b6e1_4336a3f1",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
         "patchSetId": 2
@@ -208,6 +370,30 @@
       "writtenOn": "2020-08-21T21:48:31Z",
       "side": 1,
       "message": "this should be \"some-other-instance-id\" correct?",
+      "range": {
+        "startLine": 110,
+        "startChar": 47,
+        "endLine": 110,
+        "endChar": 57
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9484a651_5ecb6e70",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-24T12:43:29Z",
+      "side": 1,
+      "message": "Not really, that instanceId is the multi-site instanceId used for wrapping the event in an eventMessage, not the gerrit.instanceId.\n\n{\n  \"header\": {\n    ...\n    \"sourceInstanceId\": \"mult-site/data/InstanceId.data goes here\",\n  },\n  \"body\": {\n    ....\n    \"instanceId\": \"gerrit.instanceId when defined, goes here\"\n  }\n}",
+      "parentUuid": "2629b6e1_4336a3f1",
       "range": {
         "startLine": 110,
         "startChar": 47,
@@ -243,6 +429,30 @@
     },
     {
       "key": {
+        "uuid": "133b4622_233300c5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-24T12:43:29Z",
+      "side": 1,
+      "message": "see my previous replies regarding this",
+      "parentUuid": "19dc9ccb_7fcc0cd1",
+      "range": {
+        "startLine": 125,
+        "startChar": 47,
+        "endLine": 125,
+        "endChar": 57
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e426569c_bc6616c3",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/util/TestEvent.java",
         "patchSetId": 2
@@ -263,6 +473,30 @@
       "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6725ed26_0f4f58ad",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/util/TestEvent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-24T12:43:29Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e426569c_bc6616c3",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 3
+      },
+      "revId": "32313f373ee533fea9fceb454ebf49e43dcd29c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
