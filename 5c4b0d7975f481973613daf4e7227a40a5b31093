@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b34e8cce_713dc916",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-08-25T08:36:18Z",
+      "side": 1,
+      "message": "Only this we have to consider is what should we do with All-Projects and All-Users repos. Should we always allow sending messages for those repos or should we use the same concept as we have in replication plugin and treat them as a normal repositories",
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
