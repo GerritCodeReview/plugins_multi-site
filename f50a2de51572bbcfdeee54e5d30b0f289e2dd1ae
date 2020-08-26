@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9b3dc167_9bdfd41d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/CacheEvictionHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-26T22:08:04Z",
+      "side": 1,
+      "message": "This should be an assisted injected property in the CacheEvictionEvent IMHO: it would make the change easier and the code clearer to read. The CacheEvictionHandler doesn\u0027t use the gerritInstanceId at all.",
+      "range": {
+        "startLine": 39,
+        "startChar": 6,
+        "endLine": 39,
+        "endChar": 58
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50e9c9b4_c580cf6f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/ProjectListUpdateHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-26T22:08:04Z",
+      "side": 1,
+      "message": "Why no using an assisted inject to ProjectListUpdateEvent?",
+      "range": {
+        "startLine": 41,
+        "startChar": 6,
+        "endLine": 41,
+        "endChar": 57
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ccee940_ce27e8b5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/CacheEvictionEvent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-26T22:08:04Z",
+      "side": 1,
+      "message": "Why not using @Assisted @Inject @GerritInstanceId?",
+      "range": {
+        "startLine": 25,
+        "startChar": 58,
+        "endLine": 25,
+        "endChar": 81
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7cbf2209_26d34453",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/ChangeIndexEvent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-26T22:08:04Z",
+      "side": 1,
+      "message": "Why not using @Assisted @Inject @GerritInstanceId?",
+      "range": {
+        "startLine": 32,
+        "startChar": 57,
+        "endLine": 32,
+        "endChar": 80
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0bd3b410_fdf8a970",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/GroupIndexEvent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-26T22:08:04Z",
+      "side": 1,
+      "message": "Why not using @Assisted @Inject @GerritInstanceId?",
+      "range": {
+        "startLine": 24,
+        "startChar": 42,
+        "endLine": 24,
+        "endChar": 66
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "064bbf05_38739b0d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/ProjectIndexEvent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-26T22:08:04Z",
+      "side": 1,
+      "message": "Why not using @Assisted @Inject @GerritInstanceId?",
+      "range": {
+        "startLine": 24,
+        "startChar": 46,
+        "endLine": 24,
+        "endChar": 70
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7cc7a25e_92a3a901",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/ProjectListUpdateEvent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-26T22:08:04Z",
+      "side": 1,
+      "message": "Why not using @Assisted @Inject @GerritInstanceId?",
+      "range": {
+        "startLine": 25,
+        "startChar": 67,
+        "endLine": 25,
+        "endChar": 91
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa36d6c1_a1303a5a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-26T22:08:04Z",
+      "side": 1,
+      "message": "Should be injected instead in ChangeIndexEvent",
+      "range": {
+        "startLine": 61,
+        "startChar": 6,
+        "endLine": 61,
+        "endChar": 57
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0aa39ee6_0822137f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/IndexEventHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-26T22:08:04Z",
+      "side": 1,
+      "message": "This should be injected as assisted in IndexAccountTask",
+      "range": {
+        "startLine": 56,
+        "startChar": 6,
+        "endLine": 56,
+        "endChar": 57
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
