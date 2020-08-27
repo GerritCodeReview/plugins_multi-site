@@ -19,22 +19,21 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 
 @Singleton
-public class BrokerCacheEvictionForwarder implements CacheEvictionForwarder {
-  private final BrokerApiWrapper broker;
-  private final Configuration cfg;
+public class BrokerCacheEvictionForwarder extends BrokerForwarder
+    implements CacheEvictionForwarder {
 
   @Inject
   BrokerCacheEvictionForwarder(BrokerApiWrapper broker, Configuration cfg) {
-    this.broker = broker;
-    this.cfg = cfg;
+    super(broker, cfg);
   }
 
   @Override
-  public boolean evict(CacheEvictionEvent event) {
-    return broker.send(EventTopic.CACHE_TOPIC.topic(cfg), event);
+  public boolean evict(ForwarderTask task, CacheEvictionEvent event) {
+    return send(task, EventTopic.CACHE_TOPIC, event);
   }
 }
