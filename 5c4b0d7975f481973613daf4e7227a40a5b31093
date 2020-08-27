@@ -16,6 +16,230 @@
       "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a5820669_e18e1964",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-27T07:35:31Z",
+      "side": 1,
+      "message": "I cannot find anywhere the point of disabling also the global refdb check and update when a project isn\u0027t matched.\n\nAlso, see my concerns and suggestions for not creating a performance bottleneck with pattern-matching done over and over again.",
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ceeeb891_cfc5f80e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-27T07:35:31Z",
+      "side": 1,
+      "message": "2020",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 22
+      },
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2eb25683_d498ac5b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-27T07:35:31Z",
+      "side": 1,
+      "message": "Should this logic be part of PatternType? (i.e. moving this method into PatternType?)\n\nExample:\n\n  public enum PatternType {\n    REGEX,\n    WILDCARD,\n    EXACT_MATCH;\n\t  \n\tpublic static PatternType ofPattern(String pattern) {\n\t  if (pattern.startsWith(AccessSection.REGEX_PREFIX)) {\n\t    return PatternType.REGEX;\n\t  } else if (pattern.endsWith(\"*\")) {\n\t    return PatternType.WILDCARD;\n\t  } else {\n\t    return PatternType.EXACT_MATCH;\n\t  }\n\t}\n  }",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 3
+      },
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0f13a90e_12373768",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-27T07:35:31Z",
+      "side": 1,
+      "message": "matches() is expected to be called *many many times* for every possible event that happens in Gerrit. Also, pattern-matching is very CPU intensive.\n\nHave you thought about memoizing it into a HashSet in memory?\n\nExample:\n  Set\u003cString\u003e globalProjects \u003d new HashSet\u003c\u003e(numProjects)\n  \n  if (globalProjects.contains(projectName)) {\n     return true;\n  }\n\n  for (String pattern : projectPatterns) {\n      if (matchesPattern(projectName, pattern)) {\n        synchronized (globalProjects) {\n          globalProjects.add(projectName);\n          return true;\n        }\n      }\n  }",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 5
+      },
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f366833_3f76264e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-27T07:35:31Z",
+      "side": 1,
+      "message": "This case is telling me that possibly you are missing a small hierarchy here?\n\n  ProjectPatter ---\u003e ExactMatch\n                \\--\u003e WildCardMatch\n                 \\-\u003e PatternMatch\n\nWDYT? Is it overkill?",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 3
+      },
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bdb01d14_34f2f18d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/IndexEventHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-27T07:35:31Z",
+      "side": 1,
+      "message": "The method call taking a projectName as a string is repeated multiple times: it would be best to DRY it out and create another method matches(String).",
+      "range": {
+        "startLine": 95,
+        "startChar": 39,
+        "endLine": 95,
+        "endChar": 88
+      },
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f55b636_08a5ff08",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-27T07:35:31Z",
+      "side": 1,
+      "message": "All this logic can be moved into the ProjectsFilter if we introduce a method \u0027matches(Event)\u0027",
+      "range": {
+        "startLine": 85,
+        "startChar": 6,
+        "endLine": 88,
+        "endChar": 7
+      },
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d39f85b1_bfb1f8dd",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-27T07:35:31Z",
+      "side": 1,
+      "message": "Can we refer to the Java Documentation of regular expressions? It would be by far more complete than trying to summarise how regex work here.",
+      "range": {
+        "startLine": 111,
+        "startChar": 17,
+        "endLine": 114,
+        "endChar": 47
+      },
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b429dff_2b499eff",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-27T07:35:31Z",
+      "side": 1,
+      "message": "This also can be reduced to a note: \"Please note that regular expressions could also be used with inverse match\".",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 37
+      },
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5171c5fb_e17678d9",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-27T07:35:31Z",
+      "side": 1,
+      "message": "projects are matched.",
+      "range": {
+        "startLine": 130,
+        "startChar": 20,
+        "endLine": 130,
+        "endChar": 52
+      },
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
