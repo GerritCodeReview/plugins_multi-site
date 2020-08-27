@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "4735fb6c_939c7615",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/CacheEvictionHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-27T14:26:06Z",
+      "side": 1,
+      "message": "good suggestion @luca",
+      "parentUuid": "9b3dc167_9bdfd41d",
+      "range": {
+        "startLine": 39,
+        "startChar": 6,
+        "endLine": 39,
+        "endChar": 58
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "50e9c9b4_c580cf6f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/ProjectListUpdateHandler.java",
         "patchSetId": 2
@@ -45,6 +69,30 @@
       "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ce956c9_42c6006c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/ProjectListUpdateHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-27T14:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50e9c9b4_c580cf6f",
+      "range": {
+        "startLine": 41,
+        "startChar": 6,
+        "endLine": 41,
+        "endChar": 57
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "97b6cde5_2d1dd03f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/CacheEvictionEvent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-27T14:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ccee940_ce27e8b5",
+      "range": {
+        "startLine": 25,
+        "startChar": 58,
+        "endLine": 25,
+        "endChar": 81
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7cbf2209_26d34453",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/ChangeIndexEvent.java",
         "patchSetId": 2
@@ -91,6 +163,30 @@
       "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0bf76361_db4e095c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/ChangeIndexEvent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-27T14:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cbf2209_26d34453",
+      "range": {
+        "startLine": 32,
+        "startChar": 57,
+        "endLine": 32,
+        "endChar": 80
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "e4ea4355_f40276f7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/GroupIndexEvent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-27T14:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0bd3b410_fdf8a970",
+      "range": {
+        "startLine": 24,
+        "startChar": 42,
+        "endLine": 24,
+        "endChar": 66
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "064bbf05_38739b0d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/ProjectIndexEvent.java",
         "patchSetId": 2
@@ -137,6 +257,30 @@
       "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f14edd12_d8d6c869",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/ProjectIndexEvent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-27T14:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "064bbf05_38739b0d",
+      "range": {
+        "startLine": 24,
+        "startChar": 46,
+        "endLine": 24,
+        "endChar": 70
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -163,6 +307,30 @@
     },
     {
       "key": {
+        "uuid": "121bc9b0_c62d1414",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/ProjectListUpdateEvent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-27T14:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cc7a25e_92a3a901",
+      "range": {
+        "startLine": 25,
+        "startChar": 67,
+        "endLine": 25,
+        "endChar": 91
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "aa36d6c1_a1303a5a",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
         "patchSetId": 2
@@ -186,6 +354,30 @@
     },
     {
       "key": {
+        "uuid": "1daa83e1_8cfadf1f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-27T14:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa36d6c1_a1303a5a",
+      "range": {
+        "startLine": 61,
+        "startChar": 6,
+        "endLine": 61,
+        "endChar": 57
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0aa39ee6_0822137f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/IndexEventHandler.java",
         "patchSetId": 2
@@ -206,6 +398,30 @@
       "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2623dfdb_ea1f60cf",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/IndexEventHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-27T14:26:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0aa39ee6_0822137f",
+      "range": {
+        "startLine": 56,
+        "startChar": 6,
+        "endLine": 56,
+        "endChar": 57
+      },
+      "revId": "f50a2de51572bbcfdeee54e5d30b0f289e2dd1ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
