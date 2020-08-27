@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6d3fde07_d0a3af05",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-27T14:39:14Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e8b76a99_19cc6792",
+      "range": {
+        "startLine": 93,
+        "startChar": 4,
+        "endLine": 93,
+        "endChar": 51
+      },
+      "revId": "7f1404c079880cf1666f285aa74588c8b63ca183",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "74fc8eef_b5843efb",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
         "patchSetId": 6
@@ -45,6 +69,30 @@
       "revId": "7f1404c079880cf1666f285aa74588c8b63ca183",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e175720c_4c6b736b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-27T14:39:14Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "74fc8eef_b5843efb",
+      "range": {
+        "startLine": 104,
+        "startChar": 4,
+        "endLine": 104,
+        "endChar": 51
+      },
+      "revId": "7f1404c079880cf1666f285aa74588c8b63ca183",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
