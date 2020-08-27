@@ -22,6 +22,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BrokerApiWrapperTest {
+  private static final long TEST_TIMEOUT_MSECS = 30000L;
   @Mock private BrokerMetrics brokerMetrics;
   @Mock private BrokerApi brokerApi;
   @Mock Event event;

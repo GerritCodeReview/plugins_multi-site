@@ -20,8 +20,9 @@ public interface CacheEvictionForwarder {
   /**
    * Forward a cache eviction event to the other master.
    *
+   * @param task that triggered the forwarding of the cache event.
    * @param cacheEvictionEvent the details of the cache eviction event.
    * @return true if successful, otherwise false.
    */
-  boolean evict(CacheEvictionEvent cacheEvictionEvent);
+  boolean evict(ForwarderTask task, CacheEvictionEvent cacheEvictionEvent);
 }
