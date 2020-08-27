@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2e8e9328_b9290273",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-27T22:48:41Z",
+      "side": 1,
+      "message": "This is good, but not enough. Some of the events are not directly coming from remote instances but are *generated locally* as a consequence of remote instances operations.\n\nThe residual problem can be sorted out as a follow-up of this change.",
+      "revId": "ec39e1ff18887a6d6032f2b5cd6ee46e4b0b8339",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
