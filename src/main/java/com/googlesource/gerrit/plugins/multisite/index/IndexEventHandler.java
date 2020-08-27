@@ -22,6 +22,7 @@ import com.google.gerrit.extensions.events.ProjectIndexedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
@@ -130,7 +131,8 @@ class IndexEventHandler
     }
   }
 
-  abstract class IndexTask implements Runnable {
+  abstract class IndexTask extends ForwarderTask {
+
     @Override
     public void run() {
       queuedTasks.remove(this);
@@ -149,7 +151,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarders.forEach(f -> f.index(changeIndexEvent));
+      forwarders.forEach(f -> f.index(this, changeIndexEvent));
     }
 
     @Override
@@ -180,7 +182,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarders.forEach(f -> f.batchIndex(changeIndexEvent));
+      forwarders.forEach(f -> f.batchIndex(this, changeIndexEvent));
     }
 
     @Override
@@ -211,7 +213,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarders.forEach(f -> f.index(accountIndexEvent));
+      forwarders.forEach(f -> f.index(this, accountIndexEvent));
     }
 
     @Override
@@ -242,7 +244,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarders.forEach(f -> f.index(groupIndexEvent));
+      forwarders.forEach(f -> f.index(this, groupIndexEvent));
     }
 
     @Override
@@ -273,7 +275,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarders.forEach(f -> f.index(projectIndexEvent));
+      forwarders.forEach(f -> f.index(this, projectIndexEvent));
     }
 
     @Override

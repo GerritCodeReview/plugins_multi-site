@@ -21,16 +21,18 @@ public interface IndexEventForwarder {
   /**
    * Publish an indexing event to the broker using interactive topic.
    *
+   * @param task that triggered the forwarding of the index event.
    * @param event the details of the index event.
    * @return true if successful, otherwise false.
    */
-  boolean index(IndexEvent event);
+  boolean index(ForwarderTask task, IndexEvent event);
 
   /**
    * Publish an indexing event to the broker using batch topic.
    *
+   * @param task that triggered the forwarding of the index event.
    * @param event the details of the index event.
    * @return true if successful, otherwise false.
    */
-  boolean batchIndex(IndexEvent event);
+  boolean batchIndex(ForwarderTask task, IndexEvent event);
 }
