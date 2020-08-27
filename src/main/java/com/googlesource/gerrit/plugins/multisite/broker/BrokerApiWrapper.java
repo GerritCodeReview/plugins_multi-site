@@ -62,17 +62,12 @@ public class BrokerApiWrapper implements BrokerApi {
 
   @Override
   public boolean send(String topic, EventMessage message) {
-
     // An event should not be dispatched when it is "forwarded".
     // meaning, it was either produced somewhere else
-    if (!isProducedByLocalInstance(message.getEvent())) {
-      Context.setForwardedEvent(true);
-    }
-    // The event has been received a consumer and thus it should not be
-    // re-forwarded
-    if (Context.isForwardedEvent()) {
+    if (!isProducedByLocalInstance(message.getEvent()) || Context.isForwardedEvent()) {
       return true;
     }
+
     boolean succeeded = false;
     try {
       succeeded = apiDelegate.get().send(topic, message);
