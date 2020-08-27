@@ -17,7 +17,10 @@ package com.googlesource.gerrit.plugins.multisite.broker;
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.gerritforge.gerrit.eventbroker.TopicSubscriber;
+import com.google.common.base.MoreObjects;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
@@ -33,20 +36,26 @@ public class BrokerApiWrapper implements BrokerApi {
   private final BrokerMetrics metrics;
   private final MessageLogger msgLog;
   private final UUID instanceId;
+  private final String gerritInstanceId;
 
   @Inject
   public BrokerApiWrapper(
       DynamicItem<BrokerApi> apiDelegate,
       BrokerMetrics metrics,
       MessageLogger msgLog,
-      @InstanceId UUID instanceId) {
+      @InstanceId UUID instanceId,
+      @Nullable @GerritInstanceId String gerritInstanceId) {
     this.apiDelegate = apiDelegate;
     this.metrics = metrics;
     this.msgLog = msgLog;
     this.instanceId = instanceId;
+    this.gerritInstanceId = gerritInstanceId;
   }
 
   public boolean send(String topic, Event event) {
+    event.instanceId =
+        MoreObjects.firstNonNull(
+            event.instanceId, MoreObjects.firstNonNull(gerritInstanceId, instanceId.toString()));
     return send(topic, apiDelegate.get().newMessage(instanceId, event));
   }
 

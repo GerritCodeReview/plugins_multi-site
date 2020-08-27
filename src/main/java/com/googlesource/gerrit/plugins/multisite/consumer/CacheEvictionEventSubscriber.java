@@ -14,7 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -31,11 +33,19 @@ public class CacheEvictionEventSubscriber extends AbstractSubcriber {
       CacheEvictionEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
       @InstanceId UUID instanceId,
+      @Nullable @GerritInstanceId String gerritInstanceId,
       MessageLogger msgLog,
       SubscriberMetrics subscriberMetrics,
       Configuration cfg) {
 
-    super(eventRouter, droppedEventListeners, instanceId, msgLog, subscriberMetrics, cfg);
+    super(
+        eventRouter,
+        droppedEventListeners,
+        instanceId,
+        gerritInstanceId,
+        msgLog,
+        subscriberMetrics,
+        cfg);
   }
 
   @Override

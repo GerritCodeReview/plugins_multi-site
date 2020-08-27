@@ -31,7 +31,11 @@ public class BrokerApiWrapperTest {
   public void setUp() {
     objectUnderTest =
         new BrokerApiWrapper(
-            DynamicItem.itemOf(BrokerApi.class, brokerApi), brokerMetrics, msgLog, instanceId);
+            DynamicItem.itemOf(BrokerApi.class, brokerApi),
+            brokerMetrics,
+            msgLog,
+            instanceId,
+            instanceId.toString());
   }
 
   @Test
