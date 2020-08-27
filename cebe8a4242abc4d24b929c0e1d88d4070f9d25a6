@@ -45,6 +45,23 @@
       "revId": "cebe8a4242abc4d24b929c0e1d88d4070f9d25a6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "46413d0b_1d38b861",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-27T22:21:51Z",
+      "side": 1,
+      "message": "I am convinced that this change is good, but NOT convinced that is needed to resolve the problem.\nLet me upload an alternative version and we can start a discussion about it :-)",
+      "revId": "cebe8a4242abc4d24b929c0e1d88d4070f9d25a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
