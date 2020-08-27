@@ -22,6 +22,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BrokerApiWrapperTest {
+  private static final long TEST_TIMEOUT_MSECS = 30000L;
   @Mock private BrokerMetrics brokerMetrics;
   @Mock private BrokerApi brokerApi;
   @Mock Event event;
@@ -85,6 +86,46 @@ public class BrokerApiWrapperTest {
 
     objectUnderTest.send(topic, testEvent);
     verify(brokerApi, never()).send(any(), any());
+  }
+
+  @Test
+  public void shouldNotDispatchEventWhenEventComesFromHighAvailabilityPluginThread()
+      throws InterruptedException {
+    TestEvent testEvent = new TestEvent(null);
+    mockNewMessageResponse(testEvent);
+
+    Thread t = new Thread(() -> objectUnderTest.send(topic, testEvent));
+    t.setName("/plugins/high-availability/");
+    t.start();
+    t.join(TEST_TIMEOUT_MSECS);
+
+    verify(brokerApi, never()).send(any(), any());
+  }
+
+  @Test
+  public void shouldNotDispatchEventWhenEventComesFromHighAvailabilityForwarderThread()
+      throws InterruptedException {
+    TestEvent testEvent = new TestEvent(null);
+    mockNewMessageResponse(testEvent);
+
+    Thread t = new Thread(() -> objectUnderTest.send(topic, testEvent));
+    t.setName("Forwarded-Index-Event");
+    t.start();
+    t.join(TEST_TIMEOUT_MSECS);
+
+    verify(brokerApi, never()).send(any(), any());
+  }
+
+  @Test
+  public void shouldDispatchEventWhenEventComesFromAnyThread() throws InterruptedException {
+    TestEvent testEvent = new TestEvent(null);
+    mockNewMessageResponse(testEvent);
+
+    Thread t = new Thread(() -> objectUnderTest.send(topic, testEvent));
+    t.start();
+    t.join(TEST_TIMEOUT_MSECS);
+
+    verify(brokerApi).send(any(), any());
   }
 
   @Test

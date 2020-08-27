@@ -33,6 +33,8 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 public class BrokerApiWrapper implements BrokerApi {
+  private static final CharSequence HIGH_AVAILABILITY_PLUGIN = "/plugins/high-availability/";
+  private static final CharSequence HIGH_AVAILABILITY_FORWARDER = "Forwarded-Index-Event";
   private final DynamicItem<BrokerApi> apiDelegate;
   private final BrokerMetrics metrics;
   private final MessageLogger msgLog;
@@ -65,12 +67,20 @@ public class BrokerApiWrapper implements BrokerApi {
         event.instanceId, MoreObjects.firstNonNull(gerritInstanceId, instanceId.toString()));
   }
 
+  private boolean currentThreadBelongsToHighAvailabilityPlugin() {
+    String currentThreadName = Thread.currentThread().getName();
+
+    return currentThreadName.contains(HIGH_AVAILABILITY_PLUGIN)
+        || currentThreadName.contains(HIGH_AVAILABILITY_FORWARDER);
+  }
+
   @Override
   public boolean send(String topic, EventMessage message) {
 
     // An event should not be dispatched when it is "forwarded".
     // meaning, it was either produced somewhere else
-    if (!isProducedByLocalInstance(message.getEvent())) {
+    if (currentThreadBelongsToHighAvailabilityPlugin()
+        || !isProducedByLocalInstance(message.getEvent())) {
       Context.setForwardedEvent(true);
     }
     // The event has been received a consumer and thus it should not be
