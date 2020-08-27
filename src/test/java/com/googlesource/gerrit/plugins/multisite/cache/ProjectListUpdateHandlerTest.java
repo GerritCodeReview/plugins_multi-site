@@ -15,6 +15,8 @@
 package com.googlesource.gerrit.plugins.multisite.cache;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -59,7 +61,9 @@ public class ProjectListUpdateHandlerTest {
     NewProjectCreatedListener.Event event = mock(NewProjectCreatedListener.Event.class);
     when(event.getProjectName()).thenReturn(projectName);
     handler.onNewProjectCreated(event);
-    verify(forwarder).updateProjectList(new ProjectListUpdateEvent(projectName, false));
+    verify(forwarder)
+        .updateProjectList(
+            any(ProjectListUpdateTask.class), eq(new ProjectListUpdateEvent(projectName, false)));
   }
 
   @Test
@@ -68,7 +72,9 @@ public class ProjectListUpdateHandlerTest {
     ProjectDeletedListener.Event event = mock(ProjectDeletedListener.Event.class);
     when(event.getProjectName()).thenReturn(projectName);
     handler.onProjectDeleted(event);
-    verify(forwarder).updateProjectList(new ProjectListUpdateEvent(projectName, true));
+    verify(forwarder)
+        .updateProjectList(
+            any(ProjectListUpdateTask.class), eq(new ProjectListUpdateEvent(projectName, true)));
   }
 
   @Test
