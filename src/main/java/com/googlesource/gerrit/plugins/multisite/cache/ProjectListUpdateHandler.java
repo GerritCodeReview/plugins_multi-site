@@ -21,6 +21,7 @@ import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import java.util.concurrent.Executor;
@@ -57,7 +58,7 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
     }
   }
 
-  class ProjectListUpdateTask implements Runnable {
+  class ProjectListUpdateTask extends ForwarderTask {
     private final ProjectListUpdateEvent projectListUpdateEvent;
 
     ProjectListUpdateTask(ProjectListUpdateEvent projectListUpdateEvent) {
@@ -66,7 +67,7 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
 
     @Override
     public void run() {
-      forwarders.forEach(f -> f.updateProjectList(projectListUpdateEvent));
+      forwarders.forEach(f -> f.updateProjectList(this, projectListUpdateEvent));
     }
 
     @Override

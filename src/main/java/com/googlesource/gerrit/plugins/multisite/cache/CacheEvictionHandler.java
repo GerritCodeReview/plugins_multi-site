@@ -20,6 +20,7 @@ import com.google.gerrit.server.cache.CacheRemovalListener;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 import java.util.concurrent.Executor;
 
@@ -45,7 +46,7 @@ class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
     }
   }
 
-  class CacheEvictionTask implements Runnable {
+  class CacheEvictionTask extends ForwarderTask {
     CacheEvictionEvent cacheEvictionEvent;
 
     CacheEvictionTask(CacheEvictionEvent cacheEvictionEvent) {
@@ -54,7 +55,7 @@ class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
 
     @Override
     public void run() {
-      forwarders.forEach(f -> f.evict(cacheEvictionEvent));
+      forwarders.forEach(f -> f.evict(this, cacheEvictionEvent));
     }
 
     @Override
