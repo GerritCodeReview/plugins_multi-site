@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "429146f1_ccd8d78b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-08-28T13:22:02Z",
+      "side": 1,
+      "message": "I\u0027ve added disabling global refdb check",
+      "parentUuid": "a5820669_e18e1964",
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ceeeb891_cfc5f80e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
         "patchSetId": 2
