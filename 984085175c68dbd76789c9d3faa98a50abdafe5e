@@ -68,6 +68,29 @@
       "revId": "984085175c68dbd76789c9d3faa98a50abdafe5e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7971ee0_b32c537f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-28T14:25:42Z",
+      "side": 1,
+      "message": "This broker is always forwarding MultiSite events, which do not have instanceId populated.\nI don\u0027t think this change is necessary.\n\nWDYT?",
+      "range": {
+        "startLine": 66,
+        "startChar": 1,
+        "endLine": 70,
+        "endChar": 5
+      },
+      "revId": "984085175c68dbd76789c9d3faa98a50abdafe5e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
