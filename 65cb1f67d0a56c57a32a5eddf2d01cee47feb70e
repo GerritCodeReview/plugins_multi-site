@@ -42,6 +42,30 @@
     },
     {
       "key": {
+        "uuid": "27e35064_f10ad1ce",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-28T15:52:15Z",
+      "side": 1,
+      "message": "True, done.",
+      "parentUuid": "ea6a90d4_feeaaeef",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 87
+      },
+      "revId": "65cb1f67d0a56c57a32a5eddf2d01cee47feb70e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ccacfeb1_ae856396",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwarderTask.java",
         "patchSetId": 7
