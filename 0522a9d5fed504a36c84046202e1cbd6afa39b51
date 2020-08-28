@@ -16,6 +16,24 @@
       "revId": "0522a9d5fed504a36c84046202e1cbd6afa39b51",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bb18b738_16317c25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-28T12:35:16Z",
+      "side": 1,
+      "message": "\u003e I have been thinking whether this check actually required?\n\u003e the instanceId of an event will always be the one of the *current* gerrit or, when it\u0027s not, the forwarded context will already be true.\n\u003e \n\u003e am I correct?\n\nI don\u0027t know, we need to write a test for it :-)\n\n\u003e If this is the case, then having this additional test does not prevent any message from being produced (the subsequent change in the chain does this).\n\nIf the event is generated locally, then the instance-id would be local.\nIf the event is simply forwarded as a stream event, then instance-id would not be the local one.\n\nP.S. I am talking about *stream-events* only here, because for the other \"not-typical events\" (reindexing, cache evictions) the concept is totally different, because the event is *always* generated locally by the plugin.\n\n\u003e I think it is a step forward in the right direction (i.e. we should not rely on Context to understand whether an event has been forwarded), but as it stands this change is un-necessary.\n\u003e \n\u003e WDYT?\n\nDon\u0027t know, we need testing for this :-)",
+      "parentUuid": "dd7b4f5d_71f9ec6b",
+      "revId": "0522a9d5fed504a36c84046202e1cbd6afa39b51",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
