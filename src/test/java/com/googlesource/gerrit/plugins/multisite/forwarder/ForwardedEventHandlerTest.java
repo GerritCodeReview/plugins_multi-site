@@ -18,8 +18,10 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.google.gerrit.exceptions.StorageException;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventDispatcher;
 import com.google.gerrit.server.events.ProjectCreatedEvent;
@@ -37,13 +39,15 @@ import org.mockito.stubbing.Answer;
 public class ForwardedEventHandlerTest {
 
   @Rule public ExpectedException exception = ExpectedException.none();
+  @Mock private DynamicItem<EventDispatcher> dispatcherMockItem;
   @Mock private EventDispatcher dispatcherMock;
   @Mock OneOffRequestContext oneOffCtxMock;
   private ForwardedEventHandler handler;
 
   @Before
   public void setUp() throws Exception {
-    handler = new ForwardedEventHandler(dispatcherMock, oneOffCtxMock);
+    when(dispatcherMockItem.get()).thenReturn(dispatcherMock);
+    handler = new ForwardedEventHandler(dispatcherMockItem, oneOffCtxMock);
   }
 
   @Test
