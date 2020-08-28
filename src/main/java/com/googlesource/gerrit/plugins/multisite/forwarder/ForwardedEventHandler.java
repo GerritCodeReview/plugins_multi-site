@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventDispatcher;
 import com.google.gerrit.server.permissions.PermissionBackendException;
@@ -33,11 +34,12 @@ import org.slf4j.LoggerFactory;
 public class ForwardedEventHandler {
   private static final Logger log = LoggerFactory.getLogger(ForwardedEventHandler.class);
 
-  private final EventDispatcher dispatcher;
+  private final DynamicItem<EventDispatcher> dispatcher;
   private final OneOffRequestContext oneOffCtx;
 
   @Inject
-  public ForwardedEventHandler(EventDispatcher dispatcher, OneOffRequestContext oneOffCtx) {
+  public ForwardedEventHandler(
+      DynamicItem<EventDispatcher> dispatcher, OneOffRequestContext oneOffCtx) {
     this.dispatcher = dispatcher;
     this.oneOffCtx = oneOffCtx;
   }
@@ -51,7 +53,7 @@ public class ForwardedEventHandler {
     try (ManualRequestContext ctx = oneOffCtx.open()) {
       Context.setForwardedEvent(true);
       log.debug("dispatching event {}", event.getType());
-      dispatcher.postEvent(event);
+      dispatcher.get().postEvent(event);
     } finally {
       Context.unsetForwardedEvent();
     }
