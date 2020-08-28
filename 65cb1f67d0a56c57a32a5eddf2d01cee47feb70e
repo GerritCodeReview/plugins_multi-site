@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5f192654_ead26f3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-28T15:26:45Z",
+      "side": 1,
+      "message": "Few nits, but the change LGTM,\nhowever I have tested it as a standalone fix, without [1] and [2] it still works.\nI think we should rebase this on stable-3.2 and ship it on its own.\n\nWDYT?\n\n\n\n[1] https://gerrit-review.googlesource.com/c/plugins/multi-site/+/279819\n[2] https://gerrit-review.googlesource.com/c/plugins/high-availability/+/279197",
+      "revId": "65cb1f67d0a56c57a32a5eddf2d01cee47feb70e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ccacfeb1_ae856396",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwarderTask.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-28T15:26:45Z",
+      "side": 1,
+      "message": "2020",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "65cb1f67d0a56c57a32a5eddf2d01cee47feb70e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2dbcfdc1_dcf5ebc1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarder.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-28T15:26:45Z",
+      "side": 1,
+      "message": "2020",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "65cb1f67d0a56c57a32a5eddf2d01cee47feb70e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9517e7d1_44ece909",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/BrokerForwarderTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-28T15:26:45Z",
+      "side": 1,
+      "message": "nit: this could be a lambda\n\n          .submit(\n                  () -\u003e {\n                    Thread.currentThread().setName(threadName);\n                    return newForwarderTask();\n                  })",
+      "range": {
+        "startLine": 116,
+        "startChar": 1,
+        "endLine": 122,
+        "endChar": 16
+      },
+      "revId": "65cb1f67d0a56c57a32a5eddf2d01cee47feb70e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
