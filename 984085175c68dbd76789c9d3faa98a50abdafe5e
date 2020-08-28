@@ -161,6 +161,29 @@
       "revId": "984085175c68dbd76789c9d3faa98a50abdafe5e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7d3cde15_fac2510b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-28T14:30:45Z",
+      "side": 1,
+      "message": "This test should be done explicitly with stream events: a generic TestEvent shouldn\u0027t be influenced at all.",
+      "range": {
+        "startLine": 83,
+        "startChar": 26,
+        "endLine": 83,
+        "endChar": 60
+      },
+      "revId": "984085175c68dbd76789c9d3faa98a50abdafe5e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
