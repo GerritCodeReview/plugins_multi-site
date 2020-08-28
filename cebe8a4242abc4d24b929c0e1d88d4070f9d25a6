@@ -128,6 +128,23 @@
       "revId": "cebe8a4242abc4d24b929c0e1d88d4070f9d25a6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "15c656de_27cce0bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-28T14:21:33Z",
+      "side": 1,
+      "message": "This isn\u0027t actually resolve the problem and is not needed for the solution.\n",
+      "revId": "cebe8a4242abc4d24b929c0e1d88d4070f9d25a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
