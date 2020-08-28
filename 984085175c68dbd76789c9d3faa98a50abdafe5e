@@ -71,6 +71,23 @@
     },
     {
       "key": {
+        "uuid": "e2c9a80d_2d91d7ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-28T15:49:16Z",
+      "side": 1,
+      "message": "This change is not required for solving the event looping problem.\nI suggest we abandon this",
+      "revId": "984085175c68dbd76789c9d3faa98a50abdafe5e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "53d644d7_56afd28f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
         "patchSetId": 2
@@ -164,6 +181,30 @@
     },
     {
       "key": {
+        "uuid": "9e389468_6c19914d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-28T15:49:16Z",
+      "side": 1,
+      "message": "I see, true.\nNot every Stream event, but only ProjectEvent [1]\n\nhttps://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/stable-3.2/src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventHandler.java#38",
+      "parentUuid": "d2b2666b_3f7bf434",
+      "range": {
+        "startLine": 66,
+        "startChar": 1,
+        "endLine": 70,
+        "endChar": 5
+      },
+      "revId": "984085175c68dbd76789c9d3faa98a50abdafe5e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7d3cde15_fac2510b",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
         "patchSetId": 2
@@ -175,6 +216,30 @@
       "writtenOn": "2020-08-28T14:30:45Z",
       "side": 1,
       "message": "This test should be done explicitly with stream events: a generic TestEvent shouldn\u0027t be influenced at all.",
+      "range": {
+        "startLine": 83,
+        "startChar": 26,
+        "endLine": 83,
+        "endChar": 60
+      },
+      "revId": "984085175c68dbd76789c9d3faa98a50abdafe5e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77fa7f2a_a4ef4984",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-28T15:49:16Z",
+      "side": 1,
+      "message": "The fix in the BrokerApiWrapper.send() method should apply to every Event specification right?",
+      "parentUuid": "7d3cde15_fac2510b",
       "range": {
         "startLine": 83,
         "startChar": 26,
