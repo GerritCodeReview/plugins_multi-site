@@ -88,6 +88,24 @@
     },
     {
       "key": {
+        "uuid": "6e1b3833_c9075c45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-28T15:57:20Z",
+      "side": 1,
+      "message": "Have you tested that *without* this change the stream events are not looping forever?",
+      "parentUuid": "e2c9a80d_2d91d7ef",
+      "revId": "984085175c68dbd76789c9d3faa98a50abdafe5e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "53d644d7_56afd28f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
         "patchSetId": 2
@@ -205,6 +223,30 @@
     },
     {
       "key": {
+        "uuid": "bae61658_d1ffb545",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-28T15:57:20Z",
+      "side": 1,
+      "message": "\u003e I see, true.\n\u003e Not every Stream event, but only ProjectEvent [1]\n\u003e \n\u003e https://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/stable-3.2/src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventHandler.java#38\n\nProjectEvents are all stream events associated with a repository. I am not aware of any stream event that isn\u0027t associated with a project though ;-) so that means *ALL* stream events.",
+      "parentUuid": "9e389468_6c19914d",
+      "range": {
+        "startLine": 66,
+        "startChar": 1,
+        "endLine": 70,
+        "endChar": 5
+      },
+      "revId": "984085175c68dbd76789c9d3faa98a50abdafe5e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7d3cde15_fac2510b",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
         "patchSetId": 2
@@ -240,6 +282,30 @@
       "side": 1,
       "message": "The fix in the BrokerApiWrapper.send() method should apply to every Event specification right?",
       "parentUuid": "7d3cde15_fac2510b",
+      "range": {
+        "startLine": 83,
+        "startChar": 26,
+        "endLine": 83,
+        "endChar": 60
+      },
+      "revId": "984085175c68dbd76789c9d3faa98a50abdafe5e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a3c57f2b_f3550ade",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-28T15:57:20Z",
+      "side": 1,
+      "message": "\u003e The fix in the BrokerApiWrapper.send() method should apply to every Event specification right?\n\nNope, only to stream events. If the event isn\u0027t a stream event, then this fix won\u0027t work at all  and it could also create a regression.\n\nNon-stream events don\u0027t have the instance-id populated and therefore would be always dropped.",
+      "parentUuid": "77fa7f2a_a4ef4984",
       "range": {
         "startLine": 83,
         "startChar": 26,
