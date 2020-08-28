@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d9dc69bd_5528ec5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-28T14:22:53Z",
+      "side": 1,
+      "message": "Rebased as Change-Id: I8e41d5aaf3",
+      "revId": "efeba4ee2d4b5f403246af7ca7b3331e0d3851f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
