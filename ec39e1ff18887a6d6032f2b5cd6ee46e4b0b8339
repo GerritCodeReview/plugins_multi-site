@@ -33,6 +33,23 @@
       "revId": "ec39e1ff18887a6d6032f2b5cd6ee46e4b0b8339",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1ced6d0a_ad759dde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-28T14:22:20Z",
+      "side": 1,
+      "message": "There is another version of this change, already rebased on top of stable-3.2: Change-Id: I4fdfa689d",
+      "revId": "ec39e1ff18887a6d6032f2b5cd6ee46e4b0b8339",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
