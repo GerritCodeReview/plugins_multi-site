@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dd7b4f5d_71f9ec6b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-08-28T12:26:13Z",
+      "side": 1,
+      "message": "I have been thinking whether this check actually required?\nthe instanceId of an event will always be the one of the *current* gerrit or, when it\u0027s not, the forwarded context will already be true.\n\nam I correct?\n\nIf this is the case, then having this additional test does not prevent any message from being produced (the subsequent change in the chain does this).\n\nI think it is a step forward in the right direction (i.e. we should not rely on Context to understand whether an event has been forwarded), but as it stands this change is un-necessary.\n\nWDYT?",
+      "revId": "0522a9d5fed504a36c84046202e1cbd6afa39b51",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
