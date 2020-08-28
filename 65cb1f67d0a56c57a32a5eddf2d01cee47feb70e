@@ -65,6 +65,30 @@
     },
     {
       "key": {
+        "uuid": "d78de403_ed69759d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwarderTask.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-28T15:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccacfeb1_ae856396",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "65cb1f67d0a56c57a32a5eddf2d01cee47feb70e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2dbcfdc1_dcf5ebc1",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarder.java",
         "patchSetId": 7
@@ -132,6 +156,30 @@
       "revId": "65cb1f67d0a56c57a32a5eddf2d01cee47feb70e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4182caba_c6f6b899",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/BrokerForwarderTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-28T15:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9517e7d1_44ece909",
+      "range": {
+        "startLine": 116,
+        "startChar": 1,
+        "endLine": 122,
+        "endChar": 16
+      },
+      "revId": "65cb1f67d0a56c57a32a5eddf2d01cee47feb70e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
