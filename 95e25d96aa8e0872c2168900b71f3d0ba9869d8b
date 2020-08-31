@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3cebbcfd_c8e7cd73",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-31T23:15:02Z",
+      "side": 1,
+      "message": "Not needed, as the method is inside the PatternType definition.",
+      "range": {
+        "startLine": 36,
+        "startChar": 15,
+        "endLine": 36,
+        "endChar": 26
+      },
+      "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79f53ceb_6ccef93e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-31T23:15:02Z",
+      "side": 1,
+      "message": "Same as above",
+      "range": {
+        "startLine": 38,
+        "startChar": 15,
+        "endLine": 38,
+        "endChar": 26
+      },
+      "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05b54dbc_df2dd618",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-31T23:15:02Z",
+      "side": 1,
+      "message": "Same as above",
+      "range": {
+        "startLine": 40,
+        "startChar": 15,
+        "endLine": 40,
+        "endChar": 26
+      },
+      "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b66ccccf_9cfdd0a4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-31T23:15:02Z",
+      "side": 1,
+      "message": "We should synchronise on globalProjects",
+      "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9373c533_c2e4a283",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-08-31T23:15:02Z",
+      "side": 1,
+      "message": "We should synchronise on localProjets",
+      "range": {
+        "startLine": 79,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 28
+      },
+      "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
