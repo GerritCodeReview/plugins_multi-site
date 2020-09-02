@@ -218,6 +218,30 @@
     },
     {
       "key": {
+        "uuid": "56ac504a_8726b6c6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-09-02T15:13:18Z",
+      "side": 1,
+      "message": "I believe it makes a lot of sense but currently we are reflecting replication plugin functionality. If we do that hierarchy we will have different behaviour of these two plugins which can cause behaviour which will be difficult to figure out.\nWe can make this change as a follow up but we should do it in both plugins",
+      "parentUuid": "5f366833_3f76264e",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 3
+      },
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "bdb01d14_34f2f18d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/IndexEventHandler.java",
         "patchSetId": 2
@@ -288,6 +312,30 @@
     },
     {
       "key": {
+        "uuid": "04f6e4fc_9ee2b179",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-09-02T15:13:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f55b636_08a5ff08",
+      "range": {
+        "startLine": 85,
+        "startChar": 6,
+        "endLine": 88,
+        "endChar": 7
+      },
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d39f85b1_bfb1f8dd",
         "filename": "src/main/resources/Documentation/config.md",
         "patchSetId": 2
@@ -332,6 +380,30 @@
       "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "240d79d9_b181c05c",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-09-02T15:13:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fa101d5_f63aace1",
+      "range": {
+        "startLine": 111,
+        "startChar": 17,
+        "endLine": 114,
+        "endChar": 47
+      },
+      "revId": "5c4b0d7975f481973613daf4e7227a40a5b31093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
