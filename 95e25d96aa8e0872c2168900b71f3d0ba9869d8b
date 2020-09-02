@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fe0bb2de_c76ba007",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-09-02T12:54:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3cebbcfd_c8e7cd73",
+      "range": {
+        "startLine": 36,
+        "startChar": 15,
+        "endLine": 36,
+        "endChar": 26
+      },
+      "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "79f53ceb_6ccef93e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
         "patchSetId": 5
@@ -45,6 +69,30 @@
       "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1257b3a4_d9cc6169",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-09-02T12:54:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79f53ceb_6ccef93e",
+      "range": {
+        "startLine": 38,
+        "startChar": 15,
+        "endLine": 38,
+        "endChar": 26
+      },
+      "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "6fdaf24e_401bc1f4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-09-02T12:54:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05b54dbc_df2dd618",
+      "range": {
+        "startLine": 40,
+        "startChar": 15,
+        "endLine": 40,
+        "endChar": 26
+      },
+      "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b66ccccf_9cfdd0a4",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
         "patchSetId": 5
@@ -88,6 +160,24 @@
     },
     {
       "key": {
+        "uuid": "15966f49_29746aaa",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-09-02T12:54:31Z",
+      "side": 1,
+      "message": "Even if we are using Sets.newConcurrentHashSet() which is based on ConcurrentHashMap?",
+      "parentUuid": "b66ccccf_9cfdd0a4",
+      "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9373c533_c2e4a283",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
         "patchSetId": 5
@@ -99,6 +189,30 @@
       "writtenOn": "2020-08-31T23:15:02Z",
       "side": 1,
       "message": "We should synchronise on localProjets",
+      "range": {
+        "startLine": 79,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 28
+      },
+      "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "adc60438_038cd53f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-09-02T12:54:31Z",
+      "side": 1,
+      "message": "Even if we are using Sets.newConcurrentHashSet() which is based on ConcurrentHashMap?",
+      "parentUuid": "9373c533_c2e4a283",
       "range": {
         "startLine": 79,
         "startChar": 4,
