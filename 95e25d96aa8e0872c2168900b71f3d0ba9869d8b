@@ -178,6 +178,24 @@
     },
     {
       "key": {
+        "uuid": "11e26041_933a41e2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-02T13:15:36Z",
+      "side": 1,
+      "message": "Apologies, I missed that. You are right.",
+      "parentUuid": "15966f49_29746aaa",
+      "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9373c533_c2e4a283",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
         "patchSetId": 5
@@ -222,6 +240,30 @@
       "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "054de9b6_f0289812",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/ProjectsFilter.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-02T13:15:36Z",
+      "side": 1,
+      "message": "As before, you are right.",
+      "parentUuid": "adc60438_038cd53f",
+      "range": {
+        "startLine": 79,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 28
+      },
+      "revId": "95e25d96aa8e0872c2168900b71f3d0ba9869d8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
