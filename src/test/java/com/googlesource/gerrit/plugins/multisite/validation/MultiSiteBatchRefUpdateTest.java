@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.validation;
 
 import static java.util.Arrays.asList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.any;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
@@ -38,6 +40,7 @@ import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.ReceiveCommand;
 import org.eclipse.jgit.transport.ReceiveCommand.Result;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -56,6 +59,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
   @Mock RevWalk revWalk;
   @Mock ProgressMonitor progressMonitor;
   @Mock ValidationMetrics validationMetrics;
+  @Mock ProjectsFilter projectsFilter;
 
   private final Ref oldRef =
       new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, A_TEST_REF_NAME, AN_OBJECT_ID_1);
@@ -89,6 +93,11 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
   @Override
   public String testBranch() {
     return "branch_" + nameRule.getMethodName();
+  }
+
+  @Before
+  public void setup() {
+    when(projectsFilter.matches(anyString())).thenReturn(true);
   }
 
   @SuppressWarnings("deprecation")
@@ -167,6 +176,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
                 validationMetrics,
                 new DefaultSharedRefEnforcement(),
                 new DummyLockWrapper(),
+                projectsFilter,
                 projectName,
                 refDb);
           }

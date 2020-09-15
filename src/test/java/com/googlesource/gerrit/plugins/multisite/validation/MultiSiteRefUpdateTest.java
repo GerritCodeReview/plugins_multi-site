@@ -16,11 +16,14 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
+import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.RefUpdateValidator.Factory;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
@@ -33,6 +36,7 @@ import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.lib.RefUpdate.Result;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,6 +53,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
   @Mock SharedRefDatabaseWrapper sharedRefDb;
   @Mock ValidationMetrics validationMetrics;
   @Mock RefDatabase refDb;
+  @Mock ProjectsFilter projectsFilter;
 
   private final Ref oldRef =
       new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, A_TEST_REF_NAME, AN_OBJECT_ID_1);
@@ -60,6 +65,11 @@ public class MultiSiteRefUpdateTest implements RefFixture {
   @Override
   public String testBranch() {
     return "branch_" + nameRule.getMethodName();
+  }
+
+  @Before
+  public void setup() {
+    when(projectsFilter.matches(anyString())).thenReturn(true);
   }
 
   @Test
@@ -182,6 +192,7 @@ public class MultiSiteRefUpdateTest implements RefFixture {
                     validationMetrics,
                     new DefaultSharedRefEnforcement(),
                     new DummyLockWrapper(),
+                    projectsFilter,
                     projectName,
                     refDb);
             return RefUpdateValidator;

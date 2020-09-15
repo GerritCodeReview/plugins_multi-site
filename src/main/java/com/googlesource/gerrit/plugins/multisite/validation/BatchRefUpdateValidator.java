@@ -18,6 +18,7 @@ import com.google.common.flogger.FluentLogger;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.googlesource.gerrit.plugins.multisite.LockWrapper;
+import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.OutOfSyncException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
@@ -51,15 +52,24 @@ public class BatchRefUpdateValidator extends RefUpdateValidator {
       ValidationMetrics validationMetrics,
       SharedRefEnforcement refEnforcement,
       LockWrapper.Factory lockWrapperFactory,
+      ProjectsFilter projectsFilter,
       @Assisted String projectName,
       @Assisted RefDatabase refDb) {
-    super(sharedRefDb, validationMetrics, refEnforcement, lockWrapperFactory, projectName, refDb);
+    super(
+        sharedRefDb,
+        validationMetrics,
+        refEnforcement,
+        lockWrapperFactory,
+        projectsFilter,
+        projectName,
+        refDb);
   }
 
   public void executeBatchUpdateWithValidation(
       BatchRefUpdate batchRefUpdate, NoParameterVoidFunction batchRefUpdateFunction)
       throws IOException {
-    if (refEnforcement.getPolicy(projectName) == EnforcePolicy.IGNORED) {
+    if (refEnforcement.getPolicy(projectName) == EnforcePolicy.IGNORED
+        || !isGlobalProject(projectName)) {
       batchRefUpdateFunction.invoke();
       return;
     }

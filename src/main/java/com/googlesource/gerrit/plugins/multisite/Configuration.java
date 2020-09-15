@@ -61,6 +61,7 @@ public class Configuration {
   private final Supplier<Cache> cache;
   private final Supplier<Event> event;
   private final Supplier<Index> index;
+  private final Supplier<Projects> projects;
   private final Supplier<SharedRefDatabase> sharedRefDb;
   private final Supplier<Collection<Message>> replicationConfigValidation;
   private final Supplier<Broker> broker;
@@ -79,6 +80,7 @@ public class Configuration {
     cache = memoize(() -> new Cache(lazyMultiSiteCfg));
     event = memoize(() -> new Event(lazyMultiSiteCfg));
     index = memoize(() -> new Index(lazyMultiSiteCfg));
+    projects = memoize(() -> new Projects(lazyMultiSiteCfg));
     sharedRefDb = memoize(() -> new SharedRefDatabase(lazyMultiSiteCfg));
     broker = memoize(() -> new Broker(lazyMultiSiteCfg));
   }
@@ -105,6 +107,10 @@ public class Configuration {
 
   public Broker broker() {
     return broker.get();
+  }
+
+  public Projects projects() {
+    return projects.get();
   }
 
   public Collection<Message> validate() {
@@ -195,6 +201,20 @@ public class Configuration {
     private List<String> getList(
         Supplier<Config> cfg, String section, String subsection, String name) {
       return ImmutableList.copyOf(cfg.get().getStringList(section, subsection, name));
+    }
+  }
+
+  public static class Projects {
+    public static final String SECTION = "projects";
+    public static final String PATTERN_KEY = "pattern";
+    public List<String> patterns;
+
+    public Projects(Supplier<Config> cfg) {
+      patterns = ImmutableList.copyOf(cfg.get().getStringList("projects", null, PATTERN_KEY));
+    }
+
+    public List<String> getPatterns() {
+      return patterns;
     }
   }
 
