@@ -16,7 +16,7 @@ package com.googlesource.gerrit.plugins.multisite;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
-import com.google.gerrit.common.data.AccessSection;
+import com.google.gerrit.entities.AccessSection;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.server.events.Event;
