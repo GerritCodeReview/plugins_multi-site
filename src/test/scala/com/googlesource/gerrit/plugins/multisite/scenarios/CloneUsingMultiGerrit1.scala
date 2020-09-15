@@ -50,10 +50,10 @@ class CloneUsingMultiGerrit1 extends GitSimulation {
     test.inject(
       nothingFor(stepWaitTime(this) seconds),
       atOnceUsers(single)
-    ),
+    ).protocols(gitProtocol),
     deleteProject.test.inject(
       nothingFor(createProject.maxExecutionTime + maxExecutionTime seconds),
       atOnceUsers(single)
     ),
-  ).protocols(gitProtocol, httpProtocol)
+  ).protocols(httpProtocol)
 }
