@@ -21,6 +21,7 @@ import com.google.gerrit.entities.Project;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.googlesource.gerrit.plugins.multisite.LockWrapper;
+import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.OutOfSyncException;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedDbSplitBrainException;
@@ -45,6 +46,7 @@ public class RefUpdateValidator {
   private final LockWrapper.Factory lockWrapperFactory;
   protected final RefDatabase refDb;
   protected final SharedRefEnforcement refEnforcement;
+  protected final ProjectsFilter projectsFilter;
 
   public static interface Factory {
     RefUpdateValidator create(String projectName, RefDatabase refDb);
@@ -73,6 +75,7 @@ public class RefUpdateValidator {
       ValidationMetrics validationMetrics,
       SharedRefEnforcement refEnforcement,
       LockWrapper.Factory lockWrapperFactory,
+      ProjectsFilter projectsFilter,
       @Assisted String projectName,
       @Assisted RefDatabase refDb) {
     this.sharedRefDb = sharedRefDb;
@@ -81,12 +84,14 @@ public class RefUpdateValidator {
     this.refDb = refDb;
     this.projectName = projectName;
     this.refEnforcement = refEnforcement;
+    this.projectsFilter = projectsFilter;
   }
 
   public RefUpdate.Result executeRefUpdate(
       RefUpdate refUpdate, NoParameterFunction<RefUpdate.Result> refUpdateFunction)
       throws IOException {
     if (isProjectVersionUpdate(refUpdate.getName())
+        || !isGlobalProject(projectName)
         || refEnforcement.getPolicy(projectName) == EnforcePolicy.IGNORED) {
       return refUpdateFunction.invoke();
     }
@@ -122,6 +127,12 @@ public class RefUpdateValidator {
     if (policy == EnforcePolicy.REQUIRED) {
       throw e;
     }
+  }
+
+  protected Boolean isGlobalProject(String projectName) {
+    Boolean isGlobalProject = projectsFilter.matches(projectName);
+    logger.atFine().log("Is global project? " + isGlobalProject);
+    return isGlobalProject;
   }
 
   protected RefUpdate.Result doExecuteRefUpdate(

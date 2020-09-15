@@ -20,6 +20,7 @@ import com.google.gerrit.extensions.events.ProjectEvent;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
@@ -31,12 +32,16 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
 
   private final DynamicSet<ProjectListUpdateForwarder> forwarders;
   private final Executor executor;
+  private final ProjectsFilter projectsFilter;
 
   @Inject
   public ProjectListUpdateHandler(
-      DynamicSet<ProjectListUpdateForwarder> forwarders, @CacheExecutor Executor executor) {
+      DynamicSet<ProjectListUpdateForwarder> forwarders,
+      @CacheExecutor Executor executor,
+      ProjectsFilter filter) {
     this.forwarders = forwarders;
     this.executor = executor;
+    this.projectsFilter = filter;
   }
 
   @Override
@@ -52,7 +57,7 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
   }
 
   private void process(ProjectEvent event, boolean delete) {
-    if (!Context.isForwardedEvent()) {
+    if (!Context.isForwardedEvent() && projectsFilter.matches(event.getProjectName())) {
       executor.execute(
           new ProjectListUpdateTask(new ProjectListUpdateEvent(event.getProjectName(), delete)));
     }
