@@ -36,7 +36,7 @@ class DeleteChangeUsingMultiGerrit1 extends GerritSimulation {
     conf.httpConfiguration.userName,
     ConfigFactory.load().getString("http.password_replica"))
 
-  val test: ScenarioBuilder = scenario(unique)
+  val test: ScenarioBuilder = scenario(uniqueName)
     .feed(data)
     .exec(session => {
       if (number.nonEmpty) {
@@ -45,7 +45,7 @@ class DeleteChangeUsingMultiGerrit1 extends GerritSimulation {
         session
       }
     })
-    .exec(http(unique).delete("${url}${number}"))
+    .exec(http(uniqueName).delete("${url}${number}"))
 
   setUp(
     test.inject(
