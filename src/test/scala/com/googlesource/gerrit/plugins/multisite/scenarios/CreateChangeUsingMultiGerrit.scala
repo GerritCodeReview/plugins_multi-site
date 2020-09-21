@@ -24,7 +24,7 @@ import scala.concurrent.duration._
 
 class CreateChangeUsingMultiGerrit extends GerritSimulation {
   private val data: FeederBuilder = jsonFile(resource).convert(keys).queue
-  private val default = name
+  private val default = className
   private val numberKey = "_number"
 
   override def relativeRuntimeWeight = 10
