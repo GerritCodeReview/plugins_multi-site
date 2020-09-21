@@ -24,9 +24,9 @@ class CreateProjectUsingMultiGerrit extends ProjectSimulation {
 
   override def relativeRuntimeWeight = 15
 
-  def this(default: String) {
+  def this(projectName: String) {
     this()
-    this.default = default
+    this.projectName = projectName
   }
 
   val test: ScenarioBuilder = scenario(uniqueName)
