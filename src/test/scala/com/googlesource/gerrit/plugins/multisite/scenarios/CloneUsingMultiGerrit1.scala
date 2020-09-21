@@ -23,7 +23,7 @@ import scala.concurrent.duration._
 
 class CloneUsingMultiGerrit1 extends GitSimulation {
   private val data: FeederBuilder = jsonFile(resource).convert(keys).queue
-  private var default: String = name
+  private var default = name
 
   def this(default: String) {
     this()
