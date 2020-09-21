@@ -29,7 +29,7 @@ class CreateProjectUsingMultiGerrit extends ProjectSimulation {
     this.default = default
   }
 
-  val test: ScenarioBuilder = scenario(unique)
+  val test: ScenarioBuilder = scenario(uniqueName)
     .feed(data)
     .exec(httpRequest.body(RawFileBody(body)).asJson)
 

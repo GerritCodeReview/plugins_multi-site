@@ -29,7 +29,7 @@ class CreateChangeUsingMultiGerrit extends GerritSimulation {
 
   override def relativeRuntimeWeight = 10
 
-  private val test: ScenarioBuilder = scenario(unique)
+  private val test: ScenarioBuilder = scenario(uniqueName)
     .feed(data)
     .exec(httpRequest
       .body(ElFileBody(body)).asJson
