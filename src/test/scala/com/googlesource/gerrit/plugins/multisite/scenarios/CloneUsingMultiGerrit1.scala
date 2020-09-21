@@ -23,24 +23,24 @@ import scala.concurrent.duration._
 
 class CloneUsingMultiGerrit1 extends GitSimulation {
   private val data: FeederBuilder = jsonFile(resource).convert(keys).queue
-  private var default = className
+  private var projectName = className
 
-  def this(default: String) {
+  def this(projectName: String) {
     this()
-    this.default = default
+    this.projectName = projectName
   }
 
   override def replaceOverride(in: String): String = {
     val next = replaceProperty("http_port1", 8081, in)
-    replaceKeyWith("_project", default, next)
+    replaceKeyWith("_project", projectName, next)
   }
 
   val test: ScenarioBuilder = scenario(uniqueName)
     .feed(data)
     .exec(gitRequest)
 
-  private val createProject = new CreateProjectUsingMultiGerrit(default)
-  private val deleteProject = new DeleteProjectUsingMultiGerrit(default)
+  private val createProject = new CreateProjectUsingMultiGerrit(projectName)
+  private val deleteProject = new DeleteProjectUsingMultiGerrit(projectName)
 
   setUp(
     createProject.test.inject(
