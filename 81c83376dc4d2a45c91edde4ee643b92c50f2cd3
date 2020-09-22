@@ -6,9 +6,11 @@
       "updated": "2020-09-22T16:46:06Z"
     },
     "gerritforge:multi-site-format-47168e90078b0b3f11401610930e82830e76bff7": {
-      "state": "SCHEDULED",
+      "state": "RUNNING",
+      "url": "https://gerrit-ci.gerritforge.com/job/plugin-multi-site-verifier/job/79%252F282079%252F2/1/console",
+      "started": "2020-09-22T16:48:20Z",
       "created": "2020-09-22T16:46:06Z",
-      "updated": "2020-09-22T16:46:06Z"
+      "updated": "2020-09-22T16:48:20Z"
     }
   }
 }
