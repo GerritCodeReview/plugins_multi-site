@@ -22,6 +22,30 @@
       "revId": "5b68f3c447fafc0d376069a64985b14813cbbcad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86782989_c35e106c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1012732
+      },
+      "writtenOn": "2020-09-22T17:39:50Z",
+      "side": 1,
+      "message": "Thanks for the stronger reference idea; done.",
+      "parentUuid": "3e0d5986_d27137dc",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 55
+      },
+      "revId": "5b68f3c447fafc0d376069a64985b14813cbbcad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
