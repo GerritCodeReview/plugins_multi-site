@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "836121b3_5eb5641d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1012732
+      },
+      "writtenOn": "2020-09-24T13:09:46Z",
+      "side": 1,
+      "message": "This change (its whole series) should be an easy enough review; thanks.",
+      "revId": "f37027de51e29e493e1f414c85947fdf109ed9db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
