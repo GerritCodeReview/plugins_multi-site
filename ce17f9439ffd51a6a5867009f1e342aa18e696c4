@@ -96,6 +96,161 @@
     },
     {
       "key": {
+        "uuid": "b53e6382_60008596",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "fails",
+      "range": {
+        "startLine": 118,
+        "startChar": 26,
+        "endLine": 118,
+        "endChar": 30
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "033c9410_0bd36601",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "I don\u0027t understand this sentence, can you try to rephrase it in multiple shorter sentences ?",
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ef35c05_dfb2d8fb",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "Replicating the repositories",
+      "range": {
+        "startLine": 162,
+        "startChar": 50,
+        "endLine": 162,
+        "endChar": 84
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "44dc7ad9_3f533298",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "locations",
+      "range": {
+        "startLine": 162,
+        "startChar": 40,
+        "endLine": 162,
+        "endChar": 48
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4f778a4e_928c8e6f",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "focused on",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 11
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8f01f35_81e59878",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "I think this is wrong, bandwidth describes how much data (how many packets) you can transfer per second, \nwhereas the latency is the time that it takes for a packet to go from source to destination.\nSee https://en.wikipedia.org/wiki/Network_performance#Bandwidth",
+      "range": {
+        "startLine": 164,
+        "startChar": 68,
+        "endLine": 165,
+        "endChar": 47
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba5b3991_a9d0866a",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "geo-location DNS routing",
+      "range": {
+        "startLine": 178,
+        "startChar": 60,
+        "endLine": 179,
+        "endChar": 12
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7eb44ab6_6a574323",
         "filename": "DESIGN.md",
         "patchSetId": 4
@@ -140,6 +295,236 @@
       "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e416b05e_27a0e339",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "for which most pushes originate from San Francisco",
+      "range": {
+        "startLine": 211,
+        "startChar": 60,
+        "endLine": 212,
+        "endChar": 37
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "825291da_a5996650",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "receiving pushes from developers",
+      "range": {
+        "startLine": 217,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 16
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5b42f008_14ac56ce",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "able to serve",
+      "range": {
+        "startLine": 220,
+        "startChar": 61,
+        "endLine": 220,
+        "endChar": 71
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "40212722_229c0ced",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "those where most pushes come from San Francisco.",
+      "range": {
+        "startLine": 221,
+        "startChar": 31,
+        "endLine": 221,
+        "endChar": 69
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f5cb18e4_fbbe9cae",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "can\u0027t access",
+      "range": {
+        "startLine": 222,
+        "startChar": 24,
+        "endLine": 222,
+        "endChar": 34
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb283a74_71c595a6",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "requests",
+      "range": {
+        "startLine": 223,
+        "startChar": 39,
+        "endLine": 223,
+        "endChar": 44
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f469343_97ae57a2",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "comes up again",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 225,
+        "endChar": 18
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9dab5d30_2019ce75",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "will become the main site again for the users in the same geo location.",
+      "range": {
+        "startLine": 225,
+        "startChar": 58,
+        "endLine": 226,
+        "endChar": 63
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "923a08d7_8265dc7b",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "asynchronous push replication",
+      "range": {
+        "startLine": 282,
+        "startChar": 38,
+        "endLine": 282,
+        "endChar": 62
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7d7480f4_9044c3c5",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:01:37Z",
+      "side": 1,
+      "message": "the synchronous replication",
+      "range": {
+        "startLine": 285,
+        "startChar": 39,
+        "endLine": 285,
+        "endChar": 61
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
