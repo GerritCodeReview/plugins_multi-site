@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "536e5ea6_2943073a",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2020-09-25T20:55:57Z",
+      "side": 1,
+      "message": "The concept of sharding is not described in this document. Could you also add a few sentences about it?",
+      "range": {
+        "startLine": 99,
+        "startChar": 43,
+        "endLine": 99,
+        "endChar": 50
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7eb44ab6_6a574323",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2020-09-25T20:55:57Z",
+      "side": 1,
+      "message": "better use a passive form",
+      "range": {
+        "startLine": 193,
+        "startChar": 34,
+        "endLine": 193,
+        "endChar": 48
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
