@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "3570523a_73446e9c",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T21:27:34Z",
+      "side": 1,
+      "message": "The sharding is introduced at stage #9: the only difference between stage #7 and #8 is the ability to perform RW on multiple sites at the same time.",
+      "range": {
+        "startLine": 98,
+        "startChar": 36,
+        "endLine": 98,
+        "endChar": 43
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "536e5ea6_2943073a",
         "filename": "DESIGN.md",
         "patchSetId": 4
@@ -13,6 +36,30 @@
       "writtenOn": "2020-09-25T20:55:57Z",
       "side": 1,
       "message": "The concept of sharding is not described in this document. Could you also add a few sentences about it?",
+      "range": {
+        "startLine": 99,
+        "startChar": 43,
+        "endLine": 99,
+        "endChar": 50
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "153f0fe6_f3e973bd",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T21:27:34Z",
+      "side": 1,
+      "message": "True, I\u0027ll create one specific section about it. It isn\u0027t fully implemented though, unless you configure it statically on the HA Proxy component.",
+      "parentUuid": "536e5ea6_2943073a",
       "range": {
         "startLine": 99,
         "startChar": 43,
