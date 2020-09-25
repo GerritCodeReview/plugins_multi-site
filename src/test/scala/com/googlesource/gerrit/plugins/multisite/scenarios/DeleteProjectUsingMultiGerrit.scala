@@ -24,12 +24,12 @@ class DeleteProjectUsingMultiGerrit extends ProjectSimulation {
 
   override def relativeRuntimeWeight = 10
 
-  def this(default: String) {
+  def this(projectName: String) {
     this()
-    this.default = default
+    this.projectName = projectName
   }
 
-  val test: ScenarioBuilder = scenario(unique)
+  val test: ScenarioBuilder = scenario(uniqueName)
     .feed(data)
     .exec(httpRequest)
 
