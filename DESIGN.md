@@ -96,7 +96,7 @@ cooperating Gerrit masters across the globe.
 6. 2x masters (active RW/active RO) / active + disaster recovery location
 7. 2x masters (active RW/active RO) / two locations
 8. 2x masters (active RW/active RW) sharded / two locations
-9. 3x masters (active RW/active RW) sharded with auto-election / two locations
+9. 2 or more masters (active RW/active RW) sharded 2 or more locations
 10. Multiple masters (active RW/active RW) with quorum / multiple locations
 
 The transition between steps requires not only an evolution of the Gerrit
@@ -111,41 +111,36 @@ difference that both masters are serving RW traffic, which is possible because t
 of their underlying storage, NFS and JGit implementation allows concurrent
 locking at the filesystem level.
 
-## TODO: Synchronous replication
-Consider also synchronous replication for cases like 5, 6, 7... in which
-cases a write operation is only accepted if it is synchronously replicated to the
-other master node(s). This would provide 100% loss-less disaster recovery support. Without
-synchronous replication, when the RW master crashes, losing data, there could
+## Pull replication, synchronous or asynchronous
+
+Consider also pull replication for cases like 5, 6, 7... which could be done
+also synchronously to the incoming write operation.
+In case a write operation fail to be replicated by the master node(s), it could be
+automatically rolled back and reported to the client for retry.
+This would provide 100% loss-less disaster recovery support.
+
+By running pull replication asynchronously, as it is done today with the classic
+push replication, if the RW master crashes, losing data, there could
 be no way to recover missed replications without soliciting users who pushed the commits
 in the first place to push them again. Further, with synchronous replication
 the RW site has to "degrade" to RO mode when the other node is not reachable and
 synchronous replications are not possible.
 
-We must re-evaluate the useability of the replication plugin for supporting
-synchronous replication. For example, the replicationDelay doesn't make much
-sense in the synchronous case. Further, the rescheduling of a replication due
-to an in-flight push to the same remote URI also doesn't make much sense as we
-want the replication to happen immediately. Further, if the ref-update of the
-incoming push request has to be blocked until the synchronous replication
-finishes, the replication plugin cannot even start a replication as there is no
-ref-updated event yet. We may consider implementing the synchronous
-replication on a lower level. For example have an "pack-received" event and
-then simply forward that pack file to the other site. Similarly for the
-ref-updated events, instead of a real git push, we could just forward the
-ref-updates to the other site.
+The [pull-replication plugin](https://gerrit.googlesource.com/plugins/pull-replication)
+supports synchronous replication and has the structure to perform also the
+asynchronous variant in the future.
 
 ## History and maturity level of the multi-site plugin
 
 This plugin expands upon the excellent work on the high-availability plugin,
 introduced by Ericsson for implementing mutli-master at Stage #4. The git log history
 of this projects still shows the 'branching point' where it started.
+The v2.16.x (with NoteDb) of the multi-site plugin was at Stage #7.
 
-The current version of the multi-site plugin is at Stage #7, which is a pretty
-advanced stage in the Gerrit multi-master/multi-site configuration.
-
-Thanks to the multi-site plugin, it is now possible for Gerrit data to be
-available in two separate geo-locations (e.g. San Francisco and Bangalore),
-each serving local traffic through the local instances with minimum latency.
+The current version of the multi-site plugin is at Stage #9, it is now possible for
+Gerrit data to be available in two or more separate geo-locations
+(e.g. San Francisco, Frankfurt and Bangalore), each serving local traffic through
+the local instances with minimum latency.
 
 ### Why another plugin from a high availability fork?
 
@@ -161,60 +156,74 @@ Having two more focussed plugins, one for high availability and another for
 multi-site, allows us to have a simpler, more usable experience, both for developers
 of the plugin and for the Gerrit administrators using it.
 
+The high-availability and multi-site plugins are solutions to different problems.
+Having two or more nodes on the same site is typically performed for increasing
+the reliability and scalability of a Gerrit setup, however, doesn't provide any
+benefit in terms of data latency across location. Having the repositories replicated
+to remote locations does not help the scalability of a Gerrit setup but is more
+focussed in reducing the latency between the client and the server, due to the
+higher bandwidth available in the local regions.
+
 ### Benefits
 
-There are some advantages in implementing multi-site at Stage #7:
+There are some advantages in implementing multi-site at Stage #9:
 
-- Optimal latency of the read-only operations on both sites, which constitutes around 90%
-  of the Gerrit traffic overall.
+- Optimal latency of the Git read/write operations on all sites, and signficant
+  improvement of the Gerrit UI responsiveness, thanks fo the reduction of the
+  network latency.
 
 - High SLA (99.99% or higher, source: GerritHub.io) can be achieved by
-  implementing both high availability inside each local site, and automatic
-  catastrophic failover between the two sites.
+  implementing network distribution across sites.
 
-- Access transparency through a single Gerrit URL entry-point.
+- Access transparency through a single Gerrit URL, thanks to a geo-located DNS
+  resolution.
 
-- Automatic failover, disaster recovery, and leader re-election.
+- Automatic failover, disaster recovery, and failover to remote sites.
 
-- The two sites have local consistency, with eventual consistency globally.
+- All sites have local consistency, with the assurance of global eventual
+  consistency.
 
 ### Limitations
 
-The current limitations of Stage #7 are:
+The current limitations of Stage #9 are:
 
-- **Single RW site**: Only the RW site can accept modifications on the
-  Git repositories or the review data.
+- **Limited supports for many sites**:
+  One could, potentially, support a very high number of sites, but the pull-replication
+  logic to all sites could have a serious consequence in the overall perceived latency.
+  For a very high number of site, you would need the implementation of a quorum on
+  all the site available for replication.
 
-- **Supports only two sites**:
-  One could, potentially, support more sites, but the configuration
-  and maintenance efforts are more than linear to the number of nodes.
-
-- **Single point of failure:** The switch between the RO to RW sites is managed by a unique decision point.
-
-- **Lack of transactionality**:
-  Data written to one site is acknowledged before its replication to the other location.
-
-- **Requires Gerrit v2.16 or later**: Data conisistency requires a server completely based on NoteDb.
+- **Requires Gerrit v3.0 or later**: Data conisistency requires a server completely
+  based on NoteDb.
   If you are not familiar with NoteDb, please read the relevant
-  [section in the Gerrit documentation](https://gerrit-documentation.storage.googleapis.com/Documentation/2.16.5/note-db.html).
+  [section in the Gerrit documentation](https://gerrit-documentation.storage.googleapis.com/Documentation/3.0.12/note-db.html).
 
 ### Example of multi-site operations
 
-Let's suppose the RW site is San Francisco and the RO site Bangalore. The
-modifications of data will always come to San Francisco and flow to Bangalore
-with a latency that can be between seconds and minutes, depending on
-the network infrastructure between the two sites. A developer located in
-Bangalore will always see a "snapshot in the past" of the data, both from the
-Gerrit UI and on the Git repository served locally.  In contrast, a developer located in
-San Francisco will always see the "latest and greatest" of everything.
+Let's suppose you have two sites, in San Francisco and Bangalore. The
+modifications of data will flow from San Francisco to Bangalore and the other way around.
+
+The latency that can be between seconds and minutes, depending on
+the network infrastructure between the two sites.
+The available bandwith is low, so the Gerrit admin decides to use a traditional
+push replication (asynchronous) between the two sites.
+
+When a developer located in Bangalore accesses a repository that is mainly
+pushed by the people in San Francisco, he may see a "snapshot in the past" of the data,
+both from the Gerrit UI and on the Git repository served locally.
+In contrast, a developer located in San Francisco will always see on his repository
+the "latest and greatest" of everything.
+Things are exactly in the other way around for a repository that is mainly
+pushed by people in Bangalore.
 
 Should the central site in San Francisco become unavailable for a
-significant period of time, the Bangalore site will take over as the RW Gerrit
-site. The roles will then be inverted.
-People in San Francisco will be served remotely by the 
+significant period of time, the Bangalore site will still be able serve all
+Gerrit repositories, including the ones pushed mainy in San Francisco.
+People in San Francisco won't have their local site anymore, because it is
+unavailable. All the Git and Gerrit UI calls will be served remotely by the 
 Bangalore server while the local system is down. When the San Francisco site
-returns to service, and passes the "necessary checks", it will be re-elected as the
-main RW site.
+returns to service, and passes the "necessary checks", it will be then be
+available to be used as main site by the people working locally.
 
 # Plugin design
 
@@ -270,11 +279,14 @@ which enables the detection of out-of-sync refs across gerrit sites.
 When no specific implementation is provided, then the [Global Ref-DB Noop implementation](#global-ref-db-noop-implementation)
 then libModule interfaces are mapped to internal no-ops implementations.
 
-- **replication plugin**: enables the replication of the _Git repositories_ across
-  sites.
+- **replication plugin**: enables the push replication (async) of the _Git repositories_
+  across sites.
 
-- **web-session flat file plugin**: supports the storage of _active sessions_
-  to an external file that can be shared and synchronized across sites.
+- **pull replication plugin**: enables the replication (sync) of the _Git repositories_
+  across sites.
+
+- **web-session broker plugin**: supports the storage of _active sessions_
+  to a message broker topic, which is then broadcasted across sites.
 
 - **health check plugin**: supports the automatic election of the RW site based
   on a number of underlying conditions of the data and the systems.
@@ -288,6 +300,7 @@ The interactions between these components are illustrated in the following diagr
 ## Implementation Details
 
 ### Multi-site libModule
+
 As mentioned earlier there are different components behind the overarching architecture
 of this solution of a distributed multi-site gerrit installation, each one fulfilling
 a specific goal. However, whilst the goal of each component is well-defined, the
@@ -355,6 +368,7 @@ exposed by the multi-site module with a specific implementation, such as Zoekeep
 etcd, MySQL, Mongo, etc.
 
 #### Global Ref-DB Noop implementation
+
 The default `Noop` implementation provided by the `Multi-site` libModule accepts
 any refs without checking for consistency. This is useful for setting up a test environment
 and allows multi-site library to be installed independently from any additional
@@ -566,33 +580,18 @@ http-request redirect code 307 prefix https://review-am.gerrithub.io if acl_NA
 
 # Next steps in the roadmap
 
-## Step-1: Fill the gaps in multi-site Stage #7 implementation:
-
-- **Detection of a stale site**: The health check plugin has no awareness that one
-  site that can be "too outdated" because it is still technically "healthy." A
-  stale site needs to be put outside the balancing and all traffic needs to go
-  to the more up-to-date site.
-
-- **Web session replication**: This currently must be implemented at the filesystem level
-  using rsync across sites.  This is problematic because of the delay it
-  introduces. Should a site fail, some of the users may lose their sessions
-  because the rsync was not executed yet.
-
-- **Index rebuild in case of broker failure**: In the case of a catastrophic
-  failure at the broker level, the indexes of the two sites will be out of
-  sync. A mechanism is needed to recover the situation
-  without requiring the reindex of both sites offline, since that could take
-  as much as days for huge installations.
-
-- **Git/SSH redirection**: Local users who rely on Git/SSH protocol are not able
-  to use the local site for serving their requests, because HAProxy is not
-  able to differentiate the type of traffic and, thus, is forced always to use the
-  RW site, even though the operation is RO.
-
-## Step-2: Move to multi-site Stage #8.
+## Move to multi-site Stage #10.
 
 - Auto-reconfigure HAProxy rules based on the projects sharding policy
 
-- Serve RW/RW traffic based on the project name/ref-name.
+- Implement more global-refdb storage layers (e.g. TiKV) and more cloud-native
+  message brokers (e.g. NATS)
 
-- Balance traffic with "locally-aware" policies based on historical data
+- Implement a quorum-based policy for accepting or rejecting changes on the pull-replication
+  plugin
+
+- Allow asynchronous pull-replication across sites, based on asynchronous events through
+  the message broker
+
+- Implement a "fast replication path" for NoteDb-only changes, instead of relying on the
+  Git protocol
