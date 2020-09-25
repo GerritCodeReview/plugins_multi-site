@@ -16,6 +16,23 @@
       "revId": "f37027de51e29e493e1f414c85947fdf109ed9db",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "10345335_43dae7bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1012732
+      },
+      "writtenOn": "2020-09-25T19:31:26Z",
+      "side": 1,
+      "message": "Thanks @Khang for the CR. Running out of timely approvals. Trivial change(s), also +1\u0027ed in core.",
+      "revId": "f37027de51e29e493e1f414c85947fdf109ed9db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
