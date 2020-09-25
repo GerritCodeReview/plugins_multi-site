@@ -178,6 +178,24 @@
     },
     {
       "key": {
+        "uuid": "3f56bb45_8ddcae67",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5848ca8_864111e2",
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ef35c05_dfb2d8fb",
         "filename": "DESIGN.md",
         "patchSetId": 4
@@ -224,6 +242,54 @@
     },
     {
       "key": {
+        "uuid": "0cbb3469_75056055",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ef35c05_dfb2d8fb",
+      "range": {
+        "startLine": 162,
+        "startChar": 50,
+        "endLine": 162,
+        "endChar": 84
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "06d5dd4e_d1ad102d",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44dc7ad9_3f533298",
+      "range": {
+        "startLine": 162,
+        "startChar": 40,
+        "endLine": 162,
+        "endChar": 48
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4f778a4e_928c8e6f",
         "filename": "DESIGN.md",
         "patchSetId": 4
@@ -244,6 +310,30 @@
       "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18e21733_b0eafd79",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f778a4e_928c8e6f",
+      "range": {
+        "startLine": 164,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 11
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -270,6 +360,30 @@
     },
     {
       "key": {
+        "uuid": "5d98a95b_7de40f3e",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "True, I need to replace \u0027latency\u0027 with \u0027data transfer time\u0027 at L164. The problem here isn\u0027t really the network latency but the higher transfer time, due to a lower bandwidth available across sites.",
+      "parentUuid": "b8f01f35_81e59878",
+      "range": {
+        "startLine": 164,
+        "startChar": 68,
+        "endLine": 165,
+        "endChar": 47
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ba5b3991_a9d0866a",
         "filename": "DESIGN.md",
         "patchSetId": 4
@@ -290,6 +404,30 @@
       "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fada6c7e_7418d7aa",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba5b3991_a9d0866a",
+      "range": {
+        "startLine": 178,
+        "startChar": 60,
+        "endLine": 179,
+        "endChar": 12
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -363,6 +501,30 @@
     },
     {
       "key": {
+        "uuid": "6a3aa313_d8806fa0",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e416b05e_27a0e339",
+      "range": {
+        "startLine": 211,
+        "startChar": 60,
+        "endLine": 212,
+        "endChar": 37
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "825291da_a5996650",
         "filename": "DESIGN.md",
         "patchSetId": 4
@@ -383,6 +545,30 @@
       "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b83b8025_cd770cd2",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "825291da_a5996650",
+      "range": {
+        "startLine": 217,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 16
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -409,6 +595,30 @@
     },
     {
       "key": {
+        "uuid": "e870165d_f5efb4cf",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b42f008_14ac56ce",
+      "range": {
+        "startLine": 220,
+        "startChar": 61,
+        "endLine": 220,
+        "endChar": 71
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "40212722_229c0ced",
         "filename": "DESIGN.md",
         "patchSetId": 4
@@ -429,6 +639,30 @@
       "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf1c6a47_66f16b89",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40212722_229c0ced",
+      "range": {
+        "startLine": 221,
+        "startChar": 31,
+        "endLine": 221,
+        "endChar": 69
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -455,6 +689,30 @@
     },
     {
       "key": {
+        "uuid": "ab5ee447_94538534",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5cb18e4_fbbe9cae",
+      "range": {
+        "startLine": 222,
+        "startChar": 24,
+        "endLine": 222,
+        "endChar": 34
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "eb283a74_71c595a6",
         "filename": "DESIGN.md",
         "patchSetId": 4
@@ -475,6 +733,30 @@
       "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87298d6d_9e9f14b1",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb283a74_71c595a6",
+      "range": {
+        "startLine": 223,
+        "startChar": 39,
+        "endLine": 223,
+        "endChar": 44
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -501,6 +783,30 @@
     },
     {
       "key": {
+        "uuid": "c751db42_52cb5d62",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f469343_97ae57a2",
+      "range": {
+        "startLine": 225,
+        "startChar": 0,
+        "endLine": 225,
+        "endChar": 18
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9dab5d30_2019ce75",
         "filename": "DESIGN.md",
         "patchSetId": 4
@@ -521,6 +827,30 @@
       "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1c90b83_d2853127",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dab5d30_2019ce75",
+      "range": {
+        "startLine": 225,
+        "startChar": 58,
+        "endLine": 226,
+        "endChar": 63
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -547,6 +877,30 @@
     },
     {
       "key": {
+        "uuid": "beab012a_1bd54d2e",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "923a08d7_8265dc7b",
+      "range": {
+        "startLine": 282,
+        "startChar": 38,
+        "endLine": 282,
+        "endChar": 62
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7d7480f4_9044c3c5",
         "filename": "DESIGN.md",
         "patchSetId": 4
@@ -567,6 +921,30 @@
       "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "90b8a79f_181a14e4",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T22:23:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d7480f4_9044c3c5",
+      "range": {
+        "startLine": 285,
+        "startChar": 39,
+        "endLine": 285,
+        "endChar": 61
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
