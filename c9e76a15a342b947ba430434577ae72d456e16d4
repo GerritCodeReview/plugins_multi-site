@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9da309f7_9d2bcae7",
+        "filename": "DESIGN.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:49:24Z",
+      "side": 1,
+      "message": "remove this redundant \u0027site\u0027",
+      "range": {
+        "startLine": 165,
+        "startChar": 49,
+        "endLine": 165,
+        "endChar": 53
+      },
+      "revId": "c9e76a15a342b947ba430434577ae72d456e16d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d944a788_81705e7e",
+        "filename": "DESIGN.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:49:24Z",
+      "side": 1,
+      "message": "Two",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 226,
+        "endChar": 10
+      },
+      "revId": "c9e76a15a342b947ba430434577ae72d456e16d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5210e6c_46dd9994",
+        "filename": "DESIGN.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-25T22:49:24Z",
+      "side": 1,
+      "message": "are typically deployed to increase",
+      "range": {
+        "startLine": 226,
+        "startChar": 42,
+        "endLine": 226,
+        "endChar": 79
+      },
+      "revId": "c9e76a15a342b947ba430434577ae72d456e16d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
