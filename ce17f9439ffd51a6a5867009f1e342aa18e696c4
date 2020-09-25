@@ -72,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "23d9632c_948d5ed4",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T21:29:58Z",
+      "side": 1,
+      "message": "I have described the sharding with an example that explain what are the benefits and how it works. It is part of the Stage #9 and we are implementing it right now.",
+      "parentUuid": "153f0fe6_f3e973bd",
+      "range": {
+        "startLine": 99,
+        "startChar": 43,
+        "endLine": 99,
+        "endChar": 50
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7eb44ab6_6a574323",
         "filename": "DESIGN.md",
         "patchSetId": 4
@@ -92,6 +116,30 @@
       "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "74ba6ae5_e2963523",
+        "filename": "DESIGN.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-25T21:29:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7eb44ab6_6a574323",
+      "range": {
+        "startLine": 193,
+        "startChar": 34,
+        "endLine": 193,
+        "endChar": 48
+      },
+      "revId": "ce17f9439ffd51a6a5867009f1e342aa18e696c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
