@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "f5d0ff64_b8d24c53",
+        "filename": "DESIGN.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-28T15:28:28Z",
+      "side": 1,
+      "message": "It is defined in two places:\n- replication.config, in remote.NAME.projects [1]\n- multi-site.config, in the projects.pattern [2]\n\n[1] https://gerrit.googlesource.com/plugins/pull-replication/+/refs/heads/master/src/main/resources/Documentation/config.md\n[2] https://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/master/src/main/resources/Documentation/config.md",
+      "parentUuid": "eac75099_ff2e4500",
+      "revId": "55ba36ed2db67f0de25a44525cf82e84a22ee705",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "023016cb_59c2f65a",
         "filename": "DESIGN.md",
         "patchSetId": 11
@@ -56,6 +74,30 @@
       "revId": "55ba36ed2db67f0de25a44525cf82e84a22ee705",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6962a203_d6b89d6d",
+        "filename": "DESIGN.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-28T15:28:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "023016cb_59c2f65a",
+      "range": {
+        "startLine": 154,
+        "startChar": 46,
+        "endLine": 154,
+        "endChar": 51
+      },
+      "revId": "55ba36ed2db67f0de25a44525cf82e84a22ee705",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -82,6 +124,30 @@
     },
     {
       "key": {
+        "uuid": "62601db5_122cd9e6",
+        "filename": "DESIGN.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-28T15:28:28Z",
+      "side": 1,
+      "message": "vice versa is of Latin etymology, for saying \"the other way round\". Also is more similar to my mother tongue term \"viceversa\" :-)\n \nEven though is correct, it isn\u0027t so current in English.\nI would prefer to rather fix the spelling of s/around/round and keep the clearer non-Latin term.",
+      "parentUuid": "c7c8b852_34cefd78",
+      "range": {
+        "startLine": 270,
+        "startChar": 68,
+        "endLine": 270,
+        "endChar": 88
+      },
+      "revId": "55ba36ed2db67f0de25a44525cf82e84a22ee705",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c73d9e9a_310fd73c",
         "filename": "DESIGN.md",
         "patchSetId": 11
@@ -102,6 +168,30 @@
       "revId": "55ba36ed2db67f0de25a44525cf82e84a22ee705",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a98cc2c_246c37f5",
+        "filename": "DESIGN.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-28T15:28:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c73d9e9a_310fd73c",
+      "range": {
+        "startLine": 272,
+        "startChar": 0,
+        "endLine": 274,
+        "endChar": 0
+      },
+      "revId": "55ba36ed2db67f0de25a44525cf82e84a22ee705",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
