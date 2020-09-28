@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "eac75099_ff2e4500",
+        "filename": "DESIGN.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2020-09-28T08:36:04Z",
+      "side": 1,
+      "message": "How is sharding logic and especially global/local property of a project configured?",
+      "revId": "55ba36ed2db67f0de25a44525cf82e84a22ee705",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "023016cb_59c2f65a",
         "filename": "DESIGN.md",
         "patchSetId": 11
