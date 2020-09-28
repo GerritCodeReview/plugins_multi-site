@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "5d63d147_72ccad6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2020-09-28T15:10:16Z",
+      "side": 1,
+      "message": "Did you publish which broker and global ref-db implementations are available\n(and which one you use) and how to setup a multi-site installation ?",
+      "revId": "55ba36ed2db67f0de25a44525cf82e84a22ee705",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "eac75099_ff2e4500",
         "filename": "DESIGN.md",
         "patchSetId": 11
