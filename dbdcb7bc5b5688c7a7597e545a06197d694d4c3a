@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9acaa896_a249ba58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-28T22:30:51Z",
+      "side": 1,
+      "message": "Thanks, Matthias, for the detailed review and copywriting.\n@Ponch @Tony @Marcin: can you review as well and +2 if you agree?",
+      "revId": "dbdcb7bc5b5688c7a7597e545a06197d694d4c3a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
