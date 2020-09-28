@@ -215,6 +215,30 @@
       "revId": "55ba36ed2db67f0de25a44525cf82e84a22ee705",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c17941fb_367146c1",
+        "filename": "DESIGN.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-09-28T15:28:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73cb1cde_399f8623",
+      "range": {
+        "startLine": 656,
+        "startChar": 69,
+        "endLine": 656,
+        "endChar": 71
+      },
+      "revId": "55ba36ed2db67f0de25a44525cf82e84a22ee705",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
