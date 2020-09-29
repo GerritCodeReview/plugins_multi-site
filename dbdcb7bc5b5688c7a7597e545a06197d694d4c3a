@@ -16,6 +16,23 @@
       "revId": "dbdcb7bc5b5688c7a7597e545a06197d694d4c3a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "19d4862e_77b335c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-09-29T09:36:00Z",
+      "side": 1,
+      "message": "It looks a comprehensive overview of where multi-site is at and what is coming next.\nAll typos and re-phrasing have been already addressed.\n\nThis looks good to me.",
+      "revId": "dbdcb7bc5b5688c7a7597e545a06197d694d4c3a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
