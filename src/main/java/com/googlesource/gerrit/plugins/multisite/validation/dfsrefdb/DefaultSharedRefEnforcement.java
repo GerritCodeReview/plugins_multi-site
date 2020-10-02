@@ -14,22 +14,11 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableMap;
-
 public class DefaultSharedRefEnforcement implements SharedRefEnforcement {
-
-  private static final ImmutableMap<String, EnforcePolicy> PREDEF_ENFORCEMENTS =
-      ImmutableMap.of("All-Users:refs/meta/external-ids", EnforcePolicy.DESIRED);
 
   @Override
   public EnforcePolicy getPolicy(String projectName, String refName) {
-    if (isRefToBeIgnoredBySharedRefDb(refName)) {
-      return EnforcePolicy.IGNORED;
-    }
-
-    return MoreObjects.firstNonNull(
-        PREDEF_ENFORCEMENTS.get(projectName + ":" + refName), EnforcePolicy.REQUIRED);
+    return isRefToBeIgnoredBySharedRefDb(refName) ? EnforcePolicy.IGNORED : EnforcePolicy.REQUIRED;
   }
 
   @Override
