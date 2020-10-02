@@ -66,6 +66,13 @@ public class DefaultSharedRefEnforcementTest implements RefFixture {
         .isEqualTo(EnforcePolicy.REQUIRED);
   }
 
+  @Test
+  public void allUsersExternalIdsRefShouldBeRequired() {
+    Ref refOne = newRef("refs/meta/external-ids", AN_OBJECT_ID_1);
+    assertThat(refEnforcement.getPolicy("All-Users", refOne.getName()))
+        .isEqualTo(EnforcePolicy.REQUIRED);
+  }
+
   @Override
   public String testBranch() {
     return "fooBranch";
