@@ -35,16 +35,11 @@ public class CustomSharedRefEnforcementByProjectTest implements RefFixture {
     sharedRefDbConfig.setStringList(
         SharedRefDatabase.SECTION,
         SharedRefDatabase.SUBSECTION_ENFORCEMENT_RULES,
-        EnforcePolicy.DESIRED.name(),
+        EnforcePolicy.IGNORED.name(),
         Arrays.asList(
             "ProjectOne",
             "ProjectTwo:refs/heads/master/test",
             "ProjectTwo:refs/heads/master/test2"));
-    sharedRefDbConfig.setString(
-        SharedRefDatabase.SECTION,
-        SharedRefDatabase.SUBSECTION_ENFORCEMENT_RULES,
-        EnforcePolicy.IGNORED.name(),
-        ":refs/heads/master/test");
 
     refEnforcement = newCustomRefEnforcement(sharedRefDbConfig);
   }
@@ -53,32 +48,32 @@ public class CustomSharedRefEnforcementByProjectTest implements RefFixture {
   public void projectOneShouldReturnDesiredForAllRefs() {
     Ref aRef = newRef("refs/heads/master/2", AN_OBJECT_ID_1);
     assertThat(refEnforcement.getPolicy("ProjectOne", aRef.getName()))
-        .isEqualTo(EnforcePolicy.DESIRED);
+        .isEqualTo(EnforcePolicy.IGNORED);
   }
 
   @Test
   public void projectOneEnforcementShouldAlwaysPrevail() {
     Ref aRef = newRef("refs/heads/master/test", AN_OBJECT_ID_1);
     assertThat(refEnforcement.getPolicy("ProjectOne", aRef.getName()))
-        .isEqualTo(EnforcePolicy.DESIRED);
-  }
-
-  @Test
-  public void aNonListedProjectShouldIgnoreRefForMasterTest() {
-    Ref aRef = newRef("refs/heads/master/test", AN_OBJECT_ID_1);
-    assertThat(refEnforcement.getPolicy("NonListedProject", aRef.getName()))
         .isEqualTo(EnforcePolicy.IGNORED);
   }
 
   @Test
-  public void projectTwoSpecificRefShouldReturnDesiredPolicy() {
+  public void aNonListedProjectShouldRequireRefForMasterTest() {
+    Ref aRef = newRef("refs/heads/master/test", AN_OBJECT_ID_1);
+    assertThat(refEnforcement.getPolicy("NonListedProject", aRef.getName()))
+        .isEqualTo(EnforcePolicy.REQUIRED);
+  }
+
+  @Test
+  public void projectTwoSpecificRefShouldReturnIgnoredPolicy() {
     Ref refOne = newRef("refs/heads/master/test", AN_OBJECT_ID_1);
     Ref refTwo = newRef("refs/heads/master/test2", AN_OBJECT_ID_1);
 
     assertThat(refEnforcement.getPolicy("ProjectTwo", refOne.getName()))
-        .isEqualTo(EnforcePolicy.DESIRED);
+        .isEqualTo(EnforcePolicy.IGNORED);
     assertThat(refEnforcement.getPolicy("ProjectTwo", refTwo.getName()))
-        .isEqualTo(EnforcePolicy.DESIRED);
+        .isEqualTo(EnforcePolicy.IGNORED);
   }
 
   @Test
@@ -104,7 +99,7 @@ public class CustomSharedRefEnforcementByProjectTest implements RefFixture {
 
   @Test
   public void getProjectPolicyForProjectOneShouldRetrunDesired() {
-    assertThat(refEnforcement.getPolicy("ProjectOne")).isEqualTo(EnforcePolicy.DESIRED);
+    assertThat(refEnforcement.getPolicy("ProjectOne")).isEqualTo(EnforcePolicy.IGNORED);
   }
 
   @Test
@@ -120,7 +115,7 @@ public class CustomSharedRefEnforcementByProjectTest implements RefFixture {
   @Test
   public void getProjectPolicyForNonListedProjectWhenSingleProject() {
     SharedRefEnforcement customEnforcement =
-        newCustomRefEnforcementWithValue(EnforcePolicy.DESIRED, ":refs/heads/master");
+        newCustomRefEnforcementWithValue(EnforcePolicy.IGNORED, ":refs/heads/master");
 
     assertThat(customEnforcement.getPolicy("NonListedProject")).isEqualTo(EnforcePolicy.REQUIRED);
   }
@@ -128,7 +123,7 @@ public class CustomSharedRefEnforcementByProjectTest implements RefFixture {
   @Test
   public void getANonListedProjectWhenOnlyOneProjectIsListedShouldReturnRequired() {
     SharedRefEnforcement customEnforcement =
-        newCustomRefEnforcementWithValue(EnforcePolicy.DESIRED, "AProject:");
+        newCustomRefEnforcementWithValue(EnforcePolicy.IGNORED, "AProject:");
     assertThat(customEnforcement.getPolicy("NonListedProject", "refs/heads/master"))
         .isEqualTo(EnforcePolicy.REQUIRED);
   }

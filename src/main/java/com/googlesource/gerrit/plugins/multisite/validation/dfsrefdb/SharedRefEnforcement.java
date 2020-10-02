@@ -18,7 +18,6 @@ package com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb;
 public interface SharedRefEnforcement {
   public enum EnforcePolicy {
     IGNORED,
-    DESIRED,
     REQUIRED;
   }
 
