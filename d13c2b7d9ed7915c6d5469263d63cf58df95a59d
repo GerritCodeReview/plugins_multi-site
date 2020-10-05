@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4a58483_0ac7402b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-05T10:20:19Z",
+      "side": 1,
+      "message": "Thanks, Tony, for fixing this. Can you also then merge the branches up to master?",
+      "revId": "d13c2b7d9ed7915c6d5469263d63cf58df95a59d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
