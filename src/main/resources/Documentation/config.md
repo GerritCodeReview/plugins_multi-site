@@ -76,7 +76,7 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
 
 ```ref-database.enforcementRules.<policy>```
 :   Level of consistency enforcement across sites on a project:refs basis.
-    Supports multiple values for enforcing the policy on multiple projects or refs.
+    Supports two values for enforcing the policy on multiple projects or refs.
     If the project or ref is omitted, apply the policy to all projects or all refs.
 
     The <policy> can be one of the following values:
@@ -86,19 +86,15 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
     The user transaction is cancelled. The Gerrit GUI (or the Git client)
     receives an HTTP 500 - Internal Server Error.
 
-    2. DESIRED - Validate the git ref-update against the shared ref-database.
-    Any misaligned is logged in errors_log file but the user operation is allowed
-    to continue successfully.
-
-    3. IGNORED - Ignore any validation against the shared ref-database.
+    2. IGNORED - Ignore any validation against the shared ref-database.
 
     *Example:*
     ```
     [ref-database "enforcementRules"]
-       DESIRED = AProject:/refs/heads/feature
+       IGNORED = AProject:/refs/heads/feature
     ```
 
-    Relax the alignment with the shared ref-database for AProject on refs/heads/feature.
+    Ignore the alignment with the shared ref-database for AProject on refs/heads/feature.
 
     Defaults: No rules = All projects are REQUIRED to be consistent on all refs.
 
