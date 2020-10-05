@@ -48,6 +48,54 @@
     },
     {
       "key": {
+        "uuid": "92ef41c9_a99848aa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-05T09:35:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20939d9d_0bf1c9bc",
+      "range": {
+        "startLine": 17,
+        "startChar": 4,
+        "endLine": 17,
+        "endChar": 40
+      },
+      "revId": "96c73aebd8d042106bafde41c490255fdd730a09",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d5411902_4b2d4462",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-05T09:35:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb5fbb85_4a69de4f",
+      "range": {
+        "startLine": 17,
+        "startChar": 53,
+        "endLine": 17,
+        "endChar": 58
+      },
+      "revId": "96c73aebd8d042106bafde41c490255fdd730a09",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cdfbcba6_83e5a53b",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "3e8ffeb6_915ef170",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-05T09:35:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdfbcba6_83e5a53b",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 16
+      },
+      "revId": "96c73aebd8d042106bafde41c490255fdd730a09",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fed2e923_4b7bfcd4",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProjectTest.java",
         "patchSetId": 3
@@ -91,6 +163,30 @@
       "revId": "96c73aebd8d042106bafde41c490255fdd730a09",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec009920_34a63fb3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/CustomSharedRefEnforcementByProjectTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-10-05T09:35:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fed2e923_4b7bfcd4",
+      "range": {
+        "startLine": 101,
+        "startChar": 55,
+        "endLine": 101,
+        "endChar": 62
+      },
+      "revId": "96c73aebd8d042106bafde41c490255fdd730a09",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
