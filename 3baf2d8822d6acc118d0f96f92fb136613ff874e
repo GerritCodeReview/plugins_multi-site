@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2e3b8c2_7a57ecdd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-20T20:59:05Z",
+      "side": 1,
+      "message": "Wow, that\u0027s a lot of code gone!\nHave you checked it E2E?",
+      "revId": "3baf2d8822d6acc118d0f96f92fb136613ff874e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
