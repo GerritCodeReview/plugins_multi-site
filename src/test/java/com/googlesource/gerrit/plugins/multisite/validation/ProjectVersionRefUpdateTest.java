@@ -24,23 +24,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.gerrit.entities.Project;
-import com.google.gerrit.entities.RefNames;
-import com.google.gerrit.server.events.Event;
-import com.google.gerrit.server.events.RefUpdatedEvent;
-import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
-import com.google.gerrit.server.project.ProjectConfig;
-import com.google.gerrit.testing.InMemoryRepositoryManager;
-import com.google.gerrit.testing.InMemoryTestEnvironment;
-import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
-import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
-import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
+
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
@@ -55,6 +42,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
+import com.google.gerrit.server.project.ProjectConfig;
+import com.google.gerrit.testing.InMemoryRepositoryManager;
+import com.google.gerrit.testing.InMemoryTestEnvironment;
+import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
+import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
+import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectVersionRefUpdateTest implements RefFixture {

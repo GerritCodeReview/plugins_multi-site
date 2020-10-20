@@ -28,7 +28,7 @@ public class GitModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    if (config.getSharedRefDb().isEnabled()) {
+    if (config.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {
       install(new ValidationModule(config));
     }
   }

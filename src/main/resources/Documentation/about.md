@@ -10,6 +10,8 @@ The masters must be:
 
 * events-broker library must be installed as a library module in the
   `$GERRIT_SITE/lib` directory of all the masters
+* global-refdb library must be installed as a library module in the
+  `$GERRIT_SITE/lib` directory of all the masters
 * connected to the same message broker
 * behind a load balancer (e.g., HAProxy)
 

@@ -22,20 +22,21 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.util.concurrent.MoreExecutors;
-import com.google.gerrit.extensions.registration.DynamicSet;
-import com.google.gerrit.server.events.Event;
-import com.google.gerrit.server.events.ProjectEvent;
-import com.google.gerrit.server.events.RefUpdatedEvent;
-import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
-import com.googlesource.gerrit.plugins.multisite.event.EventHandler.EventTask;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.ProjectEvent;
+import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.googlesource.gerrit.plugins.multisite.event.EventHandler.EventTask;
+import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
+import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventHandlerTest {

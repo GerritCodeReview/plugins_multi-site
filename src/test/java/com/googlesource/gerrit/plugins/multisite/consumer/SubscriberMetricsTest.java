@@ -18,6 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.gerritforge.gerrit.eventbroker.EventMessage;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.common.base.Suppliers;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.MetricMaker;
@@ -25,7 +26,6 @@ import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
-import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import java.util.Optional;
 import java.util.UUID;

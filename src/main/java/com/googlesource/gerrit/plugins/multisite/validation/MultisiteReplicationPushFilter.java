@@ -14,15 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
-import com.google.common.base.Preconditions;
-import com.google.common.flogger.FluentLogger;
-import com.google.gerrit.entities.Project;
-import com.google.gerrit.server.git.GitRepositoryManager;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
-import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -30,6 +21,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
@@ -37,6 +29,16 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
+import com.google.common.base.Preconditions;
+import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 
 @Singleton
 public class MultisiteReplicationPushFilter implements ReplicationPushFilter {

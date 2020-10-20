@@ -21,17 +21,18 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.util.concurrent.MoreExecutors;
-import com.google.gerrit.extensions.registration.DynamicSet;
-import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
-import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.index.IndexEventHandler.IndexProjectTask;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.gerrit.extensions.registration.DynamicSet;
+import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.index.IndexEventHandler.IndexProjectTask;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IndexEventHandlerTest {

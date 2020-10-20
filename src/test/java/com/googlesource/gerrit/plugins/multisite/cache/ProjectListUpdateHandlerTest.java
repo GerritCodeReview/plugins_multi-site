@@ -23,20 +23,21 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.google.common.util.concurrent.MoreExecutors;
-import com.google.gerrit.extensions.events.NewProjectCreatedListener;
-import com.google.gerrit.extensions.events.ProjectDeletedListener;
-import com.google.gerrit.extensions.registration.DynamicSet;
-import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
-import com.googlesource.gerrit.plugins.multisite.cache.ProjectListUpdateHandler.ProjectListUpdateTask;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.gerrit.extensions.events.NewProjectCreatedListener;
+import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.extensions.registration.DynamicSet;
+import com.googlesource.gerrit.plugins.multisite.cache.ProjectListUpdateHandler.ProjectListUpdateTask;
+import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectListUpdateHandlerTest {

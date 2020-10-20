@@ -14,15 +14,16 @@
 
 package com.googlesource.gerrit.plugins.multisite.event;
 
+import java.util.concurrent.Executor;
+
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
-import java.util.concurrent.Executor;
 
 class EventHandler implements EventListener {
   private final Executor executor;
