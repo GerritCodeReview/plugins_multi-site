@@ -16,6 +16,23 @@
       "message": "Wow, that\u0027s a lot of code gone!\nHave you checked it E2E?",
       "revId": "3baf2d8822d6acc118d0f96f92fb136613ff874e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f31c193e_c1597e95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2020-10-20T21:39:52Z",
+      "side": 1,
+      "message": "Yes, with local setup",
+      "revId": "3baf2d8822d6acc118d0f96f92fb136613ff874e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
