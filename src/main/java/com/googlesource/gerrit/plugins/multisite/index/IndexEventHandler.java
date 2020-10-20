@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.common.base.Objects;
 import com.google.gerrit.extensions.events.AccountIndexedListener;
 import com.google.gerrit.extensions.events.ChangeIndexedListener;
@@ -21,7 +22,6 @@ import com.google.gerrit.extensions.events.GroupIndexedListener;
 import com.google.gerrit.extensions.events.ProjectIndexedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;

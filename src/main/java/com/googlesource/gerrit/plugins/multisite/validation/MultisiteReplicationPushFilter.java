@@ -15,13 +15,13 @@
 package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.common.base.Preconditions;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 import java.io.IOException;
 import java.util.Collections;

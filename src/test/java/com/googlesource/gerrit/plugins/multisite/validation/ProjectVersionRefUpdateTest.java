@@ -24,6 +24,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.events.Event;
@@ -34,8 +36,6 @@ import com.google.gerrit.testing.InMemoryRepositoryManager;
 import com.google.gerrit.testing.InMemoryTestEnvironment;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
-import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
-import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import java.io.IOException;

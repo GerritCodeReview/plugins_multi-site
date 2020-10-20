@@ -14,14 +14,12 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
-import com.google.gerrit.extensions.registration.DynamicItem;
+import com.gerritforge.gerrit.globalrefdb.validation.LibModule;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.CreationException;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
-import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
@@ -29,7 +27,6 @@ import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.NoopSharedRefDatabase;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -58,11 +55,7 @@ public class Module extends LifecycleModule {
       throw new CreationException(validationErrors);
     }
 
-    DynamicItem.itemOf(binder(), GlobalRefDatabase.class);
-    DynamicItem.bind(binder(), GlobalRefDatabase.class)
-        .to(NoopSharedRefDatabase.class)
-        .in(Scopes.SINGLETON);
-    log.info("Shared ref-db engine: none");
+    install(new LibModule());
 
     listener().to(Log4jMessageLogger.class);
     bind(MessageLogger.class).to(Log4jMessageLogger.class);

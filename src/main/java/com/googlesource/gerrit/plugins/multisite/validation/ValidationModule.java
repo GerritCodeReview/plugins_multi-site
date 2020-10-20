@@ -14,20 +14,28 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import com.gerritforge.gerrit.globalrefdb.validation.BatchRefUpdateValidator;
+import com.gerritforge.gerrit.globalrefdb.validation.LockWrapper;
+import com.gerritforge.gerrit.globalrefdb.validation.Log4jSharedRefLogger;
+import com.gerritforge.gerrit.globalrefdb.validation.RefUpdateValidator;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbBatchRefUpdate;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbConfiguration;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbGitRepositoryManager;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRefDatabase;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRefUpdate;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRepository;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefLogger;
+import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
+import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.DefaultSharedRefEnforcement;
+import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.SharedRefEnforcement;
 import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.LockWrapper;
 import com.googlesource.gerrit.plugins.multisite.Log4jProjectVersionLogger;
-import com.googlesource.gerrit.plugins.multisite.Log4jSharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
-import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
-import com.googlesource.gerrit.plugins.multisite.SharedRefLogger;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
 import com.googlesource.gerrit.plugins.replication.ReplicationExtensionPointModule;
 import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 
@@ -47,18 +55,19 @@ public class ValidationModule extends FactoryModule {
     bind(ProjectVersionLogger.class).to(Log4jProjectVersionLogger.class);
     factory(LockWrapper.Factory.class);
 
-    factory(MultiSiteRepository.Factory.class);
-    factory(MultiSiteRefDatabase.Factory.class);
-    factory(MultiSiteRefUpdate.Factory.class);
-    factory(MultiSiteBatchRefUpdate.Factory.class);
+    factory(SharedRefDbRepository.Factory.class);
+    factory(SharedRefDbRefDatabase.Factory.class);
+    factory(SharedRefDbRefUpdate.Factory.class);
+    factory(SharedRefDbBatchRefUpdate.Factory.class);
     factory(RefUpdateValidator.Factory.class);
     factory(BatchRefUpdateValidator.Factory.class);
 
-    bind(GitRepositoryManager.class).to(MultiSiteGitRepositoryManager.class);
+    bind(SharedRefDbConfiguration.class).toInstance(cfg.getSharedRefDbConfiguration());
+    bind(GitRepositoryManager.class).to(SharedRefDbGitRepositoryManager.class);
     DynamicItem.bind(binder(), ReplicationPushFilter.class)
         .to(MultisiteReplicationPushFilter.class);
 
-    if (cfg.getSharedRefDb().getEnforcementRules().isEmpty()) {
+    if (cfg.getSharedRefDbConfiguration().getSharedRefDb().getEnforcementRules().isEmpty()) {
       bind(SharedRefEnforcement.class).to(DefaultSharedRefEnforcement.class).in(Scopes.SINGLETON);
     } else {
       bind(SharedRefEnforcement.class)
