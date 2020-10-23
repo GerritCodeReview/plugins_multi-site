@@ -192,10 +192,6 @@ The only way to recover the data would be telling the users who pushed the commi
 to push them again. However, someone needs to manually detect the issue in the
 replication log and get in touch with the user.
 
-The [pull-replication plugin](https://gerrit.googlesource.com/plugins/pull-replication)
-supports synchronous replication and has the structure to perform also the
-asynchronous variant in the future.
-
 ## History and maturity level of the multi-site plugin
 
 This plugin expands upon the excellent work on the high-availability plugin,
@@ -254,8 +250,8 @@ There are some advantages in implementing multi-site at Stage #9:
 The current limitations of Stage #9 are:
 
 - **Limited supports for many sites**:
-  One could, potentially, support a very high number of sites, but the pull-replication
-  logic to all sites could have a serious consequence in the overall perceived latency.
+  One could, potentially, support a very high number of sites, but replication lag
+  to all sites could have a serious consequence in the overall perceived latency.
   Having to deal with a very high number of site requires the implementation of a quorum on
   all the nodes available for replication.
 
@@ -651,6 +647,9 @@ http-request redirect code 307 prefix https://review-am.gerrithub.io if acl_NA
 
 - Implement more global-refdb storage layers (e.g. TiKV) and more cloud-native
   message brokers (e.g. NATS)
+
+- Implement a synchronous pull-replication plugin for triggering the replication
+  logic on all the other sites, based on Git protocol v2 upload-pack.
 
 - Implement a quorum-based policy for accepting or rejecting changes in the pull-replication
   plugin
