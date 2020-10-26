@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c02ae76d_d3e8ae7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-10-26T22:17:34Z",
+      "side": 1,
+      "message": "@Tyler, thanks for spotting the stale comment in the README.md. It should now be aligned with the DESIGN.md.",
+      "revId": "9ff3d28e5fb8901adcf82cd0794c0afa7e59622f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
