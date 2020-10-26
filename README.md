@@ -14,12 +14,10 @@ Requirements for the Gerrit masters are:
 **NOTE**: The multi-site plugin will not start if Gerrit is not yet migrated
 to NoteDb.
 
-Currently, the only mode supported is one primary read/write master
-and multiple read-only masters but eventually the plan is to support multiple
-read/write masters. The read/write master is handling any traffic while the
-read-only masters are serving the Gerrit GUI assets, the HTTP GET REST API and
-git fetch requests (git-upload-pack). The read-only masters are kept synchronized
-with the read/write master in order to be always ready to become a read/write master.
+Supports multiple read/write masters across multiple sites across different
+geographic locations.  The Gerrit nodes are kept synchronized
+between each-other using the replication plugin and a global ref-database in
+order to detect and prevent split-brains.
 
 For more details on the overall multi-site design and roadmap, please refer
 to the [multi-site plugin DESIGN.md document](DESIGN.md)
