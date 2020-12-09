@@ -39,9 +39,10 @@ import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
-import org.apache.commons.io.IOUtils;
+import org.eclipse.jgit.errors.LargeObjectException;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
 import org.eclipse.jgit.lib.ObjectId;
@@ -121,8 +122,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     assertThat(ref).isNotNull();
 
     ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
-    long storedVersion =
-        Long.parseLong(IOUtils.toString(loader.openStream(), StandardCharsets.UTF_8.name()));
+    long storedVersion = readLongObject(loader);
     assertThat(storedVersion).isGreaterThan((long) masterCommit.getCommitTime());
 
     verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
@@ -167,8 +167,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     assertThat(ref).isNotNull();
 
     ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
-    long storedVersion =
-        Long.parseLong(IOUtils.toString(loader.openStream(), StandardCharsets.UTF_8.name()));
+    long storedVersion = readLongObject(loader);
     assertThat(storedVersion).isGreaterThan((long) masterPlusOneCommit.getCommitTime());
 
     verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
@@ -208,8 +207,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     assertThat(ref).isNotNull();
 
     ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
-    long storedVersion =
-        Long.parseLong(IOUtils.toString(loader.openStream(), StandardCharsets.UTF_8.name()));
+    long storedVersion = readLongObject(loader);
     assertThat(storedVersion).isGreaterThan((long) masterCommit.getCommitTime());
 
     verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
@@ -224,6 +222,12 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   public void producerShouldNotUpdateProjectVersionUponStarredChangesRefUpdatedEvent()
       throws Exception {
     producerShouldNotUpdateProjectVersionUponMagicRefUpdatedEvent(RefNames.REFS_STARRED_CHANGES);
+  }
+
+  private long readLongObject(ObjectLoader loader)
+      throws LargeObjectException, UnsupportedEncodingException {
+    String boutString = new String(loader.getBytes(), StandardCharsets.UTF_8.name());
+    return Long.parseLong(boutString);
   }
 
   private void producerShouldNotUpdateProjectVersionUponMagicRefUpdatedEvent(String magicRefPrefix)
