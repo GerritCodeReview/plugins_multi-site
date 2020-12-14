@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9efd00b_97577c1f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-14T13:38:29Z",
+      "side": 1,
+      "message": "Composite key: Account.Id and sha1.",
+      "range": {
+        "startLine": 9,
+        "startChar": 51,
+        "endLine": 10,
+        "endChar": 43
+      },
+      "revId": "a75852ecbbb8838dbc12713aa05440bebc068ff1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "880a7365_18d4c7d8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-14T13:38:29Z",
+      "side": 1,
+      "message": "Nit: use (in place) abbreviated Change-Id: I61ae57802f or change 260992?",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 60
+      },
+      "revId": "a75852ecbbb8838dbc12713aa05440bebc068ff1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5524add_39d0c737",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/CachePatternMatcher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-14T13:38:29Z",
+      "side": 1,
+      "message": "Can be removed?\n\nHave you noticed my change on high-availability plugin on stable-2.15 branch, where I removed invalidation of other account caches: [1]? Those caches were removed during mirgration of accounts from ReviewDb to NoteDb.\n\n* [1] https://gerrit-review.googlesource.com/c/plugins/high-availability/+/291231",
+      "range": {
+        "startLine": 30,
+        "startChar": 10,
+        "endLine": 30,
+        "endChar": 23
+      },
+      "revId": "a75852ecbbb8838dbc12713aa05440bebc068ff1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b15886da_bc9c0ecd",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/cache/CachePattenMatcherTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-12-14T13:38:29Z",
+      "side": 1,
+      "message": "These caches were removed on stable-2.15 branch already.",
+      "range": {
+        "startLine": 40,
+        "startChar": 12,
+        "endLine": 41,
+        "endChar": 30
+      },
+      "revId": "a75852ecbbb8838dbc12713aa05440bebc068ff1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
