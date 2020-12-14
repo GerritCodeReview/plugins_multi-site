@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eff2d9f_1e7dd6bb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-12-14T14:30:11Z",
+      "side": 1,
+      "message": "Rephased.",
+      "parentUuid": "f9efd00b_97577c1f",
+      "range": {
+        "startLine": 9,
+        "startChar": 51,
+        "endLine": 10,
+        "endChar": 43
+      },
+      "revId": "a75852ecbbb8838dbc12713aa05440bebc068ff1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "880a7365_18d4c7d8",
@@ -37,6 +61,30 @@
       "writtenOn": "2020-12-14T13:38:29Z",
       "side": 1,
       "message": "Nit: use (in place) abbreviated Change-Id: I61ae57802f or change 260992?",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 60
+      },
+      "revId": "a75852ecbbb8838dbc12713aa05440bebc068ff1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cb2ad7a_a9540844",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-12-14T14:30:11Z",
+      "side": 1,
+      "message": "Done. What\u0027s the benefit of one over the other?",
+      "parentUuid": "880a7365_18d4c7d8",
       "range": {
         "startLine": 23,
         "startChar": 4,
@@ -72,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b35a9606_7888dcc3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/CachePatternMatcher.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-12-14T14:30:11Z",
+      "side": 1,
+      "message": "Makes sense.\nI will remove those a separate change, starting from 2.16",
+      "parentUuid": "d5524add_39d0c737",
+      "range": {
+        "startLine": 30,
+        "startChar": 10,
+        "endLine": 30,
+        "endChar": 23
+      },
+      "revId": "a75852ecbbb8838dbc12713aa05440bebc068ff1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b15886da_bc9c0ecd",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/cache/CachePattenMatcherTest.java",
         "patchSetId": 1
@@ -83,6 +155,30 @@
       "writtenOn": "2020-12-14T13:38:29Z",
       "side": 1,
       "message": "These caches were removed on stable-2.15 branch already.",
+      "range": {
+        "startLine": 40,
+        "startChar": 12,
+        "endLine": 41,
+        "endChar": 30
+      },
+      "revId": "a75852ecbbb8838dbc12713aa05440bebc068ff1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9275d410_6044d538",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/cache/CachePattenMatcherTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-12-14T14:30:11Z",
+      "side": 1,
+      "message": "See above.",
+      "parentUuid": "b15886da_bc9c0ecd",
       "range": {
         "startLine": 40,
         "startChar": 12,
