@@ -16,19 +16,13 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 import org.junit.Test;
 
 public class CacheEntryTest {
 
   @Test
   public void cacheEntry() throws Exception {
-    CacheEntry entry = CacheEntry.from("accounts_by_name", "someKey");
-    assertThat(entry.getPluginName()).isEqualTo(Constants.GERRIT);
-    assertThat(entry.getCacheName()).isEqualTo("accounts_by_name");
-    assertThat(entry.getKey()).isEqualTo("someKey");
-
-    entry = CacheEntry.from("my_plugin.my_cache", "someOtherKey");
+    CacheEntry entry = CacheEntry.from("my_plugin.my_cache", "someOtherKey");
     assertThat(entry.getPluginName()).isEqualTo("my_plugin");
     assertThat(entry.getCacheName()).isEqualTo("my_cache");
     assertThat(entry.getKey()).isEqualTo("someOtherKey");
