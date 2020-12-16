@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import com.gerritforge.gerrit.eventbroker.EventMessage;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.Counter1;
@@ -26,6 +27,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.events.RefReplicatedEvent;
 import com.googlesource.gerrit.plugins.replication.events.RefReplicationDoneEvent;
@@ -113,7 +115,18 @@ public class SubscriberMetrics extends MultiSiteMetrics {
     } else if (event instanceof RefUpdatedEvent) {
       RefUpdatedEvent updated = (RefUpdatedEvent) event;
       updateReplicationLagMetrics(updated.getProjectNameKey(), updated.getRefName());
+    } else if (event instanceof ProjectListUpdateEvent) {
+      ProjectListUpdateEvent projectListUpdated = (ProjectListUpdateEvent) event;
+      if (projectListUpdated.remove) {
+        removeProjectFromReplicationLagMetrics(Project.nameKey(projectListUpdated.projectName));
+      }
     }
+  }
+
+  private void removeProjectFromReplicationLagMetrics(Project.NameKey projectName) {
+    replicationStatusPerProject.remove(projectName.get());
+    localVersionPerProject.remove(projectName.get());
+    verLogger.logDeleted(projectName);
   }
 
   private void updateReplicationLagMetrics(Project.NameKey projectName, String ref) {
@@ -137,5 +150,15 @@ public class SubscriberMetrics extends MultiSiteMetrics {
           "Did not publish replication lag metric for %s because the %s version is not defined",
           projectName, localVersion.isPresent() ? "remote" : "local");
     }
+  }
+
+  @VisibleForTesting
+  Long getReplicationStatus(String projectName) {
+    return replicationStatusPerProject.get(projectName);
+  }
+
+  @VisibleForTesting
+  Long getLocalVersion(String projectName) {
+    return localVersionPerProject.get(projectName);
   }
 }
