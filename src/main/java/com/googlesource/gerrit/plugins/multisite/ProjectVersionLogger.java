@@ -19,4 +19,6 @@ import com.google.gerrit.entities.Project;
 public interface ProjectVersionLogger {
 
   public void log(Project.NameKey projectName, long currentVersion, long replicationLag);
+
+  public void logDeleted(Project.NameKey projectName);
 }
