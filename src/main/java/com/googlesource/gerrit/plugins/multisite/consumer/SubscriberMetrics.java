@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import com.gerritforge.gerrit.eventbroker.EventMessage;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.Counter1;
@@ -27,6 +28,7 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
+import com.googlesource.gerrit.plugins.replication.events.ProjectDeletionReplicationSucceededEvent;
 import com.googlesource.gerrit.plugins.replication.events.RefReplicatedEvent;
 import com.googlesource.gerrit.plugins.replication.events.RefReplicationDoneEvent;
 import com.googlesource.gerrit.plugins.replication.events.ReplicationScheduledEvent;
@@ -113,6 +115,21 @@ public class SubscriberMetrics extends MultiSiteMetrics {
     } else if (event instanceof RefUpdatedEvent) {
       RefUpdatedEvent updated = (RefUpdatedEvent) event;
       updateReplicationLagMetrics(updated.getProjectNameKey(), updated.getRefName());
+    } else if (event instanceof ProjectDeletionReplicationSucceededEvent) {
+      ProjectDeletionReplicationSucceededEvent projectDeletion =
+          (ProjectDeletionReplicationSucceededEvent) event;
+      removeProjectFromReplicationLagMetrics(projectDeletion.getProjectNameKey());
+    }
+  }
+
+  private void removeProjectFromReplicationLagMetrics(Project.NameKey projectName) {
+    Optional<Long> localVersion = projectVersionRefUpdate.getProjectLocalVersion(projectName.get());
+
+    if (!localVersion.isPresent() && localVersionPerProject.containsKey(projectName.get())) {
+      replicationStatusPerProject.remove(projectName.get());
+      localVersionPerProject.remove(projectName.get());
+      verLogger.logDeleted(projectName);
+      logger.atFine().log("Removed project '%s' from replication lag metrics", projectName);
     }
   }
 
@@ -137,5 +154,15 @@ public class SubscriberMetrics extends MultiSiteMetrics {
           "Did not publish replication lag metric for %s because the %s version is not defined",
           projectName, localVersion.isPresent() ? "remote" : "local");
     }
+  }
+
+  @VisibleForTesting
+  Long getReplicationStatus(String projectName) {
+    return replicationStatusPerProject.get(projectName);
+  }
+
+  @VisibleForTesting
+  Long getLocalVersion(String projectName) {
+    return localVersionPerProject.get(projectName);
   }
 }
