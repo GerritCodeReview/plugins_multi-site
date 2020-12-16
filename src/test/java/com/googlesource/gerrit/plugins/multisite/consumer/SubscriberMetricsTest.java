@@ -14,7 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.gerritforge.gerrit.eventbroker.EventMessage;
@@ -26,6 +28,7 @@ import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import java.util.Optional;
 import java.util.UUID;
@@ -84,6 +87,53 @@ public class SubscriberMetricsTest {
     metrics.updateReplicationStatusMetrics(eventMessage);
 
     verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, globalRefDbVersion.get(), replicationLag);
+  }
+
+  @Test
+  public void shouldLogProjectDeletionWhenReceivingProjectListUpdateWithRemoveFlag() {
+    EventMessage eventMessage = new EventMessage(msgHeader, newProjectListUpdateEvent(true));
+
+    metrics.updateReplicationStatusMetrics(eventMessage);
+
+    verify(verLogger).logDeleted(A_TEST_PROJECT_NAME_KEY);
+  }
+
+  @Test
+  public void shouldNotLogProjectDeletionWhenReceivingProjectListUpdateWithoutRemoveFlag() {
+    EventMessage eventMessage = new EventMessage(msgHeader, newProjectListUpdateEvent(false));
+
+    metrics.updateReplicationStatusMetrics(eventMessage);
+
+    verifyZeroInteractions(verLogger);
+  }
+
+  @Test
+  public void shouldRemoveProjectMetricsWhenDeleted() {
+    long nowSecs = System.currentTimeMillis() / 1000;
+    long replicationLagSecs = 60;
+    Optional<Long> globalRefDbVersion = Optional.of(nowSecs);
+    when(projectVersionRefUpdate.getProjectRemoteVersion(A_TEST_PROJECT_NAME))
+        .thenReturn(globalRefDbVersion.map(ts -> ts + replicationLagSecs));
+    when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
+        .thenReturn(globalRefDbVersion);
+
+    EventMessage eventMessage = new EventMessage(msgHeader, newRefUpdateEvent());
+
+    metrics.updateReplicationStatusMetrics(eventMessage);
+
+    assertThat(metrics.getReplicationStatus(A_TEST_PROJECT_NAME)).isEqualTo(replicationLagSecs);
+    assertThat(metrics.getLocalVersion(A_TEST_PROJECT_NAME)).isEqualTo(nowSecs);
+
+    EventMessage projectDeleteEvent = new EventMessage(msgHeader, newProjectListUpdateEvent(true));
+
+    metrics.updateReplicationStatusMetrics(projectDeleteEvent);
+
+    assertThat(metrics.getReplicationStatus(A_TEST_PROJECT_NAME)).isNull();
+    assertThat(metrics.getLocalVersion(A_TEST_PROJECT_NAME)).isNull();
+  }
+
+  private ProjectListUpdateEvent newProjectListUpdateEvent(boolean remove) {
+    return new ProjectListUpdateEvent(A_TEST_PROJECT_NAME, remove);
   }
 
   private RefUpdatedEvent newRefUpdateEvent() {
