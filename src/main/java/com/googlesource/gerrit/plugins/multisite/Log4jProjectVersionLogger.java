@@ -45,4 +45,9 @@ public class Log4jProjectVersionLogger extends LibModuleLogFile implements Proje
       verLog.info("{ \"project\":\"{}\", \"version\":{} }", projectName, currentVersion);
     }
   }
+
+  @Override
+  public void logDeleted(Project.NameKey projectName) {
+    verLog.info("{ \"project\":\"{}\", \"status\":\"DELETED\" }", projectName);
+  }
 }
