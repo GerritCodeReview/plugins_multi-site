@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
 import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
@@ -113,7 +114,18 @@ public class SubscriberMetrics extends MultiSiteMetrics {
     } else if (event instanceof RefUpdatedEvent) {
       RefUpdatedEvent updated = (RefUpdatedEvent) event;
       updateReplicationLagMetrics(updated.getProjectNameKey(), updated.getRefName());
+    } else if (event instanceof ProjectListUpdateEvent) {
+      ProjectListUpdateEvent projectListUpdated = (ProjectListUpdateEvent) event;
+      if (projectListUpdated.remove) {
+        removeProjectFromReplicationLagMetrics(Project.nameKey(projectListUpdated.projectName));
+      }
     }
+  }
+
+  private void removeProjectFromReplicationLagMetrics(Project.NameKey projectName) {
+    replicationStatusPerProject.remove(projectName.get());
+    localVersionPerProject.remove(projectName.get());
+    verLogger.logDeleted(projectName);
   }
 
   private void updateReplicationLagMetrics(Project.NameKey projectName, String ref) {
