@@ -16,6 +16,23 @@
       "message": "@Luca\ntarget branch for this change was not stable-3.2\nsame thing for merge commit 457b23e6 without Change-Id ",
       "revId": "0e2039afb120542dd392c4c4f7466d6660e9c631",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da17e984_e6ad3d59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1095383
+      },
+      "writtenOn": "2020-12-21T16:41:13Z",
+      "side": 1,
+      "message": "nm, recent merge performed by https://gerrit-review.googlesource.com/c/plugins/multi-site/+/291545",
+      "revId": "0e2039afb120542dd392c4c4f7466d6660e9c631",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
