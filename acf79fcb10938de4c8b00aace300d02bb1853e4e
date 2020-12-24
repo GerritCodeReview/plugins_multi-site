@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a9736ae_d130be06",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-12-24T17:27:23Z",
+      "side": 1,
+      "message": "What is the project is added? What would happen in that case?",
+      "range": {
+        "startLine": 120,
+        "startChar": 10,
+        "endLine": 120,
+        "endChar": 35
+      },
+      "revId": "acf79fcb10938de4c8b00aace300d02bb1853e4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "793760f2_b992dcad",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetricsTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-12-24T17:27:23Z",
+      "side": 1,
+      "message": "What about having 2 helper methods, one for the deletion and one no, like:\n\n* newProjectListUpdateEventRemoval\n* newProjectListUpdateEventAddition\n\nThis way it should be easier reading the tests:\n\n`new EventMessage(msgHeader, newProjectListUpdateEvent(true))` VS `new EventMessage(msgHeader, newProjectListUpdateEventRemoval())`\n\nIn the first case you need to check what is the boolean value for, in the second is explicit.",
+      "range": {
+        "startLine": 135,
+        "startChar": 2,
+        "endLine": 137,
+        "endChar": 3
+      },
+      "revId": "acf79fcb10938de4c8b00aace300d02bb1853e4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
