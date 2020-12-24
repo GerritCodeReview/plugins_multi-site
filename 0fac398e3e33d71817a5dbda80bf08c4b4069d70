@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50e8c0c0_fd1d6ea2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1123150
+      },
+      "writtenOn": "2020-12-24T18:53:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c1bc5ad9_59fde819",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 38
+      },
+      "revId": "0fac398e3e33d71817a5dbda80bf08c4b4069d70",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04263a40_d3d92334",
@@ -47,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a715aef_2d28a54b",
+        "filename": "setup_local_env/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1123150
+      },
+      "writtenOn": "2020-12-24T18:53:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04263a40_d3d92334",
+      "range": {
+        "startLine": 56,
+        "startChar": 77,
+        "endLine": 56,
+        "endChar": 82
+      },
+      "revId": "0fac398e3e33d71817a5dbda80bf08c4b4069d70",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e04c831_0780ab99",
@@ -60,6 +108,30 @@
       "writtenOn": "2020-12-24T16:50:55Z",
       "side": 1,
       "message": "remove",
+      "range": {
+        "startLine": 61,
+        "startChar": 59,
+        "endLine": 61,
+        "endChar": 60
+      },
+      "revId": "0fac398e3e33d71817a5dbda80bf08c4b4069d70",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5be48eec_c36fdae2",
+        "filename": "setup_local_env/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1123150
+      },
+      "writtenOn": "2020-12-24T18:53:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e04c831_0780ab99",
       "range": {
         "startLine": 61,
         "startChar": 59,
