@@ -20,7 +20,7 @@ The environment is composed by:
 Simplest setup with all default values and cleanup previous deployment
 
 ```bash
-sh setup_local_env/setup.sh --release-war-file /path/to/release.war --multisite-plugin-file /path/to/multi-site.jar
+sh setup_local_env/setup.sh --release-war-file /path/to/gerrit.war --multisite-lib-file /path/to/multi-site.jar
 ```
 
 Cleanup the previous deployments
@@ -32,13 +32,13 @@ sh setup_local_env/setup.sh --just-cleanup-env true
 Help
 
 ```bash
-Usage: sh setup.sh [--option ]
+Usage: sh ./setup.sh [--option ]
 
 [--release-war-file]            Location to release.war file
-[--multisite-plugin-file]       Location to plugin multi-site.jar file
+[--multisite-lib-file]          Location to lib multi-site.jar file
 
 [--new-deployment]              Cleans up previous gerrit deployment and re-installs it. default true
-[--get-websession-plugin]       Download websession-flatfile plugin from CI lastSuccessfulBuild; default true
+[--get-websession-plugin]       Download websession-broker plugin from CI lastSuccessfulBuild; default true
 [--deployment-location]         Base location for the test deployment; default /tmp
 
 [--gerrit-canonical-host]       The default host for Gerrit to be accessed through; default localhost
@@ -53,10 +53,12 @@ Usage: sh setup.sh [--option ]
 [--gerrit2-sshd-port]           Gerrit Instance 2 sshd port; default 49418
 
 [--replication-type]            Options [file,ssh]; default ssh
-[--replication-ssh-user]        SSH user for the replication plugin; default $(whoami)
+[--replication-ssh-user]        SSH user for the replication plugin; default jigar
+[--replication-delay]           Replication delay across the two instances in seconds
+
 [--just-cleanup-env]            Cleans up previous deployment; default false
 
-[--enabled-https]               Enabled https; default true
+[--enabled-https]               Enabled https; default trues
 ```
 
 ## Limitations
