@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a890688f_d54074c8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-12-28T21:49:46Z",
+      "side": 1,
+      "message": "the multi-site plugin",
+      "range": {
+        "startLine": 9,
+        "startChar": 38,
+        "endLine": 9,
+        "endChar": 44
+      },
+      "revId": "58de043e0d5e651aa3f576882ba9b850b4885250",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9fe218e_df0a944e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-12-28T21:49:46Z",
+      "side": 1,
+      "message": "The problem actually applies to any multi-site plugin version from v3.0 onwards.\nSee my feedback: I am not sure we just want to remove the metrics upon deletions.",
+      "revId": "58de043e0d5e651aa3f576882ba9b850b4885250",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f02a6698_15cf498e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2020-12-28T21:49:46Z",
+      "side": 1,
+      "message": "I am not sure this is what we want to do: when a project gets deleted, we want still to make sure that its deletion is getting replicated.\n\nIf we just remove the metric, we won\u0027t know that the deletion happened and, if not, what\u0027s the lag associated.",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 96
+      },
+      "revId": "58de043e0d5e651aa3f576882ba9b850b4885250",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
