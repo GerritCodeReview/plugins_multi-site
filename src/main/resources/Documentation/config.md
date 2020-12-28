@@ -97,3 +97,27 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
     Ignore the alignment with the shared ref-database for AProject on refs/heads/feature.
 
     Defaults: No rules = All projects are REQUIRED to be consistent on all refs.
+
+```projects.pattern```
+:   Specifies which projects events should be send via broker. It can be provided more
+    than once, and supports three formats: regular expressions, wildcard matching, and single
+    project matching. All three formats match case-sensitive.
+
+    Values starting with a caret `^` are treated as regular
+    expressions. For the regular expressions details please follow
+    official [java documentation](https://docs.oracle.com/javase/tutorial/essential/regex/).
+
+    Please note that regular expressions could also be used
+    with inverse match.
+
+    Values that are not regular expressions and end in `*` are
+    treated as wildcard matches. Wildcards match projects whose
+    name agrees from the beginning until the trailing `*`. So
+    `foo/b*` would match the projects `foo/b`, `foo/bar`, and
+    `foo/baz`, but neither `foobar`, nor `bar/foo/baz`.
+
+    Values that are neither regular expressions nor wildcards are
+    treated as single project matches. So `foo/bar` matches only
+    the project `foo/bar`, but no other project.
+
+    By default, all projects are matched.

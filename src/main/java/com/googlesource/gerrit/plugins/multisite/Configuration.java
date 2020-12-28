@@ -17,17 +17,16 @@ package com.googlesource.gerrit.plugins.multisite;
 import static com.google.common.base.Suppliers.memoize;
 import static com.google.common.base.Suppliers.ofInstance;
 
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbConfiguration;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement.EnforcePolicy;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -61,7 +60,8 @@ public class Configuration {
   private final Supplier<Cache> cache;
   private final Supplier<Event> event;
   private final Supplier<Index> index;
-  private final Supplier<SharedRefDatabase> sharedRefDb;
+  private final Supplier<Projects> projects;
+  private final Supplier<SharedRefDbConfiguration> sharedRefDb;
   private final Supplier<Collection<Message>> replicationConfigValidation;
   private final Supplier<Broker> broker;
   private final Config multiSiteConfig;
@@ -79,7 +79,10 @@ public class Configuration {
     cache = memoize(() -> new Cache(lazyMultiSiteCfg));
     event = memoize(() -> new Event(lazyMultiSiteCfg));
     index = memoize(() -> new Index(lazyMultiSiteCfg));
-    sharedRefDb = memoize(() -> new SharedRefDatabase(lazyMultiSiteCfg));
+    projects = memoize(() -> new Projects(lazyMultiSiteCfg));
+    sharedRefDb =
+        memoize(
+            () -> new SharedRefDbConfiguration(enableSharedRefDbByDefault(lazyMultiSiteCfg.get())));
     broker = memoize(() -> new Broker(lazyMultiSiteCfg));
   }
 
@@ -87,7 +90,7 @@ public class Configuration {
     return multiSiteConfig;
   }
 
-  public SharedRefDatabase getSharedRefDb() {
+  public SharedRefDbConfiguration getSharedRefDbConfiguration() {
     return sharedRefDb.get();
   }
 
@@ -107,12 +110,31 @@ public class Configuration {
     return broker.get();
   }
 
+  public Projects projects() {
+    return projects.get();
+  }
+
   public Collection<Message> validate() {
     return replicationConfigValidation.get();
   }
 
   private static FileBasedConfig getConfigFile(SitePaths sitePaths, String configFileName) {
     return new FileBasedConfig(sitePaths.etc_dir.resolve(configFileName).toFile(), FS.DETECTED);
+  }
+
+  private Config enableSharedRefDbByDefault(Config cfg) {
+    if (Strings.isNullOrEmpty(
+        cfg.getString(
+            SharedRefDbConfiguration.SharedRefDatabase.SECTION,
+            null,
+            SharedRefDbConfiguration.SharedRefDatabase.ENABLE_KEY))) {
+      cfg.setBoolean(
+          SharedRefDbConfiguration.SharedRefDatabase.SECTION,
+          null,
+          SharedRefDbConfiguration.SharedRefDatabase.ENABLE_KEY,
+          true);
+    }
+    return cfg;
   }
 
   private Supplier<Config> lazyLoad(Config config) {
@@ -166,35 +188,17 @@ public class Configuration {
     }
   }
 
-  public static class SharedRefDatabase {
-    public static final String SECTION = "ref-database";
-    public static final String ENABLE_KEY = "enabled";
-    public static final String SUBSECTION_ENFORCEMENT_RULES = "enforcementRules";
+  public static class Projects {
+    public static final String SECTION = "projects";
+    public static final String PATTERN_KEY = "pattern";
+    public List<String> patterns;
 
-    private final boolean enabled;
-    private final Multimap<EnforcePolicy, String> enforcementRules;
-
-    private SharedRefDatabase(Supplier<Config> cfg) {
-      enabled = getBoolean(cfg, SECTION, null, ENABLE_KEY, true);
-
-      enforcementRules = MultimapBuilder.hashKeys().arrayListValues().build();
-      for (EnforcePolicy policy : EnforcePolicy.values()) {
-        enforcementRules.putAll(
-            policy, getList(cfg, SECTION, SUBSECTION_ENFORCEMENT_RULES, policy.name()));
-      }
+    public Projects(Supplier<Config> cfg) {
+      patterns = ImmutableList.copyOf(cfg.get().getStringList("projects", null, PATTERN_KEY));
     }
 
-    public boolean isEnabled() {
-      return enabled;
-    }
-
-    public Multimap<EnforcePolicy, String> getEnforcementRules() {
-      return enforcementRules;
-    }
-
-    private List<String> getList(
-        Supplier<Config> cfg, String section, String subsection, String name) {
-      return ImmutableList.copyOf(cfg.get().getStringList(section, subsection, name));
+    public List<String> getPatterns() {
+      return patterns;
     }
   }
 

@@ -18,6 +18,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
 
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
@@ -31,7 +33,6 @@ import com.google.gerrit.server.notedb.IntBlob;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
-import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import java.io.IOException;
 import java.util.Optional;
@@ -58,6 +59,7 @@ public class ProjectVersionRefUpdate implements EventListener {
   private final GitRepositoryManager gitRepositoryManager;
   private final GitReferenceUpdated gitReferenceUpdated;
   private final ProjectVersionLogger verLogger;
+  private final ProjectsFilter projectsFilter;
 
   protected final SharedRefDatabaseWrapper sharedRefDb;
 
@@ -66,11 +68,13 @@ public class ProjectVersionRefUpdate implements EventListener {
       GitRepositoryManager gitRepositoryManager,
       SharedRefDatabaseWrapper sharedRefDb,
       GitReferenceUpdated gitReferenceUpdated,
-      ProjectVersionLogger verLogger) {
+      ProjectVersionLogger verLogger,
+      ProjectsFilter projectsFilter) {
     this.gitRepositoryManager = gitRepositoryManager;
     this.sharedRefDb = sharedRefDb;
     this.gitReferenceUpdated = gitReferenceUpdated;
     this.verLogger = verLogger;
+    this.projectsFilter = projectsFilter;
   }
 
   @Override
@@ -78,7 +82,9 @@ public class ProjectVersionRefUpdate implements EventListener {
     logger.atFine().log("Processing event type: " + event.type);
     // Producer of the Event use RefUpdatedEvent to trigger the version update
     if (!Context.isForwardedEvent() && event instanceof RefUpdatedEvent) {
-      updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
+      if (projectsFilter.matches(event)) {
+        updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
+      }
     }
   }
 

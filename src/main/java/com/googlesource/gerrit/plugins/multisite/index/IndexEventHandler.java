@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.common.base.Objects;
 import com.google.gerrit.extensions.events.AccountIndexedListener;
 import com.google.gerrit.extensions.events.ChangeIndexedListener;
@@ -22,6 +23,7 @@ import com.google.gerrit.extensions.events.ProjectIndexedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
@@ -44,15 +46,18 @@ class IndexEventHandler
   private final DynamicSet<IndexEventForwarder> forwarders;
   private final Set<IndexTask> queuedTasks = Collections.newSetFromMap(new ConcurrentHashMap<>());
   private final ChangeCheckerImpl.Factory changeChecker;
+  private final ProjectsFilter projectsFilter;
 
   @Inject
   IndexEventHandler(
       @IndexExecutor Executor executor,
       DynamicSet<IndexEventForwarder> forwarders,
-      ChangeCheckerImpl.Factory changeChecker) {
+      ChangeCheckerImpl.Factory changeChecker,
+      ProjectsFilter projectsFilter) {
     this.forwarders = forwarders;
     this.executor = executor;
     this.changeChecker = changeChecker;
+    this.projectsFilter = projectsFilter;
   }
 
   @Override
@@ -87,7 +92,7 @@ class IndexEventHandler
 
   @Override
   public void onProjectIndexed(String projectName) {
-    if (!Context.isForwardedEvent()) {
+    if (!Context.isForwardedEvent() && projectsFilter.matches(projectName)) {
       IndexProjectTask task = new IndexProjectTask(new ProjectIndexEvent(projectName));
       if (queuedTasks.add(task)) {
         executor.execute(task);
@@ -96,7 +101,7 @@ class IndexEventHandler
   }
 
   private void executeIndexChangeTask(String projectName, int id) {
-    if (!Context.isForwardedEvent()) {
+    if (!Context.isForwardedEvent() && projectsFilter.matches(projectName)) {
       ChangeChecker checker = changeChecker.create(projectName + "~" + id);
 
       try {
@@ -130,7 +135,8 @@ class IndexEventHandler
     }
   }
 
-  abstract class IndexTask implements Runnable {
+  abstract class IndexTask extends ForwarderTask {
+
     @Override
     public void run() {
       queuedTasks.remove(this);
@@ -149,7 +155,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarders.forEach(f -> f.index(changeIndexEvent));
+      forwarders.forEach(f -> f.index(this, changeIndexEvent));
     }
 
     @Override
@@ -180,7 +186,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarders.forEach(f -> f.batchIndex(changeIndexEvent));
+      forwarders.forEach(f -> f.batchIndex(this, changeIndexEvent));
     }
 
     @Override
@@ -211,7 +217,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarders.forEach(f -> f.index(accountIndexEvent));
+      forwarders.forEach(f -> f.index(this, accountIndexEvent));
     }
 
     @Override
@@ -242,7 +248,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarders.forEach(f -> f.index(groupIndexEvent));
+      forwarders.forEach(f -> f.index(this, groupIndexEvent));
     }
 
     @Override
@@ -273,7 +279,7 @@ class IndexEventHandler
 
     @Override
     public void execute() {
-      forwarders.forEach(f -> f.index(projectIndexEvent));
+      forwarders.forEach(f -> f.index(this, projectIndexEvent));
     }
 
     @Override

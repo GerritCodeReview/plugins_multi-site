@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.event;
 
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
@@ -26,17 +27,24 @@ import java.util.concurrent.Executor;
 class EventHandler implements EventListener {
   private final Executor executor;
   private final DynamicSet<StreamEventForwarder> forwarders;
+  private final ProjectsFilter projectsFilter;
 
   @Inject
-  EventHandler(DynamicSet<StreamEventForwarder> forwarders, @EventExecutor Executor executor) {
+  EventHandler(
+      DynamicSet<StreamEventForwarder> forwarders,
+      @EventExecutor Executor executor,
+      ProjectsFilter projectsFilter) {
     this.forwarders = forwarders;
     this.executor = executor;
+    this.projectsFilter = projectsFilter;
   }
 
   @Override
   public void onEvent(Event event) {
     if (!Context.isForwardedEvent() && event instanceof ProjectEvent) {
-      executor.execute(new EventTask(event));
+      if (projectsFilter.matches(event)) {
+        executor.execute(new EventTask(event));
+      }
     }
   }
 

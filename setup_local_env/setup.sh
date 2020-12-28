@@ -16,10 +16,11 @@
 
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-GERRIT_BRANCH=stable-3.1
+GERRIT_BRANCH=stable-3.2
 GERRIT_CI=https://gerrit-ci.gerritforge.com/view/Plugins-$GERRIT_BRANCH/job
 LAST_BUILD=lastSuccessfulBuild/artifact/bazel-bin/plugins
 EVENTS_BROKER_VER=`grep 'com.gerritforge:events-broker' $(dirname $0)/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
+GLOBAL_REFDB_VER=`grep 'com.gerritforge:global-refdb' $(dirname $0)/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
 
 function check_application_requirements {
   type haproxy >/dev/null 2>&1 || { echo >&2 "Require haproxy but it's not installed. Aborting."; exit 1; }
@@ -341,7 +342,7 @@ else
 fi
 if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
   echo "Downloading websession-broker plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-websession-broker-bazel-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
+  wget $GERRIT_CI/plugin-websession-broker-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
   -O $DEPLOYMENT_LOCATION/websession-broker.jar || { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
 ing"; exit 1; }
   wget $GERRIT_CI/plugin-healthcheck-bazel-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
@@ -354,6 +355,11 @@ fi
 echo "Downloading zookeeper plugin $GERRIT_BRANCH"
   wget $GERRIT_CI/plugin-zookeeper-refdb-bazel-$GERRIT_BRANCH/$LAST_BUILD/zookeeper-refdb/zookeeper-refdb.jar \
   -O $DEPLOYMENT_LOCATION/zookeeper-refdb.jar || { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Abort\
+ing"; exit 1; }
+
+echo "Downloading global-refdb library $GERRIT_BRANCH"
+  wget https://repo1.maven.org/maven2/com/gerritforge/global-refdb/$GLOBAL_REFDB_VER/global-refdb-$GLOBAL_REFDB_VER.jar \
+  -O $DEPLOYMENT_LOCATION/global-refdb.jar || { echo >&2 "Cannot download global-refdb library: Check internet connection. Abort\
 ing"; exit 1; }
 
 echo "Downloading events-broker library $GERRIT_BRANCH"
@@ -409,6 +415,9 @@ if [ $NEW_INSTALLATION = "true" ]; then
 
   echo "Copy zookeeper plugin"
   cp -f $DEPLOYMENT_LOCATION/zookeeper-refdb.jar $LOCATION_TEST_SITE_1/plugins/zookeeper-refdb.jar
+
+  echo "Copy global refdb library"
+  cp -f $DEPLOYMENT_LOCATION/global-refdb.jar $LOCATION_TEST_SITE_1/lib/global-refdb.jar
 
   echo "Copy events broker library"
   cp -f $DEPLOYMENT_LOCATION/events-broker.jar $LOCATION_TEST_SITE_1/lib/events-broker.jar

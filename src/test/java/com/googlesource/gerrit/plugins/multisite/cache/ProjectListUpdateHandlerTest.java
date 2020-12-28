@@ -15,11 +15,15 @@
 package com.googlesource.gerrit.plugins.multisite.cache;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.extensions.events.NewProjectCreatedListener;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
@@ -40,10 +44,14 @@ public class ProjectListUpdateHandlerTest {
   private ProjectListUpdateHandler handler;
 
   @Mock private ProjectListUpdateForwarder forwarder;
+  @Mock private ProjectsFilter projectsFilter;
 
   @Before
   public void setUp() {
-    handler = new ProjectListUpdateHandler(asDynamicSet(forwarder), MoreExecutors.directExecutor());
+    when(projectsFilter.matches(any(String.class))).thenReturn(true);
+    handler =
+        new ProjectListUpdateHandler(
+            asDynamicSet(forwarder), MoreExecutors.directExecutor(), projectsFilter);
   }
 
   private DynamicSet<ProjectListUpdateForwarder> asDynamicSet(
@@ -59,7 +67,9 @@ public class ProjectListUpdateHandlerTest {
     NewProjectCreatedListener.Event event = mock(NewProjectCreatedListener.Event.class);
     when(event.getProjectName()).thenReturn(projectName);
     handler.onNewProjectCreated(event);
-    verify(forwarder).updateProjectList(new ProjectListUpdateEvent(projectName, false));
+    verify(forwarder)
+        .updateProjectList(
+            any(ProjectListUpdateTask.class), eq(new ProjectListUpdateEvent(projectName, false)));
   }
 
   @Test
@@ -68,7 +78,9 @@ public class ProjectListUpdateHandlerTest {
     ProjectDeletedListener.Event event = mock(ProjectDeletedListener.Event.class);
     when(event.getProjectName()).thenReturn(projectName);
     handler.onProjectDeleted(event);
-    verify(forwarder).updateProjectList(new ProjectListUpdateEvent(projectName, true));
+    verify(forwarder)
+        .updateProjectList(
+            any(ProjectListUpdateTask.class), eq(new ProjectListUpdateEvent(projectName, true)));
   }
 
   @Test
@@ -78,6 +90,18 @@ public class ProjectListUpdateHandlerTest {
     handler.onProjectDeleted(mock(ProjectDeletedListener.Event.class));
     Context.unsetForwardedEvent();
     verifyZeroInteractions(forwarder);
+  }
+
+  @Test
+  public void shouldNotForwardIfFilteredOutByProjectName() throws Exception {
+    when(projectsFilter.matches(any(String.class))).thenReturn(false);
+    String projectName = "projectToAdd";
+    NewProjectCreatedListener.Event event = mock(NewProjectCreatedListener.Event.class);
+    when(event.getProjectName()).thenReturn(projectName);
+    handler.onNewProjectCreated(event);
+    verify(forwarder, never())
+        .updateProjectList(
+            any(ProjectListUpdateTask.class), eq(new ProjectListUpdateEvent(projectName, true)));
   }
 
   @Test

@@ -28,6 +28,6 @@ public class ProjectCheckerImpl implements ProjectChecker {
 
   @Override
   public boolean isProjectUpToDate(Project.NameKey projectName) {
-    return projectCache.get(projectName) != null;
+    return projectCache.get(projectName).isPresent();
   }
 }
