@@ -37,7 +37,6 @@ public class CachePattenMatcherTest {
     CachePatternMatcher matcher = new CachePatternMatcher(configurationMock);
     for (String cache :
         ImmutableList.of(
-            "accounts",
             "groups",
             "groups_byinclude",
             "groups_byname",
@@ -55,6 +54,7 @@ public class CachePattenMatcherTest {
     }
     for (String cache :
         ImmutableList.of(
+            "accounts",
             "adv_bases",
             "change_kind",
             "change_notes",
