@@ -46,6 +46,30 @@
       },
       "revId": "0e2028d445785fe0f46e0da878fd5a7e64a776bb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f6af0b3_d5d7918d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1123150
+      },
+      "writtenOn": "2020-12-29T16:09:37Z",
+      "side": 1,
+      "message": "gotcha. I will update README.md to point to the replaced document. Currently, https://gerrit.googlesource.com/plugins/multi-site/ refers to https://gerrit.googlesource.com/plugins/multi-site/+/HEAD/src/main/resources/Documentation/config.md",
+      "parentUuid": "84f7c27b_36befedc",
+      "range": {
+        "startLine": 7,
+        "startChar": 8,
+        "endLine": 7,
+        "endChar": 16
+      },
+      "revId": "0e2028d445785fe0f46e0da878fd5a7e64a776bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
