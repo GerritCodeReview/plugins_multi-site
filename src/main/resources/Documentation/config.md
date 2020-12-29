@@ -1,10 +1,10 @@
 
-@PLUGIN@ Configuration
+multi-site Configuration
 =========================
 
-The @PLUGIN@ plugin must be installed as a library module in the
+The multi-site plugin must be installed as a library module in the
 `$GERRIT_SITE/lib` folder of all the instances. Configuration should
-be specified in the `$site_path/etc/@PLUGIN@.config` file.
+be specified in the `$site_path/etc/multi-site.config` file.
 
 ## Configuration parameters
 

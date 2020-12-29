@@ -64,14 +64,14 @@ Prerequisites:
 
 For the masters:
 
-* Install and configure @PLUGIN@ plugin
+* Install and configure multi-site plugin
 
 For further information and supported options, refer to [config](config.md)
 documentation.
 
 ## Metrics
 
-@PLUGIN@ plugin exposes following metrics:
+multi-site plugin exposes following metrics:
 
 ### Broker message publisher
 * Broker message published count

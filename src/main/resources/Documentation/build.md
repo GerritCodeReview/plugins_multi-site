@@ -9,27 +9,27 @@ the Gerrit /plugins directory, replacing the existing empty one.
 ```
   cd gerrit/plugins
   rm external_plugin_deps.bzl
-  ln -s @PLUGIN@/external_plugin_deps.bzl .
+  ln -s multi-site/external_plugin_deps.bzl .
 ```
 
 From the Gerrit source tree issue the command:
 
 ```
-  bazel build plugins/@PLUGIN@
+  bazel build plugins/multi-site
 ```
 
 The output is created in
 
 ```
-  bazel-bin/plugins/@PLUGIN@/@PLUGIN@.jar
+  bazel-bin/plugins/multi-site/multi-site.jar
 ```
 
 To execute the tests run:
 
 ```
-  bazel test --test_tag_filters=@PLUGIN@
+  bazel test --test_tag_filters=multi-site
 ```
 
-[Back to @PLUGIN@ documentation index][index]
+[Back to multi-site documentation index][index]
 
 [index]: index.html
