@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "565d16df_c528a2b8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-12-30T17:52:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a890688f_d54074c8",
+      "range": {
+        "startLine": 9,
+        "startChar": 38,
+        "endLine": 9,
+        "endChar": 44
+      },
+      "revId": "58de043e0d5e651aa3f576882ba9b850b4885250",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a9fe218e_df0a944e",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
@@ -37,6 +61,24 @@
       "writtenOn": "2020-12-28T21:49:46Z",
       "side": 1,
       "message": "The problem actually applies to any multi-site plugin version from v3.0 onwards.\nSee my feedback: I am not sure we just want to remove the metrics upon deletions.",
+      "revId": "58de043e0d5e651aa3f576882ba9b850b4885250",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce3a020c_4ba4097f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-12-30T17:52:28Z",
+      "side": 1,
+      "message": "Oh ok, the issue ticket was referring to 3.2.\nI have see you updated it now, I will target 3.0",
+      "parentUuid": "a9fe218e_df0a944e",
       "revId": "58de043e0d5e651aa3f576882ba9b850b4885250",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -54,6 +96,30 @@
       "writtenOn": "2020-12-28T21:49:46Z",
       "side": 1,
       "message": "I am not sure this is what we want to do: when a project gets deleted, we want still to make sure that its deletion is getting replicated.\n\nIf we just remove the metric, we won\u0027t know that the deletion happened and, if not, what\u0027s the lag associated.",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 96
+      },
+      "revId": "58de043e0d5e651aa3f576882ba9b850b4885250",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d51682c_1f1aac53",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2020-12-30T17:52:28Z",
+      "side": 1,
+      "message": "Thanks @luca, it makes perfect sense what you are saying.\n\nI spent a bit of time looking into this and I think the problem is that the replication plugin does not emit any event upon successful project deletion (or project creation for that matter).\n\nUpon project deletion the following happens:\n* multi-site plugin _immediately_ publishes a project-list-update (removal) event.\n* multi-site plugin _immediately_ publishes a cache_eviction (for the removed project).\n\nAs soon as these are CONSUMED, the project disappears from the UI of the remote Gerrit (even though git data might still be on filesystem, but that\u0027s fine).\n\n* Meanwhile, the replication plugin has scheduled the deletion of the remote project[1], which happens here[2].\n\nHowever, once the deletion is actually completed (or actually failed), there is no event that gets emitted to notify consumers.\n\nSimilarly to what happens for successful ref updates, where the RefReplicationDoneEvent is emitted, I think we should have a ProjectDeletionDoneEvent (in the replication plugin) to notify when the project is _actually_ deleted from the remote node.\n\nWDYT? Do I have the wrong side of the stick here?\n\n\n[1]https://gerrit.googlesource.com/plugins/replication/+/refs/heads/stable-3.0/src/main/java/com/googlesource/gerrit/plugins/replication/ReplicationQueue.java#206\n[2]https://gerrit.googlesource.com/plugins/replication/+/refs/heads/stable-3.0/src/main/java/com/googlesource/gerrit/plugins/replication/DeleteProjectTask.java#54",
+      "parentUuid": "f02a6698_15cf498e",
       "range": {
         "startLine": 121,
         "startChar": 0,
