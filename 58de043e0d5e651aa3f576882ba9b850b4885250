@@ -128,6 +128,30 @@
       },
       "revId": "58de043e0d5e651aa3f576882ba9b850b4885250",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4c4bd47_8ef657c8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2020-12-31T13:10:14Z",
+      "side": 1,
+      "message": "I think you got it right. I have seen a similar issue with the pull-replication plugin. In my case it seems like we don\u0027t emit any event whenever we trigger an SSH command.\n\nI have added an issue [1] to document the events lifecycle in the plugin (I always forget which one are the event emitted and in which order).\n\n[1]: https://bugs.chromium.org/p/gerrit/issues/detail?id\u003d13892",
+      "parentUuid": "4d51682c_1f1aac53",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 96
+      },
+      "revId": "58de043e0d5e651aa3f576882ba9b850b4885250",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
