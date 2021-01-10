@@ -23,6 +23,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEv
 import com.googlesource.gerrit.plugins.multisite.index.ForwardedIndexExecutor;
 import com.googlesource.gerrit.plugins.multisite.index.ProjectChecker;
 import java.util.Optional;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -92,20 +93,22 @@ public class ForwardedIndexProjectHandler
         projectName,
         retryInterval);
 
-    indexExecutor.schedule(
-        () -> {
-          Context.setForwardedEvent(true);
-          if (!attemptIndex(projectName, event)) {
-            log.warn(
-                "Attempt {} to index project {} failed, scheduling again after {} msecs",
-                retryCount,
-                projectName,
-                retryInterval);
-            rescheduleIndex(projectName, event, retryCount + 1);
-          }
-        },
-        retryInterval,
-        TimeUnit.MILLISECONDS);
+    @SuppressWarnings("unused")
+    Future<?> possiblyIgnoredError =
+        indexExecutor.schedule(
+            () -> {
+              Context.setForwardedEvent(true);
+              if (!attemptIndex(projectName, event)) {
+                log.warn(
+                    "Attempt {} to index project {} failed, scheduling again after {} msecs",
+                    retryCount,
+                    projectName,
+                    retryInterval);
+                rescheduleIndex(projectName, event, retryCount + 1);
+              }
+            },
+            retryInterval,
+            TimeUnit.MILLISECONDS);
   }
 
   @Override

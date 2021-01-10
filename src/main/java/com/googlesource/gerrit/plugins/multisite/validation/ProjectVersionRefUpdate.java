@@ -36,7 +36,6 @@ import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.Set;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
@@ -48,7 +47,7 @@ import org.eclipse.jgit.lib.Repository;
 @Singleton
 public class ProjectVersionRefUpdate implements EventListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  private static final Set<RefUpdate.Result> SUCCESSFUL_RESULTS =
+  private static final ImmutableSet<RefUpdate.Result> SUCCESSFUL_RESULTS =
       ImmutableSet.of(RefUpdate.Result.NEW, RefUpdate.Result.FORCED, RefUpdate.Result.NO_CHANGE);
 
   public static final String MULTI_SITE_VERSIONING_REF = "refs/multi-site/version";

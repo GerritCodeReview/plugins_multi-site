@@ -125,8 +125,9 @@ public class ForwardedIndexChangeHandlerTest {
   @Test
   public void indexerThrowsStorageExceptionTryingToIndexChange() throws Exception {
     setupChangeAccessRelatedMocks(CHANGE_EXISTS, THROW_STORAGE_EXCEPTION, CHANGE_UP_TO_DATE);
-    exception.expect(StorageException.class);
-    handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
+    assertThrows(
+        StorageException.class,
+        () -> handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty()));
   }
 
   @Test

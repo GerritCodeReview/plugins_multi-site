@@ -71,9 +71,11 @@ public class ForwardedIndexProjectHandlerTest {
 
   @Test
   public void deleteIsNotSupported() throws Exception {
-    exception.expect(UnsupportedOperationException.class);
-    exception.expectMessage("Delete from project index not supported");
-    handler.index(nameKey, Operation.DELETE, Optional.empty());
+    UnsupportedOperationException thrown =
+        assertThrows(
+            UnsupportedOperationException.class,
+            () -> handler.index(nameKey, Operation.DELETE, Optional.empty()));
+    assertThat(thrown).hasMessageThat().isEqualTo("Delete from project index not supported");
   }
 
   @Test

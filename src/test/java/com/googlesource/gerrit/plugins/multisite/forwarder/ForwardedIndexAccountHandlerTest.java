@@ -61,9 +61,11 @@ public class ForwardedIndexAccountHandlerTest {
 
   @Test
   public void deleteIsNotSupported() throws Exception {
-    exception.expect(UnsupportedOperationException.class);
-    exception.expectMessage("Delete from account index not supported");
-    handler.index(id, Operation.DELETE, Optional.empty());
+    UnsupportedOperationException thrown =
+        assertThrows(
+            UnsupportedOperationException.class,
+            () -> handler.index(id, Operation.DELETE, Optional.empty()));
+    assertThat(thrown).hasMessageThat().isEqualTo("Delete from account index not supported");
   }
 
   @Test
