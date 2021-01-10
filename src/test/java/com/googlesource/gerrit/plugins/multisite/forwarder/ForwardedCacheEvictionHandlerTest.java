@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static org.mockito.Mockito.doReturn;
 
 import com.google.common.cache.Cache;
@@ -48,10 +49,12 @@ public class ForwardedCacheEvictionHandlerTest {
   public void shouldThrowAnExceptionWhenCacheNotFound() throws Exception {
     CacheEntry entry = new CacheEntry("somePlugin", "unexistingCache", null);
 
-    exception.expect(CacheNotFoundException.class);
-    exception.expectMessage(
-        String.format("cache %s.%s not found", entry.getPluginName(), entry.getCacheName()));
-    handler.evict(entry);
+    CacheNotFoundException thrown =
+        assertThrows(CacheNotFoundException.class, () -> handler.evict(entry));
+    assertThat(thrown)
+        .hasMessageThat()
+        .isEqualTo(
+            String.format("cache %s.%s not found", entry.getPluginName(), entry.getCacheName()));
   }
 
   @Test

@@ -67,7 +67,7 @@ public class BrokerForwarderTest {
     }
   }
 
-  public class TestEvent extends MultiSiteEvent {
+  public static class TestEvent extends MultiSiteEvent {
 
     protected TestEvent() {
       super("test");

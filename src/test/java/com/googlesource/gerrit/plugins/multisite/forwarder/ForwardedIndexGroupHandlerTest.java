@@ -61,9 +61,11 @@ public class ForwardedIndexGroupHandlerTest {
 
   @Test
   public void deleteIsNotSupported() throws Exception {
-    exception.expect(UnsupportedOperationException.class);
-    exception.expectMessage("Delete from group index not supported");
-    handler.index(uuid, Operation.DELETE, Optional.empty());
+    UnsupportedOperationException thrown =
+        assertThrows(
+            UnsupportedOperationException.class,
+            () -> handler.index(uuid, Operation.DELETE, Optional.empty()));
+    assertThat(thrown).hasMessageThat().isEqualTo("Delete from group index not supported");
   }
 
   @Test
