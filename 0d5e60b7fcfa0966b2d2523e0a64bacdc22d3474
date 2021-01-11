@@ -16,6 +16,24 @@
       "message": "Change looks good but could you explain a bit more in the commit message what is the reason for this refactoring",
       "revId": "0d5e60b7fcfa0966b2d2523e0a64bacdc22d3474",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b764e7d_7e3aada9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-11T09:26:38Z",
+      "side": 1,
+      "message": "What refactoring? See change 241634.\n\nGerrit is offering custom build tool chain with enabled more strict error prone severity level, where much more error prone pattern are turned to errors.\n\nRight now, only gerrit core and core plugins are enabled. In serviceuser plugin update seris Sasa Zivkov mentioned, that custom error prone toolchain could be easily activated, just add this line to tools/BUILD file:\n\n  package_group(\n    name \u003d \"error_prone_packages\",\n    packages \u003d [\n        \"//plugins/multi-site/...\",\n        [...]\n\nShould I add this info to Documentation/build.md file?",
+      "parentUuid": "8eb2b8cc_dfe6660e",
+      "revId": "0d5e60b7fcfa0966b2d2523e0a64bacdc22d3474",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
