@@ -33,7 +33,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.IndexEventRouter;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRouter;
-import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
+import com.googlesource.gerrit.plugins.replication.events.RefReplicationDoneEvent;
 import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
