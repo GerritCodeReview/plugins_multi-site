@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import static com.gerritforge.gerrit.globalrefdb.validation.RefUpdateValidator.SHARED_REF_DB_VERSIONING_REF;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
 
@@ -51,10 +52,11 @@ public class ProjectVersionRefUpdate implements EventListener {
   private static final Set<RefUpdate.Result> SUCCESSFUL_RESULTS =
       ImmutableSet.of(RefUpdate.Result.NEW, RefUpdate.Result.FORCED, RefUpdate.Result.NO_CHANGE);
 
-  public static final String MULTI_SITE_VERSIONING_REF = "refs/multi-site/version";
-  public static final String MULTI_SITE_VERSIONING_VALUE_REF = "refs/multi-site/version/value";
+  public static final String SHARED_REF_DB_VERSIONING_VALUE_REF =
+      SHARED_REF_DB_VERSIONING_REF + "/value";
   public static final Ref NULL_PROJECT_VERSION_REF =
-      new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId());
+      new ObjectIdRef.Unpeeled(
+          Ref.Storage.NETWORK, SHARED_REF_DB_VERSIONING_REF, ObjectId.zeroId());
 
   private final GitRepositoryManager gitRepositoryManager;
   private final GitReferenceUpdated gitReferenceUpdated;
@@ -91,7 +93,7 @@ public class ProjectVersionRefUpdate implements EventListener {
   private boolean isSpecialRefName(String refName) {
     return refName.startsWith(RefNames.REFS_SEQUENCES)
         || refName.startsWith(RefNames.REFS_STARRED_CHANGES)
-        || refName.equals(MULTI_SITE_VERSIONING_REF);
+        || refName.equals(SHARED_REF_DB_VERSIONING_REF);
   }
 
   private void updateProducerProjectVersionUpdate(RefUpdatedEvent refUpdatedEvent) {
@@ -131,7 +133,8 @@ public class ProjectVersionRefUpdate implements EventListener {
 
   private RefUpdate getProjectVersionRefUpdate(Repository repository, Long version)
       throws IOException {
-    RefUpdate refUpdate = repository.getRefDatabase().newUpdate(MULTI_SITE_VERSIONING_REF, false);
+    RefUpdate refUpdate =
+        repository.getRefDatabase().newUpdate(SHARED_REF_DB_VERSIONING_REF, false);
     refUpdate.setNewObjectId(getNewId(repository, version));
     refUpdate.setForceUpdate(true);
     return refUpdate;
@@ -150,17 +153,19 @@ public class ProjectVersionRefUpdate implements EventListener {
 
     Ref sharedRef =
         sharedRefDb
-            .get(projectNameKey, MULTI_SITE_VERSIONING_REF, String.class)
+            .get(projectNameKey, SHARED_REF_DB_VERSIONING_REF, String.class)
             .map(
                 (String objectId) ->
                     new ObjectIdRef.Unpeeled(
-                        Ref.Storage.NEW, MULTI_SITE_VERSIONING_REF, ObjectId.fromString(objectId)))
+                        Ref.Storage.NEW,
+                        SHARED_REF_DB_VERSIONING_REF,
+                        ObjectId.fromString(objectId)))
             .orElse(
                 new ObjectIdRef.Unpeeled(
-                    Ref.Storage.NEW, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId()));
+                    Ref.Storage.NEW, SHARED_REF_DB_VERSIONING_REF, ObjectId.zeroId()));
     Optional<Long> sharedVersion =
         sharedRefDb
-            .get(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, String.class)
+            .get(projectNameKey, SHARED_REF_DB_VERSIONING_VALUE_REF, String.class)
             .map(Long::parseLong);
 
     try {
@@ -194,7 +199,7 @@ public class ProjectVersionRefUpdate implements EventListener {
       success =
           sharedRefDb.compareAndPut(
               projectNameKey,
-              MULTI_SITE_VERSIONING_VALUE_REF,
+              SHARED_REF_DB_VERSIONING_VALUE_REF,
               sharedVersion.map(Object::toString).orElse(null),
               newVersion.toString());
       if (!success) {
@@ -223,7 +228,7 @@ public class ProjectVersionRefUpdate implements EventListener {
   public Optional<Long> getProjectLocalVersion(String projectName) {
     try (Repository repository =
         gitRepositoryManager.openRepository(Project.NameKey.parse(projectName))) {
-      Optional<IntBlob> blob = IntBlob.parse(repository, MULTI_SITE_VERSIONING_REF);
+      Optional<IntBlob> blob = IntBlob.parse(repository, SHARED_REF_DB_VERSIONING_REF);
       if (blob.isPresent()) {
         Long repoVersion = Integer.toUnsignedLong(blob.get().value());
         logger.atFine().log("Local project '%s' has version %d", projectName, repoVersion);
@@ -240,7 +245,7 @@ public class ProjectVersionRefUpdate implements EventListener {
   public Optional<Long> getProjectRemoteVersion(String projectName) {
     Optional<String> globalVersion =
         sharedRefDb.get(
-            Project.NameKey.parse(projectName), MULTI_SITE_VERSIONING_VALUE_REF, String.class);
+            Project.NameKey.parse(projectName), SHARED_REF_DB_VERSIONING_VALUE_REF, String.class);
     return globalVersion.flatMap(longString -> getLongValueOf(longString));
   }
 
