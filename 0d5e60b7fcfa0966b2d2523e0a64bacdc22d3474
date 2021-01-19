@@ -69,6 +69,42 @@
       "message": "The change looks ok to me, but can we add a bit more of explanation in the change description? For example, why those errors started to come up now, etc ",
       "revId": "0d5e60b7fcfa0966b2d2523e0a64bacdc22d3474",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d6b05a9_7aae31d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-19T17:24:38Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "41a5b187_2b8e63b5",
+      "revId": "0d5e60b7fcfa0966b2d2523e0a64bacdc22d3474",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8419494e_57a7e66d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-19T17:24:38Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "fc13edf2_548a423f",
+      "revId": "0d5e60b7fcfa0966b2d2523e0a64bacdc22d3474",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
