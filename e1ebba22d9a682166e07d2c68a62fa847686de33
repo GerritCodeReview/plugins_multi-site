@@ -51,6 +51,24 @@
       "parentUuid": "34ababf7_0e1f8fbb",
       "revId": "e1ebba22d9a682166e07d2c68a62fa847686de33",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b22af931_d4fe6212",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-20T16:43:56Z",
+      "side": 1,
+      "message": "Actually I have to remove the topic because the replication change needs to be merged *before* this one, not at the same time.\n\nThis is necessary to understand if this change passes, *before* being merged.",
+      "parentUuid": "4babd6f1_a2a61790",
+      "revId": "e1ebba22d9a682166e07d2c68a62fa847686de33",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
