@@ -82,7 +82,9 @@ public class Configuration {
     projects = memoize(() -> new Projects(lazyMultiSiteCfg));
     sharedRefDb =
         memoize(
-            () -> new SharedRefDbConfiguration(enableSharedRefDbByDefault(lazyMultiSiteCfg.get())));
+            () ->
+                new SharedRefDbConfiguration(
+                    enableSharedRefDbByDefault(lazyMultiSiteCfg.get()), PLUGIN_NAME));
     broker = memoize(() -> new Broker(lazyMultiSiteCfg));
   }
 
