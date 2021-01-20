@@ -98,6 +98,10 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
 
     Defaults: No rules = All projects are REQUIRED to be consistent on all refs.
 
+```ref-database.metricsRoot```
+:   Name used to prefix ref-database metrics.
+    Defaults: multi-site
+
 ```projects.pattern```
 :   Specifies which projects events should be send via broker. It can be provided more
     than once, and supports three formats: regular expressions, wildcard matching, and single
