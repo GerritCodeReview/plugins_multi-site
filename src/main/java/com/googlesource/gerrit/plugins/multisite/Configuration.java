@@ -41,6 +41,8 @@ import org.slf4j.LoggerFactory;
 
 @Singleton
 public class Configuration {
+  private static final String DEFAULT_METRICS_ROOT = "multi-site";
+
   private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
   public static final String PLUGIN_NAME = "multi-site";
@@ -82,7 +84,10 @@ public class Configuration {
     projects = memoize(() -> new Projects(lazyMultiSiteCfg));
     sharedRefDb =
         memoize(
-            () -> new SharedRefDbConfiguration(enableSharedRefDbByDefault(lazyMultiSiteCfg.get())));
+            () ->
+                new SharedRefDbConfiguration(
+                    setSharedRefDbMetricsRoot(enableSharedRefDbByDefault(lazyMultiSiteCfg.get())),
+                    PLUGIN_NAME));
     broker = memoize(() -> new Broker(lazyMultiSiteCfg));
   }
 
@@ -133,6 +138,21 @@ public class Configuration {
           null,
           SharedRefDbConfiguration.SharedRefDatabase.ENABLE_KEY,
           true);
+    }
+    return cfg;
+  }
+
+  private Config setSharedRefDbMetricsRoot(Config cfg) {
+    if (Strings.isNullOrEmpty(
+        cfg.getString(
+            SharedRefDbConfiguration.SharedRefDatabase.SECTION,
+            null,
+            SharedRefDbConfiguration.SharedRefDatabase.METRICS_ROOT))) {
+      cfg.setString(
+          SharedRefDbConfiguration.SharedRefDatabase.SECTION,
+          null,
+          SharedRefDbConfiguration.SharedRefDatabase.METRICS_ROOT,
+          DEFAULT_METRICS_ROOT);
     }
     return cfg;
   }
