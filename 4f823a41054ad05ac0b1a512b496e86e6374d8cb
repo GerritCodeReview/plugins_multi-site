@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69b8b617_f307c366",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-01-20T06:28:54Z",
+      "side": 1,
+      "message": "Should this binding configuration be documented in some place? In corresponding change in global-refdb it wasn\u0027t documented either.",
+      "revId": "4f823a41054ad05ac0b1a512b496e86e6374d8cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
