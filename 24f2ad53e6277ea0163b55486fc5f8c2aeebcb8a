@@ -128,6 +128,30 @@
       },
       "revId": "24f2ad53e6277ea0163b55486fc5f8c2aeebcb8a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "569ab355_4a0b47b1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-21T09:04:03Z",
+      "side": 1,
+      "message": "\u003e For example if you have ha plugin and multi-site and you want to have a single metric.\n\u003e In this case for both HA and multi-site we can put something like \u0027global-refdb\u0027. Without that we will always have separate metrics.\n\nI understand, that\u0027s a good point, but what would be the reason behind wanting the same metric?\nWhat advantage would it give? Wouldn\u0027t it just make it more difficult to triage any problem?\n\nI think is always useful to know where split brain generated, having one metric only would clobber that.",
+      "parentUuid": "31a7b54a_d16e584c",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 56
+      },
+      "revId": "24f2ad53e6277ea0163b55486fc5f8c2aeebcb8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
