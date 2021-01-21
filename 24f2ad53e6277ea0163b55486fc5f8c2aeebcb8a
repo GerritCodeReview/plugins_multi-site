@@ -80,6 +80,30 @@
       },
       "revId": "24f2ad53e6277ea0163b55486fc5f8c2aeebcb8a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6a68e58_0bcf5229",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-01-21T08:49:51Z",
+      "side": 1,
+      "message": "Sorry for my previous comment, should go to the different change.",
+      "parentUuid": "b89fa634_776718a9",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 56
+      },
+      "revId": "24f2ad53e6277ea0163b55486fc5f8c2aeebcb8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
