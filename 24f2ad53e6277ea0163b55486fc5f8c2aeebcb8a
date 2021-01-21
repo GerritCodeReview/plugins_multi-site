@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d7379094_8f98f611",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-21T10:57:06Z",
+      "side": 1,
+      "message": "This won\u0027t compile when we switch to global-refdb 3.3.1[1]\n\nWe need to add , pluginname to SharedRefDbConfiguration.\n\n[1]https://review.gerrithub.io/c/GerritForge/global-refdb/+/509265/5",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 89,
+        "endChar": 100
+      },
+      "revId": "24f2ad53e6277ea0163b55486fc5f8c2aeebcb8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4e11dab6_5f1d229e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
         "patchSetId": 2
@@ -168,6 +191,30 @@
       "side": 1,
       "message": "We just want to add this flexibility to the user. I can imagine some organisations where setting up new alerts take some time so they prefer to reuse existing one and have alerting working.\n\nThis isn\u0027t mandatory parameter and I agree 99% of time will be leave as a default",
       "parentUuid": "569ab355_4a0b47b1",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 144,
+        "endChar": 56
+      },
+      "revId": "24f2ad53e6277ea0163b55486fc5f8c2aeebcb8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3128dff6_bba7b4ab",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-01-21T10:57:06Z",
+      "side": 1,
+      "message": "If this is not a requirement and we actually think it will make life more difficult because of the lost of visibility on the origin of the split brain, I don\u0027t think we should enable this feature.\n\nAlso, have you tried if this is actually possible?\n\nI believe what would happen is that high-availability and multi-site (if they were to use the same prefix) would both try to register a new metric with the same name and this will fail.\n\nI made a comment here[1] where I think the problem would arise.\n\n[1]https://review.gerrithub.io/c/GerritForge/global-refdb/+/509265/comment/0c94ea9a_366c3de9/",
+      "parentUuid": "4d2c1942_e98622ca",
       "range": {
         "startLine": 144,
         "startChar": 0,
