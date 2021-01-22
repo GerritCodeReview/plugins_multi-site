@@ -16,6 +16,24 @@
       "message": "Should this binding configuration be documented in some place? In corresponding change in global-refdb it wasn\u0027t documented either.",
       "revId": "4f823a41054ad05ac0b1a512b496e86e6374d8cb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36dd87a9_ade1a68a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-01-22T21:53:12Z",
+      "side": 1,
+      "message": "Yes, it has been raised as [1] and it should be in the global refdb JavaDoc.\n\n[1] https://bugs.chromium.org/p/gerrit/issues/detail?id\u003d13978",
+      "parentUuid": "69b8b617_f307c366",
+      "revId": "4f823a41054ad05ac0b1a512b496e86e6374d8cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
