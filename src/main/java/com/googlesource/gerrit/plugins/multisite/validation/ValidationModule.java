@@ -41,7 +41,6 @@ import com.googlesource.gerrit.plugins.multisite.Log4jProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.replication.ReplicationExtensionPointModule;
 import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
-import java.util.Set;
 
 public class ValidationModule extends FactoryModule {
   private final Configuration cfg;
@@ -67,7 +66,7 @@ public class ValidationModule extends FactoryModule {
     factory(BatchRefUpdateValidator.Factory.class);
 
     bind(SharedRefDbConfiguration.class).toInstance(cfg.getSharedRefDbConfiguration());
-    bind(new TypeLiteral<Set<String>>() {})
+    bind(new TypeLiteral<ImmutableSet<String>>() {})
         .annotatedWith(Names.named(SharedRefDbGitRepositoryManager.IGNORED_REFS))
         .toInstance(
             ImmutableSet.of(
