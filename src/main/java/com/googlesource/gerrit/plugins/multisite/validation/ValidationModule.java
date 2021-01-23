@@ -67,7 +67,7 @@ public class ValidationModule extends FactoryModule {
     factory(BatchRefUpdateValidator.Factory.class);
 
     bind(SharedRefDbConfiguration.class).toInstance(cfg.getSharedRefDbConfiguration());
-    bind(new TypeLiteral<Set<String>>() {})
+    bind(new TypeLiteral<ImmutableSet<String>>() {})
         .annotatedWith(Names.named(SharedRefDbGitRepositoryManager.IGNORED_REFS))
         .toInstance(
             ImmutableSet.of(
