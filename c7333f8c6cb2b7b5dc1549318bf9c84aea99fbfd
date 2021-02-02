@@ -94,6 +94,30 @@
       },
       "revId": "c7333f8c6cb2b7b5dc1549318bf9c84aea99fbfd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e7aa00c_8a626097",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-02-02T22:56:03Z",
+      "side": 1,
+      "message": "\u003e Yeah, the build would become a lot more complicated.\n\nWe do it for all core plugins and git JGit module, so that we could also do it for all other modules. We have already the precedence case...",
+      "parentUuid": "659ace3e_84578486",
+      "range": {
+        "startLine": 13,
+        "startChar": 8,
+        "endLine": 13,
+        "endChar": 32
+      },
+      "revId": "c7333f8c6cb2b7b5dc1549318bf9c84aea99fbfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
