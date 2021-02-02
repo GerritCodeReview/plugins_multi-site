@@ -70,6 +70,30 @@
       },
       "revId": "c7333f8c6cb2b7b5dc1549318bf9c84aea99fbfd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "659ace3e_84578486",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-02T21:56:37Z",
+      "side": 1,
+      "message": "\u003e I also had the same question as marcin, thanks for clarifying the point @david.\n\u003e \n\u003e I but I have two follow up questions:\n\u003e \n\u003e - Is releasing to maven from master discouraged for any reason?\n\nNope, we can do that. We just need to define a naming convention that is clear.\nE.g. 3.4.0-\u003cYYYYMMDD\u003e?\n\n\u003e - If we were to use maven local (or build from modules/) we should also modify the pipeline accordingly, so that this change has a chance to get a clean build?\n\nYeah, the build would become a lot more complicated.",
+      "parentUuid": "5bb5f44a_6fe688fc",
+      "range": {
+        "startLine": 13,
+        "startChar": 8,
+        "endLine": 13,
+        "endChar": 32
+      },
+      "revId": "c7333f8c6cb2b7b5dc1549318bf9c84aea99fbfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
