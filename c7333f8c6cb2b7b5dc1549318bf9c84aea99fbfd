@@ -118,6 +118,30 @@
       },
       "revId": "c7333f8c6cb2b7b5dc1549318bf9c84aea99fbfd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba41d1b6_d9312660",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-02T23:39:49Z",
+      "side": 1,
+      "message": "\u003e \u003e Yeah, the build would become a lot more complicated.\n\u003e \n\u003e We do it for all core plugins and git JGit module\n\nThat\u0027s Gerrit having core plugins and JGit as submodules. Do you suggest to make multi-site and global refdb as Gerrit submodules?\n\n\u003e so that we could also do it for all other modules. We have already the precedence case...\n\nTrue, but we don\u0027t have such template for plugins. We publish already global-refdb to Maven, so it looks a lot easier to just publish from main to Maven.",
+      "parentUuid": "6e7aa00c_8a626097",
+      "range": {
+        "startLine": 13,
+        "startChar": 8,
+        "endLine": 13,
+        "endChar": 32
+      },
+      "revId": "c7333f8c6cb2b7b5dc1549318bf9c84aea99fbfd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
