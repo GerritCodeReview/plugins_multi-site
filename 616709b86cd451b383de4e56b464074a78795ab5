@@ -34,6 +34,24 @@
       "parentUuid": "8a12fa96_5559a5b8",
       "revId": "616709b86cd451b383de4e56b464074a78795ab5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5946451_6816d40d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-03T21:59:35Z",
+      "side": 1,
+      "message": "\u003e \u003e This would be applicable to master only\n\u003e \n\u003e Why? modules/jgit is applicable in gerrit for every stable branch.\n\nOn all other branches, the artifacts are on Maven central: we *could* rebuild everything locally, of course, but is it worth it?\n\nOn master things are different, because we don\u0027t do releases from master at the moment.",
+      "parentUuid": "a0950cbc_7fd2f89e",
+      "revId": "616709b86cd451b383de4e56b464074a78795ab5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
