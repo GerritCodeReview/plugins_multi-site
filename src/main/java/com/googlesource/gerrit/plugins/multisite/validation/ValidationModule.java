@@ -29,10 +29,13 @@ import com.gerritforge.gerrit.globalrefdb.validation.SharedRefLogger;
 import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
 import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.SharedRefEnforcement;
+import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Scopes;
+import com.google.inject.TypeLiteral;
+import com.google.inject.name.Names;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Log4jProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
@@ -63,6 +66,12 @@ public class ValidationModule extends FactoryModule {
     factory(BatchRefUpdateValidator.Factory.class);
 
     bind(SharedRefDbConfiguration.class).toInstance(cfg.getSharedRefDbConfiguration());
+    bind(new TypeLiteral<ImmutableSet<String>>() {})
+        .annotatedWith(Names.named(SharedRefDbGitRepositoryManager.IGNORED_REFS))
+        .toInstance(
+            ImmutableSet.of(
+                ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+                ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF));
     bind(GitRepositoryManager.class).to(SharedRefDbGitRepositoryManager.class);
     DynamicItem.bind(binder(), ReplicationPushFilter.class)
         .to(MultisiteReplicationPushFilter.class);
