@@ -16,6 +16,23 @@
       "message": "We have to update events-broker from 3.2 to 3.3",
       "revId": "5b06072e845e780d9a6591f8f7f3916667277b4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59600ea1_54e01472",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-02-03T15:34:29Z",
+      "side": 1,
+      "message": "Ping?",
+      "revId": "5b06072e845e780d9a6591f8f7f3916667277b4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
