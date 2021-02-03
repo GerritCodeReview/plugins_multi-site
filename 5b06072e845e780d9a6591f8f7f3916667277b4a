@@ -33,6 +33,23 @@
       "message": "Ping?",
       "revId": "5b06072e845e780d9a6591f8f7f3916667277b4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d81da460_a2ac4e94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-02-03T15:39:41Z",
+      "side": 1,
+      "message": "The merge should be re-done.",
+      "revId": "5b06072e845e780d9a6591f8f7f3916667277b4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
