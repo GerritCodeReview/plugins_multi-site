@@ -16,6 +16,24 @@
       "message": "This should rather be moved to stable-3.1 branch and merged up to master, where EventGsonProvider class was removed in eventbroker, in change 293252.",
       "revId": "0271abe4b866886ded8786ed548d038be7bf8569",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cad66eb4_8246e70d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-06T00:36:11Z",
+      "side": 1,
+      "message": "\u003e This should rather be moved to stable-3.1 branch and merged up to master, where EventGsonProvider class was removed in eventbroker, in change 293252.\n\nChange 293252 was abandoned though :-(",
+      "parentUuid": "b7cceaa1_1757e327",
+      "revId": "0271abe4b866886ded8786ed548d038be7bf8569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
