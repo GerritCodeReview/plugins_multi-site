@@ -20,13 +20,11 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.gerritforge.gerrit.eventbroker.EventMessage;
-import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.common.base.Suppliers;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.RefUpdatedEvent;
-import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.events.ProjectDeletionReplicationSucceededEvent;
@@ -46,8 +44,6 @@ public class SubscriberMetricsTest {
   private static final Project.NameKey A_TEST_PROJECT_NAME_KEY =
       Project.nameKey(A_TEST_PROJECT_NAME);
 
-  @Mock private SharedRefDatabaseWrapper sharedRefDb;
-  @Mock private GitReferenceUpdated gitReferenceUpdated;
   @Mock private MetricMaker metricMaker;
   @Mock private ProjectVersionLogger verLogger;
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
