@@ -22,6 +22,7 @@ import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.ProjectEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -102,19 +103,13 @@ public class SubscriberMetrics extends MultiSiteMetrics {
 
   public void updateReplicationStatusMetrics(EventMessage eventMessage) {
     Event event = eventMessage.getEvent();
-    if (event instanceof RefReplicationDoneEvent) {
-      RefReplicationDoneEvent replicationDone = (RefReplicationDoneEvent) event;
-      updateReplicationLagMetrics(
-          replicationDone.getProjectNameKey(), replicationDone.getRefName());
-    } else if (event instanceof RefReplicatedEvent) {
-      RefReplicatedEvent replicated = (RefReplicatedEvent) event;
-      updateReplicationLagMetrics(replicated.getProjectNameKey(), replicated.getRefName());
-    } else if (event instanceof ReplicationScheduledEvent) {
-      ReplicationScheduledEvent updated = (ReplicationScheduledEvent) event;
-      updateReplicationLagMetrics(updated.getProjectNameKey(), updated.getRefName());
-    } else if (event instanceof RefUpdatedEvent) {
-      RefUpdatedEvent updated = (RefUpdatedEvent) event;
-      updateReplicationLagMetrics(updated.getProjectNameKey(), updated.getRefName());
+
+    if (event instanceof RefReplicationDoneEvent
+        || event instanceof RefReplicatedEvent
+        || event instanceof ReplicationScheduledEvent
+        || event instanceof RefUpdatedEvent) {
+      ProjectEvent projectEvent = (ProjectEvent) event;
+      updateReplicationLagMetrics(projectEvent.getProjectNameKey());
     } else if (event instanceof ProjectDeletionReplicationSucceededEvent) {
       ProjectDeletionReplicationSucceededEvent projectDeletion =
           (ProjectDeletionReplicationSucceededEvent) event;
@@ -133,7 +128,7 @@ public class SubscriberMetrics extends MultiSiteMetrics {
     }
   }
 
-  private void updateReplicationLagMetrics(Project.NameKey projectName, String ref) {
+  private void updateReplicationLagMetrics(Project.NameKey projectName) {
     Optional<Long> remoteVersion =
         projectVersionRefUpdate.getProjectRemoteVersion(projectName.get());
     Optional<Long> localVersion = projectVersionRefUpdate.getProjectLocalVersion(projectName.get());
