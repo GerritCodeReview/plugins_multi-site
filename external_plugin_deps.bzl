@@ -40,8 +40,8 @@ def external_plugin_deps():
 
     maven_jar(
         name = "testcontainers-kafka",
-        artifact = "org.testcontainers:kafka:1.11.3",
-        sha1 = "932d1baa2541f218b1b44a0546ae83d530011468",
+	artifact = "org.testcontainers:kafka:1.15.0",
+        sha1 = "d34760b11ab656e08b72c1e2e9b852f037a89f90",
     )
 
     CURATOR_VER = "4.2.0"

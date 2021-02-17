@@ -56,7 +56,10 @@ java_library(
         "@curator-test//jar",
         "@mockito//jar",
         "@testcontainers-kafka//jar",
+        "//lib/jackson:jackson-annotations",
         "//lib/testcontainers",
+        "//lib/testcontainers:docker-java-api",
+        "//lib/testcontainers:docker-java-transport",
         "//plugins/replication",
     ],
 )
