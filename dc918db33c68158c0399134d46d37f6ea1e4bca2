@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b00e0892_ff890bb8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-25T23:16:09Z",
+      "side": 1,
+      "message": "\u003e I think we have some small issue, if I try to remove the empty line Gerrit is creating new Change-Id, see \n\u003e https://gerrit-review.googlesource.com/c/plugins/multi-site/+/298087\n\nNope, it works. Done.",
+      "parentUuid": "0bb52ce4_13dd7a38",
+      "revId": "dc918db33c68158c0399134d46d37f6ea1e4bca2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f704d720_c081eb5b",
