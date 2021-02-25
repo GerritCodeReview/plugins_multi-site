@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d456ff2_9a5a5bc3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-25T00:49:23Z",
+      "side": 1,
+      "message": "nit: empty line",
+      "revId": "dc918db33c68158c0399134d46d37f6ea1e4bca2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f704d720_c081eb5b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteGitRepositoryManager.java",
         "patchSetId": 1
@@ -14,6 +31,24 @@
       "writtenOn": "2021-02-24T22:29:22Z",
       "side": 1,
       "message": "I\u0027m wondering how do we manage the versioning. This plugin will work only with the newest Gerrit because it requires canPerformGC to be declared in the GitRepositoryManager interface?",
+      "revId": "dc918db33c68158c0399134d46d37f6ea1e4bca2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69215171_24769ec9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteGitRepositoryManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-02-25T00:49:23Z",
+      "side": 1,
+      "message": "Have you tested it E2E with an existing v2.16.27? What would be the resulting exception?",
+      "parentUuid": "f704d720_c081eb5b",
       "revId": "dc918db33c68158c0399134d46d37f6ea1e4bca2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
