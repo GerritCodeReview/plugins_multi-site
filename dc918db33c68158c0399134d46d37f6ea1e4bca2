@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0bb52ce4_13dd7a38",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-02-25T09:50:08Z",
+      "side": 1,
+      "message": "I think we have some small issue, if I try to remove the empty line Gerrit is creating new Change-Id, see \nhttps://gerrit-review.googlesource.com/c/plugins/multi-site/+/298087",
+      "parentUuid": "6d456ff2_9a5a5bc3",
+      "revId": "dc918db33c68158c0399134d46d37f6ea1e4bca2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f704d720_c081eb5b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteGitRepositoryManager.java",
         "patchSetId": 1
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "Have you tested it E2E with an existing v2.16.27? What would be the resulting exception?",
       "parentUuid": "f704d720_c081eb5b",
+      "revId": "dc918db33c68158c0399134d46d37f6ea1e4bca2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "898b7a25_0f971860",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultiSiteGitRepositoryManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-02-25T09:50:08Z",
+      "side": 1,
+      "message": "Yes I tested it now and it works fine without any issue",
+      "parentUuid": "69215171_24769ec9",
       "revId": "dc918db33c68158c0399134d46d37f6ea1e4bca2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
