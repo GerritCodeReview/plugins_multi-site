@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "7c33bb4d_198fd6b1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1083195
+      },
+      "writtenOn": "2021-03-11T19:09:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7f1649d_86ffd040",
+      "range": {
+        "startLine": 7,
+        "startChar": 11,
+        "endLine": 7,
+        "endChar": 42
+      },
+      "revId": "abd41e4f0d80182a319a9d3bdf97d9630c615c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "cc4a0637_da31ff23",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2021-03-09T20:40:59Z",
       "side": 1,
       "message": "\"\\\"_\"",
+      "range": {
+        "startLine": 35,
+        "startChar": 19,
+        "endLine": 35,
+        "endChar": 29
+      },
+      "revId": "abd41e4f0d80182a319a9d3bdf97d9630c615c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "600ec2c9_c9134496",
+        "filename": "src/test/scala/com/googlesource/gerrit/plugins/multisite/scenarios/CreateChangeUsingMultiGerrit.scala",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1083195
+      },
+      "writtenOn": "2021-03-11T19:09:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a48ff934_dcbefab1",
       "range": {
         "startLine": 35,
         "startChar": 19,
