@@ -68,6 +68,24 @@
       "message": "@Luca, sorry for the late reply.",
       "revId": "def0f5e222689824190552a8a2d630a4b97b2b83",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a06291c0_b8f5acec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-15T21:13:08Z",
+      "side": 1,
+      "message": "\u003e Usually I set up multi-site locally and test it. I also do the same thing for HA plugin.\n\u003e \n\u003e But for this specific change, since it is only addressing the numberKey parameter I setted all ports used in the test to a single port and tested using singular instance. I also provided http.password_replica.\n\u003e \n\u003e I will follow up with the change with step-by-step instructions.\n\nThanks, that would be much appreciated.\n\nWe already have one job on the Gerrit-CI that runs daily our Gatling load tests against a production-like setup on AWS (see [1]).\nIt would be nice to run this suite also, but we just need a bit of guidance.\n\n[1] https://gerrit-ci.gerritforge.com/job/gatling-gerrit-test/",
+      "parentUuid": "1acbc51d_a76ba80d",
+      "revId": "def0f5e222689824190552a8a2d630a4b97b2b83",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
