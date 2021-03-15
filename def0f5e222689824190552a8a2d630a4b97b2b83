@@ -33,6 +33,41 @@
       "message": "How do you guys verify these changes? Could you put some step-by-step instructions on the README.md?\nThanks for the contribution !",
       "revId": "def0f5e222689824190552a8a2d630a4b97b2b83",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1acbc51d_a76ba80d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083195
+      },
+      "writtenOn": "2021-03-15T16:15:50Z",
+      "side": 1,
+      "message": "Usually I set up multi-site locally and test it. I also do the same thing for HA plugin.\n\nBut for this specific change, since it is only addressing the numberKey parameter I setted all ports used in the test to a single port and tested using singular instance. I also provided http.password_replica.\n\nI will follow up with the change with step-by-step instructions.",
+      "parentUuid": "7d35839f_3dc466a2",
+      "revId": "def0f5e222689824190552a8a2d630a4b97b2b83",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "653f3c3a_bd9c24e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083195
+      },
+      "writtenOn": "2021-03-15T16:15:50Z",
+      "side": 1,
+      "message": "@Luca, sorry for the late reply.",
+      "revId": "def0f5e222689824190552a8a2d630a4b97b2b83",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
