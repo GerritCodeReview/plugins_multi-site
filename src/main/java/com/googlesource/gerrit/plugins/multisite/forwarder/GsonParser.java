@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 import com.google.common.base.MoreObjects;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.AccountGroup;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.server.events.EventGson;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -45,6 +46,9 @@ public final class GsonParser {
       case Constants.GROUPS_BYINCLUDE:
       case Constants.GROUPS_MEMBERS:
         key = AccountGroup.uuid(jsonElement(json).getAsJsonObject().get("uuid").getAsString());
+        break;
+      case Constants.PROJECTS:
+        key = Project.nameKey(jsonElement(json).getAsString());
         break;
       case Constants.PROJECT_LIST:
         key = gson.fromJson(nullToEmpty(json).toString(), Object.class);
