@@ -24,11 +24,11 @@ import com.google.gson.JsonElement;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 
-public final class GsonParser {
+public final class CacheKeyJsonParser {
   private final Gson gson;
 
   @Inject
-  public GsonParser(@EventGson Gson gson) {
+  public CacheKeyJsonParser(@EventGson Gson gson) {
     this.gson = gson;
   }
 

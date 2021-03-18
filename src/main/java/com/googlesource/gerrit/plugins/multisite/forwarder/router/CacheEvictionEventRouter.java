@@ -16,18 +16,18 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.router;
 
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEntry;
+import com.googlesource.gerrit.plugins.multisite.forwarder.CacheKeyJsonParser;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedCacheEvictionHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.GsonParser;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
 
 public class CacheEvictionEventRouter implements ForwardedEventRouter<CacheEvictionEvent> {
   private final ForwardedCacheEvictionHandler cacheEvictionHanlder;
-  private final GsonParser gsonParser;
+  private final CacheKeyJsonParser gsonParser;
 
   @Inject
   public CacheEvictionEventRouter(
-      ForwardedCacheEvictionHandler cacheEvictionHanlder, GsonParser gsonParser) {
+      ForwardedCacheEvictionHandler cacheEvictionHanlder, CacheKeyJsonParser gsonParser) {
     this.cacheEvictionHanlder = cacheEvictionHanlder;
     this.gsonParser = gsonParser;
   }
