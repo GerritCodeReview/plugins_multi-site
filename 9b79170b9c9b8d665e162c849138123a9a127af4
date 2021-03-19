@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90d69369_b40d9918",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-19T01:26:44Z",
+      "side": 1,
+      "message": "@Saša what do you think on the testing approach? I have verified that *IF* I change again the cache key of the projects cache, the test fails because the invalidation doesn\u0027t reach the project cache key.",
+      "revId": "9b79170b9c9b8d665e162c849138123a9a127af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
