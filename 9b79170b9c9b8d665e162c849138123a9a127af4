@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a825aad1_5ee4327f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-19T10:11:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ec490f0_92afc15d",
+      "range": {
+        "startLine": 48,
+        "startChar": 2,
+        "endLine": 48,
+        "endChar": 48
+      },
+      "revId": "9b79170b9c9b8d665e162c849138123a9a127af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3759d98c_3fbf083a",
@@ -64,6 +88,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24682084_45c4fc2e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-19T10:11:55Z",
+      "side": 1,
+      "message": "Bazel does the sandbox isolation when running tests in parallel AFAIK.\nTest are never run multithreaded unless you explicitly design them to run in that way.",
+      "parentUuid": "3759d98c_3fbf083a",
+      "range": {
+        "startLine": 65,
+        "startChar": 2,
+        "endLine": 65,
+        "endChar": 39
+      },
+      "revId": "9b79170b9c9b8d665e162c849138123a9a127af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6f9e838_c8006446",
@@ -77,6 +125,30 @@
       "writtenOn": "2021-03-19T08:28:48Z",
       "side": 1,
       "message": "Don\u0027t we know precisely how many cache evictions for the project cache should be triggered?",
+      "range": {
+        "startLine": 100,
+        "startChar": 78,
+        "endLine": 100,
+        "endChar": 82
+      },
+      "revId": "9b79170b9c9b8d665e162c849138123a9a127af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "009492f4_e119ac11",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-19T10:11:55Z",
+      "side": 1,
+      "message": "That isn\u0027t really relevant to the test here: we want to make sure that the eviction is called, but we are not testing how the eviction process is implemented.\n\nOne test should fail for just one reason, which is the intent of the test expressed by its name \"shouldEvictProjectCache\".\n\nOne thing that could be useful instead would be asserting that the eviction should be specific to the \u0027project\u0027, which it would be relevant. Let me address that concern in the next PS.",
+      "parentUuid": "f6f9e838_c8006446",
       "range": {
         "startLine": 100,
         "startChar": 78,
