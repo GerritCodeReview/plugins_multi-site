@@ -16,6 +16,75 @@
       "message": "@Saša what do you think on the testing approach? I have verified that *IF* I change again the cache key of the projects cache, the test fails because the invalidation doesn\u0027t reach the project cache key.",
       "revId": "9b79170b9c9b8d665e162c849138123a9a127af4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ec490f0_92afc15d",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-19T08:28:48Z",
+      "side": 1,
+      "message": "Seems a bit generic, should we clarify the intent of this duration?\nis this waiting for the cache eviction to happen?\nCACHE_EVICTION_TIMEOUT, perhaps?\n\nAlso, 10 seconds seems a bit too much?",
+      "range": {
+        "startLine": 48,
+        "startChar": 2,
+        "endLine": 48,
+        "endChar": 48
+      },
+      "revId": "9b79170b9c9b8d665e162c849138123a9a127af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3759d98c_3fbf083a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-19T08:28:48Z",
+      "side": 1,
+      "message": "This class being static, does it allow tests to run in parallel?\n\n\u0027cacheEvictions\u0027 is a concurrent hashmap, but still cacheEvictions content might be changed by another test running in parallel, effectively making tests interfering with each other?",
+      "range": {
+        "startLine": 65,
+        "startChar": 2,
+        "endLine": 65,
+        "endChar": 39
+      },
+      "revId": "9b79170b9c9b8d665e162c849138123a9a127af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6f9e838_c8006446",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-19T08:28:48Z",
+      "side": 1,
+      "message": "Don\u0027t we know precisely how many cache evictions for the project cache should be triggered?",
+      "range": {
+        "startLine": 100,
+        "startChar": 78,
+        "endLine": 100,
+        "endChar": 82
+      },
+      "revId": "9b79170b9c9b8d665e162c849138123a9a127af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
