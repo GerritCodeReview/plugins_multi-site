@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "533594c6_ffb4a952",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2021-03-19T13:16:47Z",
+      "side": 1,
+      "message": "optional:\nTime based waiting, for positive test results, can be unpredictable.\nIf the test machine is under heavy load the test may not finish during the given timeout. If the test machine is fast the test may wait longer than necessary.\n\nUsing CyclicBarrier (or something similar like CountdownLatch) could make the positive case finish faster and is also a more correct approach.\nWe could have a longer timeout for the negative case.",
+      "revId": "e65fc1622063897ef4b3714440de27c8d925a2bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
