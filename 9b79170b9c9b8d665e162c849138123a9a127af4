@@ -181,6 +181,30 @@
       },
       "revId": "9b79170b9c9b8d665e162c849138123a9a127af4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16d4fa8a_e1764aaa",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-19T12:03:39Z",
+      "side": 1,
+      "message": "Done, now I do assert also that the entry evicted is the one that has been routed for eviction.",
+      "parentUuid": "7a170210_c8539e74",
+      "range": {
+        "startLine": 100,
+        "startChar": 78,
+        "endLine": 100,
+        "endChar": 82
+      },
+      "revId": "9b79170b9c9b8d665e162c849138123a9a127af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
