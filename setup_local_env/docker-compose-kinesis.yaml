@@ -1,0 +1,24 @@
+version: '3'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181:2181"
+    container_name: zk_test_node
+  kinesis:
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+      - "4751:4751"
+    container_name: kinesis_test_node
+    environment:
+      SERVICES: dynamodb,cloudwatch,kinesis
+      AWS_REGION: us-east-1
+  prometheus:
+    image: prom/prometheus:v2.16.0
+    user: root
+    volumes:
+     - $COMMON_LOCATION/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    network_mode: $NETWORK_MODE

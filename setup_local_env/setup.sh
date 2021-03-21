@@ -30,6 +30,9 @@ function check_application_requirements {
   type wget >/dev/null 2>&1 || { echo >&2 "Require wget but it's not installed. Aborting."; exit 1; }
   type envsubst >/dev/null 2>&1 || { echo >&2 "Require envsubst but it's not installed. Aborting."; exit 1; }
   type openssl >/dev/null 2>&1 || { echo >&2 "Require openssl but it's not installed. Aborting."; exit 1; }
+  if [ "$BROKER_TYPE" = "kinesis" ];  then
+    type aws >/dev/null 2>&1 || { echo >&2 "Require aws-cli but it's not installed. Aborting."; exit 1; }
+  fi
 }
 
 function get_replication_url {
@@ -67,7 +70,7 @@ function copy_config_files {
     export GERRIT_HOSTNAME=$7
     export REPLICATION_HOSTNAME=$8
     export REMOTE_DEBUG_PORT=$9
-    export KAFKA_GROUP_ID=${10}
+    export GROUP_ID=${10}
     export REPLICATION_URL=$(get_replication_url $REPLICATION_LOCATION_TEST_SITE $REPLICATION_HOSTNAME)
 
     echo "Replacing variables for file $file and copying to $CONFIG_TEST_SITE/$file_name"
@@ -99,9 +102,17 @@ function start_ha_proxy {
   haproxy -f $HA_PROXY_CONFIG_DIR/haproxy.cfg &
 }
 
+function export_broker_port {
+  if [ "$BROKER_TYPE" = "kinesis" ]; then
+    export BROKER_PORT=4566
+  elif [ "$BROKER_TYPE" =  "kafka" ]; then
+    export BROKER_PORT=9092
+  fi
+}
+
 function deploy_config_files {
-  # KAFKA configuration
-  export KAFKA_PORT=9092
+  # BROKER configuration
+  export_broker_port;
 
   # ZK configuration
   export ZK_PORT=2181
@@ -112,21 +123,21 @@ function deploy_config_files {
   GERRIT_SITE1_SSHD_PORT=$3
   CONFIG_TEST_SITE_1=$LOCATION_TEST_SITE_1/etc
   GERRIT_SITE1_REMOTE_DEBUG_PORT="5005"
-  GERRIT_SITE1_KAFKA_GROUP_ID="instance-1"
+  GERRIT_SITE1_GROUP_ID="instance-1"
   # SITE 2
   GERRIT_SITE2_HOSTNAME=$4
   GERRIT_SITE2_HTTPD_PORT=$5
   GERRIT_SITE2_SSHD_PORT=$6
   CONFIG_TEST_SITE_2=$LOCATION_TEST_SITE_2/etc
   GERRIT_SITE2_REMOTE_DEBUG_PORT="5006"
-  GERRIT_SITE2_KAFKA_GROUP_ID="instance-2"
+  GERRIT_SITE2_GROUP_ID="instance-2"
 
   # Set config SITE1
-  copy_config_files $CONFIG_TEST_SITE_1 $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_SSHD_PORT $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE1_REMOTE_DEBUG_PORT $GERRIT_SITE1_KAFKA_GROUP_ID
+  copy_config_files $CONFIG_TEST_SITE_1 $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_SSHD_PORT $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE1_REMOTE_DEBUG_PORT $GERRIT_SITE1_GROUP_ID
 
 
   # Set config SITE2
-  copy_config_files $CONFIG_TEST_SITE_2 $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE2_SSHD_PORT $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE2_REMOTE_DEBUG_PORT $GERRIT_SITE2_KAFKA_GROUP_ID
+  copy_config_files $CONFIG_TEST_SITE_2 $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE2_SSHD_PORT $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE2_REMOTE_DEBUG_PORT $GERRIT_SITE2_GROUP_ID
 }
 
 function is_docker_desktop {
@@ -142,6 +153,13 @@ function docker_host_env {
   fi
 }
 
+function create_kinesis_streams {
+  for stream in "gerrit_batch_index" "gerrit_cache_eviction" "gerrit_index" "gerrit_list_project" "gerrit_stream" "gerrit_web_session" "gerrit"
+  do
+    echo "[KINESIS] Create stream $stream"
+    export AWS_PAGER=;aws --endpoint-url=http://localhost:$BROKER_PORT kinesis create-stream --shard-count 1 --stream-name $stream
+  done
+}
 
 function cleanup_environment {
   echo "Killing existing HA-PROXY setup"
@@ -158,8 +176,8 @@ function cleanup_environment {
   rm -rf $3 2> /dev/null
 }
 
-function check_if_kafka_is_running {
-  echo $(docker inspect kafka_test_node 2> /dev/null | grep '"Running": true' | wc -l)
+function check_if_broker_is_running {
+  echo $(docker inspect $BROKER_TYPE_test_node 2> /dev/null | grep '"Running": true' | wc -l)
 }
 
 while [ $# -ne 0 ]
@@ -193,6 +211,8 @@ case "$1" in
     echo "[--just-cleanup-env]            Cleans up previous deployment; default false"
     echo
     echo "[--enabled-https]               Enabled https; default true"
+    echo
+    echo "[--broker_type]"                "events brokere type; either 'kafka' or 'kinesis'. Default 'kafka'"
     echo
     exit 0
   ;;
@@ -281,6 +301,15 @@ case "$1" in
     shift
     shift
   ;;
+ "--broker-type" )
+    BROKER_TYPE=$2
+    shift
+    shift
+    if [ ! "$BROKER_TYPE" = "kafka" ] && [ ! "$BROKER_TYPE" = "kinesis" ]; then
+      echo >&2 "broker type: '$BROKER_TYPE' not valid. Please supply 'kafka' or 'kinesis'. Aborting"
+      exit 1
+    fi
+  ;;
   *     )
     echo "Unknown option argument: $1"
     shift
@@ -309,6 +338,7 @@ REPLICATION_SSH_USER=${REPLICATION_SSH_USER:-$(whoami)}
 export REPLICATION_DELAY_SEC=${REPLICATION_DELAY_SEC:-"5"}
 export SSH_ADVERTISED_PORT=${SSH_ADVERTISED_PORT:-"29418"}
 HTTPS_ENABLED=${HTTPS_ENABLED:-"false"}
+BROKER_TYPE=${BROKER_TYPE:-"kafka"}
 
 export COMMON_LOCATION=$DEPLOYMENT_LOCATION/gerrit_setup
 LOCATION_TEST_SITE_1=$COMMON_LOCATION/instance-1
@@ -367,9 +397,9 @@ echo "Downloading events-broker library $GERRIT_BRANCH"
   -O $DEPLOYMENT_LOCATION/events-broker.jar || { echo >&2 "Cannot download events-broker library: Check internet connection. Abort\
 ing"; exit 1; }
 
-echo "Downloading kafka-events plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-kafka-events-bazel-$GERRIT_BRANCH/$LAST_BUILD/kafka-events/kafka-events.jar \
-  -O $DEPLOYMENT_LOCATION/kafka-events.jar || { echo >&2 "Cannot download kafka-events plugin: Check internet connection. Abort\
+echo "Downloading $BROKER_TYPE-events plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-$BROKER_TYPE-events-bazel-$GERRIT_BRANCH/$LAST_BUILD/$BROKER_TYPE-events/$BROKER_TYPE-events.jar \
+  -O $DEPLOYMENT_LOCATION/$BROKER_TYPE-events.jar || { echo >&2 "Cannot download $BROKER_TYPE-events plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
 echo "Downloading metrics-reporter-prometheus plugin $GERRIT_BRANCH"
@@ -422,8 +452,8 @@ if [ $NEW_INSTALLATION = "true" ]; then
   echo "Copy events broker library"
   cp -f $DEPLOYMENT_LOCATION/events-broker.jar $LOCATION_TEST_SITE_1/lib/events-broker.jar
 
-  echo "Copy kafka events plugin"
-  cp -f $DEPLOYMENT_LOCATION/kafka-events.jar $LOCATION_TEST_SITE_1/plugins/kafka-events.jar
+  echo "Copy $BROKER_TYPE events plugin"
+  cp -f $DEPLOYMENT_LOCATION/$BROKER_TYPE-events.jar $LOCATION_TEST_SITE_1/plugins/$BROKER_TYPE-events.jar
 
   echo "Copy metrics-reporter-prometheus plugin"
   cp -f $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar $LOCATION_TEST_SITE_1/plugins/metrics-reporter-prometheus.jar
@@ -455,13 +485,17 @@ fi
 
 cat $SCRIPT_DIR/configs/prometheus.yml | envsubst > $COMMON_LOCATION/prometheus.yml
 
-IS_KAFKA_RUNNING=$(check_if_kafka_is_running)
-if [ $IS_KAFKA_RUNNING -lt 1 ];then
+IS_BROKER_RUNNING=$(check_if_broker_is_running)
+if [ $IS_BROKER_RUNNING -lt 1 ];then
 
-  echo "Starting zk and kafka"
-  docker-compose -f $SCRIPT_DIR/docker-compose.yaml up -d
-  echo "Waiting for kafka to start..."
-  while [[ $(check_if_kafka_is_running) -lt 1 ]];do sleep 10s; done
+  echo "Starting zk and $BROKER_TYPE broker"
+  docker-compose -f $SCRIPT_DIR/docker-compose.yaml -f docker-compose-$BROKER_TYPE.yaml up -d
+  echo "Waiting for $BROKER_TYPE to start..."
+  while [[ $(check_if_broker_is_running) -lt 1 ]];do sleep 10s; done
+
+  if [ "$BROKER_TYPE" = "kinesis" ]; then
+    create_kinesis_streams
+  fi
 fi
 
 echo "Re-deploying configuration files"
