@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a48ac997_61deea78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-22T14:08:45Z",
+      "side": 1,
+      "message": "I tested this and it\u0027s working, however at the moment is pointing to:\nhttps://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-kinesis-events-gh-bazel-master/\n\nWhich downloads the a jar that doesn\u0027t install kinesis-events properly ([1] needs to be merged first)\n\n\n[1]https://gerrit-review.googlesource.com/c/plugins/multi-site/+/300744",
+      "revId": "ef45da9033104dd940f2fd00ac227235ef59b6d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
