@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3054b911_c49886a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-22T01:45:01Z",
+      "side": 1,
+      "message": "I wouldn\u0027t duplicate the docker-compose.yaml into one for kafka and one for kinesis: why not simply have ONE docker-compose and activate the kafka or kinesis one?",
+      "revId": "66254aa39c46f8de2b51793b05d1ce00f0c53408",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
