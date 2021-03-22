@@ -34,6 +34,24 @@
       "parentUuid": "3054b911_c49886a1",
       "revId": "66254aa39c46f8de2b51793b05d1ce00f0c53408",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8e47e0a_4888e323",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-22T11:11:35Z",
+      "side": 1,
+      "message": "\u003e AFAIK there\u0027s no feature in docker-compose to activate or deactivate single services.\n\nWhy do you need to active/deactivate them?\nThis is a development environment and there is no harm to have them both active, isn\u0027t it?\n\n\u003e I can think of some solutions:\n\u003e \n\u003e 1 - to split docker-compose into two docker-compose files, one for the common part (ZK + Prometheus) + and one for the broker (docker-compose-kinesis.yaml or docker-compose-kafka.yaml). We will need to make sure we start them all as part of the same network, so that the services can talk to each others. \n\u003e \n\u003e 2 - To have all services one docker-compose file, but to start them individually (so that unwanted services are not started):\n\u003e docker-compose start zookeper\n\u003e docker-compose start prometheus\n\u003e docker-compose start kafka (or kinesis)\n\u003e \n\u003e 3 - Play with some environment variables to make the entrypoint of unwanted services effectively dummy: entrypoint: //does nothing.\n\u003e \n\u003e Do you know any other way?\n\u003e Any preference on the above?\n\nNone of the above: just start all of them, it\u0027s just for development, not for production.",
+      "parentUuid": "c95e9845_f33526c6",
+      "revId": "66254aa39c46f8de2b51793b05d1ce00f0c53408",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
