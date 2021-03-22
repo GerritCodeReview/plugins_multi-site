@@ -51,6 +51,24 @@
       "parentUuid": "533594c6_ffb4a952",
       "revId": "e65fc1622063897ef4b3714440de27c8d925a2bc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b05f160_a4910a2b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2021-03-22T15:15:40Z",
+      "side": 1,
+      "message": "\u003e I believe the problem is the failing scenario, correct?\n\nYes, but how often do we expect to have the failing scenario?\nThe failing scenario, which should only occur on some incompatible changes in Gerrit core, can take longer. We could even give it 1 minute, why not?\n\nFor the positive case, which should be 99.99% of the time, we want to wait as\nshort as possible but not shorter than that. Usage of CyclicBarrier would help\nbut this is maybe not so critical as WaitUtil is polling every 50ms.\nHowever, even if you don\u0027t want to use java.util.concurrent utilities here, one second waiting time could be too short when the test machine is under heavy load.\n\nWhy not increase the CACHE_EVICTION_TIMEOUT?",
+      "parentUuid": "487dbf8b_727cbe4b",
+      "revId": "e65fc1622063897ef4b3714440de27c8d925a2bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
