@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "504585d4_4af1286c",
+        "filename": "setup_local_env/docker-compose-kinesis.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-22T11:48:36Z",
+      "side": 1,
+      "message": "latest is never safe: is there any tag we can use instead?",
+      "range": {
+        "startLine": 4,
+        "startChar": 33,
+        "endLine": 4,
+        "endChar": 39
+      },
+      "revId": "452672032800ca1a9758e90d2a200dfc248cf15f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53915716_a4335b64",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-22T11:48:36Z",
+      "side": 1,
+      "message": "The method name suggest this is just a wait cycle, but if you look at the code it actually starts the service.\n\nCan we change it to something more meaningful?\n\nExample:\n  start_docker_compose_and_wait_for_it",
+      "range": {
+        "startLine": 184,
+        "startChar": 9,
+        "endLine": 184,
+        "endChar": 42
+      },
+      "revId": "452672032800ca1a9758e90d2a200dfc248cf15f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
