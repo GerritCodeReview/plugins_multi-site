@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f145a33e_3200ce20",
+        "filename": "setup_local_env/docker-compose-kinesis.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-22T14:04:26Z",
+      "side": 1,
+      "message": "\u003e \u003e I think this is one of the few occasions where using \"latest\" makes sense.\n\u003e \n\u003e Do you know that \"latest\" means actually nothing? You could have the \"lastest\" of 2 years ago on your local Docker daemon and you\u0027ll not even realise it :-(\n\u003e \n\u003e As a matter of fact, \"latest\" could be very very old and not the latest at all.\n\nThat\u0027s why I wanted to *always* get latest, to _actually_ always get the real latest (docker-compose no-cache). But still, this goes the opposite direction of what you are suggesting, so it doesn\u0027t solve the problem 😊\n\n\u003e \n\u003e \u003e In AWS, they always run the only available version of kinesis, aka the \"latest\". Differently from other SaaS, we have no way of pin our deployment to a particular version.\n\u003e \n\u003e True, but this is a local dev environment that allows us to write our own code.\n\u003e When you test on AWS, you\u0027ll have to use whatever is there.\n\nYes\n\n\u003e \n\u003e \u003e With this assumption, I think running the local environment with the latest released kinesis API is safer, as it will be closer to the _actual_ condition in which multi-site will run.\n\u003e \n\u003e The local environment isn\u0027t an integration test at all: having \"latest\" would allow people to run NOT the latest at all :-(\n\nI see what you mean, what I meant is that one can tell docker-compose to do so, so that you will always get image tagged with \"latest\".\nAgree this is not very convenient from a network usage/speed point of view.\n\n\u003e \n\u003e Imagine someone is saying \"I ran your environment and doesn\u0027t work because I get a strange error from Kinesis\". You ask: \"what version of the localstack you are using\" ? He says: \"the latest\" .... and then you have no idea of what he is running.\n\ntrue, Good point, tags changes might not be versioned!\n\n\u003e \n\u003e The setup of a local dev environment is for developing *your code* and not for testing AWS :-)\n\nMakes sense, let me pin it to the current highest version: 0.12.8",
+      "parentUuid": "d1817ee3_2c25d9e8",
+      "range": {
+        "startLine": 4,
+        "startChar": 33,
+        "endLine": 4,
+        "endChar": 39
+      },
+      "revId": "452672032800ca1a9758e90d2a200dfc248cf15f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "53915716_a4335b64",
         "filename": "setup_local_env/setup.sh",
         "patchSetId": 3
