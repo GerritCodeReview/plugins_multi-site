@@ -52,6 +52,24 @@
       "parentUuid": "c95e9845_f33526c6",
       "revId": "66254aa39c46f8de2b51793b05d1ce00f0c53408",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e13bdc7f_888ceeda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-22T11:35:34Z",
+      "side": 1,
+      "message": "I turned out it was quite easy to separate them, so I have opted to start them independently.\nI have also fixed a couple of other bugs and docs.\n\nLet me know what you think, if there is a good reason I\u0027ll revert the docker to the \"start all\" version.",
+      "parentUuid": "b8e47e0a_4888e323",
+      "revId": "66254aa39c46f8de2b51793b05d1ce00f0c53408",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
