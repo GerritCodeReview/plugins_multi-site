@@ -96,6 +96,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be75b041_d69f903c",
+        "filename": "setup_local_env/docker-compose-kinesis.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-22T14:07:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f145a33e_3200ce20",
+      "range": {
+        "startLine": 4,
+        "startChar": 33,
+        "endLine": 4,
+        "endChar": 39
+      },
+      "revId": "452672032800ca1a9758e90d2a200dfc248cf15f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53915716_a4335b64",
