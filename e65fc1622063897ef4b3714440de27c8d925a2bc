@@ -33,6 +33,24 @@
       "message": "optional:\nTime based waiting, for positive test results, can be unpredictable.\nIf the test machine is under heavy load the test may not finish during the given timeout. If the test machine is fast the test may wait longer than necessary.\n\nUsing CyclicBarrier (or something similar like CountdownLatch) could make the positive case finish faster and is also a more correct approach.\nWe could have a longer timeout for the negative case.",
       "revId": "e65fc1622063897ef4b3714440de27c8d925a2bc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "487dbf8b_727cbe4b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-22T14:03:37Z",
+      "side": 1,
+      "message": "\u003e optional:\n\u003e Time based waiting, for positive test results, can be unpredictable.\n\u003e If the test machine is under heavy load the test may not finish during the given timeout. If the test machine is fast the test may wait longer than necessary.\n\nTrue, I need to see if there is any way to being waken up by the cache notification.\n\n\u003e Using CyclicBarrier (or something similar like CountdownLatch) could make the positive case finish faster and is also a more correct approach.\n\u003e We could have a longer timeout for the negative case.\n\nI believe the problem is the failing scenario, correct?\nIn theory, we should give an arbitrary long time for that to fail (e.g. tens of minutes) which it would impact the overall execution time.\n\nIs there a way with the CyclicBarrier to avoid that?\nOtherwise, it is as good as the current code with just a very high timeout.",
+      "parentUuid": "533594c6_ffb4a952",
+      "revId": "e65fc1622063897ef4b3714440de27c8d925a2bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
