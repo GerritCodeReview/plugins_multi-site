@@ -15,27 +15,30 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder.events;
 
 import com.google.common.base.Objects;
+import com.google.gerrit.common.Nullable;
+import org.eclipse.jgit.lib.ObjectId;
 
 public class GroupIndexEvent extends IndexEvent {
   static final String TYPE = "group-index";
 
-  public String groupUUID;
+  public final String groupUUID;
+  public final ObjectId sha1;
 
-  public GroupIndexEvent(String groupUUID) {
+  public GroupIndexEvent(String groupUUID, @Nullable ObjectId sha1) {
     super(TYPE);
     this.groupUUID = groupUUID;
+    this.sha1 = sha1;
   }
 
-  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     GroupIndexEvent that = (GroupIndexEvent) o;
-    return Objects.equal(groupUUID, that.groupUUID);
+    return Objects.equal(groupUUID, that.groupUUID) && Objects.equal(sha1, that.sha1);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(groupUUID);
+    return Objects.hashCode(groupUUID, sha1);
   }
 }
