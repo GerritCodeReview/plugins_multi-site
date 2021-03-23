@@ -105,6 +105,24 @@
       "parentUuid": "9e474434_ae76c707",
       "revId": "e65fc1622063897ef4b3714440de27c8d925a2bc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae476034_708859a8",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-23T23:16:58Z",
+      "side": 1,
+      "message": "Thanks @Tony for your feedback. Let\u0027s put it to 1 minute, meaning that in the worst case scenario we\u0027ll wait that time to realise that the test failed.\n\nIn real terms, as you said, the event should come within a few msec, so 60 seconds is already 2 orders of magnitude bigger than the expected time, that should be fairly enough.",
+      "parentUuid": "409c7269_153b64ad",
+      "revId": "e65fc1622063897ef4b3714440de27c8d925a2bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

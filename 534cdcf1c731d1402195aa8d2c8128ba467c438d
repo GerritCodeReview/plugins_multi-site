@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be39d94e_d7d1b1c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-23T23:16:58Z",
+      "side": 1,
+      "message": "All concerns should be now be addressed. Can you guys recheck?",
+      "revId": "534cdcf1c731d1402195aa8d2c8128ba467c438d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
