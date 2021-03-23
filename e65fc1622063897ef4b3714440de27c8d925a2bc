@@ -87,6 +87,24 @@
       "parentUuid": "9b05f160_a4910a2b",
       "revId": "e65fc1622063897ef4b3714440de27c8d925a2bc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "409c7269_153b64ad",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-23T15:27:29Z",
+      "side": 1,
+      "message": "This timeout represents the maximum time we are willing to wait before feeling confident to assert that cache eviction did not happen successfully (within a certain boundary of confidence).\n\nI thought that 10 seconds was too much because usually cache eviction, even though executed asynchronously, gets triggered quickly (tens of millis? hundreds of millis?).\n\nI agree this might take sensibly longer on a busy system and we are exposed to false negatives, but then again this is true for most timeout-based assertions.\n\nDo we have some data to base this estimation on? if not, then every timeout value proposed is an arbitrary estimation and it could always be argued that increasing it would give a higher level of confidence.\n\nHaving said that, if you have good reasons to believe the current value is too short feel free to raise it to some higher value that makes sense in this scenario.",
+      "parentUuid": "9e474434_ae76c707",
+      "revId": "e65fc1622063897ef4b3714440de27c8d925a2bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
