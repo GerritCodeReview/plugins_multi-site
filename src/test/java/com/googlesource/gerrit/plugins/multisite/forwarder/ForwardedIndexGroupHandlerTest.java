@@ -24,8 +24,11 @@ import com.google.gerrit.entities.AccountGroup;
 import com.google.gerrit.server.index.group.GroupIndexer;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.index.GroupChecker;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.concurrent.ScheduledExecutorService;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,6 +43,7 @@ public class ForwardedIndexGroupHandlerTest {
 
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private GroupIndexer indexerMock;
+  @Mock private ScheduledExecutorService indexExecutorMock;
   @Mock private Configuration config;
   @Mock private Configuration.Index index;
   private ForwardedIndexGroupHandler handler;
@@ -49,7 +53,9 @@ public class ForwardedIndexGroupHandlerTest {
   public void setUp() throws Exception {
     when(config.index()).thenReturn(index);
     when(index.numStripedLocks()).thenReturn(10);
-    handler = new ForwardedIndexGroupHandler(indexerMock, config);
+    handler =
+        new ForwardedIndexGroupHandler(
+            indexerMock, config, new TestGroupChecker(), indexExecutorMock);
     uuid = "123";
   }
 
@@ -105,5 +111,13 @@ public class ForwardedIndexGroupHandlerTest {
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(indexerMock).index(AccountGroup.uuid(uuid));
+  }
+
+  private class TestGroupChecker implements GroupChecker {
+
+    @Override
+    public boolean isGroupUpToDate(Optional<GroupIndexEvent> groupIndexEvent) {
+      return true;
+    }
   }
 }
