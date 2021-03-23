@@ -39,6 +39,7 @@ public class IndexModule extends LifecycleModule {
     DynamicSet.bind(binder(), ProjectIndexedListener.class).to(IndexEventHandler.class);
 
     bind(ProjectChecker.class).to(ProjectCheckerImpl.class);
+    bind(GroupChecker.class).to(GroupCheckerImpl.class);
 
     install(
         new FactoryModuleBuilder()
