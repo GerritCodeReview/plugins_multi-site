@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.index.project.ProjectIndexer;
+import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -24,7 +25,6 @@ import com.googlesource.gerrit.plugins.multisite.index.ForwardedIndexExecutor;
 import com.googlesource.gerrit.plugins.multisite.index.ProjectChecker;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Index a project using {@link ProjectIndexer}. This class is meant to be used on the receiving
@@ -36,80 +36,38 @@ import java.util.concurrent.TimeUnit;
 public class ForwardedIndexProjectHandler
     extends ForwardedIndexingHandler<String, ProjectIndexEvent> {
   private final ProjectIndexer indexer;
-  private final int retryInterval;
-  private final int maxTries;
   private final ProjectChecker projectChecker;
-  private final ScheduledExecutorService indexExecutor;
 
   @Inject
   ForwardedIndexProjectHandler(
       ProjectIndexer indexer,
       ProjectChecker projectChecker,
       @ForwardedIndexExecutor ScheduledExecutorService indexExecutor,
+      OneOffRequestContext oneOffRequest,
       Configuration config) {
-    super(config.index().numStripedLocks());
+    super(indexExecutor, config, oneOffRequest);
     this.indexer = indexer;
-    Configuration.Index indexConfig = config.index();
-    this.retryInterval = indexConfig != null ? indexConfig.retryInterval() : 0;
-    this.maxTries = indexConfig != null ? indexConfig.maxTries() : 0;
-    this.indexExecutor = indexExecutor;
     this.projectChecker = projectChecker;
   }
 
   @Override
-  protected void doIndex(String projectName, Optional<ProjectIndexEvent> event) {
-    if (!attemptIndex(projectName, event)) {
-      log.warn("First Attempt failed, scheduling again after {} msecs", retryInterval);
-      rescheduleIndex(projectName, event, 1);
-    }
+  protected String label() {
+    return "project";
   }
 
-  public boolean attemptIndex(String projectName, Optional<ProjectIndexEvent> event) {
-    log.debug("Attempt to index project {}, event: [{}]", projectName, event);
-    final Project.NameKey projectNameKey = Project.nameKey(projectName);
-    if (projectChecker.isProjectUpToDate(projectNameKey)) {
-      indexer.index(projectNameKey);
-      log.debug("Project {} successfully indexed", projectName);
-      return true;
-    }
-    return false;
-  }
-
-  public void rescheduleIndex(
-      String projectName, Optional<ProjectIndexEvent> event, int retryCount) {
-    if (retryCount > maxTries) {
-      log.error(
-          "Project {} could not be indexed after {} retries. index could be stale.",
-          projectName,
-          retryCount);
-
-      return;
-    }
-
-    log.warn(
-        "Retrying for the #{} time to index project {} after {} msecs",
-        retryCount,
-        projectName,
-        retryInterval);
-
-    indexExecutor.schedule(
-        () -> {
-          Context.setForwardedEvent(true);
-          if (!attemptIndex(projectName, event)) {
-            log.warn(
-                "Attempt {} to index project {} failed, scheduling again after {} msecs",
-                retryCount,
-                projectName,
-                retryInterval);
-            rescheduleIndex(projectName, event, retryCount + 1);
-          }
-        },
-        retryInterval,
-        TimeUnit.MILLISECONDS);
+  @Override
+  protected void attemptToIndex(
+      String uuid, Optional<ProjectIndexEvent> projectIndexEvent, int retryCount) {
+    checkOrReschedule(uuid, projectIndexEvent, projectChecker, retryCount);
   }
 
   @Override
   protected void doDelete(String projectName, Optional<ProjectIndexEvent> event) {
     throw new UnsupportedOperationException("Delete from project index not supported");
+  }
+
+  @Override
+  protected void reindex(String id) {
+    indexer.index(Project.nameKey(id));
   }
 }

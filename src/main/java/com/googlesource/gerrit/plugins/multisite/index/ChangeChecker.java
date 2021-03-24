@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 /** Encapsulates the logic of verifying the up-to-date status of a change. */
-public interface ChangeChecker {
+public interface ChangeChecker extends Checker<ChangeIndexEvent> {
 
   /**
    * Return the Change nodes read from ReviewDb or NoteDb.
@@ -41,14 +41,6 @@ public interface ChangeChecker {
    */
   public Optional<ChangeIndexEvent> newIndexEvent(String projectName, int changeId, boolean deleted)
       throws IOException;
-
-  /**
-   * Check if the local Change is aligned with the indexEvent received.
-   *
-   * @param indexEvent indexing event
-   * @return true if the local Change is up-to-date, false otherwise.
-   */
-  public boolean isChangeUpToDate(Optional<ChangeIndexEvent> indexEvent);
 
   /**
    * Return the last computed up-to-date Change time-stamp.

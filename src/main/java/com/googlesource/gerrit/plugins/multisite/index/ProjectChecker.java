@@ -14,9 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
-import com.google.gerrit.entities.Project;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 
 /** Encapsulates the logic of verifying the up-to-date status of a project. */
-public interface ProjectChecker {
-  boolean isProjectUpToDate(Project.NameKey projectName);
-}
+public interface ProjectChecker extends Checker<ProjectIndexEvent> {}
