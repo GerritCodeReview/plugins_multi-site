@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d005a5e_2f67dcdc",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2021-03-25T13:44:37Z",
+      "side": 1,
+      "message": "This class is not really a test, it is a CacheRemovalListener implementation which tracks cache evictions. A part of my \"confusion\" was caused by not realizing that this class is not actually the test class.",
+      "range": {
+        "startLine": 69,
+        "startChar": 35,
+        "endLine": 69,
+        "endChar": 39
+      },
+      "revId": "bb1482d478937e760dee89d3b97b5ca1bedc1724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4e03eb6b_aea33834",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
         "patchSetId": 7
@@ -32,6 +55,24 @@
       "side": 1,
       "message": "We could remove the \u0027static\u0027 if we get the injected instance and we make it a singleton, yes. Does it going to make the test clearer to read?\n\nThe purpose of a test is being readable and simple enough to allow the reader to decide if it is correct or not. Remember that the test code is the only part of the code that isn\u0027t actually tested :-) so readability and simplicity is key to make it as correct as possible.",
       "parentUuid": "4e03eb6b_aea33834",
+      "revId": "bb1482d478937e760dee89d3b97b5ca1bedc1724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a820c4d9_8ed22b2e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2021-03-25T13:44:37Z",
+      "side": 1,
+      "message": "I indeed commented about readability, not about code optimization and especially not about trading readability for minor optimizations.\n\nA part of the problem here is that we don\u0027t control instantiation of the CacheRemovalListener instance and we don\u0027t have reference to it. Therefore, you need static variables. This approach also doesn\u0027t help with the readability, at least for me it was the case.\n\nI think that we already have good examples on how to add new elements to the Dynamic* extensions and have references to them from our tests. Isn\u0027t the ExtensionRegistry [1] made for that?\n\nFor example the IndexChangesIT [2] makes use\nof the ExtensionRegistry to register a locally instantiated ChangeIndexedListener.\nIn case the CacheRemovalListener registration is not yet included in the ExtensionRegistry then we should do that. Alternatively, if we cannot wait on that,\nwe can also do it like it was done in this change [3] which predates the existence of the ExtensionRegistry.\n\nAn important aspect of test readability is also to follow the idioms from already existing tests.\n\n[1] https://gerrit.googlesource.com/gerrit/+/55a77021dde6aff449777caaf7c7259874d6c24a/java/com/google/gerrit/acceptance/ExtensionRegistry.java\n[2] https://gerrit.googlesource.com/gerrit/+/55a77021dde6aff449777caaf7c7259874d6c24a/javatests/com/google/gerrit/acceptance/rest/config/IndexChangesIT.java\n[3] https://gerrit-review.googlesource.com/c/gerrit/+/231853/9/javatests/com/google/gerrit/acceptance/rest/config/IndexChangesIT.java",
+      "parentUuid": "3582b47c_bccb6eac",
       "revId": "bb1482d478937e760dee89d3b97b5ca1bedc1724",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
