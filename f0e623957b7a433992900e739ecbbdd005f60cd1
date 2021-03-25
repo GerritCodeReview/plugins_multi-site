@@ -95,6 +95,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3125b193_2a45b9de",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexGroupHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-25T16:26:36Z",
+      "side": 1,
+      "message": "Done in the followup changes.\nPlease let me know what you think, if you believe that\u0027s a sensible proposal, I will address the Index Account handler, which also needs to honour retries.",
+      "parentUuid": "9553ee49_12f1df0f",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 107,
+        "endChar": 3
+      },
+      "revId": "f0e623957b7a433992900e739ecbbdd005f60cd1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5edb63c3_b8c275d2",
