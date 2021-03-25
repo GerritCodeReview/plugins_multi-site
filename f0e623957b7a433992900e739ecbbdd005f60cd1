@@ -189,6 +189,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d674551_c34d17eb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/GroupIndexEvent.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-25T16:19:46Z",
+      "side": 1,
+      "message": "I have reverted this to the current method, it was throwing during test execution, not sure why, do you have any clue?\n\njava.lang.StackOverflowError\n\tat java.base/java.util.Objects.deepEquals(Objects.java:103)\n\tat com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent.equals(GroupIndexEvent.java:38)\n\tat java.base/java.util.Arrays.deepEquals0(Arrays.java:4841)",
+      "parentUuid": "02a32df8_1ed098f2",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 86
+      },
+      "revId": "f0e623957b7a433992900e739ecbbdd005f60cd1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1d3bbb8_2e4faefa",
