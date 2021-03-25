@@ -14,14 +14,15 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import java.util.Optional;
-import org.eclipse.jgit.lib.ObjectId;
 
-public interface GroupChecker extends UpToDateChecker<GroupIndexEvent> {
-
-  @Override
-  boolean isUpToDate(Optional<GroupIndexEvent> groupIndexEvent);
-
-  ObjectId getGroupHead(String groupUUID);
+public interface UpToDateChecker<E extends IndexEvent> {
+  /**
+   * Check if the local Change is aligned with the indexEvent received.
+   *
+   * @param indexEvent indexing event
+   * @return true if the local Change is up-to-date, false otherwise.
+   */
+  boolean isUpToDate(Optional<E> indexEvent);
 }
