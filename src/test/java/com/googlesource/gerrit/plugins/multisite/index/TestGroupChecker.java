@@ -31,7 +31,7 @@ public class TestGroupChecker implements GroupChecker {
   private static final String someObjectId = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef";
 
   @Override
-  public boolean isGroupUpToDate(Optional<GroupIndexEvent> groupIndexEvent) {
+  public boolean isUpToDate(Optional<GroupIndexEvent> groupIndexEvent) {
     return isUpToDate;
   }
 
