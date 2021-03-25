@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e03eb6b_aea33834",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2021-03-25T11:25:18Z",
+      "side": 1,
+      "message": "Why do we need both a static reference to the CountDownLatch instance here and a local variable in line 112 referencing the same instance?\n\nBtw, why do we use static variable at all in this test and then have to clear them (line 74) before running any @Test case?",
+      "revId": "bb1482d478937e760dee89d3b97b5ca1bedc1724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96bfdcce_c98789ac",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1003873
+      },
+      "writtenOn": "2021-03-25T11:25:18Z",
+      "side": 1,
+      "message": "The name of this method doesn\u0027t tell much about what it is doing. It sets the expected number of cache evictions and as a side effect also clears the cacheEvictions map.\n\nIf we get rid of static reference then we may not need this method at all.",
+      "range": {
+        "startLine": 73,
+        "startChar": 33,
+        "endLine": 73,
+        "endChar": 47
+      },
+      "revId": "bb1482d478937e760dee89d3b97b5ca1bedc1724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
