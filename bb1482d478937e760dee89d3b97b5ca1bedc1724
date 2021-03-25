@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3582b47c_bccb6eac",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-25T11:38:35Z",
+      "side": 1,
+      "message": "We could remove the \u0027static\u0027 if we get the injected instance and we make it a singleton, yes. Does it going to make the test clearer to read?\n\nThe purpose of a test is being readable and simple enough to allow the reader to decide if it is correct or not. Remember that the test code is the only part of the code that isn\u0027t actually tested :-) so readability and simplicity is key to make it as correct as possible.",
+      "parentUuid": "4e03eb6b_aea33834",
+      "revId": "bb1482d478937e760dee89d3b97b5ca1bedc1724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96bfdcce_c98789ac",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
         "patchSetId": 7
@@ -31,6 +49,30 @@
       "writtenOn": "2021-03-25T11:25:18Z",
       "side": 1,
       "message": "The name of this method doesn\u0027t tell much about what it is doing. It sets the expected number of cache evictions and as a side effect also clears the cacheEvictions map.\n\nIf we get rid of static reference then we may not need this method at all.",
+      "range": {
+        "startLine": 73,
+        "startChar": 33,
+        "endLine": 73,
+        "endChar": 47
+      },
+      "revId": "bb1482d478937e760dee89d3b97b5ca1bedc1724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1298c351_86242e34",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-25T11:38:35Z",
+      "side": 1,
+      "message": "What about startCountingEvictions?\n\nThe method is still very much needed because it needs to:\n- clear up the evictions tracking by cache name\n- initialise the countdown latch",
+      "parentUuid": "96bfdcce_c98789ac",
       "range": {
         "startLine": 73,
         "startChar": 33,
