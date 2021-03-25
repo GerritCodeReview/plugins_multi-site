@@ -16,11 +16,12 @@ package com.googlesource.gerrit.plugins.multisite.index;
 
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+
 import java.io.IOException;
 import java.util.Optional;
 
 /** Encapsulates the logic of verifying the up-to-date status of a change. */
-public interface ChangeChecker {
+public interface ChangeChecker extends UpToDateChecker<ChangeIndexEvent> {
 
   /**
    * Return the Change nodes read from ReviewDb or NoteDb.
@@ -48,7 +49,7 @@ public interface ChangeChecker {
    * @param indexEvent indexing event
    * @return true if the local Change is up-to-date, false otherwise.
    */
-  public boolean isChangeUpToDate(Optional<ChangeIndexEvent> indexEvent);
+  public boolean isUpToDate(Optional<ChangeIndexEvent> indexEvent);
 
   /**
    * Return the last computed up-to-date Change time-stamp.
