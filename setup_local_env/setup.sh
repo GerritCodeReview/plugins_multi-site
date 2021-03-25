@@ -107,6 +107,8 @@ function export_broker_port {
     export BROKER_PORT=4566
   elif [ "$BROKER_TYPE" =  "kafka" ]; then
     export BROKER_PORT=9092
+  elif [ "$BROKER_TYPE" =  "pubsub" ]; then
+    export BROKER_PORT=8085
   fi
 }
 
@@ -245,7 +247,7 @@ case "$1" in
     echo
     echo "[--enabled-https]               Enabled https; default true"
     echo
-    echo "[--broker-type]                 events broker type; either 'kafka' or 'kinesis'. Default 'kafka'"
+    echo "[--broker-type]                 events broker type; 'kafka', 'kinesis' or 'pubsub'. Default 'kafka'"
     echo
     exit 0
   ;;
@@ -338,8 +340,8 @@ case "$1" in
     BROKER_TYPE=$2
     shift
     shift
-    if [ ! "$BROKER_TYPE" = "kafka" ] && [ ! "$BROKER_TYPE" = "kinesis" ]; then
-      echo >&2 "broker type: '$BROKER_TYPE' not valid. Please supply 'kafka' or 'kinesis'. Aborting"
+    if [ ! "$BROKER_TYPE" = "kafka" ] && [ ! "$BROKER_TYPE" = "kinesis" ] && [ ! "$BROKER_TYPE" = "pubsub" ]; then
+      echo >&2 "broker type: '$BROKER_TYPE' not valid. Please supply 'kafka','kinesis' or 'pubsub'. Aborting"
       exit 1
     fi
   ;;
@@ -442,6 +444,14 @@ echo "Downloading kinesis-events plugin master (TODO: replace with $GERRIT_BRANC
   wget $GERRIT_CI/plugin-kinesis-events-gh-bazel-master/$LAST_BUILD/kinesis-events/kinesis-events.jar \
   -O $DEPLOYMENT_LOCATION/kinesis-events.jar || { echo >&2 "Cannot download kinesis-events plugin: Check internet connection. Abort\
 ing"; exit 1; }
+fi
+
+
+if [ "$BROKER_TYPE" = "pubsub" ]; then
+echo "Downloading gcloud-pubsub-events plugin master (TODO: replace with $GERRIT_BRANCH, once we have build)"
+  wget $GERRIT_CI/plugin-gcloud-pubsub-events-gh-bazel-master-stable-3.3/$LAST_BUILD/gcloud-pubsub-events/gcloud-pubsub-events.jar \
+  -O $DEPLOYMENT_LOCATION/pubsub-events.jar || { echo >&2 "Cannot download gcloud-pubsub-events plugin: Check internet connection. Abort\
+#ing"; exit 1; }
 fi
 
 echo "Downloading metrics-reporter-prometheus plugin $GERRIT_BRANCH"
