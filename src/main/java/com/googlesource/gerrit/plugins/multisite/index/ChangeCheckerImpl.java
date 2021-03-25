@@ -85,7 +85,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
   }
 
   @Override
-  public boolean isChangeUpToDate(Optional<ChangeIndexEvent> indexEvent) {
+  public boolean isUpToDate(Optional<ChangeIndexEvent> indexEvent) {
     getComputedChangeTs();
     if (!computedChangeTs.isPresent()) {
       log.warn("Unable to compute last updated ts for change {}", changeId);
