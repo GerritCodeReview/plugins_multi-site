@@ -18,8 +18,10 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEven
 import java.util.Optional;
 import org.eclipse.jgit.lib.ObjectId;
 
-public interface GroupChecker {
-  boolean isGroupUpToDate(Optional<GroupIndexEvent> groupIndexEvent);
+public interface GroupChecker extends Checker<GroupIndexEvent> {
+
+  @Override
+  boolean isUpToDate(Optional<GroupIndexEvent> groupIndexEvent);
 
   ObjectId getGroupHead(String groupUUID);
 }
