@@ -44,14 +44,14 @@ class IndexEventHandler
   private final DynamicSet<IndexEventForwarder> forwarders;
   private final Set<IndexTask> queuedTasks = Collections.newSetFromMap(new ConcurrentHashMap<>());
   private final ChangeCheckerImpl.Factory changeChecker;
-  private final GroupChecker groupChecker;
+  private final GroupUpToDateChecker groupChecker;
 
   @Inject
   IndexEventHandler(
       @IndexExecutor Executor executor,
       DynamicSet<IndexEventForwarder> forwarders,
       ChangeCheckerImpl.Factory changeChecker,
-      GroupChecker groupChecker) {
+      GroupUpToDateChecker groupChecker) {
     this.forwarders = forwarders;
     this.executor = executor;
     this.changeChecker = changeChecker;

@@ -43,7 +43,7 @@ public class GroupCheckerImplTest {
   ObjectId AN_OBJECT_ID = ObjectId.fromString("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
   AllUsersName allUsers = new AllUsersName(AllUsersNameProvider.DEFAULT);
 
-  GroupCheckerImpl objectUnderTest;
+  GroupUpToDateCheckerImpl objectUnderTest;
   @Mock private GitRepositoryManager repoManagerMock;
   @Mock private RefDatabase refDatabaseMock;
   @Mock private Repository repoMock;
@@ -52,20 +52,19 @@ public class GroupCheckerImplTest {
   public void setUp() throws Exception {
     doReturn(repoMock).when(repoManagerMock).openRepository(allUsers);
     doReturn(refDatabaseMock).when(repoMock).getRefDatabase();
-    objectUnderTest = new GroupCheckerImpl(repoManagerMock, allUsers);
+    objectUnderTest = new GroupUpToDateCheckerImpl(repoManagerMock, allUsers);
   }
 
   @Test
   public void isGroupUpToDate_shouldReturnTrueWhenEventIsEmpty() {
-    assertThat(objectUnderTest.isGroupUpToDate(Optional.empty())).isTrue();
+    assertThat(objectUnderTest.isUpToDate(Optional.empty())).isTrue();
   }
 
   @Test
   public void isGroupUpToDate_shouldReturnFalseWhenSha1DoesNotExistInAllUsers() {
     setCommitExistsInRepo(false);
     assertThat(
-            objectUnderTest.isGroupUpToDate(
-                groupIndexEvent(UUID.randomUUID().toString(), AN_OBJECT_ID)))
+            objectUnderTest.isUpToDate(groupIndexEvent(UUID.randomUUID().toString(), AN_OBJECT_ID)))
         .isFalse();
   }
 
@@ -73,8 +72,7 @@ public class GroupCheckerImplTest {
   public void isGroupUpToDate_shouldReturnFalseWhenSha1ExistsInAllUsers() {
     setCommitExistsInRepo(true);
     assertThat(
-            objectUnderTest.isGroupUpToDate(
-                groupIndexEvent(UUID.randomUUID().toString(), AN_OBJECT_ID)))
+            objectUnderTest.isUpToDate(groupIndexEvent(UUID.randomUUID().toString(), AN_OBJECT_ID)))
         .isTrue();
   }
 
@@ -83,8 +81,7 @@ public class GroupCheckerImplTest {
     UUID groupUUID = UUID.randomUUID();
     setCommitExistsInRepo(true);
 
-    assertThat(objectUnderTest.isGroupUpToDate(groupIndexEvent(groupUUID.toString(), null)))
-        .isTrue();
+    assertThat(objectUnderTest.isUpToDate(groupIndexEvent(groupUUID.toString(), null))).isTrue();
   }
 
   @Test
@@ -109,7 +106,7 @@ public class GroupCheckerImplTest {
 
   private void setCommitExistsInRepo(boolean commitExists) {
     objectUnderTest =
-        new GroupCheckerImpl(repoManagerMock, allUsers) {
+        new GroupUpToDateCheckerImpl(repoManagerMock, allUsers) {
           @Override
           boolean commitExistsInRepo(Repository repo, ObjectId sha1) {
             return commitExists;

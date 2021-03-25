@@ -24,10 +24,11 @@ import static org.mockito.Mockito.when;
 
 import com.google.gerrit.entities.AccountGroup;
 import com.google.gerrit.server.index.group.GroupIndexer;
+import com.google.gerrit.server.util.OneOffRequestContext;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.index.TestGroupChecker;
+import com.googlesource.gerrit.plugins.multisite.index.TestGroupUpToDateChecker;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
@@ -46,6 +47,7 @@ public class ForwardedIndexGroupHandlerTest {
 
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private GroupIndexer indexerMock;
+  @Mock private OneOffRequestContext ctxMock;
   @Mock private ScheduledExecutorService indexExecutorMock;
   @Mock private Configuration config;
   @Mock private Configuration.Index index;
@@ -135,7 +137,11 @@ public class ForwardedIndexGroupHandlerTest {
 
   private ForwardedIndexGroupHandler groupHandler(boolean checkIsUpToDate) {
     return new ForwardedIndexGroupHandler(
-        indexerMock, config, new TestGroupChecker(checkIsUpToDate), indexExecutorMock);
+        indexerMock,
+        config,
+        new TestGroupUpToDateChecker(checkIsUpToDate),
+        ctxMock,
+        indexExecutorMock);
   }
 
   private Optional<GroupIndexEvent> groupIndexEvent(String uuid) {

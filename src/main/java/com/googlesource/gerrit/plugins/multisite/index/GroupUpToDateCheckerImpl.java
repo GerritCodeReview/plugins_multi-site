@@ -32,19 +32,19 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevWalk;
 
 @Singleton
-class GroupCheckerImpl implements GroupChecker {
+class GroupUpToDateCheckerImpl implements GroupUpToDateChecker {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private final GitRepositoryManager repoManager;
   private final AllUsersName allUsers;
 
   @Inject
-  GroupCheckerImpl(GitRepositoryManager repoManager, AllUsersName allUsers) {
+  GroupUpToDateCheckerImpl(GitRepositoryManager repoManager, AllUsersName allUsers) {
     this.repoManager = repoManager;
     this.allUsers = allUsers;
   }
 
   @Override
-  public boolean isGroupUpToDate(Optional<GroupIndexEvent> groupIndexEvent) {
+  public boolean isUpToDate(Optional<GroupIndexEvent> groupIndexEvent) {
     if (!groupIndexEvent.isPresent()) {
       logger.atWarning().log("Group Index empty, considering this group up-to-date");
       return true;

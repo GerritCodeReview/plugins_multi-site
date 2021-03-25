@@ -1,4 +1,4 @@
-// Copyright (C) 2021 The Android Open Source Project
+// Copyright (C) 2018 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,9 +17,26 @@ package com.googlesource.gerrit.plugins.multisite.index;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import java.util.Optional;
 import org.eclipse.jgit.lib.ObjectId;
+import org.junit.Ignore;
 
-public interface GroupChecker {
-  boolean isGroupUpToDate(Optional<GroupIndexEvent> groupIndexEvent);
+@Ignore
+public class TestGroupUpToDateChecker implements GroupUpToDateChecker {
 
-  ObjectId getGroupHead(String groupUUID);
+  private final boolean isUpToDate;
+
+  public TestGroupUpToDateChecker(boolean isUpToDate) {
+    this.isUpToDate = isUpToDate;
+  }
+
+  private static final String someObjectId = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef";
+
+  @Override
+  public boolean isUpToDate(Optional<GroupIndexEvent> groupIndexEvent) {
+    return isUpToDate;
+  }
+
+  @Override
+  public ObjectId getGroupHead(String groupUUID) {
+    return ObjectId.fromString(someObjectId);
+  }
 }
