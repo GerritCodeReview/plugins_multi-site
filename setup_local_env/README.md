@@ -5,7 +5,7 @@ The environment is composed by:
 
 - 2 gerrit instances deployed by default in /tmp
 - 1 zookeeper node
-- 1 Broker node (either kafka or kinesis)
+- 1 Broker node (kafka, kinesis or gcloud-pubsub)
 - 1 HA-PROXY
 
 ## Requirements
@@ -33,6 +33,15 @@ sh setup_local_env/setup.sh \
     --release-war-file /path/to/gerrit.war \
     --multisite-lib-file /path/to/multi-site.jar \
     --broker-type kinesis
+```
+
+Deploy GCloud PubSub broker
+
+```bash
+sh setup_local_env/setup.sh \
+    --release-war-file /path/to/gerrit.war \
+    --multisite-lib-file /path/to/multi-site.jar \
+    --broker-type gcloud-pubsub
 ```
 
 
@@ -73,7 +82,7 @@ Usage: sh ./setup.sh [--option ]
 
 [--enabled-https]               Enabled https; default true
 
-[--broker_type]                 events broker type; either 'kafka' or 'kinesis'. Default 'kafka'
+[--broker_type]                 events broker type; 'kafka', 'kinesis' or 'gcloud-pubsub'. Default 'kafka'
 ```
 
 ## Limitations
