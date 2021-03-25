@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35bd6513_08358046",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-25T10:45:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59defe15_53f5572d",
+      "range": {
+        "startLine": 72,
+        "startChar": 44,
+        "endLine": 72,
+        "endChar": 58
+      },
+      "revId": "534cdcf1c731d1402195aa8d2c8128ba467c438d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f9d5c7b_636fa663",
@@ -54,6 +78,24 @@
       "writtenOn": "2021-03-25T09:50:52Z",
       "side": 1,
       "message": "when would the countDownLatch be not present? As I see there is only one @Test in this class and it always created a countDownLatch.",
+      "revId": "534cdcf1c731d1402195aa8d2c8128ba467c438d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bd7eb60_85395f82",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-25T10:45:52Z",
+      "side": 1,
+      "message": "True, let me get rid of the Optional altogether.",
+      "parentUuid": "3f9d5c7b_636fa663",
       "revId": "534cdcf1c731d1402195aa8d2c8128ba467c438d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
