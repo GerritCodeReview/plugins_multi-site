@@ -17,6 +17,8 @@ package com.googlesource.gerrit.plugins.multisite.index;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import java.util.Optional;
 
 public class ProjectCheckerImpl implements ProjectChecker {
   private final ProjectCache projectCache;
@@ -27,7 +29,7 @@ public class ProjectCheckerImpl implements ProjectChecker {
   }
 
   @Override
-  public boolean isProjectUpToDate(Project.NameKey projectName) {
-    return projectCache.get(projectName) != null;
+  public boolean isUpToDate(Optional<ProjectIndexEvent> indexEvent) {
+    return indexEvent.map(e -> Project.nameKey(e.projectName)).map(projectCache::get).isPresent();
   }
 }
