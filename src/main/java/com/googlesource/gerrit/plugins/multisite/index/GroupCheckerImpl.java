@@ -44,7 +44,7 @@ class GroupCheckerImpl implements GroupChecker {
   }
 
   @Override
-  public boolean isGroupUpToDate(Optional<GroupIndexEvent> groupIndexEvent) {
+  public boolean isUpToDate(Optional<GroupIndexEvent> groupIndexEvent) {
     if (!groupIndexEvent.isPresent()) {
       logger.atWarning().log("Group Index empty, considering this group up-to-date");
       return true;
