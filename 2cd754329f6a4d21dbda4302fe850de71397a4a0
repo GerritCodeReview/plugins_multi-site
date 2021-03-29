@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "750de75c_68476525",
+        "filename": "setup_local_env/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-03-29T14:24:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "467a76e0_2d3e25cb",
+      "range": {
+        "startLine": 8,
+        "startChar": 35,
+        "endLine": 8,
+        "endChar": 41
+      },
+      "revId": "2cd754329f6a4d21dbda4302fe850de71397a4a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "629b655f_5996d26a",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-03-29T07:42:06Z",
       "side": 1,
       "message": "gcloud-pubsub",
+      "range": {
+        "startLine": 38,
+        "startChar": 7,
+        "endLine": 38,
+        "endChar": 13
+      },
+      "revId": "2cd754329f6a4d21dbda4302fe850de71397a4a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "919d0820_708985a9",
+        "filename": "setup_local_env/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-03-29T14:24:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "629b655f_5996d26a",
       "range": {
         "startLine": 38,
         "startChar": 7,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbbf46f6_23993928",
+        "filename": "setup_local_env/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-03-29T14:24:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80ebf3cf_8adf7143",
+      "range": {
+        "startLine": 85,
+        "startChar": 75,
+        "endLine": 85,
+        "endChar": 81
+      },
+      "revId": "2cd754329f6a4d21dbda4302fe850de71397a4a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18fccffb_fa1dd225",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-03-29T07:42:06Z",
       "side": 1,
       "message": "I think this project\u003d\"test-project\" might be confused with the concept of \nproject in Gerrit.\n\nIt is not uncommon in gerrit configurations to see \"project\u003dfoo\" to refer to actions that are specific only to some gerrit projects.\n\nAs far as I understand, this is actually referring to the gcloud entity and nothing to do with gerrit projects.\n\nAny chance we can make this distinction more obvious?",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 26
+      },
+      "revId": "2cd754329f6a4d21dbda4302fe850de71397a4a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee525cfb_eca84da1",
+        "filename": "setup_local_env/configs/gerrit.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-03-29T14:24:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18fccffb_fa1dd225",
       "range": {
         "startLine": 62,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0d25b00_438dad40",
+        "filename": "setup_local_env/docker-compose-pubsub.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-03-29T14:24:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8bbad0c7_ee870b0f",
+      "range": {
+        "startLine": 7,
+        "startChar": 20,
+        "endLine": 7,
+        "endChar": 26
+      },
+      "revId": "2cd754329f6a4d21dbda4302fe850de71397a4a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9dde1ac8_6f39f6e1",
@@ -129,6 +249,30 @@
       "writtenOn": "2021-03-29T07:42:06Z",
       "side": 1,
       "message": "gcloud-pubsub?",
+      "range": {
+        "startLine": 110,
+        "startChar": 28,
+        "endLine": 110,
+        "endChar": 34
+      },
+      "revId": "2cd754329f6a4d21dbda4302fe850de71397a4a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aac08e9b_d339ab22",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-03-29T14:24:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dde1ac8_6f39f6e1",
       "range": {
         "startLine": 110,
         "startChar": 28,
@@ -162,6 +306,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a9bf3f8_626d5695",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-03-29T14:24:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51aa2629_ac18dbb6",
+      "range": {
+        "startLine": 250,
+        "startChar": 85,
+        "endLine": 250,
+        "endChar": 91
+      },
+      "revId": "2cd754329f6a4d21dbda4302fe850de71397a4a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3480d81_9dd423d7",
@@ -175,6 +343,30 @@
       "writtenOn": "2021-03-29T07:42:06Z",
       "side": 1,
       "message": "gcloud-pubsub?",
+      "range": {
+        "startLine": 343,
+        "startChar": 99,
+        "endLine": 343,
+        "endChar": 105
+      },
+      "revId": "2cd754329f6a4d21dbda4302fe850de71397a4a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ab99732_229c753d",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-03-29T14:24:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3480d81_9dd423d7",
       "range": {
         "startLine": 343,
         "startChar": 99,
@@ -208,6 +400,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6aeece39_caaccee0",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-03-29T14:24:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7233fb6_3753c793",
+      "range": {
+        "startLine": 344,
+        "startChar": 91,
+        "endLine": 344,
+        "endChar": 97
+      },
+      "revId": "2cd754329f6a4d21dbda4302fe850de71397a4a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50cac402_0800be2b",
@@ -221,6 +437,30 @@
       "writtenOn": "2021-03-29T07:42:06Z",
       "side": 1,
       "message": "gcloud-pubsub?",
+      "range": {
+        "startLine": 450,
+        "startChar": 23,
+        "endLine": 450,
+        "endChar": 29
+      },
+      "revId": "2cd754329f6a4d21dbda4302fe850de71397a4a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e7053e3_ba6005f5",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-03-29T14:24:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50cac402_0800be2b",
       "range": {
         "startLine": 450,
         "startChar": 23,
