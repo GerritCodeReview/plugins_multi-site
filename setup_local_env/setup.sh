@@ -160,6 +160,7 @@ function create_kinesis_streams {
 function create_kinesis_stream {
   local stream=$1
 
+  export AWS_PAGER=''
   echo "[KINESIS] Create stream $stream"
   until aws --endpoint-url=http://localhost:$BROKER_PORT kinesis create-stream --shard-count 1 --stream-name "$stream"
   do
