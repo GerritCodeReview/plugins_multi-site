@@ -440,7 +440,7 @@ fi
 
 if [ "$BROKER_TYPE" = "kinesis" ]; then
 echo "Downloading kinesis-events plugin master (TODO: replace with $GERRIT_BRANCH, once we have build)"
-  wget $GERRIT_CI/plugin-kinesis-events-gh-bazel-master/$LAST_BUILD/kinesis-events/kinesis-events.jar \
+  wget $GERRIT_CI/plugin-kinesis-events-gh-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/kinesis-events/kinesis-events.jar \
   -O $DEPLOYMENT_LOCATION/kinesis-events.jar || { echo >&2 "Cannot download kinesis-events plugin: Check internet connection. Abort\
 ing"; exit 1; }
 fi
