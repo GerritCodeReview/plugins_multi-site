@@ -366,6 +366,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e3c4fa4_97186195",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/GroupCheckerImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-31T07:35:31Z",
+      "side": 1,
+      "message": "Ack, then warning is correct.",
+      "parentUuid": "be225168_6e7073d1",
+      "range": {
+        "startLine": 48,
+        "startChar": 13,
+        "endLine": 48,
+        "endChar": 22
+      },
+      "revId": "f0e623957b7a433992900e739ecbbdd005f60cd1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86e7e930_87b6d605",
@@ -861,6 +885,30 @@
       "side": 1,
       "message": "Yes, I believe this is what we are testing.\nIf the sha1 is null, then we are asserting that we consider the group up-to-date (as you said, we the code immediately falls back to false).",
       "parentUuid": "d589a818_95ecc6e2",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 3
+      },
+      "revId": "f0e623957b7a433992900e739ecbbdd005f60cd1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6983b42_779e8fa5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/index/GroupCheckerImplTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-31T07:35:31Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fb5cddf0_cfb85419",
       "range": {
         "startLine": 69,
         "startChar": 0,

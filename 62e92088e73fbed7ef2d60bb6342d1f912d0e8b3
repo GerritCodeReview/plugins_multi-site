@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1dfde6e_fd9cb152",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/GroupCheckerImpl.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-03-31T07:35:31Z",
+      "side": 1,
+      "message": "optional: atWarning() would highlight that groups *may be* not up-to-date here, but there are still outdated peers that aren\u0027t sending that info. Once the upgrade if finished those warnings should disappear.",
+      "range": {
+        "startLine": 56,
+        "startChar": 13,
+        "endLine": 56,
+        "endChar": 19
+      },
+      "revId": "62e92088e73fbed7ef2d60bb6342d1f912d0e8b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
