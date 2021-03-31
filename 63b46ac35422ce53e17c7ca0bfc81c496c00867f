@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7fde68e1_c265972f",
+        "filename": "setup_local_env/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-03-31T07:41:06Z",
+      "side": 1,
+      "message": "Yeah my first idea was to use pubsub, but as suggested by @Tony I\u0027ve changed it to gcloud-pubsub. Another advantage of having gcloud-pubsub is that we do not have to rename gcloud-pubsub-events.jar to pubsub-events.jar\n\nBTW for kinesis shouldn\u0027t the jar be named aws-kinesis-events.jar instead of kinesis-events.jar?",
+      "parentUuid": "ccf1b39f_5440730a",
+      "range": {
+        "startLine": 8,
+        "startChar": 35,
+        "endLine": 8,
+        "endChar": 48
+      },
+      "revId": "63b46ac35422ce53e17c7ca0bfc81c496c00867f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f08446bb_676461b2",
         "filename": "setup_local_env/README.md",
         "patchSetId": 3
