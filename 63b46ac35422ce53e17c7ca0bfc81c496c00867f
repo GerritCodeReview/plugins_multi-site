@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ccf1b39f_5440730a",
+        "filename": "setup_local_env/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-03-31T06:43:40Z",
+      "side": 1,
+      "message": "I have actually suggested @marcin exactly the opposite.\n\u0027pubsub\u0027 is inconsistent with the naming of the plugins:\n\n- kafka-events (broker type is \"kafka\")\n- kinesis-events (broker type is \"kinesis\")\n- gcloud-pubsub-events (broker type should be \"gcloud-pubsub\", not \"pubsub\").\n\nAlso I think \"pubsub\" is too much of a generic term, that might be identified with the pubsub pattern, without indicating any relationship with Google Cloud.",
+      "parentUuid": "c71a1b77_399bd69f",
+      "range": {
+        "startLine": 8,
+        "startChar": 35,
+        "endLine": 8,
+        "endChar": 48
+      },
+      "revId": "63b46ac35422ce53e17c7ca0bfc81c496c00867f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f08446bb_676461b2",
         "filename": "setup_local_env/README.md",
         "patchSetId": 3
