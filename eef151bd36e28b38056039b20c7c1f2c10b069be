@@ -22,6 +22,30 @@
       },
       "revId": "eef151bd36e28b38056039b20c7c1f2c10b069be",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dc40641_68a47876",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-04-01T15:54:52Z",
+      "side": 1,
+      "message": "RetriableActions have been introduced in gerrit 3.2[1], this change is for 3.2.\nI took a look at its predecessor, RetryHelper, which is available in 3.1 [2], but I don\u0027t see a way to use it to achieve retries in multi-site, out of the box.\n\nIt reads any configuration from @GerritConfiguration rather than arbitrary plugin config and it seems to be based on timeouts, rather than number of retries, which is the strategy used by multi-site and high-availability.\n\nPerhaps you see a way to use it that I don\u0027t?\n\n[1]https://gerrit-review.googlesource.com/c/gerrit/+/247645\n[2]https://gerrit.googlesource.com/gerrit/+/refs/heads/stable-3.1/java/com/google/gerrit/server/update/RetryHelper.java",
+      "parentUuid": "5082aca0_29fa6504",
+      "range": {
+        "startLine": 33,
+        "startChar": 22,
+        "endLine": 33,
+        "endChar": 57
+      },
+      "revId": "eef151bd36e28b38056039b20c7c1f2c10b069be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
