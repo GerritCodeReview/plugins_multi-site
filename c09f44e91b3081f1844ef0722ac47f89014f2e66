@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4271bbdf_bccb48f6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-04-01T08:24:40Z",
+      "side": 1,
+      "message": "This is unused and shouldn\u0027t be needed, becaue Guice is not involved in bootstrapping here, but we our self creating instance of ValidationModule with new operating and passing in Configuration instance in GitModule.java:\n\n  @Override\n  protected void configure() {\n    if (config.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {\n      install(new ValidationModule(config));\n    }\n  }",
+      "range": {
+        "startLine": 49,
+        "startChar": 2,
+        "endLine": 49,
+        "endChar": 9
+      },
+      "revId": "c09f44e91b3081f1844ef0722ac47f89014f2e66",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "106a8731_6d3162a5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-04-01T08:24:40Z",
+      "side": 1,
+      "message": "The method is not needed and can be removed (see two comments below).",
+      "range": {
+        "startLine": 115,
+        "startChar": 2,
+        "endLine": 116,
+        "endChar": 50
+      },
+      "revId": "c09f44e91b3081f1844ef0722ac47f89014f2e66",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec0b8001_f7e35b5b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-04-01T08:24:40Z",
+      "side": 1,
+      "message": "It can be simplified, just inject it on line 62 with:\n\n  @Inject private CacheEvictionEventRouter objectUnderTest;\n\nand remove this initialization.",
+      "range": {
+        "startLine": 119,
+        "startChar": 4,
+        "endLine": 119,
+        "endChar": 75
+      },
+      "revId": "c09f44e91b3081f1844ef0722ac47f89014f2e66",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33affa10_78ce3074",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-04-01T08:24:40Z",
+      "side": 1,
+      "message": "It can be simplified, just inject it on line 65 with:\n\n  @Inject @EventGson private Gson gson;\n\nand remove this initialization.",
+      "range": {
+        "startLine": 120,
+        "startChar": 4,
+        "endLine": 120,
+        "endChar": 70
+      },
+      "revId": "c09f44e91b3081f1844ef0722ac47f89014f2e66",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
