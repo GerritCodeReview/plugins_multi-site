@@ -119,6 +119,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cc15ba8_a62b36c9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-04-01T00:52:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e0ec4bd_1bb9b6de",
+      "revId": "bb1482d478937e760dee89d3b97b5ca1bedc1724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96bfdcce_c98789ac",
@@ -156,6 +174,30 @@
       "side": 1,
       "message": "What about startCountingEvictions?\n\nThe method is still very much needed because it needs to:\n- clear up the evictions tracking by cache name\n- initialise the countdown latch",
       "parentUuid": "96bfdcce_c98789ac",
+      "range": {
+        "startLine": 73,
+        "startChar": 33,
+        "endLine": 73,
+        "endChar": 47
+      },
+      "revId": "bb1482d478937e760dee89d3b97b5ca1bedc1724",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e90d6d33_1a5e7aa3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-04-01T00:52:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1298c351_86242e34",
       "range": {
         "startLine": 73,
         "startChar": 33,
