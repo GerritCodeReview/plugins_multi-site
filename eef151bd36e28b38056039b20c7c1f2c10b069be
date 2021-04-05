@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbfd4148_4c481bdb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-04-05T13:08:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "861ad70b_efb81c28",
+      "range": {
+        "startLine": 29,
+        "startChar": 29,
+        "endLine": 29,
+        "endChar": 38
+      },
+      "revId": "eef151bd36e28b38056039b20c7c1f2c10b069be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5082aca0_29fa6504",
@@ -168,6 +192,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1e76de4a_2be08753",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-04-05T13:08:26Z",
+      "side": 1,
+      "message": "\u003e Actually, the method name tells that this method either checks or reschedule, but it is actually triggering also the reindexing.\n\nI agree the name is misleading.\n\n\u003e \n\u003e What about \u0027indexWhenUpToDateOrReschedule\u0027 ?\n\nThe method is actually *always* reindexing *and then* checking the change is up-to-date, possibly rescheduling.\n\nThis is a requirement imposed by the change indexer (see current implementation: [1] and related test[2]).\n\nI renamed this method \u0027reindexAndCheckIsUpToDate\u0027.\n\nWDYT?\n\n\n[1]https://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/stable-3.1/src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandler.java#80\n\n[2]https://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/stable-3.1/src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandlerTest.java#104",
+      "parentUuid": "fd80521a_1ffe83bc",
+      "range": {
+        "startLine": 93,
+        "startChar": 20,
+        "endLine": 93,
+        "endChar": 37
+      },
+      "revId": "eef151bd36e28b38056039b20c7c1f2c10b069be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "44084f56_02f54a94",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/Checker.java",
         "patchSetId": 5
@@ -179,6 +227,30 @@
       "writtenOn": "2021-04-03T01:31:01Z",
       "side": 1,
       "message": "UpToDateChecker would be more specific",
+      "range": {
+        "startLine": 6,
+        "startChar": 17,
+        "endLine": 6,
+        "endChar": 24
+      },
+      "revId": "eef151bd36e28b38056039b20c7c1f2c10b069be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39381bc0_2df89468",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/Checker.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-04-05T13:08:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44084f56_02f54a94",
       "range": {
         "startLine": 6,
         "startChar": 17,
