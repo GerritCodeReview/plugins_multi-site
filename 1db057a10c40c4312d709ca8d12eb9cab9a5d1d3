@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ac3b3de_6c92634d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexGroupHandler.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-04-08T21:47:02Z",
+      "side": 1,
+      "message": "what about \"indexName\" or \"indexType\" or something more specific?",
+      "range": {
+        "startLine": 64,
+        "startChar": 19,
+        "endLine": 64,
+        "endChar": 24
+      },
+      "revId": "1db057a10c40c4312d709ca8d12eb9cab9a5d1d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe458287_a4a4f5d2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-04-08T21:47:02Z",
+      "side": 1,
+      "message": "this method return a boolean but it is never used",
+      "range": {
+        "startLine": 60,
+        "startChar": 12,
+        "endLine": 60,
+        "endChar": 19
+      },
+      "revId": "1db057a10c40c4312d709ca8d12eb9cab9a5d1d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb6c507f_464d2384",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-04-08T21:47:02Z",
+      "side": 1,
+      "message": "nit: an alternative way of writing it to loose one nesting level\n\n   if (!upToDateChecker.isUpToDate(indexEvent)) {\n      log.warn(\"{} {} is not up-to-date. Rescheduling\", label(), id);\n      rescheduleIndex(id, indexEvent, retryCount + 1);\n      return;\n   }\n\n    if (retryCount \u003e 0) {\n        log.warn(\"{} {} has been eventually indexed after {} attempt(s)\", label(), id, retryCount);\n    } else {\n        log.debug(\"{} {} successfully indexed\", label(), id);\n    }",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 5
+      },
+      "revId": "1db057a10c40c4312d709ca8d12eb9cab9a5d1d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
