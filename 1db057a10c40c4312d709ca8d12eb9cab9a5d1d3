@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa9e8d46_a20787a4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexGroupHandler.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-04-09T09:35:04Z",
+      "side": 1,
+      "message": "Yes good point, I will rename this to \"indexName\"",
+      "parentUuid": "6ac3b3de_6c92634d",
+      "range": {
+        "startLine": 64,
+        "startChar": 19,
+        "endLine": 64,
+        "endChar": 24
+      },
+      "revId": "1db057a10c40c4312d709ca8d12eb9cab9a5d1d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe458287_a4a4f5d2",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84cd1537_76f4289c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-04-09T09:35:04Z",
+      "side": 1,
+      "message": "It\u0027s true but if you agree I would leave it as-is for two reasons:\n- it\u0027s the porting of the method from ForwardedIndexGroupHandler.java#L78\n- even thought its return value is not used by the ForwardedIndexGroupHandler, I would like to keep its original signature in this common module: other ForwardedIndex*Handler will use it (see next change in the the chain for example[1]).\n\n[1]https://gerrit.googlesource.com/plugins/multi-site/+/7e3675c7c1da862c4ae410374a41f3c32862abca/src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandler.java#74",
+      "parentUuid": "fe458287_a4a4f5d2",
+      "range": {
+        "startLine": 60,
+        "startChar": 12,
+        "endLine": 60,
+        "endChar": 19
+      },
+      "revId": "1db057a10c40c4312d709ca8d12eb9cab9a5d1d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb6c507f_464d2384",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
         "patchSetId": 9
@@ -60,6 +108,30 @@
       "writtenOn": "2021-04-08T21:47:02Z",
       "side": 1,
       "message": "nit: an alternative way of writing it to loose one nesting level\n\n   if (!upToDateChecker.isUpToDate(indexEvent)) {\n      log.warn(\"{} {} is not up-to-date. Rescheduling\", label(), id);\n      rescheduleIndex(id, indexEvent, retryCount + 1);\n      return;\n   }\n\n    if (retryCount \u003e 0) {\n        log.warn(\"{} {} has been eventually indexed after {} attempt(s)\", label(), id, retryCount);\n    } else {\n        log.debug(\"{} {} successfully indexed\", label(), id);\n    }",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 5
+      },
+      "revId": "1db057a10c40c4312d709ca8d12eb9cab9a5d1d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a17af079_5a7ec1bf",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-04-09T09:35:04Z",
+      "side": 1,
+      "message": "Nice one your code looks cleaner.",
+      "parentUuid": "fb6c507f_464d2384",
       "range": {
         "startLine": 96,
         "startChar": 0,
