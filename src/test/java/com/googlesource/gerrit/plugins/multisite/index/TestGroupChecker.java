@@ -14,22 +14,29 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
-import com.google.gerrit.entities.Project;
-import com.google.gerrit.server.project.ProjectCache;
-import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import java.util.Optional;
+import org.eclipse.jgit.lib.ObjectId;
+import org.junit.Ignore;
 
-public class ProjectCheckerImpl implements ProjectChecker {
-  private final ProjectCache projectCache;
+@Ignore
+public class TestGroupChecker implements GroupChecker {
 
-  @Inject
-  ProjectCheckerImpl(ProjectCache projectCache) {
-    this.projectCache = projectCache;
+  private final boolean isUpToDate;
+
+  public TestGroupChecker(boolean isUpToDate) {
+    this.isUpToDate = isUpToDate;
+  }
+
+  private static final String someObjectId = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef";
+
+  @Override
+  public boolean isUpToDate(Optional<GroupIndexEvent> groupIndexEvent) {
+    return isUpToDate;
   }
 
   @Override
-  public boolean isUpToDate(Optional<ProjectIndexEvent> indexEvent) {
-    return indexEvent.map(e -> Project.nameKey(e.projectName)).map(projectCache::get).isPresent();
+  public ObjectId getGroupHead(String groupUUID) {
+    return ObjectId.fromString(someObjectId);
   }
 }

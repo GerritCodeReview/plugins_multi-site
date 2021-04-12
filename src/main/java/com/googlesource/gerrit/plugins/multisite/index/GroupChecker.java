@@ -1,4 +1,4 @@
-// Copyright (C) 2018 The Android Open Source Project
+// Copyright (C) 2021 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,22 +14,14 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
-import com.google.gerrit.entities.Project;
-import com.google.gerrit.server.project.ProjectCache;
-import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import java.util.Optional;
+import org.eclipse.jgit.lib.ObjectId;
 
-public class ProjectCheckerImpl implements ProjectChecker {
-  private final ProjectCache projectCache;
-
-  @Inject
-  ProjectCheckerImpl(ProjectCache projectCache) {
-    this.projectCache = projectCache;
-  }
+public interface GroupChecker extends UpToDateChecker<GroupIndexEvent> {
 
   @Override
-  public boolean isUpToDate(Optional<ProjectIndexEvent> indexEvent) {
-    return indexEvent.map(e -> Project.nameKey(e.projectName)).map(projectCache::get).isPresent();
-  }
+  boolean isUpToDate(Optional<GroupIndexEvent> groupIndexEvent);
+
+  ObjectId getGroupHead(String groupUUID);
 }
