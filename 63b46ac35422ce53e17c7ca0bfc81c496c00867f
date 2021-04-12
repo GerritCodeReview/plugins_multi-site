@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "3ea11098_3e7a42f9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-04-12T06:57:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "523617da_13545010",
+      "revId": "63b46ac35422ce53e17c7ca0bfc81c496c00867f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "3aa8546e_cd5522f5",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
@@ -168,6 +186,30 @@
       "side": 1,
       "message": "That\u0027s already the plan when moving it to googlesource",
       "parentUuid": "a675c74e_ec447d37",
+      "range": {
+        "startLine": 8,
+        "startChar": 35,
+        "endLine": 8,
+        "endChar": 48
+      },
+      "revId": "63b46ac35422ce53e17c7ca0bfc81c496c00867f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d76795cb_51d1609c",
+        "filename": "setup_local_env/README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-04-12T06:57:38Z",
+      "side": 1,
+      "message": "I this we agreed that gcloud-pubsub is ok. Can I resolve all those comments and can we close this change?",
+      "parentUuid": "29919ed3_0b9d5efd",
       "range": {
         "startLine": 8,
         "startChar": 35,
