@@ -47,17 +47,20 @@ class IndexEventHandler
   private final Set<IndexTask> queuedTasks = Collections.newSetFromMap(new ConcurrentHashMap<>());
   private final ChangeCheckerImpl.Factory changeChecker;
   private final ProjectsFilter projectsFilter;
+  private final GroupChecker groupChecker;
 
   @Inject
   IndexEventHandler(
       @IndexExecutor Executor executor,
       DynamicSet<IndexEventForwarder> forwarders,
       ChangeCheckerImpl.Factory changeChecker,
-      ProjectsFilter projectsFilter) {
+      ProjectsFilter projectsFilter,
+      GroupChecker groupChecker) {
     this.forwarders = forwarders;
     this.executor = executor;
     this.changeChecker = changeChecker;
     this.projectsFilter = projectsFilter;
+    this.groupChecker = groupChecker;
   }
 
   @Override
@@ -83,7 +86,8 @@ class IndexEventHandler
   @Override
   public void onGroupIndexed(String groupUUID) {
     if (!Context.isForwardedEvent()) {
-      IndexGroupTask task = new IndexGroupTask(new GroupIndexEvent(groupUUID));
+      IndexGroupTask task =
+          new IndexGroupTask(new GroupIndexEvent(groupUUID, groupChecker.getGroupHead(groupUUID)));
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }
