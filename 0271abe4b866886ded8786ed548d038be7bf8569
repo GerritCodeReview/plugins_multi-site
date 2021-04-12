@@ -34,6 +34,24 @@
       "parentUuid": "b7cceaa1_1757e327",
       "revId": "0271abe4b866886ded8786ed548d038be7bf8569",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9379d79_642e64cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-04-12T15:27:06Z",
+      "side": 1,
+      "message": "Let\u0027s keep it all on master branch then. So, the relevant change on gerrit core is also on master and not included on stable-3.4 branch yet.",
+      "parentUuid": "cad66eb4_8246e70d",
+      "revId": "0271abe4b866886ded8786ed548d038be7bf8569",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
