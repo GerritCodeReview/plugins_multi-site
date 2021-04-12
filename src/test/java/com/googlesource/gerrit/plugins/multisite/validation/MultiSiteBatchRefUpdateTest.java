@@ -24,10 +24,12 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
+import com.googlesource.gerrit.plugins.multisite.validation.RefUpdateValidator.OneParameterVoidFunction;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.zookeeper.RefFixture;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 import org.eclipse.jgit.lib.BatchRefUpdate;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
@@ -54,6 +56,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
   @Mock RevWalk revWalk;
   @Mock ProgressMonitor progressMonitor;
   @Mock ValidationMetrics validationMetrics;
+  @Mock OneParameterVoidFunction<List<ReceiveCommand>> rollbackFunction;
 
   private final Ref oldRef =
       new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, A_TEST_REF_NAME, AN_OBJECT_ID_1);

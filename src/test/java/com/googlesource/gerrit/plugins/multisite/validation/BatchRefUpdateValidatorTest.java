@@ -39,6 +39,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.ReceiveCommand;
+import org.eclipse.jgit.transport.ReceiveCommand.Result;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -100,7 +101,7 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
     BatchRefUpdateValidator BatchRefUpdateValidator = newDefaultValidator(A_TEST_PROJECT_NAME);
 
     BatchRefUpdateValidator.executeBatchUpdateWithValidation(
-        batchRefUpdate, () -> execute(batchRefUpdate));
+        batchRefUpdate, () -> execute(batchRefUpdate), this::defaultRollback);
 
     assertFalse(zkSharedRefDatabase.exists(A_TEST_PROJECT_NAME, AN_IMMUTABLE_REF));
   }
@@ -114,7 +115,7 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
     BatchRefUpdateValidator BatchRefUpdateValidator = newDefaultValidator(A_TEST_PROJECT_NAME);
 
     BatchRefUpdateValidator.executeBatchUpdateWithValidation(
-        batchRefUpdate, () -> execute(batchRefUpdate));
+        batchRefUpdate, () -> execute(batchRefUpdate), this::defaultRollback);
 
     assertFalse(zkSharedRefDatabase.exists(A_TEST_PROJECT_NAME, DRAFT_COMMENT));
   }
@@ -144,11 +145,16 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
   private BatchRefUpdate newBatchUpdate(List<ReceiveCommand> cmds) {
     BatchRefUpdate u = refdir.newBatchUpdate();
     u.addCommand(cmds);
+    cmds.forEach(c -> c.setResult(Result.OK));
     return u;
   }
 
   @Override
   public String testBranch() {
     return "branch_" + nameRule.getMethodName();
+  }
+
+  private void defaultRollback(List<ReceiveCommand> cmds) throws IOException {
+    // do nothing
   }
 }
