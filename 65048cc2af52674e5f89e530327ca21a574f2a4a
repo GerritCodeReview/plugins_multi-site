@@ -16,6 +16,24 @@
       "message": "This merge shows the issue related to eventGonsProvider[1], which I believe will be fixed by [2]\n\n[1]https://pastebin.com/ziSqRxUr\n[2]https://gerrit-review.googlesource.com/c/gerrit/+/296105",
       "revId": "65048cc2af52674e5f89e530327ca21a574f2a4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e0a3483_e696ffb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-04-13T15:48:10Z",
+      "side": 1,
+      "message": "It doesn\u0027t built on bazel@HEAD:\n\n          logger.atSevere().withCause(e).log(\n                                          ^\n    (see https://errorprone.info/bugpattern/FloggerFormatString)\nplugins/multi-site/src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java:83: error: [FloggerFormatString] missing argument for format specifier \u0027%s\u0027\n        logger.atSevere().withCause(e).log(\n                                          ^\n    (see https://errorprone.info/bugpattern/FloggerFormatString)\nTarget //plugins/multi-site:multi_site_tests failed to build\nUse --verbose_failures to see the command lines of failed build steps.\nINFO: Elapsed time: 51.266s, Critical Path: 17.64s",
+      "parentUuid": "5469f2d6_1d5e28cf",
+      "revId": "65048cc2af52674e5f89e530327ca21a574f2a4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
