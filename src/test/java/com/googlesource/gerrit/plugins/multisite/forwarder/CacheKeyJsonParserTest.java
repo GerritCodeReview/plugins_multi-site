@@ -24,11 +24,11 @@ import com.google.gson.Gson;
 import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 import org.junit.Test;
 
-public class GsonParserTest {
+public class CacheKeyJsonParserTest {
   private static final Object EMPTY_JSON = "{}";
 
   private final Gson gson = new EventGsonProvider().get();
-  private final GsonParser gsonParser = new GsonParser(gson);
+  private final CacheKeyJsonParser gsonParser = new CacheKeyJsonParser(gson);
 
   @Test
   public void accountIDParse() {

@@ -1,0 +1,17 @@
+version: '3'
+services:
+  kinesis:
+    image: localstack/localstack:0.12.8
+    ports:
+      - "4566:4566"
+      - "4751:4751"
+    container_name: kinesis_test_node
+    environment:
+      SERVICES: dynamodb,cloudwatch,kinesis
+      AWS_REGION: us-east-1
+      USE_SSL: "true"
+    networks:
+      - setup_local_env_default
+networks:
+  setup_local_env_default:
+    external: true
