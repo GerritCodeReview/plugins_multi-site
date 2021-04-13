@@ -76,12 +76,10 @@ public abstract class AbstractSubcriber {
         subscriberMetrics.incrementSubscriberConsumedMessage();
         subscriberMetrics.updateReplicationStatusMetrics(event);
       } catch (IOException e) {
-        logger.atSevere().withCause(e).log(
-            "Malformed event '%s': [Exception: %s]", event.getHeader());
+        logger.atSevere().withCause(e).log("Malformed event '%s'", event.getHeader());
         subscriberMetrics.incrementSubscriberFailedToConsumeMessage();
       } catch (PermissionBackendException | CacheNotFoundException e) {
-        logger.atSevere().withCause(e).log(
-            "Cannot handle message %s: [Exception: %s]", event.getHeader());
+        logger.atSevere().withCause(e).log("Cannot handle message '%s'", event.getHeader());
         subscriberMetrics.incrementSubscriberFailedToConsumeMessage();
       }
     }
