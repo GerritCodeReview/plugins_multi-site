@@ -190,6 +190,6 @@ public class ForwardedIndexChangeHandlerTest {
       }
     }
 
-    when(changeCheckerPresentMock.isChangeUpToDate(any())).thenReturn(changeIsUpToDate);
+    when(changeCheckerPresentMock.isUpToDate(any())).thenReturn(changeIsUpToDate);
   }
 }

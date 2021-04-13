@@ -16,11 +16,15 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.gerrit.entities.AccountGroup;
 import com.google.gerrit.server.index.group.GroupIndexer;
+import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.index.ForwardedIndexExecutor;
+import com.googlesource.gerrit.plugins.multisite.index.GroupChecker;
 import java.util.Optional;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Index a group using {@link GroupIndexer}. This class is meant to be used on the receiving side of
@@ -29,19 +33,42 @@ import java.util.Optional;
  * done for the same group uuid
  */
 @Singleton
-public class ForwardedIndexGroupHandler extends ForwardedIndexingHandler<String, GroupIndexEvent> {
+public class ForwardedIndexGroupHandler
+    extends ForwardedIndexingHandlerWithRetries<String, GroupIndexEvent> {
   private final GroupIndexer indexer;
+  private final GroupChecker groupChecker;
 
   @Inject
-  ForwardedIndexGroupHandler(GroupIndexer indexer, Configuration config) {
-    super(config.index().numStripedLocks());
+  ForwardedIndexGroupHandler(
+      GroupIndexer indexer,
+      Configuration config,
+      GroupChecker groupChecker,
+      OneOffRequestContext oneOffRequestContext,
+      @ForwardedIndexExecutor ScheduledExecutorService indexExecutor) {
+    super(indexExecutor, config, oneOffRequestContext);
     this.indexer = indexer;
+    this.groupChecker = groupChecker;
   }
 
   @Override
   protected void doIndex(String uuid, Optional<GroupIndexEvent> event) {
-    indexer.index(AccountGroup.uuid(uuid));
-    log.debug("Group {} successfully indexed", uuid);
+    attemptToIndex(uuid, event, 0);
+  }
+
+  @Override
+  protected void reindex(String id) {
+    indexer.index(AccountGroup.uuid(id));
+  }
+
+  @Override
+  protected String indexName() {
+    return "group";
+  }
+
+  @Override
+  protected void attemptToIndex(
+      String uuid, Optional<GroupIndexEvent> groupIndexEvent, int retryCount) {
+    reindexAndCheckIsUpToDate(uuid, groupIndexEvent, groupChecker, retryCount);
   }
 
   @Override
