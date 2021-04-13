@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.googlesource.gerrit.plugins.multisite.validation.RefUpdateValidator.NoParameterFunction;
 import java.io.IOException;
 import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.ObjectId;
@@ -92,22 +93,34 @@ public class MultiSiteRefUpdate extends RefUpdate {
 
   @Override
   public Result update() throws IOException {
-    return refUpdateValidator.executeRefUpdate(refUpdateBase, refUpdateBase::update);
+    return refUpdateValidator.executeRefUpdate(
+        refUpdateBase,
+        refUpdateBase::update,
+        objectId -> rollback(objectId, refUpdateBase::update));
   }
 
   @Override
   public Result update(RevWalk rev) throws IOException {
-    return refUpdateValidator.executeRefUpdate(refUpdateBase, () -> refUpdateBase.update(rev));
+    return refUpdateValidator.executeRefUpdate(
+        refUpdateBase,
+        () -> refUpdateBase.update(rev),
+        objectId -> rollback(objectId, () -> refUpdateBase.update(rev)));
   }
 
   @Override
   public Result delete() throws IOException {
-    return refUpdateValidator.executeRefUpdate(refUpdateBase, refUpdateBase::delete);
+    return refUpdateValidator.executeRefUpdate(
+        refUpdateBase,
+        refUpdateBase::delete,
+        objectId -> rollback(objectId, refUpdateBase::update));
   }
 
   @Override
   public Result delete(RevWalk walk) throws IOException {
-    return refUpdateValidator.executeRefUpdate(refUpdateBase, () -> refUpdateBase.delete(walk));
+    return refUpdateValidator.executeRefUpdate(
+        refUpdateBase,
+        () -> refUpdateBase.delete(walk),
+        objectId -> rollback(objectId, () -> refUpdateBase.update(walk)));
   }
 
   @Override
@@ -222,7 +235,10 @@ public class MultiSiteRefUpdate extends RefUpdate {
 
   @Override
   public Result forceUpdate() throws IOException {
-    return refUpdateValidator.executeRefUpdate(refUpdateBase, refUpdateBase::forceUpdate);
+    return refUpdateValidator.executeRefUpdate(
+        refUpdateBase,
+        refUpdateBase::forceUpdate,
+        objectId -> rollback(objectId, refUpdateBase::forceUpdate));
   }
 
   @Override
@@ -233,5 +249,12 @@ public class MultiSiteRefUpdate extends RefUpdate {
   @Override
   public void setCheckConflicting(boolean check) {
     refUpdateBase.setCheckConflicting(check);
+  }
+
+  private Result rollback(ObjectId objectId, NoParameterFunction<Result> updateFunction)
+      throws IOException {
+    refUpdateBase.setExpectedOldObjectId(refUpdateBase.getNewObjectId());
+    refUpdateBase.setNewObjectId(objectId);
+    return updateFunction.invoke();
   }
 }

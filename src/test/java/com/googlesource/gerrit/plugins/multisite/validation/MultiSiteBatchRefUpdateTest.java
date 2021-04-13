@@ -27,10 +27,12 @@ import static org.mockito.Mockito.when;
 
 import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
+import com.googlesource.gerrit.plugins.multisite.validation.RefUpdateValidator.OneParameterVoidFunction;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 import org.eclipse.jgit.lib.BatchRefUpdate;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
@@ -60,6 +62,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
   @Mock ProgressMonitor progressMonitor;
   @Mock ValidationMetrics validationMetrics;
   @Mock ProjectsFilter projectsFilter;
+  @Mock OneParameterVoidFunction<List<ReceiveCommand>> rollbackFunction;
 
   private final Ref oldRef =
       new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, A_TEST_REF_NAME, AN_OBJECT_ID_1);
@@ -140,7 +143,7 @@ public class MultiSiteBatchRefUpdateTest implements RefFixture {
     multiSiteRefUpdate = getMultiSiteBatchRefUpdateWithMockedValidator();
     doThrow(new IOException("IO Test Exception"))
         .when(batchRefUpdateValidator)
-        .executeBatchUpdateWithValidation(any(), any());
+        .executeBatchUpdateWithValidation(any(), any(), any());
 
     multiSiteRefUpdate.execute(revWalk, progressMonitor, Collections.emptyList());
   }
