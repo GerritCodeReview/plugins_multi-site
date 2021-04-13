@@ -46,7 +46,11 @@ public class IndexEventHandlerTest {
   public void setUp() {
     eventHandler =
         new IndexEventHandler(
-            MoreExecutors.directExecutor(), asDynamicSet(forwarder), changeChecker, projectsFilter);
+            MoreExecutors.directExecutor(),
+            asDynamicSet(forwarder),
+            changeChecker,
+            projectsFilter,
+            new TestGroupChecker(true));
   }
 
   private DynamicSet<IndexEventForwarder> asDynamicSet(IndexEventForwarder forwarder) {

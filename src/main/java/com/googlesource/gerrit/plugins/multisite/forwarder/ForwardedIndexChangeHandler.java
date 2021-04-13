@@ -23,15 +23,12 @@ import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.Configuration.Index;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeChecker;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeCheckerImpl;
 import com.googlesource.gerrit.plugins.multisite.index.ForwardedIndexExecutor;
 import java.util.Optional;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Index a change using {@link ChangeIndexer}. This class is meant to be used on the receiving side
@@ -41,12 +38,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Singleton
 public class ForwardedIndexChangeHandler
-    extends ForwardedIndexingHandler<String, ChangeIndexEvent> {
+    extends ForwardedIndexingHandlerWithRetries<String, ChangeIndexEvent> {
   private final ChangeIndexer indexer;
-  private final ScheduledExecutorService indexExecutor;
-  private final OneOffRequestContext oneOffCtx;
-  private final int retryInterval;
-  private final int maxTries;
   private final ChangeCheckerImpl.Factory changeCheckerFactory;
 
   @Inject
@@ -56,43 +49,22 @@ public class ForwardedIndexChangeHandler
       @ForwardedIndexExecutor ScheduledExecutorService indexExecutor,
       OneOffRequestContext oneOffCtx,
       ChangeCheckerImpl.Factory changeCheckerFactory) {
-    super(configuration.index().numStripedLocks());
+    super(indexExecutor, configuration, oneOffCtx);
     this.indexer = indexer;
-    this.indexExecutor = indexExecutor;
-    this.oneOffCtx = oneOffCtx;
     this.changeCheckerFactory = changeCheckerFactory;
-
-    Index indexConfig = configuration.index();
-    this.retryInterval = indexConfig != null ? indexConfig.retryInterval() : 0;
-    this.maxTries = indexConfig != null ? indexConfig.maxTries() : 0;
   }
 
   @Override
   protected void doIndex(String id, Optional<ChangeIndexEvent> indexEvent) {
-    doIndex(id, indexEvent, 0);
+    attemptToIndex(id, indexEvent, 0);
   }
 
-  private void doIndex(String id, Optional<ChangeIndexEvent> indexEvent, int retryCount) {
+  @Override
+  protected void attemptToIndex(String id, Optional<ChangeIndexEvent> indexEvent, int retryCount) {
     ChangeChecker checker = changeCheckerFactory.create(id);
     Optional<ChangeNotes> changeNotes = checker.getChangeNotes();
     if (changeNotes.isPresent()) {
-      ChangeNotes notes = changeNotes.get();
-      reindex(notes);
-
-      if (checker.isChangeUpToDate(indexEvent)) {
-        if (retryCount > 0) {
-          log.warn("Change {} has been eventually indexed after {} attempt(s)", id, retryCount);
-        } else {
-          log.debug("Change {} successfully indexed", id);
-        }
-      } else {
-        log.warn(
-            "Change {} seems too old compared to the event timestamp (event={} >> change-Ts={})",
-            id,
-            indexEvent,
-            checker);
-        rescheduleIndex(id, indexEvent, retryCount + 1);
-      }
+      reindexAndCheckIsUpToDate(id, indexEvent, checker, retryCount);
     } else {
       log.warn(
           "Change {} not present yet in local Git repository (event={}) after {} attempt(s)",
@@ -106,42 +78,20 @@ public class ForwardedIndexChangeHandler
     }
   }
 
-  private void reindex(ChangeNotes notes) {
+  @Override
+  protected void reindex(String id) {
     try (ManualRequestContext ctx = oneOffCtx.open()) {
+      ChangeChecker checker = changeCheckerFactory.create(id);
+      Optional<ChangeNotes> changeNotes = checker.getChangeNotes();
+      ChangeNotes notes = changeNotes.get();
       notes.reload();
       indexer.index(notes.getChange());
     }
   }
 
-  private boolean rescheduleIndex(
-      String id, Optional<ChangeIndexEvent> indexEvent, int retryCount) {
-    if (retryCount > maxTries) {
-      log.error(
-          "Change {} could not be indexed after {} retries. Change index could be stale.",
-          id,
-          retryCount);
-      return false;
-    }
-
-    log.warn(
-        "Retrying for the #{} time to index Change {} after {} msecs",
-        retryCount,
-        id,
-        retryInterval);
-    @SuppressWarnings("unused")
-    Future<?> possiblyIgnoredError =
-        indexExecutor.schedule(
-            () -> {
-              try (ManualRequestContext ctx = oneOffCtx.open()) {
-                Context.setForwardedEvent(true);
-                doIndex(id, indexEvent, retryCount);
-              } catch (Exception e) {
-                log.warn("Change {} could not be indexed", id, e);
-              }
-            },
-            retryInterval,
-            TimeUnit.MILLISECONDS);
-    return true;
+  @Override
+  protected String indexName() {
+    return "change";
   }
 
   @Override
