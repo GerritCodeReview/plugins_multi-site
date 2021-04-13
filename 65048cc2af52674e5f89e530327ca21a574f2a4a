@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5469f2d6_1d5e28cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-04-13T15:25:34Z",
+      "side": 1,
+      "message": "This merge shows the issue related to eventGonsProvider[1], which I believe will be fixed by [2]\n\n[1]https://pastebin.com/ziSqRxUr\n[2]https://gerrit-review.googlesource.com/c/gerrit/+/296105",
+      "revId": "65048cc2af52674e5f89e530327ca21a574f2a4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
