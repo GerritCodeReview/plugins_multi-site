@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "a1809f6f_a996eb0b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-04-13T19:48:16Z",
+      "side": 1,
+      "message": "GJF.",
+      "revId": "467a3e5ed3c6545db028141c82c6c491b087f01e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "7f8b3de8_dcb53b44",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/RefUpdateValidatorTest.java",
         "patchSetId": 1
