@@ -20,6 +20,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -27,9 +28,9 @@ import com.google.gerrit.entities.Project;
 import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.SharedRefLogger;
+import com.googlesource.gerrit.plugins.multisite.validation.RefUpdateValidator.OneParameterFunction;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
-import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedDbSplitBrainException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefDatabase;
@@ -58,6 +59,8 @@ public class RefUpdateValidatorTest implements RefFixture {
 
   @Mock ProjectsFilter projectsFilter;
 
+  @Mock OneParameterFunction<ObjectId, Result> rollbackFunction;
+
   String refName;
   Ref oldUpdateRef;
   Ref newUpdateRef;
@@ -74,10 +77,10 @@ public class RefUpdateValidatorTest implements RefFixture {
 
     doReturn(localRef).when(localRefDb).findRef(refName);
     doReturn(localRef).when(localRefDb).exactRef(refName);
-    doReturn(oldUpdateRef).when(refUpdate).getRef();
     doReturn(newUpdateRef.getObjectId()).when(refUpdate).getNewObjectId();
     doReturn(refName).when(refUpdate).getName();
     lenient().doReturn(oldUpdateRef.getObjectId()).when(refUpdate).getOldObjectId();
+    doReturn(Result.FAST_FORWARD).when(rollbackFunction).invoke(any());
 
     doReturn(true).when(projectsFilter).matches(anyString());
 
@@ -109,7 +112,9 @@ public class RefUpdateValidatorTest implements RefFixture {
         .when(sharedRefDb)
         .compareAndPut(A_TEST_PROJECT_NAME_KEY, localRef, newUpdateRef.getObjectId());
 
-    Result result = refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
+    Result result =
+        refUpdateValidator.executeRefUpdate(
+            refUpdate, () -> RefUpdate.Result.NEW, this::defaultRollback);
 
     assertThat(result).isEqualTo(RefUpdate.Result.NEW);
   }
@@ -127,7 +132,9 @@ public class RefUpdateValidatorTest implements RefFixture {
         .compareAndPut(A_TEST_PROJECT_NAME_KEY, localRef, ObjectId.zeroId());
     doReturn(localRef).doReturn(null).when(localRefDb).findRef(refName);
 
-    Result result = refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.FORCED);
+    Result result =
+        refUpdateValidator.executeRefUpdate(
+            refUpdate, () -> RefUpdate.Result.FORCED, this::defaultRollback);
 
     assertThat(result).isEqualTo(RefUpdate.Result.FORCED);
   }
@@ -146,7 +153,9 @@ public class RefUpdateValidatorTest implements RefFixture {
         .compareAndPut(A_TEST_PROJECT_NAME_KEY, localNullRef, newUpdateRef.getObjectId());
     doReturn(localNullRef).doReturn(newUpdateRef).when(localRefDb).findRef(refName);
 
-    Result result = refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
+    Result result =
+        refUpdateValidator.executeRefUpdate(
+            refUpdate, () -> RefUpdate.Result.NEW, this::defaultRollback);
 
     assertThat(result).isEqualTo(RefUpdate.Result.NEW);
   }
@@ -160,13 +169,15 @@ public class RefUpdateValidatorTest implements RefFixture {
     doReturn(true).when(sharedRefDb).exists(A_TEST_PROJECT_NAME_KEY, refName);
     doReturn(false).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, localRef);
 
-    Result result = refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
+    Result result =
+        refUpdateValidator.executeRefUpdate(
+            refUpdate, () -> RefUpdate.Result.NEW, this::defaultRollback);
 
     assertThat(result).isEqualTo(Result.LOCK_FAILURE);
   }
 
-  @Test(expected = SharedDbSplitBrainException.class)
-  public void shouldTrowSplitBrainWhenLocalRefDbIsUpToDateButFinalCompareAndPutIsFailing()
+  @Test
+  public void shouldRollbackWhenLocalRefDbIsUpToDateButFinalCompareAndPutIsFailing()
       throws Exception {
     lenient()
         .doReturn(false)
@@ -181,7 +192,11 @@ public class RefUpdateValidatorTest implements RefFixture {
         .when(sharedRefDb)
         .compareAndPut(A_TEST_PROJECT_NAME_KEY, localRef, newUpdateRef.getObjectId());
 
-    refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.NEW);
+    Result result =
+        refUpdateValidator.executeRefUpdate(refUpdate, () -> Result.NEW, rollbackFunction);
+
+    verify(rollbackFunction, times(1)).invoke(any());
+    assertThat(result).isEqualTo(Result.LOCK_FAILURE);
   }
 
   @Test
@@ -193,7 +208,8 @@ public class RefUpdateValidatorTest implements RefFixture {
     doReturn(true).when(sharedRefDb).isUpToDate(A_TEST_PROJECT_NAME_KEY, localRef);
 
     Result result =
-        refUpdateValidator.executeRefUpdate(refUpdate, () -> RefUpdate.Result.LOCK_FAILURE);
+        refUpdateValidator.executeRefUpdate(
+            refUpdate, () -> Result.LOCK_FAILURE, this::defaultRollback);
 
     verify(sharedRefDb, never())
         .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
@@ -219,5 +235,9 @@ public class RefUpdateValidatorTest implements RefFixture {
         projectsFilter,
         A_TEST_PROJECT_NAME,
         localRefDb);
+  }
+
+  private Result defaultRollback(ObjectId objectId) {
+    return Result.NO_CHANGE;
   }
 }

@@ -29,6 +29,7 @@ import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
+import com.googlesource.gerrit.plugins.multisite.validation.RefUpdateValidator.OneParameterVoidFunction;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.SharedRefEnforcement;
@@ -47,6 +48,7 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.ReceiveCommand;
+import org.eclipse.jgit.transport.ReceiveCommand.Result;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -68,7 +70,10 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
   @Mock SharedRefDatabaseWrapper sharedRefDatabase;
 
   @Mock SharedRefEnforcement tmpRefEnforcement;
+
   @Mock ProjectsFilter projectsFilter;
+
+  @Mock OneParameterVoidFunction<List<ReceiveCommand>> rollbackFunction;
 
   @Before
   public void setup() throws Exception {
@@ -95,7 +100,7 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
     BatchRefUpdateValidator BatchRefUpdateValidator = newDefaultValidator(A_TEST_PROJECT_NAME);
 
     BatchRefUpdateValidator.executeBatchUpdateWithValidation(
-        batchRefUpdate, () -> execute(batchRefUpdate));
+        batchRefUpdate, () -> execute(batchRefUpdate), this::defaultRollback);
 
     verify(sharedRefDatabase, never())
         .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
@@ -110,7 +115,7 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
     BatchRefUpdateValidator BatchRefUpdateValidator = newDefaultValidator(A_TEST_PROJECT_NAME);
 
     BatchRefUpdateValidator.executeBatchUpdateWithValidation(
-        batchRefUpdate, () -> execute(batchRefUpdate));
+        batchRefUpdate, () -> execute(batchRefUpdate), this::defaultRollback);
 
     verify(sharedRefDatabase, never())
         .compareAndPut(A_TEST_PROJECT_NAME_KEY, newRef(DRAFT_COMMENT, A.getId()), B.getId());
@@ -134,7 +139,9 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
         .isUpToDate(A_TEST_PROJECT_NAME_KEY, newRef(AN_OUT_OF_SYNC_REF, AN_OBJECT_ID_1));
 
     batchRefUpdateValidator.executeBatchUpdateWithValidation(
-        batchRefUpdate, () -> execute(batchRefUpdate));
+        batchRefUpdate, () -> execute(batchRefUpdate), rollbackFunction);
+
+    verify(rollbackFunction, never()).invoke(any());
 
     final List<ReceiveCommand> commands = batchRefUpdate.getCommands();
     assertThat(commands.size()).isEqualTo(1);
@@ -186,11 +193,16 @@ public class BatchRefUpdateValidatorTest extends LocalDiskRepositoryTestCase imp
   private BatchRefUpdate newBatchUpdate(List<ReceiveCommand> cmds) {
     BatchRefUpdate u = refdir.newBatchUpdate();
     u.addCommand(cmds);
+    cmds.forEach(c -> c.setResult(Result.OK));
     return u;
   }
 
   @Override
   public String testBranch() {
     return "branch_" + nameRule.getMethodName();
+  }
+
+  private void defaultRollback(List<ReceiveCommand> cmds) throws IOException {
+    // do nothing
   }
 }
