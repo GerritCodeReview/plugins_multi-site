@@ -31,6 +31,7 @@ import org.eclipse.jgit.util.time.ProposedTimestamp;
 public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
 
   private final BatchRefUpdate batchRefUpdate;
+  private final BatchRefUpdate batchRefUpdateRollback;
   private final String project;
   private final BatchRefUpdateValidator.Factory batchRefValidatorFactory;
   private final RefDatabase refDb;
@@ -48,6 +49,7 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     this.refDb = refDb;
     this.project = project;
     this.batchRefUpdate = refDb.newBatchUpdate();
+    this.batchRefUpdateRollback = refDb.newBatchUpdate();
     this.batchRefValidatorFactory = batchRefValidatorFactory;
   }
 
@@ -68,6 +70,7 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
 
   @Override
   public BatchRefUpdate setAllowNonFastForwards(boolean allow) {
+    batchRefUpdateRollback.setAllowNonFastForwards(allow);
     return batchRefUpdate.setAllowNonFastForwards(allow);
   }
 
@@ -78,6 +81,7 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
 
   @Override
   public BatchRefUpdate setRefLogIdent(PersonIdent pi) {
+    batchRefUpdateRollback.setRefLogIdent(pi);
     return batchRefUpdate.setRefLogIdent(pi);
   }
 
@@ -93,6 +97,7 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
 
   @Override
   public BatchRefUpdate setRefLogMessage(String msg, boolean appendStatus) {
+    batchRefUpdateRollback.setRefLogMessage(msg, appendStatus);
     return batchRefUpdate.setRefLogMessage(msg, appendStatus);
   }
 
@@ -103,6 +108,7 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
 
   @Override
   public BatchRefUpdate setForceRefLog(boolean force) {
+    batchRefUpdateRollback.setForceRefLog(force);
     return batchRefUpdate.setForceRefLog(force);
   }
 
@@ -167,7 +173,10 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     batchRefValidatorFactory
         .create(project, refDb)
         .executeBatchUpdateWithValidation(
-            batchRefUpdate, () -> batchRefUpdate.execute(walk, monitor, options));
+            batchRefUpdate,
+            () -> batchRefUpdate.execute(walk, monitor, options),
+            (commands) ->
+                batchRefUpdateRollback.addCommand(commands).execute(walk, monitor, options));
   }
 
   @Override
@@ -175,7 +184,9 @@ public class MultiSiteBatchRefUpdate extends BatchRefUpdate {
     batchRefValidatorFactory
         .create(project, refDb)
         .executeBatchUpdateWithValidation(
-            batchRefUpdate, () -> batchRefUpdate.execute(walk, monitor));
+            batchRefUpdate,
+            () -> batchRefUpdate.execute(walk, monitor),
+            (commands) -> batchRefUpdateRollback.addCommand(commands).execute(walk, monitor));
   }
 
   @Override
