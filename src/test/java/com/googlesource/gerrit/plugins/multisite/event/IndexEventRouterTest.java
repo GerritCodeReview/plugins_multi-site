@@ -35,6 +35,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.router.IndexEventRout
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRouter;
 import com.googlesource.gerrit.plugins.replication.events.RefReplicationDoneEvent;
 import java.util.Optional;
+import org.eclipse.jgit.lib.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -95,7 +96,7 @@ public class IndexEventRouterTest {
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_GroupIndex() throws Exception {
     final String groupId = "12";
-    final GroupIndexEvent event = new GroupIndexEvent(groupId);
+    final GroupIndexEvent event = new GroupIndexEvent(groupId, ObjectId.zeroId());
     router.route(event);
 
     verify(indexGroupHandler)

@@ -40,12 +40,12 @@ class DeleteChangeUsingMultiGerrit1 extends GerritSimulation {
     .feed(data)
     .exec(session => {
       if (number.nonEmpty) {
-        session.set("number", number.get)
+        session.set(numberKey, number.get)
       } else {
         session
       }
     })
-    .exec(http(uniqueName).delete("${url}${number}"))
+    .exec(http(uniqueName).delete("${url}${"+ numberKey +"}"))
 
   setUp(
     test.inject(

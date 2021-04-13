@@ -5,15 +5,8 @@ services:
     ports:
       - "2181:2181"
     container_name: zk_test_node
-  kafka:
-    image: wurstmeister/kafka:2.12-2.1.0
-    ports:
-      - "9092:9092"
-    container_name: kafka_test_node
-    environment:
-      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
   prometheus:
+    container_name: prometheus_test_node
     image: prom/prometheus:v2.16.0
     user: root
     volumes:

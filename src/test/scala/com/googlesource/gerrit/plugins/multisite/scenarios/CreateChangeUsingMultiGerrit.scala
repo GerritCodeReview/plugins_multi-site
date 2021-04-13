@@ -25,7 +25,6 @@ import scala.concurrent.duration._
 class CreateChangeUsingMultiGerrit extends GerritSimulation {
   private val data: FeederBuilder = jsonFile(resource).convert(keys).queue
   private val projectName = className
-  private val numberKey = "_number"
 
   override def relativeRuntimeWeight = 10
 
@@ -33,7 +32,7 @@ class CreateChangeUsingMultiGerrit extends GerritSimulation {
     .feed(data)
     .exec(httpRequest
       .body(ElFileBody(body)).asJson
-      .check(regex("\"" + numberKey + "\":(\\d+),").saveAs(numberKey)))
+      .check(regex("\"_" + numberKey + "\":(\\d+),").saveAs(numberKey)))
     .exec(session => {
       deleteChange.number = Some(session(numberKey).as[Int])
       session

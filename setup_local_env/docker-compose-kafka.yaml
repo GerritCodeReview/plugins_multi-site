@@ -1,0 +1,15 @@
+version: '3'
+services:
+  kafka:
+    image: wurstmeister/kafka:2.12-2.1.0
+    ports:
+      - "9092:9092"
+    container_name: kafka_test_node
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    networks:
+      - setup_local_env_default
+networks:
+  setup_local_env_default:
+    external: true

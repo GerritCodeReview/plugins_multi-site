@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.index.project.ProjectIndexer;
+import com.google.gerrit.server.util.OneOffRequestContext;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
 import com.googlesource.gerrit.plugins.multisite.index.ProjectChecker;
@@ -44,6 +45,7 @@ public class ForwardedIndexProjectHandlerTest {
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private ProjectIndexer indexerMock;
   @Mock private Configuration configMock;
+  @Mock private OneOffRequestContext ctxMock;
   @Mock private ProjectChecker projectCheckerMock;
   @Mock private Configuration.Index indexMock;
   @Mock private ScheduledExecutorService indexExecutorMock;
@@ -56,10 +58,10 @@ public class ForwardedIndexProjectHandlerTest {
     when(indexMock.numStripedLocks()).thenReturn(10);
     when(indexMock.retryInterval()).thenReturn(0);
     when(indexMock.maxTries()).thenReturn(2);
-    when(projectCheckerMock.isProjectUpToDate(any())).thenReturn(true);
+    when(projectCheckerMock.isUpToDate(any())).thenReturn(true);
     handler =
         new ForwardedIndexProjectHandler(
-            indexerMock, projectCheckerMock, indexExecutorMock, configMock);
+            indexerMock, projectCheckerMock, ctxMock, indexExecutorMock, configMock);
     nameKey = "project/name";
   }
 
@@ -117,14 +119,5 @@ public class ForwardedIndexProjectHandlerTest {
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(indexerMock).index(Project.nameKey(nameKey));
-  }
-
-  @Test
-  public void indexAttemptShouldFailWhenCheckerFails() throws Exception {
-    handler =
-        new ForwardedIndexProjectHandler(
-            indexerMock, (projectName) -> false, indexExecutorMock, configMock);
-
-    assertThat(handler.attemptIndex(nameKey, Optional.empty())).isFalse();
   }
 }

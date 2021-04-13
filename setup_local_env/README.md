@@ -4,7 +4,8 @@ This script configures a full environment to simulate a Gerrit Multi-Site setup.
 The environment is composed by:
 
 - 2 gerrit instances deployed by default in /tmp
-- 1 kafka node and 1 zookeeper node
+- 1 zookeeper node
+- 1 Broker node (kafka, kinesis or gcloud-pubsub)
 - 1 HA-PROXY
 
 ## Requirements
@@ -14,14 +15,35 @@ The environment is composed by:
 - wget
 - envsubst
 - haproxy
+- aws-cli (only when broker_type is "kinesis")
 
 ## Examples
 
-Simplest setup with all default values and cleanup previous deployment
+Simplest setup with all default values and cleanup previous deployment. This
+will deploy kafka broker
 
 ```bash
 sh setup_local_env/setup.sh --release-war-file /path/to/gerrit.war --multisite-lib-file /path/to/multi-site.jar
 ```
+
+Deploy Kinesis broker
+
+```bash
+sh setup_local_env/setup.sh \
+    --release-war-file /path/to/gerrit.war \
+    --multisite-lib-file /path/to/multi-site.jar \
+    --broker-type kinesis
+```
+
+Deploy GCloud PubSub broker
+
+```bash
+sh setup_local_env/setup.sh \
+    --release-war-file /path/to/gerrit.war \
+    --multisite-lib-file /path/to/multi-site.jar \
+    --broker-type gcloud-pubsub
+```
+
 
 Cleanup the previous deployments
 
@@ -59,6 +81,8 @@ Usage: sh ./setup.sh [--option ]
 [--just-cleanup-env]            Cleans up previous deployment; default false
 
 [--enabled-https]               Enabled https; default true
+
+[--broker_type]                 events broker type; 'kafka', 'kinesis' or 'gcloud-pubsub'. Default 'kafka'
 ```
 
 ## Limitations
