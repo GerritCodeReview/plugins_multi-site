@@ -51,6 +51,11 @@ public class MultiSiteGitRepositoryManager implements GitRepositoryManager {
   }
 
   @Override
+  public Boolean canPerformGC() {
+    return gitRepositoryManager.canPerformGC();
+  }
+
+  @Override
   public SortedSet<Project.NameKey> list() {
     return gitRepositoryManager.list();
   }
