@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12af8f8d_55a45182",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-04-19T09:12:24Z",
+      "side": 1,
+      "message": "Still WIP because we have to wait for events-broker to be published",
+      "revId": "60b4afeb23e700c03983086caacc637344e8457d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
