@@ -34,7 +34,7 @@ public abstract class AbstractSubcriber {
 
   private final ForwardedEventRouter eventRouter;
   private final DynamicSet<DroppedEventListener> droppedEventListeners;
-  private final UUID instanceId;
+  private final String instanceId;
   private final MessageLogger msgLog;
   private SubscriberMetrics subscriberMetrics;
   private final Configuration cfg;
@@ -49,7 +49,7 @@ public abstract class AbstractSubcriber {
       Configuration cfg) {
     this.eventRouter = eventRouter;
     this.droppedEventListeners = droppedEventListeners;
-    this.instanceId = instanceId;
+    this.instanceId = instanceId.toString();
     this.msgLog = msgLog;
     this.subscriberMetrics = subscriberMetrics;
     this.cfg = cfg;
@@ -66,8 +66,7 @@ public abstract class AbstractSubcriber {
 
     if (event.getHeader().sourceInstanceId.equals(instanceId)) {
       logger.atFiner().log(
-          "Dropping event %s produced by our instanceId %s",
-          event.toString(), instanceId.toString());
+          "Dropping event %s produced by our instanceId %s", event.toString(), instanceId);
       droppedEventListeners.forEach(l -> l.onEventDropped(event));
     } else {
       try {
