@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "be74f128_9822cdce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-04-19T09:17:04Z",
+      "side": 1,
+      "message": "Possibly dumb question:\ninstance id is optional, what happens when it\u0027s not defined?\n\nhttps://gerrit-review.googlesource.com/Documentation/config-gerrit.html#gerrit.instanceId",
+      "range": {
+        "startLine": 9,
+        "startChar": 32,
+        "endLine": 9,
+        "endChar": 50
+      },
+      "revId": "60b4afeb23e700c03983086caacc637344e8457d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "12af8f8d_55a45182",
