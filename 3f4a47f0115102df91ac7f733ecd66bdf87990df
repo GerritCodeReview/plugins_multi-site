@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ebd4986_fce90263",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-04-21T05:21:59Z",
+      "side": 1,
+      "message": "Plugin cannot be downloaded\n\nCorrect path is: https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.3/job/plugin-events-gcloud-pubsub-bazel-stable-3.3/lastSuccessfulBuild/artifact/bazel-bin/plugins/events-gcloud-pubsub/events-gcloud-pubsub.jar\n\nBut actual is:\nhttps://gerrit-ci.gerritforge.com/view/Plugins-stable-3.3/job/plugin-events-gcloud-pubsub-bazel-master-stable-3.3/lastSuccessfulBuild/artifact/bazel-bin/plugins/events-gcloud-pubsub/events-gcloud-pubsub.jar",
+      "revId": "3f4a47f0115102df91ac7f733ecd66bdf87990df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
