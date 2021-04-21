@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0472add_0cad5ba7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-04-21T06:29:11Z",
+      "side": 1,
+      "message": "KafkaEventDeserialiser treat events without instanceId as malformed so they are rejected. But I don\u0027t see that validation in Kinesis and GCloud. That\u0027s why we should move the message parsing to the events-broker library. I will make sure that this code will skip messages without instanceId plus I will add validation to both Kinesis and GCloud.\n\nWhen we get rid of the envelope we should not start multi-site when instanceId is null. But that should be done on stable-3.4",
+      "parentUuid": "be74f128_9822cdce",
+      "range": {
+        "startLine": 9,
+        "startChar": 32,
+        "endLine": 9,
+        "endChar": 50
+      },
+      "revId": "60b4afeb23e700c03983086caacc637344e8457d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "12af8f8d_55a45182",
