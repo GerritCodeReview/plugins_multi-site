@@ -16,6 +16,24 @@
       "message": "Plugin cannot be downloaded\n\nCorrect path is: https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.3/job/plugin-events-gcloud-pubsub-bazel-stable-3.3/lastSuccessfulBuild/artifact/bazel-bin/plugins/events-gcloud-pubsub/events-gcloud-pubsub.jar\n\nBut actual is:\nhttps://gerrit-ci.gerritforge.com/view/Plugins-stable-3.3/job/plugin-events-gcloud-pubsub-bazel-master-stable-3.3/lastSuccessfulBuild/artifact/bazel-bin/plugins/events-gcloud-pubsub/events-gcloud-pubsub.jar",
       "revId": "3f4a47f0115102df91ac7f733ecd66bdf87990df",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13d4c923_20d0d260",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-04-21T09:53:17Z",
+      "side": 1,
+      "message": "I tested this and it was working.\nThe artifact has now moved because the job has been rebuilt with this (yet unmerged) change:\n\nhttps://gerrit-review.googlesource.com/c/gerrit-ci-scripts/+/303925/1\n\nIf we merge that one I will adapt this change accordingly.",
+      "parentUuid": "5ebd4986_fce90263",
+      "revId": "3f4a47f0115102df91ac7f733ecd66bdf87990df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
