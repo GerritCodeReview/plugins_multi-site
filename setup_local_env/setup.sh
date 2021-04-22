@@ -441,17 +441,17 @@ ing"; exit 1; }
 fi
 
 if [ "$BROKER_TYPE" = "kinesis" ]; then
-echo "Downloading kinesis-events plugin master (TODO: replace with $GERRIT_BRANCH, once we have build)"
-  wget $GERRIT_CI/plugin-kinesis-events-gh-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/kinesis-events/kinesis-events.jar \
-  -O $DEPLOYMENT_LOCATION/kinesis-events.jar || { echo >&2 "Cannot download kinesis-events plugin: Check internet connection. Abort\
+echo "Downloading events-aws-kinesis plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-events-aws-kinesis-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-aws-kinesis/events-aws-kinesis.jar \
+  -O $DEPLOYMENT_LOCATION/events-aws-kinesis.jar || { echo >&2 "Cannot download events-aws-kinesis plugin: Check internet connection. Abort\
 ing"; exit 1; }
 fi
 
 
 if [ "$BROKER_TYPE" = "gcloud-pubsub" ]; then
-echo "Downloading gcloud-pubsub-events plugin master (TODO: replace with $GERRIT_BRANCH, once we have build)"
-  wget $GERRIT_CI/plugin-gcloud-pubsub-events-gh-bazel-master-stable-3.3/$LAST_BUILD/gcloud-pubsub-events/gcloud-pubsub-events.jar \
-  -O $DEPLOYMENT_LOCATION/gcloud-pubsub-events.jar || { echo >&2 "Cannot download gcloud-pubsub-events plugin: Check internet connection. Abort\
+echo "Downloading events-gcloud-pubsub plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-events-gcloud-pubsub-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-gcloud-pubsub/events-gcloud-pubsub.jar \
+  -O $DEPLOYMENT_LOCATION/events-gcloud-pubsub.jar || { echo >&2 "Cannot download events-gcloud-pubsub plugin: Check internet connection. Abort\
 ing"; exit 1; }
 fi
 
@@ -506,7 +506,13 @@ if [ $NEW_INSTALLATION = "true" ]; then
   cp -f $DEPLOYMENT_LOCATION/events-broker.jar $LOCATION_TEST_SITE_1/lib/events-broker.jar
 
   echo "Copy $BROKER_TYPE events plugin"
-  cp -f $DEPLOYMENT_LOCATION/$BROKER_TYPE-events.jar $LOCATION_TEST_SITE_1/plugins/$BROKER_TYPE-events.jar
+  if [ $BROKER_TYPE = "kinesis" ]; then
+     cp -f $DEPLOYMENT_LOCATION/events-aws-kinesis.jar $LOCATION_TEST_SITE_1/plugins/events-aws-kinesis.jar
+  elif [ $BROKER_TYPE = "gcloud-pubsub" ]; then
+    cp -f $DEPLOYMENT_LOCATION/events-gcloud-pubsub.jar $LOCATION_TEST_SITE_1/plugins/events-gcloud-pubsub.jar
+  else
+     cp -f $DEPLOYMENT_LOCATION/$BROKER_TYPE-events.jar $LOCATION_TEST_SITE_1/plugins/$BROKER_TYPE-events.jar
+  fi
 
   echo "Copy metrics-reporter-prometheus plugin"
   cp -f $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar $LOCATION_TEST_SITE_1/plugins/metrics-reporter-prometheus.jar
