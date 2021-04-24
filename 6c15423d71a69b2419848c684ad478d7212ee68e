@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fc8302f_53501c53",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-04-24T02:11:50Z",
+      "side": 1,
+      "message": "This should be WARN IMHO.",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 95
+      },
+      "revId": "6c15423d71a69b2419848c684ad478d7212ee68e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
