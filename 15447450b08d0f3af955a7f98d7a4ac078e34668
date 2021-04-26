@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "788de68c_7e4a1874",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-04-26T19:11:34Z",
+      "side": 1,
+      "message": "These plugins are still used from master:\n\n* websession-broker\n* healthcheck\n* zookeeper-refdb\n* metrics-reporter-prometheus",
+      "range": {
+        "startLine": 411,
+        "startChar": 49,
+        "endLine": 411,
+        "endChar": 55
+      },
+      "revId": "15447450b08d0f3af955a7f98d7a4ac078e34668",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
