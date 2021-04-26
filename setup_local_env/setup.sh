@@ -434,9 +434,9 @@ echo "Downloading events-broker library $GERRIT_BRANCH"
 ing"; exit 1; }
 
 if [ "$BROKER_TYPE" = "kafka" ]; then
-echo "Downloading kafka-events plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-kafka-events-bazel-$GERRIT_BRANCH/$LAST_BUILD/kafka-events/kafka-events.jar \
-  -O $DEPLOYMENT_LOCATION/kafka-events.jar || { echo >&2 "Cannot download kafka-events plugin: Check internet connection. Abort\
+echo "Downloading events-kafka plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-events-kafka-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-kafka/events-kafka.jar \
+  -O $DEPLOYMENT_LOCATION/events-kafka.jar || { echo >&2 "Cannot download events-kafka plugin: Check internet connection. Abort\
 ing"; exit 1; }
 fi
 
