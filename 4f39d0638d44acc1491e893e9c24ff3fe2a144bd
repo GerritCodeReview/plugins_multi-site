@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69aa57b1_165538a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-04-27T21:48:52Z",
+      "side": 1,
+      "message": "Tested with events-aws-kinesis broker only for the time being.",
+      "revId": "4f39d0638d44acc1491e893e9c24ff3fe2a144bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
