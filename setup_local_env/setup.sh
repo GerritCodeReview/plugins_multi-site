@@ -361,9 +361,9 @@ echo "Downloading events-broker library $GERRIT_BRANCH"
   -O $DEPLOYMENT_LOCATION/events-broker.jar || { echo >&2 "Cannot download events-broker library: Check internet connection. Abort\
 ing"; exit 1; }
 
-echo "Downloading kafka-events plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-kafka-events-bazel-$GERRIT_BRANCH/$LAST_BUILD/kafka-events/kafka-events.jar \
-  -O $DEPLOYMENT_LOCATION/kafka-events.jar || { echo >&2 "Cannot download kafka-events plugin: Check internet connection. Abort\
+echo "Downloading events-kafka plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-events-kafka-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-kafka/events-kafka.jar \
+  -O $DEPLOYMENT_LOCATION/events-kafka.jar || { echo >&2 "Cannot download events-kafka plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
 echo "Downloading metrics-reporter-prometheus plugin $GERRIT_BRANCH"
@@ -413,8 +413,8 @@ if [ $NEW_INSTALLATION = "true" ]; then
   echo "Copy events broker library"
   cp -f $DEPLOYMENT_LOCATION/events-broker.jar $LOCATION_TEST_SITE_1/lib/events-broker.jar
 
-  echo "Copy kafka events plugin"
-  cp -f $DEPLOYMENT_LOCATION/kafka-events.jar $LOCATION_TEST_SITE_1/plugins/kafka-events.jar
+  echo "Copy events kafka plugin"
+  cp -f $DEPLOYMENT_LOCATION/events-kafka.jar $LOCATION_TEST_SITE_1/plugins/kafka-events.jar
 
   echo "Copy metrics-reporter-prometheus plugin"
   cp -f $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar $LOCATION_TEST_SITE_1/plugins/metrics-reporter-prometheus.jar
