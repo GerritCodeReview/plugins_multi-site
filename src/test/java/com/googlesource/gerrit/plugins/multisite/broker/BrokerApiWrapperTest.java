@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
+import com.google.common.util.concurrent.SettableFuture;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
@@ -36,14 +37,18 @@ public class BrokerApiWrapperTest {
 
   @Test
   public void shouldIncrementBrokerMetricCounterWhenMessagePublished() {
-    when(brokerApi.send(any(), any())).thenReturn(true);
+    SettableFuture<Boolean> resultF = SettableFuture.create();
+    resultF.set(true);
+    when(brokerApi.send(any(), any())).thenReturn(resultF);
     objectUnderTest.send(topic, event);
     verify(brokerMetrics, only()).incrementBrokerPublishedMessage();
   }
 
   @Test
   public void shouldIncrementBrokerFailedMetricCounterWhenMessagePublishingFailed() {
-    when(brokerApi.send(any(), any())).thenReturn(false);
+    SettableFuture<Boolean> resultF = SettableFuture.create();
+    resultF.setException(new Exception("Force Future failure"));
+    when(brokerApi.send(any(), any())).thenReturn(resultF);
     objectUnderTest.send(topic, event);
     verify(brokerMetrics, only()).incrementBrokerFailedToPublishMessage();
   }

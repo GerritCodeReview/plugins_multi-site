@@ -17,6 +17,11 @@ package com.googlesource.gerrit.plugins.multisite.broker;
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.gerritforge.gerrit.eventbroker.TopicSubscriber;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.MoreExecutors;
+import com.google.common.util.concurrent.SettableFuture;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
@@ -27,8 +32,11 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BrokerApiWrapper implements BrokerApi {
+  private static final Logger log = LoggerFactory.getLogger(BrokerApiWrapper.class);
   private final DynamicItem<BrokerApi> apiDelegate;
   private final BrokerMetrics metrics;
   private final MessageLogger msgLog;
@@ -47,26 +55,49 @@ public class BrokerApiWrapper implements BrokerApi {
   }
 
   public boolean send(String topic, Event event) {
-    return send(topic, apiDelegate.get().newMessage(instanceId, event));
+    boolean succeeded = false;
+    try {
+      succeeded = send(topic, apiDelegate.get().newMessage(instanceId, event)).get();
+    } catch (Throwable e) {
+      log.error(
+          "Failed to publish event '{}' to topic '{}' - error: {}", event, topic, e.getMessage());
+      metrics.incrementBrokerFailedToPublishMessage();
+    }
+
+    return succeeded;
   }
 
   @Override
-  public boolean send(String topic, EventMessage message) {
+  public ListenableFuture<Boolean> send(String topic, EventMessage message) {
+    SettableFuture<Boolean> resultFuture = SettableFuture.create();
     if (Context.isForwardedEvent()) {
-      return true;
+      resultFuture.set(true);
+      return resultFuture;
     }
-    boolean succeeded = false;
-    try {
-      succeeded = apiDelegate.get().send(topic, message);
-    } finally {
-      if (succeeded) {
-        msgLog.log(Direction.PUBLISH, topic, message);
-        metrics.incrementBrokerPublishedMessage();
-      } else {
-        metrics.incrementBrokerFailedToPublishMessage();
-      }
-    }
-    return succeeded;
+
+    ListenableFuture<Boolean> resfultF = apiDelegate.get().send(topic, message);
+    Futures.addCallback(
+        resfultF,
+        new FutureCallback<Boolean>() {
+          @Override
+          public void onSuccess(Boolean result) {
+            msgLog.log(Direction.PUBLISH, topic, message);
+            metrics.incrementBrokerPublishedMessage();
+          }
+
+          @Override
+          public void onFailure(Throwable throwable) {
+            log.error(
+                "Failed to publish message '{}' to topic '{}' - error: {}",
+                message.toString(),
+                topic,
+                throwable.getMessage());
+            metrics.incrementBrokerFailedToPublishMessage();
+          }
+        },
+        MoreExecutors.directExecutor());
+
+    return resfultF;
   }
 
   @Override
