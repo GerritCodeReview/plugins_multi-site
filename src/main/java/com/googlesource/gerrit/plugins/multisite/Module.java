@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerModule;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
@@ -71,6 +72,8 @@ public class Module extends LifecycleModule {
     if (config.index().synchronize()) {
       install(new IndexModule());
     }
+
+    install(new BrokerModule());
 
     install(new RouterModule());
   }
