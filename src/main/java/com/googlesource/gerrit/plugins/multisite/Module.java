@@ -72,6 +72,8 @@ public class Module extends LifecycleModule {
       install(new IndexModule());
     }
 
+    install(new EventModule());
+
     install(new RouterModule());
   }
 
