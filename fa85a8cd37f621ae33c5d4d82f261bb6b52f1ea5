@@ -22,6 +22,30 @@
       },
       "revId": "fa85a8cd37f621ae33c5d4d82f261bb6b52f1ea5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d89c905f_c644a5d8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-04-30T08:26:22Z",
+      "side": 1,
+      "message": "You mean I should create a BrokerApiWrapperExecutor instead of using the directExecutor?",
+      "parentUuid": "aa3f4c7c_f26ab10f",
+      "range": {
+        "startLine": 98,
+        "startChar": 8,
+        "endLine": 98,
+        "endChar": 39
+      },
+      "revId": "fa85a8cd37f621ae33c5d4d82f261bb6b52f1ea5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
