@@ -23,7 +23,9 @@ EVENTS_BROKER_VER=`grep 'com.gerritforge:events-broker' $(dirname $0)/../externa
 GLOBAL_REFDB_VER=`grep 'com.gerritforge:global-refdb' $(dirname $0)/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
 
 function check_application_requirements {
-  type haproxy >/dev/null 2>&1 || { echo >&2 "Require haproxy but it's not installed. Aborting."; exit 1; }
+  if [ "$NO_HAPROXY" = "false" ];  then
+    type haproxy >/dev/null 2>&1 || { echo >&2 "Require haproxy but it's not installed. Aborting."; exit 1; }
+  fi
   type java >/dev/null 2>&1 || { echo >&2 "Require java but it's not installed. Aborting."; exit 1; }
   type docker >/dev/null 2>&1 || { echo >&2 "Require docker but it's not installed. Aborting."; exit 1; }
   type docker-compose >/dev/null 2>&1 || { echo >&2 "Require docker-compose but it's not installed. Aborting."; exit 1; }
@@ -250,6 +252,8 @@ case "$1" in
     echo
     echo "[--broker-type]                 events broker type; 'kafka', 'kinesis' or 'gcloud-pubsub'. Default 'kafka'"
     echo
+    echo "[--no-haproxy]                  Skip HAProxy checks and setup"
+    echo
     exit 0
   ;;
   "--new-deployment")
@@ -346,6 +350,11 @@ case "$1" in
       exit 1
     fi
   ;;
+  "--no-haproxy" )
+    NO_HAPROXY=$2
+    shift
+    shift
+  ;;
   *     )
     echo "Unknown option argument: $1"
     shift
@@ -375,6 +384,7 @@ export REPLICATION_DELAY_SEC=${REPLICATION_DELAY_SEC:-"5"}
 export SSH_ADVERTISED_PORT=${SSH_ADVERTISED_PORT:-"29418"}
 HTTPS_ENABLED=${HTTPS_ENABLED:-"false"}
 BROKER_TYPE=${BROKER_TYPE:-"kafka"}
+NO_HAPROXY=${NO_HAPROXY:-"false"}
 
 export COMMON_LOCATION=$DEPLOYMENT_LOCATION/gerrit_setup
 LOCATION_TEST_SITE_1=$COMMON_LOCATION/instance-1
@@ -482,6 +492,7 @@ if [ $NEW_INSTALLATION = "true" ]; then
 
   echo "Setting up directories"
   mkdir -p $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $HA_PROXY_CERTIFICATES_DIR $FAKE_NFS
+  ls -lrt  $DEPLOYMENT_LOCATION
   java -jar $DEPLOYMENT_LOCATION/gerrit.war init --batch --no-auto-start --install-all-plugins --dev -d $LOCATION_TEST_SITE_1
 
   # Deploying TLS certificates
@@ -545,7 +556,7 @@ fi
 cat $SCRIPT_DIR/configs/prometheus.yml | envsubst > $COMMON_LOCATION/prometheus.yml
 
 export_broker_port
-ensure_docker_compose_is_up_and_running "core" "prometheus_test_node" "docker-compose-core.yaml"
+#ensure_docker_compose_is_up_and_running "core" "prometheus_test_node" "docker-compose-core.yaml"
 ensure_docker_compose_is_up_and_running "$BROKER_TYPE" "${BROKER_TYPE}_test_node" "docker-compose-$BROKER_TYPE.yaml"
 prepare_broker_data
 
@@ -556,10 +567,11 @@ $LOCATION_TEST_SITE_1/bin/gerrit.sh restart
 echo "Starting gerrit site 2"
 $LOCATION_TEST_SITE_2/bin/gerrit.sh restart
 
-
-if [[ $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}' | wc -l) -lt 1 ]];then
-  echo "Starting haproxy"
-  start_ha_proxy
+if [ "$NO_HAPROXY" = "false" ];  then
+  if [[ $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}' | wc -l) -lt 1 ]];then
+    echo "Starting haproxy"
+    start_ha_proxy
+  fi
 fi
 
 echo "==============================="
@@ -572,7 +584,9 @@ echo "replication-ssh-user=$REPLICATION_SSH_USER"
 echo "replication-delay=$REPLICATION_DELAY_SEC"
 echo "enable-https=$HTTPS_ENABLED"
 echo
-echo "GERRIT HA-PROXY: $GERRIT_CANONICAL_WEB_URL"
+if [ "$NO_HAPROXY" = "false" ];  then
+  echo "GERRIT HA-PROXY: $GERRIT_CANONICAL_WEB_URL"
+fi
 echo "GERRIT-1: http://$GERRIT_1_HOSTNAME:$GERRIT_1_HTTPD_PORT"
 echo "GERRIT-2: http://$GERRIT_2_HOSTNAME:$GERRIT_2_HTTPD_PORT"
 echo "Prometheus: http://localhost:9090"
