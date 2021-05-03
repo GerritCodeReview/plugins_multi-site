@@ -5,6 +5,7 @@ services:
     ports:
       - "2181:2181"
     container_name: zk_test_node
+    network_mode: $NETWORK_MODE
   prometheus:
     container_name: prometheus_test_node
     image: prom/prometheus:v2.16.0

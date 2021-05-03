@@ -8,8 +8,4 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    networks:
-      - setup_local_env_default
-networks:
-  setup_local_env_default:
-    external: true
+    network_mode: $NETWORK_MODE
