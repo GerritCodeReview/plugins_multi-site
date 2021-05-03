@@ -23,7 +23,9 @@ EVENTS_BROKER_VER=`grep 'com.gerritforge:events-broker' $(dirname $0)/../externa
 GLOBAL_REFDB_VER=`grep 'com.gerritforge:global-refdb' $(dirname $0)/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
 
 function check_application_requirements {
-  type haproxy >/dev/null 2>&1 || { echo >&2 "Require haproxy but it's not installed. Aborting."; exit 1; }
+  if [ "$CI_SETUP" = "false" ];  then
+    type haproxy >/dev/null 2>&1 || { echo >&2 "Require haproxy but it's not installed. Aborting."; exit 1; }
+  fi
   type java >/dev/null 2>&1 || { echo >&2 "Require java but it's not installed. Aborting."; exit 1; }
   type docker >/dev/null 2>&1 || { echo >&2 "Require docker but it's not installed. Aborting."; exit 1; }
   type docker-compose >/dev/null 2>&1 || { echo >&2 "Require docker-compose but it's not installed. Aborting."; exit 1; }
@@ -250,6 +252,8 @@ case "$1" in
     echo
     echo "[--broker-type]                 events broker type; 'kafka', 'kinesis' or 'gcloud-pubsub'. Default 'kafka'"
     echo
+    echo "[--ci-setup]                    Install a lightweight setup for e2e testing in the CI"
+    echo
     exit 0
   ;;
   "--new-deployment")
@@ -346,6 +350,11 @@ case "$1" in
       exit 1
     fi
   ;;
+  "--ci-setup" )
+    CI_SETUP=$2
+    shift
+    shift
+  ;;
   *     )
     echo "Unknown option argument: $1"
     shift
@@ -375,6 +384,7 @@ export REPLICATION_DELAY_SEC=${REPLICATION_DELAY_SEC:-"5"}
 export SSH_ADVERTISED_PORT=${SSH_ADVERTISED_PORT:-"29418"}
 HTTPS_ENABLED=${HTTPS_ENABLED:-"false"}
 BROKER_TYPE=${BROKER_TYPE:-"kafka"}
+CI_SETUP=${CI_SETUP:-"false"}
 
 export COMMON_LOCATION=$DEPLOYMENT_LOCATION/gerrit_setup
 LOCATION_TEST_SITE_1=$COMMON_LOCATION/instance-1
@@ -455,10 +465,12 @@ echo "Downloading events-gcloud-pubsub plugin $GERRIT_BRANCH"
 ing"; exit 1; }
 fi
 
-echo "Downloading metrics-reporter-prometheus plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-metrics-reporter-prometheus-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/metrics-reporter-prometheus/metrics-reporter-prometheus.jar \
-  -O $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar || { echo >&2 "Cannot download metrics-reporter-prometheus plugin: Check internet connection. Abort\
-ing"; exit 1; }
+if [ "$CI_SETUP" = "false" ];  then
+  echo "Downloading metrics-reporter-prometheus plugin $GERRIT_BRANCH"
+    wget $GERRIT_CI/plugin-metrics-reporter-prometheus-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/metrics-reporter-prometheus/metrics-reporter-prometheus.jar \
+    -O $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar || { echo >&2 "Cannot download metrics-reporter-prometheus plugin: Check internet connection. Abort\
+  ing"; exit 1; }
+fi
 
 if [ "$REPLICATION_TYPE" = "ssh" ];then
   echo "Using 'SSH' replication type"
@@ -545,7 +557,9 @@ fi
 cat $SCRIPT_DIR/configs/prometheus.yml | envsubst > $COMMON_LOCATION/prometheus.yml
 
 export_broker_port
-ensure_docker_compose_is_up_and_running "core" "prometheus_test_node" "docker-compose-core.yaml"
+if [ "$CI_SETUP" = "false" ];  then
+  ensure_docker_compose_is_up_and_running "core" "prometheus_test_node" "docker-compose-core.yaml"
+fi
 ensure_docker_compose_is_up_and_running "$BROKER_TYPE" "${BROKER_TYPE}_test_node" "docker-compose-$BROKER_TYPE.yaml"
 prepare_broker_data
 
@@ -556,10 +570,11 @@ $LOCATION_TEST_SITE_1/bin/gerrit.sh restart
 echo "Starting gerrit site 2"
 $LOCATION_TEST_SITE_2/bin/gerrit.sh restart
 
-
-if [[ $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}' | wc -l) -lt 1 ]];then
-  echo "Starting haproxy"
-  start_ha_proxy
+if [ "$CI_SETUP" = "false" ];  then
+  if [[ $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}' | wc -l) -lt 1 ]];then
+    echo "Starting haproxy"
+    start_ha_proxy
+  fi
 fi
 
 echo "==============================="
@@ -572,7 +587,9 @@ echo "replication-ssh-user=$REPLICATION_SSH_USER"
 echo "replication-delay=$REPLICATION_DELAY_SEC"
 echo "enable-https=$HTTPS_ENABLED"
 echo
-echo "GERRIT HA-PROXY: $GERRIT_CANONICAL_WEB_URL"
+if [ "$CI_SETUP" = "false" ];  then
+  echo "GERRIT HA-PROXY: $GERRIT_CANONICAL_WEB_URL"
+fi
 echo "GERRIT-1: http://$GERRIT_1_HOSTNAME:$GERRIT_1_HTTPD_PORT"
 echo "GERRIT-2: http://$GERRIT_2_HOSTNAME:$GERRIT_2_HTTPD_PORT"
 echo "Prometheus: http://localhost:9090"
