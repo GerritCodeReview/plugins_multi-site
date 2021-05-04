@@ -94,6 +94,30 @@
       },
       "revId": "fa85a8cd37f621ae33c5d4d82f261bb6b52f1ea5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ee06d96_1faebac7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-04T00:13:17Z",
+      "side": 1,
+      "message": "It was on the source code, strangely not in the JavaDoc.",
+      "parentUuid": "9195a4ca_5ac03784",
+      "range": {
+        "startLine": 98,
+        "startChar": 8,
+        "endLine": 98,
+        "endChar": 39
+      },
+      "revId": "fa85a8cd37f621ae33c5d4d82f261bb6b52f1ea5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
