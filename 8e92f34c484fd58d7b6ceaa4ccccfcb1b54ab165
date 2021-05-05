@@ -62,6 +62,30 @@
       },
       "revId": "8e92f34c484fd58d7b6ceaa4ccccfcb1b54ab165",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c6fca22_bd515367",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-05-05T10:21:23Z",
+      "side": 1,
+      "message": "This is the extra check explained here:\n\u003e KafkaEventDeserialiser treat events without instanceId as malformed so they are rejected. But I don\u0027t see that validation in Kinesis and GCloud. That\u0027s why we should move the message parsing to the events-broker library. I will make sure that this code will skip messages without instanceId plus I will add validation to both Kinesis and GCloud.\n\n\u003e When we get rid of the envelope we should not start multi-site when instanceId is null. But that should be done on stable-3.4\n\nValidation is added to all event broker plugins but still we should never trust events coming from the topic so this is extra check to avoid loop.",
+      "parentUuid": "94acc313_02e28b29",
+      "range": {
+        "startLine": 73,
+        "startChar": 17,
+        "endLine": 73,
+        "endChar": 74
+      },
+      "revId": "8e92f34c484fd58d7b6ceaa4ccccfcb1b54ab165",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
