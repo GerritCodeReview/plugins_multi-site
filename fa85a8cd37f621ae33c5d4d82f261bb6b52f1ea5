@@ -142,6 +142,30 @@
       },
       "revId": "fa85a8cd37f621ae33c5d4d82f261bb6b52f1ea5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ecbd04d_2f6a8d25",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-05-06T19:03:01Z",
+      "side": 1,
+      "message": "I finally find what you were referring to...my bad: https://github.com/google/guava/blob/fe203043d4b099eafeeca044077f03523e57bab3/android/guava/src/com/google/common/util/concurrent/Futures.java#L1003",
+      "parentUuid": "f75dfe50_64bf04c3",
+      "range": {
+        "startLine": 98,
+        "startChar": 8,
+        "endLine": 98,
+        "endChar": 39
+      },
+      "revId": "fa85a8cd37f621ae33c5d4d82f261bb6b52f1ea5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
