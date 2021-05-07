@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9398cab6_907e48e5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-07T07:47:37Z",
+      "side": 1,
+      "message": "Yes, *please* :-)\nCan you raise an issue for that? It would also be worth checking the other events-* plugins.",
+      "parentUuid": "bfed606c_73bfc819",
+      "range": {
+        "startLine": 39,
+        "startChar": 2,
+        "endLine": 39,
+        "endChar": 84
+      },
+      "revId": "22ffe09a8645a18700ae1cb9add74e1087933e99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49ccdc03_b7fb72bb",
