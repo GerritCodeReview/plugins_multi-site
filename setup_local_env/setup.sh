@@ -163,6 +163,10 @@ function create_kinesis_stream {
   local stream=$1
 
   export AWS_PAGER=''
+  export AWS_ACCESS_KEY_ID=accessKey
+  export AWS_SECRET_ACCESS_KEY=secretKey
+  export AWS_REGION=us-east-1
+  export AWS_DEFAULT_REGION=us-east-1
   echo "[KINESIS] Create stream $stream"
   until aws --endpoint-url=http://localhost:$BROKER_PORT kinesis create-stream --shard-count 1 --stream-name "$stream"
   do
