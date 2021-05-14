@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import com.gerritforge.gerrit.eventbroker.EventMessage;
+import com.google.common.base.Strings;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.permissions.PermissionBackendException;
@@ -34,7 +35,7 @@ public abstract class AbstractSubcriber {
 
   private final ForwardedEventRouter eventRouter;
   private final DynamicSet<DroppedEventListener> droppedEventListeners;
-  private final UUID instanceId;
+  private final String instanceId;
   private final MessageLogger msgLog;
   private SubscriberMetrics subscriberMetrics;
   private final Configuration cfg;
@@ -49,7 +50,7 @@ public abstract class AbstractSubcriber {
       Configuration cfg) {
     this.eventRouter = eventRouter;
     this.droppedEventListeners = droppedEventListeners;
-    this.instanceId = instanceId;
+    this.instanceId = instanceId.toString();
     this.msgLog = msgLog;
     this.subscriberMetrics = subscriberMetrics;
     this.cfg = cfg;
@@ -63,11 +64,18 @@ public abstract class AbstractSubcriber {
   }
 
   private void processRecord(EventMessage event) {
+    String sourceInstanceId = event.getHeader().sourceInstanceId;
 
-    if (event.getHeader().sourceInstanceId.equals(instanceId)) {
-      logger.atFiner().log(
-          "Dropping event %s produced by our instanceId %s",
-          event.toString(), instanceId.toString());
+    if (Strings.isNullOrEmpty(sourceInstanceId) || instanceId.equals(sourceInstanceId)) {
+      if (Strings.isNullOrEmpty(sourceInstanceId)) {
+        logger.atWarning().log(
+            String.format(
+                "Dropping event %s because sourceInstanceId cannot be null", event.toString()));
+      } else {
+        logger.atFiner().log(
+            String.format(
+                "Dropping event %s produced by our instanceId %s", event.toString(), instanceId));
+      }
       droppedEventListeners.forEach(l -> l.onEventDropped(event));
     } else {
       try {
