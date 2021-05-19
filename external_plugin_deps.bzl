@@ -3,12 +3,12 @@ load("//tools/bzl:maven_jar.bzl", "maven_jar")
 def external_plugin_deps():
     maven_jar(
         name = "global-refdb",
-        artifact = "com.gerritforge:global-refdb:3.3.1",
-        sha1 = "5df9dddad2fc67c922406f41549186b210cd957e",
+        artifact = "com.gerritforge:global-refdb:3.4.0",
+        sha1 = "a1c7b02ddabe0dd0a989fb30ca18b61fe95ee894",
     )
 
     maven_jar(
         name = "events-broker",
-        artifact = "com.gerritforge:events-broker:3.4.0-rc2",
-        sha1 = "f72b4166e6d785fd1a41c997a4ffb14461dd7d87",
+        artifact = "com.gerritforge:events-broker:3.4.0",
+        sha1 = "031881f18def90f945b21c7aafda3a1ac95e89c8",
     )
