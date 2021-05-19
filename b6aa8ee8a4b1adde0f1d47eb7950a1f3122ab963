@@ -16,6 +16,46 @@
       "message": "New versions are not released yet on Maven Central?",
       "revId": "b6aa8ee8a4b1adde0f1d47eb7950a1f3122ab963",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a7dbc68_17be5cbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-05-19T11:44:13Z",
+      "side": 1,
+      "message": "Why there is no CI verification? ",
+      "revId": "b6aa8ee8a4b1adde0f1d47eb7950a1f3122ab963",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93f888d8_5f30a570",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-05-19T11:44:13Z",
+      "side": 1,
+      "message": "Copy/paste error from the SHA1 above? It should be:\n\n  031881f18def90f945b21c7aafda3a1ac95e89c8\n\nSee: [1].\n\n[1] https://repo1.maven.org/maven2/com/gerritforge/events-broker/3.4.0/events-broker-3.4.0.jar.sha1",
+      "range": {
+        "startLine": 13,
+        "startChar": 16,
+        "endLine": 13,
+        "endChar": 56
+      },
+      "revId": "b6aa8ee8a4b1adde0f1d47eb7950a1f3122ab963",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
