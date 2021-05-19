@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5312f418_4cda5f13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-05-19T08:01:33Z",
+      "side": 1,
+      "message": "New versions are not released yet on Maven Central?",
+      "revId": "b6aa8ee8a4b1adde0f1d47eb7950a1f3122ab963",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
