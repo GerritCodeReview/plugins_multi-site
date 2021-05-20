@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd15a9e9_4c713a26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-20T00:21:07Z",
+      "side": 1,
+      "message": "Good question :-) ... we never added it?",
+      "parentUuid": "3a7dbc68_17be5cbc",
+      "revId": "b6aa8ee8a4b1adde0f1d47eb7950a1f3122ab963",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93f888d8_5f30a570",
@@ -48,6 +66,30 @@
       "writtenOn": "2021-05-19T11:44:13Z",
       "side": 1,
       "message": "Copy/paste error from the SHA1 above? It should be:\n\n  031881f18def90f945b21c7aafda3a1ac95e89c8\n\nSee: [1].\n\n[1] https://repo1.maven.org/maven2/com/gerritforge/events-broker/3.4.0/events-broker-3.4.0.jar.sha1",
+      "range": {
+        "startLine": 13,
+        "startChar": 16,
+        "endLine": 13,
+        "endChar": 56
+      },
+      "revId": "b6aa8ee8a4b1adde0f1d47eb7950a1f3122ab963",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5072c9a2_dd5593e5",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-20T00:21:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93f888d8_5f30a570",
       "range": {
         "startLine": 13,
         "startChar": 16,
