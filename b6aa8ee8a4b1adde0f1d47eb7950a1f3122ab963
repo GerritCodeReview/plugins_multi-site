@@ -143,6 +143,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fb9eba6_df4e6ebf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-20T11:06:54Z",
+      "side": 1,
+      "message": "Zuul is the way to go: I am just concerned on how to introduce Docker support without having to code it in each plugin :-(\n\nIt isn\u0027t about installing Docker, but rather managing a Docker server and images, which isn\u0027t easy at all (based on my experience with Gerrit-CI).",
+      "parentUuid": "cfdcc59b_63542125",
+      "revId": "b6aa8ee8a4b1adde0f1d47eb7950a1f3122ab963",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93f888d8_5f30a570",
