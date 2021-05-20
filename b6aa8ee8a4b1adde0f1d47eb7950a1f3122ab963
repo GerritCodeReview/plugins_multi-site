@@ -107,6 +107,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c07ef136_ebcbeed5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-05-20T10:03:37Z",
+      "side": 1,
+      "message": "I am unsure how that works though, who is doing the maintenance of the images? who is checking if there are some running and updating them as needed?\n\nI believe it should be all done by the job’s ansi le script, isn’t it?",
+      "parentUuid": "b1569c91_bb503ea9",
+      "revId": "b6aa8ee8a4b1adde0f1d47eb7950a1f3122ab963",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93f888d8_5f30a570",
