@@ -125,6 +125,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfdcc59b_63542125",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-05-20T10:25:12Z",
+      "side": 1,
+      "message": "May be we should discuss this in another place. How we proceed here? I would prefer to add a CI verification. The question is: should I add it on Gerritforge CI or Zuul?",
+      "parentUuid": "c07ef136_ebcbeed5",
+      "revId": "b6aa8ee8a4b1adde0f1d47eb7950a1f3122ab963",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93f888d8_5f30a570",
