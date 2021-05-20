@@ -89,6 +89,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1569c91_bb503ea9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2021-05-20T07:57:33Z",
+      "side": 1,
+      "message": "Zuul doesn\u0027t have any issue with Docker. See change 305663 for task plugin, where Docker based tests were added to Zuul verification pipeline.",
+      "parentUuid": "a9735cd8_c46fbf2b",
+      "revId": "b6aa8ee8a4b1adde0f1d47eb7950a1f3122ab963",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93f888d8_5f30a570",
