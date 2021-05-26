@@ -22,8 +22,8 @@ public class CacheEvictionEvent extends MultiSiteEvent {
   public String cacheName;
   public Object key;
 
-  public CacheEvictionEvent(String cacheName, Object key) {
-    super(TYPE);
+  public CacheEvictionEvent(String cacheName, Object key, String instanceId) {
+    super(TYPE, instanceId);
     this.cacheName = cacheName;
     this.key = key;
   }

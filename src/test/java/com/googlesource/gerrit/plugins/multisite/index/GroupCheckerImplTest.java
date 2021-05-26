@@ -101,7 +101,7 @@ public class GroupCheckerImplTest {
   }
 
   private Optional<GroupIndexEvent> groupIndexEvent(String uuid, @Nullable ObjectId sha1) {
-    return Optional.of(new GroupIndexEvent(uuid, sha1));
+    return Optional.of(new GroupIndexEvent(uuid, sha1, "instance-id"));
   }
 
   private void setCommitExistsInRepo(boolean commitExists) {

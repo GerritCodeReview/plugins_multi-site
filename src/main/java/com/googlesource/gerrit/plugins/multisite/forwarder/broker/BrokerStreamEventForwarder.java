@@ -35,6 +35,6 @@ public class BrokerStreamEventForwarder implements StreamEventForwarder {
 
   @Override
   public boolean send(Event event) {
-    return broker.send(EventTopic.STREAM_EVENT_TOPIC.topic(cfg), event);
+    return broker.sendSync(EventTopic.STREAM_EVENT_TOPIC.topic(cfg), event);
   }
 }
