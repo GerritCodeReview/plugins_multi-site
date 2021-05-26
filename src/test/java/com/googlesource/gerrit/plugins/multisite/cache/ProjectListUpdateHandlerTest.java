@@ -41,6 +41,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectListUpdateHandlerTest {
 
+  private static final String INSTANCE_ID = "instance-id";
+
   private ProjectListUpdateHandler handler;
 
   @Mock private ProjectListUpdateForwarder forwarder;
@@ -51,7 +53,7 @@ public class ProjectListUpdateHandlerTest {
     when(projectsFilter.matches(any(String.class))).thenReturn(true);
     handler =
         new ProjectListUpdateHandler(
-            asDynamicSet(forwarder), MoreExecutors.directExecutor(), projectsFilter);
+            asDynamicSet(forwarder), MoreExecutors.directExecutor(), projectsFilter, INSTANCE_ID);
   }
 
   private DynamicSet<ProjectListUpdateForwarder> asDynamicSet(
@@ -69,7 +71,8 @@ public class ProjectListUpdateHandlerTest {
     handler.onNewProjectCreated(event);
     verify(forwarder)
         .updateProjectList(
-            any(ProjectListUpdateTask.class), eq(new ProjectListUpdateEvent(projectName, false)));
+            any(ProjectListUpdateTask.class),
+            eq(new ProjectListUpdateEvent(projectName, false, INSTANCE_ID)));
   }
 
   @Test
@@ -80,7 +83,8 @@ public class ProjectListUpdateHandlerTest {
     handler.onProjectDeleted(event);
     verify(forwarder)
         .updateProjectList(
-            any(ProjectListUpdateTask.class), eq(new ProjectListUpdateEvent(projectName, true)));
+            any(ProjectListUpdateTask.class),
+            eq(new ProjectListUpdateEvent(projectName, true, INSTANCE_ID)));
   }
 
   @Test
@@ -101,18 +105,22 @@ public class ProjectListUpdateHandlerTest {
     handler.onNewProjectCreated(event);
     verify(forwarder, never())
         .updateProjectList(
-            any(ProjectListUpdateTask.class), eq(new ProjectListUpdateEvent(projectName, true)));
+            any(ProjectListUpdateTask.class),
+            eq(new ProjectListUpdateEvent(projectName, true, INSTANCE_ID)));
   }
 
   @Test
   public void testProjectUpdateTaskToString() throws Exception {
     String projectName = "someProjectName";
     ProjectListUpdateTask task =
-        handler.new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, false));
+        handler
+        .new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, false, INSTANCE_ID));
     assertThat(task.toString())
         .isEqualTo(String.format("Update project list in target instance: add '%s'", projectName));
 
-    task = handler.new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, true));
+    task =
+        handler
+        .new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, true, INSTANCE_ID));
     assertThat(task.toString())
         .isEqualTo(
             String.format("Update project list in target instance: remove '%s'", projectName));

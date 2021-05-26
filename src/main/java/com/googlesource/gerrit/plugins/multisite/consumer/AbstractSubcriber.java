@@ -14,20 +14,19 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
-import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.google.common.base.Strings;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedEventRouter;
 import java.io.IOException;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 public abstract class AbstractSubcriber {
@@ -44,13 +43,13 @@ public abstract class AbstractSubcriber {
   public AbstractSubcriber(
       ForwardedEventRouter eventRouter,
       DynamicSet<DroppedEventListener> droppedEventListeners,
-      @InstanceId UUID instanceId,
+      @GerritInstanceId String gerritInstanceId,
       MessageLogger msgLog,
       SubscriberMetrics subscriberMetrics,
       Configuration cfg) {
     this.eventRouter = eventRouter;
     this.droppedEventListeners = droppedEventListeners;
-    this.instanceId = instanceId.toString();
+    this.instanceId = gerritInstanceId;
     this.msgLog = msgLog;
     this.subscriberMetrics = subscriberMetrics;
     this.cfg = cfg;
@@ -59,12 +58,12 @@ public abstract class AbstractSubcriber {
 
   protected abstract EventTopic getTopic();
 
-  public Consumer<EventMessage> getConsumer() {
+  public Consumer<Event> getConsumer() {
     return this::processRecord;
   }
 
-  private void processRecord(EventMessage event) {
-    String sourceInstanceId = event.getHeader().sourceInstanceId;
+  private void processRecord(Event event) {
+    String sourceInstanceId = event.instanceId;
 
     if (Strings.isNullOrEmpty(sourceInstanceId) || instanceId.equals(sourceInstanceId)) {
       if (Strings.isNullOrEmpty(sourceInstanceId)) {
@@ -80,14 +79,14 @@ public abstract class AbstractSubcriber {
     } else {
       try {
         msgLog.log(Direction.CONSUME, topic, event);
-        eventRouter.route(event.getEvent());
+        eventRouter.route(event);
         subscriberMetrics.incrementSubscriberConsumedMessage();
         subscriberMetrics.updateReplicationStatusMetrics(event);
       } catch (IOException e) {
-        logger.atSevere().withCause(e).log("Malformed event '%s'", event.getHeader());
+        logger.atSevere().withCause(e).log("Malformed event '%s'", event);
         subscriberMetrics.incrementSubscriberFailedToConsumeMessage();
       } catch (PermissionBackendException | CacheNotFoundException e) {
-        logger.atSevere().withCause(e).log("Cannot handle message '%s'", event.getHeader());
+        logger.atSevere().withCause(e).log("Cannot handle message '%s'", event);
         subscriberMetrics.incrementSubscriberFailedToConsumeMessage();
       }
     }

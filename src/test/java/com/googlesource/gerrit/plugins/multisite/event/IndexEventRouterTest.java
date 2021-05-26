@@ -44,7 +44,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IndexEventRouterTest {
-
+  private static final String INSTANCE_ID = "instance-id";
   private IndexEventRouter router;
   @Mock private ForwardedIndexAccountHandler indexAccountHandler;
   @Mock private ForwardedIndexChangeHandler indexChangeHandler;
@@ -66,7 +66,7 @@ public class IndexEventRouterTest {
 
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_AccountIndex() throws Exception {
-    final AccountIndexEvent event = new AccountIndexEvent(1);
+    final AccountIndexEvent event = new AccountIndexEvent(1, INSTANCE_ID);
     router.route(event);
 
     verify(indexAccountHandler)
@@ -80,7 +80,7 @@ public class IndexEventRouterTest {
 
     StreamEventRouter streamEventRouter = new StreamEventRouter(forwardedEventHandler, router);
 
-    final AccountIndexEvent event = new AccountIndexEvent(1);
+    final AccountIndexEvent event = new AccountIndexEvent(1, INSTANCE_ID);
     router.route(event);
 
     verify(indexAccountHandler)
@@ -96,7 +96,7 @@ public class IndexEventRouterTest {
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_GroupIndex() throws Exception {
     final String groupId = "12";
-    final GroupIndexEvent event = new GroupIndexEvent(groupId, ObjectId.zeroId());
+    final GroupIndexEvent event = new GroupIndexEvent(groupId, ObjectId.zeroId(), INSTANCE_ID);
     router.route(event);
 
     verify(indexGroupHandler)
@@ -108,7 +108,7 @@ public class IndexEventRouterTest {
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_ProjectIndex() throws Exception {
     final String projectName = "projectName";
-    final ProjectIndexEvent event = new ProjectIndexEvent(projectName);
+    final ProjectIndexEvent event = new ProjectIndexEvent(projectName, INSTANCE_ID);
     router.route(event);
 
     verify(indexProjectHandler)
@@ -119,7 +119,7 @@ public class IndexEventRouterTest {
 
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_ChangeIndex() throws Exception {
-    final ChangeIndexEvent event = new ChangeIndexEvent("projectName", 3, false);
+    final ChangeIndexEvent event = new ChangeIndexEvent("projectName", 3, false, INSTANCE_ID);
     router.route(event);
 
     verify(indexChangeHandler)
@@ -133,7 +133,7 @@ public class IndexEventRouterTest {
 
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_ChangeIndexDelete() throws Exception {
-    final ChangeIndexEvent event = new ChangeIndexEvent("projectName", 3, true);
+    final ChangeIndexEvent event = new ChangeIndexEvent("projectName", 3, true, INSTANCE_ID);
     router.route(event);
 
     verify(indexChangeHandler)
@@ -147,7 +147,7 @@ public class IndexEventRouterTest {
 
   @Test
   public void routerShouldFailForNotRecognisedEvents() throws Exception {
-    final IndexEvent newEventType = new IndexEvent("new-type") {};
+    final IndexEvent newEventType = new IndexEvent("new-type", INSTANCE_ID) {};
 
     assertThrows(UnsupportedOperationException.class, () -> router.route(newEventType));
     verifyZeroInteractions(

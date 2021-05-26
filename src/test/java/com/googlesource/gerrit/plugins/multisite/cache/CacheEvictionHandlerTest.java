@@ -36,9 +36,10 @@ public class CacheEvictionHandlerTest {
 
   @Test
   public void shouldNotPublishAccountsCacheEvictions() {
-
+    String instanceId = "instance-id";
     final CacheEvictionHandler<String, String> handler =
-        new CacheEvictionHandler<>(DynamicSet.emptySet(), executorMock, defaultCacheMatcher);
+        new CacheEvictionHandler<>(
+            DynamicSet.emptySet(), executorMock, defaultCacheMatcher, instanceId);
 
     handler.onRemoval(
         "test", "accounts", RemovalNotification.create("test", "accounts", RemovalCause.EXPLICIT));
