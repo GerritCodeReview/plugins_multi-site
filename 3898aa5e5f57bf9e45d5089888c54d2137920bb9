@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81d8c1e0_c005c34f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-05-26T09:53:42Z",
+      "side": 1,
+      "message": "I\u0027m waiting for events-broker to be released",
+      "revId": "3898aa5e5f57bf9e45d5089888c54d2137920bb9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
