@@ -104,7 +104,9 @@ public class ForwardedIndexChangeHandlerTest {
   public void changeIsStillIndexedEvenWhenOutdated() throws Exception {
     setupChangeAccessRelatedMocks(CHANGE_EXISTS, CHANGE_OUTDATED);
     handler.index(
-        TEST_CHANGE_ID, Operation.INDEX, Optional.of(new ChangeIndexEvent("foo", 1, false)));
+        TEST_CHANGE_ID,
+        Operation.INDEX,
+        Optional.of(new ChangeIndexEvent("foo", 1, false, "instance-id")));
     verify(indexerMock, times(1)).index(any(Change.class));
   }
 

@@ -72,6 +72,7 @@ public class ForwardedCacheEvictionHandlerIT extends LightweightPluginDaemonTest
       SharedRefDbConfiguration sharedRefDbConfig =
           new SharedRefDbConfiguration(new Config(), "multi-site");
       bind(SharedRefDbConfiguration.class).toInstance(sharedRefDbConfig);
+      //  bind(String.class).annotatedWith(GerritInstanceId.class).toInstance("instance-id");
     }
   }
 
@@ -123,7 +124,7 @@ public class ForwardedCacheEvictionHandlerIT extends LightweightPluginDaemonTest
   @Test
   public void shouldEvictProjectCache() throws Exception {
     objectUnderTest.route(
-        new CacheEvictionEvent(ProjectCacheImpl.CACHE_NAME, gson.toJson(project)));
+        new CacheEvictionEvent(ProjectCacheImpl.CACHE_NAME, gson.toJson(project), "instance-id"));
     evictionsCacheTracker.waitForExpectedEvictions();
 
     assertThat(evictionsCacheTracker.trackedEvictionsFor(ProjectCacheImpl.CACHE_NAME))

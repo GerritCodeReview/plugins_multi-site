@@ -28,8 +28,8 @@ public class ChangeIndexEvent extends IndexEvent {
   public String targetSha;
   public boolean deleted;
 
-  public ChangeIndexEvent(String projectName, int changeId, boolean deleted) {
-    super(TYPE);
+  public ChangeIndexEvent(String projectName, int changeId, boolean deleted, String instanceId) {
+    super(TYPE, instanceId);
     this.projectName = projectName;
     this.changeId = changeId;
     this.deleted = deleted;

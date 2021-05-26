@@ -36,8 +36,7 @@ public class BrokerApiWrapperTest {
             MoreExecutors.directExecutor(),
             DynamicItem.itemOf(BrokerApi.class, brokerApi),
             brokerMetrics,
-            msgLog,
-            instanceId);
+            msgLog);
   }
 
   @Test
@@ -63,7 +62,7 @@ public class BrokerApiWrapperTest {
     when(brokerApi.send(any(), any()))
         .thenThrow(new RuntimeException("Unexpected runtime exception"));
     try {
-      objectUnderTest.send(topic, event);
+      objectUnderTest.sendSync(topic, event);
     } catch (RuntimeException e) {
       // expected
     }

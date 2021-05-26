@@ -24,8 +24,8 @@ public class GroupIndexEvent extends IndexEvent {
   public final String groupUUID;
   public final ObjectId sha1;
 
-  public GroupIndexEvent(String groupUUID, @Nullable ObjectId sha1) {
-    super(TYPE);
+  public GroupIndexEvent(String groupUUID, @Nullable ObjectId sha1, String instanceId) {
+    super(TYPE, instanceId);
     this.groupUUID = groupUUID;
     this.sha1 = sha1;
   }
