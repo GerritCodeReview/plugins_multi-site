@@ -46,6 +46,6 @@ public abstract class BrokerForwarder {
       return true;
     }
 
-    return broker.send(eventTopic.topic(cfg), event);
+    return broker.sendSync(eventTopic.topic(cfg), event);
   }
 }
