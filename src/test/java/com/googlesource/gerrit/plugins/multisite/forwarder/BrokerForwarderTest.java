@@ -92,7 +92,7 @@ public class BrokerForwarderTest {
   @Test
   public void shouldSendEventToBrokerFromGenericSourceThread() {
     brokerForwarder.send(newForwarderTask(), testTopic, testEvent);
-    verify(brokerMock).send(eq(testTopicName), eq(testEvent));
+    verify(brokerMock).sendSync(eq(testTopicName), eq(testEvent));
   }
 
   @Test

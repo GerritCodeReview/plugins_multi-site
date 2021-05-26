@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
-import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
@@ -101,8 +100,7 @@ public class SubscriberMetrics extends MultiSiteMetrics {
     subscriberFailureCounter.increment(SUBSCRIBER_FAILURE_COUNTER);
   }
 
-  public void updateReplicationStatusMetrics(EventMessage eventMessage) {
-    Event event = eventMessage.getEvent();
+  public void updateReplicationStatusMetrics(Event event) {
 
     if (event instanceof RefReplicationDoneEvent
         || event instanceof RefReplicatedEvent
