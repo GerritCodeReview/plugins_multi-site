@@ -19,18 +19,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.google.common.base.Suppliers;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.data.RefUpdateAttribute;
+import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.events.ProjectDeletionReplicationSucceededEvent;
 import java.net.URISyntaxException;
 import java.util.Optional;
-import java.util.UUID;
 import org.eclipse.jgit.transport.URIish;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,11 +47,9 @@ public class SubscriberMetricsTest {
   @Mock private ProjectVersionLogger verLogger;
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
   private SubscriberMetrics metrics;
-  private EventMessage.Header msgHeader;
 
   @Before
   public void setup() throws Exception {
-    msgHeader = new EventMessage.Header(UUID.randomUUID(), UUID.randomUUID());
     metrics = new SubscriberMetrics(metricMaker, projectVersionRefUpdate, verLogger);
   }
 
@@ -64,7 +61,7 @@ public class SubscriberMetricsTest {
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(globalRefDbVersion);
 
-    EventMessage eventMessage = new EventMessage(msgHeader, newRefUpdateEvent());
+    Event eventMessage = newRefUpdateEvent();
 
     metrics.updateReplicationStatusMetrics(eventMessage);
 
@@ -80,7 +77,7 @@ public class SubscriberMetricsTest {
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(globalRefDbVersion);
 
-    EventMessage eventMessage = new EventMessage(msgHeader, newRefUpdateEvent());
+    Event eventMessage = newRefUpdateEvent();
 
     metrics.updateReplicationStatusMetrics(eventMessage);
 
@@ -99,7 +96,7 @@ public class SubscriberMetricsTest {
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(globalRefDbVersion);
 
-    EventMessage refUpdateEventMessage = new EventMessage(msgHeader, newRefUpdateEvent());
+    Event refUpdateEventMessage = newRefUpdateEvent();
     metrics.updateReplicationStatusMetrics(refUpdateEventMessage);
 
     assertThat(metrics.getReplicationStatus(A_TEST_PROJECT_NAME)).isEqualTo(replicationLagSecs);
@@ -108,7 +105,7 @@ public class SubscriberMetricsTest {
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(Optional.empty());
 
-    EventMessage projectDeleteEventMessage = new EventMessage(msgHeader, projectDeletionSuccess());
+    Event projectDeleteEventMessage = projectDeletionSuccess();
     metrics.updateReplicationStatusMetrics(projectDeleteEventMessage);
 
     verify(verLogger).logDeleted(A_TEST_PROJECT_NAME_KEY);
@@ -117,7 +114,7 @@ public class SubscriberMetricsTest {
   @Test
   public void shouldNotLogUponProjectDeletionSuccessWhenSubscriberMetricsDoNotExist()
       throws Exception {
-    EventMessage eventMessage = new EventMessage(msgHeader, projectDeletionSuccess());
+    Event eventMessage = projectDeletionSuccess();
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(Optional.empty());
 
@@ -131,7 +128,7 @@ public class SubscriberMetricsTest {
 
   @Test
   public void shouldNotLogUponProjectDeletionSuccessWhenLocalVersionStillExists() throws Exception {
-    EventMessage eventMessage = new EventMessage(msgHeader, projectDeletionSuccess());
+    Event eventMessage = projectDeletionSuccess();
     Optional<Long> anyRefVersionValue = Optional.of(System.currentTimeMillis() / 1000);
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(anyRefVersionValue);
@@ -151,7 +148,7 @@ public class SubscriberMetricsTest {
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(globalRefDbVersion);
 
-    EventMessage eventMessage = new EventMessage(msgHeader, newRefUpdateEvent());
+    Event eventMessage = newRefUpdateEvent();
 
     metrics.updateReplicationStatusMetrics(eventMessage);
 
@@ -160,7 +157,7 @@ public class SubscriberMetricsTest {
 
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(Optional.empty());
-    EventMessage projectDeleteEvent = new EventMessage(msgHeader, projectDeletionSuccess());
+    Event projectDeleteEvent = projectDeletionSuccess();
 
     metrics.updateReplicationStatusMetrics(projectDeleteEvent);
 

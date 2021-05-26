@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
-import com.gerritforge.gerrit.eventbroker.EventMessage;
+import com.google.gerrit.server.events.Event;
 
 public interface DroppedEventListener {
   /**
@@ -22,5 +22,5 @@ public interface DroppedEventListener {
    *
    * @param event information about the event.
    */
-  void onEventDropped(EventMessage event);
+  void onEventDropped(Event event);
 }

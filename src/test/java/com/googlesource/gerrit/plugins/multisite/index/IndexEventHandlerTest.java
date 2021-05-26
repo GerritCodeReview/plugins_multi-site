@@ -36,6 +36,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class IndexEventHandlerTest {
 
+  private static final String INSTANCE_ID = "instance-id";
+
   private IndexEventHandler eventHandler;
 
   @Mock private ProjectsFilter projectsFilter;
@@ -50,7 +52,8 @@ public class IndexEventHandlerTest {
             asDynamicSet(forwarder),
             changeChecker,
             projectsFilter,
-            new TestGroupChecker(true));
+            new TestGroupChecker(true),
+            INSTANCE_ID);
   }
 
   private DynamicSet<IndexEventForwarder> asDynamicSet(IndexEventForwarder forwarder) {
@@ -65,7 +68,7 @@ public class IndexEventHandlerTest {
 
     eventHandler.onProjectIndexed("test_project");
     verify(forwarder, never())
-        .index(any(IndexProjectTask.class), eq(new ProjectIndexEvent("test_project")));
+        .index(any(IndexProjectTask.class), eq(new ProjectIndexEvent("test_project", INSTANCE_ID)));
   }
 
   @Test
