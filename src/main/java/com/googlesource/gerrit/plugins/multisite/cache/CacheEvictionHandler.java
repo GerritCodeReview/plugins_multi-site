@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.cache;
 import com.google.common.cache.RemovalNotification;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.cache.CacheRemovalListener;
+import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
@@ -28,21 +29,25 @@ class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
   private final Executor executor;
   private final DynamicSet<CacheEvictionForwarder> forwarders;
   private final CachePatternMatcher matcher;
+  private final String instanceId;
 
   @Inject
   CacheEvictionHandler(
       DynamicSet<CacheEvictionForwarder> forwarders,
       @CacheExecutor Executor executor,
-      CachePatternMatcher matcher) {
+      CachePatternMatcher matcher,
+      @GerritInstanceId String instanceId) {
     this.forwarders = forwarders;
     this.executor = executor;
     this.matcher = matcher;
+    this.instanceId = instanceId;
   }
 
   @Override
   public void onRemoval(String plugin, String cache, RemovalNotification<K, V> notification) {
     if (!Context.isForwardedEvent() && !notification.wasEvicted() && matcher.matches(cache)) {
-      executor.execute(new CacheEvictionTask(new CacheEvictionEvent(cache, notification.getKey())));
+      executor.execute(
+          new CacheEvictionTask(new CacheEvictionEvent(cache, notification.getKey(), instanceId)));
     }
   }
 
