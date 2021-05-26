@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.plugins.multisite.broker;
 
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
-import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.gerritforge.gerrit.eventbroker.TopicSubscriber;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -24,12 +23,10 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.InstanceId;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 import org.slf4j.Logger;
@@ -41,25 +38,22 @@ public class BrokerApiWrapper implements BrokerApi {
   private final DynamicItem<BrokerApi> apiDelegate;
   private final BrokerMetrics metrics;
   private final MessageLogger msgLog;
-  private final UUID instanceId;
 
   @Inject
   public BrokerApiWrapper(
       @BrokerExecutor Executor executor,
       DynamicItem<BrokerApi> apiDelegate,
       BrokerMetrics metrics,
-      MessageLogger msgLog,
-      @InstanceId UUID instanceId) {
+      MessageLogger msgLog) {
     this.apiDelegate = apiDelegate;
     this.executor = executor;
     this.metrics = metrics;
     this.msgLog = msgLog;
-    this.instanceId = instanceId;
   }
 
-  public boolean send(String topic, Event event) {
+  public boolean sendSync(String topic, Event event) {
     try {
-      return send(topic, apiDelegate.get().newMessage(instanceId, event)).get();
+      return send(topic, event).get();
     } catch (Throwable e) {
       log.error(
           "Failed to publish event '{}' to topic '{}' - error: {} - stack trace: {}",
@@ -73,7 +67,7 @@ public class BrokerApiWrapper implements BrokerApi {
   }
 
   @Override
-  public ListenableFuture<Boolean> send(String topic, EventMessage message) {
+  public ListenableFuture<Boolean> send(String topic, Event message) {
     SettableFuture<Boolean> resultFuture = SettableFuture.create();
     if (Context.isForwardedEvent()) {
       resultFuture.set(true);
@@ -106,7 +100,7 @@ public class BrokerApiWrapper implements BrokerApi {
   }
 
   @Override
-  public void receiveAsync(String topic, Consumer<EventMessage> messageConsumer) {
+  public void receiveAsync(String topic, Consumer<Event> messageConsumer) {
     apiDelegate.get().receiveAsync(topic, messageConsumer);
   }
 

@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
+
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
@@ -46,6 +47,6 @@ public abstract class BrokerForwarder {
       return true;
     }
 
-    return broker.send(eventTopic.topic(cfg), event);
+    return broker.sendSync(eventTopic.topic(cfg), event);
   }
 }
