@@ -21,8 +21,8 @@ public class ProjectIndexEvent extends IndexEvent {
 
   public String projectName;
 
-  public ProjectIndexEvent(String projectName) {
-    super(TYPE);
+  public ProjectIndexEvent(String projectName, String instanceId) {
+    super(TYPE, instanceId);
     this.projectName = projectName;
   }
 

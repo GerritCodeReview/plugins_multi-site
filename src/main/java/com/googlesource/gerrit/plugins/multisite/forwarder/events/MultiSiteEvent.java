@@ -29,7 +29,8 @@ public abstract class MultiSiteEvent extends Event {
     register(ProjectListUpdateEvent.TYPE, ProjectListUpdateEvent.class);
   }
 
-  protected MultiSiteEvent(String type) {
+  protected MultiSiteEvent(String type, String instanceId) {
     super(type);
+    this.instanceId = instanceId;
   }
 }

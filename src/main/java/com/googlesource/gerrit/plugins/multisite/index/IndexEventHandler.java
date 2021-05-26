@@ -16,11 +16,13 @@ package com.googlesource.gerrit.plugins.multisite.index;
 
 import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.common.base.Objects;
+import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.events.AccountIndexedListener;
 import com.google.gerrit.extensions.events.ChangeIndexedListener;
 import com.google.gerrit.extensions.events.GroupIndexedListener;
 import com.google.gerrit.extensions.events.ProjectIndexedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
@@ -48,6 +50,7 @@ class IndexEventHandler
   private final ChangeCheckerImpl.Factory changeChecker;
   private final ProjectsFilter projectsFilter;
   private final GroupChecker groupChecker;
+  private String instanceId;
 
   @Inject
   IndexEventHandler(
@@ -55,18 +58,20 @@ class IndexEventHandler
       DynamicSet<IndexEventForwarder> forwarders,
       ChangeCheckerImpl.Factory changeChecker,
       ProjectsFilter projectsFilter,
-      GroupChecker groupChecker) {
+      GroupChecker groupChecker,
+      @Nullable @GerritInstanceId String instanceId) {
     this.forwarders = forwarders;
     this.executor = executor;
     this.changeChecker = changeChecker;
     this.projectsFilter = projectsFilter;
     this.groupChecker = groupChecker;
+    this.instanceId = instanceId;
   }
 
   @Override
   public void onAccountIndexed(int id) {
     if (!Context.isForwardedEvent()) {
-      IndexAccountTask task = new IndexAccountTask(new AccountIndexEvent(id));
+      IndexAccountTask task = new IndexAccountTask(new AccountIndexEvent(id, instanceId));
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }
@@ -87,7 +92,8 @@ class IndexEventHandler
   public void onGroupIndexed(String groupUUID) {
     if (!Context.isForwardedEvent()) {
       IndexGroupTask task =
-          new IndexGroupTask(new GroupIndexEvent(groupUUID, groupChecker.getGroupHead(groupUUID)));
+          new IndexGroupTask(
+              new GroupIndexEvent(groupUUID, groupChecker.getGroupHead(groupUUID), instanceId));
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }
@@ -97,7 +103,7 @@ class IndexEventHandler
   @Override
   public void onProjectIndexed(String projectName) {
     if (!Context.isForwardedEvent() && projectsFilter.matches(projectName)) {
-      IndexProjectTask task = new IndexProjectTask(new ProjectIndexEvent(projectName));
+      IndexProjectTask task = new IndexProjectTask(new ProjectIndexEvent(projectName, instanceId));
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }
@@ -132,7 +138,7 @@ class IndexEventHandler
 
   private void executeDeleteChangeTask(int id) {
     if (!Context.isForwardedEvent()) {
-      IndexChangeTask task = new IndexChangeTask(new ChangeIndexEvent("", id, true));
+      IndexChangeTask task = new IndexChangeTask(new ChangeIndexEvent("", id, true, instanceId));
       if (queuedTasks.add(task)) {
         executor.execute(task);
       }
