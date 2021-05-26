@@ -14,8 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
-import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.google.gerrit.extensions.systemstatus.ServerInformation;
+import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventGsonProvider;
 import com.google.gerrit.server.util.PluginLogFile;
 import com.google.gerrit.server.util.SystemLog;
@@ -41,7 +41,7 @@ public class Log4jMessageLogger extends PluginLogFile implements MessageLogger {
   }
 
   @Override
-  public void log(Direction direction, String topic, EventMessage event) {
+  public void log(Direction direction, String topic, Event event) {
     msgLog.info("{} {} {}", direction, topic, gson.toJson(event));
   }
 }

@@ -38,7 +38,8 @@ public class ProjectListUpdateRouterTest {
 
   @Test
   public void routerShouldSendEventsToTheAppropriateHandler_ProjectListUpdate() throws Exception {
-    final ProjectListUpdateEvent event = new ProjectListUpdateEvent("project", false);
+    String instanceId = "instance-id";
+    final ProjectListUpdateEvent event = new ProjectListUpdateEvent("project", false, instanceId);
     router.route(event);
 
     verify(projectListUpdateHandler).update(event);
