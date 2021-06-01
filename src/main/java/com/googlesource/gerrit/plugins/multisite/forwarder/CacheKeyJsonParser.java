@@ -48,7 +48,7 @@ public final class CacheKeyJsonParser {
         key = AccountGroup.uuid(jsonElement(json).getAsJsonObject().get("uuid").getAsString());
         break;
       case Constants.PROJECTS:
-        key = Project.nameKey(jsonElement(json).getAsString());
+        key = Project.nameKey(nullToEmpty(json));
         break;
       case Constants.PROJECT_LIST:
         key = gson.fromJson(nullToEmpty(json).toString(), Object.class);
