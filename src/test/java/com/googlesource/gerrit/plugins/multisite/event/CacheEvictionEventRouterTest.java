@@ -16,7 +16,9 @@ package com.googlesource.gerrit.plugins.multisite.event;
 
 import static org.mockito.Mockito.verify;
 
+import com.google.gerrit.entities.Project;
 import com.google.gson.Gson;
+import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEntry;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheKeyJsonParser;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedCacheEvictionHandler;
@@ -48,11 +50,21 @@ public class CacheEvictionEventRouterTest {
   }
 
   @Test
-  public void routerShouldSendEventsToTheAppropriateHandler_ProjectCacheEvictionWithSlash()
+  public void routerShouldSendEventsToTheAppropriateHandler_CacheEvictionWithSlash()
       throws Exception {
-    final CacheEvictionEvent event = new CacheEvictionEvent("cache", "some/project");
+    final CacheEvictionEvent event = new CacheEvictionEvent("cache", "some/key");
     router.route(event);
 
     verify(cacheEvictionHandler).evict(CacheEntry.from(event.cacheName, event.key));
+  }
+
+  @Test
+  public void routerShouldSendEventsToTheAppropriateHandler_ProjectCacheEvictionWithSlash()
+      throws Exception {
+    final CacheEvictionEvent event = new CacheEvictionEvent(Constants.PROJECTS, "some/project");
+    router.route(event);
+
+    verify(cacheEvictionHandler)
+        .evict(CacheEntry.from(event.cacheName, Project.nameKey((String) event.key)));
   }
 }

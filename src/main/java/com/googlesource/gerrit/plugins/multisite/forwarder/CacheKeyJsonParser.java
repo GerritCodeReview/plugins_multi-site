@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.MoreObjects;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.entities.AccountGroup;
@@ -48,7 +49,7 @@ public final class CacheKeyJsonParser {
         key = AccountGroup.uuid(jsonElement(json).getAsJsonObject().get("uuid").getAsString());
         break;
       case Constants.PROJECTS:
-        key = Project.nameKey(jsonElement(json).getAsString());
+        key = Project.nameKey(CharMatcher.is('\"').trimFrom(nullToEmpty(json)));
         break;
       case Constants.PROJECT_LIST:
         key = gson.fromJson(nullToEmpty(json).toString(), Object.class);
