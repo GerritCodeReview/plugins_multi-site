@@ -34,34 +34,34 @@ public class CacheKeyJsonParserTest {
   public void accountIDParse() {
     Account.Id accountId = Account.id(1);
     String json = gson.toJson(accountId);
-    assertThat(accountId).isEqualTo(gsonParser.fromJson(Constants.ACCOUNTS, json));
+    assertThat(accountId).isEqualTo(gsonParser.from(Constants.ACCOUNTS, json));
   }
 
   @Test
   public void accountGroupIDParse() {
     AccountGroup.Id accountGroupId = AccountGroup.id(1);
     String json = gson.toJson(accountGroupId);
-    assertThat(accountGroupId).isEqualTo(gsonParser.fromJson(Constants.GROUPS, json));
+    assertThat(accountGroupId).isEqualTo(gsonParser.from(Constants.GROUPS, json));
   }
 
   @Test
   public void accountGroupUUIDParse() {
     AccountGroup.UUID accountGroupUuid = AccountGroup.uuid("abc123");
     String json = gson.toJson(accountGroupUuid);
-    assertThat(accountGroupUuid).isEqualTo(gsonParser.fromJson(Constants.GROUPS_BYINCLUDE, json));
+    assertThat(accountGroupUuid).isEqualTo(gsonParser.from(Constants.GROUPS_BYINCLUDE, json));
   }
 
   @Test
   public void projectNameKeyParse() {
     String projectName = "foo";
     Project.NameKey name = Project.nameKey(projectName);
-    assertThat(name).isEqualTo(gsonParser.fromJson(Constants.PROJECTS, projectName));
+    assertThat(name).isEqualTo(gsonParser.from(Constants.PROJECTS, projectName));
   }
 
   @Test
   public void stringParse() {
     String key = "key";
-    assertThat(key).isEqualTo(gsonParser.fromJson("any-cache-with-string-key", key));
+    assertThat(key).isEqualTo(gsonParser.from("any-cache-with-string-key", key));
   }
 
   @Test
