@@ -122,8 +122,7 @@ public class ForwardedCacheEvictionHandlerIT extends LightweightPluginDaemonTest
 
   @Test
   public void shouldEvictProjectCache() throws Exception {
-    objectUnderTest.route(
-        new CacheEvictionEvent(ProjectCacheImpl.CACHE_NAME, gson.toJson(project)));
+    objectUnderTest.route(new CacheEvictionEvent(ProjectCacheImpl.CACHE_NAME, project));
     evictionsCacheTracker.waitForExpectedEvictions();
 
     assertThat(evictionsCacheTracker.trackedEvictionsFor(ProjectCacheImpl.CACHE_NAME))
