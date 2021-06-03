@@ -16,6 +16,23 @@
       "message": "Why is the problem in 3.3 only ? Should it go in 3.2?",
       "revId": "e36847760db148fa943d25b767da3ece006b9139",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fce7e14a_17beff7b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/CacheKeyJsonParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-03T11:14:00Z",
+      "side": 1,
+      "message": "isn\u0027t this going to remove the slash from the json altogether?\n\nHow are we going to distinguish cache evictions for `foo/bar` from cache evictions for `foobar`?",
+      "revId": "e36847760db148fa943d25b767da3ece006b9139",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
