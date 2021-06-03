@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4b1509a_70b8f51f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-03T10:12:53Z",
+      "side": 1,
+      "message": "Why is the problem in 3.3 only ? Should it go in 3.2?",
+      "revId": "e36847760db148fa943d25b767da3ece006b9139",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
