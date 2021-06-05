@@ -18,6 +18,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e13ef611_b301ab8f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-05T01:46:47Z",
+      "side": 1,
+      "message": "The bug is raised against v3.4, but this is fix is on v3.3 where the problem does not occur.\nI found actually a bug but it is in the test. The code looks good to me.\n\nLet me try to reproduce on stable-3.4 instead.",
+      "revId": "e36847760db148fa943d25b767da3ece006b9139",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fce7e14a_17beff7b",
@@ -85,6 +102,29 @@
       "side": 1,
       "message": "Issue is that json is a serialised string and Gson serialiser always adding quotes so if we do Gson.toJson(Project.nameKey(\"foo\")) string will look like this: \"\"foo\"\". Because it\u0027s not a valid Json we cannot deserialise it using Gson.fromJson(json) but we just cast it to string. But with casting we will still have quotes.",
       "parentUuid": "9b6865f3_3fbc39a6",
+      "revId": "e36847760db148fa943d25b767da3ece006b9139",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39e535d9_45251818",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/event/CacheEvictionEventRouterTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-05T01:46:47Z",
+      "side": 1,
+      "message": "This test is wrong: we do not send a plain string but rather we delegate the EventGson to the serialisation of a project object.\n\nThe correct form is done in the ForwardedCacheEvictionHandlerIT.java:126\n\n  @Test\n  public void shouldEvictProjectCache() throws Exception {\n    objectUnderTest.route(\n        new CacheEvictionEvent(ProjectCacheImpl.CACHE_NAME, gson.toJson(project)));\n    evictionsCacheTracker.waitForExpectedEvictions();\n\n    assertThat(evictionsCacheTracker.trackedEvictionsFor(ProjectCacheImpl.CACHE_NAME))\n        .contains(project);\n  }\n  \nYou are assuming what the EventGson would do, without using the real object.",
+      "range": {
+        "startLine": 64,
+        "startChar": 80,
+        "endLine": 64,
+        "endChar": 94
+      },
       "revId": "e36847760db148fa943d25b767da3ece006b9139",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
