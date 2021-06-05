@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1cc6e76_daa75ea0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-05T09:04:37Z",
+      "side": 1,
+      "message": "there is a bug in stable-3.3. setup local environment, create project with / in the name and change the description. You will see desesialisation issue. It\u0027s because it\u0027s in the switch we have special case for projects and before it was handled in default section",
+      "parentUuid": "e13ef611_b301ab8f",
+      "revId": "e36847760db148fa943d25b767da3ece006b9139",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fce7e14a_17beff7b",
