@@ -16,6 +16,29 @@
       "message": "Can you put this in the same topic as it following in the chain?",
       "revId": "e1f57bc4d54c232f4c3b826be33013b709f2c401",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "033f779b_bbf52814",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-07T23:50:49Z",
+      "side": 1,
+      "message": "This doesn\u0027t show the issue: you should use a project name with a \u0027/\u0027 in the middle.\n\nExample:\n\n  @Test\n  public void shouldEvictProjectCache() throws Exception {\n    ProjectInput in \u003d new ProjectInput();\n    in.name \u003d name(\"my/project\");\n    gApi.projects().create(in);\n    NameKey projectNameKey \u003d Project.nameKey(in.name);\n\n    objectUnderTest.route(\n        new CacheEvictionEvent(ProjectCacheImpl.CACHE_NAME, projectNameKey.get()));\n    evictionsCacheTracker.waitForExpectedEvictions();\n\n    assertThat(evictionsCacheTracker.trackedEvictionsFor(ProjectCacheImpl.CACHE_NAME))\n        .contains(projectNameKey);\n  }",
+      "range": {
+        "startLine": 125,
+        "startChar": 78,
+        "endLine": 125,
+        "endChar": 91
+      },
+      "revId": "e1f57bc4d54c232f4c3b826be33013b709f2c401",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
