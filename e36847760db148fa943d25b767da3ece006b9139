@@ -163,6 +163,30 @@
       },
       "revId": "e36847760db148fa943d25b767da3ece006b9139",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "657b02cd_5dd66e2e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/event/CacheEvictionEventRouterTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-07T06:14:25Z",
+      "side": 1,
+      "message": "I\u0027ve tested with local setup and actually I have issue in other tests. If we use gson.toJson(project) extra quotes will be added e.g: \"\"some/project\"\" that\u0027s why I have this extra code to remove them. But in real file we are getting: \"some/project\", it\u0027s because we are deserialising json to Event object so extra quotes are already removed, then we are passing it one more time to our CacheKeyJsonParser - gsonParser.fromJson(cacheEvictionEvent.cacheName, cacheEvictionEvent.key);. I will remove this extra functionality and use string instead of Gson",
+      "parentUuid": "39e535d9_45251818",
+      "range": {
+        "startLine": 64,
+        "startChar": 80,
+        "endLine": 64,
+        "endChar": 94
+      },
+      "revId": "e36847760db148fa943d25b767da3ece006b9139",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
