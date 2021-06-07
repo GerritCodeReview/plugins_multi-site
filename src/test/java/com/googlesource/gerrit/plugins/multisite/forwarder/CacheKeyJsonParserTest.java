@@ -53,9 +53,10 @@ public class CacheKeyJsonParserTest {
 
   @Test
   public void projectNameKeyParse() {
-    Project.NameKey name = Project.nameKey("foo");
-    String json = gson.toJson(name);
-    assertThat(name).isEqualTo(gsonParser.fromJson(Constants.PROJECTS, json));
+    String projectNameString = "foo";
+    Project.NameKey projectNameKey = Project.nameKey(projectNameString);
+    assertThat(projectNameKey)
+        .isEqualTo(gsonParser.fromJson(Constants.PROJECTS, projectNameString));
   }
 
   @Test
