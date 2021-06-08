@@ -142,6 +142,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db78fa29_abcfd290",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/CacheKeyJsonParser.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-08T07:51:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7c62577c_e5daa33b",
+      "revId": "e36847760db148fa943d25b767da3ece006b9139",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39e535d9_45251818",
