@@ -87,6 +87,30 @@
       },
       "revId": "e1f57bc4d54c232f4c3b826be33013b709f2c401",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0084399b_9700511e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-08T06:29:46Z",
+      "side": 1,
+      "message": "\u003e It also looks like that this isn\u0027t enough as there is a new \u0027persisted_projects\u0027 in stable-3.4\n\nBut this change is for stable-3.3 if there is a new \u0027persisted_projects\u0027 in stable-3.4 we should fix it there",
+      "parentUuid": "820f5df7_264bf5a9",
+      "range": {
+        "startLine": 125,
+        "startChar": 78,
+        "endLine": 125,
+        "endChar": 91
+      },
+      "revId": "e1f57bc4d54c232f4c3b826be33013b709f2c401",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
