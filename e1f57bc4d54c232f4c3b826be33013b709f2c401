@@ -63,6 +63,30 @@
       },
       "revId": "e1f57bc4d54c232f4c3b826be33013b709f2c401",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "820f5df7_264bf5a9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-08T06:27:23Z",
+      "side": 1,
+      "message": "I wanted to change existing tests here, but add tests for  / in a follow up change together with the fix. So the code compiles all the time. But I can move tests here.",
+      "parentUuid": "8651d609_ed5ee1e3",
+      "range": {
+        "startLine": 125,
+        "startChar": 78,
+        "endLine": 125,
+        "endChar": 91
+      },
+      "revId": "e1f57bc4d54c232f4c3b826be33013b709f2c401",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
