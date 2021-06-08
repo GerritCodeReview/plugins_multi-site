@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08246bb3_280caca3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/CacheKeyJsonParser.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-08T18:44:20Z",
+      "side": 1,
+      "message": "I believe the method name is the root cause of the mess-up with the data types. Also, the Object parameter name is called \u0027json\u0027 whilst, in reality, it *may* be a JSON object and *may be* a simple string.\n\nShall we rename the method and the parameter name?",
+      "range": {
+        "startLine": 36,
+        "startChar": 16,
+        "endLine": 36,
+        "endChar": 24
+      },
+      "revId": "023465d173051555c6037591f9aa495e484512b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
