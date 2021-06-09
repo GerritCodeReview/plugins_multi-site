@@ -23,6 +23,8 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -51,6 +53,7 @@ public class Configuration {
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
 
   private static final String REPLICATION_CONFIG = "replication.config";
+  private static final String GERRIT_CONFIG = "gerrit.config";
   // common parameters to cache and index sections
   private static final int DEFAULT_INDEX_MAX_TRIES = 2;
   private static final int DEFAULT_INDEX_RETRY_INTERVAL = 30000;
@@ -63,16 +66,21 @@ public class Configuration {
   private final Supplier<Projects> projects;
   private final Supplier<SharedRefDbConfiguration> sharedRefDb;
   private final Supplier<Collection<Message>> replicationConfigValidation;
+  private final Supplier<Collection<Message>> gerritConfigValidation;
   private final Supplier<Broker> broker;
   private final Config multiSiteConfig;
 
   @Inject
   Configuration(SitePaths sitePaths) {
-    this(getConfigFile(sitePaths, MULTI_SITE_CONFIG), getConfigFile(sitePaths, REPLICATION_CONFIG));
+    this(
+        getConfigFile(sitePaths, GERRIT_CONFIG),
+        getConfigFile(sitePaths, MULTI_SITE_CONFIG),
+        getConfigFile(sitePaths, REPLICATION_CONFIG));
   }
 
   @VisibleForTesting
-  public Configuration(Config multiSiteConfig, Config replicationConfig) {
+  public Configuration(Config gerritConfig, Config multiSiteConfig, Config replicationConfig) {
+    gerritConfigValidation = lazyValidateGerritConfig(gerritConfig);
     Supplier<Config> lazyMultiSiteCfg = lazyLoad(multiSiteConfig);
     this.multiSiteConfig = multiSiteConfig;
     replicationConfigValidation = lazyValidateReplicatioConfig(replicationConfig);
@@ -117,7 +125,8 @@ public class Configuration {
   }
 
   public Collection<Message> validate() {
-    return replicationConfigValidation.get();
+    return Lists.newArrayList(
+        Iterables.concat(gerritConfigValidation.get(), replicationConfigValidation.get()));
   }
 
   private static FileBasedConfig getConfigFile(SitePaths sitePaths, String configFileName) {
@@ -155,6 +164,29 @@ public class Configuration {
           });
     }
     return ofInstance(config);
+  }
+
+  private Supplier<Collection<Message>> lazyValidateGerritConfig(Config gerritConfig) {
+    if (gerritConfig instanceof FileBasedConfig) {
+      FileBasedConfig fileConfig = (FileBasedConfig) gerritConfig;
+      try {
+        fileConfig.load();
+        return memoize(() -> validateGerritConfig(gerritConfig));
+      } catch (IOException | ConfigInvalidException e) {
+        return ofInstance(Arrays.asList(new Message("Unable to load gerrit.config", e)));
+      }
+    }
+    return ofInstance(validateGerritConfig(gerritConfig));
+  }
+
+  private Collection<Message> validateGerritConfig(Config gerritConfig) {
+    String instanceId = gerritConfig.getString("gerrit", null, "instanceId");
+    if (Strings.isNullOrEmpty(instanceId)) {
+      return Arrays.asList(
+          new Message(
+              "Invalid gerrit.config: gerrit.instanceId has to be set for multi-site setups"));
+    }
+    return Collections.emptyList();
   }
 
   private Supplier<Collection<Message>> lazyValidateReplicatioConfig(Config replicationConfig) {
