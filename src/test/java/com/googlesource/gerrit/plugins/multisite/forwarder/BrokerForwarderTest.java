@@ -76,7 +76,7 @@ public class BrokerForwarderTest {
 
   @Before
   public void setup() {
-    cfg = new Configuration(new Config(), new Config());
+    cfg = new Configuration(new Config(), new Config(), new Config());
     testTopic = EventTopic.INDEX_TOPIC;
     testTopicName = testTopic.topic(cfg);
     testEvent = new TestEvent();

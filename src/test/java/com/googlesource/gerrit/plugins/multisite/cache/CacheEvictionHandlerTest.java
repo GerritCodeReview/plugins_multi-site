@@ -32,7 +32,7 @@ public class CacheEvictionHandlerTest {
 
   @Mock private Executor executorMock;
   private CachePatternMatcher defaultCacheMatcher =
-      new CachePatternMatcher(new Configuration(new Config(), new Config()));
+      new CachePatternMatcher(new Configuration(new Config(), new Config(), new Config()));
 
   @Test
   public void shouldNotPublishAccountsCacheEvictions() {
