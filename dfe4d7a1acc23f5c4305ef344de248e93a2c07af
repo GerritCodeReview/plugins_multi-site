@@ -141,6 +141,30 @@
       },
       "revId": "dfe4d7a1acc23f5c4305ef344de248e93a2c07af",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f5aa8d3_e6e6cba6",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/CacheKeyJsonParserTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-09T22:51:53Z",
+      "side": 1,
+      "message": "as mentioned in your comment in a follow up change",
+      "parentUuid": "40410616_1c40f353",
+      "range": {
+        "startLine": 58,
+        "startChar": 42,
+        "endLine": 58,
+        "endChar": 50
+      },
+      "revId": "dfe4d7a1acc23f5c4305ef344de248e93a2c07af",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
