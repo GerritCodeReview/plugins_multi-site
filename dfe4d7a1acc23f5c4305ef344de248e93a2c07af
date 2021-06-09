@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b2a31fe_1c08fd01",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/event/CacheEvictionEventRouterTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-09T06:25:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f956dd17_87af887e",
+      "range": {
+        "startLine": 43,
+        "startChar": 11,
+        "endLine": 43,
+        "endChar": 34
+      },
+      "revId": "dfe4d7a1acc23f5c4305ef344de248e93a2c07af",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a0b50d8_3ed5dd7a",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-06-08T18:40:56Z",
       "side": 1,
       "message": "That is weird though and is error-prone: the method name is called \u0027fromJson\u0027 but, actually, we are using it with something that isn\u0027t a JSON but a string.\n\nShould this be renamed in a follow-up change?",
+      "range": {
+        "startLine": 58,
+        "startChar": 42,
+        "endLine": 58,
+        "endChar": 50
+      },
+      "revId": "dfe4d7a1acc23f5c4305ef344de248e93a2c07af",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "102245a5_beed65b5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/CacheKeyJsonParserTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-09T06:25:30Z",
+      "side": 1,
+      "message": "Sure I will do that.",
+      "parentUuid": "9a0b50d8_3ed5dd7a",
       "range": {
         "startLine": 58,
         "startChar": 42,
