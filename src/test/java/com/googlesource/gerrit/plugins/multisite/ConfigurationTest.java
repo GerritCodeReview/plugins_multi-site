@@ -36,18 +36,23 @@ public class ConfigurationTest {
   private static final String INVALID_BOOLEAN = "invalidBoolean";
   private static final String INVALID_INT = "invalidInt";
   private static final int THREAD_POOL_SIZE = 1;
+  private static final String DEFAULT_INSTANCE_ID = "instance-id";
 
+  private Config gerritConfig;
   private Config globalPluginConfig;
   private Config replicationConfig;
 
   @Before
   public void setUp() {
+
+    gerritConfig = new Config();
+    gerritConfig.setString("gerrit", null, "instanceId", DEFAULT_INSTANCE_ID);
     globalPluginConfig = new Config();
     replicationConfig = new Config();
   }
 
   private Configuration getConfiguration() {
-    return new Configuration(globalPluginConfig, replicationConfig);
+    return new Configuration(gerritConfig, globalPluginConfig, replicationConfig);
   }
 
   @Test
@@ -127,6 +132,27 @@ public class ConfigurationTest {
   public void shouldReturnValidationErrorsWhenReplicationOnStartupIsEnabled() throws Exception {
     Config replicationConfig = new Config();
     replicationConfig.setBoolean("gerrit", null, "replicateOnStartup", true);
-    assertThat(new Configuration(globalPluginConfig, replicationConfig).validate()).isNotEmpty();
+    assertThat(new Configuration(gerritConfig, globalPluginConfig, replicationConfig).validate())
+        .isNotEmpty();
+  }
+
+  @Test
+  public void shouldReturnValidationErrorsWhenGerritInstanceIdIsNull() throws Exception {
+    gerritConfig.setString("gerrit", null, "instanceId", null);
+    assertThat(new Configuration(gerritConfig, globalPluginConfig, replicationConfig).validate())
+        .isNotEmpty();
+  }
+
+  @Test
+  public void shouldReturnValidationErrorsWhenGerritInstanceIdIsEmpty() throws Exception {
+    gerritConfig.setString("gerrit", null, "instanceId", "");
+    assertThat(new Configuration(gerritConfig, globalPluginConfig, replicationConfig).validate())
+        .isNotEmpty();
+  }
+
+  @Test
+  public void shouldPassValidationWhenGerritInstanceIdIsSet() throws Exception {
+    assertThat(new Configuration(gerritConfig, globalPluginConfig, replicationConfig).validate())
+        .isEmpty();
   }
 }
