@@ -70,6 +70,30 @@
       },
       "revId": "27712534f720f66aaaad192a49d8e0974da78bf1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07e6cb6b_775b1867",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/CacheKeyJsonParser.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-10T15:59:31Z",
+      "side": 1,
+      "message": "\u003e \u003e \u003e Also, this change is now bigger than it needs to be and it does more than just fixing the \"cache eviction for project cache\", as the commit message claims.\n\u003e \u003e \n\u003e \u003e I\u0027ve updated the commit message to cover renaming as well.\n\u003e \u003e \n\u003e \u003e \u003e I have read the conversation in the parent change, but this method \"fromJson\" is not just used to parse cache keys for projects (which are strings), but also for other caches, which _are_ json.\n\u003e \u003e \n\u003e \u003e Exactly, if this method is accepting plain string or json why is named \u0027fromJson\u0027? \n\u003e \u003e I believe this method is a code smell and we should refactor it in a separate change. This change is focusing on fixing the real problem with project cache. And I believe suggestion from @luca is correct this method is misleading because it suggest that cacheKeyValue param is *always* a JSON element which is not true and in some cases is just plain string.\n\u003e \u003e \n\u003e \u003e But again we should refactor this part of the code in a separate change\n\u003e \n\u003e Plain strings are valid json (RFC 8259)) (see this [1] for more details).\n\nAFAIK, \"foo\" is a valid JSON, foo is not.\n\n\u003e You can try also some online validator, such as [2] or [3].\n\nI did, and I got:\n\nParse error on line 1:\nfoo\n^\nExpecting \u0027STRING\u0027, \u0027NUMBER\u0027, \u0027NULL\u0027, \u0027TRUE\u0027, \u0027FALSE\u0027, \u0027{\u0027, \u0027[\u0027, got \u0027undefined\u0027\n\nThat\u0027s exactly the problem we saw in multi-site.\n\n\u003e I agree that fromJson is not a great name though, I think \"from\" makes it even more obscure about what the method does. Perhaps something along the \"parse()\" would be more appropriate.\n\u003e \n\u003e But again, I think it should be done as a separate change, so that in this change we fix the project cache routing issue only.\n\nSort-of: the problem was the naming that lead to the misunderstanding that the argument was always a JSON element, which is untrue.\n\nThe renaming is integral part of the fix I believe.\n\n\u003e [1] https://stackoverflow.com/questions/7487869/is-this-simple-string-considered-valid-json\n\u003e [2] https://jsonformatter.org/\n\u003e [3] https://codebeautify.org/jsonvalidator",
+      "parentUuid": "a51c4c92_83f9f2b4",
+      "range": {
+        "startLine": 36,
+        "startChar": 2,
+        "endLine": 36,
+        "endChar": 62
+      },
+      "revId": "27712534f720f66aaaad192a49d8e0974da78bf1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
