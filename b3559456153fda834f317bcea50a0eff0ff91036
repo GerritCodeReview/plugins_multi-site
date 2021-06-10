@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0db289d1_ee384179",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-10T08:41:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eef94a21_16d8b784",
+      "range": {
+        "startLine": 7,
+        "startChar": 43,
+        "endLine": 7,
+        "endChar": 44
+      },
+      "revId": "b3559456153fda834f317bcea50a0eff0ff91036",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1dd58b6_f5458955",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-06-10T07:26:17Z",
       "side": 1,
       "message": "For clarity: \"A string representing the project name\"?",
+      "range": {
+        "startLine": 9,
+        "startChar": 47,
+        "endLine": 9,
+        "endChar": 71
+      },
+      "revId": "b3559456153fda834f317bcea50a0eff0ff91036",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce6ef480_912fbf9c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-10T08:41:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1dd58b6_f5458955",
       "range": {
         "startLine": 9,
         "startChar": 47,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8df1b2fb_7fa74e1e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/CacheKeyJsonParserTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-10T08:41:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e76b5d73_54062e01",
+      "range": {
+        "startLine": 56,
+        "startChar": 1,
+        "endLine": 56,
+        "endChar": 31
+      },
+      "revId": "b3559456153fda834f317bcea50a0eff0ff91036",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a59c17db_8a49c14c",
@@ -83,6 +155,54 @@
       "writtenOn": "2021-06-10T07:26:17Z",
       "side": 1,
       "message": "projectNameKey?",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 56
+      },
+      "revId": "b3559456153fda834f317bcea50a0eff0ff91036",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae982146_1ae3db4c",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/CacheKeyJsonParserTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-10T08:41:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a59c17db_8a49c14c",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 56
+      },
+      "revId": "b3559456153fda834f317bcea50a0eff0ff91036",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41051d25_a4190eb9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/CacheKeyJsonParserTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-10T08:41:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a59c17db_8a49c14c",
       "range": {
         "startLine": 57,
         "startChar": 0,
