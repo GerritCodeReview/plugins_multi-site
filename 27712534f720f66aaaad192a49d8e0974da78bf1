@@ -22,6 +22,30 @@
       },
       "revId": "27712534f720f66aaaad192a49d8e0974da78bf1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ccf24c6_c35c8e36",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/CacheKeyJsonParser.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-10T08:57:55Z",
+      "side": 1,
+      "message": "\u003e Also, this change is now bigger than it needs to be and it does more than just fixing the \"cache eviction for project cache\", as the commit message claims.\n\nI\u0027ve updated the commit message to cover renaming as well.\n\n\u003e I have read the conversation in the parent change, but this method \"fromJson\" is not just used to parse cache keys for projects (which are strings), but also for other caches, which _are_ json.\n\nExactly, if this method is accepting plain string or json why is named \u0027fromJson\u0027? I believe this method is a code smell and we should refactor it in a separate change. This change is focusing on fixing the real problem with project cache. And I believe suggestion from @luca is correct this method is misleading because it suggest that cacheKeyValue param is *always* a JSON element which is not true and in some cases is just plain string.\n\nBut again we should refactor this part of the code in a separate change",
+      "parentUuid": "3be166f0_3ee2037e",
+      "range": {
+        "startLine": 36,
+        "startChar": 2,
+        "endLine": 36,
+        "endChar": 62
+      },
+      "revId": "27712534f720f66aaaad192a49d8e0974da78bf1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
