@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c01980e_293a8d6c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-06-14T08:13:51Z",
+      "side": 1,
+      "message": "nit: s/User/Use/",
+      "range": {
+        "startLine": 10,
+        "startChar": 41,
+        "endLine": 10,
+        "endChar": 45
+      },
+      "revId": "940378c9603c4f7e5d7ea98e8933f9aeae0e715f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55ee95a7_449800f5",
+        "filename": "setup_local_env/configs/gerrit.config",
+        "patchSetId": 7
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-06-14T08:13:51Z",
+      "side": 1,
+      "message": "you mean the group of servers forming the multi-site cluster, right?",
+      "range": {
+        "startLine": 8,
+        "startChar": 17,
+        "endLine": 8,
+        "endChar": 26
+      },
+      "revId": "940378c9603c4f7e5d7ea98e8933f9aeae0e715f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bcd7aac_b1edbf0d",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-06-14T08:13:51Z",
+      "side": 1,
+      "message": "nit: remove the code that is commented out?",
+      "revId": "940378c9603c4f7e5d7ea98e8933f9aeae0e715f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
