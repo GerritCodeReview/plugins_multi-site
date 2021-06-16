@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3252b468_bb40b31b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-16T09:57:01Z",
+      "side": 1,
+      "message": "nit: an",
+      "range": {
+        "startLine": 11,
+        "startChar": 40,
+        "endLine": 11,
+        "endChar": 41
+      },
+      "revId": "fa90447d59d93707378b2af713014bee04606d05",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ee9f1d8_9991c832",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-16T09:57:01Z",
+      "side": 1,
+      "message": "This behaviour should probably be documented.",
+      "range": {
+        "startLine": 13,
+        "startChar": 50,
+        "endLine": 15,
+        "endChar": 7
+      },
+      "revId": "fa90447d59d93707378b2af713014bee04606d05",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce6c8b46_d7294569",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-16T09:57:01Z",
+      "side": 1,
+      "message": "Why can\u0027t we just use the @GerritInstanceId notation to find out whether it is set or not?",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 77
+      },
+      "revId": "fa90447d59d93707378b2af713014bee04606d05",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
