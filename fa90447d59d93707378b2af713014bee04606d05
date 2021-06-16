@@ -68,6 +68,30 @@
       },
       "revId": "fa90447d59d93707378b2af713014bee04606d05",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2392b43d_3d43ae0b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-16T21:58:57Z",
+      "side": 1,
+      "message": "Nope, because this is loaded in a lib module and we do not have @GerritInstaceId annotation binded yet",
+      "parentUuid": "ce6c8b46_d7294569",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 77
+      },
+      "revId": "fa90447d59d93707378b2af713014bee04606d05",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
