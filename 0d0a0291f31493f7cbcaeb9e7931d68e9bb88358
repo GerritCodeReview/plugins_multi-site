@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90fc1cd0_dda5013d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "238fff06_f2840735",
+      "range": {
+        "startLine": 9,
+        "startChar": 60,
+        "endLine": 10,
+        "endChar": 40
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7334559a_9bde9785",
@@ -144,6 +168,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "48a9795a_7ba73b76",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Isn\u0027t that a code smell. We should set an instance id when we create the message. If we set it here we don\u0027t know if it is a correct instance id plus we can have issues in different part of the system which also expects the instance id",
+      "parentUuid": "0c7ea7a8_54dad3a6",
+      "range": {
+        "startLine": 77,
+        "startChar": 41,
+        "endLine": 77,
+        "endChar": 80
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6ad5d0f_d65ef026",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/CacheEvictionHandler.java",
         "patchSetId": 8
@@ -155,6 +203,30 @@
       "writtenOn": "2021-06-17T23:45:58Z",
       "side": 1,
       "message": "Is this really nullable? My understanding is that GerritInstanceId is mandatory for multi-site",
+      "range": {
+        "startLine": 40,
+        "startChar": 6,
+        "endLine": 40,
+        "endChar": 16
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "230f0fe9_a1839182",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/CacheEvictionHandler.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e6ad5d0f_d65ef026",
       "range": {
         "startLine": 40,
         "startChar": 6,
@@ -188,6 +260,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d9ced61_780d3ebc",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/ProjectListUpdateHandler.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62ada615_805a9054",
+      "range": {
+        "startLine": 45,
+        "startChar": 6,
+        "endLine": 45,
+        "endChar": 16
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be823da6_46a465ce",
@@ -201,6 +297,30 @@
       "writtenOn": "2021-06-17T23:45:58Z",
       "side": 1,
       "message": "Same as above",
+      "range": {
+        "startLine": 47,
+        "startChar": 6,
+        "endLine": 47,
+        "endChar": 15
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73fda168_546adbab",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be823da6_46a465ce",
       "range": {
         "startLine": 47,
         "startChar": 6,
@@ -234,6 +354,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "829b884a_2a21c2a0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/BatchIndexEventSubscriber.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e807920c_a8178502",
+      "range": {
+        "startLine": 33,
+        "startChar": 6,
+        "endLine": 33,
+        "endChar": 15
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e964843f_7feefaa4",
@@ -247,6 +391,30 @@
       "writtenOn": "2021-06-17T23:45:58Z",
       "side": 1,
       "message": "Same as above",
+      "range": {
+        "startLine": 33,
+        "startChar": 6,
+        "endLine": 33,
+        "endChar": 15
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c222af3_3d8f7088",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/CacheEvictionEventSubscriber.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e964843f_7feefaa4",
       "range": {
         "startLine": 33,
         "startChar": 6,
@@ -280,6 +448,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fefb525c_b4d062a5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/IndexEventSubscriber.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b216b114_9e8962ba",
+      "range": {
+        "startLine": 33,
+        "startChar": 6,
+        "endLine": 33,
+        "endChar": 16
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35957ebe_0df8b23e",
@@ -293,6 +485,30 @@
       "writtenOn": "2021-06-17T23:45:58Z",
       "side": 1,
       "message": "Same as above",
+      "range": {
+        "startLine": 33,
+        "startChar": 6,
+        "endLine": 33,
+        "endChar": 16
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebc0f180_0dc9c9e2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ProjectUpdateEventSubscriber.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35957ebe_0df8b23e",
       "range": {
         "startLine": 33,
         "startChar": 6,
@@ -326,6 +542,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e613f55f_f7bba0a8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/StreamEventSubscriber.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7070762_9e9428f5",
+      "range": {
+        "startLine": 33,
+        "startChar": 6,
+        "endLine": 33,
+        "endChar": 16
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b05a6156_2ba61377",
@@ -339,6 +579,30 @@
       "writtenOn": "2021-06-17T23:45:58Z",
       "side": 1,
       "message": "+ final",
+      "range": {
+        "startLine": 49,
+        "startChar": 2,
+        "endLine": 49,
+        "endChar": 10
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df5005d8_a49cf0b9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b05a6156_2ba61377",
       "range": {
         "startLine": 49,
         "startChar": 2,
@@ -372,6 +636,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8490e0be_44dcf583",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a75eb7ec_5582dfeb",
+      "range": {
+        "startLine": 61,
+        "startChar": 6,
+        "endLine": 61,
+        "endChar": 16
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e65546d6_0b34446d",
@@ -395,6 +683,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c8fe4ca_9e442ff5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/IndexEventHandler.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e65546d6_0b34446d",
+      "range": {
+        "startLine": 53,
+        "startChar": 2,
+        "endLine": 53,
+        "endChar": 10
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01765c83_81348f26",
@@ -408,6 +720,30 @@
       "writtenOn": "2021-06-17T23:45:58Z",
       "side": 1,
       "message": "Same as above",
+      "range": {
+        "startLine": 62,
+        "startChar": 6,
+        "endLine": 62,
+        "endChar": 16
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f05dfe4d_885ed54f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/IndexEventHandler.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-06-18T17:02:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01765c83_81348f26",
       "range": {
         "startLine": 62,
         "startChar": 6,
