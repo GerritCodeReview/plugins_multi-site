@@ -216,6 +216,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ce67b7e1_687a5d7a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-18T21:26:08Z",
+      "side": 1,
+      "message": "\u003e \u003e Isn\u0027t that a code smell. We should set an instance id when we create the message. If we set it here we don\u0027t know if it is a correct instance id\n\u003e \n\u003e What do you mean?\n\u003e How can you have the broker setting an instance id that is \"incorrect\", can you outline a scenario?\n\u003e \n\u003e plus we can have issues in different part of the system which also expects the instance id\n\nFor the SRP, if the instance-id is generated in Gerrit core when the event is generated, then it should not be re-handled and re-generated somewhere else.\n\n\u003e I have raised the same point in [1], for two reasons:\n\u003e - We do set instanceId in the EventBroker[2], and I just wanted to understand why this broker should behave differently\n\nThey have the same name but two very different purposes: the [2] is the place where the event is generated into the Gerrit but it isn\u0027t a proper \"broker\" because it isn\u0027t transmitted anywhere over the network.\n\n\u003e - it will simplify the code because we will just set it once in the broker rather than everywhere.\n\nTrue, but then it should go in [1] where all the other events are generated in Gerrit.\n\n\u003e There might be some side effect I am not considering but I cannot think of any\n\nI mentioned them in [1]: because of a software bug the instance-id may not be set. Then we set the instance-id \"assuming\" the local one is good, but actually it could be the good one.\n\nThe problem would then start generating side-effects and may go unnoticed for years :-(\n\nIn software, better *assert* rather than *assume*.\n\n\u003e [1]https://gerrit-review.googlesource.com/c/plugins/websession-broker/+/307828\n\u003e [2]thttps://gerrit.googlesource.com/gerrit/+/refs/heads/stable-3.4/java/com/google/gerrit/server/events/EventBroker.java#115",
+      "parentUuid": "d27c619b_f990f7fe",
+      "range": {
+        "startLine": 77,
+        "startChar": 41,
+        "endLine": 77,
+        "endChar": 80
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6ad5d0f_d65ef026",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/CacheEvictionHandler.java",
         "patchSetId": 8
