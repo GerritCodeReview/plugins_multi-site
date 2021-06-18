@@ -192,6 +192,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d27c619b_f990f7fe",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-18T17:21:00Z",
+      "side": 1,
+      "message": "\u003e Isn\u0027t that a code smell. We should set an instance id when we create the message. If we set it here we don\u0027t know if it is a correct instance id\n\nWhat do you mean?\nHow can you have the broker setting an instance id that is \"incorrect\", can you outline a scenario?\n\nplus we can have issues in different part of the system which also expects the instance id\n\nI have raised the same point in [1], for two reasons:\n- We do set instanceId in the EventBroker[2], and I just wanted to understand why this broker should behave differently\n- it will simplify the code because we will just set it once in the broker rather than everywhere.\n\nThere might be some side effect I am not considering but I cannot think of any\n\n\n[1]https://gerrit-review.googlesource.com/c/plugins/websession-broker/+/307828\n[2]thttps://gerrit.googlesource.com/gerrit/+/refs/heads/stable-3.4/java/com/google/gerrit/server/events/EventBroker.java#115",
+      "parentUuid": "48a9795a_7ba73b76",
+      "range": {
+        "startLine": 77,
+        "startChar": 41,
+        "endLine": 77,
+        "endChar": 80
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6ad5d0f_d65ef026",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/CacheEvictionHandler.java",
         "patchSetId": 8
