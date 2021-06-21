@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6c90f2a_c0a31e61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-21T09:10:43Z",
+      "side": 1,
+      "message": "@luca, @marcin: please see my reply.\nIn all honesty I am still convinced that setting the instance-id in the broker would be safer and less invasive. Unfortunately, I haven\u0027t convinced myself otherwise (yet).\n\nHaving said that, don\u0027t let me stall this ticket any longer just because I don\u0027t fully agree (or understand 😊).\n\nLuca and Marcin you seem to be on the same page on this, and this change does achieve the intended result.\n\n ",
+      "revId": "7990ec9cbd3b942b86e2936eacb903c2e141243d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
