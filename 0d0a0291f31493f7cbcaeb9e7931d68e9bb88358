@@ -262,6 +262,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21a44e46_0c592dfd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-22T01:11:52Z",
+      "side": 1,
+      "message": "The instance-id is not something that an API of a generic broker should be managing: it is something that is in Gerrit and identify the running instance.\n\nIt gets assigned when the event is created and never when is sent over the network.\n\nHaving two places where it gets assigned is dangerous and error prone: you would have to look in two places.\n\nWe could reuse the Gerrit place at [2] to assign the instance-id, I would opt for that. Please bear in mind that the \u0027EventBroker.java\u0027 in Gerrit has nothing to do with this event-broker: just bad choice of names, one or the other.\n\nGerrit\u0027s event-broker is the one responsible for firing the event inside Gerrit and NOT for sending it around the network: the more correct name would be \u0027Event generator\u0027.",
+      "parentUuid": "4a62aff9_6baca3b7",
+      "range": {
+        "startLine": 77,
+        "startChar": 41,
+        "endLine": 77,
+        "endChar": 80
+      },
+      "revId": "0d0a0291f31493f7cbcaeb9e7931d68e9bb88358",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6ad5d0f_d65ef026",
