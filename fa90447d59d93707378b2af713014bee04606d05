@@ -157,6 +157,30 @@
       },
       "revId": "fa90447d59d93707378b2af713014bee04606d05",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec1b96f8_2bc0b8b2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-06-23T07:28:25Z",
+      "side": 1,
+      "message": "yep, I remember writing tests [1] to make sure it was possible.\n\n[1]: https://gerrit.googlesource.com/gerrit/+/refs/heads/master/javatests/com/google/gerrit/acceptance/config/InstanceIdFromPluginIT.java",
+      "parentUuid": "114dd4b4_425b28a1",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 77
+      },
+      "revId": "fa90447d59d93707378b2af713014bee04606d05",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
