@@ -29,7 +29,6 @@ import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.googlesource.gerrit.plugins.multisite.event.EventHandler.EventTask;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +38,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventHandlerTest {
+  private static final String DEFAULT_INSTANCE_ID = "instance-id";
 
   private EventHandler eventHandler;
 
@@ -49,7 +49,11 @@ public class EventHandlerTest {
   public void setUp() {
     when(projectsFilter.matches(any(ProjectEvent.class))).thenReturn(true);
     eventHandler =
-        new EventHandler(asDynamicSet(forwarder), MoreExecutors.directExecutor(), projectsFilter);
+        new EventHandler(
+            asDynamicSet(forwarder),
+            MoreExecutors.directExecutor(),
+            projectsFilter,
+            DEFAULT_INSTANCE_ID);
   }
 
   private DynamicSet<StreamEventForwarder> asDynamicSet(StreamEventForwarder forwarder) {
@@ -61,6 +65,7 @@ public class EventHandlerTest {
   @Test
   public void shouldForwardAnyProjectEvent() throws Exception {
     ProjectEvent event = mock(ProjectEvent.class);
+    event.instanceId = DEFAULT_INSTANCE_ID;
     eventHandler.onEvent(event);
     verify(forwarder).send(event);
   }
@@ -73,9 +78,9 @@ public class EventHandlerTest {
 
   @Test
   public void shouldNotForwardIfAlreadyForwardedEvent() throws Exception {
-    Context.setForwardedEvent(true);
-    eventHandler.onEvent(mock(ProjectEvent.class));
-    Context.unsetForwardedEvent();
+    Event event = mock(ProjectEvent.class);
+    event.instanceId = "instance-id-2";
+    eventHandler.onEvent(event);
     verifyZeroInteractions(forwarder);
   }
 
@@ -84,7 +89,7 @@ public class EventHandlerTest {
     when(projectsFilter.matches(any(ProjectEvent.class))).thenReturn(false);
 
     ProjectEvent event = mock(ProjectEvent.class);
-
+    event.instanceId = DEFAULT_INSTANCE_ID;
     eventHandler.onEvent(event);
     verify(forwarder, never()).send(event);
   }

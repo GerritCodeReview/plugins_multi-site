@@ -14,13 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.gerrit.testing.GerritJUnit.assertThrows;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventDispatcher;
@@ -33,7 +29,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ForwardedEventHandlerTest {
@@ -54,47 +49,6 @@ public class ForwardedEventHandlerTest {
   public void testSuccessfulDispatching() throws Exception {
     Event event = new ProjectCreatedEvent();
     handler.dispatch(event);
-    verify(dispatcherMock).postEvent(event);
-  }
-
-  @Test
-  public void shouldSetAndUnsetForwardedContext() throws Exception {
-    Event event = new ProjectCreatedEvent();
-    // this doAnswer is to allow to assert that context is set to forwarded
-    // while cache eviction is called.
-    doAnswer(
-            (Answer<Void>)
-                invocation -> {
-                  assertThat(Context.isForwardedEvent()).isTrue();
-                  return null;
-                })
-        .when(dispatcherMock)
-        .postEvent(event);
-
-    assertThat(Context.isForwardedEvent()).isFalse();
-    handler.dispatch(event);
-    assertThat(Context.isForwardedEvent()).isFalse();
-
-    verify(dispatcherMock).postEvent(event);
-  }
-
-  @Test
-  public void shouldSetAndUnsetForwardedContextEvenIfExceptionIsThrown() throws Exception {
-    Event event = new ProjectCreatedEvent();
-    doAnswer(
-            (Answer<Void>)
-                invocation -> {
-                  assertThat(Context.isForwardedEvent()).isTrue();
-                  throw new StorageException("someMessage");
-                })
-        .when(dispatcherMock)
-        .postEvent(event);
-
-    assertThat(Context.isForwardedEvent()).isFalse();
-    StorageException thrown = assertThrows(StorageException.class, () -> handler.dispatch(event));
-    assertThat(thrown).hasMessageThat().isEqualTo("someMessage");
-    assertThat(Context.isForwardedEvent()).isFalse();
-
     verify(dispatcherMock).postEvent(event);
   }
 }
