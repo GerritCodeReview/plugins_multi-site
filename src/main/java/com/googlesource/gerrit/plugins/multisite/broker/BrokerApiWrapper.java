@@ -22,11 +22,11 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
@@ -39,17 +39,20 @@ public class BrokerApiWrapper implements BrokerApi {
   private final DynamicItem<BrokerApi> apiDelegate;
   private final BrokerMetrics metrics;
   private final MessageLogger msgLog;
+  private final String nodeInstanceId;
 
   @Inject
   public BrokerApiWrapper(
       @BrokerExecutor Executor executor,
       DynamicItem<BrokerApi> apiDelegate,
       BrokerMetrics metrics,
-      MessageLogger msgLog) {
+      MessageLogger msgLog,
+      @GerritInstanceId String instanceId) {
     this.apiDelegate = apiDelegate;
     this.executor = executor;
     this.metrics = metrics;
     this.msgLog = msgLog;
+    this.nodeInstanceId = instanceId;
   }
 
   public boolean sendSync(String topic, Event event) {
@@ -70,7 +73,7 @@ public class BrokerApiWrapper implements BrokerApi {
   @Override
   public ListenableFuture<Boolean> send(String topic, Event message) {
     SettableFuture<Boolean> resultFuture = SettableFuture.create();
-    if (Context.isForwardedEvent()) {
+    if (!nodeInstanceId.equals(message.instanceId)) {
       resultFuture.set(true);
       return resultFuture;
     }
