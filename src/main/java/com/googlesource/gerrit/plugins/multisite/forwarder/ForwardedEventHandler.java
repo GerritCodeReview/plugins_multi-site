@@ -51,11 +51,8 @@ public class ForwardedEventHandler {
    */
   public void dispatch(Event event) throws PermissionBackendException {
     try (ManualRequestContext ctx = oneOffCtx.open()) {
-      Context.setForwardedEvent(true);
       log.debug("dispatching event {}", event.getType());
       dispatcher.get().postEvent(event);
-    } finally {
-      Context.unsetForwardedEvent();
     }
   }
 }

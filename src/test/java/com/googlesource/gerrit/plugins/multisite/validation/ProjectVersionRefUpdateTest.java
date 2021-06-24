@@ -36,7 +36,6 @@ import com.google.gerrit.testing.InMemoryRepositoryManager;
 import com.google.gerrit.testing.InMemoryTestEnvironment;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -49,7 +48,6 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectLoader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -70,7 +68,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
   @Inject private ProjectConfig.Factory projectConfigFactory;
   @Inject private InMemoryRepositoryManager repoManager;
-
+  private static String DEFAULT_INSTANCE_ID = "instance-id";
   private TestRepository<InMemoryRepository> repo;
   private ProjectConfig project;
   private RevCommit masterCommit;
@@ -78,6 +76,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   @Before
   public void setUp() throws Exception {
     when(projectsFilter.matches(any(Event.class))).thenReturn(true);
+    refUpdatedEvent.instanceId = DEFAULT_INSTANCE_ID;
     InMemoryRepository inMemoryRepo = repoManager.createRepository(A_TEST_PROJECT_NAME_KEY);
     project = projectConfigFactory.create(A_TEST_PROJECT_NAME_KEY);
     project.load(inMemoryRepo);
@@ -85,14 +84,8 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     masterCommit = repo.branch("master").commit().create();
   }
 
-  @After
-  public void tearDown() {
-    Context.unsetForwardedEvent();
-  }
-
   @Test
   public void producerShouldUpdateProjectVersionUponRefUpdatedEvent() throws IOException {
-    Context.setForwardedEvent(false);
     when(sharedRefDb.get(
             A_TEST_PROJECT_NAME_KEY,
             ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
@@ -111,7 +104,12 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
 
     new ProjectVersionRefUpdate(
-            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+            repoManager,
+            sharedRefDb,
+            gitReferenceUpdated,
+            verLogger,
+            projectsFilter,
+            DEFAULT_INSTANCE_ID)
         .onEvent(refUpdatedEvent);
 
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
@@ -130,8 +128,6 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
   @Test
   public void producerShouldUpdateProjectVersionUponForcedPushRefUpdatedEvent() throws Exception {
-    Context.setForwardedEvent(false);
-
     Thread.sleep(1000L);
     RevCommit masterPlusOneCommit = repo.branch("master").commit().create();
 
@@ -156,7 +152,12 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
 
     new ProjectVersionRefUpdate(
-            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+            repoManager,
+            sharedRefDb,
+            gitReferenceUpdated,
+            verLogger,
+            projectsFilter,
+            DEFAULT_INSTANCE_ID)
         .onEvent(refUpdatedEvent);
 
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
@@ -176,7 +177,6 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   @Test
   public void producerShouldCreateNewProjectVersionWhenMissingUponRefUpdatedEvent()
       throws IOException {
-    Context.setForwardedEvent(false);
     when(sharedRefDb.get(
             A_TEST_PROJECT_NAME_KEY,
             ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
@@ -196,7 +196,12 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
 
     new ProjectVersionRefUpdate(
-            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+            repoManager,
+            sharedRefDb,
+            gitReferenceUpdated,
+            verLogger,
+            projectsFilter,
+            DEFAULT_INSTANCE_ID)
         .onEvent(refUpdatedEvent);
 
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
@@ -233,13 +238,37 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   private void producerShouldNotUpdateProjectVersionUponMagicRefUpdatedEvent(String magicRefPrefix)
       throws Exception {
     String magicRefName = magicRefPrefix + "/foo";
-    Context.setForwardedEvent(false);
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
     when(refUpdatedEvent.getRefName()).thenReturn(magicRefName);
     repo.branch(magicRefName).commit().create();
 
     new ProjectVersionRefUpdate(
-            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+            repoManager,
+            sharedRefDb,
+            gitReferenceUpdated,
+            verLogger,
+            projectsFilter,
+            DEFAULT_INSTANCE_ID)
+        .onEvent(refUpdatedEvent);
+
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
+    assertThat(ref).isNull();
+
+    verifyZeroInteractions(verLogger);
+  }
+
+  @Test
+  public void producerShouldNotUpdateProjectVersionUponForwardedRefUpdatedEvent()
+      throws IOException {
+    refUpdatedEvent.instanceId = "instance-id-2";
+
+    new ProjectVersionRefUpdate(
+            repoManager,
+            sharedRefDb,
+            gitReferenceUpdated,
+            verLogger,
+            projectsFilter,
+            DEFAULT_INSTANCE_ID)
         .onEvent(refUpdatedEvent);
 
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
@@ -250,12 +279,16 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
   @Test
   public void shouldNotUpdateProjectVersionWhenProjectDoesntExist() throws IOException {
-    Context.setForwardedEvent(false);
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(Project.nameKey("aNonExistentProject"));
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
 
     new ProjectVersionRefUpdate(
-            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+            repoManager,
+            sharedRefDb,
+            gitReferenceUpdated,
+            verLogger,
+            projectsFilter,
+            DEFAULT_INSTANCE_ID)
         .onEvent(refUpdatedEvent);
 
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
@@ -268,8 +301,6 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   public void shouldNotUpdateProjectVersionWhenProjectFilteredOut() throws Exception {
     when(projectsFilter.matches(any(Event.class))).thenReturn(false);
 
-    Context.setForwardedEvent(false);
-
     Thread.sleep(1000L);
     repo.branch("master").commit().create();
 
@@ -277,7 +308,12 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     repo.branch("master").update(masterCommit);
 
     new ProjectVersionRefUpdate(
-            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+            repoManager,
+            sharedRefDb,
+            gitReferenceUpdated,
+            verLogger,
+            projectsFilter,
+            DEFAULT_INSTANCE_ID)
         .onEvent(refUpdatedEvent);
 
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
@@ -293,7 +329,12 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
     Optional<Long> version =
         new ProjectVersionRefUpdate(
-                repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+                repoManager,
+                sharedRefDb,
+                gitReferenceUpdated,
+                verLogger,
+                projectsFilter,
+                DEFAULT_INSTANCE_ID)
             .getProjectRemoteVersion(A_TEST_PROJECT_NAME);
 
     assertThat(version.isPresent()).isTrue();

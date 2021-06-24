@@ -24,6 +24,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.events.RefUpdatedEvent;
@@ -33,7 +34,6 @@ import com.google.gerrit.server.notedb.IntBlob;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
-import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import java.io.IOException;
 import java.util.Optional;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
@@ -59,6 +59,7 @@ public class ProjectVersionRefUpdate implements EventListener {
   private final GitReferenceUpdated gitReferenceUpdated;
   private final ProjectVersionLogger verLogger;
   private final ProjectsFilter projectsFilter;
+  private final String nodeInstanceId;
 
   protected final SharedRefDatabaseWrapper sharedRefDb;
 
@@ -68,19 +69,21 @@ public class ProjectVersionRefUpdate implements EventListener {
       SharedRefDatabaseWrapper sharedRefDb,
       GitReferenceUpdated gitReferenceUpdated,
       ProjectVersionLogger verLogger,
-      ProjectsFilter projectsFilter) {
+      ProjectsFilter projectsFilter,
+      @GerritInstanceId String nodeInstanceId) {
     this.gitRepositoryManager = gitRepositoryManager;
     this.sharedRefDb = sharedRefDb;
     this.gitReferenceUpdated = gitReferenceUpdated;
     this.verLogger = verLogger;
     this.projectsFilter = projectsFilter;
+    this.nodeInstanceId = nodeInstanceId;
   }
 
   @Override
   public void onEvent(Event event) {
     logger.atFine().log("Processing event type: " + event.type);
     // Producer of the Event use RefUpdatedEvent to trigger the version update
-    if (!Context.isForwardedEvent() && event instanceof RefUpdatedEvent) {
+    if (nodeInstanceId.equals(event.instanceId) && event instanceof RefUpdatedEvent) {
       if (projectsFilter.matches(event)) {
         updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
       }
