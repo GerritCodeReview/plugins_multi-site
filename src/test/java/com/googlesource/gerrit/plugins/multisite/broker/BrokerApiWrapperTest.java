@@ -22,6 +22,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BrokerApiWrapperTest {
+  private static final String DEFAULT_INSTANCE_ID = "instance-id";
   @Mock private BrokerMetrics brokerMetrics;
   @Mock private BrokerApi brokerApi;
   @Mock Event event;
@@ -32,13 +33,14 @@ public class BrokerApiWrapperTest {
 
   @Before
   public void setUp() {
-    event.instanceId = "instance-id";
+    event.instanceId = DEFAULT_INSTANCE_ID;
     objectUnderTest =
         new BrokerApiWrapper(
             MoreExecutors.directExecutor(),
             DynamicItem.itemOf(BrokerApi.class, brokerApi),
             brokerMetrics,
-            msgLog);
+            msgLog,
+            DEFAULT_INSTANCE_ID);
   }
 
   @Test
