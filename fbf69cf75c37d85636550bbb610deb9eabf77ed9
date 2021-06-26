@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66594019_844338c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-06-26T00:06:21Z",
+      "side": 1,
+      "message": "Should this belong to master? It isn\u0027t necessarily needed on stable-3.4 and the full implementation may likely need some Gerrit core changes.",
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
