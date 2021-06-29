@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bff458c9_83f39de2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-06-29T13:29:19Z",
+      "side": 1,
+      "message": "I tried to start gerrit without setting instanceId, (note: *prior* to this change being merged).\n\nGerrit does not start.\n\nThis is because the ProjectListUpdateHandler[1] requires @GerritInstanceId as a non @Nullable field.\n\nThis is the stacktrace of the error[2]\n\n\nI believe, as things stand this CR is not required, as Gerrit would not start without instanceId, in a multi-site environment.\n\nI think however, we could fail more gracefully with a more meaningful error message than the binding error we have now.\n\n[1] https://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/stable-3.4/src/main/java/com/googlesource/gerrit/plugins/multisite/cache/ProjectListUpdateHandler.java#44\n[2] https://pastebin.com/XXyjyD4H",
+      "revId": "5d534b564ce2537102fd17ac4eecab70a859f7c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
