@@ -7,7 +7,8 @@ This plugin allows Gerrit to publish and to consume events over a
 message broker for aligning with the other masters over different sites.
 
 The masters must be:
-
+* Gerrit instance id is mandatory for @PLUGIN@ plugin. All the master 
+  must have gerrit.instanceId populated.
 * events-broker library must be installed as a library module in the
   `$GERRIT_SITE/lib` directory of all the masters
 * global-refdb library must be installed as a library module in the
