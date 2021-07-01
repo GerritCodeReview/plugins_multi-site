@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26c78feb_0bef174d",
+        "filename": "src/main/resources/Documentation/about.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-01T07:51:38Z",
+      "side": 1,
+      "message": "Ack, we can fix this in a follow up change.",
+      "parentUuid": "d6aad3ff_f57794c8",
+      "range": {
+        "startLine": 10,
+        "startChar": 55,
+        "endLine": 10,
+        "endChar": 70
+      },
+      "revId": "0e836cce9365e0fe4e7bed6c02086c0c2b260464",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46a64d36_d13e5921",
