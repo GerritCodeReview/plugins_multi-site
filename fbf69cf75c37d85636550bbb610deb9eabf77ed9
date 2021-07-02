@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "68a6ca2b_31bdb44a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-02T13:51:05Z",
+      "side": 1,
+      "message": "nit: How about lengthening this sentence to explain why:\n\n...because the message instanceId can always be compared against the node instanceId and simply dropped in case they are equal.",
+      "range": {
+        "startLine": 11,
+        "startChar": 52,
+        "endLine": 11,
+        "endChar": 53
+      },
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7ded1b8_b7974383",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-02T13:51:05Z",
+      "side": 1,
+      "message": "Why just \"most cases\"? isn\u0027t this in all cases?",
+      "range": {
+        "startLine": 11,
+        "startChar": 20,
+        "endLine": 11,
+        "endChar": 30
+      },
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "66594019_844338c8",
@@ -14,6 +60,97 @@
       "writtenOn": "2021-06-26T00:06:21Z",
       "side": 1,
       "message": "Should this belong to master? It isn\u0027t necessarily needed on stable-3.4 and the full implementation may likely need some Gerrit core changes.",
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4de945f_8be15d7e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-02T13:51:05Z",
+      "side": 1,
+      "message": "nit: could be final",
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fc2080f_61ea7968",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-02T13:51:05Z",
+      "side": 1,
+      "message": "nit: unrelated",
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "942952c0_42204de2",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/event/EventHandlerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-02T13:51:05Z",
+      "side": 1,
+      "message": "nit: final",
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1f2f998_da1965a2",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-02T13:51:05Z",
+      "side": 1,
+      "message": "nit: final?",
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95d7406d_8074454a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-02T13:51:05Z",
+      "side": 1,
+      "message": "Is this right?\nThe message has instanceId \u003d\u003d instance-id-2 and gerrit has instanceId \u003d\u003d DEFAULT_INSTANCE_ID.\n\nIn this context the message is *not* forwarded right? shouldn\u0027t then the message being processed rather than discarded?",
+      "range": {
+        "startLine": 263,
+        "startChar": 2,
+        "endLine": 271,
+        "endChar": 32
+      },
       "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
