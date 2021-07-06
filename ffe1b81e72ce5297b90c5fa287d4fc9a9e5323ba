@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "252089ab_bacf4f16",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-07-06T06:42:25Z",
+      "side": 1,
+      "message": "I would like to check one more edge case before going live",
+      "revId": "ffe1b81e72ce5297b90c5fa287d4fc9a9e5323ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

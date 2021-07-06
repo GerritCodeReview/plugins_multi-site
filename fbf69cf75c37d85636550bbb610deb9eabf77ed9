@@ -47,6 +47,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "271c5c6d_a61d38da",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-07-06T06:42:25Z",
+      "side": 1,
+      "message": "Nope, for example for reindexing we still need to keep it because we need to change gerrit core in a separate change to be able to do it",
+      "parentUuid": "b7ded1b8_b7974383",
+      "range": {
+        "startLine": 11,
+        "startChar": 20,
+        "endLine": 11,
+        "endChar": 30
+      },
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "66594019_844338c8",
@@ -81,6 +105,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f73074de_a3180b74",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-07-06T06:42:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4de945f_8be15d7e",
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9fc2080f_61ea7968",
@@ -94,6 +136,24 @@
       "writtenOn": "2021-07-02T13:51:05Z",
       "side": 1,
       "message": "nit: unrelated",
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef303e5f_07444c18",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapperTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-07-06T06:42:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fc2080f_61ea7968",
       "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -115,6 +175,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a01e9754_8e129b78",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/event/EventHandlerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-07-06T06:42:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "942952c0_42204de2",
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1f2f998_da1965a2",
@@ -132,6 +210,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f5b0b37_bd8a41b5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-07-06T06:42:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1f2f998_da1965a2",
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95d7406d_8074454a",
@@ -145,6 +241,30 @@
       "writtenOn": "2021-07-02T13:51:05Z",
       "side": 1,
       "message": "Is this right?\nThe message has instanceId \u003d\u003d instance-id-2 and gerrit has instanceId \u003d\u003d DEFAULT_INSTANCE_ID.\n\nIn this context the message is *not* forwarded right? shouldn\u0027t then the message being processed rather than discarded?",
+      "range": {
+        "startLine": 263,
+        "startChar": 2,
+        "endLine": 271,
+        "endChar": 32
+      },
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e202a05c_731513c4",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-07-06T06:42:25Z",
+      "side": 1,
+      "message": "It is forwarded, because DEFAULT_INSTANCE_ID !\u003d instance-id-2 this means that event wasn\u0027t produced by current instance so it is a forwarded event",
+      "parentUuid": "95d7406d_8074454a",
       "range": {
         "startLine": 263,
         "startChar": 2,
