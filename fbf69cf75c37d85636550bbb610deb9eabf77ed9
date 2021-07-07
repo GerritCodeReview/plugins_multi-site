@@ -73,6 +73,54 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "7f6b151d_602db14f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-07T13:11:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68a6ca2b_31bdb44a",
+      "range": {
+        "startLine": 11,
+        "startChar": 52,
+        "endLine": 11,
+        "endChar": 53
+      },
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58131b81_22467ff2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-07T13:11:01Z",
+      "side": 1,
+      "message": "I understand, thanks.\nI think it would be useful to mention in the commit message for what specific events instanceId is used, because when reading:\n\n\"Use Event.instanceId instead of forwarded event tagging with ThreadLocal\"\n\nLooks like it is the new generally used approach, rather than specific to some message types only.",
+      "parentUuid": "271c5c6d_a61d38da",
+      "range": {
+        "startLine": 11,
+        "startChar": 20,
+        "endLine": 11,
+        "endChar": 30
+      },
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "66594019_844338c8",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -265,6 +313,30 @@
       "side": 1,
       "message": "It is forwarded, because DEFAULT_INSTANCE_ID !\u003d instance-id-2 this means that event wasn\u0027t produced by current instance so it is a forwarded event",
       "parentUuid": "95d7406d_8074454a",
+      "range": {
+        "startLine": 263,
+        "startChar": 2,
+        "endLine": 271,
+        "endChar": 32
+      },
+      "revId": "fbf69cf75c37d85636550bbb610deb9eabf77ed9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62dc250f_c4c664f4",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-07T13:11:01Z",
+      "side": 1,
+      "message": "you\u0027re right I phrased my comment in a bad way.\nWhat I meant was: \"shouldn\u0027t the message being processed\" since it was produced by another node?\n\nNormally we only process messages from \"other\" instances, and we do not process messages produced by our own instance. But this is ProjectVersionRefUpdate, so it should only be processed for events produced by the current instance and not others.\n\nResolving.",
+      "parentUuid": "e202a05c_731513c4",
       "range": {
         "startLine": 263,
         "startChar": 2,
