@@ -1,6 +1,0 @@
-Host *
-   User root
-   IdentityFile /var/gerrit/.ssh/id_rsa
-   PreferredAuthentications publickey
-   # Not ideal at all. Just a quick workaround to avoid updating the known_hosts at startup
-   StrictHostKeyChecking no

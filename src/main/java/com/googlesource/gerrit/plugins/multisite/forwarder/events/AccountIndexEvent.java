@@ -21,8 +21,8 @@ public class AccountIndexEvent extends IndexEvent {
 
   public int accountId;
 
-  public AccountIndexEvent(int accountId) {
-    super(TYPE);
+  public AccountIndexEvent(int accountId, String instanceId) {
+    super(TYPE, instanceId);
     this.accountId = accountId;
   }
 

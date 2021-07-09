@@ -22,8 +22,8 @@ public class ProjectListUpdateEvent extends MultiSiteEvent {
   public String projectName;
   public boolean remove;
 
-  public ProjectListUpdateEvent(String projectName, boolean remove) {
-    super(TYPE);
+  public ProjectListUpdateEvent(String projectName, boolean remove, String instanceId) {
+    super(TYPE, instanceId);
     this.projectName = projectName;
     this.remove = remove;
   }

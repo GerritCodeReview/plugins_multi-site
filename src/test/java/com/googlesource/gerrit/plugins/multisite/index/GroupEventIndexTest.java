@@ -16,7 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.index;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.gerritforge.gerrit.eventbroker.EventGsonProvider;
+import com.google.gerrit.server.events.EventGsonProvider;
 import com.google.gson.Gson;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import java.util.UUID;
@@ -24,13 +24,14 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.junit.Test;
 
 public class GroupEventIndexTest {
+  private static final String INSTANCE_ID = "instance-id";
   private static final Gson gson = new EventGsonProvider().get();
 
   @Test
   public void groupEventIndexRoundTripWithSha1() {
     String aGroupUUID = UUID.randomUUID().toString();
     ObjectId anObjectId = ObjectId.fromString("deadbeefdeadbeefdeadbeefdeadbeefdeadbeef");
-    GroupIndexEvent original = new GroupIndexEvent(aGroupUUID, anObjectId);
+    GroupIndexEvent original = new GroupIndexEvent(aGroupUUID, anObjectId, INSTANCE_ID);
 
     assertThat(gson.fromJson(gson.toJson(original), GroupIndexEvent.class)).isEqualTo(original);
   }
@@ -38,7 +39,7 @@ public class GroupEventIndexTest {
   @Test
   public void groupEventIndexRoundTripWithoutSha1() {
     String aGroupUUID = UUID.randomUUID().toString();
-    GroupIndexEvent original = new GroupIndexEvent(aGroupUUID, null);
+    GroupIndexEvent original = new GroupIndexEvent(aGroupUUID, null, INSTANCE_ID);
 
     assertThat(gson.fromJson(gson.toJson(original), GroupIndexEvent.class)).isEqualTo(original);
   }

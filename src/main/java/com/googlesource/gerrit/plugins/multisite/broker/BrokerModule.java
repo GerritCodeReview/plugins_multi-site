@@ -1,4 +1,4 @@
-// Copyright (C) 2019 The Android Open Source Project
+// Copyright (C) 2021 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,13 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.googlesource.gerrit.plugins.multisite;
+package com.googlesource.gerrit.plugins.multisite.broker;
 
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import com.google.gerrit.lifecycle.LifecycleModule;
+import java.util.concurrent.Executor;
 
-import com.google.inject.BindingAnnotation;
-import java.lang.annotation.Retention;
+public class BrokerModule extends LifecycleModule {
 
-@Retention(RUNTIME)
-@BindingAnnotation
-public @interface InstanceId {}
+  @Override
+  protected void configure() {
+    bind(Executor.class)
+        .annotatedWith(BrokerExecutor.class)
+        .toProvider(BrokerExecutorProvider.class);
+  }
+}

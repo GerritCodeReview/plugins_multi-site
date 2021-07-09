@@ -143,6 +143,6 @@ public class ForwardedIndexGroupHandlerTest {
   }
 
   private Optional<GroupIndexEvent> groupIndexEvent(String uuid) {
-    return Optional.of(new GroupIndexEvent(uuid, null));
+    return Optional.of(new GroupIndexEvent(uuid, null, "instance-id"));
   }
 }
