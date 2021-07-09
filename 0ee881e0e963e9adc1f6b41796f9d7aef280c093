@@ -22,6 +22,30 @@
       },
       "revId": "0ee881e0e963e9adc1f6b41796f9d7aef280c093",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c53ceae_fc3e89ff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-07-09T08:30:54Z",
+      "side": 1,
+      "message": "\u003e shouldn\u0027t this be: in case they *are* equal?\nIn that case we want to drop forwarded events so *not* equal is correct. See:\nhttps://gerrit-review.googlesource.com/c/plugins/multi-site/+/310283/3/src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java#86",
+      "parentUuid": "a1328460_032f7d64",
+      "range": {
+        "startLine": 14,
+        "startChar": 64,
+        "endLine": 14,
+        "endChar": 67
+      },
+      "revId": "0ee881e0e963e9adc1f6b41796f9d7aef280c093",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
