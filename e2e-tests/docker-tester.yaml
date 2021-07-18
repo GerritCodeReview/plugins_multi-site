@@ -1,0 +1,13 @@
+version: '3'
+services:
+  tester:
+    image: gerritcodereview/gerrit:${GERRIT_IMAGE}
+    depends_on:
+      gerrit1:
+        condition: service_healthy
+      gerrit2:
+        condition: service_healthy
+    volumes:
+      - "${SCENARIOS}:/var/gerrit/scenarios.sh"
+      - "${COMMON_SSH}:/var/gerrit/.ssh"
+    entrypoint: ["/var/gerrit/scenarios.sh"]

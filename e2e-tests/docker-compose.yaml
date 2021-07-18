@@ -1,0 +1,42 @@
+version: '3'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+
+  gerrit1:
+    image: gerritcodereview/gerrit:${GERRIT_IMAGE}
+    depends_on:
+      - zookeeper
+    volumes:
+      - "${GERRIT_1_ETC}:/var/gerrit/etc"
+      - "${GERRIT_1_PLUGINS}:/var/gerrit/plugins"
+      - "${GERRIT_1_LIBS}:/var/gerrit/lib"
+      - "${GERRIT_1_GIT}:/var/gerrit/git"
+      - "${GERRIT_2_GIT}:/var/gerrit/git-instance2"
+      - "${COMMON_SSH}:/var/gerrit/.ssh"
+      - "${FAKE_NFS}:/var/gerrit/fake-nfs"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/config/server/healthcheck~status"]
+      start_period: 45s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  gerrit2:
+    image: gerritcodereview/gerrit:${GERRIT_IMAGE}
+    depends_on:
+      - zookeeper
+    volumes:
+      - "${GERRIT_2_ETC}:/var/gerrit/etc"
+      - "${GERRIT_2_PLUGINS}:/var/gerrit/plugins"
+      - "${GERRIT_2_LIBS}:/var/gerrit/lib"
+      - "${GERRIT_2_GIT}:/var/gerrit/git"
+      - "${GERRIT_1_GIT}:/var/gerrit/git-instance1"
+      - "${COMMON_SSH}:/var/gerrit/.ssh"
+      - "${FAKE_NFS}:/var/gerrit/fake-nfs"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/config/server/healthcheck~status"]
+      start_period: 45s
+      interval: 5s
+      timeout: 5s
+      retries: 5

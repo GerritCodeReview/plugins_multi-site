@@ -1,0 +1,20 @@
+version: '3'
+services:
+  zookeeper:
+    ports:
+      - "2181:2181"
+    container_name: zk_test_node
+  
+  gerrit1:
+    container_name: gerrit1
+    ports:
+      - "29418:29418"
+      - "8081:8080"
+      - "5005:5005"
+  
+  gerrit2:
+    container_name: gerrit2
+    ports:
+      - "29419:29418"
+      - "8082:8080"
+      - "5006:5005"

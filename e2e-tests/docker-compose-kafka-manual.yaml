@@ -1,0 +1,6 @@
+version: '3'
+services:
+  kafka:
+    ports:
+      - "9092:9092"
+    container_name: kafka_test_node
