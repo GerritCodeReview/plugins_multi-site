@@ -113,7 +113,11 @@ function export_broker_port {
 }
 
 function deploy_config_files {
+  # broker configuration
+  export BROKER_HOST=localhost
+
   # ZK configuration
+  export ZK_HOST=localhost
   export ZK_PORT=2181
 
   # SITE 1

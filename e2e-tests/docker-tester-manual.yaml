@@ -1,0 +1,6 @@
+version: '3'
+services:
+  tester:
+    container_name: gerrit_tester
+    working_dir: /var/gerrit
+    entrypoint: ["sh", "-c", "tail -f /dev/null"]
