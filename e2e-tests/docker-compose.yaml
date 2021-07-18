@@ -1,0 +1,74 @@
+version: '3'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181:2181"
+    container_name: zk_test_node
+
+  gerrit1:
+    image: gerritcodereview/gerrit:3.4.0-centos8
+    container_name: gerrit1
+    depends_on:
+      - zookeeper
+    ports:
+      - "29418:29418"
+      - "8081:8080"
+      - "5005:5005"
+    volumes:
+      - "${GERRIT_1_ETC}:/var/gerrit/etc"
+      - "${GERRIT_1_PLUGINS}:/var/gerrit/plugins"
+      - "${GERRIT_1_LIBS}:/var/gerrit/lib"
+      - gerrit1-git:/var/gerrit/git
+      - gerrit1-db:/var/gerrit/db
+      - gerrit1-index:/var/gerrit/index
+      - gerrit1-cache:/var/gerrit/cache
+      - gerrit2-git:/var/gerrit/git-instance2
+      - fake-nfs:/var/gerrit/fake-nfs
+    environment:
+      - CANONICAL_WEB_URL=http://localhost:8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/config/server/healthcheck~status"]
+      start_period: 45s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  gerrit2:
+    image: gerritcodereview/gerrit:3.4.0-centos8
+    container_name: gerrit2
+    depends_on:
+      - zookeeper
+    ports:
+      - "29419:29418"
+      - "8082:8080"
+      - "5006:5005"
+    volumes:
+      - "${GERRIT_2_ETC}:/var/gerrit/etc"
+      - "${GERRIT_2_PLUGINS}:/var/gerrit/plugins"
+      - "${GERRIT_2_LIBS}:/var/gerrit/lib"
+      - gerrit2-git:/var/gerrit/git
+      - gerrit2-db:/var/gerrit/db
+      - gerrit2-index:/var/gerrit/index
+      - gerrit2-cache:/var/gerrit/cache
+      - gerrit1-git:/var/gerrit/git-instance1
+      - fake-nfs:/var/gerrit/fake-nfs
+    environment:
+      - CANONICAL_WEB_URL=http://localhost:8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/config/server/healthcheck~status"]
+      start_period: 45s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  fake-nfs:
+  gerrit1-git:
+  gerrit1-db:
+  gerrit1-index:
+  gerrit1-cache:
+  gerrit2-git:
+  gerrit2-db:
+  gerrit2-index:
+  gerrit2-cache:
