@@ -1,0 +1,36 @@
+version: '3'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+
+  gerrit1:
+    image: gerritcodereview/gerrit:${GERRIT_IMAGE}
+    depends_on:
+      - zookeeper
+    volumes:
+      - "gerrit1_git:/var/gerrit/git"
+      - "gerrit2_git:/var/gerrit/git-instance2"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/config/server/healthcheck~status"]
+      start_period: ${GERRIT_START_PERIOD:-90s}
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  gerrit2:
+    image: gerritcodereview/gerrit:${GERRIT_IMAGE}
+    depends_on:
+      - zookeeper
+    volumes:
+      - "gerrit2_git:/var/gerrit/git"
+      - "gerrit1_git:/var/gerrit/git-instance1"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/config/server/healthcheck~status"]
+      start_period: ${GERRIT_START_PERIOD:-90s}
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  gerrit1_git:
+  gerrit2_git:
