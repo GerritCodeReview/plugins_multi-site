@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "981238c4_e89a2e45",
+        "filename": "e2e-tests/docker-compose-kafka.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-18T12:05:15Z",
+      "side": 1,
+      "message": "nit: remove spaces",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 2
+      },
+      "revId": "82c49384d9e5bd1b0c31719f31795e2f59bad80e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91ddc8eb_40dd2e67",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-18T12:05:15Z",
+      "side": 1,
+      "message": "nit: whitespaces",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 2
+      },
+      "revId": "82c49384d9e5bd1b0c31719f31795e2f59bad80e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "401d3841_b074fcd0",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-18T12:05:15Z",
+      "side": 1,
+      "message": "nit: whitespaces",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 2
+      },
+      "revId": "82c49384d9e5bd1b0c31719f31795e2f59bad80e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d468980_0b35292a",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-18T12:05:15Z",
+      "side": 1,
+      "message": "nit: remove the commented out line",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 172
+      },
+      "revId": "82c49384d9e5bd1b0c31719f31795e2f59bad80e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
