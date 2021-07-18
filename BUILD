@@ -53,3 +53,38 @@ java_library(
         "//plugins/replication",
     ],
 )
+
+filegroup(
+    name = "e2e_multi_site_test_dir",
+    srcs = [
+        "e2e-tests",
+    ],
+)
+
+filegroup(
+    name = "e2e_multi_site_setup_local_env_dir",
+    srcs = [
+        "setup_local_env",
+    ],
+)
+
+sh_test(
+    name = "e2e_multi_site_tests",
+    srcs = [
+        "e2e-tests/test.sh",
+    ],
+    data = [
+        "//plugins/multi-site",
+        "//plugins/multi-site:e2e_multi_site_test_dir",
+        "//plugins/multi-site:e2e_multi_site_setup_local_env_dir",
+        "external_plugin_deps.bzl",
+    ] + glob(["setup_local_env/**/*"]) + glob(["e2e-tests/**/*"]),
+    args = [
+        "--multisite-lib-file $(location //plugins/multi-site)",
+        "--location '$(location //plugins/multi-site:e2e_multi_site_test_dir)'",
+        "--local-env '$(location //plugins/multi-site:e2e_multi_site_setup_local_env_dir)'",
+    ],
+    tags = [
+        "e2e-multi-site",
+    ],
+)
