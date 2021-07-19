@@ -1,0 +1,274 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dcb9982_ec41fe4f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-19T19:21:00Z",
+      "side": 1,
+      "message": "Running this, exactly fails for me with:\n\n```\nERROR: .FileNotFoundError: [Errno 2] No such file or directory: \u0027./docker-compose.yaml\u0027\n```\n\nIt seems that the script has to be run from the e2e-tests directory?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 19
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae86704b_38d56ec3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-19T19:21:00Z",
+      "side": 1,
+      "message": "Thanks Jacek! 😊\n\nI ran this locally and the environment does start up (see my comments in this CR for where I had problems/issues).\n\nOn top of those (little) technical concerns, I have one, larger directional one 😊\n\nUp until recently we had a dockerized environment, which was ditched by this CR[1]\n\nThis change is kind of resuming that approach.\n\nPerhaps this is what we want, on the light of our new requirements, but I would like to highlight that we are re-introducing something we ditched just few months ago, so I think it\u0027s worth mentioning.\n\n@ponch, @luca, @marcin are we all on the same page this is the direction we want to go?\n\n[1]https://gerrit-review.googlesource.com/c/plugins/multi-site/+/305588",
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cef86b9_17388c0a",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-19T19:21:00Z",
+      "side": 1,
+      "message": "I am not sure we actually need the replication.jar",
+      "range": {
+        "startLine": 48,
+        "startChar": 37,
+        "endLine": 48,
+        "endChar": 59
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "402fc1f3_60fb79db",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-19T19:21:00Z",
+      "side": 1,
+      "message": "if we don\u0027t have a load balancer I don\u0027t see any reason to set the canonical web URL to something other than the instance itself.",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 47
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "990f8efc_99631378",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-19T19:21:00Z",
+      "side": 1,
+      "message": "why 45s? is this based on something?",
+      "range": {
+        "startLine": 60,
+        "startChar": 20,
+        "endLine": 60,
+        "endChar": 23
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d54fa1c4_81c75b6c",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-19T19:21:00Z",
+      "side": 1,
+      "message": "I can see a substantial overlap between this setup and the setup_local_env.sh one.\n\nI am thinking for example about the downloading of the essential components, the parsing of valid broker-types, etc.\n\nIs there anything at all that can be packaged into a library and re-used from both?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b18193a3_383f03ea",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-19T19:21:00Z",
+      "side": 1,
+      "message": "what\u0027s the rationale behind these defaults?\nIn my environment this points to a totally random directory in my home.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 93
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43ae93d3_627e8df5",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-19T19:21:00Z",
+      "side": 1,
+      "message": "Do we need this? we are not running any nginx right?",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 55
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c75081f7_f426abd7",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-19T19:21:00Z",
+      "side": 1,
+      "message": "typo: replication",
+      "range": {
+        "startLine": 117,
+        "startChar": 5,
+        "endLine": 117,
+        "endChar": 15
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10275d36_e016d348",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-19T19:21:00Z",
+      "side": 1,
+      "message": "replication is a core plugin.\nWhat\u0027s the reason for having to provide it explicitly? Could it not just be downloaded by this script?",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 4
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35cf28e7_331f45cd",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-19T19:21:00Z",
+      "side": 1,
+      "message": "nit: setup",
+      "range": {
+        "startLine": 234,
+        "startChar": 8,
+        "endLine": 234,
+        "endChar": 13
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff8441c0_d4ca7ef5",
+        "filename": "setup_local_env/configs/gerrit.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-19T19:21:00Z",
+      "side": 1,
+      "message": "I haven\u0027t checked the details, but websessions are not shared between the two gerrits.\nI login in gerrit-1 and the session does not get propagated.\n\nI don\u0027t see anywhere that we install the websession-broker plugin, could you check that perhaps?",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 25
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
