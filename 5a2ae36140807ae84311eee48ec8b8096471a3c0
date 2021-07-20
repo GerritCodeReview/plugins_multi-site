@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "17544b31_fa8597a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "That\u0027s not associated with Issue 14509, where we were aiming to have a TestContainer-based integration test.",
+      "range": {
+        "startLine": 9,
+        "startChar": 40,
+        "endLine": 9,
+        "endChar": 66
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46444073_af6e26e8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "We already have a Gatling-based E2E tests: can you explain the value added compared to the tests already written by Ericsson?\n\nWe also had a docker-compose environment and it was removed with Change-Id: I2f3ad4a. What\u0027s the purpose of resuming it?",
+      "range": {
+        "startLine": 10,
+        "startChar": 7,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4dcb9982_ec41fe4f",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -43,6 +89,52 @@
         "startChar": 0,
         "endLine": 12,
         "endChar": 19
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27a26dd9_37931795",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "We already have the docker-based environment for manual verification. What is this supposed to add? Can you explain that in the commit message?",
+      "range": {
+        "startLine": 14,
+        "startChar": 28,
+        "endLine": 14,
+        "endChar": 47
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d1dc9de_d2cc1bc9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "Nit: it should be\nBug: Issue 14509",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 10
       },
       "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
@@ -118,6 +210,46 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0da4443b_e1d6e778",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "I believe this is a duplicate of what we already have: shall we have a talk about it tomorrow? I don\u0027t see so much value in continuing in reviewing this and burn everyone\u0027s time on it.",
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dd722fa_0d8b42b3",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "That\u0027s not the purpose of this change: we already have a manual setup, we do need an automated one that can be run on the CI.",
+      "range": {
+        "startLine": 4,
+        "startChar": 5,
+        "endLine": 4,
+        "endChar": 11
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5220efac_672b1a5c",
@@ -136,6 +268,29 @@
         "startChar": 65,
         "endLine": 9,
         "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4385206a_cab8a2e2",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "That\u0027s not what the issue is about: how can that be automated? That\u0027s the problem and what we were supposed to resolve.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 2
       },
       "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
@@ -214,6 +369,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c3008b7_cd21a7ee",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "982f4a40_df86b6b6",
+      "range": {
+        "startLine": 48,
+        "startChar": 37,
+        "endLine": 48,
+        "endChar": 59
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86714fa1_331996e0",
+        "filename": "e2e-tests/docker-compose-kafka.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "Why a separate file and not included in docker-compose.yaml?",
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "77c49624_7f9baa4b",
         "filename": "e2e-tests/docker-compose.yaml",
         "patchSetId": 2
@@ -249,6 +445,30 @@
       "side": 1,
       "message": "I echo Tony on this. I recogn the ticket I wrote wasn\u0027t clear at all about what we were aiming with this ticket..there was nothing in the ticket 😐 my bad. I think the final aim is to run the tests in the CI, as you also said. It is ok to have an intermediate state where we run the tests manually, but we should keep in mind constraint we might have when running the tests in the CI. Ports is one of these as Tony pointed out.\n\nI would try to \"seal\" the whole multi-site setup in a bunch of coordinated containers, without exposing any port, and interact with it, only via the tests (some placeholders are ok initially...just a curl to see gerrit is up and running is fine for the scope of this tickets IMO).\n\nTo find out the problem you might have when running the tests in the CI, I\u0027d try to use what you have done so far to explore how it would look like to run it in the CI so you can find out straight away what are the issues you might find out, i.e.: ports allocation.\n\nNot sure if those notes are of any help: https://kanbanflow.com/t/PQ4E3Ruj",
       "parentUuid": "77c49624_7f9baa4b",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 19
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a674360_eeba5654",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "The reason why we proposed to use TestContainers is because of the ability to run on a CI environment by dynamically allocating the ports. This approach with Docker compose doesn\u0027t achieve that.\n\nWe could actually get the best of both worlds by using sbt-docker-compose (see [1]) which allows to still rely on a docker-compose.yaml file but having the ports dynamically allocated. WDYT?\n\n[1] https://github.com/Tapad/sbt-docker-compose",
+      "parentUuid": "31614085_6c777925",
       "range": {
         "startLine": 15,
         "startChar": 0,
@@ -308,6 +528,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e1c565f4_321dc350",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "Do we really need this for the purpose of testing Gerrit multi-site?",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1c47d8df_2e3aa34a",
         "filename": "e2e-tests/docker-compose.yaml",
         "patchSetId": 2
@@ -325,6 +568,46 @@
         "endLine": 38,
         "endChar": 40
       },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fed9f39_b04287ac",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "NFS?",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 37
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "237032c6_4a25d5cf",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "Same as above: not needed.",
       "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -395,6 +678,29 @@
         "startChar": 20,
         "endLine": 60,
         "endChar": 23
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2037dac_30c52de2",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-20T23:24:03Z",
+      "side": 1,
+      "message": "What\u0027s the purpose of those volumes?",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 16
       },
       "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
