@@ -191,6 +191,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "77c49624_7f9baa4b",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T10:32:25Z",
+      "side": 1,
+      "message": "We have to keep in mind that the final goal of this script is to run e2e tests within a CI environment and I am not sure how this would run in this context.\n\nThese ports cannot be statically allocated, because we don\u0027t have control on which ports will be available in Jenkins at the time of running.\n\nI wonder if we need to expose anything at all?\n\nIf we were to run the tests within a dedicated container, which is part of the docker-compose, then that container can access gerrit within the internal docker network, without needing to expose anything.\n\n\nWDYT?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 19
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "402fc1f3_60fb79db",
         "filename": "e2e-tests/docker-compose.yaml",
         "patchSetId": 2
