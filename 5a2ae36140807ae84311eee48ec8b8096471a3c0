@@ -100,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd778b87_0a4a0bfc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T09:40:58Z",
+      "side": 1,
+      "message": "Yes absolutely,\nI think moving to test containers would be premature at this stage.\n\nJust to be clear. I think this approach is valid: having a e2e test is different, conceptually, from what [1] was trying to achieve, which was more a development environment.\n\nI just thought about bringing to everyone\u0027s attention that a (recently removed) dockerized environment is being introduced.",
+      "parentUuid": "d2a44ce3_5432ec15",
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6cef86b9_17388c0a",
@@ -137,6 +155,30 @@
       "side": 1,
       "message": "We do - otherwise `mutli-site` doesn\u0027t load (it uses lib module from it) - that alone (if cannot be get rid off) is a huge complication on setting it up in the testcontainers...",
       "parentUuid": "6cef86b9_17388c0a",
+      "range": {
+        "startLine": 48,
+        "startChar": 37,
+        "endLine": 48,
+        "endChar": 59
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "982f4a40_df86b6b6",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T09:40:58Z",
+      "side": 1,
+      "message": "see my comment above, the replication.jar already exists in the gerrit docker container",
+      "parentUuid": "9745a28a_d4382c3f",
       "range": {
         "startLine": 48,
         "startChar": 37,
@@ -241,6 +283,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ccf8a1b_7e675c2c",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T09:40:58Z",
+      "side": 1,
+      "message": "Ack.\n\nThis is probably a good default, we can change it we find it necessary.",
+      "parentUuid": "332abdae_ac8bde7a",
+      "range": {
+        "startLine": 60,
+        "startChar": 20,
+        "endLine": 60,
+        "endChar": 23
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d54fa1c4_81c75b6c",
@@ -288,6 +354,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d29cfbd_ccf9fdaa",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T09:40:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "479662d3_0f0d6863",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b18193a3_383f03ea",
@@ -325,6 +415,30 @@
       "side": 1,
       "message": "I guess that it boils down to how one builds (but more importantly how CI builds) the plugins... I\u0027m building in tree hence plugin is under gerrit/plugins/multi-site directory and regardless on how I call bazel build (from plugin or from gerrit) it always ends up in the directory mentioned. Obviously it would be good to know how are you and CI building it :D",
       "parentUuid": "b18193a3_383f03ea",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 93
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "934e8556_923e69b2",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T09:40:58Z",
+      "side": 1,
+      "message": "It\u0027s a good point actually, I realized I don\u0027t really have a good idea on how the relevant artifacts will land on the CI, when we build the jenkins job.\n\nI can think of two viable approaches:\n \n1 - is the idea to build the multi-site in-tree and then rung e2e tests against it?\n\nThe benefit of this is that we can validate e2e *before* merging a change.\n(there\u0027s nothing that would trigger this at the moment, so we would need to trigger the CI job on demand, when we think is necessary, I guess?).\n\n2 - we always run e2e on *stable* branches.\n\nIn this case, we do not need to provide the multi-site.jar, as it will always be downloaded from the CI.\nObviously we will not be able to test e2e feature and bug fixes *before*  they get merged.\n\nI think your approach is going for 1, right?",
+      "parentUuid": "ce46fc14_ca7b15a6",
       "range": {
         "startLine": 23,
         "startChar": 0,
@@ -478,6 +592,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "14b87b10_d4f429e4",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T09:40:58Z",
+      "side": 1,
+      "message": "Yes, sorry for the confusion.\nThere\u0027s no need to download the replication plugin.\n\nWhat I should have said is: \n\nWhen running the gerritcodereview/gerrit:3.4.0-centos8, the replication plugin will already be present, since it is part of the gerrit core.\n\n\nI think we can remove the replication plugin altogether from the script.",
+      "parentUuid": "8d5fffd3_fdce33a7",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 4
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "35cf28e7_331f45cd",
         "filename": "e2e-tests/test.sh",
         "patchSetId": 2
@@ -560,6 +698,30 @@
       "side": 1,
       "message": "was wondering if we actually need it as there is no ha-proxy in this picture either... having said that it is a trivial step to add it and share over `fake-nfs` if you think that it is essential to the setup.",
       "parentUuid": "ff8441c0_d4ca7ef5",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 25
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01dc51b2_fb0c4ee1",
+        "filename": "setup_local_env/configs/gerrit.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T09:40:58Z",
+      "side": 1,
+      "message": "Yes I think the websession-broker would be an essential component for this setup, to be honest.\nIt a crucial part of multi-site and it is also affected by changes underlying the events-broker lib.",
+      "parentUuid": "a4b3c0c7_e0de33a9",
       "range": {
         "startLine": 42,
         "startChar": 0,
