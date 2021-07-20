@@ -120,6 +120,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5220efac_672b1a5c",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-07-20T13:43:45Z",
+      "side": 1,
+      "message": "This is actually needed. I am not saying in this change, but we need to keep it in mind when laying down the bases since the final purpose is having an easy way of doing integration tests with the different components, hence different brokers.\n\nJust to give a bit more of context, this ticket, meant to be set of tickets, was created after some breakage that were unnoticed while changing the broker API. We ended up having multi-site working with only a subset of brokers for a given Gerrit version.",
+      "range": {
+        "startLine": 8,
+        "startChar": 65,
+        "endLine": 9,
+        "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6cef86b9_17388c0a",
         "filename": "e2e-tests/README.md",
         "patchSetId": 2
@@ -202,6 +225,30 @@
       "writtenOn": "2021-07-20T10:32:25Z",
       "side": 1,
       "message": "We have to keep in mind that the final goal of this script is to run e2e tests within a CI environment and I am not sure how this would run in this context.\n\nThese ports cannot be statically allocated, because we don\u0027t have control on which ports will be available in Jenkins at the time of running.\n\nI wonder if we need to expose anything at all?\n\nIf we were to run the tests within a dedicated container, which is part of the docker-compose, then that container can access gerrit within the internal docker network, without needing to expose anything.\n\n\nWDYT?",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 19
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31614085_6c777925",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-07-20T13:43:45Z",
+      "side": 1,
+      "message": "I echo Tony on this. I recogn the ticket I wrote wasn\u0027t clear at all about what we were aiming with this ticket..there was nothing in the ticket 😐 my bad. I think the final aim is to run the tests in the CI, as you also said. It is ok to have an intermediate state where we run the tests manually, but we should keep in mind constraint we might have when running the tests in the CI. Ports is one of these as Tony pointed out.\n\nI would try to \"seal\" the whole multi-site setup in a bunch of coordinated containers, without exposing any port, and interact with it, only via the tests (some placeholders are ok initially...just a curl to see gerrit is up and running is fine for the scope of this tickets IMO).\n\nTo find out the problem you might have when running the tests in the CI, I\u0027d try to use what you have done so far to explore how it would look like to run it in the CI so you can find out straight away what are the issues you might find out, i.e.: ports allocation.\n\nNot sure if those notes are of any help: https://kanbanflow.com/t/PQ4E3Ruj",
+      "parentUuid": "77c49624_7f9baa4b",
       "range": {
         "startLine": 15,
         "startChar": 0,
@@ -497,6 +544,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f8d1a3a_fcd9a48f",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-07-20T13:43:45Z",
+      "side": 1,
+      "message": "If approach #2 makes things much more easy, we could start we it, otherwise #1 seems to me more flexible, it would allow us to run the tests on a stable branch or before merging a change in a branch by injecting the artefact we want to test.",
+      "parentUuid": "934e8556_923e69b2",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 93
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "43ae93d3_627e8df5",
         "filename": "e2e-tests/test.sh",
         "patchSetId": 2
@@ -537,6 +608,29 @@
         "startChar": 0,
         "endLine": 65,
         "endChar": 55
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92c8be01_66866cd5",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-07-20T13:43:45Z",
+      "side": 1,
+      "message": "Do we need this to be configurable?",
+      "range": {
+        "startLine": 100,
+        "startChar": 3,
+        "endLine": 100,
+        "endChar": 107
       },
       "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
