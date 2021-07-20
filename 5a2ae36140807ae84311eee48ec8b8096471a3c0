@@ -238,6 +238,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c47d8df_2e3aa34a",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T10:23:17Z",
+      "side": 1,
+      "message": "This should probably be a variable, so that we can pass it via the Jenkins UI and choose which minor version to run.\n\nIn this case we could also be kept in sync with the version of gerrit to checkout when building the multi-site artifact.",
+      "range": {
+        "startLine": 38,
+        "startChar": 35,
+        "endLine": 38,
+        "endChar": 40
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "990f8efc_99631378",
         "filename": "e2e-tests/docker-compose.yaml",
         "patchSetId": 2
