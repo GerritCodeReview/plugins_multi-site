@@ -686,6 +686,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6708dac6_527b2a29",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-20T10:27:04Z",
+      "side": 1,
+      "message": "Should this be run on background?\nI would expect here to trigger the actual tests (whatever they are).\n\nIf we don\u0027t return the prompt that it would be difficult to trigger any additional script.",
+      "range": {
+        "startLine": 248,
+        "startChar": 0,
+        "endLine": 249,
+        "endChar": 74
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ff8441c0_d4ca7ef5",
         "filename": "setup_local_env/configs/gerrit.config",
         "patchSetId": 2
