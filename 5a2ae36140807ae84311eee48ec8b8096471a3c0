@@ -227,6 +227,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "353397bc_36faf2de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-22T23:31:15Z",
+      "side": 1,
+      "message": "Resetting my -2 after the joint discussion today.",
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0dd722fa_0d8b42b3",
