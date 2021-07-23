@@ -38,6 +38,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class BrokerForwarderTest {
   private static final String HIGH_AVAILABILITY_PLUGIN = "/plugins/high-availability/";
   private static final String HIGH_AVAILABILITY_FORWARDED = "Forwarded-Index-Event";
+  private static final String HIGH_AVAILABILITY_BATCH_FORWARDED = "Forwarded-BatchIndex-Event";
   private static final long TEST_TIMEOUT_SEC = 5L;
 
   @Mock private BrokerApiWrapper brokerMock;
@@ -99,6 +100,13 @@ public class BrokerForwarderTest {
   @Test
   public void shouldSkipEventFromHighAvailabilityPluginForwardedThread() {
     brokerForwarder.send(newForwarderTask(HIGH_AVAILABILITY_FORWARDED), testTopic, testEvent);
+
+    verifyZeroInteractions(brokerMock);
+  }
+
+  @Test
+  public void shouldSkipEventFromHighAvailabilityPluginBatchForwardedThread() {
+    brokerForwarder.send(newForwarderTask(HIGH_AVAILABILITY_BATCH_FORWARDED), testTopic, testEvent);
 
     verifyZeroInteractions(brokerMock);
   }
