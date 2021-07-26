@@ -21,8 +21,9 @@ public interface ProjectListUpdateForwarder {
   /**
    * Forward an update the project list cache event to the other master.
    *
+   * @param task that triggered the forwarding of the project list event.
    * @param projectListUpdateEvent the content of project list update event
    * @return true if successful, otherwise false.
    */
-  boolean updateProjectList(ProjectListUpdateEvent projectListUpdateEvent);
+  boolean updateProjectList(ForwarderTask task, ProjectListUpdateEvent projectListUpdateEvent);
 }
