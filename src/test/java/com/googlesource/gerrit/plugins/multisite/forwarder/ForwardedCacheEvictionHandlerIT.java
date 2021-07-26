@@ -23,6 +23,8 @@ import com.google.common.collect.Sets;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.config.GerritConfig;
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.extensions.api.projects.ProjectInput;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.registration.RegistrationHandle;
 import com.google.gerrit.server.cache.CacheRemovalListener;
@@ -125,10 +127,33 @@ public class ForwardedCacheEvictionHandlerIT extends LightweightPluginDaemonTest
   @GerritConfig(name = "gerrit.instanceId", value = "testInstanceId")
   public void shouldEvictProjectCache() throws Exception {
     objectUnderTest.route(
-        new CacheEvictionEvent(ProjectCacheImpl.CACHE_NAME, gson.toJson(project), "instance-id"));
+        new CacheEvictionEvent(ProjectCacheImpl.CACHE_NAME, project.get(), "instance-id"));
     evictionsCacheTracker.waitForExpectedEvictions();
 
     assertThat(evictionsCacheTracker.trackedEvictionsFor(ProjectCacheImpl.CACHE_NAME))
         .contains(project);
+  }
+
+  @Test
+  @GerritConfig(name = "gerrit.instanceId", value = "testInstanceId")
+  public void shouldEvictProjectCacheWithSlash() throws Exception {
+    ProjectInput in = new ProjectInput();
+    in.name = name("my/project");
+    gApi.projects().create(in);
+    Project.NameKey projectNameKey = Project.nameKey(in.name);
+
+    restartCacheEvictionsTracking();
+
+    objectUnderTest.route(
+        new CacheEvictionEvent(ProjectCacheImpl.CACHE_NAME, projectNameKey.get(), "instance-id"));
+
+    evictionsCacheTracker.waitForExpectedEvictions();
+    assertThat(evictionsCacheTracker.trackedEvictionsFor(ProjectCacheImpl.CACHE_NAME))
+        .contains(projectNameKey);
+  }
+
+  private void restartCacheEvictionsTracking() {
+    stopTrackingCacheEvictions();
+    startTrackingCacheEvictions();
   }
 }
