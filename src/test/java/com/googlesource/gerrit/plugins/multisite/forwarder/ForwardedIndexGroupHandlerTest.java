@@ -143,28 +143,4 @@ public class ForwardedIndexGroupHandlerTest {
   private Optional<GroupIndexEvent> groupIndexEvent(String uuid) {
     return Optional.of(new GroupIndexEvent(uuid, null));
   }
-
-  @Test
-  public void shouldChangeIndexEventWheNotUpToDate() throws IOException {
-    ForwardedIndexGroupHandler groupHandlerWithOutdatedEvent = groupHandler(false);
-    groupHandlerWithOutdatedEvent.index(uuid, Operation.INDEX, groupIndexEvent(uuid));
-    verify(indexerMock).index(new AccountGroup.UUID(uuid));
-  }
-
-  @Test
-  public void shouldRescheduleGroupIndexingWhenItIsNotUpToDate() throws IOException {
-    ForwardedIndexGroupHandler groupHandlerWithOutdatedEvent = groupHandler(false);
-    groupHandlerWithOutdatedEvent.index(uuid, Operation.INDEX, groupIndexEvent(uuid));
-    verify(indexExecutorMock)
-        .schedule(any(Runnable.class), eq(new Long(RETRY_INTERVAL)), eq(TimeUnit.MILLISECONDS));
-  }
-
-  private ForwardedIndexGroupHandler groupHandler(boolean checkIsUpToDate) {
-    return new ForwardedIndexGroupHandler(
-        indexerMock, config, new TestGroupChecker(checkIsUpToDate), indexExecutorMock);
-  }
-
-  private Optional<GroupIndexEvent> groupIndexEvent(String uuid) {
-    return Optional.of(new GroupIndexEvent(uuid, null));
-  }
 }
