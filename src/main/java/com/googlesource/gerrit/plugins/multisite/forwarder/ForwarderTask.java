@@ -1,4 +1,4 @@
-// Copyright (C) 2019 The Android Open Source Project
+// Copyright (C) 2020 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,15 +14,10 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
+public abstract class ForwarderTask implements Runnable {
+  private final Thread callerThread = Thread.currentThread();
 
-public interface CacheEvictionForwarder {
-  /**
-   * Forward a cache eviction event to the other master.
-   *
-   * @param task that triggered the forwarding of the cache event.
-   * @param cacheEvictionEvent the details of the cache eviction event.
-   * @return true if successful, otherwise false.
-   */
-  boolean evict(ForwarderTask task, CacheEvictionEvent cacheEvictionEvent);
+  public Thread getCallerThread() {
+    return callerThread;
+  }
 }
