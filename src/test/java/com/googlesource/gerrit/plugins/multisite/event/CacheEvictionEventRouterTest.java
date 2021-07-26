@@ -16,7 +16,10 @@ package com.googlesource.gerrit.plugins.multisite.event;
 
 import static org.mockito.Mockito.verify;
 
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.server.events.EventGsonProvider;
 import com.google.gson.Gson;
+import com.googlesource.gerrit.plugins.multisite.cache.Constants;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEntry;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheKeyJsonParser;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedCacheEvictionHandler;
@@ -32,12 +35,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 public class CacheEvictionEventRouterTest {
 
   private static final String INSTANCE_ID = "instance-id";
+  private static Gson gson = new EventGsonProvider().get();
   private CacheEvictionEventRouter router;
   @Mock private ForwardedCacheEvictionHandler cacheEvictionHandler;
 
   @Before
   public void setUp() {
-    router = new CacheEvictionEventRouter(cacheEvictionHandler, new CacheKeyJsonParser(new Gson()));
+    router = new CacheEvictionEventRouter(cacheEvictionHandler, new CacheKeyJsonParser(gson));
   }
 
   @Test
@@ -49,11 +53,22 @@ public class CacheEvictionEventRouterTest {
   }
 
   @Test
-  public void routerShouldSendEventsToTheAppropriateHandler_ProjectCacheEvictionWithSlash()
+  public void routerShouldSendEventsToTheAppropriateHandler_CacheEvictionWithSlash()
       throws Exception {
-    final CacheEvictionEvent event = new CacheEvictionEvent("cache", "some/project", INSTANCE_ID);
+    final CacheEvictionEvent event = new CacheEvictionEvent("cache", "some/key", INSTANCE_ID);
     router.route(event);
 
     verify(cacheEvictionHandler).evict(CacheEntry.from(event.cacheName, event.key));
+  }
+
+  @Test
+  public void routerShouldSendEventsToTheAppropriateHandler_ProjectCacheEvictionWithSlash()
+      throws Exception {
+    final CacheEvictionEvent event =
+        new CacheEvictionEvent(Constants.PROJECTS, "some/project", INSTANCE_ID);
+    router.route(event);
+
+    verify(cacheEvictionHandler)
+        .evict(CacheEntry.from(event.cacheName, Project.nameKey((String) event.key)));
   }
 }
