@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84d10d42_9e4d957d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-07-26T10:47:19Z",
+      "side": 1,
+      "message": "Duplicate",
+      "parentUuid": "9b24a466_d831f306",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 36
+      },
+      "revId": "859f7c3998ce3ed46489982dee1bff1f6c308cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cfef0278_6172eb9c",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2021-07-26T10:39:20Z",
       "side": 1,
       "message": "Should we instead fix the tests rather than deleting them? Or it is not possible for some reason?",
+      "range": {
+        "startLine": 16,
+        "startChar": 48,
+        "endLine": 17,
+        "endChar": 22
+      },
+      "revId": "859f7c3998ce3ed46489982dee1bff1f6c308cf7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f41239ee_8dfb3233",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-07-26T10:47:19Z",
+      "side": 1,
+      "message": "Those are the same tests it\u0027s just a merge issue that we ended up with the same code twice",
+      "parentUuid": "cfef0278_6172eb9c",
       "range": {
         "startLine": 16,
         "startChar": 48,
