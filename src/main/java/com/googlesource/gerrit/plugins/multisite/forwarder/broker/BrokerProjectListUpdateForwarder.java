@@ -20,22 +20,21 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 
 @Singleton
-public class BrokerProjectListUpdateForwarder implements ProjectListUpdateForwarder {
-  private final BrokerApiWrapper broker;
-  private final Configuration cfg;
+public class BrokerProjectListUpdateForwarder extends BrokerForwarder
+    implements ProjectListUpdateForwarder {
 
   @Inject
   BrokerProjectListUpdateForwarder(BrokerApiWrapper broker, Configuration cfg) {
-    this.broker = broker;
-    this.cfg = cfg;
+    super(broker, cfg);
   }
 
   @Override
-  public boolean updateProjectList(ProjectListUpdateEvent event) {
-    return broker.send(PROJECT_LIST_TOPIC.topic(cfg), event);
+  public boolean updateProjectList(ForwarderTask task, ProjectListUpdateEvent event) {
+    return send(task, PROJECT_LIST_TOPIC, event);
   }
 }
