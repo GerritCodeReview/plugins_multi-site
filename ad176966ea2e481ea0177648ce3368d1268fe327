@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3441bdfd_9b2e4bdf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-27T13:49:56Z",
+      "side": 1,
+      "message": "Depends on \n\nhttps://gerrit-review.googlesource.com/c/modules/events-broker/+/312853\n\nand the publishing of the related artifact",
+      "revId": "ad176966ea2e481ea0177648ce3368d1268fe327",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
