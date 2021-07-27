@@ -79,6 +79,30 @@
       },
       "revId": "ad176966ea2e481ea0177648ce3368d1268fe327",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bea563f7_ce097908",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-27T14:56:08Z",
+      "side": 1,
+      "message": "\u003e That\u0027s not the right topic,\n\nI find it a bit confusing that the STREAM_EVENT_TOPIC is not the right topic for sending stream events 😊\n\nBut I guess this part is the inconsistency we are trying to solve.\n\nDo we actually need to add *another* topic configuration to multi-site?\nI was thinking that after removing the publishing of the\n stream events from the events-* broker, we will just need *one* topic and not two anymore right?\nCan we not use this one for that purpose?\n\n\u003e events-* plugins sending events to `gerrit` topic and this will be resolved by default to `GERRIT.EVENT.STREAM` in that cache both StreamEventPublisher and EventHandler will publish to the same topic. Two issues with that:\n\u003e 1. We will duplicate messages\n\nI thought the plan was to remove remove the sending of the events from the events-* broker. is that not the case?\n\n\u003e 2. EventHandler is filtering events using global/local projects feature but now all events will be propagated\n\nYes, this is what we should be discussing about tomorrow I believe.\nWe are thinking to centralize the streaming of the events, however multi-site does something quite custom there, perhaps it is not the best candidate to use common logic.",
+      "parentUuid": "c41c5a14_1198bf06",
+      "range": {
+        "startLine": 45,
+        "startChar": 20,
+        "endLine": 45,
+        "endChar": 70
+      },
+      "revId": "ad176966ea2e481ea0177648ce3368d1268fe327",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
