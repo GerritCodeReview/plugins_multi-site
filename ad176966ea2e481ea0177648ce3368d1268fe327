@@ -56,6 +56,29 @@
       },
       "revId": "ad176966ea2e481ea0177648ce3368d1268fe327",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c41c5a14_1198bf06",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-07-27T14:26:16Z",
+      "side": 1,
+      "message": "That\u0027s not the right topic, events-* plugins sending events to `gerrit` topic and this will be resolved by default to `GERRIT.EVENT.STREAM` in that cache both StreamEventPublisher and EventHandler will publish to the same topic. Two issues with that:\n1. We will duplicate messages\n2. EventHandler is filtering events using global/local projects feature but now all events will be propagated",
+      "range": {
+        "startLine": 45,
+        "startChar": 20,
+        "endLine": 45,
+        "endChar": 70
+      },
+      "revId": "ad176966ea2e481ea0177648ce3368d1268fe327",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
