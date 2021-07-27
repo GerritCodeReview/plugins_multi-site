@@ -16,6 +16,46 @@
       "message": "Depends on \n\nhttps://gerrit-review.googlesource.com/c/modules/events-broker/+/312853\n\nand the publishing of the related artifact",
       "revId": "ad176966ea2e481ea0177648ce3368d1268fe327",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8be3e6b8_6bb51b89",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-27T13:58:06Z",
+      "side": 1,
+      "message": "@luca, @Marcin, @Ponch.\nThe moving of the stream events publishing logic to the events-broker implies that all implementations are equals.\n\nHowever multi-site at the moment has its own implementation of the gerrit event streaming handling, which only publishes a subset of all gerrit events.\n\nThis is in contrast with the current events-broker implementation, which *add* to this logic and publish all messages, unfiltered.\n\nI think it would be useful to have a quick catch up to:\n\n- Understand if moving the stream events publishing logic to events-broker actually makes sense.\n\n- Understand if (currently, even before this CR), multi-site does the right thing, because it seems to me that:\n   * some events might be published twice\n   * some events that are not supposed to be streamed to other masters are streamed anyway (due to the blind implementation of the brokers).\n\n[1] https://gerrit.googlesource.com/plugins/multi-site/+/ad176966ea2e481ea0177648ce3368d1268fe327/src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventHandler.java#46",
+      "revId": "ad176966ea2e481ea0177648ce3368d1268fe327",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e095be6_776d6a0a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-07-27T13:58:06Z",
+      "side": 1,
+      "message": "Note to self:\nBefore merging this change, different EventListener need to be removed from kinesis, gcloud and kafka implementation.",
+      "range": {
+        "startLine": 38,
+        "startChar": 1,
+        "endLine": 38,
+        "endChar": 30
+      },
+      "revId": "ad176966ea2e481ea0177648ce3368d1268fe327",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
