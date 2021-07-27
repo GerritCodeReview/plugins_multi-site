@@ -21,7 +21,36 @@ public enum EventTopic {
   BATCH_INDEX_TOPIC("GERRIT.EVENT.BATCH.INDEX", "batchIndexEvent"),
   CACHE_TOPIC("GERRIT.EVENT.CACHE", "cacheEvent"),
   PROJECT_LIST_TOPIC("GERRIT.EVENT.PROJECT.LIST", "projectListEvent"),
-  STREAM_EVENT_TOPIC("GERRIT.EVENT.STREAM", "streamEvent");
+  /**
+   * the STREAM_EVENT_TOPICS and the GERRIT_TOPIC are both used to publish stream events. It might
+   * not be immediately intuitive why there are _two_ streams for this, rather than one. These are
+   * some gotchas regarding this:
+   *
+   * <ul>
+   *   <li>A subset of stream events is published to the STREAM_EVENT_TOPIC (i.e. only global
+   *       project events). This is done by the EventHandler.
+   *   <li>All, unfiltered gerrit events are published to a topic called `gerrit` (the
+   *       GERRIT_TOPIC). This is done by the StreamEventPublisher provided by the events-broker
+   *       library.
+   * </ul>
+   *
+   * Historically, the GERRIT_TOPIC existed to allow the streaming of all stream events. With the
+   * introduction of multi-site however, events had to be wrapped into EventMessage and streamed
+   * separately, in order to provide a header containing the instance-id that produced that message.
+   * For this purpose a *new* STREAM_EVENT_TOPIC topic was introduced.
+   *
+   * <p><a href="https://bugs.chromium.org/p/gerrit/issues/detail?id=14823">Issue 14823</a> now
+   * removed the need of EventMessage altogether,so that the `STREAM_EVENT_TOPIC` stream,
+   * conceptually would not be needed anymore.
+   *
+   * <p>However, before the `STREAM_EVENT_TOPIC` stream can be effectively removed, the filtering of
+   * the events needs to happen on the receiving side, as explained in <a
+   * href="https://bugs.chromium.org/p/gerrit/issues/detail?id=14835">Issue 14835</a>.
+   *
+   * <p>This would allow to *all* events to be streamed to the STREAM_EVENT_TOPICS.
+   */
+  STREAM_EVENT_TOPIC("GERRIT.EVENT.STREAM", "streamEvent"),
+  GERRIT_TOPIC("gerrit", "gerritEvents");
 
   private final String topic;
   private final String aliasKey;
