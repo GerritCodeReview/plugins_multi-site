@@ -33,38 +33,41 @@ public final class CacheKeyJsonParser {
   }
 
   @SuppressWarnings("cast")
-  public Object fromJson(String cacheName, Object json) {
-    Object key;
+  public Object from(String cacheName, Object cacheKeyValue) {
+    Object parsedKey;
     // Need to add a case for 'adv_bases'
     switch (cacheName) {
       case Constants.ACCOUNTS:
-        key = Account.id(jsonElement(json).getAsJsonObject().get("id").getAsInt());
+        parsedKey = Account.id(jsonElement(cacheKeyValue).getAsJsonObject().get("id").getAsInt());
         break;
       case Constants.GROUPS:
-        key = AccountGroup.id(jsonElement(json).getAsJsonObject().get("id").getAsInt());
+        parsedKey =
+            AccountGroup.id(jsonElement(cacheKeyValue).getAsJsonObject().get("id").getAsInt());
         break;
       case Constants.GROUPS_BYINCLUDE:
       case Constants.GROUPS_MEMBERS:
-        key = AccountGroup.uuid(jsonElement(json).getAsJsonObject().get("uuid").getAsString());
+        parsedKey =
+            AccountGroup.uuid(
+                jsonElement(cacheKeyValue).getAsJsonObject().get("uuid").getAsString());
         break;
       case Constants.PROJECTS:
-        key = Project.nameKey(jsonElement(json).getAsString());
+        parsedKey = Project.nameKey(nullToEmpty(cacheKeyValue));
         break;
       case Constants.PROJECT_LIST:
-        key = gson.fromJson(nullToEmpty(json).toString(), Object.class);
+        parsedKey = gson.fromJson(nullToEmpty(cacheKeyValue).toString(), Object.class);
         break;
       default:
-        if (json instanceof String) {
-          key = (String) json;
+        if (cacheKeyValue instanceof String) {
+          parsedKey = (String) cacheKeyValue;
         } else {
           try {
-            key = gson.fromJson(nullToEmpty(json).toString().trim(), String.class);
+            parsedKey = gson.fromJson(nullToEmpty(cacheKeyValue).toString().trim(), String.class);
           } catch (Exception e) {
-            key = gson.fromJson(nullToEmpty(json).toString(), Object.class);
+            parsedKey = gson.fromJson(nullToEmpty(cacheKeyValue).toString(), Object.class);
           }
         }
     }
-    return key;
+    return parsedKey;
   }
 
   private JsonElement jsonElement(Object json) {
