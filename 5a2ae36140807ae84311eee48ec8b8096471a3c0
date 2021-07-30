@@ -94,6 +94,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d5f200e_a5ff214e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-30T21:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecec6d98_e21fcd50",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 19
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27a26dd9_37931795",
@@ -408,6 +432,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86d5e418_be5d8f55",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-30T21:14:26Z",
+      "side": 1,
+      "message": "we can get it from the container itself (without event starting it) with the following commands:\n\n  CONTAINER_NAME\u003d$(docker create -ti --entrypoint /bin/bash gerritcodereview/gerrit:3.4.0-centos8) \u0026\u0026 \\\n  docker cp ${CONTAINER_NAME}:/var/gerrit/plugins/replication.jar /path/to/destination\n  docker rm -fv ${CONTAINER_NAME}",
+      "parentUuid": "5c3008b7_cd21a7ee",
+      "range": {
+        "startLine": 48,
+        "startChar": 37,
+        "endLine": 48,
+        "endChar": 59
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86714fa1_331996e0",
@@ -421,6 +469,24 @@
       "writtenOn": "2021-07-20T23:24:03Z",
       "side": 1,
       "message": "Why a separate file and not included in docker-compose.yaml?",
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5a2c126_cfcd1056",
+        "filename": "e2e-tests/docker-compose-kafka.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-30T21:14:26Z",
+      "side": 1,
+      "message": "in case we would like to test it against the different broker it will be added when different one would be chosen",
+      "parentUuid": "86714fa1_331996e0",
       "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -486,6 +552,30 @@
       "side": 1,
       "message": "The reason why we proposed to use TestContainers is because of the ability to run on a CI environment by dynamically allocating the ports. This approach with Docker compose doesn\u0027t achieve that.\n\nWe could actually get the best of both worlds by using sbt-docker-compose (see [1]) which allows to still rely on a docker-compose.yaml file but having the ports dynamically allocated. WDYT?\n\n[1] https://github.com/Tapad/sbt-docker-compose",
       "parentUuid": "31614085_6c777925",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 19
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dca6603c_b91a9aca",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-30T21:14:26Z",
+      "side": 1,
+      "message": "ports were moved to the `--manual` switch and as such they are no longer needed to be exposed for testing.",
+      "parentUuid": "6a674360_eeba5654",
       "range": {
         "startLine": 15,
         "startChar": 0,
@@ -566,6 +656,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a93a07e_5d1b404e",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-30T21:14:26Z",
+      "side": 1,
+      "message": "yes we do - otherwise we need to take care of timeouts while gerrit starts ourselves",
+      "parentUuid": "e1c565f4_321dc350",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c47d8df_2e3aa34a",
@@ -579,6 +693,30 @@
       "writtenOn": "2021-07-20T10:23:17Z",
       "side": 1,
       "message": "This should probably be a variable, so that we can pass it via the Jenkins UI and choose which minor version to run.\n\nIn this case we could also be kept in sync with the version of gerrit to checkout when building the multi-site artifact.",
+      "range": {
+        "startLine": 38,
+        "startChar": 35,
+        "endLine": 38,
+        "endChar": 40
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf3d8651_8e3917e7",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-30T21:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c47d8df_2e3aa34a",
       "range": {
         "startLine": 38,
         "startChar": 35,
@@ -612,6 +750,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "863da882_39e8bb73",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-30T21:14:26Z",
+      "side": 1,
+      "message": "it is for websession-broker to share the session file - regardless there is no need for it to be a volume",
+      "parentUuid": "2fed9f39_b04287ac",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 37
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "237032c6_4a25d5cf",
@@ -625,6 +787,24 @@
       "writtenOn": "2021-07-20T23:24:03Z",
       "side": 1,
       "message": "Same as above: not needed.",
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae82143e_96f31792",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-30T21:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "237032c6_4a25d5cf",
       "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -713,6 +893,30 @@
       "writtenOn": "2021-07-20T23:24:03Z",
       "side": 1,
       "message": "What\u0027s the purpose of those volumes?",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4613940_e174e71f",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-30T21:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2037dac_30c52de2",
       "range": {
         "startLine": 65,
         "startChar": 0,
@@ -1077,6 +1281,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbefe5a8_a4f6ea08",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-30T21:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14b87b10_d4f429e4",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 4
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35cf28e7_331f45cd",
@@ -1208,6 +1436,30 @@
       "side": 1,
       "message": "Yes I think the websession-broker would be an essential component for this setup, to be honest.\nIt a crucial part of multi-site and it is also affected by changes underlying the events-broker lib.",
       "parentUuid": "a4b3c0c7_e0de33a9",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 25
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fde6d232_b42c858b",
+        "filename": "setup_local_env/configs/gerrit.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-30T21:14:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01dc51b2_fb0c4ee1",
       "range": {
         "startLine": 42,
         "startChar": 0,
