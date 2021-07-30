@@ -166,6 +166,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "46b6cbae_f630b6d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-30T21:25:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d1dc9de_d2cc1bc9",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 10
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ae86704b_38d56ec3",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -600,6 +624,30 @@
       "side": 1,
       "message": "ports were moved to the `--manual` switch and as such they are no longer needed to be exposed for testing.",
       "parentUuid": "6a674360_eeba5654",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 19
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ce326dd_06e2d00e",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-30T21:25:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dca6603c_b91a9aca",
       "range": {
         "startLine": 15,
         "startChar": 0,
