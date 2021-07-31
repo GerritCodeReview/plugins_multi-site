@@ -81,6 +81,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f4880e4_e54e3848",
+        "filename": "e2e-tests/docker-compose-kafka-manual.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-31T08:13:02Z",
+      "side": 1,
+      "message": "all those *-manual.yaml are called only when `--manual true` switch is added to the call IOW it creates the necessary environment that one can use to develop test scenarios - I should have probably highlighted that more ;)",
+      "parentUuid": "f7b8e925_203b0559",
+      "range": {
+        "startLine": 5,
+        "startChar": 9,
+        "endLine": 5,
+        "endChar": 13
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fde26a0_5fe522e4",
@@ -198,6 +222,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dc3aee0d_345c55d2",
+        "filename": "e2e-tests/docker-tester.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-31T08:13:02Z",
+      "side": 1,
+      "message": "AFAICT it is honoured - that was the reason to add `healthcheck` to `gerrit*` services...",
+      "parentUuid": "4ac873f3_d21ecaeb",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 34
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "235ce0ee_95c8e718",
         "filename": "e2e-tests/scenarios.sh",
         "patchSetId": 5
@@ -238,6 +286,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b7b5809e_3cca1300",
+        "filename": "e2e-tests/scenarios.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-31T08:13:02Z",
+      "side": 1,
+      "message": "+1 I could perform different test then e.g. create project (with SSH create-project command) in `gerrit1` and check if it was properly propagated to `gerrit2` etc... but lets agree if that makes sense to continue ;)",
+      "parentUuid": "0fb08e32_7578b9b7",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 44
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "51ef7cce_264d155e",
         "filename": "e2e-tests/test.sh",
         "patchSetId": 5
@@ -249,6 +321,30 @@
       "writtenOn": "2021-07-31T02:24:53Z",
       "side": 1,
       "message": "This can come with the version of Gerrit in the source tree.",
+      "range": {
+        "startLine": 24,
+        "startChar": 17,
+        "endLine": 24,
+        "endChar": 22
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eda65f0_0c1275d0",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-31T08:13:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "51ef7cce_264d155e",
       "range": {
         "startLine": 24,
         "startChar": 17,

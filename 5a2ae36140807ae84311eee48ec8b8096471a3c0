@@ -778,6 +778,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a8b402e5_6879ff4f",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-31T08:13:02Z",
+      "side": 1,
+      "message": "it isn\u0027t the k8s but it will delay the start of the tester container until gerrit instance reports that it is healthy IOW I see the following benefits of this approach:\n* I don\u0027t have to write check-wait loop in order to do that in the test container IOW it is easier to maintain\n* we are adding healthcheck plugin verification which is IMHO part of the setup",
+      "parentUuid": "69dab839_188d9f65",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1c47d8df_2e3aa34a",
         "filename": "e2e-tests/docker-compose.yaml",
         "patchSetId": 2
@@ -884,6 +908,30 @@
       "side": 1,
       "message": "We do not use shared websessions over NFS or any other shared filesystem on multi-site.",
       "parentUuid": "863da882_39e8bb73",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 37
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3df45deb_b5986147",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-31T08:13:02Z",
+      "side": 1,
+      "message": "I was fooled by the following `setup_local_env/configs/gerrit.config` entry:\n\n  [plugin \"websession-flatfile\"]\n    directory \u003d $FAKE_NFS\n\nHaven\u0027t noticed that it actually mentions different plugin ;)",
+      "parentUuid": "eb2c8e7a_0111231d",
       "range": {
         "startLine": 55,
         "startChar": 0,
@@ -1014,6 +1062,30 @@
       "side": 1,
       "message": "The docker-compose health-check isn\u0027t even useful in this context: I believe we are adding a complexity that isn\u0027t really focused in testing multi-site here.",
       "parentUuid": "9ccf8a1b_7e675c2c",
+      "range": {
+        "startLine": 60,
+        "startChar": 20,
+        "endLine": 60,
+        "endChar": 23
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4c74fbe_15ad6a93",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-31T08:13:02Z",
+      "side": 1,
+      "message": "Can you elaborate? AFAICT docker lets Gerrit start (note that `init` is performed first) the given amount of time and once the healthcheck results with `200` test container (that depends on that) is started... IMHO it is useful as it takes away the burden of doing that manually... so let\u0027s sync on that ;)",
+      "parentUuid": "fa1625c5_7c927327",
       "range": {
         "startLine": 60,
         "startChar": 20,
