@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3449e44c_a1e79956",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-07-31T08:15:07Z",
+      "side": 1,
+      "message": "I\u0027m in the process of adding a `sh_test` (see in [1]) rule to build and one will get the results of test by simply calling\n\nbazel test //plugins/multi-site/...\n\n[1] https://docs.bazel.build/versions/main/be/shell.html#sh_test",
+      "parentUuid": "7eced147_2efdf68b",
+      "range": {
+        "startLine": 5,
+        "startChar": 13,
+        "endLine": 5,
+        "endChar": 37
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7b8e925_203b0559",
         "filename": "e2e-tests/docker-compose-kafka-manual.yaml",
         "patchSetId": 5
