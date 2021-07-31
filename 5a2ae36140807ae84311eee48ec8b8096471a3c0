@@ -754,6 +754,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "69dab839_188d9f65",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-31T02:24:53Z",
+      "side": 1,
+      "message": "What are you expecting from docker-compose to do with this healthcheck? Docker-compose isn\u0027t K8s and won\u0027t really do anything with it, AFAIK.",
+      "parentUuid": "4a93a07e_5d1b404e",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1c47d8df_2e3aa34a",
         "filename": "e2e-tests/docker-compose.yaml",
         "patchSetId": 2
@@ -836,6 +860,30 @@
       "side": 1,
       "message": "it is for websession-broker to share the session file - regardless there is no need for it to be a volume",
       "parentUuid": "2fed9f39_b04287ac",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 37
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb2c8e7a_0111231d",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-31T02:24:53Z",
+      "side": 1,
+      "message": "We do not use shared websessions over NFS or any other shared filesystem on multi-site.",
+      "parentUuid": "863da882_39e8bb73",
       "range": {
         "startLine": 55,
         "startChar": 0,
@@ -954,6 +1002,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa1625c5_7c927327",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-31T02:24:53Z",
+      "side": 1,
+      "message": "The docker-compose health-check isn\u0027t even useful in this context: I believe we are adding a complexity that isn\u0027t really focused in testing multi-site here.",
+      "parentUuid": "9ccf8a1b_7e675c2c",
+      "range": {
+        "startLine": 60,
+        "startChar": 20,
+        "endLine": 60,
+        "endChar": 23
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e2037dac_30c52de2",
         "filename": "e2e-tests/docker-compose.yaml",
         "patchSetId": 2
@@ -1060,6 +1132,30 @@
       "side": 1,
       "message": "Ack",
       "parentUuid": "479662d3_0f0d6863",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5ce8d70_19674807",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-31T02:24:53Z",
+      "side": 1,
+      "message": "Reopening the issue: I do believe this is making the project less maintainable. The all purpose of this exercise was to have something that helps us making less mistakes in the future. Duplicating the manual setup is adding one more chance to make mistakes IMHO.",
+      "parentUuid": "9d29cfbd_ccf9fdaa",
       "range": {
         "startLine": 1,
         "startChar": 0,
