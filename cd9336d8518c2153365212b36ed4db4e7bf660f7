@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a695b215_29df8efa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-31T01:57:44Z",
+      "side": 1,
+      "message": "nit: backward",
+      "range": {
+        "startLine": 12,
+        "startChar": 21,
+        "endLine": 12,
+        "endChar": 26
+      },
+      "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f25dca0f_5266731d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-31T01:57:44Z",
+      "side": 1,
+      "message": "The \u0027gerrit\u0027 topic has been there for many more years than the existence of the multi-site plugin.\n\nI believe we should remove the topic introduced by multi-site and then rely on the \u0027gerrit\u0027 topic instead.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 58
+      },
+      "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b465fb37_d2f9a0f7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventTopic.java",
         "patchSetId": 3
@@ -20,6 +66,23 @@
         "endLine": 25,
         "endChar": 71
       },
+      "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01cbb1e3_cedabe1b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventTopic.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-07-31T01:57:44Z",
+      "side": 1,
+      "message": "Should the GERRIT.EVENT.STREAM topic be deprecated?",
       "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
