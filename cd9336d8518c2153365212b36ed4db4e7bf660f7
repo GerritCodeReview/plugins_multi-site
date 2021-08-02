@@ -145,6 +145,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d3e248d1_650cd8e4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-02T09:47:01Z",
+      "side": 1,
+      "message": "Marcin from your last comment [1] seems like you believed the ultimate goal was to stream to the STREAM_EVENT_TOPIC, not the GERRIT_TOPIC one?\n\n```\n... and the we can get rid of the EventHandler and StreamEventPublish can send events to STREAM_EVENT_TOPIC.\n```\n\nLet\u0027s have a quick catch up to straighten some of this inconsistencies to make sure we all agree what to do 😊\n\n[1]https://gerrit-review.googlesource.com/c/plugins/multi-site/+/312871/comments/c41c5a14_1198bf06",
+      "parentUuid": "c82efc87_3e0136bf",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 58
+      },
+      "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b465fb37_d2f9a0f7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventTopic.java",
         "patchSetId": 3
@@ -239,6 +263,24 @@
       "side": 1,
       "message": "`stream_event` should be deprecated",
       "parentUuid": "10ea2553_0ef33267",
+      "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cabff5e5_77d00452",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventTopic.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-02T09:47:01Z",
+      "side": 1,
+      "message": "I think the STREAM_EVENT_TOPIC can be deprecated in favour of the GERRIT_TOPIC only when [1] is done, now quite yet right?\n\nIf we were to stream *all* events to the GERRIT_TOPIC, then that topic would get twice the number of messages and it would not do honour the local project filtering.\n\nWDYT?  \n\n[1] https://bugs.chromium.org/p/gerrit/issues/detail?id\u003d14835",
+      "parentUuid": "a91e33f3_b617b372",
       "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
