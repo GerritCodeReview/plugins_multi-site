@@ -48,7 +48,10 @@ public enum EventTopic {
    * href="https://bugs.chromium.org/p/gerrit/issues/detail?id=14835">Issue 14835</a>.
    *
    * <p>This would allow to *all* events to be streamed to the STREAM_EVENT_TOPICS.
+   *
+   * @deprecated Use {@link #GERRIT_TOPIC} instead.
    */
+  @Deprecated
   STREAM_EVENT_TOPIC("GERRIT.EVENT.STREAM", "streamEvent"),
   GERRIT_TOPIC("gerrit", "gerritEvents");
 
