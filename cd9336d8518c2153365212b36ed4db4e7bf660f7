@@ -307,6 +307,24 @@
       "parentUuid": "a91e33f3_b617b372",
       "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dec05176_24c3faae",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventTopic.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-02T12:22:47Z",
+      "side": 1,
+      "message": "Done this in a follow up change.",
+      "parentUuid": "cabff5e5_77d00452",
+      "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
