@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fcdffb67_9ca631b0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-02T07:51:33Z",
+      "side": 1,
+      "message": "oh really? my understanding was that the `gerrit` topic was the one introduced by multi-site, and the streamEvent topic is the one that always existed.\n\n@marcin, @Luca, did I get this the other way around?",
+      "parentUuid": "f25dca0f_5266731d",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 58
+      },
+      "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b465fb37_d2f9a0f7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventTopic.java",
         "patchSetId": 3
@@ -83,6 +107,24 @@
       "writtenOn": "2021-07-31T01:57:44Z",
       "side": 1,
       "message": "Should the GERRIT.EVENT.STREAM topic be deprecated?",
+      "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10ea2553_0ef33267",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventTopic.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-02T07:51:33Z",
+      "side": 1,
+      "message": "Good idea, as soon as I shed some light on which topic is the one to deprecate (gerrit or stream_event) I will mark is as deprecated in a follow up change.",
+      "parentUuid": "01cbb1e3_cedabe1b",
       "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
