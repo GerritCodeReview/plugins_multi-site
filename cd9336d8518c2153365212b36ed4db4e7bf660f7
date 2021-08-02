@@ -167,6 +167,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ea043b5_a73d8d2d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-02T12:19:53Z",
+      "side": 1,
+      "message": "I spoke to @Marcin and the `gerrit` topic is indeed the one to keep.\nSo Let\u0027s resolve this comment, the documentation has been updated accordingly.",
+      "parentUuid": "d3e248d1_650cd8e4",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 58
+      },
+      "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b465fb37_d2f9a0f7",
