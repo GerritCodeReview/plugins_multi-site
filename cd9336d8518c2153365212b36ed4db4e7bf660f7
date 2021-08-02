@@ -73,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf24131c_9c0acd84",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-02T08:00:26Z",
+      "side": 1,
+      "message": "Yep. `gerrit` topic was always there and this is the one which should stay",
+      "parentUuid": "fcdffb67_9ca631b0",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 58
+      },
+      "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b465fb37_d2f9a0f7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventTopic.java",
         "patchSetId": 3
@@ -125,6 +149,24 @@
       "side": 1,
       "message": "Good idea, as soon as I shed some light on which topic is the one to deprecate (gerrit or stream_event) I will mark is as deprecated in a follow up change.",
       "parentUuid": "01cbb1e3_cedabe1b",
+      "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a91e33f3_b617b372",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventTopic.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-02T08:00:26Z",
+      "side": 1,
+      "message": "`stream_event` should be deprecated",
+      "parentUuid": "10ea2553_0ef33267",
       "revId": "cd9336d8518c2153365212b36ed4db4e7bf660f7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
