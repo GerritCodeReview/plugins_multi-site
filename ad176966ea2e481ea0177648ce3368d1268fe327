@@ -129,6 +129,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaf35c9a_abc0551a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-02T09:19:22Z",
+      "side": 1,
+      "message": "This is now happening and relevant changes are part of a topic.\nResolving this.",
+      "parentUuid": "0e095be6_776d6a0a",
+      "range": {
+        "startLine": 38,
+        "startChar": 1,
+        "endLine": 38,
+        "endChar": 30
+      },
+      "revId": "ad176966ea2e481ea0177648ce3368d1268fe327",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c41c5a14_1198bf06",
