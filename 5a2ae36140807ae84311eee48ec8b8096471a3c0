@@ -802,6 +802,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "63e0065b_9d5577dd",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-03T01:05:35Z",
+      "side": 1,
+      "message": "I wouldn\u0027t start building something on a deprecated feature of docker-compose: the depends_on was introduced back in v2.1 of docker-compose but then deprecated in v3 and later removed.",
+      "parentUuid": "a8b402e5_6879ff4f",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1c47d8df_2e3aa34a",
         "filename": "e2e-tests/docker-compose.yaml",
         "patchSetId": 2
@@ -1086,6 +1110,30 @@
       "side": 1,
       "message": "Can you elaborate? AFAICT docker lets Gerrit start (note that `init` is performed first) the given amount of time and once the healthcheck results with `200` test container (that depends on that) is started... IMHO it is useful as it takes away the burden of doing that manually... so let\u0027s sync on that ;)",
       "parentUuid": "fa1625c5_7c927327",
+      "range": {
+        "startLine": 60,
+        "startChar": 20,
+        "endLine": 60,
+        "endChar": 23
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b02171bd_cc072bf5",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-03T01:05:35Z",
+      "side": 1,
+      "message": "See above: the depends_on is deprecated in docker-compose.",
+      "parentUuid": "b4c74fbe_15ad6a93",
       "range": {
         "startLine": 60,
         "startChar": 20,
