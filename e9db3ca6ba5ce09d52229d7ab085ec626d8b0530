@@ -84,6 +84,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "27b0d59f_2c3e6dc1",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-08-03T10:07:37Z",
+      "side": 1,
+      "message": "See my comment in e2e-tests/docker-compose-kafka-manual.yaml",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 26
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7b8e925_203b0559",
         "filename": "e2e-tests/docker-compose-kafka-manual.yaml",
         "patchSetId": 5
@@ -119,6 +142,30 @@
       "side": 1,
       "message": "all those *-manual.yaml are called only when `--manual true` switch is added to the call IOW it creates the necessary environment that one can use to develop test scenarios - I should have probably highlighted that more ;)",
       "parentUuid": "f7b8e925_203b0559",
+      "range": {
+        "startLine": 5,
+        "startChar": 9,
+        "endLine": 5,
+        "endChar": 13
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e381d869_167236ff",
+        "filename": "e2e-tests/docker-compose-kafka-manual.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-08-03T10:07:37Z",
+      "side": 1,
+      "message": "I think if we need the environment running locally, for any reason, among which developing test scenarios, we could use the local setup we currently have.\n\nI think this setup has to be focused solely on running tests in the CI. If we try to make it flexible to run it manually as well we are introducing more complexity that we need and we will end up with two local setup to maintain.",
+      "parentUuid": "1f4880e4_e54e3848",
       "range": {
         "startLine": 5,
         "startChar": 9,
