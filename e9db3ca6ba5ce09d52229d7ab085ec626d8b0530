@@ -178,6 +178,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7c902106_911e3a61",
+        "filename": "e2e-tests/docker-compose-kafka-manual.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-04T01:26:08Z",
+      "side": 1,
+      "message": "Agreed: we don\u0027t want to maintain two local test environments.",
+      "parentUuid": "e381d869_167236ff",
+      "range": {
+        "startLine": 5,
+        "startChar": 9,
+        "endLine": 5,
+        "endChar": 13
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0fde26a0_5fe522e4",
         "filename": "e2e-tests/docker-compose-manual.yaml",
         "patchSetId": 5
