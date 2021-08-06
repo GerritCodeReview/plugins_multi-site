@@ -14,17 +14,25 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+
+
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.IndexEventRouter;
 
 @Singleton
 public class BatchIndexEventSubscriber extends AbstractSubcriber {
+  private final ProjectsFilter projectsFilter;
+
   @Inject
   public BatchIndexEventSubscriber(
       IndexEventRouter eventRouter,
@@ -32,12 +40,25 @@ public class BatchIndexEventSubscriber extends AbstractSubcriber {
       @GerritInstanceId String instanceId,
       MessageLogger msgLog,
       SubscriberMetrics subscriberMetrics,
-      Configuration cfg) {
+      Configuration cfg,
+      ProjectsFilter projectsFilter) {
     super(eventRouter, droppedEventListeners, instanceId, msgLog, subscriberMetrics, cfg);
+    this.projectsFilter = projectsFilter;
   }
 
   @Override
   protected EventTopic getTopic() {
     return EventTopic.BATCH_INDEX_TOPIC;
+  }
+
+  @Override
+  protected Boolean shouldConsumeEvent(Event event) {
+    if (event instanceof ChangeIndexEvent) {
+      return projectsFilter.matches(((ChangeIndexEvent) event).projectName);
+    }
+    if (event instanceof ProjectIndexEvent) {
+      return projectsFilter.matches(((ProjectIndexEvent) event).projectName);
+    }
+    return true;
   }
 }

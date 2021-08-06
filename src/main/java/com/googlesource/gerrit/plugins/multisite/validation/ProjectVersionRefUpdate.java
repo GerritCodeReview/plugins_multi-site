@@ -18,7 +18,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
 
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
-import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
@@ -58,7 +57,6 @@ public class ProjectVersionRefUpdate implements EventListener {
   private final GitRepositoryManager gitRepositoryManager;
   private final GitReferenceUpdated gitReferenceUpdated;
   private final ProjectVersionLogger verLogger;
-  private final ProjectsFilter projectsFilter;
   private final String nodeInstanceId;
 
   protected final SharedRefDatabaseWrapper sharedRefDb;
@@ -69,13 +67,11 @@ public class ProjectVersionRefUpdate implements EventListener {
       SharedRefDatabaseWrapper sharedRefDb,
       GitReferenceUpdated gitReferenceUpdated,
       ProjectVersionLogger verLogger,
-      ProjectsFilter projectsFilter,
       @GerritInstanceId String nodeInstanceId) {
     this.gitRepositoryManager = gitRepositoryManager;
     this.sharedRefDb = sharedRefDb;
     this.gitReferenceUpdated = gitReferenceUpdated;
     this.verLogger = verLogger;
-    this.projectsFilter = projectsFilter;
     this.nodeInstanceId = nodeInstanceId;
   }
 
@@ -84,9 +80,7 @@ public class ProjectVersionRefUpdate implements EventListener {
     logger.atFine().log("Processing event type: " + event.type);
     // Producer of the Event use RefUpdatedEvent to trigger the version update
     if (nodeInstanceId.equals(event.instanceId) && event instanceof RefUpdatedEvent) {
-      if (projectsFilter.matches(event)) {
-        updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
-      }
+      updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
     }
   }
 
