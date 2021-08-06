@@ -15,14 +15,10 @@
 package com.googlesource.gerrit.plugins.multisite.event;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
 
-import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.events.Event;
@@ -43,17 +39,12 @@ public class EventHandlerTest {
   private EventHandler eventHandler;
 
   @Mock private StreamEventForwarder forwarder;
-  @Mock private ProjectsFilter projectsFilter;
 
   @Before
   public void setUp() {
-    when(projectsFilter.matches(any(ProjectEvent.class))).thenReturn(true);
     eventHandler =
         new EventHandler(
-            asDynamicSet(forwarder),
-            MoreExecutors.directExecutor(),
-            projectsFilter,
-            DEFAULT_INSTANCE_ID);
+            asDynamicSet(forwarder), MoreExecutors.directExecutor(), DEFAULT_INSTANCE_ID);
   }
 
   private DynamicSet<StreamEventForwarder> asDynamicSet(StreamEventForwarder forwarder) {
@@ -82,16 +73,6 @@ public class EventHandlerTest {
     event.instanceId = "instance-id-2";
     eventHandler.onEvent(event);
     verifyZeroInteractions(forwarder);
-  }
-
-  @Test
-  public void shouldNotForwardIfFilteredOutByProjectName() throws Exception {
-    when(projectsFilter.matches(any(ProjectEvent.class))).thenReturn(false);
-
-    ProjectEvent event = mock(ProjectEvent.class);
-    event.instanceId = DEFAULT_INSTANCE_ID;
-    eventHandler.onEvent(event);
-    verify(forwarder, never()).send(event);
   }
 
   @Test
