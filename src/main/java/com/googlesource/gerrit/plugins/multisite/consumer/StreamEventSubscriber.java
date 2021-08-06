@@ -14,8 +14,11 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -25,6 +28,8 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRou
 
 @Singleton
 public class StreamEventSubscriber extends AbstractSubcriber {
+  private final ProjectsFilter projectsFilter;
+
   @Inject
   public StreamEventSubscriber(
       StreamEventRouter eventRouter,
@@ -32,12 +37,19 @@ public class StreamEventSubscriber extends AbstractSubcriber {
       @GerritInstanceId String instanceId,
       MessageLogger msgLog,
       SubscriberMetrics subscriberMetrics,
-      Configuration cfg) {
+      Configuration cfg,
+      ProjectsFilter projectsFilter) {
     super(eventRouter, droppedEventListeners, instanceId, msgLog, subscriberMetrics, cfg);
+    this.projectsFilter = projectsFilter;
   }
 
   @Override
   protected EventTopic getTopic() {
     return EventTopic.STREAM_EVENT_TOPIC;
+  }
+
+  @Override
+  protected Boolean shouldConsumeEvent(Event event) {
+    return projectsFilter.matches(((RefUpdatedEvent) event).getProjectNameKey().get());
   }
 }

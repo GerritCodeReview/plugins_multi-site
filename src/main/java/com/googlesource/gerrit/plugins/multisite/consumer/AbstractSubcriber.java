@@ -58,6 +58,8 @@ public abstract class AbstractSubcriber {
 
   protected abstract EventTopic getTopic();
 
+  protected abstract Boolean shouldConsumeEvent(Event event);
+
   public Consumer<Event> getConsumer() {
     return this::processRecord;
   }
@@ -65,7 +67,8 @@ public abstract class AbstractSubcriber {
   private void processRecord(Event event) {
     String sourceInstanceId = event.instanceId;
 
-    if (Strings.isNullOrEmpty(sourceInstanceId) || instanceId.equals(sourceInstanceId)) {
+    if ((Strings.isNullOrEmpty(sourceInstanceId) || instanceId.equals(sourceInstanceId))
+        && !shouldConsumeEvent(event)) {
       if (Strings.isNullOrEmpty(sourceInstanceId)) {
         logger.atWarning().log(
             String.format(

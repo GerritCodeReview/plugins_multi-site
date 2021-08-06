@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
-import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.common.base.Objects;
 import com.google.gerrit.extensions.events.AccountIndexedListener;
 import com.google.gerrit.extensions.events.ChangeIndexedListener;
@@ -47,7 +46,6 @@ class IndexEventHandler
   private final DynamicSet<IndexEventForwarder> forwarders;
   private final Set<IndexTask> queuedTasks = Collections.newSetFromMap(new ConcurrentHashMap<>());
   private final ChangeCheckerImpl.Factory changeChecker;
-  private final ProjectsFilter projectsFilter;
   private final GroupChecker groupChecker;
   private final String instanceId;
 
@@ -56,13 +54,11 @@ class IndexEventHandler
       @IndexExecutor Executor executor,
       DynamicSet<IndexEventForwarder> forwarders,
       ChangeCheckerImpl.Factory changeChecker,
-      ProjectsFilter projectsFilter,
       GroupChecker groupChecker,
       @GerritInstanceId String instanceId) {
     this.forwarders = forwarders;
     this.executor = executor;
     this.changeChecker = changeChecker;
-    this.projectsFilter = projectsFilter;
     this.groupChecker = groupChecker;
     this.instanceId = instanceId;
   }
@@ -101,7 +97,7 @@ class IndexEventHandler
 
   @Override
   public void onProjectIndexed(String projectName) {
-    if (!Context.isForwardedEvent() && projectsFilter.matches(projectName)) {
+    if (!Context.isForwardedEvent()) {
       IndexProjectTask task = new IndexProjectTask(new ProjectIndexEvent(projectName, instanceId));
       if (queuedTasks.add(task)) {
         executor.execute(task);
@@ -110,7 +106,7 @@ class IndexEventHandler
   }
 
   private void executeIndexChangeTask(String projectName, int id) {
-    if (!Context.isForwardedEvent() && projectsFilter.matches(projectName)) {
+    if (!Context.isForwardedEvent()) {
       ChangeChecker checker = changeChecker.create(projectName + "~" + id);
 
       try {
