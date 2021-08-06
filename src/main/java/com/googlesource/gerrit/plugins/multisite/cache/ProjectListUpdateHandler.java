@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.cache;
 
-import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.gerrit.extensions.events.NewProjectCreatedListener;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.events.ProjectEvent;
@@ -33,18 +32,15 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
 
   private final DynamicSet<ProjectListUpdateForwarder> forwarders;
   private final Executor executor;
-  private final ProjectsFilter projectsFilter;
   private final String instanceId;
 
   @Inject
   public ProjectListUpdateHandler(
       DynamicSet<ProjectListUpdateForwarder> forwarders,
       @CacheExecutor Executor executor,
-      ProjectsFilter filter,
       @GerritInstanceId String instanceId) {
     this.forwarders = forwarders;
     this.executor = executor;
-    this.projectsFilter = filter;
     this.instanceId = instanceId;
   }
 
@@ -61,7 +57,7 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
   }
 
   private void process(ProjectEvent event, boolean delete) {
-    if (!Context.isForwardedEvent() && projectsFilter.matches(event.getProjectName())) {
+    if (!Context.isForwardedEvent()) {
       executor.execute(
           new ProjectListUpdateTask(
               new ProjectListUpdateEvent(event.getProjectName(), delete, instanceId)));

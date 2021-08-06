@@ -23,7 +23,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.extensions.events.NewProjectCreatedListener;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
@@ -46,14 +45,12 @@ public class ProjectListUpdateHandlerTest {
   private ProjectListUpdateHandler handler;
 
   @Mock private ProjectListUpdateForwarder forwarder;
-  @Mock private ProjectsFilter projectsFilter;
 
   @Before
   public void setUp() {
-    when(projectsFilter.matches(any(String.class))).thenReturn(true);
     handler =
         new ProjectListUpdateHandler(
-            asDynamicSet(forwarder), MoreExecutors.directExecutor(), projectsFilter, INSTANCE_ID);
+            asDynamicSet(forwarder), MoreExecutors.directExecutor(), INSTANCE_ID);
   }
 
   private DynamicSet<ProjectListUpdateForwarder> asDynamicSet(
@@ -98,7 +95,6 @@ public class ProjectListUpdateHandlerTest {
 
   @Test
   public void shouldNotForwardIfFilteredOutByProjectName() throws Exception {
-    when(projectsFilter.matches(any(String.class))).thenReturn(false);
     String projectName = "projectToAdd";
     NewProjectCreatedListener.Event event = mock(NewProjectCreatedListener.Event.class);
     when(event.getProjectName()).thenReturn(projectName);
