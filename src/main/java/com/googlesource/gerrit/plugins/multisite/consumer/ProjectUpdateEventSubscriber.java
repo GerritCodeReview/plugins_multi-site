@@ -14,17 +14,22 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ProjectListUpdateRouter;
 
 @Singleton
 public class ProjectUpdateEventSubscriber extends AbstractSubcriber {
+  private final ProjectsFilter projectsFilter;
+
   @Inject
   public ProjectUpdateEventSubscriber(
       ProjectListUpdateRouter eventRouter,
@@ -32,12 +37,19 @@ public class ProjectUpdateEventSubscriber extends AbstractSubcriber {
       @GerritInstanceId String instanceId,
       MessageLogger msgLog,
       SubscriberMetrics subscriberMetrics,
-      Configuration cfg) {
+      Configuration cfg,
+      ProjectsFilter projectsFilter) {
     super(eventRouter, droppedEventListeners, instanceId, msgLog, subscriberMetrics, cfg);
+    this.projectsFilter = projectsFilter;
   }
 
   @Override
   protected EventTopic getTopic() {
     return EventTopic.PROJECT_LIST_TOPIC;
+  }
+
+  @Override
+  protected Boolean shouldConsumeEvent(Event event) {
+    return projectsFilter.matches(((ProjectListUpdateEvent) event).projectName);
   }
 }
