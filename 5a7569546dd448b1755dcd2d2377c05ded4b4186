@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcb63180_509190ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-06T15:32:28Z",
+      "side": 1,
+      "message": "There is no tests for AbstractSubscriber I\u0027m not sure that it\u0027s worth to add to test functionality which is already tested in global-refdb library",
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
