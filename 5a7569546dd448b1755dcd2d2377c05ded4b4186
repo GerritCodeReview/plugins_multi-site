@@ -53,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "797bdcf7_1a84b9d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-09T14:57:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0103c04_12ad198b",
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f622a8a6_1cbf93f5",
@@ -78,6 +96,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89e297e6_6e3e9347",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-09T14:57:45Z",
+      "side": 1,
+      "message": "Hmm I will make this change but I was afraid that if we do not want to consume event because it\u0027s a local project we should not trace it as well to not keep any information about projects we should not care about",
+      "parentUuid": "f622a8a6_1cbf93f5",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 9
+      },
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1507b948_584b2765",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/BatchIndexEventSubscriber.java",
         "patchSetId": 1
@@ -89,6 +131,30 @@
       "writtenOn": "2021-08-09T10:33:04Z",
       "side": 1,
       "message": "nit: redundant empty line",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 0
+      },
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1274cc7_fba9be71",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/BatchIndexEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-09T14:57:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1507b948_584b2765",
       "range": {
         "startLine": 17,
         "startChar": 0,
@@ -124,6 +190,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9e8521b0_c0d54b7c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/CacheEvictionEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-09T14:57:45Z",
+      "side": 1,
+      "message": "We can try to do that as a follow up, we didn\u0027t have this functionality on produce side either because it\u0027s not easy to get project name from the cache key",
+      "parentUuid": "f3a10615_53f6ab81",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 3
+      },
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4cab7fae_59e89bdb",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/event/EventHandlerTest.java",
         "patchSetId": 1
@@ -135,6 +225,24 @@
       "writtenOn": "2021-08-09T10:33:04Z",
       "side": 1,
       "message": "nit: redundant new line",
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ed6b128_da344c2c",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/event/EventHandlerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-09T14:57:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4cab7fae_59e89bdb",
       "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
