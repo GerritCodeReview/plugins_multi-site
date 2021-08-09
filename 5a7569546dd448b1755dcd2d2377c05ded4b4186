@@ -16,6 +16,127 @@
       "message": "There is no tests for AbstractSubscriber I\u0027m not sure that it\u0027s worth to add to test functionality which is already tested in global-refdb library",
       "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0103c04_12ad198b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T10:33:04Z",
+      "side": 1,
+      "message": "In the global-refdb we test that the projectFilter functionality works.\nI think here we should test that it is used (and not forgotten) and that it is used correctly.",
+      "parentUuid": "fcb63180_509190ce",
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9eef80b3_a8fbd151",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T10:33:04Z",
+      "side": 1,
+      "message": "config.md [1] should also be updated.\n\nCurrently it says:\n\n```\nprojects.pattern : Specifies which projects events should be send via broker.\n```\n\n[1]https://gerrit.googlesource.com/plugins/multi-site/+/5a7569546dd448b1755dcd2d2377c05ded4b4186/src/main/resources/Documentation/config.md",
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f622a8a6_1cbf93f5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T10:33:04Z",
+      "side": 1,
+      "message": "If we are not consuming these events, I think they should be sent to the `droppedEventListener`.\n\nThis could also be used to test the correct behaviour in the tests.",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 9
+      },
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1507b948_584b2765",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/BatchIndexEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T10:33:04Z",
+      "side": 1,
+      "message": "nit: redundant empty line",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 0
+      },
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3a10615_53f6ab81",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/CacheEvictionEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T10:33:04Z",
+      "side": 1,
+      "message": "Should we consume cache eviction events of projects that we are not interested in?\nIf a project is local, then there is no need to process its cache evictions globally.\n\nIf so, is this something we should address in a follow up change?",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 3
+      },
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cab7fae_59e89bdb",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/event/EventHandlerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T10:33:04Z",
+      "side": 1,
+      "message": "nit: redundant new line",
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

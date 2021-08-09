@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "425b4c3e_425a7724",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/event/EventHandlerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T10:33:04Z",
+      "side": 0,
+      "message": "I personally believe it would be useful to replace this test with its receiving side equivalent.\n\nshouldNotConsumeNonGlobalProject() or something like it.",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 3
+      },
+      "revId": "89e49734ad39c7c3f0ea1154d56d29dd7c49add1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d538f67e_172aaf26",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/index/IndexEventHandlerTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T10:33:04Z",
+      "side": 0,
+      "message": "Would it be possible to rewrite these tests so that we are testing the only global projects are consumed?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 53
+      },
+      "revId": "89e49734ad39c7c3f0ea1154d56d29dd7c49add1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc20861c_be17ac89",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-09T10:33:04Z",
+      "side": 0,
+      "message": "As above, I think it would be beneficial to replace these tests with their equivalent on the consuming side.\n\nI don\u0027t think we have anything otherwise, that would test the Project matching functionality do we?",
+      "range": {
+        "startLine": 302,
+        "startChar": 0,
+        "endLine": 302,
+        "endChar": 86
+      },
+      "revId": "89e49734ad39c7c3f0ea1154d56d29dd7c49add1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
