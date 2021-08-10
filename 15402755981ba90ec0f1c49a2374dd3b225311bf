@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa8a4e6a_f8c83462",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-10T10:12:30Z",
+      "side": 1,
+      "message": "There is an overlap between shouldConsumeEvent and the additional checks we do before that (for example both of them are testing instanceId.equals(sourceInstanceId).\n\nI think it would be cleaner and more DRY to encapsulate all in the `shouldConsumeEvent` method.",
+      "range": {
+        "startLine": 70,
+        "startChar": 3,
+        "endLine": 71,
+        "endChar": 40
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e486ed0_189d3136",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/BatchIndexEventSubscriberTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-10T10:12:30Z",
+      "side": 1,
+      "message": "This gives a warning, consider adding:\n@SuppressWarnings(\"unchecked\")",
+      "range": {
+        "startLine": 48,
+        "startChar": 1,
+        "endLine": 48,
+        "endChar": 47
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cb3ab1d_0a4a8124",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/IndexEventSubscriberTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-10T10:12:30Z",
+      "side": 1,
+      "message": "This gives a warning, consider adding:\n@SuppressWarnings(\"unchecked\")",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 47
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40f7dd35_de348b58",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/ProjectUpdateEventSubscriberTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-10T10:12:30Z",
+      "side": 1,
+      "message": "nit: no need for this to be a static field, it is used only at L37",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 46
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ed81c53_ca894171",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/ProjectUpdateEventSubscriberTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-10T10:12:30Z",
+      "side": 1,
+      "message": "@SuppressWarnings(\"rawtypes\")",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 11
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75ace5ac_2b741828",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/ProjectUpdateEventSubscriberTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-10T10:12:30Z",
+      "side": 1,
+      "message": "Should we also test project creation, where remove is false?\nI believe that\u0027s handled as well right?",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 3
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77edbc84_0ac0d3c9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/StreamEventSubscriberTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-10T10:12:30Z",
+      "side": 1,
+      "message": "@SuppressWarnings(\"rawtypes\")",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 11
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

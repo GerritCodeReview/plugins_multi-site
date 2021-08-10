@@ -120,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1ed28059_353a597e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-10T10:12:30Z",
+      "side": 1,
+      "message": "\u003e Hmm I will make this change but I was afraid that if we do not want to consume event because it\u0027s a local project we should not trace it as well\n\nWe do not \"trace\" the event, we just notify registered listeners to do whatever they want with it. it might be tracing or something else entirely.\n\n\u003e to not keep any information about projects we should not care about\n\nI thought that was the purpose of the dropped event listener, to track events that we do not care about.\n\n\nIt\u0027s a good point though: does anyone else have any opinion on this?\n@Ponch, @Luca?",
+      "parentUuid": "89e297e6_6e3e9347",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 9
+      },
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1507b948_584b2765",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/BatchIndexEventSubscriber.java",
         "patchSetId": 1
@@ -202,6 +226,30 @@
       "side": 1,
       "message": "We can try to do that as a follow up, we didn\u0027t have this functionality on produce side either because it\u0027s not easy to get project name from the cache key",
       "parentUuid": "f3a10615_53f6ab81",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 3
+      },
+      "revId": "5a7569546dd448b1755dcd2d2377c05ded4b4186",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4785aa9f_f5d09783",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/CacheEvictionEventSubscriber.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-10T10:12:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9e8521b0_c0d54b7c",
       "range": {
         "startLine": 46,
         "startChar": 0,
