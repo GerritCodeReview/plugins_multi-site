@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "636b6373_4178c583",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-10T10:52:54Z",
+      "side": 1,
+      "message": "Not sure that I understand. `shouldConsumeEvent` is an abstract method so every subscriber implements it\u0027s own logic about the events filtering. If I would have to move `Strings.isNullOrEmpty(sourceInstanceId) || instanceId.equals(sourceInstanceId)` to `shouldConsumeEvent` I would have to implement it in every *Subscriber",
+      "parentUuid": "fa8a4e6a_f8c83462",
+      "range": {
+        "startLine": 70,
+        "startChar": 3,
+        "endLine": 71,
+        "endChar": 40
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2e486ed0_189d3136",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/BatchIndexEventSubscriberTest.java",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2021-08-10T10:12:30Z",
       "side": 1,
       "message": "This gives a warning, consider adding:\n@SuppressWarnings(\"unchecked\")",
+      "range": {
+        "startLine": 48,
+        "startChar": 1,
+        "endLine": 48,
+        "endChar": 47
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6547cc2f_f6d4ad37",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/BatchIndexEventSubscriberTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-10T10:52:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e486ed0_189d3136",
       "range": {
         "startLine": 48,
         "startChar": 1,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07329295_1c18dcf9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/IndexEventSubscriberTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-10T10:52:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9cb3ab1d_0a4a8124",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 47
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40f7dd35_de348b58",
@@ -93,6 +165,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2ac2015_f72f5600",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/ProjectUpdateEventSubscriberTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-10T10:52:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40f7dd35_de348b58",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 46
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ed81c53_ca894171",
@@ -106,6 +202,30 @@
       "writtenOn": "2021-08-10T10:12:30Z",
       "side": 1,
       "message": "@SuppressWarnings(\"rawtypes\")",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 11
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "558e445a_e970bc0d",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/ProjectUpdateEventSubscriberTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-10T10:52:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ed81c53_ca894171",
       "range": {
         "startLine": 30,
         "startChar": 0,
@@ -141,6 +261,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "af6c5ce5_5d7fba97",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/ProjectUpdateEventSubscriberTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-10T10:52:54Z",
+      "side": 1,
+      "message": "Yes, code is checking the event type and uses only plugin name so remove param is unrelated",
+      "parentUuid": "75ace5ac_2b741828",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 3
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "77edbc84_0ac0d3c9",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/StreamEventSubscriberTest.java",
         "patchSetId": 4
@@ -152,6 +296,30 @@
       "writtenOn": "2021-08-10T10:12:30Z",
       "side": 1,
       "message": "@SuppressWarnings(\"rawtypes\")",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 11
+      },
+      "revId": "15402755981ba90ec0f1c49a2374dd3b225311bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93554834_8de10c35",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/StreamEventSubscriberTest.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-10T10:52:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77edbc84_0ac0d3c9",
       "range": {
         "startLine": 33,
         "startChar": 0,
