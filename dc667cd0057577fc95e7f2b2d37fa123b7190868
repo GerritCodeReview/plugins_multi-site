@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9b6bec4_ba72aca6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-10T12:32:34Z",
+      "side": 1,
+      "message": "I think this logging might be wrong now.\n\nBefore this change we could end up in this else only when the message was produced by our instance, so the logging made sense.\n\nWith the introduction of shouldConsumeEvent() however, we can now end-up here for *any* reason, depending on the implementation of shouldConsumeEvent() (i.e. event type is not interesting, or project is not global).",
+      "range": {
+        "startLine": 77,
+        "startChar": 7,
+        "endLine": 79,
+        "endChar": 98
+      },
+      "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
