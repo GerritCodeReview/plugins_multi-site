@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "38274228_e86f7427",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-08-10T19:01:44Z",
+      "side": 1,
+      "message": "what about moving this bit inside the `shouldConsumeEvent`method? I think it would make the whole if statement more readable.",
+      "range": {
+        "startLine": 70,
+        "startChar": 9,
+        "endLine": 70,
+        "endChar": 87
+      },
+      "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f9b6bec4_ba72aca6",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
         "patchSetId": 5
@@ -20,6 +43,92 @@
         "endLine": 79,
         "endChar": 98
       },
+      "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c81ede23_cd3720cb",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/BatchIndexEventSubscriberTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-08-10T19:01:44Z",
+      "side": 1,
+      "message": "\"Other\" as in \"Non project and non change\"? If so shall we make it explicit in the test name?",
+      "range": {
+        "startLine": 42,
+        "startChar": 27,
+        "endLine": 42,
+        "endChar": 32
+      },
+      "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4adf6864_a15449ab",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/BatchIndexEventSubscriberTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-08-10T19:01:44Z",
+      "side": 1,
+      "message": "should we also add the dual test of this one?",
+      "range": {
+        "startLine": 42,
+        "startChar": 2,
+        "endLine": 42,
+        "endChar": 53
+      },
+      "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4e0485a_adc2e18b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/IndexEventSubscriberTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-08-10T19:01:44Z",
+      "side": 1,
+      "message": "Same comments as in `BatchIndexEventSubscriberTest.java`",
+      "range": {
+        "startLine": 42,
+        "startChar": 2,
+        "endLine": 42,
+        "endChar": 53
+      },
+      "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "694f352b_76561c8e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/ProjectUpdateEventSubscriberTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-08-10T19:01:44Z",
+      "side": 1,
+      "message": "I think I am missing something, sorry 😐 Why there are no tests in this file?",
       "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
