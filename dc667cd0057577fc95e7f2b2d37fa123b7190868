@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "54b266fe_2993bb32",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-11T06:25:13Z",
+      "side": 1,
+      "message": "@Tony already put this comment, so the issue:  `shouldConsumeEvent` is an abstract method so every subscriber implements it\u0027s own logic about the events filtering. If I would have to move `Strings.isNullOrEmpty(sourceInstanceId) || instanceId.equals(sourceInstanceId)` to `shouldConsumeEvent` I would have to implement it in every *Subscriber",
+      "parentUuid": "38274228_e86f7427",
+      "range": {
+        "startLine": 70,
+        "startChar": 9,
+        "endLine": 70,
+        "endChar": 87
+      },
+      "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f9b6bec4_ba72aca6",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2021-08-10T12:32:34Z",
       "side": 1,
       "message": "I think this logging might be wrong now.\n\nBefore this change we could end up in this else only when the message was produced by our instance, so the logging made sense.\n\nWith the introduction of shouldConsumeEvent() however, we can now end-up here for *any* reason, depending on the implementation of shouldConsumeEvent() (i.e. event type is not interesting, or project is not global).",
+      "range": {
+        "startLine": 77,
+        "startChar": 7,
+        "endLine": 79,
+        "endChar": 98
+      },
+      "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82f02599_66affb19",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-11T06:25:13Z",
+      "side": 1,
+      "message": "Good catch. I fixed it plus I didn\u0027t want to add logging related to the shouldConsumeEvent() because I don\u0027t want to log messages which should be local, another thing is that I don\u0027t know the reason, for now is the local/global project filtering but in the future extra logic can be added to `shouldConsumeEvent`",
+      "parentUuid": "f9b6bec4_ba72aca6",
       "range": {
         "startLine": 77,
         "startChar": 7,
@@ -95,6 +143,54 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "79bc525a_f6a06274",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/BatchIndexEventSubscriberTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-11T06:25:13Z",
+      "side": 1,
+      "message": "What is the extra test you want to add. We are testing that if it\u0027s non project and non change we always consume it",
+      "parentUuid": "4adf6864_a15449ab",
+      "range": {
+        "startLine": 42,
+        "startChar": 2,
+        "endLine": 42,
+        "endChar": 53
+      },
+      "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e787b78_e322d15e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/BatchIndexEventSubscriberTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-11T06:25:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c81ede23_cd3720cb",
+      "range": {
+        "startLine": 42,
+        "startChar": 27,
+        "endLine": 42,
+        "endChar": 32
+      },
+      "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b4e0485a_adc2e18b",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/IndexEventSubscriberTest.java",
         "patchSetId": 5
@@ -118,6 +214,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5f90325b_a7683724",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/IndexEventSubscriberTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-11T06:25:13Z",
+      "side": 1,
+      "message": "same as above",
+      "parentUuid": "b4e0485a_adc2e18b",
+      "range": {
+        "startLine": 42,
+        "startChar": 2,
+        "endLine": 42,
+        "endChar": 53
+      },
+      "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "694f352b_76561c8e",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/ProjectUpdateEventSubscriberTest.java",
         "patchSetId": 5
@@ -129,6 +249,24 @@
       "writtenOn": "2021-08-10T19:01:44Z",
       "side": 1,
       "message": "I think I am missing something, sorry 😐 Why there are no tests in this file?",
+      "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb3b3627_b283861b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/ProjectUpdateEventSubscriberTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-11T06:25:13Z",
+      "side": 1,
+      "message": "Common tests for all subscribers are in AbstractSubscriberTestBase",
+      "parentUuid": "694f352b_76561c8e",
       "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
