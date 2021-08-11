@@ -95,6 +95,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdb93301_2d177c1e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-11T08:24:41Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "82f02599_66affb19",
+      "range": {
+        "startLine": 77,
+        "startChar": 7,
+        "endLine": 79,
+        "endChar": 98
+      },
+      "revId": "dc667cd0057577fc95e7f2b2d37fa123b7190868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c81ede23_cd3720cb",
