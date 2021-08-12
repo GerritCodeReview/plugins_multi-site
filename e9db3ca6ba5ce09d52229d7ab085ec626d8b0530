@@ -82,6 +82,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfddcca7_09bf3039",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-12T10:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3449e44c_a1e79956",
+      "range": {
+        "startLine": 5,
+        "startChar": 13,
+        "endLine": 5,
+        "endChar": 37
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27b0d59f_2c3e6dc1",
@@ -200,6 +224,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08c73332_78a9b3a8",
+        "filename": "e2e-tests/docker-compose-kafka-manual.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-12T10:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c902106_911e3a61",
+      "range": {
+        "startLine": 5,
+        "startChar": 9,
+        "endLine": 5,
+        "endChar": 13
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "226f566c_b84183c1",
+        "filename": "e2e-tests/docker-compose-kafka-manual.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-12T10:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c902106_911e3a61",
+      "range": {
+        "startLine": 5,
+        "startChar": 9,
+        "endLine": 5,
+        "endChar": 13
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0fde26a0_5fe522e4",
@@ -213,6 +285,30 @@
       "writtenOn": "2021-07-31T02:24:53Z",
       "side": 1,
       "message": "We cannot guarantee that port to be available.",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 19
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9eacc0e5_dc911d16",
+        "filename": "e2e-tests/docker-compose-manual.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-12T10:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fde26a0_5fe522e4",
       "range": {
         "startLine": 5,
         "startChar": 0,
@@ -246,6 +342,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b818933_4a9e7aa6",
+        "filename": "e2e-tests/docker-compose-manual.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-12T10:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b5bd280_4d311aca",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 19
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb50436c_1d170786",
@@ -269,6 +389,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b6820d6_6a571cd7",
+        "filename": "e2e-tests/docker-compose-manual.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-12T10:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb50436c_1d170786",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 19
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e39b493_d806dc36",
@@ -282,6 +426,30 @@
       "writtenOn": "2021-08-03T01:05:35Z",
       "side": 1,
       "message": "Why FAKE_NFS is still there?",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 36,
+        "endChar": 20
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41a61a08_792f6b71",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-12T10:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e39b493_d806dc36",
       "range": {
         "startLine": 36,
         "startChar": 8,
@@ -416,6 +584,30 @@
       "side": 1,
       "message": "+1 I could perform different test then e.g. create project (with SSH create-project command) in `gerrit1` and check if it was properly propagated to `gerrit2` etc... but lets agree if that makes sense to continue ;)",
       "parentUuid": "0fb08e32_7578b9b7",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 44
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c290a99_127f83e4",
+        "filename": "e2e-tests/scenarios.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-12T10:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b7b5809e_3cca1300",
       "range": {
         "startLine": 43,
         "startChar": 0,

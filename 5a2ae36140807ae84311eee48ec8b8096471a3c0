@@ -826,6 +826,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d5d23f95_f9655deb",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-12T10:49:35Z",
+      "side": 1,
+      "message": "I\u0027m probably checking sth wrong for `depends_on` as I can\u0027t see the deprecation note there (see [1]). Same for `healthcheck` - I can\u0027t see deprecation note there either (see [2]).\nAgain I can work it out to check in tests for both gerrit instances to start but if we agree on that let\u0027s do it in the follow up.\n\n[1] https://docs.docker.com/compose/compose-file/compose-file-v3/#depends_on\n[2] https://docs.docker.com/compose/compose-file/compose-file-v3/#healthcheck",
+      "parentUuid": "63e0065b_9d5577dd",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1c47d8df_2e3aa34a",
         "filename": "e2e-tests/docker-compose.yaml",
         "patchSetId": 2
@@ -1146,6 +1170,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41a91b2f_e92d6ee0",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-12T10:49:35Z",
+      "side": 1,
+      "message": "See above - can\u0027t see the deprecation notice there :/",
+      "parentUuid": "b02171bd_cc072bf5",
+      "range": {
+        "startLine": 60,
+        "startChar": 20,
+        "endLine": 60,
+        "endChar": 23
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e2037dac_30c52de2",
         "filename": "e2e-tests/docker-compose.yaml",
         "patchSetId": 2
@@ -1276,6 +1324,30 @@
       "side": 1,
       "message": "Reopening the issue: I do believe this is making the project less maintainable. The all purpose of this exercise was to have something that helps us making less mistakes in the future. Duplicating the manual setup is adding one more chance to make mistakes IMHO.",
       "parentUuid": "9d29cfbd_ccf9fdaa",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "672158aa_49f8a486",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-12T10:49:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5ce8d70_19674807",
       "range": {
         "startLine": 1,
         "startChar": 0,
