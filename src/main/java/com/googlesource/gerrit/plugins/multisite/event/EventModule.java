@@ -24,7 +24,6 @@ import com.google.inject.name.Names;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
-import java.util.concurrent.Executor;
 
 public class EventModule extends LifecycleModule {
   private final Configuration configuration;
@@ -36,9 +35,6 @@ public class EventModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-    bind(Executor.class).annotatedWith(EventExecutor.class).toProvider(EventExecutorProvider.class);
-    listener().to(EventExecutorProvider.class);
-    DynamicSet.bind(binder(), EventListener.class).to(EventHandler.class);
     DynamicSet.bind(binder(), EventListener.class).to(ProjectVersionRefUpdate.class);
     bind(new TypeLiteral<String>() {})
         .annotatedWith(Names.named(StreamEventPublisher.STREAM_EVENTS_TOPIC))

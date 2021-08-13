@@ -45,7 +45,7 @@ public class StreamEventSubscriber extends AbstractSubcriber {
 
   @Override
   protected EventTopic getTopic() {
-    return EventTopic.STREAM_EVENT_TOPIC;
+    return EventTopic.GERRIT_TOPIC;
   }
 
   @Override
