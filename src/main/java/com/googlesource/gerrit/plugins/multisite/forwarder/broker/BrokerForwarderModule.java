@@ -19,7 +19,6 @@ import com.google.gerrit.lifecycle.LifecycleModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
-import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 
 public class BrokerForwarderModule extends LifecycleModule {
   @Override
@@ -28,6 +27,5 @@ public class BrokerForwarderModule extends LifecycleModule {
     DynamicSet.bind(binder(), CacheEvictionForwarder.class).to(BrokerCacheEvictionForwarder.class);
     DynamicSet.bind(binder(), ProjectListUpdateForwarder.class)
         .to(BrokerProjectListUpdateForwarder.class);
-    DynamicSet.bind(binder(), StreamEventForwarder.class).to(BrokerStreamEventForwarder.class);
   }
 }
