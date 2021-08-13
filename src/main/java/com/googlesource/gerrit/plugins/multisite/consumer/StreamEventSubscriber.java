@@ -18,7 +18,7 @@ import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
-import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.google.gerrit.server.events.ProjectEvent;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -50,6 +50,9 @@ public class StreamEventSubscriber extends AbstractSubcriber {
 
   @Override
   protected Boolean shouldConsumeEvent(Event event) {
-    return projectsFilter.matches(((RefUpdatedEvent) event).getProjectNameKey().get());
+    if (event instanceof ProjectEvent) {
+      return projectsFilter.matches(((ProjectEvent) event).getProjectNameKey().get());
+    }
+    return true;
   }
 }
