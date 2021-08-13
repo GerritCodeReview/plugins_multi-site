@@ -58,12 +58,6 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
 :   Name of the topic to use for publishing indexing events
     Defaults to GERRIT.EVENT.INDEX
 
-```broker.streamEventTopic```
-:   Name of the topic to use for publishing stream events. Note that only
-    project events are streamed and only for global projects (see
-    `projects.pattern`).
-    Defaults to GERRIT.EVENT.STREAM
-
 `broker.gerritEventsTopic`
 :   Name of the topic to use for publishing all stream events.
     Default: gerrit
