@@ -68,7 +68,7 @@ public class BatchIndexEventSubscriberTest extends AbstractSubscriberTestBase {
     return new BatchIndexEventSubscriber(
         (IndexEventRouter) eventRouter,
         asDynamicSet(droppedEventListeners),
-        INSTANCE_ID,
+        NODE_INSTANCE_ID,
         msgLog,
         subscriberMetrics,
         cfg,

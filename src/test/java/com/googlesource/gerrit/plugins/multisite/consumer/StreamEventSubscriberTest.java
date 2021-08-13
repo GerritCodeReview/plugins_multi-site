@@ -48,7 +48,7 @@ public class StreamEventSubscriberTest extends AbstractSubscriberTestBase {
     return new StreamEventSubscriber(
         (StreamEventRouter) eventRouter,
         asDynamicSet(droppedEventListeners),
-        INSTANCE_ID,
+        NODE_INSTANCE_ID,
         msgLog,
         subscriberMetrics,
         cfg,

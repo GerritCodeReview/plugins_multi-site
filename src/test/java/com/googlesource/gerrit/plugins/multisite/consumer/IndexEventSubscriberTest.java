@@ -68,7 +68,7 @@ public class IndexEventSubscriberTest extends AbstractSubscriberTestBase {
     return new IndexEventSubscriber(
         (IndexEventRouter) eventRouter,
         asDynamicSet(droppedEventListeners),
-        INSTANCE_ID,
+        NODE_INSTANCE_ID,
         msgLog,
         subscriberMetrics,
         cfg,

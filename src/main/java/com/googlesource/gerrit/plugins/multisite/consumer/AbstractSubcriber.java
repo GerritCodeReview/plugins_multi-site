@@ -68,7 +68,7 @@ public abstract class AbstractSubcriber {
     String sourceInstanceId = event.instanceId;
 
     if ((Strings.isNullOrEmpty(sourceInstanceId) || instanceId.equals(sourceInstanceId))
-        && !shouldConsumeEvent(event)) {
+        || !shouldConsumeEvent(event)) {
       if (Strings.isNullOrEmpty(sourceInstanceId)) {
         logger.atWarning().log(
             String.format(

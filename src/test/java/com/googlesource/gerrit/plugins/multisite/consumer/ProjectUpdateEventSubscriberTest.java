@@ -41,7 +41,7 @@ public class ProjectUpdateEventSubscriberTest extends AbstractSubscriberTestBase
     return new ProjectUpdateEventSubscriber(
         (ProjectListUpdateRouter) eventRouter,
         asDynamicSet(droppedEventListeners),
-        INSTANCE_ID,
+        NODE_INSTANCE_ID,
         msgLog,
         subscriberMetrics,
         cfg,

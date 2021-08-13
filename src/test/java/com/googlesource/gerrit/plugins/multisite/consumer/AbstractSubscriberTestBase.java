@@ -28,7 +28,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 @Ignore
 public abstract class AbstractSubscriberTestBase {
-  protected static final String INSTANCE_ID = "node-instance-id";
+  protected static final String NODE_INSTANCE_ID = "node-instance-id";
+  protected static final String INSTANCE_ID = "other-node-instance-id";
   protected static final String PROJECT_NAME = "project-name";
 
   @Mock protected DroppedEventListener droppedEventListeners;
@@ -68,6 +69,23 @@ public abstract class AbstractSubscriberTestBase {
       when(projectsFilter.matches(any(String.class))).thenReturn(false);
       objectUnderTest.getConsumer().accept(event);
       verifySkipped(event);
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  @Test
+  public void shouldSkipLocalEvents()
+      throws IOException, PermissionBackendException, CacheNotFoundException {
+    for (Event event : events()) {
+      event.instanceId = NODE_INSTANCE_ID;
+      when(projectsFilter.matches(any(String.class))).thenReturn(true);
+
+      objectUnderTest.getConsumer().accept(event);
+
+      verify(projectsFilter, never()).matches(PROJECT_NAME);
+      verify(eventRouter, never()).route(event);
+      verify(droppedEventListeners, times(1)).onEventDropped(event);
+      reset(projectsFilter, eventRouter, droppedEventListeners);
     }
   }
 
