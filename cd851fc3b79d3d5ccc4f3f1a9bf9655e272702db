@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bfb22c8_f362962d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventTopic.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-16T16:47:22Z",
+      "side": 0,
+      "message": "Shouldn\u0027t we keep this as a name?\nI think stream_event_topic is more accurate thatn GERRIT_TOPIC",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 59
+      },
+      "revId": "cd851fc3b79d3d5ccc4f3f1a9bf9655e272702db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4a9855f_87cb403b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/events/EventTopic.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-16T16:47:22Z",
+      "side": 0,
+      "message": "The streamEventsTopic needs to be removed from the configuration",
+      "range": {
+        "startLine": 55,
+        "startChar": 2,
+        "endLine": 55,
+        "endChar": 59
+      },
+      "revId": "cd851fc3b79d3d5ccc4f3f1a9bf9655e272702db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
