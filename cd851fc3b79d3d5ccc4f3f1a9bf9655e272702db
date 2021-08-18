@@ -140,6 +140,30 @@
       },
       "revId": "cd851fc3b79d3d5ccc4f3f1a9bf9655e272702db",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eadedd0e_50e6358a",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-18T10:32:10Z",
+      "side": 0,
+      "message": "This change is on master, do we need to keep back-compatibility?\nEven removing one topic would not be back-compatible",
+      "parentUuid": "e0d42699_0895a8e6",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 19
+      },
+      "revId": "cd851fc3b79d3d5ccc4f3f1a9bf9655e272702db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
