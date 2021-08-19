@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c8d2fbd_c25c59f7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-19T15:12:19Z",
+      "side": 1,
+      "message": "Removing the reference to Issue #14509 so that there is no confusion.",
+      "parentUuid": "17544b31_fa8597a0",
+      "range": {
+        "startLine": 9,
+        "startChar": 40,
+        "endLine": 9,
+        "endChar": 66
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46444073_af6e26e8",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-07-20T23:24:03Z",
       "side": 1,
       "message": "We already have a Gatling-based E2E tests: can you explain the value added compared to the tests already written by Ericsson?\n\nWe also had a docker-compose environment and it was removed with Change-Id: I2f3ad4a. What\u0027s the purpose of resuming it?",
+      "range": {
+        "startLine": 10,
+        "startChar": 7,
+        "endLine": 10,
+        "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e54de365_3c64ffc5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-19T15:12:19Z",
+      "side": 1,
+      "message": "Idea is to have all the moving targets (set of plugins and related configuration) tested each time when `multi-site` plugin gets changed.",
+      "parentUuid": "46444073_af6e26e8",
       "range": {
         "startLine": 10,
         "startChar": 7,
@@ -131,6 +179,30 @@
       "writtenOn": "2021-07-20T23:24:03Z",
       "side": 1,
       "message": "We already have the docker-based environment for manual verification. What is this supposed to add? Can you explain that in the commit message?",
+      "range": {
+        "startLine": 14,
+        "startChar": 28,
+        "endLine": 14,
+        "endChar": 47
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db6e9fbe_7f8255c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-19T15:12:19Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "27a26dd9_37931795",
       "range": {
         "startLine": 14,
         "startChar": 28,
@@ -315,6 +387,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e056a345_df682dfb",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-19T15:12:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0dd722fa_0d8b42b3",
+      "range": {
+        "startLine": 4,
+        "startChar": 5,
+        "endLine": 4,
+        "endChar": 11
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5220efac_672b1a5c",
@@ -328,6 +424,30 @@
       "writtenOn": "2021-07-20T13:43:45Z",
       "side": 1,
       "message": "This is actually needed. I am not saying in this change, but we need to keep it in mind when laying down the bases since the final purpose is having an easy way of doing integration tests with the different components, hence different brokers.\n\nJust to give a bit more of context, this ticket, meant to be set of tickets, was created after some breakage that were unnoticed while changing the broker API. We ended up having multi-site working with only a subset of brokers for a given Gerrit version.",
+      "range": {
+        "startLine": 8,
+        "startChar": 65,
+        "endLine": 9,
+        "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fe476b3_58c4f740",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-19T15:12:19Z",
+      "side": 1,
+      "message": "Let\u0027s continue with the remaining brokers once this change gets accepted. WDYT?",
+      "parentUuid": "5220efac_672b1a5c",
       "range": {
         "startLine": 8,
         "startChar": 65,
@@ -1467,6 +1587,30 @@
       "side": 1,
       "message": "I guess this can be answered once I try to integrate it with bazel ;) but that obviously can only happen when you guys find any value in it :D",
       "parentUuid": "9f8d1a3a_fcd9a48f",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 93
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd39c683_b5537694",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-19T15:12:19Z",
+      "side": 1,
+      "message": "Resolved by using `sh_test` bazel target and adding jar file as dependency",
+      "parentUuid": "187bde2f_e66b9e37",
       "range": {
         "startLine": 23,
         "startChar": 0,

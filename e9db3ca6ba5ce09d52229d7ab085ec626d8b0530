@@ -129,6 +129,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7284a8f_2233342a",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-19T15:12:19Z",
+      "side": 1,
+      "message": "removed",
+      "parentUuid": "27b0d59f_2c3e6dc1",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 26
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7b8e925_203b0559",
@@ -483,6 +507,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdaa6207_04bd44ce",
+        "filename": "e2e-tests/docker-tester.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-19T15:12:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac0e0b92_038141a2",
+      "range": {
+        "startLine": 4,
+        "startChar": 4,
+        "endLine": 4,
+        "endChar": 50
+      },
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ac873f3_d21ecaeb",
@@ -543,6 +591,24 @@
       "writtenOn": "2021-07-30T21:31:56Z",
       "side": 1,
       "message": "this is the vey simple scenario that is bash based 😊 to give you an idea on how the tests could be performed and what is needed to have it up and running - don\u0027t judge the potential of the solution cuz of that ;)",
+      "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b67b290_113d02cd",
+        "filename": "e2e-tests/scenarios.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-19T15:12:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "235ce0ee_95c8e718",
       "revId": "e9db3ca6ba5ce09d52229d7ab085ec626d8b0530",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
