@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "366ad47a_562fd374",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2021-08-19T06:47:15Z",
+      "side": 1,
+      "message": "It seems that WIP doesn\u0027t trigger build :/",
+      "revId": "2454c5cc3e150097035bd2429fbfd7917edc496c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
