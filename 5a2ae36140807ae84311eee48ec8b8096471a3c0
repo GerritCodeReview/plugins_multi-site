@@ -458,6 +458,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8770d2dc_628bbfe0",
+        "filename": "e2e-tests/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-21T00:54:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "2fe476b3_58c4f740",
+      "range": {
+        "startLine": 8,
+        "startChar": 65,
+        "endLine": 9,
+        "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4385206a_cab8a2e2",
@@ -968,6 +992,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c58433be_0c38440e",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-21T00:54:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d5d23f95_f9655deb",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 16
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c47d8df_2e3aa34a",
@@ -1302,6 +1350,30 @@
       "side": 1,
       "message": "See above - can\u0027t see the deprecation notice there :/",
       "parentUuid": "b02171bd_cc072bf5",
+      "range": {
+        "startLine": 60,
+        "startChar": 20,
+        "endLine": 60,
+        "endChar": 23
+      },
+      "revId": "5a2ae36140807ae84311eee48ec8b8096471a3c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6554e375_0dfeea6e",
+        "filename": "e2e-tests/docker-compose.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-08-21T00:54:38Z",
+      "side": 1,
+      "message": "Resolving this for now, I trust the successful CI on this.",
+      "parentUuid": "41a91b2f_e92d6ee0",
       "range": {
         "startLine": 60,
         "startChar": 20,
