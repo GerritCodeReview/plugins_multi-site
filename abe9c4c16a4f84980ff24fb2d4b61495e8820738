@@ -16,6 +16,24 @@
       "message": "Let\u0027s say admins have this configuration in 3.4:\n\nstreamEventTopic: this contains only events for global projects \n so we can name it \"filtered_events_topic\"\n \ngerritEventsTopic: this contains all events, so we can name it \"all_events_topic\"\n\nI am trying to understand how this will cope with upgrades.\n\n3.4 publisher - 3.5 receiver:\nA node on 3.4 will stream to both topics.\nA node on 3.5 however will receive only events on filtered_events_topic.\n\nI guess this it not a regression, since it is already the case right?\n\n3.5 publisher - 3.5 receiver:\nA node on 3.5 will stream all events, *only* to \u0027all_events_topic\u0027\nA node on 3.4 will not subscribe to the \u0027filtered_events_topic\u0027\n\nDoesn\u0027t this mean that now local projects will be consumed by 3.4 even thought they are not global?\n\nIn other words:\nWhen 3.5 streams everything, in the assumption that the other node will filter client side, this will not happen, if the other node is on 3.4.\n\nWDYT?",
       "revId": "abe9c4c16a4f84980ff24fb2d4b61495e8820738",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2af0ae64_0f42d695",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-25T07:48:29Z",
+      "side": 1,
+      "message": "\u003e Let\u0027s say admins have this configuration in 3.4:\n\u003e \n\u003e streamEventTopic: this contains only events for global projects \n\u003e  so we can name it \"filtered_events_topic\"\n\u003e  \n\u003e gerritEventsTopic: this contains all events, so we can name it \"all_events_topic\"\n\u003e \n\u003e I am trying to understand how this will cope with upgrades.\n\u003e \n\u003e 3.4 publisher - 3.5 receiver:\n\u003e A node on 3.4 will stream to both topics.\n\u003e A node on 3.5 however will receive only events on filtered_events_topic.\n\u003e \n\u003e I guess this it not a regression, since it is already the case right?\n\u003e \n\u003e 3.5 publisher - 3.5 receiver:\n\u003e A node on 3.5 will stream all events, *only* to \u0027all_events_topic\u0027\n\u003e A node on 3.4 will not subscribe to the \u0027filtered_events_topic\u0027\n\nI meant\n3.5 publisher - 3.4 receiver:\n\n\u003e \n\u003e Doesn\u0027t this mean that now local projects will be consumed by 3.4 even thought they are not global?\n\u003e \n\u003e In other words:\n\u003e When 3.5 streams everything, in the assumption that the other node will filter client side, this will not happen, if the other node is on 3.4.\n\u003e \n\u003e WDYT?",
+      "parentUuid": "f2034a3c_68f6b848",
+      "revId": "abe9c4c16a4f84980ff24fb2d4b61495e8820738",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
