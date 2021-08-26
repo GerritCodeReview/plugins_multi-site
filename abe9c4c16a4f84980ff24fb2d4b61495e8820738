@@ -34,6 +34,24 @@
       "parentUuid": "f2034a3c_68f6b848",
       "revId": "abe9c4c16a4f84980ff24fb2d4b61495e8820738",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fd73123_fb9db9fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-26T15:08:10Z",
+      "side": 1,
+      "message": "That\u0027s a valid point! I\u0027ve added message filtering on receiver site to stable-3.4[1] This will allow rolling upgrade.\n\n[1]https://gerrit-review.googlesource.com/c/plugins/multi-site/+/316488",
+      "parentUuid": "2af0ae64_0f42d695",
+      "revId": "abe9c4c16a4f84980ff24fb2d4b61495e8820738",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
