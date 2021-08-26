@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -40,5 +41,10 @@ public class CacheEvictionEventSubscriber extends AbstractSubcriber {
   @Override
   protected EventTopic getTopic() {
     return EventTopic.CACHE_TOPIC;
+  }
+
+  @Override
+  protected Boolean shouldConsumeEvent(Event event) {
+    return true;
   }
 }
