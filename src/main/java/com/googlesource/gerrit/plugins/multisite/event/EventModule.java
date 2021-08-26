@@ -14,13 +14,12 @@
 
 package com.googlesource.gerrit.plugins.multisite.event;
 
-import com.gerritforge.gerrit.eventbroker.StreamEventPublisher;
+import com.gerritforge.gerrit.eventbroker.publisher.StreamEventPublisherConfig;
+import com.gerritforge.gerrit.eventbroker.publisher.StreamEventPublisherModule;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.events.EventListener;
 import com.google.inject.Inject;
-import com.google.inject.TypeLiteral;
-import com.google.inject.name.Names;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
@@ -36,10 +35,13 @@ public class EventModule extends LifecycleModule {
   @Override
   protected void configure() {
     DynamicSet.bind(binder(), EventListener.class).to(ProjectVersionRefUpdate.class);
-    bind(new TypeLiteral<String>() {})
-        .annotatedWith(Names.named(StreamEventPublisher.STREAM_EVENTS_TOPIC))
-        .toInstance(EventTopic.STREAM_EVENT_TOPIC.topic(configuration));
 
-    DynamicSet.bind(binder(), EventListener.class).to(StreamEventPublisher.class);
+    bind(StreamEventPublisherConfig.class)
+        .toInstance(
+            new StreamEventPublisherConfig(
+                EventTopic.STREAM_EVENT_TOPIC.topic(configuration),
+                configuration.broker().getStreamEventPublishTimeout()));
+
+    install(new StreamEventPublisherModule());
   }
 }

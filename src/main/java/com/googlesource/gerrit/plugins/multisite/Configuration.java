@@ -57,6 +57,8 @@ public class Configuration {
   private static final String NUM_STRIPED_LOCKS = "numStripedLocks";
   private static final int DEFAULT_NUM_STRIPED_LOCKS = 10;
 
+  private static final long DEFALULT_STREAM_EVENT_PUBLISH_TIMEOUT = 30000;
+
   private final Supplier<Cache> cache;
   private final Supplier<Event> event;
   private final Supplier<Index> index;
@@ -190,6 +192,17 @@ public class Configuration {
     }
   }
 
+  private static long getLong(
+      Supplier<Config> cfg, String section, String subSection, String name, long defaultValue) {
+    try {
+      return cfg.get().getLong(section, subSection, name, defaultValue);
+    } catch (IllegalArgumentException e) {
+      log.error("invalid value for {}; using default value {}", name, defaultValue);
+      log.debug("Failed to retrieve long value: {}", e.getMessage(), e);
+      return defaultValue;
+    }
+  }
+
   public static class Projects {
     public static final String SECTION = "projects";
     public static final String PATTERN_KEY = "pattern";
@@ -293,14 +306,27 @@ public class Configuration {
 
   public static class Broker {
     static final String BROKER_SECTION = "broker";
+    static final String STREAM_EVENT_PUBLISH_TIMEOUT = "streamEventPublishTimeout";
     private final Config cfg;
+    private long streamEventPublishTimeout;
 
     Broker(Supplier<Config> cfgSupplier) {
       cfg = cfgSupplier.get();
+      streamEventPublishTimeout =
+          getLong(
+              cfgSupplier,
+              BROKER_SECTION,
+              null,
+              STREAM_EVENT_PUBLISH_TIMEOUT,
+              DEFALULT_STREAM_EVENT_PUBLISH_TIMEOUT);
     }
 
     public String getTopic(String topicKey, String defValue) {
       return MoreObjects.firstNonNull(cfg.getString(BROKER_SECTION, null, topicKey), defValue);
+    }
+
+    public long getStreamEventPublishTimeout() {
+      return streamEventPublishTimeout;
     }
   }
 
