@@ -69,6 +69,10 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
 ```broker.projectListEventTopic```
 :   Name of the topic to use for publishing cache eviction events
     Defaults to GERRIT.EVENT.PROJECT.LIST
+    
+```broker.streamEventPublishTimeout```
+:   The timeout in milliseconds for publishing stream events.
+    Defaults to 30000 (30 seconds).
 
 ```ref-database.enabled```
 :   Enable the use of a shared ref-database
