@@ -16,6 +16,24 @@
       "message": "I don\u0027t think we need to revert this.\nin multi-site we can still bind the StreamEventPublisher provided by the events-broker (that is, leave the code as-is).\n\nIn the various broker implementations, we we will revert the removal of the publishing and instead we will allow to *enable* it on demand.\n\n@luca @marcin WDYT?",
       "revId": "c6f23c2208a2e0f1d54a2f51d4ae72dd81cc74d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99aba92e_b26008d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-08-27T06:55:25Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "72be0e2e_d9976ea8",
+      "revId": "c6f23c2208a2e0f1d54a2f51d4ae72dd81cc74d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
