@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1df2ddea_b5e23474",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-27T16:38:45Z",
+      "side": 1,
+      "message": "I\u0027m not sure if master is a correct thing to put here. Soon we will release stable-3.5 and this commit will not be valid anymore",
+      "parentUuid": "02c0a174_b07c3182",
+      "range": {
+        "startLine": 9,
+        "startChar": 3,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "0328d900bc4c39e447635455eee1eec4005c54d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a1b28f58_cfca920d",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubscriberTestBase.java",
         "patchSetId": 1
@@ -37,6 +61,24 @@
       "writtenOn": "2021-08-26T15:56:53Z",
       "side": 1,
       "message": "missing copyright header",
+      "revId": "0328d900bc4c39e447635455eee1eec4005c54d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42f770be_2315f510",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubscriberTestBase.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-08-27T16:38:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1b28f58_cfca920d",
       "revId": "0328d900bc4c39e447635455eee1eec4005c54d6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
