@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "033ea5a4_57911610",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/StreamEventSubscriberTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-08-29T16:19:04Z",
+      "side": 1,
+      "message": "NotConsume ?",
+      "range": {
+        "startLine": 71,
+        "startChar": 20,
+        "endLine": 71,
+        "endChar": 23
+      },
+      "revId": "e115b3e346ef802ba7b06ba8fcdeb483e1442b01",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
