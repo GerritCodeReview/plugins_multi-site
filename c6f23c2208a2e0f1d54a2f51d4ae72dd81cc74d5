@@ -70,6 +70,23 @@
       "parentUuid": "46cb28d2_bb2cc051",
       "revId": "c6f23c2208a2e0f1d54a2f51d4ae72dd81cc74d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0534fbc_d4abfee7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-08-30T08:52:13Z",
+      "side": 1,
+      "message": "@luca can you please abandon this?\n\nhttps://gerrit-review.googlesource.com/c/plugins/multi-site/+/315265\n\nThe publishing of the gerrit events should now work across all brokers without reverting multi-site.",
+      "revId": "c6f23c2208a2e0f1d54a2f51d4ae72dd81cc74d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
