@@ -14,13 +14,16 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.gerritforge.gerrit.eventbroker.metrics.BrokerMetrics;
 import com.gerritforge.gerrit.globalrefdb.validation.ProjectDeletedSharedDbCleanup;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Inject;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerMetricsImpl;
 import com.googlesource.gerrit.plugins.multisite.consumer.MultiSiteConsumerRunner;
 import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarderModule;
@@ -36,6 +39,9 @@ public class PluginModule extends LifecycleModule {
   @Override
   protected void configure() {
     bind(BrokerApiWrapper.class).in(Scopes.SINGLETON);
+    DynamicItem.bind(binder(), BrokerMetrics.class)
+        .to(BrokerMetricsImpl.class)
+        .in(Scopes.SINGLETON);
     install(new SubscriberModule());
 
     install(new BrokerForwarderModule());
