@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.broker;
 
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.gerritforge.gerrit.eventbroker.TopicSubscriber;
+import com.gerritforge.gerrit.eventbroker.metrics.BrokerMetrics;
 import com.google.common.base.Strings;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -37,7 +38,7 @@ public class BrokerApiWrapper implements BrokerApi {
   private static final Logger log = LoggerFactory.getLogger(BrokerApiWrapper.class);
   private final Executor executor;
   private final DynamicItem<BrokerApi> apiDelegate;
-  private final BrokerMetrics metrics;
+  private final DynamicItem<BrokerMetrics> metrics;
   private final MessageLogger msgLog;
   private final String nodeInstanceId;
 
@@ -45,7 +46,7 @@ public class BrokerApiWrapper implements BrokerApi {
   public BrokerApiWrapper(
       @BrokerExecutor Executor executor,
       DynamicItem<BrokerApi> apiDelegate,
-      BrokerMetrics metrics,
+      DynamicItem<BrokerMetrics> metrics,
       MessageLogger msgLog,
       @GerritInstanceId String instanceId) {
     this.apiDelegate = apiDelegate;
@@ -65,7 +66,7 @@ public class BrokerApiWrapper implements BrokerApi {
           topic,
           e.getMessage(),
           e.getStackTrace());
-      metrics.incrementBrokerFailedToPublishMessage();
+      metrics.get().incrementBrokerFailedToPublishMessage();
       return false;
     }
   }
@@ -93,7 +94,7 @@ public class BrokerApiWrapper implements BrokerApi {
           @Override
           public void onSuccess(Boolean result) {
             msgLog.log(Direction.PUBLISH, topic, message);
-            metrics.incrementBrokerPublishedMessage();
+            metrics.get().incrementBrokerPublishedMessage();
           }
 
           @Override
@@ -103,7 +104,7 @@ public class BrokerApiWrapper implements BrokerApi {
                 message.toString(),
                 topic,
                 throwable.getMessage());
-            metrics.incrementBrokerFailedToPublishMessage();
+            metrics.get().incrementBrokerFailedToPublishMessage();
           }
         },
         executor);
