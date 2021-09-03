@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31311ed7_ae454ee5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-03T18:53:11Z",
+      "side": 1,
+      "message": "nit: putting the unit in the name makes it more clear, imho.\nConsider: streamEventPublishTimeoutMs",
+      "range": {
+        "startLine": 309,
+        "startChar": 56,
+        "endLine": 309,
+        "endChar": 81
+      },
+      "revId": "5c33c579e8df5ccf4e492e2c4acecf649952c666",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efac3b9b_1e37a06c",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-09-03T18:53:11Z",
+      "side": 1,
+      "message": "nit: empty spaces",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 4
+      },
+      "revId": "5c33c579e8df5ccf4e492e2c4acecf649952c666",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
