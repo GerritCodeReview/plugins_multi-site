@@ -14,10 +14,12 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.gerritforge.gerrit.eventbroker.metrics.BrokerMetrics;
 import com.gerritforge.gerrit.globalrefdb.validation.ProjectDeletedSharedDbCleanup;
 import com.google.common.collect.ImmutableList;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.git.WorkQueue;
@@ -27,6 +29,7 @@ import com.google.inject.Injector;
 import com.google.inject.ProvisionException;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerMetricsImpl;
 import com.googlesource.gerrit.plugins.multisite.consumer.MultiSiteConsumerRunner;
 import com.googlesource.gerrit.plugins.multisite.consumer.ReplicationStatusModule;
 import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
@@ -56,6 +59,14 @@ public class PluginModule extends LifecycleModule {
 
   @Override
   protected void configure() {
+<<<<<<< PATCH SET (d9c50c Add metrics to StreamEventsPublisher)
+    bind(BrokerApiWrapper.class).in(Scopes.SINGLETON);
+    DynamicItem.bind(binder(), BrokerMetrics.class)
+        .to(BrokerMetricsImpl.class)
+        .in(Scopes.SINGLETON);
+    install(new SubscriberModule());
+=======
+>>>>>>> BASE      (43b856 Minor improvements to spelling in Design.md)
 
     if (config.index().synchronize()
         || config.cache().synchronize()
