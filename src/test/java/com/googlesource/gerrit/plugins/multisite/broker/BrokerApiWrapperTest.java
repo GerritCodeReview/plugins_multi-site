@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
+import com.gerritforge.gerrit.eventbroker.metrics.BrokerMetrics;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.SettableFuture;
 import com.google.gerrit.extensions.registration.DynamicItem;
@@ -23,7 +24,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class BrokerApiWrapperTest {
   private static final String DEFAULT_INSTANCE_ID = "instance-id";
-  @Mock private BrokerMetrics brokerMetrics;
+  @Mock private BrokerMetricsImpl brokerMetrics;
   @Mock private BrokerApi brokerApi;
   @Mock Event event;
   @Mock MessageLogger msgLog;
@@ -38,7 +39,7 @@ public class BrokerApiWrapperTest {
         new BrokerApiWrapper(
             MoreExecutors.directExecutor(),
             DynamicItem.itemOf(BrokerApi.class, brokerApi),
-            brokerMetrics,
+            DynamicItem.itemOf(BrokerMetrics.class, brokerMetrics),
             msgLog,
             DEFAULT_INSTANCE_ID);
   }
