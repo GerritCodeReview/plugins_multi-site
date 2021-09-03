@@ -14,14 +14,13 @@
 
 package com.googlesource.gerrit.plugins.multisite.broker;
 
+import com.gerritforge.gerrit.eventbroker.metrics.BrokerMetrics;
 import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
 
-@Singleton
-public class BrokerMetrics extends MultiSiteMetrics {
+public class BrokerMetricsImpl extends MultiSiteMetrics implements BrokerMetrics {
   private static final String PUBLISHER_SUCCESS_COUNTER = "broker_msg_publisher_counter";
   private static final String PUBLISHER_FAILURE_COUNTER = "broker_msg_publisher_failure_counter";
 
@@ -29,7 +28,7 @@ public class BrokerMetrics extends MultiSiteMetrics {
   private final Counter1<String> brokerPublisherFailureCounter;
 
   @Inject
-  public BrokerMetrics(MetricMaker metricMaker) {
+  public BrokerMetricsImpl(MetricMaker metricMaker) {
 
     this.brokerPublisherSuccessCounter =
         metricMaker.newCounter(
@@ -45,10 +44,12 @@ public class BrokerMetrics extends MultiSiteMetrics {
             stringField(PUBLISHER_FAILURE_COUNTER, "Broker failed to publish message count"));
   }
 
+  @Override
   public void incrementBrokerPublishedMessage() {
     brokerPublisherSuccessCounter.increment(PUBLISHER_SUCCESS_COUNTER);
   }
 
+  @Override
   public void incrementBrokerFailedToPublishMessage() {
     brokerPublisherFailureCounter.increment(PUBLISHER_FAILURE_COUNTER);
   }
