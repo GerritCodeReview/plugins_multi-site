@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbbf140a_1276950a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-09-03T19:55:20Z",
+      "side": 1,
+      "message": "Waiting for events-broker library changes to be reviewed and released",
+      "revId": "d034d487198c4da2c3a97d35c63c49c369902632",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
