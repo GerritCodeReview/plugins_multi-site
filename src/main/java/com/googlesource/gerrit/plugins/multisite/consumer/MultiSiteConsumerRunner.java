@@ -28,12 +28,12 @@ public class MultiSiteConsumerRunner implements LifecycleListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final DynamicSet<AbstractSubcriber> consumers;
-  private DynamicItem<BrokerApi> brokerApi;
+  private DynamicSet<BrokerApi> brokerApi;
   private Configuration cfg;
 
   @Inject
   public MultiSiteConsumerRunner(
-      DynamicItem<BrokerApi> brokerApi,
+      DynamicSet<BrokerApi> brokerApi,
       DynamicSet<AbstractSubcriber> consumers,
       Configuration cfg) {
     this.consumers = consumers;

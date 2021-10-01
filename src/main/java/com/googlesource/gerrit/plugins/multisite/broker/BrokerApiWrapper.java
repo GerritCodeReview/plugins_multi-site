@@ -17,7 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.broker;
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.gerritforge.gerrit.eventbroker.TopicSubscriber;
-import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.InstanceId;
@@ -26,17 +26,19 @@ import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public class BrokerApiWrapper implements BrokerApi {
-  private final DynamicItem<BrokerApi> apiDelegate;
+  private final DynamicSet<BrokerApi> apiDelegate;
   private final BrokerMetrics metrics;
   private final MessageLogger msgLog;
   private final UUID instanceId;
 
   @Inject
   public BrokerApiWrapper(
-      DynamicItem<BrokerApi> apiDelegate,
+      DynamicSet<BrokerApi> apiDelegate,
       BrokerMetrics metrics,
       MessageLogger msgLog,
       @InstanceId UUID instanceId) {
@@ -47,7 +49,12 @@ public class BrokerApiWrapper implements BrokerApi {
   }
 
   public boolean send(String topic, Event event) {
-    return send(topic, apiDelegate.get().newMessage(instanceId, event));
+    AtomicReference <Boolean> sentAtLEastOne = new AtomicReference <>(false);
+    apiDelegate.stream().parallel().forEach( brokerApi -> {
+      send(topic, brokerApi.newMessage(instanceId, event));
+      sentAtLEastOne.set(true);
+    });
+    return sentAtLEastOne.get();
   }
 
   @Override
@@ -55,18 +62,20 @@ public class BrokerApiWrapper implements BrokerApi {
     if (Context.isForwardedEvent()) {
       return true;
     }
-    boolean succeeded = false;
+    AtomicBoolean succeededAtLEastOnce = new AtomicBoolean(false);
     try {
-      succeeded = apiDelegate.get().send(topic, message);
+      apiDelegate.stream().parallel().forEach( brokerApi -> {
+        succeededAtLEastOnce.set(brokerApi.send(topic, message));
+      });
     } finally {
-      if (succeeded) {
+      if (succeededAtLEastOnce.get()) {
         msgLog.log(Direction.PUBLISH, topic, message);
         metrics.incrementBrokerPublishedMessage();
       } else {
         metrics.incrementBrokerFailedToPublishMessage();
       }
     }
-    return succeeded;
+    return succeededAtLEastOnce.get();
   }
 
   @Override
