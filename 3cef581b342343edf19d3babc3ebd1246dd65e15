@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "819702e9_d3e49a7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-10-05T19:15:42Z",
+      "side": 1,
+      "message": "I was waiting for this one: https://gerrit-review.googlesource.com/c/modules/events-broker/+/317146\n\nLet me bump the version of events-broker and we can release it to maven which will unblock this change",
+      "revId": "3cef581b342343edf19d3babc3ebd1246dd65e15",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
