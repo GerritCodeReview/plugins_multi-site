@@ -1,0 +1,4 @@
+kafka.bootstrapServers="http://localhost:9092"
+kafka.groupId="Bridge"
+kinesis.endpointUrl="http://localhost:4566"
+kinesis.region="us-east-1"
