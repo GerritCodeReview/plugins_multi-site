@@ -16,6 +16,24 @@
       "message": "Waiting for events-broker library changes to be reviewed and released",
       "revId": "d034d487198c4da2c3a97d35c63c49c369902632",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "347d9971_4088359c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-10-05T18:53:22Z",
+      "side": 1,
+      "message": "Can you add the link to the changes you are waiting for?",
+      "parentUuid": "bbbf140a_1276950a",
+      "revId": "d034d487198c4da2c3a97d35c63c49c369902632",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
