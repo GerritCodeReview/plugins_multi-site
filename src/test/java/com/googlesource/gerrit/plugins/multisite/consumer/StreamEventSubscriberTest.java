@@ -68,7 +68,7 @@ public class StreamEventSubscriberTest extends AbstractSubscriberTestBase {
 
   @SuppressWarnings("unchecked")
   @Test
-  public void shouldNoPProjectEventTypes()
+  public void shouldNotConsumeNonProjectEventTypeEvents()
       throws IOException, PermissionBackendException, CacheNotFoundException {
     IndexEvent event = new AccountIndexEvent(1, INSTANCE_ID);
 
