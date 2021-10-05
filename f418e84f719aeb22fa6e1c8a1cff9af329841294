@@ -1,6 +1,40 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "97175ebf_c8bec532",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-10-05T20:18:20Z",
+      "side": 1,
+      "message": "nit: empty line",
+      "revId": "f418e84f719aeb22fa6e1c8a1cff9af329841294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b07d92da_130bc0fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-10-05T20:18:20Z",
+      "side": 1,
+      "message": "Have you though about a completely and possibly simpler way to do that? What about Akka stream and Alpakka?",
+      "revId": "f418e84f719aeb22fa6e1c8a1cff9af329841294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0baa1233_e6d3a90e",
