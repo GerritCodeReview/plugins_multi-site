@@ -16,6 +16,24 @@
       "message": "Verified locally with\n\nbazel test //plugins/multi-site/...\n\n@Ponch here you go ;)",
       "revId": "6f00a94a9a5eeb8cfed316b96194665589079695",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cb5c3c1_295d1620",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-10-05T17:25:45Z",
+      "side": 1,
+      "message": "Thanks!",
+      "parentUuid": "706b156e_fbf10738",
+      "revId": "6f00a94a9a5eeb8cfed316b96194665589079695",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
