@@ -84,7 +84,6 @@ public abstract class AbstractSubcriber {
         msgLog.log(Direction.CONSUME, topic, event);
         eventRouter.route(event);
         subscriberMetrics.incrementSubscriberConsumedMessage();
-        subscriberMetrics.updateReplicationStatusMetrics(event);
       } catch (IOException e) {
         logger.atSevere().withCause(e).log("Malformed event '%s'", event);
         subscriberMetrics.incrementSubscriberFailedToConsumeMessage();
@@ -93,5 +92,6 @@ public abstract class AbstractSubcriber {
         subscriberMetrics.incrementSubscriberFailedToConsumeMessage();
       }
     }
+    subscriberMetrics.updateReplicationStatusMetrics(event);
   }
 }
