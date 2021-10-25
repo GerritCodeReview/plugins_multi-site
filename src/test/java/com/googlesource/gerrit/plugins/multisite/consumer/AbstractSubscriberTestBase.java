@@ -103,6 +103,34 @@ public abstract class AbstractSubscriberTestBase {
     }
   }
 
+  @Test
+  public void shouldUpdateReplicationMetricsWithLocalEvents()
+      throws IOException, PermissionBackendException, CacheNotFoundException {
+    for (Event event : events()) {
+      event.instanceId = NODE_INSTANCE_ID;
+      when(projectsFilter.matches(any(String.class))).thenReturn(true);
+
+      objectUnderTest.getConsumer().accept(event);
+
+      verify(subscriberMetrics, times(1)).updateReplicationStatusMetrics(event);
+      reset(projectsFilter, eventRouter, droppedEventListeners, subscriberMetrics);
+    }
+  }
+
+  @Test
+  public void shouldUpdateReplicationMetricsWithNonLocalEvents()
+      throws IOException, PermissionBackendException, CacheNotFoundException {
+    for (Event event : events()) {
+      event.instanceId = INSTANCE_ID;
+      when(projectsFilter.matches(any(String.class))).thenReturn(true);
+
+      objectUnderTest.getConsumer().accept(event);
+
+      verify(subscriberMetrics, times(1)).updateReplicationStatusMetrics(event);
+      reset(projectsFilter, eventRouter, droppedEventListeners, subscriberMetrics);
+    }
+  }
+
   protected abstract AbstractSubcriber objectUnderTest();
 
   protected abstract List<Event> events();
