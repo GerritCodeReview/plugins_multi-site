@@ -16,6 +16,24 @@
       "message": "@Ponch\n\nThe verification should be fix by now",
       "revId": "1a45e283372118a328a194200f402672567ad585",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6747280_f981b57e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-11-08T16:38:21Z",
+      "side": 1,
+      "message": "Good stuff! Thanks",
+      "parentUuid": "bd155932_eccbe5f7",
+      "revId": "1a45e283372118a328a194200f402672567ad585",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
