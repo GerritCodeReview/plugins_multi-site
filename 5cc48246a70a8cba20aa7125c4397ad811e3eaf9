@@ -33,6 +33,24 @@
       "message": "The CI still fetches with \"-master-\" suffix for some reason:\nDownloading healthcheck plugin stable-3.4\n--2021-11-08 15:53:12--  https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.4/job/plugin-healthcheck-bazel-master-stable-3.4/lastSuccessfulBuild/artifact/bazel-bin/plugins/healthcheck/healthcheck.jar\n\n",
       "revId": "5cc48246a70a8cba20aa7125c4397ad811e3eaf9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6211d605_e6ae27c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083195
+      },
+      "writtenOn": "2021-11-08T16:22:38Z",
+      "side": 1,
+      "message": "Found the issue, there are 2 places to fix",
+      "parentUuid": "f608fc00_8838427d",
+      "revId": "5cc48246a70a8cba20aa7125c4397ad811e3eaf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
