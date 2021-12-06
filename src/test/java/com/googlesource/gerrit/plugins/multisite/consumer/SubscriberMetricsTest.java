@@ -52,7 +52,9 @@ public class SubscriberMetricsTest {
   @Before
   public void setup() throws Exception {
     msgHeader = new EventMessage.Header(UUID.randomUUID(), UUID.randomUUID());
-    metrics = new SubscriberMetrics(metricMaker, projectVersionRefUpdate, verLogger);
+    metrics =
+        new SubscriberMetrics(
+            metricMaker, new ReplicationStatus(projectVersionRefUpdate, verLogger));
   }
 
   @Test

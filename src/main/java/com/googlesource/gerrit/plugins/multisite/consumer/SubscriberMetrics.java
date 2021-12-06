@@ -16,7 +16,6 @@ package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.google.common.flogger.FluentLogger;
-import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.MetricMaker;
@@ -25,16 +24,9 @@ import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
-import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
-import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
 import com.googlesource.gerrit.plugins.replication.RefReplicationDoneEvent;
 import com.googlesource.gerrit.plugins.replication.ReplicationScheduledEvent;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @Singleton
 public class SubscriberMetrics extends MultiSiteMetrics {
@@ -47,20 +39,12 @@ public class SubscriberMetrics extends MultiSiteMetrics {
 
   private final Counter1<String> subscriberSuccessCounter;
   private final Counter1<String> subscriberFailureCounter;
-  private final ProjectVersionLogger verLogger;
-
-  private final Map<String, Long> replicationStatusPerProject = new HashMap<>();
-  private final Map<String, Long> localVersionPerProject = new HashMap<>();
-
-  private ProjectVersionRefUpdate projectVersionRefUpdate;
+  private final ReplicationStatus replicationStatus;
 
   @Inject
-  public SubscriberMetrics(
-      MetricMaker metricMaker,
-      ProjectVersionRefUpdate projectVersionRefUpdate,
-      ProjectVersionLogger verLogger) {
+  public SubscriberMetrics(MetricMaker metricMaker, ReplicationStatus replicationStatus) {
+    this.replicationStatus = replicationStatus;
 
-    this.projectVersionRefUpdate = projectVersionRefUpdate;
     this.subscriberSuccessCounter =
         metricMaker.newCounter(
             "multi_site/subscriber/subscriber_message_consumer_counter",
@@ -79,15 +63,7 @@ public class SubscriberMetrics extends MultiSiteMetrics {
         REPLICATION_LAG_SEC,
         Long.class,
         new Description("Replication lag (sec)").setGauge().setUnit(Description.Units.SECONDS),
-        () -> {
-          Collection<Long> lags = replicationStatusPerProject.values();
-          if (lags.isEmpty()) {
-            return 0L;
-          }
-          return Collections.max(lags);
-        });
-
-    this.verLogger = verLogger;
+        replicationStatus::getMaxLag);
   }
 
   public void incrementSubscriberConsumedMessage() {
@@ -102,40 +78,16 @@ public class SubscriberMetrics extends MultiSiteMetrics {
     Event event = eventMessage.getEvent();
     if (event instanceof RefReplicationDoneEvent) {
       RefReplicationDoneEvent replicationDone = (RefReplicationDoneEvent) event;
-      updateReplicationLagMetrics(
-          replicationDone.getProjectNameKey(), replicationDone.getRefName());
+      replicationStatus.updateReplicationLag(replicationDone.getProjectNameKey());
     } else if (event instanceof RefReplicatedEvent) {
       RefReplicatedEvent replicated = (RefReplicatedEvent) event;
-      updateReplicationLagMetrics(replicated.getProjectNameKey(), replicated.getRefName());
+      replicationStatus.updateReplicationLag(replicated.getProjectNameKey());
     } else if (event instanceof ReplicationScheduledEvent) {
       ReplicationScheduledEvent updated = (ReplicationScheduledEvent) event;
-      updateReplicationLagMetrics(updated.getProjectNameKey(), updated.getRefName());
+      replicationStatus.updateReplicationLag(updated.getProjectNameKey());
     } else if (event instanceof RefUpdatedEvent) {
       RefUpdatedEvent updated = (RefUpdatedEvent) event;
-      updateReplicationLagMetrics(updated.getProjectNameKey(), updated.getRefName());
-    }
-  }
-
-  private void updateReplicationLagMetrics(Project.NameKey projectName, String ref) {
-    Optional<Long> remoteVersion =
-        projectVersionRefUpdate.getProjectRemoteVersion(projectName.get());
-    Optional<Long> localVersion = projectVersionRefUpdate.getProjectLocalVersion(projectName.get());
-    if (remoteVersion.isPresent() && localVersion.isPresent()) {
-      long lag = remoteVersion.get() - localVersion.get();
-
-      if (!localVersion.get().equals(localVersionPerProject.get(projectName.get()))
-          || lag != replicationStatusPerProject.get(projectName.get())) {
-        logger.atFine().log(
-            "Published replication lag metric for project '%s' of %d sec(s) [local-ref=%d global-ref=%d]",
-            projectName, lag, localVersion.get(), remoteVersion.get());
-        replicationStatusPerProject.put(projectName.get(), lag);
-        localVersionPerProject.put(projectName.get(), localVersion.get());
-        verLogger.log(projectName, localVersion.get(), lag);
-      }
-    } else {
-      logger.atFine().log(
-          "Did not publish replication lag metric for %s because the %s version is not defined",
-          projectName, localVersion.isPresent() ? "remote" : "local");
+      replicationStatus.updateReplicationLag(updated.getProjectNameKey());
     }
   }
 }
