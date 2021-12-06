@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.inject.Inject;
@@ -23,8 +24,10 @@ import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpd
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Singleton
 public class ReplicationStatus {
@@ -50,7 +53,19 @@ public class ReplicationStatus {
     return Collections.max(lags);
   }
 
-  void updateReplicationLag(Project.NameKey projectName) {
+  public Map<String, Long> getReplicationLag(Integer limit) {
+    return replicationStatusPerProject.entrySet().stream()
+        .sorted((c1, c2) -> c2.getValue().compareTo(c1.getValue()))
+        .limit(limit)
+        .collect(
+            Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (oldValue, newValue) -> oldValue,
+                LinkedHashMap::new));
+  }
+
+  public void updateReplicationLag(Project.NameKey projectName) {
     Optional<Long> remoteVersion =
         projectVersionRefUpdate.getProjectRemoteVersion(projectName.get());
     Optional<Long> localVersion = projectVersionRefUpdate.getProjectLocalVersion(projectName.get());
@@ -62,7 +77,7 @@ public class ReplicationStatus {
         logger.atFine().log(
             "Updated replication lag for project '%s' of %d sec(s) [local-ref=%d global-ref=%d]",
             projectName, lag, localVersion.get(), remoteVersion.get());
-        replicationStatusPerProject.put(projectName.get(), lag);
+        doUpdateLag(projectName, lag);
         localVersionPerProject.put(projectName.get(), localVersion.get());
         verLogger.log(projectName, localVersion.get(), lag);
       }
@@ -71,5 +86,10 @@ public class ReplicationStatus {
           "Did not update replication lag for %s because the %s version is not defined",
           projectName, localVersion.isPresent() ? "remote" : "local");
     }
+  }
+
+  @VisibleForTesting
+  public void doUpdateLag(Project.NameKey projectName, Long lag) {
+    replicationStatusPerProject.put(projectName.get(), lag);
   }
 }
