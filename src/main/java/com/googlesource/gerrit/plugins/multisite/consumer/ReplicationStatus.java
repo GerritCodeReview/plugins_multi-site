@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.inject.Inject;
@@ -23,14 +24,17 @@ import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpd
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Singleton
 public class ReplicationStatus {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private final Map<String, Long> replicationStatusPerProject = new HashMap<>();
+  //  TODO: make final
+  private Map<String, Long> replicationStatusPerProject = new HashMap<>();
   private final Map<String, Long> localVersionPerProject = new HashMap<>();
   private final ProjectVersionRefUpdate projectVersionRefUpdate;
   private final ProjectVersionLogger verLogger;
@@ -48,6 +52,20 @@ public class ReplicationStatus {
       return 0L;
     }
     return Collections.max(lags);
+  }
+
+  public Map<String, Long> getReplicationLag(Integer limit) {
+    replicationStatusPerProject =
+        ImmutableMap.of("project1", 5L, "zan", 10L, "saz", 4202L, "rat", 0L, "bar", 162L);
+    return replicationStatusPerProject.entrySet().stream()
+        .sorted((c1, c2) -> c2.getValue().compareTo(c1.getValue()))
+        .limit(limit)
+        .collect(
+            Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (oldValue, newValue) -> oldValue,
+                LinkedHashMap::new));
   }
 
   void updateReplicationLag(Project.NameKey projectName) {
