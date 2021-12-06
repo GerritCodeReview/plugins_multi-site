@@ -20,9 +20,12 @@ import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.CreationException;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
+import com.googlesource.gerrit.plugins.multisite.consumer.ReplicationStatus;
+import com.googlesource.gerrit.plugins.multisite.consumer.ReplicationStatusCacheModule;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
@@ -73,6 +76,9 @@ public class Module extends LifecycleModule {
     }
 
     install(new RouterModule());
+    install(new ReplicationStatusCacheModule());
+    bind(ReplicationStatus.class).in(Scopes.SINGLETON);
+    listener().to(ReplicationStatus.class);
   }
 
   @Provides

@@ -20,6 +20,7 @@ import static org.mockito.Mockito.when;
 import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.common.base.Suppliers;
+import com.google.common.cache.CacheBuilder;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.data.RefUpdateAttribute;
@@ -54,7 +55,9 @@ public class SubscriberMetricsTest {
     msgHeader = new EventMessage.Header(UUID.randomUUID(), UUID.randomUUID());
     metrics =
         new SubscriberMetrics(
-            metricMaker, new ReplicationStatus(projectVersionRefUpdate, verLogger));
+            metricMaker,
+            new ReplicationStatus(
+                CacheBuilder.newBuilder().build(), projectVersionRefUpdate, verLogger));
   }
 
   @Test

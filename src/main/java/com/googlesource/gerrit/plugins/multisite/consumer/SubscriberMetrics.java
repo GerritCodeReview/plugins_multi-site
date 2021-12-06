@@ -22,6 +22,7 @@ import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
 import com.googlesource.gerrit.plugins.replication.RefReplicatedEvent;
@@ -39,11 +40,12 @@ public class SubscriberMetrics extends MultiSiteMetrics {
 
   private final Counter1<String> subscriberSuccessCounter;
   private final Counter1<String> subscriberFailureCounter;
-  private final ReplicationStatus replicationStatus;
+  private final Provider<ReplicationStatus> replicationStatusProvider;
 
   @Inject
-  public SubscriberMetrics(MetricMaker metricMaker, ReplicationStatus replicationStatus) {
-    this.replicationStatus = replicationStatus;
+  public SubscriberMetrics(
+      MetricMaker metricMaker, Provider<ReplicationStatus> replicationStatusProvider) {
+    this.replicationStatusProvider = replicationStatusProvider;
 
     this.subscriberSuccessCounter =
         metricMaker.newCounter(
@@ -63,7 +65,7 @@ public class SubscriberMetrics extends MultiSiteMetrics {
         REPLICATION_LAG_SEC,
         Long.class,
         new Description("Replication lag (sec)").setGauge().setUnit(Description.Units.SECONDS),
-        replicationStatus::getMaxLag);
+        replicationStatusProvider.get()::getMaxLag);
   }
 
   public void incrementSubscriberConsumedMessage() {
@@ -78,16 +80,16 @@ public class SubscriberMetrics extends MultiSiteMetrics {
     Event event = eventMessage.getEvent();
     if (event instanceof RefReplicationDoneEvent) {
       RefReplicationDoneEvent replicationDone = (RefReplicationDoneEvent) event;
-      replicationStatus.updateReplicationLag(replicationDone.getProjectNameKey());
+      replicationStatusProvider.get().updateReplicationLag(replicationDone.getProjectNameKey());
     } else if (event instanceof RefReplicatedEvent) {
       RefReplicatedEvent replicated = (RefReplicatedEvent) event;
-      replicationStatus.updateReplicationLag(replicated.getProjectNameKey());
+      replicationStatusProvider.get().updateReplicationLag(replicated.getProjectNameKey());
     } else if (event instanceof ReplicationScheduledEvent) {
       ReplicationScheduledEvent updated = (ReplicationScheduledEvent) event;
-      replicationStatus.updateReplicationLag(updated.getProjectNameKey());
+      replicationStatusProvider.get().updateReplicationLag(updated.getProjectNameKey());
     } else if (event instanceof RefUpdatedEvent) {
       RefUpdatedEvent updated = (RefUpdatedEvent) event;
-      replicationStatus.updateReplicationLag(updated.getProjectNameKey());
+      replicationStatusProvider.get().updateReplicationLag(updated.getProjectNameKey());
     }
   }
 }

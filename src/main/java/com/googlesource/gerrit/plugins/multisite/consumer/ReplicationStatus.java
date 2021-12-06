@@ -14,30 +14,47 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import static com.googlesource.gerrit.plugins.multisite.consumer.ReplicationStatusCacheModule.REPLICATION_STATUS_CACHE;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.cache.Cache;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.extensions.events.LifecycleListener;
+import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Singleton
-public class ReplicationStatus {
+public class ReplicationStatus implements LifecycleListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final Map<String, Long> replicationStatusPerProject = new HashMap<>();
   private final Map<String, Long> localVersionPerProject = new HashMap<>();
+  private final Cache<String, Long> cache;
+  private final ProjectCache projectCache;
   private final ProjectVersionRefUpdate projectVersionRefUpdate;
   private final ProjectVersionLogger verLogger;
 
   @Inject
   public ReplicationStatus(
-      ProjectVersionRefUpdate projectVersionRefUpdate, ProjectVersionLogger verLogger) {
+      @Named(REPLICATION_STATUS_CACHE) Cache<String, Long> cache,
+      ProjectCache projectCache,
+      ProjectVersionRefUpdate projectVersionRefUpdate,
+      ProjectVersionLogger verLogger) {
+    this.cache = cache;
+    this.projectCache = projectCache;
     this.projectVersionRefUpdate = projectVersionRefUpdate;
     this.verLogger = verLogger;
   }
@@ -50,7 +67,19 @@ public class ReplicationStatus {
     return Collections.max(lags);
   }
 
-  void updateReplicationLag(Project.NameKey projectName) {
+  public Map<String, Long> getReplicationLag(Integer limit) {
+    return replicationStatusPerProject.entrySet().stream()
+        .sorted((c1, c2) -> c2.getValue().compareTo(c1.getValue()))
+        .limit(limit)
+        .collect(
+            Collectors.toMap(
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                (oldValue, newValue) -> oldValue,
+                LinkedHashMap::new));
+  }
+
+  public void updateReplicationLag(Project.NameKey projectName) {
     Optional<Long> remoteVersion =
         projectVersionRefUpdate.getProjectRemoteVersion(projectName.get());
     Optional<Long> localVersion = projectVersionRefUpdate.getProjectLocalVersion(projectName.get());
@@ -62,7 +91,7 @@ public class ReplicationStatus {
         logger.atFine().log(
             "Updated replication lag for project '%s' of %d sec(s) [local-ref=%d global-ref=%d]",
             projectName, lag, localVersion.get(), remoteVersion.get());
-        replicationStatusPerProject.put(projectName.get(), lag);
+        doUpdateLag(projectName, lag);
         localVersionPerProject.put(projectName.get(), localVersion.get());
         verLogger.log(projectName, localVersion.get(), lag);
       }
@@ -71,5 +100,29 @@ public class ReplicationStatus {
           "Did not update replication lag for %s because the %s version is not defined",
           projectName, localVersion.isPresent() ? "remote" : "local");
     }
+  }
+
+  @VisibleForTesting
+  public void doUpdateLag(Project.NameKey projectName, Long lag) {
+    cache.put(projectName.get(), lag);
+    logger.atWarning().log("Updated cache with %s -> %s", projectName.get(), lag);
+    replicationStatusPerProject.put(projectName.get(), lag);
+  }
+
+  @Override
+  public void start() {
+    logger.atInfo().log("START - Reloading replication status from cache");
+    reloadFromCache();
+    logger.atInfo().log("DONE - Reloading replication status from cache");
+  }
+
+  @Override
+  public void stop() {}
+
+  private void reloadFromCache() {
+    ImmutableMap<String, Long> allPresent =
+        cache.getAllPresent(
+            projectCache.all().stream().map(Project.NameKey::get).collect(Collectors.toSet()));
+    replicationStatusPerProject.putAll(allPresent);
   }
 }
