@@ -14,10 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.http;
 
-import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
-import static com.google.common.truth.Truth.assertThat;
-import static com.googlesource.gerrit.plugins.multisite.http.HttpModule.LAG_ENDPOINT_SEGMENT;
-
 import com.gerritforge.gerrit.globalrefdb.validation.Log4jSharedRefLogger;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbConfiguration;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefLogger;
@@ -34,10 +30,15 @@ import com.googlesource.gerrit.plugins.multisite.consumer.ReplicationStatus;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
-import java.io.IOException;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
+
+import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
+import static com.google.common.truth.Truth.assertThat;
+import static com.googlesource.gerrit.plugins.multisite.http.HttpModule.LAG_ENDPOINT_SEGMENT;
 
 @TestPlugin(
     name = "multi-site",
@@ -57,6 +58,7 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
       install(new CacheModule());
       install(new RouterModule());
       install(new IndexModule());
+      install(ReplicationStatus.module());
       SharedRefDbConfiguration sharedRefDbConfig =
           new SharedRefDbConfiguration(new Config(), "multi-site");
       bind(SharedRefDbConfiguration.class).toInstance(sharedRefDbConfig);

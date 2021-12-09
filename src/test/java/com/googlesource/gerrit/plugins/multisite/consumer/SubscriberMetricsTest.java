@@ -14,12 +14,10 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.common.base.Suppliers;
+import com.google.common.cache.CacheBuilder;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.data.RefUpdateAttribute;
@@ -27,13 +25,17 @@ import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
-import java.util.Optional;
-import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SubscriberMetricsTest {
@@ -54,7 +56,9 @@ public class SubscriberMetricsTest {
     msgHeader = new EventMessage.Header(UUID.randomUUID(), UUID.randomUUID());
     metrics =
         new SubscriberMetrics(
-            metricMaker, new ReplicationStatus(projectVersionRefUpdate, verLogger));
+            metricMaker,
+            new ReplicationStatus(
+                CacheBuilder.newBuilder().build(), projectVersionRefUpdate, verLogger));
   }
 
   @Test
