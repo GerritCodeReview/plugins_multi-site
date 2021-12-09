@@ -20,11 +20,14 @@ import static org.mockito.Mockito.when;
 import com.gerritforge.gerrit.eventbroker.EventMessage;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.common.base.Suppliers;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.ImmutableSortedSet;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
+import com.google.gerrit.server.project.ProjectCache;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import java.util.Optional;
@@ -45,16 +48,23 @@ public class SubscriberMetricsTest {
   @Mock private GitReferenceUpdated gitReferenceUpdated;
   @Mock private MetricMaker metricMaker;
   @Mock private ProjectVersionLogger verLogger;
+  @Mock private ProjectCache projectCache;
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
   private SubscriberMetrics metrics;
   private EventMessage.Header msgHeader;
 
   @Before
   public void setup() throws Exception {
+    when(projectCache.all()).thenReturn(ImmutableSortedSet.of());
     msgHeader = new EventMessage.Header(UUID.randomUUID(), UUID.randomUUID());
     metrics =
         new SubscriberMetrics(
-            metricMaker, new ReplicationStatus(projectVersionRefUpdate, verLogger));
+            metricMaker,
+            new ReplicationStatus(
+                CacheBuilder.newBuilder().build(),
+                projectVersionRefUpdate,
+                verLogger,
+                projectCache));
   }
 
   @Test
