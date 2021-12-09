@@ -57,6 +57,7 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
       install(new CacheModule());
       install(new RouterModule());
       install(new IndexModule());
+      install(ReplicationStatus.module());
       SharedRefDbConfiguration sharedRefDbConfig =
           new SharedRefDbConfiguration(new Config(), "multi-site");
       bind(SharedRefDbConfiguration.class).toInstance(sharedRefDbConfig);

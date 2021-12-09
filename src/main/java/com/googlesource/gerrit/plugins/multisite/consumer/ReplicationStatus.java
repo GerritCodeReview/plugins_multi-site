@@ -15,10 +15,16 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.cache.Cache;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.server.cache.CacheModule;
+import com.google.gerrit.server.cache.serialize.JavaCacheSerializer;
+import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
 import com.google.inject.Inject;
+import com.google.inject.Module;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import java.util.Collection;
@@ -33,20 +39,37 @@ import java.util.stream.Collectors;
 public class ReplicationStatus {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-  private final Map<String, Long> replicationStatusPerProject = new HashMap<>();
+  static final String REPLICATION_STATUS_CACHE = "replication_status";
+
+  public static Module module() {
+    return new CacheModule() {
+      @Override
+      protected void configure() {
+        persist(REPLICATION_STATUS_CACHE, String.class, Long.class)
+            .version(1)
+            .keySerializer(StringCacheSerializer.INSTANCE)
+            .valueSerializer(new JavaCacheSerializer<>());
+      }
+    };
+  }
+
   private final Map<String, Long> localVersionPerProject = new HashMap<>();
+  private final Cache<String, Long> cache;
   private final ProjectVersionRefUpdate projectVersionRefUpdate;
   private final ProjectVersionLogger verLogger;
 
   @Inject
   public ReplicationStatus(
-      ProjectVersionRefUpdate projectVersionRefUpdate, ProjectVersionLogger verLogger) {
+      @Named(REPLICATION_STATUS_CACHE) Cache<String, Long> cache,
+      ProjectVersionRefUpdate projectVersionRefUpdate,
+      ProjectVersionLogger verLogger) {
+    this.cache = cache;
     this.projectVersionRefUpdate = projectVersionRefUpdate;
     this.verLogger = verLogger;
   }
 
   public Long getMaxLag() {
-    Collection<Long> lags = replicationStatusPerProject.values();
+    Collection<Long> lags = cacheMap().values();
     if (lags.isEmpty()) {
       return 0L;
     }
@@ -54,7 +77,7 @@ public class ReplicationStatus {
   }
 
   public Map<String, Long> getReplicationLags(Integer limit) {
-    return replicationStatusPerProject.entrySet().stream()
+    return cacheMap().entrySet().stream()
         .sorted((c1, c2) -> c2.getValue().compareTo(c1.getValue()))
         .limit(limit)
         .collect(
@@ -70,10 +93,10 @@ public class ReplicationStatus {
         projectVersionRefUpdate.getProjectRemoteVersion(projectName.get());
     Optional<Long> localVersion = projectVersionRefUpdate.getProjectLocalVersion(projectName.get());
     if (remoteVersion.isPresent() && localVersion.isPresent()) {
-      long lag = remoteVersion.get() - localVersion.get();
+      Long lag = remoteVersion.get() - localVersion.get();
 
       if (!localVersion.get().equals(localVersionPerProject.get(projectName.get()))
-          || lag != replicationStatusPerProject.get(projectName.get())) {
+          || lag.equals(cache.getIfPresent(projectName.get()))) {
         logger.atFine().log(
             "Updated replication lag for project '%s' of %d sec(s) [local-ref=%d global-ref=%d]",
             projectName, lag, localVersion.get(), remoteVersion.get());
@@ -90,6 +113,10 @@ public class ReplicationStatus {
 
   @VisibleForTesting
   public void doUpdateLag(Project.NameKey projectName, Long lag) {
-    replicationStatusPerProject.put(projectName.get(), lag);
+    cache.put(projectName.get(), lag);
+  }
+
+  private Map<String, Long> cacheMap() {
+    return cache.asMap();
   }
 }

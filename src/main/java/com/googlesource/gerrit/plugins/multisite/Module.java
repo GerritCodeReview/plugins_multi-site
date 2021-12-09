@@ -23,6 +23,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
+import com.googlesource.gerrit.plugins.multisite.consumer.ReplicationStatus;
 import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
@@ -73,6 +74,7 @@ public class Module extends LifecycleModule {
     }
 
     install(new RouterModule());
+    install(ReplicationStatus.module());
   }
 
   @Provides
