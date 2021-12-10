@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2fb2afa_685c2b36",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-12-10T09:17:51Z",
+      "side": 1,
+      "message": "getReplicationLags",
+      "range": {
+        "startLine": 56,
+        "startChar": 27,
+        "endLine": 56,
+        "endChar": 44
+      },
+      "revId": "d5aece0ef78bc64ec34d95ba2c1219e4cb428871",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0251b681_a05c0235",
+        "filename": "src/main/resources/Documentation/http-endpoints.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2021-12-10T09:17:51Z",
+      "side": 1,
+      "message": "lag_",
+      "range": {
+        "startLine": 16,
+        "startChar": 76,
+        "endLine": 16,
+        "endChar": 79
+      },
+      "revId": "d5aece0ef78bc64ec34d95ba2c1219e4cb428871",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
