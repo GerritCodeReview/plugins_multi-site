@@ -15,9 +15,9 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 public abstract class ForwarderTask implements Runnable {
-  private final Thread callerThread = Thread.currentThread();
+  private final String callerThreadName = Thread.currentThread().getName();
 
-  public Thread getCallerThread() {
-    return callerThread;
+  public String getCallerThreadName() {
+    return callerThreadName;
   }
 }
