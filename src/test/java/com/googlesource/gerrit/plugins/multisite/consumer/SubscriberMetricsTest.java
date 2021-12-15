@@ -47,10 +47,12 @@ public class SubscriberMetricsTest {
   @Mock private ProjectVersionLogger verLogger;
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
   private SubscriberMetrics metrics;
+  private ReplicationStatus replicationStatus;
 
   @Before
   public void setup() throws Exception {
-    metrics = new SubscriberMetrics(metricMaker, projectVersionRefUpdate, verLogger);
+    replicationStatus = new ReplicationStatus(projectVersionRefUpdate, verLogger);
+    metrics = new SubscriberMetrics(metricMaker, replicationStatus);
   }
 
   @Test
@@ -99,8 +101,9 @@ public class SubscriberMetricsTest {
     Event refUpdateEventMessage = newRefUpdateEvent();
     metrics.updateReplicationStatusMetrics(refUpdateEventMessage);
 
-    assertThat(metrics.getReplicationStatus(A_TEST_PROJECT_NAME)).isEqualTo(replicationLagSecs);
-    assertThat(metrics.getLocalVersion(A_TEST_PROJECT_NAME)).isEqualTo(nowSecs);
+    assertThat(replicationStatus.getReplicationStatus(A_TEST_PROJECT_NAME))
+        .isEqualTo(replicationLagSecs);
+    assertThat(replicationStatus.getLocalVersion(A_TEST_PROJECT_NAME)).isEqualTo(nowSecs);
 
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(Optional.empty());
@@ -118,8 +121,8 @@ public class SubscriberMetricsTest {
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(Optional.empty());
 
-    assertThat(metrics.getReplicationStatus(A_TEST_PROJECT_NAME)).isNull();
-    assertThat(metrics.getLocalVersion(A_TEST_PROJECT_NAME)).isNull();
+    assertThat(replicationStatus.getReplicationStatus(A_TEST_PROJECT_NAME)).isNull();
+    assertThat(replicationStatus.getLocalVersion(A_TEST_PROJECT_NAME)).isNull();
 
     metrics.updateReplicationStatusMetrics(eventMessage);
 
@@ -152,8 +155,9 @@ public class SubscriberMetricsTest {
 
     metrics.updateReplicationStatusMetrics(eventMessage);
 
-    assertThat(metrics.getReplicationStatus(A_TEST_PROJECT_NAME)).isEqualTo(replicationLagSecs);
-    assertThat(metrics.getLocalVersion(A_TEST_PROJECT_NAME)).isEqualTo(nowSecs);
+    assertThat(replicationStatus.getReplicationStatus(A_TEST_PROJECT_NAME))
+        .isEqualTo(replicationLagSecs);
+    assertThat(replicationStatus.getLocalVersion(A_TEST_PROJECT_NAME)).isEqualTo(nowSecs);
 
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(Optional.empty());
@@ -161,8 +165,8 @@ public class SubscriberMetricsTest {
 
     metrics.updateReplicationStatusMetrics(projectDeleteEvent);
 
-    assertThat(metrics.getReplicationStatus(A_TEST_PROJECT_NAME)).isNull();
-    assertThat(metrics.getLocalVersion(A_TEST_PROJECT_NAME)).isNull();
+    assertThat(replicationStatus.getReplicationStatus(A_TEST_PROJECT_NAME)).isNull();
+    assertThat(replicationStatus.getLocalVersion(A_TEST_PROJECT_NAME)).isNull();
   }
 
   private ProjectDeletionReplicationSucceededEvent projectDeletionSuccess()
