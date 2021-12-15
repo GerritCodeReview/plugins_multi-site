@@ -20,11 +20,13 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Suppliers;
+import com.google.common.cache.CacheBuilder;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.google.gerrit.server.project.ProjectCache;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.events.ProjectDeletionReplicationSucceededEvent;
@@ -45,13 +47,16 @@ public class SubscriberMetricsTest {
 
   @Mock private MetricMaker metricMaker;
   @Mock private ProjectVersionLogger verLogger;
+  @Mock private ProjectCache projectCache;
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
   private SubscriberMetrics metrics;
   private ReplicationStatus replicationStatus;
 
   @Before
   public void setup() throws Exception {
-    replicationStatus = new ReplicationStatus(projectVersionRefUpdate, verLogger);
+    replicationStatus =
+        new ReplicationStatus(
+            CacheBuilder.newBuilder().build(), projectVersionRefUpdate, verLogger, projectCache);
     metrics = new SubscriberMetrics(metricMaker, replicationStatus);
   }
 
