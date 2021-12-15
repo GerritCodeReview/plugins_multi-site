@@ -1,11 +1,12 @@
 {
   "checks": {
     "gerritforge:multi-site-format-47168e90078b0b3f11401610930e82830e76bff7": {
-      "state": "RUNNING",
+      "state": "SUCCESSFUL",
       "url": "https://gerrit-ci.gerritforge.com/job/plugin-multi-site-verifier/job/57%252F326257%252F3/1/console",
       "started": "2021-12-15T10:17:52Z",
+      "finished": "2021-12-15T10:18:00Z",
       "created": "2021-12-15T10:17:01Z",
-      "updated": "2021-12-15T10:17:01Z"
+      "updated": "2021-12-15T10:17:09Z"
     }
   }
 }
