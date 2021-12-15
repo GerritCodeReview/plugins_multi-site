@@ -35,7 +35,7 @@ public abstract class BrokerForwarder {
   }
 
   protected boolean currentThreadBelongsToHighAvailabilityPlugin(ForwarderTask task) {
-    String currentThreadName = task.getCallerThread().getName();
+    String currentThreadName = task.getCallerThreadName();
 
     return currentThreadName.contains(HIGH_AVAILABILITY_PLUGIN)
         || currentThreadName.contains(HIGH_AVAILABILITY_FORWARDER)
