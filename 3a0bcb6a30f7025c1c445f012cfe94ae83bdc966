@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cf53d64_579b25d7",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatusTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2021-12-15T14:09:35Z",
+      "side": 1,
+      "message": "could we add some more test, for example if we are updating the persistent cache when we update the value",
+      "range": {
+        "startLine": 34,
+        "startChar": 13,
+        "endLine": 34,
+        "endChar": 34
+      },
+      "revId": "3a0bcb6a30f7025c1c445f012cfe94ae83bdc966",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
