@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.Scopes;
 
@@ -23,5 +25,6 @@ public class ReplicationStatusModule extends LifecycleModule {
     bind(ReplicationStatus.class).in(Scopes.SINGLETON);
     install(ReplicationStatus.cacheModule());
     listener().to(ReplicationStatus.class);
+    DynamicSet.bind(binder(), ProjectDeletedListener.class).to(ReplicationStatus.class);
   }
 }

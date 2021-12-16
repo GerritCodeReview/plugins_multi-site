@@ -19,6 +19,7 @@ import com.google.common.cache.Cache;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.events.LifecycleListener;
+import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.server.cache.CacheModule;
 import com.google.gerrit.server.cache.serialize.JavaCacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
@@ -39,7 +40,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Singleton
-public class ReplicationStatus implements LifecycleListener {
+public class ReplicationStatus implements LifecycleListener, ProjectDeletedListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final Map<String, Long> replicationStatusPerProject = new HashMap<>();
@@ -121,7 +122,7 @@ public class ReplicationStatus implements LifecycleListener {
   void removeProjectFromReplicationLagMetrics(Project.NameKey projectName) {
     Optional<Long> localVersion = projectVersionRefUpdate.getProjectLocalVersion(projectName.get());
 
-    if (!localVersion.isPresent() && localVersionPerProject.containsKey(projectName.get())) {
+    if (!localVersion.isPresent() && replicationStatusPerProject.containsKey(projectName.get())) {
       cache.invalidate(projectName.get());
       replicationStatusPerProject.remove(projectName.get());
       localVersionPerProject.remove(projectName.get());
@@ -158,5 +159,10 @@ public class ReplicationStatus implements LifecycleListener {
     Set<String> cachedProjects =
         projectCache.all().stream().map(Project.NameKey::get).collect(Collectors.toSet());
     replicationStatusPerProject.putAll(cache.getAllPresent(cachedProjects));
+  }
+
+  @Override
+  public void onProjectDeleted(Event event) {
+    removeProjectFromReplicationLagMetrics(Project.nameKey(event.getProjectName()));
   }
 }
