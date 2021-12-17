@@ -12,3 +12,11 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
       KAFKA_CREATE_TOPICS: "gerrit:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  kafka-rest:
+    image: confluentinc/cp-kafka-rest:6.0.4
+    ports:
+      - "8082:8082"
+    environment:
+      KAFKA_REST_HOST_NAME: 127.0.0.1
+      KAFKA_REST_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_REST_LISTENER: http://127.0.0.1:8082
