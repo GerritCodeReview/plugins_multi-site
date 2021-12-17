@@ -6,10 +6,20 @@ services:
       - "9092:9092"
     container_name: kafka_test_node
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     networks:
       - setup_local_env_default
+
+  kafka-rest:
+    image: confluentinc/cp-kafka-rest:6.0.4
+    ports:
+      - "8082:8082"
+    environment:
+      KAFKA_REST_HOST_NAME: 127.0.0.1
+      KAFKA_REST_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_REST_LISTENER: http://127.0.0.1:8082
+
 networks:
   setup_local_env_default:
     external: true
