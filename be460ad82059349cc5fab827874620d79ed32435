@@ -39,6 +39,30 @@
       },
       "revId": "be460ad82059349cc5fab827874620d79ed32435",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4479010_59d4ed85",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/IndexEventSubscriber.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2021-12-21T13:08:51Z",
+      "side": 1,
+      "message": "Eeven if the replication has successfully completed, the change will still be in the index: removing it from the index is precisely the intent of _this_ subscriber\u0027s handler, so we should be sure the change is still sitting in the index .\n\nWe are using findOne() to find the change and, by looking at its implementation, the change is searched first in the cache and then in the *index*[1], not on disk, so that it will still be found on the receiving side, even after replication.\n\nWDYT? Do I have the wrong side of the stick?\n\n[1]https://gerrit.googlesource.com/gerrit/+/refs/heads/stable-3.4/java/com/google/gerrit/server/change/ChangeFinder.java#216",
+      "parentUuid": "dae9af3e_eeeef593",
+      "range": {
+        "startLine": 64,
+        "startChar": 8,
+        "endLine": 64,
+        "endChar": 93
+      },
+      "revId": "be460ad82059349cc5fab827874620d79ed32435",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
