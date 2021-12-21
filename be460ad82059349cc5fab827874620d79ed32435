@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ad3d67b_8167e3b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-12-21T02:04:05Z",
+      "side": 1,
+      "message": "Not sure this is the correct solution: it looks to me that is working \"by mistake\" because of the replication delay. WDYT?",
+      "revId": "be460ad82059349cc5fab827874620d79ed32435",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dae9af3e_eeeef593",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/IndexEventSubscriber.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2021-12-21T02:04:05Z",
+      "side": 1,
+      "message": "If the change has been deleted, how can we find it and get the associated project id? Would this work for now only because we receive the event *before* the replication may have happened?",
+      "range": {
+        "startLine": 64,
+        "startChar": 8,
+        "endLine": 64,
+        "endChar": 93
+      },
+      "revId": "be460ad82059349cc5fab827874620d79ed32435",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
