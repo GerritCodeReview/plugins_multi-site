@@ -20,11 +20,13 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Suppliers;
+import com.google.common.cache.CacheBuilder;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.google.gerrit.server.project.ProjectCache;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.events.ProjectDeletionReplicationSucceededEvent;
@@ -45,12 +47,17 @@ public class SubscriberMetricsTest {
 
   @Mock private MetricMaker metricMaker;
   @Mock private ProjectVersionLogger verLogger;
+  @Mock private ProjectCache projectCache;
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
   private SubscriberMetrics metrics;
+  private ReplicationStatus replicationStatus;
 
   @Before
   public void setup() throws Exception {
-    metrics = new SubscriberMetrics(metricMaker, projectVersionRefUpdate, verLogger);
+    replicationStatus =
+        new ReplicationStatus(
+            CacheBuilder.newBuilder().build(), projectVersionRefUpdate, verLogger, projectCache);
+    metrics = new SubscriberMetrics(metricMaker, replicationStatus);
   }
 
   @Test
@@ -99,8 +106,9 @@ public class SubscriberMetricsTest {
     Event refUpdateEventMessage = newRefUpdateEvent();
     metrics.updateReplicationStatusMetrics(refUpdateEventMessage);
 
-    assertThat(metrics.getReplicationStatus(A_TEST_PROJECT_NAME)).isEqualTo(replicationLagSecs);
-    assertThat(metrics.getLocalVersion(A_TEST_PROJECT_NAME)).isEqualTo(nowSecs);
+    assertThat(replicationStatus.getReplicationStatus(A_TEST_PROJECT_NAME))
+        .isEqualTo(replicationLagSecs);
+    assertThat(replicationStatus.getLocalVersion(A_TEST_PROJECT_NAME)).isEqualTo(nowSecs);
 
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(Optional.empty());
@@ -118,8 +126,8 @@ public class SubscriberMetricsTest {
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(Optional.empty());
 
-    assertThat(metrics.getReplicationStatus(A_TEST_PROJECT_NAME)).isNull();
-    assertThat(metrics.getLocalVersion(A_TEST_PROJECT_NAME)).isNull();
+    assertThat(replicationStatus.getReplicationStatus(A_TEST_PROJECT_NAME)).isNull();
+    assertThat(replicationStatus.getLocalVersion(A_TEST_PROJECT_NAME)).isNull();
 
     metrics.updateReplicationStatusMetrics(eventMessage);
 
@@ -152,8 +160,9 @@ public class SubscriberMetricsTest {
 
     metrics.updateReplicationStatusMetrics(eventMessage);
 
-    assertThat(metrics.getReplicationStatus(A_TEST_PROJECT_NAME)).isEqualTo(replicationLagSecs);
-    assertThat(metrics.getLocalVersion(A_TEST_PROJECT_NAME)).isEqualTo(nowSecs);
+    assertThat(replicationStatus.getReplicationStatus(A_TEST_PROJECT_NAME))
+        .isEqualTo(replicationLagSecs);
+    assertThat(replicationStatus.getLocalVersion(A_TEST_PROJECT_NAME)).isEqualTo(nowSecs);
 
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(Optional.empty());
@@ -161,8 +170,8 @@ public class SubscriberMetricsTest {
 
     metrics.updateReplicationStatusMetrics(projectDeleteEvent);
 
-    assertThat(metrics.getReplicationStatus(A_TEST_PROJECT_NAME)).isNull();
-    assertThat(metrics.getLocalVersion(A_TEST_PROJECT_NAME)).isNull();
+    assertThat(replicationStatus.getReplicationStatus(A_TEST_PROJECT_NAME)).isNull();
+    assertThat(replicationStatus.getLocalVersion(A_TEST_PROJECT_NAME)).isNull();
   }
 
   private ProjectDeletionReplicationSucceededEvent projectDeletionSuccess()

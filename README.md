@@ -86,3 +86,8 @@ For more details on the configuration settings, please refer to the
 You also need to setup the Git-level replication between nodes, for more details
 please refer to the
 [replication plugin documentation](https://gerrit.googlesource.com/plugins/replication/+/refs/heads/master/src/main/resources/Documentation/config.md).
+
+# HTTP endpoints
+
+For information about available HTTP endpoints please refer to
+the [documentation](src/main/resources/Documentation/http-endpoints.md).
