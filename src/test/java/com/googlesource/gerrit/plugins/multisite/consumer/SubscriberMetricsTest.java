@@ -27,6 +27,7 @@ import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.project.ProjectCache;
+import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import java.util.Optional;
@@ -48,6 +49,7 @@ public class SubscriberMetricsTest {
   @Mock private MetricMaker metricMaker;
   @Mock private ProjectVersionLogger verLogger;
   @Mock private ProjectCache projectCache;
+  @Mock private Provider<ProjectVersionRefUpdate> projectVersionRefUpdateProvider;
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
   private SubscriberMetrics metrics;
   private EventMessage.Header msgHeader;
@@ -60,9 +62,10 @@ public class SubscriberMetricsTest {
             metricMaker,
             new ReplicationStatus(
                 CacheBuilder.newBuilder().build(),
-                projectVersionRefUpdate,
+                projectVersionRefUpdateProvider,
                 verLogger,
                 projectCache));
+    when(projectVersionRefUpdateProvider.get()).thenReturn(projectVersionRefUpdate);
   }
 
   @Test
