@@ -16,7 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.extensions.registration.DynamicItem;
-import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.gerrit.server.config.RepositoryConfig;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.LockWrapper;
@@ -33,9 +33,11 @@ import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 
 public class ValidationModule extends FactoryModule {
   private final Configuration cfg;
+  private final RepositoryConfig repoConfig;
 
-  public ValidationModule(Configuration cfg) {
+  public ValidationModule(Configuration cfg, RepositoryConfig repoConfig) {
     this.cfg = cfg;
+    this.repoConfig = repoConfig;
   }
 
   @Override
@@ -54,7 +56,8 @@ public class ValidationModule extends FactoryModule {
     factory(RefUpdateValidator.Factory.class);
     factory(BatchRefUpdateValidator.Factory.class);
 
-    bind(GitRepositoryManager.class).to(MultiSiteGitRepositoryManager.class);
+    install(new RepositoryManagerModule(repoConfig));
+
     DynamicItem.bind(binder(), ReplicationPushFilter.class)
         .to(MultisiteReplicationPushFilter.class);
 

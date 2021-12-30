@@ -14,22 +14,25 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.google.gerrit.server.config.RepositoryConfig;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
 
 public class GitModule extends AbstractModule {
   private final Configuration config;
+  private final RepositoryConfig repoConfig;
 
   @Inject
-  public GitModule(Configuration config) {
+  public GitModule(Configuration config, RepositoryConfig repoConfig) {
     this.config = config;
+    this.repoConfig = repoConfig;
   }
 
   @Override
   protected void configure() {
     if (config.getSharedRefDb().isEnabled()) {
-      install(new ValidationModule(config));
+      install(new ValidationModule(config, repoConfig));
     }
   }
 }
