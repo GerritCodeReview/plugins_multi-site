@@ -15,7 +15,9 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
+import com.google.gerrit.entities.Change;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.server.change.ChangeFinder;
 import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
@@ -26,10 +28,12 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEve
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.IndexEventRouter;
+import java.util.Optional;
 
 @Singleton
 public class IndexEventSubscriber extends AbstractSubcriber {
   private final ProjectsFilter projectsFilter;
+  private final ChangeFinder changeFinder;
 
   @Inject
   public IndexEventSubscriber(
@@ -39,9 +43,11 @@ public class IndexEventSubscriber extends AbstractSubcriber {
       MessageLogger msgLog,
       SubscriberMetrics subscriberMetrics,
       Configuration cfg,
-      ProjectsFilter projectsFilter) {
+      ProjectsFilter projectsFilter,
+      ChangeFinder changeFinder) {
     super(eventRouter, droppedEventListeners, instanceId, msgLog, subscriberMetrics, cfg);
     this.projectsFilter = projectsFilter;
+    this.changeFinder = changeFinder;
   }
 
   @Override
@@ -52,11 +58,24 @@ public class IndexEventSubscriber extends AbstractSubcriber {
   @Override
   protected Boolean shouldConsumeEvent(Event event) {
     if (event instanceof ChangeIndexEvent) {
-      return projectsFilter.matches(((ChangeIndexEvent) event).projectName);
+      ChangeIndexEvent changeIndexEvent = (ChangeIndexEvent) event;
+      String projectName = changeIndexEvent.projectName;
+      if (isDeletedChangeWithEmptyProject(changeIndexEvent)) {
+        projectName = findProjectFromChangeId(changeIndexEvent.changeId).orElse(projectName);
+      }
+      return projectsFilter.matches(projectName);
     }
     if (event instanceof ProjectIndexEvent) {
       return projectsFilter.matches(((ProjectIndexEvent) event).projectName);
     }
     return true;
+  }
+
+  private boolean isDeletedChangeWithEmptyProject(ChangeIndexEvent changeIndexEvent) {
+    return changeIndexEvent.deleted && changeIndexEvent.projectName.isEmpty();
+  }
+
+  private Optional<String> findProjectFromChangeId(int changeId) {
+    return changeFinder.findOne(Change.id(changeId)).map(c -> c.getChange().getProject().get());
   }
 }
