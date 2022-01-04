@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8ecaef02_a7c60f04",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-01-04T07:47:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "88ec395b_7a0e502c",
+      "revId": "53a53d13e5c19663cc05ec956350dbef3fc04e7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "c6d8ee39_5f929792",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2022-01-04T02:01:54Z",
       "side": 1,
       "message": "Add one test to cover the scenario? Do you believe it is easy / possible?",
+      "revId": "53a53d13e5c19663cc05ec956350dbef3fc04e7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29f3bb52_784ded40",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-01-04T07:47:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d8ee39_5f929792",
       "revId": "53a53d13e5c19663cc05ec956350dbef3fc04e7b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -48,6 +84,30 @@
       "writtenOn": "2022-01-04T02:01:54Z",
       "side": 1,
       "message": "2022",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "53a53d13e5c19663cc05ec956350dbef3fc04e7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5962f40f_46116d16",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RepositoryManagerModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-01-04T07:47:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b111cd69_79ee2f51",
       "range": {
         "startLine": 1,
         "startChar": 17,
