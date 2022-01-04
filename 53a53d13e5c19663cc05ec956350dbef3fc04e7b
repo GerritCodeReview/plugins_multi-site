@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88ec395b_7a0e502c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-04T02:01:54Z",
+      "side": 1,
+      "message": "I believe Zuul requires a URL here. However, we don\u0027t use Zuul CI for validating multi-site, because it would require a Docker container.",
+      "revId": "53a53d13e5c19663cc05ec956350dbef3fc04e7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6d8ee39_5f929792",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-04T02:01:54Z",
+      "side": 1,
+      "message": "Add one test to cover the scenario? Do you believe it is easy / possible?",
+      "revId": "53a53d13e5c19663cc05ec956350dbef3fc04e7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b111cd69_79ee2f51",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/RepositoryManagerModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-04T02:01:54Z",
+      "side": 1,
+      "message": "2022",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "53a53d13e5c19663cc05ec956350dbef3fc04e7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
