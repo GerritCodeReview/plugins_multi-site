@@ -37,8 +37,6 @@ import com.google.inject.Scopes;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.Log4jProjectVersionLogger;
-import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.replication.ReplicationExtensionPointModule;
 import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 
@@ -55,7 +53,7 @@ public class ValidationModule extends FactoryModule {
 
     bind(SharedRefDatabaseWrapper.class).in(Scopes.SINGLETON);
     bind(SharedRefLogger.class).to(Log4jSharedRefLogger.class);
-    bind(ProjectVersionLogger.class).to(Log4jProjectVersionLogger.class);
+
     factory(LockWrapper.Factory.class);
 
     factory(SharedRefDbRepository.Factory.class);
