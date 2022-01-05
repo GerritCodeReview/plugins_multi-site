@@ -20,7 +20,6 @@ import com.gerritforge.gerrit.globalrefdb.validation.Log4jSharedRefLogger;
 import com.gerritforge.gerrit.globalrefdb.validation.RefUpdateValidator;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbBatchRefUpdate;
-import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbConfiguration;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbGitRepositoryManager;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRefDatabase;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRefUpdate;
@@ -37,8 +36,6 @@ import com.google.inject.Scopes;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.Log4jProjectVersionLogger;
-import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.replication.ReplicationExtensionPointModule;
 import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 
@@ -55,7 +52,6 @@ public class ValidationModule extends FactoryModule {
 
     bind(SharedRefDatabaseWrapper.class).in(Scopes.SINGLETON);
     bind(SharedRefLogger.class).to(Log4jSharedRefLogger.class);
-    bind(ProjectVersionLogger.class).to(Log4jProjectVersionLogger.class);
     factory(LockWrapper.Factory.class);
 
     factory(SharedRefDbRepository.Factory.class);
@@ -65,7 +61,6 @@ public class ValidationModule extends FactoryModule {
     factory(RefUpdateValidator.Factory.class);
     factory(BatchRefUpdateValidator.Factory.class);
 
-    bind(SharedRefDbConfiguration.class).toInstance(cfg.getSharedRefDbConfiguration());
     bind(new TypeLiteral<ImmutableSet<String>>() {})
         .annotatedWith(Names.named(SharedRefDbGitRepositoryManager.IGNORED_REFS))
         .toInstance(
