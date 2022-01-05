@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbConfiguration;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
@@ -28,6 +29,8 @@ public class GitModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    bind(SharedRefDbConfiguration.class).toInstance(config.getSharedRefDbConfiguration());
+    bind(ProjectVersionLogger.class).to(Log4jProjectVersionLogger.class);
     if (config.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {
       install(new ValidationModule(config));
     }

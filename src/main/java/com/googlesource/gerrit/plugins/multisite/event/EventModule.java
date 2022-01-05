@@ -17,16 +17,35 @@ package com.googlesource.gerrit.plugins.multisite.event;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.events.EventListener;
+import com.google.inject.Scopes;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
+import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdateImpl;
+import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdateNoOp;
 import java.util.concurrent.Executor;
 
 public class EventModule extends LifecycleModule {
+
+  private final Configuration config;
+
+  public EventModule(Configuration config) {
+    this.config = config;
+  }
 
   @Override
   protected void configure() {
     bind(Executor.class).annotatedWith(EventExecutor.class).toProvider(EventExecutorProvider.class);
     listener().to(EventExecutorProvider.class);
     DynamicSet.bind(binder(), EventListener.class).to(EventHandler.class);
-    DynamicSet.bind(binder(), EventListener.class).to(ProjectVersionRefUpdate.class);
+    if (config.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {
+      DynamicSet.bind(binder(), EventListener.class).to(ProjectVersionRefUpdateImpl.class);
+      bind(ProjectVersionRefUpdate.class)
+          .to(ProjectVersionRefUpdateImpl.class)
+          .in(Scopes.SINGLETON);
+    } else {
+      bind(ProjectVersionRefUpdate.class)
+          .to(ProjectVersionRefUpdateNoOp.class)
+          .in(Scopes.SINGLETON);
+    }
   }
 }

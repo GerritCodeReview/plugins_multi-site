@@ -15,18 +15,16 @@
 package com.googlesource.gerrit.plugins.multisite.validation;
 
 import java.util.Optional;
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectIdRef;
-import org.eclipse.jgit.lib.Ref;
 
-public interface ProjectVersionRefUpdate {
+public class ProjectVersionRefUpdateNoOp implements ProjectVersionRefUpdate {
 
-  String MULTI_SITE_VERSIONING_REF = "refs/multi-site/version";
-  String MULTI_SITE_VERSIONING_VALUE_REF = "refs/multi-site/version/value";
-  Ref NULL_PROJECT_VERSION_REF =
-      new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId());
+  @Override
+  public Optional<Long> getProjectLocalVersion(String projectName) {
+    return Optional.empty();
+  }
 
-  Optional<Long> getProjectLocalVersion(String projectName);
-
-  Optional<Long> getProjectRemoteVersion(String projectName);
+  @Override
+  public Optional<Long> getProjectRemoteVersion(String projectName) {
+    return Optional.empty();
+  }
 }
