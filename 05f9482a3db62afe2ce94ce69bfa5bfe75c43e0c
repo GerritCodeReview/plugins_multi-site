@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7beacccf_32a2fe57",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/GitModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-07T15:01:39Z",
+      "side": 1,
+      "message": "The binding of the Log4jProjectVersionLogger has been moved here from the ValidationModule() and that makes sense.\n\nHowever the SharedRefDbConfiguration is still been left the ValidationModule() [1], is that wanted?\n\nAlso,looking at the related issue it seems that the plugin would fail to start because when `refs-database.enabled` is set to false, these bindings never happen (since the ValidationModule() is not installed).\n\nWouldn\u0027t be enough just to move the relevant binding outside the ValidationModule?\nWhat\u0027s the point of creating an interface for ProjectVersionRefUpdate?\n\n[1]https://gerrit.googlesource.com/plugins/multi-site/+/refs/changes/77/327377/1/src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java#66",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 73
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afdd517d_dcb37602",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-07T15:01:39Z",
+      "side": 1,
+      "message": "Why do we need the NoOp at all?\nCould we not always bind ProjectVersionRefUpdateImpl and only bind the eventListener when the sharedRefDb is enabled?\n\nIf the eventListener is disabled the ProjectVersionRefUpdate will never be triggered anyway right?",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 32
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38ccb232_c62b2245",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-07T15:01:39Z",
+      "side": 1,
+      "message": "2022",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd5e7cb1_3b26eb30",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateNoOp.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-07T15:01:39Z",
+      "side": 1,
+      "message": "2022",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33b07632_1d6ed074",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-07T15:01:39Z",
+      "side": 1,
+      "message": "nit: remove empty line",
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "289d5588_2b3602a3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/http/ReplicationStatusServletIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-07T15:01:39Z",
+      "side": 1,
+      "message": "nit: remove empty line",
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecde435c_21a8867e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-07T15:01:39Z",
+      "side": 1,
+      "message": "In addition to this change, shouldn\u0027t we have a test that explicitly checks that the binding is satisfied when global-refdb is disabled?",
+      "range": {
+        "startLine": 113,
+        "startChar": 4,
+        "endLine": 113,
+        "endChar": 36
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
