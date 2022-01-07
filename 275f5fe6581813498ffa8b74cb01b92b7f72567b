@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7d8bec4_76b32095",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-07T23:04:10Z",
+      "side": 1,
+      "message": "Yes, good point. I\u0027ll also add the link to the AWS/MSK documentation that mentions the use of REST-PROXY as a connectivity solution.",
+      "parentUuid": "96ff50fc_9c612ddf",
+      "range": {
+        "startLine": 14,
+        "startChar": 32,
+        "endLine": 15,
+        "endChar": 19
+      },
+      "revId": "275f5fe6581813498ffa8b74cb01b92b7f72567b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e73be2c5_6907ce75",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-12-17T09:47:13Z",
       "side": 1,
       "message": "Looks like the latest is 7.0.1, any compatibility reason not to use that one?",
+      "range": {
+        "startLine": 16,
+        "startChar": 38,
+        "endLine": 16,
+        "endChar": 43
+      },
+      "revId": "275f5fe6581813498ffa8b74cb01b92b7f72567b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82fcde03_0273f247",
+        "filename": "docker-compose.kafka-broker.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-07T23:04:10Z",
+      "side": 1,
+      "message": "Every version of the Kafka-REST Proxy is tied with a specific version of Kafka. The 6.0.5 is the latest version that supports Kafka v2.6.x.",
+      "parentUuid": "e73be2c5_6907ce75",
       "range": {
         "startLine": 16,
         "startChar": 38,
