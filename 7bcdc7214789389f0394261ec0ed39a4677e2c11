@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14e08728_36fc8112",
+        "filename": "setup_local_env/configs/gerrit.config",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-10T21:18:06Z",
+      "side": 0,
+      "message": "We should keep those as well, then we can just flip the clientType",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 28
+      },
+      "revId": "7bcdc7214789389f0394261ec0ed39a4677e2c11",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

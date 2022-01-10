@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4272dfa_a072ba0c",
+        "filename": "setup_local_env/docker-compose-kafka.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-10T21:18:06Z",
+      "side": 1,
+      "message": "This needs to be parametrised, so that we use \u0027kafka\u0027 with clientType\u003dREST and 127.0.0.1 when clientType\u003dNATIVE",
+      "range": {
+        "startLine": 9,
+        "startChar": 34,
+        "endLine": 9,
+        "endChar": 39
+      },
+      "revId": "de1caaee67725484d71d00d6382b129fc12c1c90",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
