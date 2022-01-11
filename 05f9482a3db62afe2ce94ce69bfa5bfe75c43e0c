@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1bff5cf8_fba0e6ba",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/GitModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-01-11T08:51:41Z",
+      "side": 1,
+      "message": "\u003e However the SharedRefDbConfiguration is still been left the ValidationModule() [1], is that wanted?\n\nGood catch it should not be there\n\n\u003e Wouldn\u0027t be enough just to move the relevant binding outside the ValidationModule?\n\u003e What\u0027s the point of creating an interface for ProjectVersionRefUpdate?\n\nProjectVersionRefUpdate is using SharedRefDatabaseWrapper and I thought the same I will just move in to ValidationModule and done. Unfortunately ReplicationStatus is using ProjectVersionRefUpdate so ProjectVersionRefUpdate must be always provided.",
+      "parentUuid": "7beacccf_32a2fe57",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 73
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96277855_d6a7d40a",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
         "patchSetId": 1
@@ -96,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a8960853_c1089ba7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-01-11T08:51:41Z",
+      "side": 1,
+      "message": "That was my initial idea as well, to move all the binding related to the globa-refdb to ValidationModule and use it only when ref-db is enabled(that\u0027s how it was done before the regression). Unfortunately it\u0027s not that easy because   ProjectVersionRefUpdate is injected to the ReplicationStatus and ReplicationStatus is used in many places. That\u0027s why if I cannot skip bindings I decided to introduce NoOp implementation",
+      "parentUuid": "44bc37cb_d8d39737",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 32
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "38ccb232_c62b2245",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
         "patchSetId": 1
@@ -107,6 +155,30 @@
       "writtenOn": "2022-01-07T15:01:39Z",
       "side": 1,
       "message": "2022",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28a9b2e7_38341a11",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdate.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-01-11T08:51:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38ccb232_c62b2245",
       "range": {
         "startLine": 1,
         "startChar": 17,
@@ -140,6 +212,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5feda282_74f58cff",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-01-11T08:51:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b85632b6_c48fef12",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd5e7cb1_3b26eb30",
@@ -153,6 +249,30 @@
       "writtenOn": "2022-01-07T15:01:39Z",
       "side": 1,
       "message": "2022",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05311cdd_924fc195",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateNoOp.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-01-11T08:51:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd5e7cb1_3b26eb30",
       "range": {
         "startLine": 1,
         "startChar": 17,
@@ -180,6 +300,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06a726cc_ce15de96",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-01-11T08:51:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33b07632_1d6ed074",
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "289d5588_2b3602a3",
@@ -197,6 +335,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c25e6c8_1962b6d8",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/http/ReplicationStatusServletIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-01-11T08:51:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "289d5588_2b3602a3",
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ecde435c_21a8867e",
@@ -210,6 +366,30 @@
       "writtenOn": "2022-01-07T15:01:39Z",
       "side": 1,
       "message": "In addition to this change, shouldn\u0027t we have a test that explicitly checks that the binding is satisfied when global-refdb is disabled?",
+      "range": {
+        "startLine": 113,
+        "startChar": 4,
+        "endLine": 113,
+        "endChar": 36
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fe1d9a3_94e2fa4a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-01-11T08:51:41Z",
+      "side": 1,
+      "message": "Good point I will add the test",
+      "parentUuid": "ecde435c_21a8867e",
       "range": {
         "startLine": 113,
         "startChar": 4,
