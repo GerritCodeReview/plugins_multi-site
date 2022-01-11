@@ -1,89 +1,21 @@
 {
-  "comments": [],
-  "submitRequirementResults": [
+  "comments": [
     {
-      "submitRequirement": {
-        "name": "Code-Review",
-        "description": {
-          "value": "At least one maximum vote for label \u0027Code-Review\u0027 is required"
-        },
-        "applicabilityExpression": {},
-        "submittabilityExpression": {
-          "expressionString": "label:Code-Review\u003dMAX,user\u003dnon_uploader AND -label:Code-Review\u003dMIN"
-        },
-        "overrideExpression": {},
-        "allowOverrideInChildProjects": true
+      "unresolved": true,
+      "key": {
+        "uuid": "16e6891f_9663eb1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
       },
-      "applicabilityExpressionResult": {},
-      "submittabilityExpressionResult": {
-        "expression": {
-          "expressionString": "label:Code-Review\u003dMAX,user\u003dnon_uploader AND -label:Code-Review\u003dMIN"
-        },
-        "status": "PASS",
-        "errorMessage": {},
-        "passingAtoms": [
-          "label:Code-Review\u003dMAX,user\u003dnon_uploader"
-        ],
-        "failingAtoms": [
-          "label:Code-Review\u003dMIN"
-        ]
+      "lineNbr": 0,
+      "author": {
+        "id": 1139902
       },
-      "overrideExpressionResult": {},
-      "patchSetCommitId": "7bcdc7214789389f0394261ec0ed39a4677e2c11",
-      "legacy": {
-        "value": false
-      },
-      "forced": {}
-    },
-    {
-      "submitRequirement": {
-        "name": "Verified",
-        "description": {
-          "value": "CI result status for build and tests is passing"
-        },
-        "applicabilityExpression": {
-          "value": {
-            "expressionString": "-branch:refs/meta/config"
-          }
-        },
-        "submittabilityExpression": {
-          "expressionString": "label:Verified\u003dMAX AND -label:Verified\u003dMIN"
-        },
-        "overrideExpression": {},
-        "allowOverrideInChildProjects": true
-      },
-      "applicabilityExpressionResult": {
-        "value": {
-          "expression": {
-            "expressionString": "-branch:refs/meta/config"
-          },
-          "status": "PASS",
-          "errorMessage": {},
-          "passingAtoms": [],
-          "failingAtoms": [
-            "branch:refs/meta/config"
-          ]
-        }
-      },
-      "submittabilityExpressionResult": {
-        "expression": {
-          "expressionString": "label:Verified\u003dMAX AND -label:Verified\u003dMIN"
-        },
-        "status": "PASS",
-        "errorMessage": {},
-        "passingAtoms": [
-          "label:Verified\u003dMAX"
-        ],
-        "failingAtoms": [
-          "label:Verified\u003dMIN"
-        ]
-      },
-      "overrideExpressionResult": {},
-      "patchSetCommitId": "7bcdc7214789389f0394261ec0ed39a4677e2c11",
-      "legacy": {
-        "value": false
-      },
-      "forced": {}
+      "writtenOn": "2022-01-11T03:26:45Z",
+      "side": 1,
+      "message": "lgtm",
+      "revId": "7bcdc7214789389f0394261ec0ed39a4677e2c11",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
