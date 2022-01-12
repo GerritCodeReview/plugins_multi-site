@@ -73,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84119696_af96c6f1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-12T09:53:13Z",
+      "side": 1,
+      "message": "Good point: we should check it before L40 and throw a more specific exception rather than NPE in that case.",
+      "parentUuid": "96277855_d6a7d40a",
+      "range": {
+        "startLine": 40,
+        "startChar": 45,
+        "endLine": 40,
+        "endChar": 59
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "afdd517d_dcb37602",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
         "patchSetId": 1
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "That was my initial idea as well, to move all the binding related to the globa-refdb to ValidationModule and use it only when ref-db is enabled(that\u0027s how it was done before the regression). Unfortunately it\u0027s not that easy because   ProjectVersionRefUpdate is injected to the ReplicationStatus and ReplicationStatus is used in many places. That\u0027s why if I cannot skip bindings I decided to introduce NoOp implementation",
       "parentUuid": "44bc37cb_d8d39737",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 32
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae5d67f1_b30f580c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-01-12T09:53:13Z",
+      "side": 1,
+      "message": "Have you tried an optional binding instead?",
+      "parentUuid": "a8960853_c1089ba7",
       "range": {
         "startLine": 46,
         "startChar": 0,
