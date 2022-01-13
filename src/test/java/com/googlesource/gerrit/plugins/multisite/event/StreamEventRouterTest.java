@@ -55,6 +55,6 @@ public class StreamEventRouterTest {
         Change.id(1),
         Account.id(1),
         BranchNameKey.create("proj", "refs/heads/master"),
-        TimeUtil.nowTs());
+        TimeUtil.now());
   }
 }
