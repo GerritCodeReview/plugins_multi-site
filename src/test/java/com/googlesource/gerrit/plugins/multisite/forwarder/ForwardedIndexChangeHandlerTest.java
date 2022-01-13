@@ -83,7 +83,7 @@ public class ForwardedIndexChangeHandlerTest {
   public void setUp() throws Exception {
     when(ctxMock.open()).thenReturn(manualRequestContextMock);
     id = Change.id(TEST_CHANGE_NUMBER);
-    change = new Change(null, id, null, null, TimeUtil.nowTs());
+    change = new Change(null, id, null, null, TimeUtil.now());
     when(changeNotes.getChange()).thenReturn(change);
     when(changeCheckerFactoryMock.create(any())).thenReturn(changeCheckerAbsentMock);
     when(configurationMock.index()).thenReturn(index);
