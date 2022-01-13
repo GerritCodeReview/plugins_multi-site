@@ -128,6 +128,6 @@ public class IndexEventSubscriberTest extends AbstractSubscriberTestBase {
         Change.id(CHANGE_ID),
         Account.id(9999),
         BranchNameKey.create(Project.nameKey(PROJECT_NAME), "refs/heads/master"),
-        TimeUtil.nowTs());
+        TimeUtil.now());
   }
 }
