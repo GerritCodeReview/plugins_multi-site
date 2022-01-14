@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9cd546a_80a23e58",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-01-14T06:42:48Z",
+      "side": 1,
+      "message": "This adaptation has nothing to do with the dropped TimeUtil.now() method in gerrit core.The reason is change 327257, \"Use Instant instead of Date/Timestamp\" to fix more cases of JdkObsolete: [2] and JavaUtilDate bug pattern flagged by Error Prone: [3], that states:\n\n  Date has a bad API that leads to bugs; prefer java.time.Instant or LocalDate.\n  \nThe goal is to replace all occurrences of Timestamp with Instant.\n\nIn the above code, you could omit the conversion from Instant to Timesatmpm but then you would need to compare Instant with Timestamp on line 158 below, so that I would wait with the conversion, once the whole code base is migrated to using new Time API in gerrit core.\n\nJust update the commit message and you are fine.\n\n[1] https://gerrit-review.googlesource.com/c/gerrit/+/327257/2/java/com/google/gerrit/entities/Change.java#454\n[2] https://errorprone.info/bugpattern/JdkObsolete\n[3] https://errorprone.info/bugpattern/JavaUtilDate",
+      "range": {
+        "startLine": 154,
+        "startChar": 4,
+        "endLine": 154,
+        "endChar": 67
+      },
+      "revId": "03108646513465a7bdee521e690352d92bc6d0c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
