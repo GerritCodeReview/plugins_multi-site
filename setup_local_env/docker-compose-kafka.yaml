@@ -11,14 +11,32 @@ services:
     networks:
       - setup_local_env_default
 
-  kafka-rest:
+  kafka-rest-1:
     image: confluentinc/cp-kafka-rest:6.0.5
     ports:
       - "8082:8082"
     environment:
+      KAFKA_REST_ID: kafka_rest_1
       KAFKA_REST_HOST_NAME: 127.0.0.1
       KAFKA_REST_BOOTSTRAP_SERVERS: kafka:9092
       KAFKA_REST_LISTENER: http://127.0.0.1:8082
+
+  kafka-rest-2:
+    image: confluentinc/cp-kafka-rest:6.0.5
+    ports:
+      - "8083:8082"
+    environment:
+      KAFKA_REST_ID: kafka_rest_2
+      KAFKA_REST_HOST_NAME: 127.0.0.1
+      KAFKA_REST_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_REST_LISTENER: http://127.0.0.1:8082
+
+  haproxy-kafka:
+    image: haproxy:latest
+    ports:
+      - "8085:8080"
+    volumes:
+     - "./haproxy-config-kafka:/usr/local/etc/haproxy"
 
 networks:
   setup_local_env_default:
