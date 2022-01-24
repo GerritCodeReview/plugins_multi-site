@@ -95,6 +95,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4074671b_0008e394",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-01-24T09:51:22Z",
+      "side": 1,
+      "message": "I don\u0027t this so because this code is already used in different part of the code, but I will double check and address it as a follow up if needed",
+      "parentUuid": "84119696_af96c6f1",
+      "range": {
+        "startLine": 40,
+        "startChar": 45,
+        "endLine": 40,
+        "endChar": 59
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afdd517d_dcb37602",
