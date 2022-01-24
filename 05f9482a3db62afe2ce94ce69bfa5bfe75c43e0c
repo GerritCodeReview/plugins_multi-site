@@ -542,6 +542,30 @@
       },
       "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87e29428_d41704f1",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-01-24T09:55:28Z",
+      "side": 1,
+      "message": "I don\u0027t see any test which is actually testing the bindings. I mean test which is using the real modules to load the bindings instead of the test modules",
+      "parentUuid": "0141fb44_02b79a8c",
+      "range": {
+        "startLine": 113,
+        "startChar": 4,
+        "endLine": 113,
+        "endChar": 36
+      },
+      "revId": "05f9482a3db62afe2ce94ce69bfa5bfe75c43e0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
