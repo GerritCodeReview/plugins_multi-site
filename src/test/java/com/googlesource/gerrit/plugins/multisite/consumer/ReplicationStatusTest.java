@@ -15,7 +15,6 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 import com.google.common.cache.Cache;
@@ -23,9 +22,9 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.server.project.ProjectCache;
-import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
+import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +36,6 @@ public class ReplicationStatusTest {
 
   @Mock private ProjectVersionLogger verLogger;
   @Mock private ProjectCache projectCache;
-  @Mock private Provider<ProjectVersionRefUpdate> projectVersionRefUpdateProvider;
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
   private ReplicationStatus objectUnderTest;
   private Cache<String, Long> replicationStatusCache;
@@ -50,8 +48,7 @@ public class ReplicationStatusTest {
     replicationStatusCache = CacheBuilder.newBuilder().build();
     objectUnderTest =
         new ReplicationStatus(
-            replicationStatusCache, projectVersionRefUpdateProvider, verLogger, projectCache);
-    lenient().when(projectVersionRefUpdateProvider.get()).thenReturn(projectVersionRefUpdate);
+            replicationStatusCache, Optional.of(projectVersionRefUpdate), verLogger, projectCache);
   }
 
   @Test

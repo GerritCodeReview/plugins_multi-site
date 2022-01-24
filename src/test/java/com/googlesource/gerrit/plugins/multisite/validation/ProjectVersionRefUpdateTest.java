@@ -110,7 +110,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
 
-    new ProjectVersionRefUpdate(
+    new ProjectVersionRefUpdateImpl(
             repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
         .onEvent(refUpdatedEvent);
 
@@ -155,7 +155,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
 
-    new ProjectVersionRefUpdate(
+    new ProjectVersionRefUpdateImpl(
             repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
         .onEvent(refUpdatedEvent);
 
@@ -195,7 +195,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
 
-    new ProjectVersionRefUpdate(
+    new ProjectVersionRefUpdateImpl(
             repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
         .onEvent(refUpdatedEvent);
 
@@ -238,7 +238,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     when(refUpdatedEvent.getRefName()).thenReturn(magicRefName);
     repo.branch(magicRefName).commit().create();
 
-    new ProjectVersionRefUpdate(
+    new ProjectVersionRefUpdateImpl(
             repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
         .onEvent(refUpdatedEvent);
 
@@ -254,7 +254,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(Project.nameKey("aNonExistentProject"));
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
 
-    new ProjectVersionRefUpdate(
+    new ProjectVersionRefUpdateImpl(
             repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
         .onEvent(refUpdatedEvent);
 
@@ -276,7 +276,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     Thread.sleep(1000L);
     repo.branch("master").update(masterCommit);
 
-    new ProjectVersionRefUpdate(
+    new ProjectVersionRefUpdateImpl(
             repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
         .onEvent(refUpdatedEvent);
 
@@ -292,7 +292,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
         .thenReturn(Optional.of("123"));
 
     Optional<Long> version =
-        new ProjectVersionRefUpdate(
+        new ProjectVersionRefUpdateImpl(
                 repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
             .getProjectRemoteVersion(A_TEST_PROJECT_NAME);
 
