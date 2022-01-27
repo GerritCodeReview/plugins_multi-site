@@ -24,6 +24,7 @@ public abstract class BrokerForwarder {
   private static final CharSequence HIGH_AVAILABILITY_FORWARDER = "Forwarded-Index-Event";
   private static final CharSequence HIGH_AVAILABILITY_BATCH_FORWARDER =
       "Forwarded-BatchIndex-Event";
+  private static final CharSequence HIGH_AVAILABILITY_AUTO_REINDEX = "HighAvailability-AutoReindex";
 
   private final BrokerApiWrapper broker;
 
@@ -36,7 +37,8 @@ public abstract class BrokerForwarder {
 
     return currentThreadName.contains(HIGH_AVAILABILITY_PLUGIN)
         || currentThreadName.contains(HIGH_AVAILABILITY_FORWARDER)
-        || currentThreadName.contains(HIGH_AVAILABILITY_BATCH_FORWARDER);
+        || currentThreadName.contains(HIGH_AVAILABILITY_BATCH_FORWARDER)
+        || currentThreadName.contains(HIGH_AVAILABILITY_AUTO_REINDEX);
   }
 
   protected boolean send(ForwarderTask task, EventTopic eventTopic, MultiSiteEvent event) {
