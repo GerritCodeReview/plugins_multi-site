@@ -38,20 +38,22 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectListUpdateHandlerTest {
-
+  private static final String PLUGIN_NAME = "multi-site";
   private ProjectListUpdateHandler handler;
 
   @Mock private ProjectListUpdateForwarder forwarder;
 
   @Before
   public void setUp() {
-    handler = new ProjectListUpdateHandler(asDynamicSet(forwarder), MoreExecutors.directExecutor());
+    handler =
+        new ProjectListUpdateHandler(
+            asDynamicSet(forwarder), MoreExecutors.directExecutor(), PLUGIN_NAME);
   }
 
   private DynamicSet<ProjectListUpdateForwarder> asDynamicSet(
       ProjectListUpdateForwarder forwarder) {
     DynamicSet<ProjectListUpdateForwarder> result = new DynamicSet<>();
-    result.add("multi-site", forwarder);
+    result.add(PLUGIN_NAME, forwarder);
     return result;
   }
 
@@ -92,11 +94,15 @@ public class ProjectListUpdateHandlerTest {
     ProjectListUpdateTask task =
         handler.new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, false));
     assertThat(task.toString())
-        .isEqualTo(String.format("Update project list in target instance: add '%s'", projectName));
+        .isEqualTo(
+            String.format(
+                "[%s] Update project list in target instance: add '%s'", PLUGIN_NAME, projectName));
 
     task = handler.new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, true));
     assertThat(task.toString())
         .isEqualTo(
-            String.format("Update project list in target instance: remove '%s'", projectName));
+            String.format(
+                "[%s] Update project list in target instance: remove '%s'",
+                PLUGIN_NAME, projectName));
   }
 }
