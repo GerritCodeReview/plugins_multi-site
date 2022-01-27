@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2528de21_8d5b3fd3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarder.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2022-01-27T16:09:04Z",
+      "side": 1,
+      "message": "I don\u0027t know why the other thread names are instantiated as `CharSequence`s instead of `String`s, but assuming there\u0027s a reason I\u0027d expect this to follow the same pattern.",
+      "range": {
+        "startLine": 27,
+        "startChar": 23,
+        "endLine": 27,
+        "endChar": 29
+      },
+      "revId": "049fd0e0c581e3762b4fb1eb9f089e69d02fa339",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
