@@ -19,8 +19,10 @@ import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
+
 import java.util.concurrent.Executor;
 
 class EventHandler implements EventListener {
@@ -28,7 +30,9 @@ class EventHandler implements EventListener {
   private final DynamicSet<StreamEventForwarder> forwarders;
 
   @Inject
-  EventHandler(DynamicSet<StreamEventForwarder> forwarders, @EventExecutor Executor executor) {
+  EventHandler(
+      DynamicSet<StreamEventForwarder> forwarders,
+      @EventExecutor Executor executor) {
     this.forwarders = forwarders;
     this.executor = executor;
   }
@@ -54,7 +58,7 @@ class EventHandler implements EventListener {
 
     @Override
     public String toString() {
-      return String.format("Send event '%s' to target instance", event.type);
+      return String.format("[%s] Send event '%s' to target instance", Configuration.PLUGIN_NAME, event.type);
     }
   }
 }
