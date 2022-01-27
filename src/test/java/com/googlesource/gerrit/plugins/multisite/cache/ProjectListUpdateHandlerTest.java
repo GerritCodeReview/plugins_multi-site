@@ -26,6 +26,7 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.extensions.events.NewProjectCreatedListener;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.cache.ProjectListUpdateHandler.ProjectListUpdateTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
@@ -38,7 +39,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProjectListUpdateHandlerTest {
-
   private ProjectListUpdateHandler handler;
 
   @Mock private ProjectListUpdateForwarder forwarder;
@@ -92,11 +92,16 @@ public class ProjectListUpdateHandlerTest {
     ProjectListUpdateTask task =
         handler.new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, false));
     assertThat(task.toString())
-        .isEqualTo(String.format("Update project list in target instance: add '%s'", projectName));
+        .isEqualTo(
+            String.format(
+                "[%s] Update project list in target instance: add '%s'",
+                Configuration.PLUGIN_NAME, projectName));
 
     task = handler.new ProjectListUpdateTask(new ProjectListUpdateEvent(projectName, true));
     assertThat(task.toString())
         .isEqualTo(
-            String.format("Update project list in target instance: remove '%s'", projectName));
+            String.format(
+                "[%s] Update project list in target instance: remove '%s'",
+                Configuration.PLUGIN_NAME, projectName));
   }
 }

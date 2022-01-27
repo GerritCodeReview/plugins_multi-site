@@ -21,6 +21,7 @@ import com.google.gerrit.extensions.events.GroupIndexedListener;
 import com.google.gerrit.extensions.events.ProjectIndexedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
@@ -173,7 +174,9 @@ class IndexEventHandler
 
     @Override
     public String toString() {
-      return String.format("Index change %s in target instance", changeIndexEvent.changeId);
+      return String.format(
+          "[%s] Index change %s in target instance",
+          Configuration.PLUGIN_NAME, changeIndexEvent.changeId);
     }
   }
 
@@ -204,7 +207,9 @@ class IndexEventHandler
 
     @Override
     public String toString() {
-      return String.format("Index change %s in target instance", changeIndexEvent.changeId);
+      return String.format(
+          "[%s] Index change %s in target instance",
+          Configuration.PLUGIN_NAME, changeIndexEvent.changeId);
     }
   }
 
@@ -235,7 +240,9 @@ class IndexEventHandler
 
     @Override
     public String toString() {
-      return String.format("Index account %s in target instance", accountIndexEvent.accountId);
+      return String.format(
+          "[%s] Index account %s in target instance",
+          Configuration.PLUGIN_NAME, accountIndexEvent.accountId);
     }
   }
 
@@ -266,7 +273,9 @@ class IndexEventHandler
 
     @Override
     public String toString() {
-      return String.format("Index group %s in target instance", groupIndexEvent.groupUUID);
+      return String.format(
+          "[%s] Index group %s in target instance",
+          Configuration.PLUGIN_NAME, groupIndexEvent.groupUUID);
     }
   }
 
@@ -297,7 +306,9 @@ class IndexEventHandler
 
     @Override
     public String toString() {
-      return String.format("Index project %s in target instance", projectIndexEvent.projectName);
+      return String.format(
+          "[%s] Index project %s in target instance",
+          Configuration.PLUGIN_NAME, projectIndexEvent.projectName);
     }
   }
 }

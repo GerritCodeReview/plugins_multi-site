@@ -20,6 +20,7 @@ import com.google.gerrit.extensions.events.ProjectEvent;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
@@ -73,8 +74,10 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
     @Override
     public String toString() {
       return String.format(
-          "Update project list in target instance: %s '%s'",
-          projectListUpdateEvent.remove ? "remove" : "add", projectListUpdateEvent.projectName);
+          "[%s] Update project list in target instance: %s '%s'",
+          Configuration.PLUGIN_NAME,
+          projectListUpdateEvent.remove ? "remove" : "add",
+          projectListUpdateEvent.projectName);
     }
   }
 }

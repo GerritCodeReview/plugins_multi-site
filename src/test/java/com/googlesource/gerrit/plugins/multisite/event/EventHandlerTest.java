@@ -24,6 +24,7 @@ import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.event.EventHandler.EventTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
@@ -35,7 +36,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventHandlerTest {
-
   private EventHandler eventHandler;
 
   @Mock private StreamEventForwarder forwarder;
@@ -77,6 +77,8 @@ public class EventHandlerTest {
     Event event = new RefUpdatedEvent();
     EventTask task = eventHandler.new EventTask(event);
     assertThat(task.toString())
-        .isEqualTo(String.format("Send event '%s' to target instance", event.type));
+        .isEqualTo(
+            String.format(
+                "[%s] Send event '%s' to target instance", Configuration.PLUGIN_NAME, event.type));
   }
 }

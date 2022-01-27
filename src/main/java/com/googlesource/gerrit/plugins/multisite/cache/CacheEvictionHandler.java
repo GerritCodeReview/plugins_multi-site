@@ -18,6 +18,7 @@ import com.google.common.cache.RemovalNotification;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.cache.CacheRemovalListener;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
@@ -61,8 +62,8 @@ class CacheEvictionHandler<K, V> implements CacheRemovalListener<K, V> {
     @Override
     public String toString() {
       return String.format(
-          "Evict key '%s' from cache '%s' in target instance",
-          cacheEvictionEvent.key, cacheEvictionEvent.cacheName);
+          "[%s] Evict key '%s' from cache '%s' in target instance",
+          Configuration.PLUGIN_NAME, cacheEvictionEvent.key, cacheEvictionEvent.cacheName);
     }
   }
 }
