@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a30430b_88b772cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-01-27T16:45:21Z",
+      "side": 1,
+      "message": "@PluginName annotation is not available when multi-site is loaded as library.\n\n3) No implementation for java.lang.String annotated with @com.google.gerrit.extensions.annotations.PluginName() was bound.\n  Did you mean?\n    * java.lang.String annotated with interface com.google.gerrit.server.config.GerritInstanceName\n    * java.lang.String annotated with interface com.google.gerrit.server.config.CanonicalWebUrl\n  while locating java.lang.String annotated with @com.google.gerrit.extensions.annotations.PluginName()\n    for the 3rd parameter of com.googlesource.gerrit.plugins.multisite.event.EventHandler.\u003cinit\u003e(Unknown Source)\n  at com.google.gerrit.extensions.registration.DynamicSet.bind(DynamicSet.java:110) (via modules: com.googlesource.gerrit.plugins.multisite.Module -\u003e com.googlesource.gerrit.plugins.multisite.event.EventModule)\n  \n  \nWe need to use a static string instead.",
+      "revId": "fbd59f954a5f9b32e9ae0e6752cbbedace9eaa6d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
