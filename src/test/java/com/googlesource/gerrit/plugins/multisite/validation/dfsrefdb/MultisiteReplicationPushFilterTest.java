@@ -22,6 +22,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.testing.InMemoryRepositoryManager;
 import com.google.gerrit.testing.InMemoryTestEnvironment;
 import com.google.inject.Inject;
@@ -59,14 +60,19 @@ public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestC
 
   @Inject private InMemoryRepositoryManager gitRepositoryManager;
 
-  String project = A_TEST_PROJECT_NAME;
+  String project;
 
   private TestRepository<InMemoryRepository> repo;
 
+  @Override
   @Before
   public void setUp() throws Exception {
-    InMemoryRepository inMemoryRepo =
-        gitRepositoryManager.createRepository(A_TEST_PROJECT_NAME_KEY);
+    setUp(A_TEST_PROJECT_NAME, A_TEST_PROJECT_NAME_KEY);
+  }
+
+  private void setUp(String projectName, Project.NameKey projectNameKey) throws Exception {
+    project = projectName;
+    InMemoryRepository inMemoryRepo = gitRepositoryManager.createRepository(projectNameKey);
     repo = new TestRepository<>(inMemoryRepo);
   }
 
@@ -141,6 +147,19 @@ public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestC
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactly(refUpToDate, refChangeUpToDate);
+  }
+
+  @Test
+  public void shouldFilterProjectNameEndingWithPlus() throws Exception {
+    setUp("testrepo+", new Project.NameKey("testrepo+"));
+    RemoteRefUpdate refUpdate = refUpdate("refs/heads/foo");
+    doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(project), any());
+
+    MultisiteReplicationPushFilter pushFilter =
+        new MultisiteReplicationPushFilter(sharedRefDatabaseMock, gitRepositoryManager);
+    List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, Arrays.asList(refUpdate));
+
+    assertThat(filteredRefUpdates).contains(refUpdate);
   }
 
   private SharedRefDatabaseWrapper newSharedRefDatabase(String... rejectedRefs) {

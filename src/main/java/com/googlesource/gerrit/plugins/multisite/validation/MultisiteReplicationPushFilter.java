@@ -62,7 +62,7 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
   public List<RemoteRefUpdate> filter(String projectName, List<RemoteRefUpdate> remoteUpdatesList) {
     Set<String> outdatedChanges = new HashSet<>();
     try (Repository repository =
-        gitRepositoryManager.openRepository(Project.NameKey.parse(projectName))) {
+        gitRepositoryManager.openRepository(new Project.NameKey(projectName))) {
       List<RemoteRefUpdate> filteredRefUpdates =
           remoteUpdatesList.stream()
               .filter(
