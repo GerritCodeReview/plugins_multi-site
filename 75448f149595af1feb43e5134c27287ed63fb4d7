@@ -46,6 +46,30 @@
       },
       "revId": "75448f149595af1feb43e5134c27287ed63fb4d7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4fcf7c3_5bf329af",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/MultisiteReplicationPushFilterTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2022-02-19T19:04:38Z",
+      "side": 1,
+      "message": "I believe it is OK when one test gets an extra step to be executed whereas the rest of them benefit from the common setup...",
+      "parentUuid": "dde51d34_8240c45c",
+      "range": {
+        "startLine": 154,
+        "startChar": 4,
+        "endLine": 154,
+        "endChar": 57
+      },
+      "revId": "75448f149595af1feb43e5134c27287ed63fb4d7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
