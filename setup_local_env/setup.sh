@@ -550,6 +550,7 @@ else
 fi
 
 cat $SCRIPT_DIR/configs/prometheus.yml | envsubst > $COMMON_LOCATION/prometheus.yml
+cp $SCRIPT_DIR/kafka-rest-config/*.properties $COMMON_LOCATION/
 
 export_broker_port
 ensure_docker_compose_is_up_and_running "core" "prometheus_test_node" "docker-compose-core.yaml"

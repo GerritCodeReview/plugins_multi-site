@@ -19,6 +19,13 @@ services:
       KAFKA_REST_HOST_NAME: 127.0.0.1
       KAFKA_REST_BOOTSTRAP_SERVERS: kafka:9092
       KAFKA_REST_LISTENER: http://127.0.0.1:8082
+      KAFKA_REST_AUTHENTICATION_METHOD: BASIC
+      KAFKA_REST_AUTHENTICATION_REALM: KafkaRest
+      KAFKA_REST_AUTHENTICATION_ROLES: GerritRole
+      KAFKAREST_OPTS: "-Djava.security.auth.login.config=/etc/kafka-rest/rest-jaas.properties"
+    volumes:
+     - $COMMON_LOCATION/rest-jaas.properties:/etc/kafka-rest/rest-jaas.properties
+     - $COMMON_LOCATION/password.properties:/etc/kafka-rest/password.properties
 
 networks:
   setup_local_env_default:
