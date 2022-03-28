@@ -26,7 +26,6 @@ import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Module;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
@@ -61,14 +60,14 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
 
   private final Map<String, Long> localVersionPerProject = new HashMap<>();
   private final Cache<String, Long> cache;
-  private final Provider<ProjectVersionRefUpdate> projectVersionRefUpdate;
+  private final Optional<ProjectVersionRefUpdate> projectVersionRefUpdate;
   private final ProjectVersionLogger verLogger;
   private final ProjectCache projectCache;
 
   @Inject
   public ReplicationStatus(
       @Named(REPLICATION_STATUS_CACHE) Cache<String, Long> cache,
-      Provider<ProjectVersionRefUpdate> projectVersionRefUpdate,
+      Optional<ProjectVersionRefUpdate> projectVersionRefUpdate,
       ProjectVersionLogger verLogger,
       ProjectCache projectCache) {
     this.cache = cache;
@@ -99,9 +98,11 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
 
   public void updateReplicationLag(Project.NameKey projectName) {
     Optional<Long> remoteVersion =
-        projectVersionRefUpdate.get().getProjectRemoteVersion(projectName.get());
+        projectVersionRefUpdate.flatMap(
+            refUpdate -> refUpdate.getProjectRemoteVersion(projectName.get()));
     Optional<Long> localVersion =
-        projectVersionRefUpdate.get().getProjectLocalVersion(projectName.get());
+        projectVersionRefUpdate.flatMap(
+            refUpdate -> refUpdate.getProjectLocalVersion(projectName.get()));
     if (remoteVersion.isPresent() && localVersion.isPresent()) {
       long lag = remoteVersion.get() - localVersion.get();
 

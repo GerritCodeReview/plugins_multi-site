@@ -54,7 +54,7 @@ public class Module extends LifecycleModule {
       install(new CacheModule());
     }
     if (config.event().synchronize()) {
-      install(new EventModule());
+      install(new EventModule(config));
     }
     if (config.index().synchronize()) {
       install(new IndexModule());
