@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ffa9f57_2e407fd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-06-14T07:58:57Z",
+      "side": 1,
+      "message": "Probably unrelated to your change, but the CI fails because of:\n\n```\nplugins/multi-site/src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java:154: error: incompatible types: Timestamp cannot be converted to Instant\n    Timestamp changeTs \u003d Timestamp.from(change.getLastUpdatedOn());\n                                                               ^\nTarget //plugins/multi-site:multi-site failed to build\n```",
+      "revId": "d58e9e29cdee27a5fad15d5222cc4abcba738805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
