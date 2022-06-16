@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0760b8ce_e64644ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2022-06-16T16:07:52Z",
+      "side": 1,
+      "message": "Build breakage doesn\u0027t seem to be related:\n\n```\n--2022-06-16 16:05:14--  https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.4/job/plugin-websession-broker-bazel-master-stable-3.4/lastSuccessfulBuild/artifact/bazel-bin/plugins/websession-broker/websession-broker.jar\nResolving gerrit-ci.gerritforge.com (gerrit-ci.gerritforge.com)... 8.26.94.23\nConnecting to gerrit-ci.gerritforge.com (gerrit-ci.gerritforge.com)|8.26.94.23|:443... connected.\nHTTP request sent, awaiting response... 404 Not Found\n2022-06-16 16:05:15 ERROR 404: Not Found.\n\nCannot download websession-broker plugin: Check internet connection. Aborting\n```",
+      "revId": "d9e7ca47108a6d75513af2d80e78f2dc101d7d89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
