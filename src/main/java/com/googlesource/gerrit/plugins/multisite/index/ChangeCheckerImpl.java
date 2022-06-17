@@ -151,7 +151,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
 
   private long getTsFromChangeAndDraftComments(ChangeNotes notes) {
     Change change = notes.getChange();
-    Timestamp changeTs = Timestamp.from(change.getLastUpdatedOn());
+    Timestamp changeTs = change.getLastUpdatedOn();
     try {
       for (HumanComment comment : commentsUtil.draftByChange(changeNotes.get())) {
         Timestamp commentTs = comment.writtenOn;
