@@ -16,6 +16,24 @@
       "message": "Probably unrelated to your change, but the CI fails because of:\n\n```\nplugins/multi-site/src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java:154: error: incompatible types: Timestamp cannot be converted to Instant\n    Timestamp changeTs \u003d Timestamp.from(change.getLastUpdatedOn());\n                                                               ^\nTarget //plugins/multi-site:multi-site failed to build\n```",
       "revId": "d58e9e29cdee27a5fad15d5222cc4abcba738805",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abfc547e_41f4cd7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-06-17T09:02:19Z",
+      "side": 1,
+      "message": "I checked the stable-3.5 and is green:\nhttps://gerrit-ci.gerritforge.com/job/plugin-multi-site-bazel-stable-3.5/3/console",
+      "parentUuid": "5ffa9f57_2e407fd7",
+      "revId": "d58e9e29cdee27a5fad15d5222cc4abcba738805",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
