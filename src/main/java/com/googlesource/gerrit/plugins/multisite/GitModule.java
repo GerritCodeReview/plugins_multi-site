@@ -15,16 +15,20 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbConfiguration;
+import com.google.gerrit.server.config.RepositoryConfig;
+import com.google.gerrit.server.git.GitRepositoryManagerModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.validation.ValidationModule;
 
 public class GitModule extends AbstractModule {
   private final Configuration config;
+  private final RepositoryConfig repoConfig;
 
   @Inject
-  public GitModule(Configuration config) {
+  public GitModule(Configuration config, RepositoryConfig repoConfig) {
     this.config = config;
+    this.repoConfig = repoConfig;
   }
 
   @Override
@@ -32,7 +36,9 @@ public class GitModule extends AbstractModule {
     bind(SharedRefDbConfiguration.class).toInstance(config.getSharedRefDbConfiguration());
     bind(ProjectVersionLogger.class).to(Log4jProjectVersionLogger.class);
     if (config.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {
-      install(new ValidationModule(config));
+      install(new ValidationModule(config, repoConfig));
+    } else {
+      install(new GitRepositoryManagerModule(repoConfig));
     }
   }
 }

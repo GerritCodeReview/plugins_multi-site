@@ -31,6 +31,7 @@ import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.SharedRefEnforceme
 import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.gerrit.server.config.RepositoryConfig;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Scopes;
 import com.google.inject.TypeLiteral;
@@ -41,9 +42,11 @@ import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 
 public class ValidationModule extends FactoryModule {
   private final Configuration cfg;
+  private final RepositoryConfig repoConfig;
 
-  public ValidationModule(Configuration cfg) {
+  public ValidationModule(Configuration cfg, RepositoryConfig repoConfig) {
     this.cfg = cfg;
+    this.repoConfig = repoConfig;
   }
 
   @Override
