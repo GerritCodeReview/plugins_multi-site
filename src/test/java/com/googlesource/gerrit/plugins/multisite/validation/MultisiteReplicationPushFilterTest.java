@@ -102,7 +102,10 @@ public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestC
 
   @Test
   public void shouldLoadLocalVersionAndNotFilter() throws Exception {
-    RemoteRefUpdate temporaryOutdated = refUpdate("refs/heads/temporaryOutdated");
+    String refName = "refs/heads/temporaryOutdated";
+    RemoteRefUpdate temporaryOutdated = refUpdate(refName);
+    ObjectId latestObjectId = repo.getRepository().exactRef(refName).getObjectId();
+
     List<RemoteRefUpdate> refUpdates = Collections.singletonList(temporaryOutdated);
     doReturn(false).doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
 
@@ -110,7 +113,9 @@ public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestC
         new MultisiteReplicationPushFilter(sharedRefDatabaseMock, gitRepositoryManager);
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
-    assertThat(filteredRefUpdates).containsExactly(temporaryOutdated);
+    assertThat(filteredRefUpdates).hasSize(1);
+    assertThat(filteredRefUpdates.get(0).getNewObjectId()).isEqualTo(latestObjectId);
+
     verify(sharedRefDatabaseMock, times(2)).isUpToDate(any(), any());
   }
 
