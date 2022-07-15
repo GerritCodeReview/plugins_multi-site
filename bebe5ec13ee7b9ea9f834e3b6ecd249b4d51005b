@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "089ecac0_a37a09cf",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/dfsrefdb/MultisiteReplicationPushFilterTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-07-15T21:40:48Z",
+      "side": 0,
+      "message": "This should have *NOT* be deleted because is the test of the MultisiteReplicationPushFilter which is not part of the global-refdb validation",
+      "revId": "bebe5ec13ee7b9ea9f834e3b6ecd249b4d51005b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

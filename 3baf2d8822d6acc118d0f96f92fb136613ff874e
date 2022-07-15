@@ -33,6 +33,23 @@
       "message": "Yes, with local setup",
       "revId": "3baf2d8822d6acc118d0f96f92fb136613ff874e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48c3e7c7_0418bad6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-07-15T21:40:48Z",
+      "side": 1,
+      "message": "post-merge -1",
+      "revId": "3baf2d8822d6acc118d0f96f92fb136613ff874e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
