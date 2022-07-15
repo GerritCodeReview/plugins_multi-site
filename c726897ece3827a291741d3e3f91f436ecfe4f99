@@ -39,6 +39,30 @@
       },
       "revId": "c726897ece3827a291741d3e3f91f436ecfe4f99",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9127312_924b7d05",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-07-15T21:23:39Z",
+      "side": 1,
+      "message": "Fixed with  Ic9bd23694, @Ponch can you double-check?",
+      "parentUuid": "d128e376_8af8918e",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 36
+      },
+      "revId": "c726897ece3827a291741d3e3f91f436ecfe4f99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
