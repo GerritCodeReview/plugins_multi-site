@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87f93b04_a635a258",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-07-15T21:23:09Z",
+      "side": 1,
+      "message": "post-merge -2: this change has created split-brains in case of local racyiness.",
+      "revId": "c726897ece3827a291741d3e3f91f436ecfe4f99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d128e376_8af8918e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 14
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-07-15T21:23:09Z",
+      "side": 1,
+      "message": "This is wrong: are returning that the refUpdate is up-to-date as a result, which isn\u0027t actually true.\n\n1. The refUpdate is *NOT* up-to-date with the global-refdb, otherwise it would have returned at L75\n2. The refUpdate is *NOT* up-to-date with the local refdb, otherwise the check at L95 would have also failed\n\nThe solution is to *update* the refUpdate object with the newly loaded SHA1 from the repository and instruct the replication plugin to use it.",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 36
+      },
+      "revId": "c726897ece3827a291741d3e3f91f436ecfe4f99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
