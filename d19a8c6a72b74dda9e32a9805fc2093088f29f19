@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4d2a0e8_83b1fcc5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubscriberTestBase.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-07-18T19:26:17Z",
+      "side": 1,
+      "message": "We are missing one test that says it should update replication metrics with remote refs-replicated events.",
+      "revId": "d19a8c6a72b74dda9e32a9805fc2093088f29f19",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
