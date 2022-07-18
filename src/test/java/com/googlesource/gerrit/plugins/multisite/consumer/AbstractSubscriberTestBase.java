@@ -104,8 +104,7 @@ public abstract class AbstractSubscriberTestBase {
   }
 
   @Test
-  public void shouldUpdateReplicationMetricsWithLocalEvents()
-      throws IOException, PermissionBackendException, CacheNotFoundException {
+  public void shouldUpdateReplicationMetricsWithLocalEvents() {
     for (Event event : events()) {
       event.instanceId = NODE_INSTANCE_ID;
       when(projectsFilter.matches(any(String.class))).thenReturn(true);
@@ -118,8 +117,7 @@ public abstract class AbstractSubscriberTestBase {
   }
 
   @Test
-  public void shouldUpdateReplicationMetricsWithNonLocalEvents()
-      throws IOException, PermissionBackendException, CacheNotFoundException {
+  public void shouldUpdateReplicationMetricsWithNonLocalEvents() {
     for (Event event : events()) {
       event.instanceId = INSTANCE_ID;
       when(projectsFilter.matches(any(String.class))).thenReturn(true);
