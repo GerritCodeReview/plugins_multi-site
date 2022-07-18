@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -140,6 +141,23 @@ public class ReplicationStatusTest {
     objectUnderTest.onProjectDeleted(projectDeletedEvent(projectName));
 
     assertThat(replicationStatusCache.getIfPresent(projectName)).isEqualTo(lag);
+  }
+
+  @Test
+  public void shouldUpdateReplicationLagForProject() {
+    String projectName = "projectA";
+    long projectLocalVersion = 10L;
+    long projectRemoteVersion = 20L;
+
+    when(projectVersionRefUpdate.getProjectLocalVersion(eq(projectName)))
+        .thenReturn(Optional.of(projectLocalVersion));
+    when(projectVersionRefUpdate.getProjectRemoteVersion(eq(projectName)))
+        .thenReturn(Optional.of(projectRemoteVersion));
+
+    objectUnderTest.updateReplicationLag(Project.nameKey(projectName));
+
+    assertThat(replicationStatusCache.getIfPresent(projectName))
+        .isEqualTo(projectRemoteVersion - projectLocalVersion);
   }
 
   private void setupReplicationLag(String projectName, long lag) {

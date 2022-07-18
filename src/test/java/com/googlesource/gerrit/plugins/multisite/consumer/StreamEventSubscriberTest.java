@@ -14,15 +14,19 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.RefEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
@@ -77,6 +81,31 @@ public class StreamEventSubscriberTest extends AbstractSubscriberTestBase {
     verify(projectsFilter, never()).matches(PROJECT_NAME);
     verify(eventRouter, times(1)).route(event);
     verify(droppedEventListeners, never()).onEventDropped(event);
+  }
+
+  @Test
+  public void shouldUpdateReplicationMetricsWithRemoteRefEvent() {
+    Event event =
+        new RefEvent("ref-replicated") {
+
+          @Override
+          public String getRefName() {
+            return "foo-ref";
+          }
+
+          @Override
+          public NameKey getProjectNameKey() {
+            return Project.nameKey(PROJECT_NAME);
+          }
+        };
+
+    event.instanceId = INSTANCE_ID;
+    when(projectsFilter.matches(eq(PROJECT_NAME))).thenReturn(true);
+
+    objectUnderTest.getConsumer().accept(event);
+
+    verify(subscriberMetrics, times(1)).updateReplicationStatusMetrics(event);
+    reset(projectsFilter, eventRouter, droppedEventListeners, subscriberMetrics);
   }
 
   @Override
