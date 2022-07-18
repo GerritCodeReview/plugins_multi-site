@@ -22,6 +22,30 @@
       },
       "revId": "7f254185b1c68e9d897cd7939dcb12b822736fe2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "367cc6f0_3ecc52d9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-07-18T15:24:07Z",
+      "side": 1,
+      "message": "The difference here is that we are reloading the latest SHA1 from the local disk (L73), whilst previously we were just checking if they were up-to-date or not.",
+      "parentUuid": "f0d38ccb_9e3f188c",
+      "range": {
+        "startLine": 70,
+        "startChar": 14,
+        "endLine": 85,
+        "endChar": 33
+      },
+      "revId": "7f254185b1c68e9d897cd7939dcb12b822736fe2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
