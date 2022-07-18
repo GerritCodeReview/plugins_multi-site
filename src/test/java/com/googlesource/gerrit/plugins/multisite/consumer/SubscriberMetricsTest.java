@@ -20,18 +20,27 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Suppliers;
+import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.project.ProjectCache;
+import com.google.inject.name.Named;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.events.ProjectDeletionReplicationSucceededEvent;
+
+import java.lang.module.Configuration;
 import java.net.URISyntaxException;
 import java.util.Optional;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.transport.URIish;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,10 +68,22 @@ public class SubscriberMetricsTest {
             CacheBuilder.newBuilder().build(),
             Optional.of(projectVersionRefUpdate),
             verLogger,
-            projectCache);
+            projectCache,
+            Executors.newScheduledThreadPool(1),
+            new com.googlesource.gerrit.plugins.multisite.Configuration(new Config(), new Config()));
     metrics = new SubscriberMetrics(metricMaker, replicationStatus);
   }
 
+  /*
+   *   public ReplicationStatus(
+      @Named(REPLICATION_STATUS_CACHE) Cache<String, Long> cache,
+      Optional<ProjectVersionRefUpdate> projectVersionRefUpdate,
+      ProjectVersionLogger verLogger,
+      ProjectCache projectCache,
+      ScheduledExecutorService statusScheduler,
+      Configuration config) {
+   */
+  
   @Test
   public void shouldLogProjectVersionWhenReceivingRefUpdatedEventWithoutLag() {
     Optional<Long> globalRefDbVersion = Optional.of(System.currentTimeMillis() / 1000);
