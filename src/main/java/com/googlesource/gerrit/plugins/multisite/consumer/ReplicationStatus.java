@@ -28,6 +28,7 @@ import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import java.util.Collection;
@@ -37,6 +38,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -63,17 +66,24 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
   private final Optional<ProjectVersionRefUpdate> projectVersionRefUpdate;
   private final ProjectVersionLogger verLogger;
   private final ProjectCache projectCache;
+  private final ScheduledExecutorService statusScheduler;
+
+  private final Configuration config;
 
   @Inject
   public ReplicationStatus(
       @Named(REPLICATION_STATUS_CACHE) Cache<String, Long> cache,
       Optional<ProjectVersionRefUpdate> projectVersionRefUpdate,
       ProjectVersionLogger verLogger,
-      ProjectCache projectCache) {
+      ProjectCache projectCache,
+      ScheduledExecutorService statusScheduler,
+      Configuration config) {
     this.cache = cache;
     this.projectVersionRefUpdate = projectVersionRefUpdate;
     this.verLogger = verLogger;
     this.projectCache = projectCache;
+    this.statusScheduler = statusScheduler;
+    this.config = config;
   }
 
   public Long getMaxLag() {
@@ -154,6 +164,22 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
   @Override
   public void start() {
     loadAllFromCache();
+
+    long replicationLagPollingInterval = config.replicationLagRefreshInterval().toMillis();
+    statusScheduler.scheduleAtFixedRate(
+        () -> refreshProjectsWithLag(),
+        replicationLagPollingInterval,
+        replicationLagPollingInterval,
+        TimeUnit.MILLISECONDS);
+  }
+
+  @VisibleForTesting
+  public void refreshProjectsWithLag() {
+    replicationStatusPerProject.entrySet().stream()
+        .filter(entry -> entry.getValue() > 0)
+        .map(Map.Entry::getKey)
+        .map(Project::nameKey)
+        .forEach(this::updateReplicationLag);
   }
 
   @Override
