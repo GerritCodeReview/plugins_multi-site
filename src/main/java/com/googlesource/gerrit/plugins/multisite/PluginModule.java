@@ -18,6 +18,7 @@ import com.gerritforge.gerrit.globalrefdb.validation.ProjectDeletedSharedDbClean
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.gerrit.server.git.WorkQueue;
 import com.google.inject.Inject;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
@@ -27,11 +28,13 @@ import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarderModule;
 
 public class PluginModule extends LifecycleModule {
-  private Configuration config;
+  private final Configuration config;
+  private final WorkQueue workQueue;
 
   @Inject
-  public PluginModule(Configuration config) {
+  public PluginModule(Configuration config, WorkQueue workQueue) {
     this.config = config;
+    this.workQueue = workQueue;
   }
 
   @Override
@@ -42,7 +45,7 @@ public class PluginModule extends LifecycleModule {
     install(new BrokerForwarderModule());
     listener().to(MultiSiteConsumerRunner.class);
 
-    install(new ReplicationStatusModule());
+    install(new ReplicationStatusModule(workQueue));
     if (config.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {
       listener().to(PluginStartup.class);
       DynamicSet.bind(binder(), ProjectDeletedListener.class)
