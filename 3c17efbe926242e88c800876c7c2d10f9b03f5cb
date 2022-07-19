@@ -19,6 +19,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f03c5d0_4dc365cd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-07-19T21:32:50Z",
+      "side": 1,
+      "message": "Could we add some logs to see that refresh is triggered",
+      "revId": "3c17efbe926242e88c800876c7c2d10f9b03f5cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b52ab5ae_ca9f5b1c",
