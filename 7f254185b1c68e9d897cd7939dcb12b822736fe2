@@ -37,6 +37,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4d3143f0_3e32f5b9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-07-19T21:39:16Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "6d5c5039_d1576f3f",
+      "revId": "7f254185b1c68e9d897cd7939dcb12b822736fe2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ceb3ab2_fd44ef1a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-07-19T21:39:16Z",
+      "side": 1,
+      "message": "Wrong import",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 68
+      },
+      "revId": "7f254185b1c68e9d897cd7939dcb12b822736fe2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f0d38ccb_9e3f188c",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
         "patchSetId": 6
