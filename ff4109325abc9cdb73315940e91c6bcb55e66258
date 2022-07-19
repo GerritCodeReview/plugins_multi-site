@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "4281da4e_38f68ea0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-07-19T16:42:33Z",
+      "side": 1,
+      "message": "This change seems to add a new parameter (`ref-database.replicationLagRefreshInterval`), not only increasing the test coverage.\n\nConsider splitting the change in 2 if necessary or mention the addition of the new parameter.",
+      "revId": "ff4109325abc9cdb73315940e91c6bcb55e66258",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "f5ae0c76_085b2899",
