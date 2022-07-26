@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -92,8 +93,13 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
 
   public final void reindexAndCheckIsUpToDate(
       T id, Optional<E> indexEvent, UpToDateChecker<E> upToDateChecker, int retryCount) {
-    reindex(id);
-
+    try {
+      reindex(id);
+    } catch (StorageException e) {
+      log.warn(String.format("%s %s is inconsistent. Rescheduling", indexName(), id), e);
+      rescheduleIndex(id, indexEvent, retryCount + 1);
+      return;
+    }
     if (!upToDateChecker.isUpToDate(indexEvent)) {
       log.warn("{} {} is not up-to-date. Rescheduling", indexName(), id);
       rescheduleIndex(id, indexEvent, retryCount + 1);
