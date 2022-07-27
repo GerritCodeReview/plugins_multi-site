@@ -63,12 +63,17 @@ public class ForwardedIndexChangeHandler
   protected void attemptToIndex(String id, Optional<ChangeIndexEvent> indexEvent, int retryCount) {
     ChangeChecker checker = changeCheckerFactory.create(id);
     Optional<ChangeNotes> changeNotes = checker.getChangeNotes();
-    if (changeNotes.isPresent()) {
+    boolean changeIsPresent = changeNotes.isPresent();
+    boolean changeIsConsistent = checker.isChangeConsistent();
+    if (changeIsPresent && changeIsConsistent) {
       reindexAndCheckIsUpToDate(id, indexEvent, checker, retryCount);
     } else {
       log.warn(
-          "Change {} not present yet in local Git repository (event={}) after {} attempt(s)",
+          "Change {} {} in local Git repository (event={}) after {} attempt(s)",
           id,
+          !changeIsPresent
+              ? "not present yet"
+              : (changeIsConsistent ? "is" : "is not") + " consistent",
           indexEvent,
           retryCount);
       if (!rescheduleIndex(id, indexEvent, retryCount + 1)) {

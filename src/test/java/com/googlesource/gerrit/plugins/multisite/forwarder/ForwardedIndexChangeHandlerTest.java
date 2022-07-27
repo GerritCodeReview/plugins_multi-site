@@ -62,6 +62,8 @@ public class ForwardedIndexChangeHandlerTest {
   private static final boolean THROW_STORAGE_EXCEPTION = true;
   private static final boolean CHANGE_UP_TO_DATE = true;
   private static final boolean CHANGE_OUTDATED = false;
+  private static final boolean CHANGE_CONSISTENT = true;
+  private static final boolean CHANGE_INCONSISTENT = false;
 
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private ChangeIndexer indexerMock;
@@ -95,14 +97,14 @@ public class ForwardedIndexChangeHandlerTest {
 
   @Test
   public void changeIsIndexedWhenUpToDate() throws Exception {
-    setupChangeAccessRelatedMocks(CHANGE_EXISTS, CHANGE_UP_TO_DATE);
+    setupChangeAccessRelatedMocks(CHANGE_EXISTS, CHANGE_UP_TO_DATE, CHANGE_CONSISTENT);
     handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
     verify(indexerMock, times(1)).index(any(Change.class));
   }
 
   @Test
   public void changeIsStillIndexedEvenWhenOutdated() throws Exception {
-    setupChangeAccessRelatedMocks(CHANGE_EXISTS, CHANGE_OUTDATED);
+    setupChangeAccessRelatedMocks(CHANGE_EXISTS, CHANGE_OUTDATED, CHANGE_CONSISTENT);
     handler.index(
         TEST_CHANGE_ID,
         Operation.INDEX,
@@ -118,7 +120,7 @@ public class ForwardedIndexChangeHandlerTest {
 
   @Test
   public void changeToIndexDoesNotExist() throws Exception {
-    setupChangeAccessRelatedMocks(CHANGE_DOES_NOT_EXIST, CHANGE_OUTDATED);
+    setupChangeAccessRelatedMocks(CHANGE_DOES_NOT_EXIST, CHANGE_OUTDATED, CHANGE_INCONSISTENT);
     handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
     verify(indexerMock, never()).delete(id);
     verify(indexerMock, never()).index(any(Project.NameKey.class), any(Change.Id.class));
@@ -126,7 +128,8 @@ public class ForwardedIndexChangeHandlerTest {
 
   @Test
   public void indexerThrowsStorageExceptionTryingToIndexChange() throws Exception {
-    setupChangeAccessRelatedMocks(CHANGE_EXISTS, THROW_STORAGE_EXCEPTION, CHANGE_UP_TO_DATE);
+    setupChangeAccessRelatedMocks(
+        CHANGE_EXISTS, THROW_STORAGE_EXCEPTION, CHANGE_UP_TO_DATE, CHANGE_CONSISTENT);
     assertThrows(
         StorageException.class,
         () -> handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty()));
@@ -178,11 +181,21 @@ public class ForwardedIndexChangeHandlerTest {
 
   private void setupChangeAccessRelatedMocks(boolean changeExist, boolean changeUpToDate)
       throws Exception {
-    setupChangeAccessRelatedMocks(changeExist, DO_NOT_THROW_STORAGE_EXCEPTION, changeUpToDate);
+    setupChangeAccessRelatedMocks(
+        changeExist, DO_NOT_THROW_STORAGE_EXCEPTION, changeUpToDate, CHANGE_CONSISTENT);
   }
 
   private void setupChangeAccessRelatedMocks(
-      boolean changeExists, boolean storageException, boolean changeIsUpToDate)
+      boolean changeExist, boolean changeUpToDate, boolean changeConsistent) throws Exception {
+    setupChangeAccessRelatedMocks(
+        changeExist, DO_NOT_THROW_STORAGE_EXCEPTION, changeUpToDate, changeConsistent);
+  }
+
+  private void setupChangeAccessRelatedMocks(
+      boolean changeExists,
+      boolean storageException,
+      boolean changeIsUpToDate,
+      boolean changeConsistent)
       throws StorageException {
     if (changeExists) {
       when(changeCheckerFactoryMock.create(TEST_CHANGE_ID)).thenReturn(changeCheckerPresentMock);
@@ -193,5 +206,6 @@ public class ForwardedIndexChangeHandlerTest {
     }
 
     when(changeCheckerPresentMock.isUpToDate(any())).thenReturn(changeIsUpToDate);
+    when(changeCheckerPresentMock.isChangeConsistent()).thenReturn(changeConsistent);
   }
 }
