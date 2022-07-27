@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee5bff29_70e5d57c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-07-27T22:46:08Z",
+      "side": 1,
+      "message": "Good stuff @Marcin, see my comments.",
+      "revId": "9d34b097936aef21c2d463d2c1eeb20181720cf1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c380a71_d0b64559",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-07-27T22:46:08Z",
+      "side": 1,
+      "message": "Can we narrow this down to something more specific?",
+      "range": {
+        "startLine": 161,
+        "startChar": 13,
+        "endLine": 161,
+        "endChar": 26
+      },
+      "revId": "9d34b097936aef21c2d463d2c1eeb20181720cf1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "333f1777_f4161a87",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-07-27T22:46:08Z",
+      "side": 1,
+      "message": "Why using a String.format() and not the native formatting of the logger?",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 59
+      },
+      "revId": "9d34b097936aef21c2d463d2c1eeb20181720cf1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69ccb979_f92df7d1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-07-27T22:46:08Z",
+      "side": 1,
+      "message": "And what if you have a more recent patch-set but not the \u0027/meta\u0027 ref update pointing to it?\n\nExample: \u0027/meta\u0027 says that the current patch-set is 5, but you also have patch-set 6.",
+      "range": {
+        "startLine": 169,
+        "startChar": 11,
+        "endLine": 169,
+        "endChar": 15
+      },
+      "revId": "9d34b097936aef21c2d463d2c1eeb20181720cf1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
