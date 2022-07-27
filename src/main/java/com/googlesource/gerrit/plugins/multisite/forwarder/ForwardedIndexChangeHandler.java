@@ -63,7 +63,7 @@ public class ForwardedIndexChangeHandler
   protected void attemptToIndex(String id, Optional<ChangeIndexEvent> indexEvent, int retryCount) {
     ChangeChecker checker = changeCheckerFactory.create(id);
     Optional<ChangeNotes> changeNotes = checker.getChangeNotes();
-    if (changeNotes.isPresent()) {
+    if (changeNotes.isPresent() && checker.isChangeConsistent()) {
       reindexAndCheckIsUpToDate(id, indexEvent, checker, retryCount);
     } else {
       log.warn(
