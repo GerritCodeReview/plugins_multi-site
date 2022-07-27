@@ -31,8 +31,10 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.Optional;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevWalk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,6 +145,28 @@ public class ChangeCheckerImpl implements ChangeChecker {
       log.warn("Unable to resolve target branch SHA for change {}", changeId, e);
       return null;
     }
+  }
+
+  @Override
+public boolean isChangeConsistent() {
+    Optional<ChangeNotes> notes = getChangeNotes();
+    if (!notes.isPresent()) {
+      log.warn("Unable to compute change notes for change {}", changeId);
+      return true;
+    }
+    ObjectId currentPatchSetCommitId = notes.get().getCurrentPatchSet().commitId();
+    try (Repository repo = gitRepoMgr.openRepository(changeNotes.get().getProjectName());
+        RevWalk walk = new RevWalk(repo)) {
+      walk.parseCommit(currentPatchSetCommitId);
+    } catch (IOException e) {
+      log.warn(
+          String.format(
+              "Consistency check failed for change %s, missing current patchset commit %s",
+              changeId, currentPatchSetCommitId.getName()),
+          e);
+      return false;
+    }
+    return true;
   }
 
   private Optional<Long> computeLastChangeTs() {
