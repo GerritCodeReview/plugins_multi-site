@@ -102,6 +102,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b84a51bd_d7c3244c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-07-28T18:12:19Z",
+      "side": 1,
+      "message": "I want to pass original exception to the log message. We can do that only with warn(msg, throwable) if I use warn(format, Object... argument) exception will not be logged",
+      "parentUuid": "333f1777_f4161a87",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 59
+      },
+      "revId": "9d34b097936aef21c2d463d2c1eeb20181720cf1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "69ccb979_f92df7d1",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
         "patchSetId": 1
@@ -113,6 +137,30 @@
       "writtenOn": "2022-07-27T22:46:08Z",
       "side": 1,
       "message": "And what if you have a more recent patch-set but not the \u0027/meta\u0027 ref update pointing to it?\n\nExample: \u0027/meta\u0027 says that the current patch-set is 5, but you also have patch-set 6.",
+      "range": {
+        "startLine": 169,
+        "startChar": 11,
+        "endLine": 169,
+        "endChar": 15
+      },
+      "revId": "9d34b097936aef21c2d463d2c1eeb20181720cf1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d603cb4a_09754e45",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-07-28T18:12:19Z",
+      "side": 1,
+      "message": "If I understand it correctly it will be covered by the isUpToDate method:\nhttps://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/stable-3.4/src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java#93\n\nwhich compares last update timestamp(plus draft and comments timestamp) with the the event creation time, if local timestamp is older than event it will schedule reindexing",
+      "parentUuid": "69ccb979_f92df7d1",
       "range": {
         "startLine": 169,
         "startChar": 11,
