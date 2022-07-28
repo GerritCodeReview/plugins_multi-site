@@ -77,6 +77,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7be3caa_c033ac3a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-07-28T18:18:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c380a71_d0b64559",
+      "range": {
+        "startLine": 161,
+        "startChar": 13,
+        "endLine": 161,
+        "endChar": 26
+      },
+      "revId": "9d34b097936aef21c2d463d2c1eeb20181720cf1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "333f1777_f4161a87",
