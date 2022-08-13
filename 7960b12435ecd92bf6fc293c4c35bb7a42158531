@@ -16,6 +16,24 @@
       "message": "Post-merge -1: this change did not include the associated changes to the README.md file and therefore the user may be unaware that now the instanceId in gerrit.config is mandatory.",
       "revId": "7960b12435ecd92bf6fc293c4c35bb7a42158531",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78814e0e_6a16ab63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-13T22:14:00Z",
+      "side": 1,
+      "message": "Fixed with Change-Id: Ic827ce2c3dd",
+      "parentUuid": "577984d4_e02ec0a6",
+      "revId": "7960b12435ecd92bf6fc293c4c35bb7a42158531",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
