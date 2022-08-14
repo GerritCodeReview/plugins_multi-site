@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c52919bd_168f2b7b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-14T22:24:32Z",
+      "side": 1,
+      "message": "I believe you\u0027ve undone this change: any reason for that?",
+      "revId": "d620dbd9de17b3d30fd284a7661c9ba04cddc9bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
