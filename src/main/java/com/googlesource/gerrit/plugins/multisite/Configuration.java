@@ -23,15 +23,18 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
+import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
@@ -50,6 +53,10 @@ public class Configuration {
   static final String THREAD_POOL_SIZE_KEY = "threadPoolSize";
   static final int DEFAULT_THREAD_POOL_SIZE = 4;
 
+  private static final String REF_DATABASE = "ref-database";
+  private static final String REPLICATION_LAG_REFRESH_INTERVAL = "replicationLagRefreshInterval";
+  private static final Duration REPLICATION_LAG_REFRESH_INTERVAL_DEFAULT = Duration.ofSeconds(60);
+
   private static final String REPLICATION_CONFIG = "replication.config";
   // common parameters to cache and index sections
   private static final int DEFAULT_INDEX_MAX_TRIES = 2;
@@ -65,6 +72,7 @@ public class Configuration {
   private final Supplier<Collection<Message>> replicationConfigValidation;
   private final Supplier<Broker> broker;
   private final Config multiSiteConfig;
+  private final Supplier<Duration> replicationLagRefreshInterval;
 
   @Inject
   Configuration(SitePaths sitePaths) {
@@ -86,6 +94,17 @@ public class Configuration {
                 new SharedRefDbConfiguration(
                     enableSharedRefDbByDefault(lazyMultiSiteCfg.get()), PLUGIN_NAME));
     broker = memoize(() -> new Broker(lazyMultiSiteCfg));
+    replicationLagRefreshInterval =
+        memoize(
+            () ->
+                Duration.ofMillis(
+                    ConfigUtil.getTimeUnit(
+                        lazyMultiSiteCfg.get(),
+                        REF_DATABASE,
+                        null,
+                        REPLICATION_LAG_REFRESH_INTERVAL,
+                        REPLICATION_LAG_REFRESH_INTERVAL_DEFAULT.toMillis(),
+                        TimeUnit.MILLISECONDS)));
   }
 
   public Config getMultiSiteConfig() {
@@ -114,6 +133,10 @@ public class Configuration {
 
   public Projects projects() {
     return projects.get();
+  }
+
+  public Duration replicationLagRefreshInterval() {
+    return replicationLagRefreshInterval.get();
   }
 
   public Collection<Message> validate() {

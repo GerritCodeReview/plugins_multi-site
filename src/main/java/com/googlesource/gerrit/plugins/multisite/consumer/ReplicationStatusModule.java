@@ -17,13 +17,23 @@ package com.googlesource.gerrit.plugins.multisite.consumer;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.gerrit.server.git.WorkQueue;
+import com.google.inject.Inject;
 import com.google.inject.Scopes;
 
 public class ReplicationStatusModule extends LifecycleModule {
+
+  private final WorkQueue workQueue;
+
+  @Inject
+  public ReplicationStatusModule(WorkQueue workQueue) {
+    this.workQueue = workQueue;
+  }
+
   @Override
   protected void configure() {
     bind(ReplicationStatus.class).in(Scopes.SINGLETON);
-    install(ReplicationStatus.cacheModule());
+    install(ReplicationStatus.cacheModule(workQueue));
     listener().to(ReplicationStatus.class);
     DynamicSet.bind(binder(), ProjectDeletedListener.class).to(ReplicationStatus.class);
   }
