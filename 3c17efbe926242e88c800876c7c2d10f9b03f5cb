@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7f710e8_744cba57",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-19T15:03:01Z",
+      "side": 1,
+      "message": "Good idea.",
+      "parentUuid": "1f03c5d0_4dc365cd",
+      "revId": "3c17efbe926242e88c800876c7c2d10f9b03f5cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cf7efd34_33427b69",
@@ -132,6 +150,30 @@
       "writtenOn": "2022-08-02T20:13:05Z",
       "side": 1,
       "message": "worth adding a test to see the events are properly queued",
+      "range": {
+        "startLine": 69,
+        "startChar": 42,
+        "endLine": 69,
+        "endChar": 51
+      },
+      "revId": "3c17efbe926242e88c800876c7c2d10f9b03f5cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6bfdc85_c8b621b1",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/http/ReplicationStatusServletIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-19T15:03:01Z",
+      "side": 1,
+      "message": "In ReplicationStatusServletIT? I think this test suite is for covering the functionality of the ReplicationStatusServlet and not really to check the async replication lag update.",
+      "parentUuid": "0eb0f390_2024a353",
       "range": {
         "startLine": 69,
         "startChar": 42,
