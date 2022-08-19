@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65ae3f4a_c8fb960c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-19T21:35:36Z",
+      "side": 1,
+      "message": "This is only a scheduler and doesn\u0027t need a queue or idle executors.",
+      "parentUuid": "7034fdb5_368ef761",
+      "range": {
+        "startLine": 65,
+        "startChar": 42,
+        "endLine": 65,
+        "endChar": 43
+      },
+      "revId": "bf4e144e1ada333ffb45677ff91770287146a910",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1b9a361_c6e261df",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-08-19T21:24:44Z",
       "side": 1,
       "message": "nit: this can be replaced with method reference",
+      "revId": "bf4e144e1ada333ffb45677ff91770287146a910",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c518805_c7372524",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-19T21:35:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1b9a361_c6e261df",
       "revId": "bf4e144e1ada333ffb45677ff91770287146a910",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
