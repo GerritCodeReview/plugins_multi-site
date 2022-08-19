@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7034fdb5_368ef761",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-19T21:24:44Z",
+      "side": 1,
+      "message": "why is the queue size 0? is this expected?",
+      "range": {
+        "startLine": 65,
+        "startChar": 42,
+        "endLine": 65,
+        "endChar": 43
+      },
+      "revId": "bf4e144e1ada333ffb45677ff91770287146a910",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1b9a361_c6e261df",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-19T21:24:44Z",
+      "side": 1,
+      "message": "nit: this can be replaced with method reference",
+      "revId": "bf4e144e1ada333ffb45677ff91770287146a910",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d3ed8ed_eaabaadd",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-19T21:24:44Z",
+      "side": 1,
+      "message": "How is this achieved, I can\u0027t find in the code where we avoid scheduling the auto-replication if `replicationLagRefreshInterval` is zero.",
+      "range": {
+        "startLine": 79,
+        "startChar": 39,
+        "endLine": 80,
+        "endChar": 14
+      },
+      "revId": "bf4e144e1ada333ffb45677ff91770287146a910",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
