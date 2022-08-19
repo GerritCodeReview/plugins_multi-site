@@ -32,6 +32,8 @@ import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpd
 import com.googlesource.gerrit.plugins.replication.events.ProjectDeletionReplicationSucceededEvent;
 import java.net.URISyntaxException;
 import java.util.Optional;
+import java.util.concurrent.Executors;
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.transport.URIish;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +61,10 @@ public class SubscriberMetricsTest {
             CacheBuilder.newBuilder().build(),
             Optional.of(projectVersionRefUpdate),
             verLogger,
-            projectCache);
+            projectCache,
+            Executors.newScheduledThreadPool(1),
+            new com.googlesource.gerrit.plugins.multisite.Configuration(
+                new Config(), new Config()));
     metrics = new SubscriberMetrics(metricMaker, replicationStatus);
   }
 

@@ -74,6 +74,12 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
 :   Enable the use of a shared ref-database
     Defaults: true
 
+```ref-database.replicationLagRefreshInterval```
+:   Enable the auto-refresh of the metrics to trace the auto-replication
+    lag by polling on a regular basis. Set to zero for disabling the polling
+    mechanism.
+    Defaults: 60 min
+
 ```ref-database.enforcementRules.<policy>```
 :   Level of consistency enforcement across sites on a project:refs basis.
     Supports two values for enforcing the policy on multiple projects or refs.
