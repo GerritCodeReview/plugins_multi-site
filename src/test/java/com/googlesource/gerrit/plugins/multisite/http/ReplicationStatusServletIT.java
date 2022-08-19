@@ -26,7 +26,9 @@ import com.google.gerrit.acceptance.RestResponse;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.httpd.restapi.RestApiServlet;
+import com.google.gerrit.server.git.WorkQueue;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
 import com.google.inject.Scopes;
 import com.google.inject.multibindings.OptionalBinder;
 import com.googlesource.gerrit.plugins.multisite.Log4jProjectVersionLogger;
@@ -56,13 +58,15 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
   private ReplicationStatus replicationStatus;
 
   public static class TestModule extends AbstractModule {
+    @Inject WorkQueue workQueue;
+
     @Override
     protected void configure() {
       install(new ForwarderModule());
       install(new CacheModule());
       install(new RouterModule());
       install(new IndexModule());
-      install(new ReplicationStatusModule());
+      install(new ReplicationStatusModule(workQueue));
       SharedRefDbConfiguration sharedRefDbConfig =
           new SharedRefDbConfiguration(new Config(), "multi-site");
       bind(SharedRefDbConfiguration.class).toInstance(sharedRefDbConfig);

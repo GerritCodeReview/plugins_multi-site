@@ -23,11 +23,14 @@ import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.server.cache.CacheModule;
 import com.google.gerrit.server.cache.serialize.JavaCacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
+import com.google.gerrit.server.git.WorkQueue;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import com.google.inject.name.Names;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import java.util.Collection;
@@ -37,6 +40,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -44,16 +49,20 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final Map<String, Long> replicationStatusPerProject = new HashMap<>();
-  static final String REPLICATION_STATUS_CACHE = "replication_status";
+  static final String REPLICATION_STATUS = "replication_status";
 
-  public static Module cacheModule() {
+  public static Module cacheModule(WorkQueue queue) {
     return new CacheModule() {
       @Override
       protected void configure() {
-        persist(REPLICATION_STATUS_CACHE, String.class, Long.class)
+        persist(REPLICATION_STATUS, String.class, Long.class)
             .version(1)
             .keySerializer(StringCacheSerializer.INSTANCE)
             .valueSerializer(new JavaCacheSerializer<>());
+
+        bind(ScheduledExecutorService.class)
+            .annotatedWith(Names.named(REPLICATION_STATUS))
+            .toInstance(queue.createQueue(0, REPLICATION_STATUS));
       }
     };
   }
@@ -63,17 +72,24 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
   private final Optional<ProjectVersionRefUpdate> projectVersionRefUpdate;
   private final ProjectVersionLogger verLogger;
   private final ProjectCache projectCache;
+  private final ScheduledExecutorService statusScheduler;
+
+  private final Configuration config;
 
   @Inject
   public ReplicationStatus(
-      @Named(REPLICATION_STATUS_CACHE) Cache<String, Long> cache,
+      @Named(REPLICATION_STATUS) Cache<String, Long> cache,
       Optional<ProjectVersionRefUpdate> projectVersionRefUpdate,
       ProjectVersionLogger verLogger,
-      ProjectCache projectCache) {
+      ProjectCache projectCache,
+      @Named(REPLICATION_STATUS) ScheduledExecutorService statusScheduler,
+      Configuration config) {
     this.cache = cache;
     this.projectVersionRefUpdate = projectVersionRefUpdate;
     this.verLogger = verLogger;
     this.projectCache = projectCache;
+    this.statusScheduler = statusScheduler;
+    this.config = config;
   }
 
   public Long getMaxLag() {
@@ -154,6 +170,26 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
   @Override
   public void start() {
     loadAllFromCache();
+
+    long replicationLagPollingInterval = config.replicationLagRefreshInterval().toMillis();
+
+    if (replicationLagPollingInterval > 0) {
+      statusScheduler.scheduleAtFixedRate(
+          this::refreshProjectsWithLag,
+          replicationLagPollingInterval,
+          replicationLagPollingInterval,
+          TimeUnit.MILLISECONDS);
+    }
+  }
+
+  @VisibleForTesting
+  public void refreshProjectsWithLag() {
+    logger.atFine().log("Refreshing projects version lags triggered ...");
+    replicationStatusPerProject.entrySet().stream()
+        .filter(entry -> entry.getValue() > 0)
+        .map(Map.Entry::getKey)
+        .map(Project::nameKey)
+        .forEach(this::updateReplicationLag);
   }
 
   @Override
