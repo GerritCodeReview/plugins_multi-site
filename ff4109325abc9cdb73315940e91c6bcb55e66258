@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c3ebc4ec_9fb58374",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-19T14:24:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e5c6c94_c52afa30",
+      "revId": "ff4109325abc9cdb73315940e91c6bcb55e66258",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e43a89a9_12aab19b",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -138,6 +156,30 @@
       "writtenOn": "2022-07-19T21:44:26Z",
       "side": 1,
       "message": "remove",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 2
+      },
+      "revId": "ff4109325abc9cdb73315940e91c6bcb55e66258",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb93b040_930ef5b0",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetricsTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-19T14:24:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f526c4ed_8da170c1",
       "range": {
         "startLine": 77,
         "startChar": 0,
