@@ -16,6 +16,23 @@
       "message": "This looks good to me now, @Tony can you re-check? (I cannot merge it because I did the latest uploads)",
       "revId": "153d98699f229b1086b2458cd5d847da26b40be0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5f3a762_4b96ecb2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2022-08-19T21:08:30Z",
+      "side": 1,
+      "message": "LGTM 🔥",
+      "revId": "153d98699f229b1086b2458cd5d847da26b40be0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
