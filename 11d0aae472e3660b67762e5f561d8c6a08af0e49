@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2561176d_6afd7e7b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandler.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-19T15:18:52Z",
+      "side": 1,
+      "message": "This log is stale: you could end up in the `else` clause because the change isn\u0027t consistent.",
+      "range": {
+        "startLine": 70,
+        "startChar": 21,
+        "endLine": 70,
+        "endChar": 36
+      },
+      "revId": "11d0aae472e3660b67762e5f561d8c6a08af0e49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8c4ffff_8acc9370",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeChecker.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-19T15:18:52Z",
+      "side": 1,
+      "message": "Only the current or all of them?",
+      "range": {
+        "startLine": 64,
+        "startChar": 40,
+        "endLine": 64,
+        "endChar": 47
+      },
+      "revId": "11d0aae472e3660b67762e5f561d8c6a08af0e49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

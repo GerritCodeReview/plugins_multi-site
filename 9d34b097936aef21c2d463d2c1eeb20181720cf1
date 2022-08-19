@@ -148,6 +148,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43fe477c_678bed98",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-19T15:18:52Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b84a51bd_d7c3244c",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 59
+      },
+      "revId": "9d34b097936aef21c2d463d2c1eeb20181720cf1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69ccb979_f92df7d1",
@@ -185,6 +209,30 @@
       "side": 1,
       "message": "If I understand it correctly it will be covered by the isUpToDate method:\nhttps://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/stable-3.4/src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java#93\n\nwhich compares last update timestamp(plus draft and comments timestamp) with the the event creation time, if local timestamp is older than event it will schedule reindexing",
       "parentUuid": "69ccb979_f92df7d1",
+      "range": {
+        "startLine": 169,
+        "startChar": 11,
+        "endLine": 169,
+        "endChar": 15
+      },
+      "revId": "9d34b097936aef21c2d463d2c1eeb20181720cf1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89ff1080_349a9a9e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-08-19T15:18:52Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d603cb4a_09754e45",
       "range": {
         "startLine": 169,
         "startChar": 11,
