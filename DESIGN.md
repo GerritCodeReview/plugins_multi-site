@@ -89,15 +89,15 @@ single Gerrit master deployment, and the end goal is a fully distributed set of
 cooperating Gerrit masters across the globe.
 
 1. 1x master / single location.
-2. 2x masters (active/standby) / single location - shared disks
+2. 2x masters (active/standby) / single location - shared disks (XXX That's the same as point 3?)
 3. 2x masters (active/passive) / single location - shared disks
 4. 2x masters (active RW/active RO) / single location - shared disks
 5. 2x masters (active RW/active RO) / single location - separate disks
 6. 2x masters (active RW/active RO) / active + disaster recovery location
 7. 2x masters (active RW/active RO) / two locations
 8. 2x masters (active RW/active RW) / two locations
-9. 2 or more masters (active RW/active RW) sharded across 2 or more locations
-10. Multiple masters (active RW/active RW) with quorum / multiple locations
+9. 2 or more masters (active RW/active RW) sharded across 2 or more locations (XXX This is the current status , right ???)
+10. Multiple masters (active RW/active RW) with quorum / multiple locations (XXX what is this? Do we want to get here with MS?)
 
 The transition between steps requires not only an evolution of the Gerrit
 setup and the set of plugins but also the implementation of more mature methods to
@@ -180,7 +180,7 @@ are not impacted at all.
 
 ## Pull replication, synchronous or asynchronous
 
-Consider also pull replication for cases like 5, 6, 7... which could be done
+Consider also pull (XXX Push?) replication for cases like 5, 6, 7... which could be done
 also synchronously to the incoming write operation.
 In case a write operation fails to be replicated by the master node(s), it could be
 automatically rolled back and reported to the client for retry.
@@ -190,11 +190,11 @@ When running pull replication asynchronously, similarly to the replication plugi
 an unrecoverable crash of the replication source would result in unnoticed data loss.
 The only way to recover the data would be telling the users who pushed the commits
 to push them again. However, someone needs to manually detect the issue in the
-replication log and get in touch with the user.
+replication log and get in touch with the user. (XXX I don't get this)
 
 The [pull-replication plugin](https://gerrit.googlesource.com/plugins/pull-replication)
 supports synchronous replication and has the structure to perform also the
-asynchronous variant in the future.
+asynchronous variant in the future. (XXX This is already possible, right?)
 
 ## History and maturity level of the multi-site plugin
 
@@ -332,7 +332,7 @@ The multi-site solution described here depends upon the combined use of differen
 components:
 
 - **multi-site libModule**: exports interfaces as DynamicItems to plug in specific
-implementation of `Brokers` and `Global Ref-DB` plugins.
+implementation of `Brokers` and `Global Ref-DB` plugins. (XXX What is the lib module needed for?)
 
 - **broker plugin**: an implementation of the broker interface, which enables the
 replication of Gerrit _indexes_, _caches_,  and _stream events_ across sites.
@@ -359,6 +359,11 @@ then libModule interfaces are mapped to internal no-ops implementations.
 - **HA Proxy**: provides the single entry-point to all Gerrit functionality across sites.
 
 The interactions between these components are illustrated in the following diagram:
+
+XXX A bit confusing:
+* cache eviction seems wrong
+* replication plugin doesn't talk to replication plugin
+* what is the arrwo from GRDB plugin to SharedDir infrastrcuture?
 
 ![Initial Multi-Site Plugin Architecture](images/architecture-first-iteration.png)
 
@@ -454,18 +459,20 @@ channels in the multi-site plugin and reconcile the events at the destinations.
 The solution adopted by the multi-site plugin supports eventual consistency at
 rest at the data level, thanks to the following two components which:
 
-* **Identify not-yet-processable events**: 
+(XXX What?)
+
+* **Identify not-yet-processable events**:
 A mechanism to recognize _not-yet-processable events_ related to data not yet
 available (based on the timestamp information available on both the metadata
 update and the data event)
 
-* **Queue not-yet-processable events**: 
+* **Queue not-yet-processable events**:
 A queue of *not-yet-processable events* and an *asynchronous processor*
 to check if they became processable. The system also is configured to discard
 events that have been in the queue for too long.
 
 ### Avoid event replication loops
-
+(XXX not anymore)
 Stream events are wrapped into an event header containing a source identifier.
 Events originated by the same node in the broker-based channel are silently
 dropped so that they do not replicate multiple times.
@@ -474,6 +481,7 @@ Gerrit has the concept of **server-id** which, unfortunately, does not help
 solve this problem because all the nodes in a Gerrit cluster must have the same
 server-id to allow interoperability of the data stored in NoteDb.
 
+(XXX Update, it is now in Gerrit)
 The multi-site plugin introduces a new concept of **instance-id**, which is a UUID
 generated during startup and saved into the data folder of the Gerrit site. If
 the Gerrit site is cleared or removed, a new id is generated and the multi-site
@@ -482,7 +490,7 @@ plugin will start consuming all events that have been previously produced.
 The concept of the instance-id is very useful. Since other plugins could benefit
 from it, it will be the first candidate to move into the Gerrit core,
 generated and maintained with the rest of the configuration.  Then it can be
-included in **all** stream events, at which time the multi-site plugin's 
+included in **all** stream events, at which time the multi-site plugin's
 "enveloping of events" will become redundant.
 
 ### Manage failures
@@ -492,6 +500,7 @@ But there is still a point of failure: the availability of the broker itself. Ho
 using the broker does allow having a high-level of redundancy and a multi-master
 / multi-site configuration at the transport and storage level.
 
+(XXX Which failures are we talking about here ?)
 At the moment, the acknowledge level for publication can be controlled via
 configuration and allows to tune the QoS of the publication process. Failures
 are explicitly not handled at the moment; they are just logged as errors.
@@ -503,7 +512,7 @@ The current solution of multi-site at Stage #7 with asynchronous replication
 risks that the system will reach a Split Brain situation (see
 [issue #10554](https://bugs.chromium.org/p/gerrit/issues/detail?id=10554)).
 
-#### The diagram below illustrates the happy path with crash recovery returning the system to a healthy state.
+#### The diagram below illustrates the happy path with crash recovery returning the system to a healthy state. (XXX What is the W0 - W1 border?)
 
 ![Healthy Use Case](images/git-replication-healthy.png)
 
@@ -550,6 +559,7 @@ Root causes of the Split Brain problem:
 
 Two possible approaches to solve the Split Brain problem:
 
+(XXX As in wait to ack until replicate on all nodes?)
 - **Synchronous replication**: In this case the system would behave essentially as the
 _happy path_ diagram shown above and would solve the problem by operating on the first of the causes,
 at the expense of performance, availability and scalability. It is a viable and simple solution
@@ -558,6 +568,9 @@ for two nodes set up with an infrastructure allowing fast replication.
 - **Centralise the information about the latest status of mutable refs**: This would operate
 on the second cause. That is, it would allow instances to realise that _they are
 not in sync on a particular ref_ and refuse any write operation on that ref.
+
+(XXX If serving reads , there reads will be out of date. What is the best way of making sure sure we serve the same read everywhere? Project sharding, i.e.: one node as active for a repo? How a CI system can be sure of pucking the last commmit ? Think about apple and the 3rd node?)
+
 The system could operate normally on any other ref and also would impose no
 limitation in other functions such as, Serving the GUI, supporting reads, accepting new
 changes or patch-sets on existing changes. This option is discussed in further
@@ -584,7 +597,7 @@ operations on the reference can be recovered.
 If `Client2` can perform the `push` again vs `Instance2`, the server recognises that
 the client status needs an update, the client will `rebase` and `push` the correct status.
 
-__NOTE__:
+__NOTE__: (XXX what?)
 This implementation will prevent the cluster to enter split brain but might result in a
 set of refs in Read Only state across all the cluster if the RW node is failing after having
 sent the request to the Ref-DB but before persisting this request into its `git` layer.

@@ -82,6 +82,8 @@ Example:
 
 ## How to configure
 
+XXX Not enough to add multi-site: multi-site is a bundle of plugins
+
 Install the multi-site plugin into the `$GERRIT_SITE/lib` directory of all
 the Gerrit servers that are part of the multi-site cluster.
 Create a symbolic link from `$GERRIT_SITE/lib/multi-site.jar` into the
