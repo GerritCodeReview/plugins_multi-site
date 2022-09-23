@@ -14,19 +14,26 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import java.util.Optional;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefLogger;
 import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
+import org.junit.Ignore;
 
-public interface ProjectVersionRefUpdate {
+@Ignore
+public class DisabledSharedRefLogger implements SharedRefLogger {
 
-  String MULTI_SITE_VERSIONING_REF = "refs/multi-site/version";
-  String MULTI_SITE_VERSIONING_VALUE_REF = "refs/multi-site/version/value";
-  Ref NULL_PROJECT_VERSION_REF =
-      new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId());
+  @Override
+  public void logRefUpdate(String project, Ref currRef, ObjectId newRefValue) {}
 
-  Optional<Long> getProjectLocalVersion(String projectName);
+  @Override
+  public void logProjectDelete(String project) {}
 
-  Optional<Long> getProjectRemoteVersion(String projectName);
+  @Override
+  public void logLockAcquisition(String project, String refName) {}
+
+  @Override
+  public void logLockRelease(String project, String refName) {}
+
+  @Override
+  public <T> void logRefUpdate(String project, String refName, T currRef, T newRefValue) {}
 }

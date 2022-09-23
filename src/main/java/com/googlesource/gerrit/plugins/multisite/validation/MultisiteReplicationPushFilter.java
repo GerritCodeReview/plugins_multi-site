@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -66,19 +67,23 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
         gitRepositoryManager.openRepository(Project.nameKey(projectName))) {
       List<RemoteRefUpdate> filteredRefUpdates =
           remoteUpdatesList.stream()
-              .filter(
+              .map(
                   refUpdate -> {
-                    boolean refUpToDate = isUpToDateWithRetry(projectName, repository, refUpdate);
-                    if (!refUpToDate) {
+                    Optional<RemoteRefUpdate> updatedRefUpdate =
+                        isUpToDateWithRetry(projectName, repository, refUpdate);
+                    if (!updatedRefUpdate.isPresent()) {
                       repLog.warn(
-                          "{} is not up-to-date with the shared-refdb and thus will NOT BE replicated",
+                          "{} is not up-to-date with the shared-refdb and thus will NOT BE"
+                              + " replicated",
                           refUpdate);
                       if (refUpdate.getSrcRef().endsWith(REF_META_SUFFIX)) {
                         outdatedChanges.add(getRootChangeRefPrefix(refUpdate.getSrcRef()));
                       }
                     }
-                    return refUpToDate;
+                    return updatedRefUpdate;
                   })
+              .filter(Optional::isPresent)
+              .map(Optional::get)
               .collect(Collectors.toList());
 
       return filteredRefUpdates.stream()
@@ -102,35 +107,54 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
     }
   }
 
-  private boolean isUpToDateWithRetry(
+  private Optional<RemoteRefUpdate> isUpToDateWithRetry(
       String projectName, Repository repository, RemoteRefUpdate refUpdate) {
     String ref = refUpdate.getSrcRef();
     try {
       if (sharedRefDb.isUpToDate(
           Project.nameKey(projectName),
           new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, ref, refUpdate.getNewObjectId()))) {
-        return true;
+        return Optional.of(refUpdate);
       }
 
       randomSleepForMitigatingConditionWhereLocalRefHaveJustBeenChanged(
           projectName, refUpdate, ref);
 
+      ObjectId reloadedNewObjectId = getNotNullExactRef(repository, ref);
+      RemoteRefUpdate refUpdateReloaded =
+          newRemoteRefUpdateWithObjectId(repository, refUpdate, reloadedNewObjectId);
       return sharedRefDb.isUpToDate(
-          Project.nameKey(projectName),
-          new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, ref, getNotNullExactRef(repository, ref)));
+              Project.nameKey(projectName),
+              new ObjectIdRef.Unpeeled(
+                  Ref.Storage.NETWORK, ref, refUpdateReloaded.getNewObjectId()))
+          ? Optional.of(refUpdateReloaded)
+          : Optional.empty();
     } catch (GlobalRefDbLockException gle) {
       String message =
           String.format("%s is locked on shared-refdb and thus will NOT BE replicated", ref);
       repLog.error(message);
       logger.atSevere().withCause(gle).log(message);
-      return false;
+      return Optional.empty();
     } catch (IOException ioe) {
       String message =
           String.format("Error while extracting ref '%s' for project '%s'", ref, projectName);
       repLog.error(message);
       logger.atSevere().withCause(ioe).log(message);
-      return false;
+      return Optional.empty();
     }
+  }
+
+  private RemoteRefUpdate newRemoteRefUpdateWithObjectId(
+      Repository localDb, RemoteRefUpdate refUpdate, ObjectId reloadedNewObjectId)
+      throws IOException {
+    return new RemoteRefUpdate(
+        localDb,
+        refUpdate.getSrcRef(),
+        reloadedNewObjectId,
+        refUpdate.getRemoteName(),
+        refUpdate.isForceUpdate(),
+        null,
+        refUpdate.getExpectedOldObjectId());
   }
 
   private void randomSleepForMitigatingConditionWhereLocalRefHaveJustBeenChanged(
@@ -140,7 +164,8 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
             + new Random().nextInt(RANDOM_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS);
     repLog.debug(
         String.format(
-            "'%s' is not up-to-date for project '%s' [local='%s']. Reload local ref in '%d ms' and re-check",
+            "'%s' is not up-to-date for project '%s' [local='%s']. Reload local ref in '%d ms' and"
+                + " re-check",
             ref, projectName, refUpdate.getNewObjectId(), randomSleepTimeMsec));
     try {
       Thread.sleep(randomSleepTimeMsec);

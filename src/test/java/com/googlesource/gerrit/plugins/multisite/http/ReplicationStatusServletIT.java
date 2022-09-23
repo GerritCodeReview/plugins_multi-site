@@ -27,7 +27,11 @@ import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.config.GerritConfig;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.httpd.restapi.RestApiServlet;
+import com.google.gerrit.server.git.WorkQueue;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.google.inject.Scopes;
+import com.google.inject.multibindings.OptionalBinder;
 import com.googlesource.gerrit.plugins.multisite.Log4jProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
@@ -36,6 +40,8 @@ import com.googlesource.gerrit.plugins.multisite.consumer.ReplicationStatusModul
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
+import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
+import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdateImpl;
 import java.io.IOException;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
@@ -53,18 +59,24 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
   private ReplicationStatus replicationStatus;
 
   public static class TestModule extends AbstractModule {
+    @Inject WorkQueue workQueue;
+
     @Override
     protected void configure() {
       install(new ForwarderModule());
       install(new CacheModule());
       install(new RouterModule());
       install(new IndexModule());
-      install(new ReplicationStatusModule());
+      install(new ReplicationStatusModule(workQueue));
       SharedRefDbConfiguration sharedRefDbConfig =
           new SharedRefDbConfiguration(new Config(), "multi-site");
       bind(SharedRefDbConfiguration.class).toInstance(sharedRefDbConfig);
       bind(ProjectVersionLogger.class).to(Log4jProjectVersionLogger.class);
       bind(SharedRefLogger.class).to(Log4jSharedRefLogger.class);
+      OptionalBinder.newOptionalBinder(binder(), ProjectVersionRefUpdate.class)
+          .setBinding()
+          .to(ProjectVersionRefUpdateImpl.class)
+          .in(Scopes.SINGLETON);
     }
   }
 
