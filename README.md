@@ -65,6 +65,21 @@ instantiating and using a Kafka/Zookeeper broker. Make sure you have a Docker
 daemon running (/var/run/docker.sock accessible) or a DOCKER_HOST pointing to
 a Docker server.
 
+## Pre-requisites
+
+Each Gerrit server of the cluster must be identified with a globally unique
+[instance-id](https://gerrit-documentation.storage.googleapis.com/Documentation/3.4.5/config-gerrit.html#gerrit.instanceId)
+defined in `$GERRIT_SITE/etc/gerrit.config`.
+When migrating from a multi-site configuration with Gerrit v3.3 or earlier,
+you must reuse the instance-id value stored under `$GERRIT_SITE/data/multi-site`.
+
+Example:
+
+```
+[gerrit]
+  instanceId = 758fe5b7-1869-46e6-942a-3ae0ae7e3bd2
+```
+
 ## How to configure
 
 Install the multi-site plugin into the `$GERRIT_SITE/lib` directory of all

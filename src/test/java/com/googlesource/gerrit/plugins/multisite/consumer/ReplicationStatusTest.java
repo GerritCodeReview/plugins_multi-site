@@ -15,7 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,10 +25,12 @@ import com.google.common.collect.ImmutableSortedSet;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.server.project.ProjectCache;
-import com.google.inject.Provider;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import java.util.Optional;
+import java.util.concurrent.Executors;
+import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +42,6 @@ public class ReplicationStatusTest {
 
   @Mock private ProjectVersionLogger verLogger;
   @Mock private ProjectCache projectCache;
-  @Mock private Provider<ProjectVersionRefUpdate> projectVersionRefUpdateProvider;
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
   private ReplicationStatus objectUnderTest;
   private Cache<String, Long> replicationStatusCache;
@@ -53,8 +54,12 @@ public class ReplicationStatusTest {
     replicationStatusCache = CacheBuilder.newBuilder().build();
     objectUnderTest =
         new ReplicationStatus(
-            replicationStatusCache, projectVersionRefUpdateProvider, verLogger, projectCache);
-    lenient().when(projectVersionRefUpdateProvider.get()).thenReturn(projectVersionRefUpdate);
+            replicationStatusCache,
+            Optional.of(projectVersionRefUpdate),
+            verLogger,
+            projectCache,
+            Executors.newScheduledThreadPool(1),
+            new Configuration(new Config(), new Config()));
   }
 
   @Test
@@ -144,6 +149,44 @@ public class ReplicationStatusTest {
     objectUnderTest.onProjectDeleted(projectDeletedEvent(projectName));
 
     assertThat(replicationStatusCache.getIfPresent(projectName)).isEqualTo(lag);
+  }
+
+  @Test
+  public void shouldUpdateReplicationLagForProject() {
+    String projectName = "projectA";
+    long projectLocalVersion = 10L;
+    long projectRemoteVersion = 20L;
+
+    when(projectVersionRefUpdate.getProjectLocalVersion(eq(projectName)))
+        .thenReturn(Optional.of(projectLocalVersion));
+    when(projectVersionRefUpdate.getProjectRemoteVersion(eq(projectName)))
+        .thenReturn(Optional.of(projectRemoteVersion));
+
+    objectUnderTest.updateReplicationLag(Project.nameKey(projectName));
+
+    assertThat(replicationStatusCache.getIfPresent(projectName))
+        .isEqualTo(projectRemoteVersion - projectLocalVersion);
+  }
+
+  @SuppressWarnings("unchecked")
+  @Test
+  public void shouldAutoRefreshReplicationLagForProject() {
+    String projectName = "projectA";
+    long projectLocalVersion = 10L;
+    long projectRemoteVersion = 20L;
+
+    when(projectVersionRefUpdate.getProjectLocalVersion(eq(projectName)))
+        .thenReturn(Optional.of(projectLocalVersion), Optional.of(projectRemoteVersion));
+    when(projectVersionRefUpdate.getProjectRemoteVersion(eq(projectName)))
+        .thenReturn(Optional.of(projectRemoteVersion));
+
+    objectUnderTest.updateReplicationLag(Project.nameKey(projectName));
+
+    assertThat(replicationStatusCache.getIfPresent(projectName))
+        .isEqualTo(projectRemoteVersion - projectLocalVersion);
+    objectUnderTest.refreshProjectsWithLag();
+
+    assertThat(replicationStatusCache.getIfPresent(projectName)).isEqualTo(0);
   }
 
   private void setupReplicationLag(String projectName, long lag) {
