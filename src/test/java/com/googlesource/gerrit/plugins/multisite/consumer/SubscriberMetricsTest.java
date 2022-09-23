@@ -27,12 +27,13 @@ import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.project.ProjectCache;
-import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.events.ProjectDeletionReplicationSucceededEvent;
 import java.net.URISyntaxException;
 import java.util.Optional;
+import java.util.concurrent.Executors;
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.transport.URIish;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +50,6 @@ public class SubscriberMetricsTest {
   @Mock private MetricMaker metricMaker;
   @Mock private ProjectVersionLogger verLogger;
   @Mock private ProjectCache projectCache;
-  @Mock private Provider<ProjectVersionRefUpdate> projectVersionRefUpdateProvider;
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
   private SubscriberMetrics metrics;
   private ReplicationStatus replicationStatus;
@@ -59,11 +59,13 @@ public class SubscriberMetricsTest {
     replicationStatus =
         new ReplicationStatus(
             CacheBuilder.newBuilder().build(),
-            projectVersionRefUpdateProvider,
+            Optional.of(projectVersionRefUpdate),
             verLogger,
-            projectCache);
+            projectCache,
+            Executors.newScheduledThreadPool(1),
+            new com.googlesource.gerrit.plugins.multisite.Configuration(
+                new Config(), new Config()));
     metrics = new SubscriberMetrics(metricMaker, replicationStatus);
-    when(projectVersionRefUpdateProvider.get()).thenReturn(projectVersionRefUpdate);
   }
 
   @Test

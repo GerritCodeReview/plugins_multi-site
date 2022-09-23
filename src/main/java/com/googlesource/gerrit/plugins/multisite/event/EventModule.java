@@ -20,9 +20,12 @@ import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.events.EventListener;
 import com.google.inject.Inject;
+import com.google.inject.Scopes;
+import com.google.inject.multibindings.OptionalBinder;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
+import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdateImpl;
 
 public class EventModule extends LifecycleModule {
   private final Configuration configuration;
@@ -34,7 +37,17 @@ public class EventModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-    DynamicSet.bind(binder(), EventListener.class).to(ProjectVersionRefUpdate.class);
+    OptionalBinder<ProjectVersionRefUpdate> projectVersionRefUpdateBinder =
+        OptionalBinder.newOptionalBinder(binder(), ProjectVersionRefUpdate.class);
+    if (configuration.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {
+      DynamicSet.bind(binder(), EventListener.class).to(ProjectVersionRefUpdateImpl.class);
+      projectVersionRefUpdateBinder
+          .setBinding()
+          .to(ProjectVersionRefUpdateImpl.class)
+          .in(Scopes.SINGLETON);
+    }
+
+    DynamicSet.bind(binder(), EventListener.class).to(ProjectVersionRefUpdateImpl.class);
 
     bind(StreamEventPublisherConfig.class)
         .toInstance(
