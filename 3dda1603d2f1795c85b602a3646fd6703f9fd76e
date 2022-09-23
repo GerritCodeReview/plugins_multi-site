@@ -188,6 +188,30 @@
       },
       "revId": "3dda1603d2f1795c85b602a3646fd6703f9fd76e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c9f034f_b49e562f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-23T20:21:10Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "523008d5_11b5f491",
+      "range": {
+        "startLine": 292,
+        "startChar": 14,
+        "endLine": 292,
+        "endChar": 65
+      },
+      "revId": "3dda1603d2f1795c85b602a3646fd6703f9fd76e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
