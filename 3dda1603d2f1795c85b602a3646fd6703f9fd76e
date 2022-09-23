@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c30adfce_788b7f37",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-23T17:40:21Z",
+      "side": 0,
+      "message": "`EventExecutor*` have been removed in 3.5. See [1].\n\n[1]: https://gerrit-review.googlesource.com/c/plugins/multi-site/+/314781",
+      "parentUuid": "dc1838db_d4e51864",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 74
+      },
+      "revId": "3dda1603d2f1795c85b602a3646fd6703f9fd76e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "16530262_b8aafed7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
         "patchSetId": 3
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a1b4f466_273bd4b9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-23T17:40:21Z",
+      "side": 0,
+      "message": "This [1] change was removing the filtering from the `ProjectVersionRefUpdate`. In the meanwhile in 3.4 `ProjectVersionRefUpdate` become an interface and the `ProjectVersionRefUpdateImpl` was added.\n\n[1]: https://gerrit-review.googlesource.com/c/plugins/multi-site/+/313939",
+      "parentUuid": "16530262_b8aafed7",
+      "range": {
+        "startLine": 78,
+        "startChar": 6,
+        "endLine": 78,
+        "endChar": 42
+      },
+      "revId": "3dda1603d2f1795c85b602a3646fd6703f9fd76e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b997f605_76058166",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
         "patchSetId": 3
@@ -60,6 +108,30 @@
       "writtenOn": "2022-09-23T17:28:25Z",
       "side": 0,
       "message": "What happened to projects filtering?",
+      "range": {
+        "startLine": 292,
+        "startChar": 14,
+        "endLine": 292,
+        "endChar": 65
+      },
+      "revId": "3dda1603d2f1795c85b602a3646fd6703f9fd76e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "523008d5_11b5f491",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-23T17:40:21Z",
+      "side": 0,
+      "message": "See [1]\n\n[1]: https://gerrit-review.googlesource.com/c/plugins/multi-site/+/346537/comment/16530262_b8aafed7/",
+      "parentUuid": "b997f605_76058166",
       "range": {
         "startLine": 292,
         "startChar": 14,
