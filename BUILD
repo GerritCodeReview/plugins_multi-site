@@ -19,8 +19,8 @@ gerrit_plugin(
     resources = glob(["src/main/resources/**/*"]),
     deps = [
         ":replication-neverlink",
-        "@events-broker//jar",
-        "@global-refdb//jar",
+        "@events-broker//jar:neverlink",
+        "@global-refdb//jar:neverlink",
     ],
 )
 
@@ -74,12 +74,6 @@ sh_test(
     srcs = [
         "e2e-tests/test.sh",
     ],
-    data = [
-        "//plugins/multi-site",
-        "//plugins/multi-site:e2e_multi_site_test_dir",
-        "//plugins/multi-site:e2e_multi_site_setup_local_env_dir",
-        "external_plugin_deps.bzl",
-    ] + glob(["setup_local_env/**/*"]) + glob(["e2e-tests/**/*"]),
     args = [
         "--multisite-lib-file $(location //plugins/multi-site)",
         "--healthcheck-interval 5s",
@@ -88,6 +82,12 @@ sh_test(
         "--location '$(location //plugins/multi-site:e2e_multi_site_test_dir)'",
         "--local-env '$(location //plugins/multi-site:e2e_multi_site_setup_local_env_dir)'",
     ],
+    data = [
+        "//plugins/multi-site",
+        "//plugins/multi-site:e2e_multi_site_test_dir",
+        "//plugins/multi-site:e2e_multi_site_setup_local_env_dir",
+        "external_plugin_deps.bzl",
+    ] + glob(["setup_local_env/**/*"]) + glob(["e2e-tests/**/*"]),
     tags = [
         "e2e-multi-site",
     ],
