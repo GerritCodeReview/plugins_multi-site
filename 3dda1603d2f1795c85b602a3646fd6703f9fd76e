@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc1838db_d4e51864",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-23T17:28:25Z",
+      "side": 0,
+      "message": "Why those three lines are not included?",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 74
+      },
+      "revId": "3dda1603d2f1795c85b602a3646fd6703f9fd76e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16530262_b8aafed7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-23T17:28:25Z",
+      "side": 0,
+      "message": "Why has the projects filter functionality been removed?",
+      "range": {
+        "startLine": 78,
+        "startChar": 6,
+        "endLine": 78,
+        "endChar": 42
+      },
+      "revId": "3dda1603d2f1795c85b602a3646fd6703f9fd76e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b997f605_76058166",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-23T17:28:25Z",
+      "side": 0,
+      "message": "What happened to projects filtering?",
+      "range": {
+        "startLine": 292,
+        "startChar": 14,
+        "endLine": 292,
+        "endChar": 65
+      },
+      "revId": "3dda1603d2f1795c85b602a3646fd6703f9fd76e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

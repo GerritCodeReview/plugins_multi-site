@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b1612a2_6e4ccc05",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-23T17:28:25Z",
+      "side": 1,
+      "message": "Add  _also set target branch to stable-3.5_",
+      "revId": "51200588bf369dd8b4c774ea00e346644df6c14b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "d7d836fd_de5ad0b8",
@@ -14,6 +31,52 @@
       "writtenOn": "2022-09-23T17:22:12Z",
       "side": 1,
       "message": "Tested locally",
+      "revId": "51200588bf369dd8b4c774ea00e346644df6c14b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6aa233cd_d9e08907",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-23T17:28:25Z",
+      "side": 1,
+      "message": "Needs to be mentioned on the commit message",
+      "range": {
+        "startLine": 19,
+        "startChar": 14,
+        "endLine": 19,
+        "endChar": 24
+      },
+      "revId": "51200588bf369dd8b4c774ea00e346644df6c14b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23204483_b2d18cea",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-23T17:28:25Z",
+      "side": 1,
+      "message": "Any reason why this has changed position compared to the one that was in stable-3.4?",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 5
+      },
       "revId": "51200588bf369dd8b4c774ea00e346644df6c14b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
