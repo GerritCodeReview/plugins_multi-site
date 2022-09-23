@@ -228,7 +228,7 @@ cp -f $MULTISITE_LIB_LOCATION $COMMON_PLUGINS/multi-site.jar  >/dev/null 2>&1 ||
   { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 
 echo "Downloading websession-broker plugin $GERRIT_BRANCH"
-wget $GERRIT_CI/plugin-websession-broker-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
+wget $GERRIT_CI/plugin-websession-broker-bazel-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
   -O $COMMON_PLUGINS/websession-broker.jar || { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Aborting"; exit 1; }
 
 echo "Downloading healthcheck plugin $GERRIT_BRANCH"
