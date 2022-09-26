@@ -16,6 +16,24 @@
       "message": "We should probably add some logic in the plugin download to cascade between the 2 possible plugin naming options, otherwise we will always need to juggle between the version with and without `master` prefix.",
       "revId": "b8534019b627755fbd2a339b92cb32b775cc33e7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a4fd52d_3b2dc735",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-09-26T12:33:59Z",
+      "side": 1,
+      "message": "Yes, could you do that instead?",
+      "parentUuid": "a662d7a9_f318843f",
+      "revId": "b8534019b627755fbd2a339b92cb32b775cc33e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
