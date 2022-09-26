@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a662d7a9_f318843f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2022-09-26T02:54:05Z",
+      "side": 1,
+      "message": "We should probably add some logic in the plugin download to cascade between the 2 possible plugin naming options, otherwise we will always need to juggle between the version with and without `master` prefix.",
+      "revId": "b8534019b627755fbd2a339b92cb32b775cc33e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
