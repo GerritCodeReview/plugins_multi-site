@@ -32,6 +32,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.inject.ProvisionException;
 import com.google.inject.Scopes;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
@@ -67,6 +68,14 @@ public class ValidationModule extends FactoryModule {
             ImmutableSet.of(
                 ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
                 ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF));
+
+    try {
+      bind(GitRepositoryManager.class)
+          .annotatedWith(Names.named(SharedRefDbGitRepositoryManager.LOCAL_DISK_REPOSITORY_MANAGER))
+          .to(cfg.getLocalRepositoryManager());
+    } catch (ClassNotFoundException e) {
+      throw new ProvisionException("Unable to instantiate the local repository manager", e);
+    }
     bind(GitRepositoryManager.class).to(SharedRefDbGitRepositoryManager.class);
     DynamicItem.bind(binder(), ReplicationPushFilter.class)
         .to(MultisiteReplicationPushFilter.class);
