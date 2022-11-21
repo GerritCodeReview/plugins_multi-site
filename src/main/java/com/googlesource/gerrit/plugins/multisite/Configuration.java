@@ -25,6 +25,7 @@ import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.SitePaths;
+import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
@@ -211,6 +212,11 @@ public class Configuration {
       log.debug("Failed to retrieve integer value: {}", e.getMessage(), e);
       return defaultValue;
     }
+  }
+
+  public Class<? extends GitRepositoryManager> getLocalRepositoryManager()
+      throws ClassNotFoundException {
+    return sharedRefDb.get().getLocalRepositoryManager();
   }
 
   public static class Projects {
