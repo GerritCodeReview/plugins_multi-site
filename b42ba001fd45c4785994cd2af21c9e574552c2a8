@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb339ff2_7fdcf546",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2022-11-23T09:32:34Z",
+      "side": 1,
+      "message": "This logic also is needed on `high-availability` plugin",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 5
+      },
+      "revId": "b42ba001fd45c4785994cd2af21c9e574552c2a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
