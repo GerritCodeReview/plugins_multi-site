@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "adfc1517_023ce7da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2022-11-24T08:53:25Z",
+      "side": 1,
+      "message": "We should add documentation how to setup alternative implementation",
+      "revId": "b42ba001fd45c4785994cd2af21c9e574552c2a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb339ff2_7fdcf546",
