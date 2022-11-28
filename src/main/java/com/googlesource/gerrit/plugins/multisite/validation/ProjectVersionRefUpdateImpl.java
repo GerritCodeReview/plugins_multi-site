@@ -71,7 +71,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
 
   @Override
   public void onEvent(Event event) {
-    logger.atFine().log("Processing event type: " + event.type);
+    logger.atFine().log("Processing event type: %s", event.type);
     // Producer of the Event use RefUpdatedEvent to trigger the version update
     if (nodeInstanceId.equals(event.instanceId) && event instanceof RefUpdatedEvent) {
       updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
@@ -114,8 +114,8 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
       }
     } catch (LocalProjectVersionUpdateException | SharedProjectVersionUpdateException e) {
       logger.atSevere().withCause(e).log(
-          "Issue encountered when updating version for project "
-              + refUpdatedEvent.getProjectNameKey());
+          "Issue encountered when updating version for project %s",
+              refUpdatedEvent.getProjectNameKey());
     }
   }
 
@@ -134,6 +134,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
     return newId;
   }
 
+  @SuppressWarnings("FloggerLogString")
   private boolean updateSharedProjectVersion(
       Project.NameKey projectNameKey, ObjectId newObjectId, Long newVersion)
       throws SharedProjectVersionUpdateException {
@@ -156,20 +157,18 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
     try {
       if (sharedVersion.isPresent() && sharedVersion.get() >= newVersion) {
         logger.atWarning().log(
-            String.format(
-                "NOT Updating project %s version %s (value=%d) in shared ref-db because is more recent than the local one %s (value=%d) ",
+            "NOT Updating project %s version %s (value=%d) in shared ref-db because is more recent than the local one %s (value=%d) ",
                 projectNameKey.get(),
                 newObjectId,
                 newVersion,
                 sharedRef.getObjectId().getName(),
-                sharedVersion.get()));
+                sharedVersion.get());
         return false;
       }
 
       logger.atFine().log(
-          String.format(
               "Updating shared project %s version to %s (value=%d)",
-              projectNameKey.get(), newObjectId, newVersion));
+              projectNameKey.get(), newObjectId, newVersion);
 
       boolean success = sharedRefDb.compareAndPut(projectNameKey, sharedRef, newObjectId);
       if (!success) {
@@ -256,6 +255,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
     }
   }
 
+  @SuppressWarnings("FloggerLogString")
   private Optional<RefUpdate> updateLocalProjectVersion(
       Project.NameKey projectNameKey, long newVersionNumber)
       throws LocalProjectVersionUpdateException {
