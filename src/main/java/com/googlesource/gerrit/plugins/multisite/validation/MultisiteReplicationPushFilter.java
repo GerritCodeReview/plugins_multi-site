@@ -100,9 +100,9 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
           .collect(Collectors.toList());
 
     } catch (IOException ioe) {
-      String message = String.format("Error while opening project: '%s'", projectName);
-      repLog.error(message);
-      logger.atSevere().withCause(ioe).log(message);
+      final String messageFmt = "Error while opening project: '%s'";
+      repLog.error(messageFmt, projectName);
+      logger.atSevere().withCause(ioe).log(messageFmt, projectName);
       return Collections.emptyList();
     }
   }
@@ -130,16 +130,14 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
           ? Optional.of(refUpdateReloaded)
           : Optional.empty();
     } catch (GlobalRefDbLockException gle) {
-      String message =
-          String.format("%s is locked on shared-refdb and thus will NOT BE replicated", ref);
-      repLog.error(message);
-      logger.atSevere().withCause(gle).log(message);
+      final String messageFmt = "%s is locked on shared-refdb and thus will NOT BE replicated";
+      repLog.error(messageFmt, ref);
+      logger.atSevere().withCause(gle).log(messageFmt, ref);
       return Optional.empty();
     } catch (IOException ioe) {
-      String message =
-          String.format("Error while extracting ref '%s' for project '%s'", ref, projectName);
-      repLog.error(message);
-      logger.atSevere().withCause(ioe).log(message);
+      final String messageFmt = "Error while extracting ref '%s' for project '%s'";
+      repLog.error(messageFmt, ref, projectName);
+      logger.atSevere().withCause(ioe).log(messageFmt, ref, projectName);
       return Optional.empty();
     }
   }
@@ -170,10 +168,9 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
     try {
       Thread.sleep(randomSleepTimeMsec);
     } catch (InterruptedException ie) {
-      String message =
-          String.format("Error while waiting for next check for '%s', ref '%s'", projectName, ref);
-      repLog.error(message);
-      logger.atWarning().withCause(ie).log(message);
+      final String messageFmt = "Error while waiting for next check for '%s', ref '%s'";
+      repLog.error(messageFmt, projectName, ref);
+      logger.atWarning().withCause(ie).log(messageFmt, projectName, ref);
     }
   }
 
