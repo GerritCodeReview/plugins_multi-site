@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ae883d7_8afd0e75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2022-11-28T15:31:05Z",
+      "side": 1,
+      "message": "looks like this fix should be done on stable-3.6 since its build is failing with the same ErrorProne error\n\nhttps://gerrit-ci.gerritforge.com/job/plugin-multi-site-verifier/job/81%252F353281%252F1/2/console",
+      "revId": "0d8b1cd2d3ece41b73f7c7c0c8f91364c5926892",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
