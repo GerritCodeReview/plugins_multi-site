@@ -71,12 +71,10 @@ public abstract class AbstractSubcriber {
         || !shouldConsumeEvent(event)) {
       if (Strings.isNullOrEmpty(sourceInstanceId)) {
         logger.atWarning().log(
-            String.format(
-                "Dropping event %s because sourceInstanceId cannot be null", event.toString()));
+            "Dropping event %s because sourceInstanceId cannot be null", event.toString());
       } else if (instanceId.equals(sourceInstanceId)) {
         logger.atFiner().log(
-            String.format(
-                "Dropping event %s produced by our instanceId %s", event.toString(), instanceId));
+            "Dropping event %s produced by our instanceId %s", event.toString(), instanceId);
       }
       droppedEventListeners.forEach(l -> l.onEventDropped(event));
     } else {
