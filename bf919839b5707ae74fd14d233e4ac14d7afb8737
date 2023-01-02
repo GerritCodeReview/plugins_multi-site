@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36b8e4cf_6d97d6c1",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-01-02T21:19:56Z",
+      "side": 1,
+      "message": "Why is this needed?\nWas this always meant to check projectCache only? if so, should it be fixed as a separate change?",
+      "revId": "bf919839b5707ae74fd14d233e4ac14d7afb8737",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
