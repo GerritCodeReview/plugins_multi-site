@@ -14,18 +14,31 @@
 
 package com.googlesource.gerrit.plugins.multisite.cache;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gerrit.extensions.events.NewProjectCreatedListener;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.cache.CacheRemovalListener;
+import com.googlesource.gerrit.plugins.multisite.ExecutorProvider;
 import java.util.concurrent.Executor;
 
 public class CacheModule extends LifecycleModule {
 
+  private final Class<? extends ExecutorProvider> cacheExecutorProviderClass;
+
+  public CacheModule() {
+    this(CacheExecutorProvider.class);
+  }
+
+  @VisibleForTesting
+  public CacheModule(Class<? extends ExecutorProvider> cacheExecutorProvider) {
+    this.cacheExecutorProviderClass = cacheExecutorProvider;
+  }
+
   @Override
   protected void configure() {
-    bind(Executor.class).annotatedWith(CacheExecutor.class).toProvider(CacheExecutorProvider.class);
+    bind(Executor.class).annotatedWith(CacheExecutor.class).toProvider(cacheExecutorProviderClass);
     listener().to(CacheExecutorProvider.class);
     DynamicSet.bind(binder(), CacheRemovalListener.class).to(CacheEvictionHandler.class);
     DynamicSet.bind(binder(), NewProjectCreatedListener.class).to(ProjectListUpdateHandler.class);
