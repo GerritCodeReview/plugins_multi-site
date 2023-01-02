@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfde7e14_17907bea",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/CacheModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-01-02T18:41:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5fade29_5e9d4ed8",
+      "range": {
+        "startLine": 35,
+        "startChar": 55,
+        "endLine": 35,
+        "endChar": 76
+      },
+      "revId": "f59db575924f3928c09b9951221ecfa683b38cdc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eca7e48f_81e0ec7a",
