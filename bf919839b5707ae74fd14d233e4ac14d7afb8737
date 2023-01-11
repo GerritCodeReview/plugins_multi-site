@@ -51,6 +51,24 @@
       "parentUuid": "36b8e4cf_6d97d6c1",
       "revId": "bf919839b5707ae74fd14d233e4ac14d7afb8737",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a64a8ad4_9e440ea9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-01-11T23:26:28Z",
+      "side": 1,
+      "message": "The cache tracker is receiving the evictions of all caches, not the ones we are focusing to test.\n\nI agree on the fact that it should be parametric rather than hardcoded though.",
+      "parentUuid": "18e70cc1_f5035bca",
+      "revId": "bf919839b5707ae74fd14d233e4ac14d7afb8737",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
