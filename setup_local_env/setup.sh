@@ -472,6 +472,11 @@ if [ "$REPLICATION_TYPE" = "ssh" ];then
   echo "Make sure ~/.ssh/authorized_keys and ~/.ssh/known_hosts are configured correctly"
 fi
 
+echo "Downloading pull-replication plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-pull-replication-$GERRIT_BRANCH/$LAST_BUILD/pull-replication/pull-replication.jar \
+  -O $DEPLOYMENT_LOCATION/pull-replication.jar || { echo >&2 "Cannot download pull-replication plugin: Check internet connection. Abort\
+ing"; exit 1; }
+
 if [ "$HTTPS_ENABLED" = "true" ];then
   export HTTP_PROTOCOL="https"
   export GERRIT_CANONICAL_WEB_URL="$HTTP_PROTOCOL://$GERRIT_CANONICAL_HOSTNAME/"
