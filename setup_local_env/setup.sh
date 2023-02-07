@@ -16,7 +16,7 @@
 
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-GERRIT_BRANCH=stable-3.5
+GERRIT_BRANCH=stable-3.6
 GERRIT_CI=https://gerrit-ci.gerritforge.com/view/Plugins-$GERRIT_BRANCH/job
 LAST_BUILD=lastSuccessfulBuild/artifact/bazel-bin/plugins
 EVENTS_BROKER_VER=`grep 'com.gerritforge:events-broker' $(dirname $0)/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
@@ -47,6 +47,18 @@ function get_replication_url {
   fi
 }
 
+function get_pull_replication_api_url {
+  REPLICATION_HOSTNAME=$1
+
+  echo "apiUrl = http://$REPLICATION_HOSTNAME:$REPLICATION_HTTPD_PORT"
+}
+
+function get_pull_replication_url {
+  REPLICATION_HOSTNAME=$1
+
+  echo "apiUrl = http://$REPLICATION_HOSTNAME:$REPLICATION_HTTPD_PORT/#{name}#.git"
+}
+
 function deploy_tls_certificates {
   echo "Deplying certificates in $HA_PROXY_CERTIFICATES_DIR..."
   openssl req -new -newkey rsa:2048 -x509 -sha256 -days 365 -nodes \
@@ -72,6 +84,8 @@ function copy_config_files {
     export REMOTE_DEBUG_PORT=$9
     export INSTANCE_ID=${10}
     export REPLICATION_URL=$(get_replication_url $REPLICATION_LOCATION_TEST_SITE $REPLICATION_HOSTNAME)
+    export PULL_REPLICATION_URL=$(get_pull_replication_url $REPLICATION_HOSTNAME)
+    export PULL_REPLICATION_API_URL=$(get_pull_replication_api_url $REPLICATION_HOSTNAME)
 
     echo "Replacing variables for file $file and copying to $CONFIG_TEST_SITE/$file_name"
 
@@ -415,7 +429,7 @@ else
 fi
 if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
   echo "Downloading websession-broker plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-websession-broker-bazel-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
+  wget $GERRIT_CI/plugin-websession-broker-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
   -O $DEPLOYMENT_LOCATION/websession-broker.jar || { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
 ing"; exit 1; }
   wget $GERRIT_CI/plugin-healthcheck-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
@@ -442,7 +456,7 @@ ing"; exit 1; }
 
 if [ "$BROKER_TYPE" = "kafka" ]; then
 echo "Downloading events-kafka plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-events-kafka-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-kafka/events-kafka.jar \
+  wget $GERRIT_CI/plugin-events-kafka-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/events-kafka/events-kafka.jar \
   -O $DEPLOYMENT_LOCATION/events-kafka.jar || { echo >&2 "Cannot download events-kafka plugin: Check internet connection. Abort\
 ing"; exit 1; }
 fi
@@ -471,6 +485,11 @@ if [ "$REPLICATION_TYPE" = "ssh" ];then
   echo "Using 'SSH' replication type"
   echo "Make sure ~/.ssh/authorized_keys and ~/.ssh/known_hosts are configured correctly"
 fi
+
+echo "Downloading pull-replication plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-pull-replication-bazel-$GERRIT_BRANCH/$LAST_BUILD/pull-replication/pull-replication.jar \
+  -O $DEPLOYMENT_LOCATION/pull-replication.jar || { echo >&2 "Cannot download pull-replication plugin: Check internet connection. Abort\
+ing"; exit 1; }
 
 if [ "$HTTPS_ENABLED" = "true" ];then
   export HTTP_PROTOCOL="https"
@@ -537,6 +556,10 @@ if [ $NEW_INSTALLATION = "true" ]; then
   echo "Link multi-site library to plugin directory"
   ln -s $LOCATION_TEST_SITE_1/lib/multi-site.jar $LOCATION_TEST_SITE_1/plugins/multi-site.jar
   ln -s $LOCATION_TEST_SITE_2/lib/multi-site.jar $LOCATION_TEST_SITE_2/plugins/multi-site.jar
+
+  echo "Copy pull-replication plugin"
+  cp -f $DEPLOYMENT_LOCATION/pull-replication.jar $LOCATION_TEST_SITE_1/plugins/pull-replication.jar
+
 fi
 
 DOCKER_HOST_ENV=$(docker_host_env)
