@@ -69,6 +69,24 @@
       "parentUuid": "18e70cc1_f5035bca",
       "revId": "bf919839b5707ae74fd14d233e4ac14d7afb8737",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4cc5f03_482b2e80",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-02-11T23:27:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a64a8ad4_9e440ea9",
+      "revId": "bf919839b5707ae74fd14d233e4ac14d7afb8737",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
