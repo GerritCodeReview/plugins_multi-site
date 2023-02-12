@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
@@ -231,7 +231,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
     assertThat(ref).isNull();
 
-    verifyZeroInteractions(verLogger);
+    verifyNoInteractions(verLogger);
   }
 
   @Test
@@ -246,7 +246,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
     assertThat(ref).isNull();
 
-    verifyZeroInteractions(verLogger);
+    verifyNoInteractions(verLogger);
   }
 
   @Test
@@ -261,7 +261,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
     assertThat(ref).isNull();
 
-    verifyZeroInteractions(verLogger);
+    verifyNoInteractions(verLogger);
   }
 
   @Test
