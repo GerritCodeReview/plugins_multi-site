@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31f0caa9_e3cc0552",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-02-12T23:51:54Z",
+      "side": 1,
+      "message": "This should stay as 3.5",
+      "range": {
+        "startLine": 19,
+        "startChar": 21,
+        "endLine": 19,
+        "endChar": 24
+      },
+      "revId": "e9082ef94066daa8a79d7c2c45636f0e062ea7a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
