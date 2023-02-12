@@ -16,7 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.event;
 
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.server.config.AllUsersName;
@@ -73,7 +73,7 @@ public class IndexEventRouterTest {
     verify(indexAccountHandler)
         .indexAsync(Account.id(event.accountId), ForwardedIndexingHandler.Operation.INDEX);
 
-    verifyZeroInteractions(indexChangeHandler, indexGroupHandler, indexProjectHandler);
+    verifyNoInteractions(indexChangeHandler, indexGroupHandler, indexProjectHandler);
   }
 
   @Test
@@ -87,7 +87,7 @@ public class IndexEventRouterTest {
     verify(indexAccountHandler)
         .indexAsync(Account.id(event.accountId), ForwardedIndexingHandler.Operation.INDEX);
 
-    verifyZeroInteractions(indexChangeHandler, indexGroupHandler, indexProjectHandler);
+    verifyNoInteractions(indexChangeHandler, indexGroupHandler, indexProjectHandler);
 
     streamEventRouter.route(new RefReplicationDoneEvent(allUsersName.get(), "refs/any", 1));
 
@@ -103,7 +103,7 @@ public class IndexEventRouterTest {
     verify(indexGroupHandler)
         .index(groupId, ForwardedIndexingHandler.Operation.INDEX, Optional.of(event));
 
-    verifyZeroInteractions(indexAccountHandler, indexChangeHandler, indexProjectHandler);
+    verifyNoInteractions(indexAccountHandler, indexChangeHandler, indexProjectHandler);
   }
 
   @Test
@@ -115,7 +115,7 @@ public class IndexEventRouterTest {
     verify(indexProjectHandler)
         .index(projectName, ForwardedIndexingHandler.Operation.INDEX, Optional.of(event));
 
-    verifyZeroInteractions(indexAccountHandler, indexChangeHandler, indexGroupHandler);
+    verifyNoInteractions(indexAccountHandler, indexChangeHandler, indexGroupHandler);
   }
 
   @Test
@@ -129,7 +129,7 @@ public class IndexEventRouterTest {
             ForwardedIndexingHandler.Operation.INDEX,
             Optional.of(event));
 
-    verifyZeroInteractions(indexAccountHandler, indexGroupHandler, indexProjectHandler);
+    verifyNoInteractions(indexAccountHandler, indexGroupHandler, indexProjectHandler);
   }
 
   @Test
@@ -143,7 +143,7 @@ public class IndexEventRouterTest {
             ForwardedIndexingHandler.Operation.DELETE,
             Optional.of(event));
 
-    verifyZeroInteractions(indexAccountHandler, indexGroupHandler, indexProjectHandler);
+    verifyNoInteractions(indexAccountHandler, indexGroupHandler, indexProjectHandler);
   }
 
   @Test
@@ -151,7 +151,7 @@ public class IndexEventRouterTest {
     final IndexEvent newEventType = new IndexEvent("new-type", INSTANCE_ID) {};
 
     assertThrows(UnsupportedOperationException.class, () -> router.route(newEventType));
-    verifyZeroInteractions(
+    verifyNoInteractions(
         indexAccountHandler, indexChangeHandler, indexGroupHandler, indexProjectHandler);
   }
 }

@@ -16,7 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
@@ -99,21 +99,21 @@ public class BrokerForwarderTest {
   @Test
   public void shouldSkipEventFromHighAvailabilityPluginThread() {
     brokerForwarder.send(newForwarderTask(HIGH_AVAILABILITY_PLUGIN), testTopic, testEvent);
-    verifyZeroInteractions(brokerMock);
+    verifyNoInteractions(brokerMock);
   }
 
   @Test
   public void shouldSkipEventFromHighAvailabilityPluginForwardedThread() {
     brokerForwarder.send(newForwarderTask(HIGH_AVAILABILITY_FORWARDED), testTopic, testEvent);
 
-    verifyZeroInteractions(brokerMock);
+    verifyNoInteractions(brokerMock);
   }
 
   @Test
   public void shouldSkipEventFromHighAvailabilityPluginBatchForwardedThread() {
     brokerForwarder.send(newForwarderTask(HIGH_AVAILABILITY_BATCH_FORWARDED), testTopic, testEvent);
 
-    verifyZeroInteractions(brokerMock);
+    verifyNoInteractions(brokerMock);
   }
 
   private ForwarderTask newForwarderTask(String threadName) {
