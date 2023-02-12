@@ -24,6 +24,7 @@ import com.gerritforge.gerrit.globalrefdb.validation.SharedRefLogger;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.RestResponse;
 import com.google.gerrit.acceptance.TestPlugin;
+import com.google.gerrit.acceptance.config.GerritConfig;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.httpd.restapi.RestApiServlet;
 import com.google.gerrit.server.git.WorkQueue;
@@ -85,6 +86,7 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @GerritConfig(name = "gerrit.instanceId", value = "testInstanceId")
   public void shouldSucceedForAdminUsers() throws Exception {
     RestResponse result = adminRestSession.get(LAG_ENDPOINT);
 
@@ -93,6 +95,7 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @GerritConfig(name = "gerrit.instanceId", value = "testInstanceId")
   public void shouldFailWhenUserHasNoAdminServerCapability() throws Exception {
     RestResponse result = userRestSession.get(LAG_ENDPOINT);
     result.assertForbidden();
@@ -100,6 +103,7 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @GerritConfig(name = "gerrit.instanceId", value = "testInstanceId")
   public void shouldReturnCurrentProjectLag() throws Exception {
     replicationStatus.doUpdateLag(Project.nameKey("foo"), 123L);
 
@@ -110,6 +114,7 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @GerritConfig(name = "gerrit.instanceId", value = "testInstanceId")
   public void shouldReturnProjectsOrderedDescendinglyByLag() throws Exception {
     replicationStatus.doUpdateLag(Project.nameKey("bar"), 123L);
     replicationStatus.doUpdateLag(Project.nameKey("foo"), 3L);
@@ -122,6 +127,7 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @GerritConfig(name = "gerrit.instanceId", value = "testInstanceId")
   public void shouldHonourTheLimitParameter() throws Exception {
     replicationStatus.doUpdateLag(Project.nameKey("bar"), 1L);
     replicationStatus.doUpdateLag(Project.nameKey("foo"), 2L);
