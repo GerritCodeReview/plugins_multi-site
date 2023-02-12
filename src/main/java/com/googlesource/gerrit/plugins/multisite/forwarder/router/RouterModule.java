@@ -14,7 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.router;
 
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.gerrit.server.events.EventListener;
 import com.google.inject.Scopes;
 
 public class RouterModule extends LifecycleModule {
@@ -22,6 +24,8 @@ public class RouterModule extends LifecycleModule {
   protected void configure() {
     bind(IndexEventRouter.class).in(Scopes.SINGLETON);
     listener().to(IndexEventRouter.class).in(Scopes.SINGLETON);
+    DynamicSet.bind(binder(), EventListener.class).to(IndexEventRouter.class);
+
     bind(CacheEvictionEventRouter.class).in(Scopes.SINGLETON);
     bind(ProjectListUpdateRouter.class).in(Scopes.SINGLETON);
     bind(StreamEventRouter.class).in(Scopes.SINGLETON);
