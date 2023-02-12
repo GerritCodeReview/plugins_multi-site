@@ -61,7 +61,8 @@ public class IndexEventRouterTest {
             indexChangeHandler,
             indexGroupHandler,
             indexProjectHandler,
-            allUsersName);
+            allUsersName,
+            INSTANCE_ID);
   }
 
   @Test
