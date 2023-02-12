@@ -21,6 +21,10 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.server.config.AllUsersName;
+import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.gerrit.server.events.Event;
+import com.google.gerrit.server.events.EventListener;
+import com.google.gerrit.server.events.RefEvent;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
@@ -32,12 +36,12 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEve
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
-import com.googlesource.gerrit.plugins.replication.events.RefReplicationDoneEvent;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
 
-public class IndexEventRouter implements ForwardedEventRouter<IndexEvent>, LifecycleListener {
+public class IndexEventRouter
+    implements ForwardedEventRouter<IndexEvent>, EventListener, LifecycleListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final ForwardedIndexAccountHandler indexAccountHandler;
@@ -45,6 +49,7 @@ public class IndexEventRouter implements ForwardedEventRouter<IndexEvent>, Lifec
   private final ForwardedIndexGroupHandler indexGroupHandler;
   private final ForwardedIndexProjectHandler indexProjectHandler;
   private final AllUsersName allUsersName;
+  private final String gerritInstanceId;
 
   @Inject
   public IndexEventRouter(
@@ -52,12 +57,14 @@ public class IndexEventRouter implements ForwardedEventRouter<IndexEvent>, Lifec
       ForwardedIndexChangeHandler indexChangeHandler,
       ForwardedIndexGroupHandler indexGroupHandler,
       ForwardedIndexProjectHandler indexProjectHandler,
-      AllUsersName allUsersName) {
+      AllUsersName allUsersName,
+      @GerritInstanceId String gerritInstanceId) {
     this.indexAccountHandler = indexAccountHandler;
     this.indexChangeHandler = indexChangeHandler;
     this.indexGroupHandler = indexGroupHandler;
     this.indexProjectHandler = indexProjectHandler;
     this.allUsersName = allUsersName;
+    this.gerritInstanceId = gerritInstanceId;
   }
 
   @Override
@@ -85,13 +92,26 @@ public class IndexEventRouter implements ForwardedEventRouter<IndexEvent>, Lifec
     }
   }
 
-  public void onRefReplicated(RefReplicationDoneEvent replicationEvent) throws IOException {
+  public void onRefReplicated(RefEvent replicationEvent) throws IOException {
     if (replicationEvent.getProjectNameKey().equals(allUsersName)) {
       Account.Id accountId = Account.Id.fromRef(replicationEvent.getRefName());
       if (accountId != null) {
         indexAccountHandler.index(accountId, INDEX, Optional.empty());
       } else {
         indexAccountHandler.doAsyncIndex();
+      }
+    }
+  }
+
+  @Override
+  public void onEvent(Event event) {
+    if (event instanceof RefEvent
+        && event.getType().contains("ref-replicated")
+        && gerritInstanceId.equals(event.instanceId)) {
+      try {
+        onRefReplicated((RefEvent) event);
+      } catch (IOException e) {
+        logger.atSevere().withCause(e).log("Error while processing event %s", event);
       }
     }
   }
