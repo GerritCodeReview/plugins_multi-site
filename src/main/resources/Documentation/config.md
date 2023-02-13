@@ -9,7 +9,8 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
 ## Configuration parameters
 
 ```cache.synchronize```
-:   Whether to synchronize cache evictions.
+:   Whether to synchronize cache evictions. IT Requires disabling the background
+    cache evictions notifications in `gerrit.config` by setting `cache.threads = 0`.
     Defaults to true.
 
 ```cache.threadPoolSize```
