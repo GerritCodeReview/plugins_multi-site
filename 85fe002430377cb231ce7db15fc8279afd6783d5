@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "042ccb2a_4ea70268",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-02-13T08:43:56Z",
+      "side": 1,
+      "message": "What is the `cache.threads` property? I don\u0027t find it in the docs. I might be missing something.\n\nAnd why do we need to set it to `0` for this test?",
+      "range": {
+        "startLine": 180,
+        "startChar": 49,
+        "endLine": 180,
+        "endChar": 50
+      },
+      "revId": "85fe002430377cb231ce7db15fc8279afd6783d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
