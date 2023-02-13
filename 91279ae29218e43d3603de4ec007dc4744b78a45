@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d00e51ec_7c429c2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-02-13T10:39:16Z",
+      "side": 1,
+      "message": "The CI hasn\u0027t Java 8 build anymore, this is simply a documentation change.",
+      "revId": "91279ae29218e43d3603de4ec007dc4744b78a45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
