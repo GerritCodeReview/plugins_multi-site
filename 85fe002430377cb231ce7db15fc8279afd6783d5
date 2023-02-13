@@ -39,6 +39,30 @@
       },
       "revId": "85fe002430377cb231ce7db15fc8279afd6783d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88d32c26_12708147",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedCacheEvictionHandlerIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-02-13T10:19:54Z",
+      "side": 1,
+      "message": "See [1]. We should also mention in the documentation that `cache.threads \u003d 0` is a mandatory requirement for blocking the cache evictions notification loop. Possibly a different change?\n\n[1] https://gerrit.googlesource.com/gerrit/+/refs/heads/stable-3.6/Documentation/config-gerrit.txt#746",
+      "parentUuid": "042ccb2a_4ea70268",
+      "range": {
+        "startLine": 180,
+        "startChar": 49,
+        "endLine": 180,
+        "endChar": 50
+      },
+      "revId": "85fe002430377cb231ce7db15fc8279afd6783d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
