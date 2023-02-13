@@ -34,6 +34,24 @@
       "parentUuid": "cbe3d384_45c4a47d",
       "revId": "531f09955fc182494f59e51e0a72195394f91852",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37210835_46be3524",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 5
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-02-13T08:26:33Z",
+      "side": 1,
+      "message": "Bearer token needs this class `org.eclipse.jgit.transport.TransportProvider` added by the pull-replication",
+      "parentUuid": "6aca3538_97063af9",
+      "revId": "531f09955fc182494f59e51e0a72195394f91852",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
