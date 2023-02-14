@@ -47,6 +47,18 @@ function get_replication_url {
   fi
 }
 
+function get_pull_replication_api_url {
+  REPLICATION_HOSTNAME=$1
+
+  echo "apiUrl = http://$REPLICATION_HOSTNAME:$REPLICATION_HTTPD_PORT"
+}
+
+function get_pull_replication_url {
+  REPLICATION_HOSTNAME=$1
+
+  echo "url = http://$REPLICATION_HOSTNAME:$REPLICATION_HTTPD_PORT/#{name}#.git"
+}
+
 function deploy_tls_certificates {
   echo "Deplying certificates in $HA_PROXY_CERTIFICATES_DIR..."
   openssl req -new -newkey rsa:2048 -x509 -sha256 -days 365 -nodes \
@@ -71,7 +83,10 @@ function copy_config_files {
     export REPLICATION_HOSTNAME=$8
     export REMOTE_DEBUG_PORT=$9
     export INSTANCE_ID=${10}
+    export REPLICA_INSTANCE_ID=${11}
     export REPLICATION_URL=$(get_replication_url $REPLICATION_LOCATION_TEST_SITE $REPLICATION_HOSTNAME)
+    export PULL_REPLICATION_URL=$(get_pull_replication_url $REPLICATION_HOSTNAME)
+    export PULL_REPLICATION_API_URL=$(get_pull_replication_api_url $REPLICATION_HOSTNAME)
 
     echo "Replacing variables for file $file and copying to $CONFIG_TEST_SITE/$file_name"
 
@@ -136,11 +151,11 @@ function deploy_config_files {
   GERRIT_SITE2_INSTANCE_ID="instance-2"
 
   # Set config SITE1
-  copy_config_files $CONFIG_TEST_SITE_1 $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_SSHD_PORT $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE1_REMOTE_DEBUG_PORT $GERRIT_SITE1_INSTANCE_ID
+  copy_config_files $CONFIG_TEST_SITE_1 $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_SSHD_PORT $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE1_REMOTE_DEBUG_PORT $GERRIT_SITE1_INSTANCE_ID $GERRIT_SITE2_INSTANCE_ID
 
 
   # Set config SITE2
-  copy_config_files $CONFIG_TEST_SITE_2 $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE2_SSHD_PORT $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE2_REMOTE_DEBUG_PORT $GERRIT_SITE2_INSTANCE_ID
+  copy_config_files $CONFIG_TEST_SITE_2 $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE2_SSHD_PORT $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE2_REMOTE_DEBUG_PORT $GERRIT_SITE2_INSTANCE_ID $GERRIT_SITE1_INSTANCE_ID
 }
 
 function is_docker_desktop {
@@ -472,6 +487,11 @@ if [ "$REPLICATION_TYPE" = "ssh" ];then
   echo "Make sure ~/.ssh/authorized_keys and ~/.ssh/known_hosts are configured correctly"
 fi
 
+echo "Downloading pull-replication plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-pull-replication-bazel-$GERRIT_BRANCH/$LAST_BUILD/pull-replication/pull-replication.jar \
+  -O $DEPLOYMENT_LOCATION/pull-replication.jar || { echo >&2 "Cannot download pull-replication plugin: Check internet connection. Abort\
+ing"; exit 1; }
+
 if [ "$HTTPS_ENABLED" = "true" ];then
   export HTTP_PROTOCOL="https"
   export GERRIT_CANONICAL_WEB_URL="$HTTP_PROTOCOL://$GERRIT_CANONICAL_HOSTNAME/"
@@ -534,9 +554,18 @@ if [ $NEW_INSTALLATION = "true" ]; then
   ln -s $LOCATION_TEST_SITE_1/plugins/replication.jar $LOCATION_TEST_SITE_1/lib/replication.jar
   ln -s $LOCATION_TEST_SITE_2/plugins/replication.jar $LOCATION_TEST_SITE_2/lib/replication.jar
 
+  echo "Link pullreplication plugin"
+  ln -s $LOCATION_TEST_SITE_1/plugins/pull-replication.jar $LOCATION_TEST_SITE_1/lib/pull-replication.jar
+  ln -s $LOCATION_TEST_SITE_2/plugins/pull-replication.jar $LOCATION_TEST_SITE_2/lib/pull-replication.jar
+
   echo "Link multi-site library to plugin directory"
   ln -s $LOCATION_TEST_SITE_1/lib/multi-site.jar $LOCATION_TEST_SITE_1/plugins/multi-site.jar
   ln -s $LOCATION_TEST_SITE_2/lib/multi-site.jar $LOCATION_TEST_SITE_2/plugins/multi-site.jar
+
+  echo "Copy pull-replication plugin"
+  cp -f $DEPLOYMENT_LOCATION/pull-replication.jar $LOCATION_TEST_SITE_1/plugins/pull-replication.jar
+  cp -f $DEPLOYMENT_LOCATION/pull-replication.jar $LOCATION_TEST_SITE_2/plugins/pull-replication.jar
+
 fi
 
 DOCKER_HOST_ENV=$(docker_host_env)
