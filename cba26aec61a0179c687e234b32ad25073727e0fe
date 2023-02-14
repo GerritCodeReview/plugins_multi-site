@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "200c92ae_16d7fcae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-02-14T23:04:41Z",
+      "side": 1,
+      "message": "True, we could. However, the logic would be duplicated isn\u0027t it?\n- Using replication \u003d\u003e stays in multi-site\n- Using pull-replication \u003d\u003e stays in multi-site (but unused) and in pull-replication\n\nI\u0027d prefer to reuse the existing logic here and just add a trigger.",
+      "parentUuid": "77d42aaf_fbd996a1",
+      "revId": "cba26aec61a0179c687e234b32ad25073727e0fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e8ce1122_dd627c60",
