@@ -16,6 +16,46 @@
       "message": "The CI hasn\u0027t Java 8 build anymore, this is simply a documentation change.",
       "revId": "91279ae29218e43d3603de4ec007dc4744b78a45",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b626f2d_3e294251",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-15T07:16:11Z",
+      "side": 1,
+      "message": "Luca feel free to fix typo and merge it",
+      "revId": "91279ae29218e43d3603de4ec007dc4744b78a45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17983227_45657a99",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-02-15T07:16:11Z",
+      "side": 1,
+      "message": "nit: s/IT Requires/It requires",
+      "range": {
+        "startLine": 12,
+        "startChar": 44,
+        "endLine": 12,
+        "endChar": 49
+      },
+      "revId": "91279ae29218e43d3603de4ec007dc4744b78a45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
