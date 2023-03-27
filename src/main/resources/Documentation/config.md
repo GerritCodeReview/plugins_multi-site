@@ -127,3 +127,34 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
     the project `foo/bar`, but no other project.
 
     By default, all projects are matched.
+
+## Replication filters
+
+The @PLUGIN@ plugin is also responsible for filtering out replication events that may
+risk to create a split-brain situation.
+It integrates the push and pull replication filtering extension points for validating
+the refs to be replicated and dropping some of them.
+
+**Replication plugin**
+
+When using the Gerrit core replication plugin, also known as push-replication, link the
+`replication.jar` to the `$GERRIT_SITE/lib` directory and add the following two libModules
+to `gerrit.config`:
+
+```
+[gerrit]
+        installModule = com.googlesource.gerrit.plugins.replication.ReplicationExtensionPointModule
+        installModule = com.googlesource.gerrit.plugins.multisite.validation.PushReplicationFilterModule
+```
+
+**Pull-replication plugin**
+
+When using the [pull-replication](https://gerrit.googlesource.com/plugins/pull-replication)
+plugin, link the `pull-replication.jar` to the `$GERRIT_SITE/lib` directory and add the following
+two libModules to `gerrit.config`:
+
+```
+[gerrit]
+        installModule = com.googlesource.gerrit.plugins.replication.pull.ReplicationExtensionPointModule
+        installModule = com.googlesource.gerrit.plugins.multisite.validation.PullReplicationFilterModule
+```
