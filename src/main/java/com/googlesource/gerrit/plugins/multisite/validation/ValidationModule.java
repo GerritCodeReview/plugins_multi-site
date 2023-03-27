@@ -38,6 +38,7 @@ import com.google.inject.name.Names;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.replication.ReplicationExtensionPointModule;
 import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
+import com.googlesource.gerrit.plugins.replication.pull.ReplicationFetchFilter;
 
 public class ValidationModule extends FactoryModule {
   private final Configuration cfg;
@@ -70,6 +71,8 @@ public class ValidationModule extends FactoryModule {
     bind(GitRepositoryManager.class).to(SharedRefDbGitRepositoryManager.class);
     DynamicItem.bind(binder(), ReplicationPushFilter.class)
         .to(MultisiteReplicationPushFilter.class);
+    DynamicItem.bind(binder(), ReplicationFetchFilter.class)
+        .to(MultisiteReplicationFetchFilter.class);
 
     if (cfg.getSharedRefDbConfiguration().getSharedRefDb().getEnforcementRules().isEmpty()) {
       bind(SharedRefEnforcement.class).to(DefaultSharedRefEnforcement.class).in(Scopes.SINGLETON);
