@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d11eeed_6bfa7595",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-03-28T08:28:13Z",
+      "side": 1,
+      "message": "Not sure if I understand that part. If meta ref is up to date with global refdb all patchset will be omitted from fetch? But let\u0027s imagine that someone pushed large patch set which cannot be applied via apply object. In that case meta ref will be updated by apply object but we must fetch the patchset.",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 39
+      },
+      "revId": "b2a4072cc1d96814b69cd99d1f068558d4dfde33",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
