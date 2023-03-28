@@ -388,6 +388,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b1eaa8f_ee886a55",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilterTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-28T21:06:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5227eef7_fd28e2ee",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "38eb15f4_cab3599b",
@@ -411,6 +435,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe4806de_dd6511ee",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilterTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-28T21:06:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "38eb15f4_cab3599b",
+      "range": {
+        "startLine": 88,
+        "startChar": 16,
+        "endLine": 88,
+        "endChar": 35
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dfedb365_6f96767a",
@@ -424,6 +472,24 @@
       "writtenOn": "2023-03-28T16:21:19Z",
       "side": 1,
       "message": "nit: can inline `refName` at L100",
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ade2b19_81383d00",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilterTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-28T21:06:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfedb365_6f96767a",
       "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
