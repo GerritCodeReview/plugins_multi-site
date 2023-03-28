@@ -24,9 +24,11 @@ import static org.mockito.Mockito.verify;
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDBMetrics;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.registration.DynamicItem;
+import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.testing.InMemoryRepositoryManager;
 import com.google.gerrit.testing.InMemoryTestEnvironment;
 import com.google.inject.Inject;
@@ -199,7 +201,8 @@ public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestC
         };
     return new SharedRefDatabaseWrapper(
         DynamicItem.itemOf(GlobalRefDatabase.class, sharedRefDatabase),
-        new DisabledSharedRefLogger());
+        new DisabledSharedRefLogger(),
+        new SharedRefDBMetrics(new DisabledMetricMaker()));
   }
 
   private RemoteRefUpdate refUpdate(String refName) throws Exception {
