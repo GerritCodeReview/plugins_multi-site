@@ -1,0 +1,245 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6159416_d7432686",
+        "filename": "BUILD",
+        "patchSetId": 9
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-03-28T16:21:19Z",
+      "side": 1,
+      "message": "We should update the `build.md` file with the instructions on how to build the plugin locally.",
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55ec3273_053a9730",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-03-28T16:21:19Z",
+      "side": 1,
+      "message": "2023",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26f17ef8_704252e0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-03-28T16:21:19Z",
+      "side": 1,
+      "message": "Should this not be `pull_replication_log`?\n\n`repLog` is already available statically by importing\n\n`import static com.googlesource.gerrit.plugins.replication.pull.PullReplicationLogger.repLog;`",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 77
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd098782_43d4b4a3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-03-28T16:21:19Z",
+      "side": 1,
+      "message": "nit: useless bracket",
+      "range": {
+        "startLine": 69,
+        "startChar": 27,
+        "endLine": 69,
+        "endChar": 28
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04ee0eed_93583358",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-03-28T16:21:19Z",
+      "side": 1,
+      "message": "`refDb.extractRef` already gives you a `Ref`, so we don\u0027t need to create a new `ObjectIdRef` here.\n\nConsider loosing the `.map(Ref::getObjectId)` and to use the `ref` extracted at L96 here.",
+      "range": {
+        "startLine": 102,
+        "startChar": 26,
+        "endLine": 102,
+        "endChar": 84
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b1912d8_ef81c242",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-03-28T16:21:19Z",
+      "side": 1,
+      "message": "nit: consider using `isEmpty()`",
+      "range": {
+        "startLine": 104,
+        "startChar": 28,
+        "endLine": 104,
+        "endChar": 37
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a82c1cec_7379fd79",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-03-28T16:21:19Z",
+      "side": 1,
+      "message": "should this be `false`? Does it mean we only retry once?",
+      "range": {
+        "startLine": 108,
+        "startChar": 82,
+        "endLine": 108,
+        "endChar": 87
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58f01920_9f46e58a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-03-28T16:21:19Z",
+      "side": 1,
+      "message": "Why using `String.format` rather than using placeholders `{}` here?",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 30
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5227eef7_fd28e2ee",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilterTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-03-28T16:21:19Z",
+      "side": 1,
+      "message": "2023",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38eb15f4_cab3599b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilterTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-03-28T16:21:19Z",
+      "side": 1,
+      "message": "s/filteredrefsToFetch/filteredRefsToFetch/",
+      "range": {
+        "startLine": 88,
+        "startChar": 16,
+        "endLine": 88,
+        "endChar": 35
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfedb365_6f96767a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilterTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-03-28T16:21:19Z",
+      "side": 1,
+      "message": "nit: can inline `refName` at L100",
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
