@@ -153,6 +153,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5244be53_87f55ce0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-28T21:03:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd098782_43d4b4a3",
+      "range": {
+        "startLine": 69,
+        "startChar": 27,
+        "endLine": 69,
+        "endChar": 28
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04ee0eed_93583358",
@@ -166,6 +190,30 @@
       "writtenOn": "2023-03-28T16:21:19Z",
       "side": 1,
       "message": "`refDb.extractRef` already gives you a `Ref`, so we don\u0027t need to create a new `ObjectIdRef` here.\n\nConsider loosing the `.map(Ref::getObjectId)` and to use the `ref` extracted at L96 here.",
+      "range": {
+        "startLine": 102,
+        "startChar": 26,
+        "endLine": 102,
+        "endChar": 84
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83aaa89a_bfb45568",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-28T21:03:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04ee0eed_93583358",
       "range": {
         "startLine": 102,
         "startChar": 26,
@@ -199,6 +247,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64c16dae_41aa06b2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-28T21:03:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b1912d8_ef81c242",
+      "range": {
+        "startLine": 104,
+        "startChar": 28,
+        "endLine": 104,
+        "endChar": 37
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a82c1cec_7379fd79",
@@ -222,6 +294,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee0dba00_d4ac97f9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-28T21:03:06Z",
+      "side": 1,
+      "message": "Yes, we retry only once.",
+      "parentUuid": "a82c1cec_7379fd79",
+      "range": {
+        "startLine": 108,
+        "startChar": 82,
+        "endLine": 108,
+        "endChar": 87
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58f01920_9f46e58a",
@@ -235,6 +331,30 @@
       "writtenOn": "2023-03-28T16:21:19Z",
       "side": 1,
       "message": "Why using `String.format` rather than using placeholders `{}` here?",
+      "range": {
+        "startLine": 132,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 30
+      },
+      "revId": "f5b07d5fc6a72c41f127af3ba228cffaf769f279",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1894903_77974f5b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-28T21:03:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58f01920_9f46e58a",
       "range": {
         "startLine": 132,
         "startChar": 0,
