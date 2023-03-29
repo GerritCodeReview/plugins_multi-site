@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a76bb65e_d23b34ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-03-29T23:04:33Z",
+      "side": 1,
+      "message": "Let\u0027s wait for the global-refdb to be published",
+      "revId": "5f9aa3b4cb2da52a487245519db092468af95ea0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
