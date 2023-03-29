@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf587a62_f9641b3a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-03-29T15:38:09Z",
+      "side": 1,
+      "message": "Might be worth mentioning this is a breaking change for push-replication, as in the gerrit.config will need to be changed if using push-replication to install its filter module.",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 0
+      },
+      "revId": "28bfc0d265e89f9aef5f2a6757b961d2550748e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f565b82_2b64fb14",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-03-29T15:38:09Z",
+      "side": 1,
+      "message": "We are not using `localRefOid` other than checking if we are up-to-date with the GRDB. Can we just rename `getSha1IfUpToDateWithGlobalRefDb` to `isUpToDateWithGlobalRefDb` and return a boolean?",
+      "range": {
+        "startLine": 62,
+        "startChar": 35,
+        "endLine": 62,
+        "endChar": 46
+      },
+      "revId": "28bfc0d265e89f9aef5f2a6757b961d2550748e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
