@@ -33,6 +33,24 @@
       "message": "sha1 of global-refdb shoudl be fde470b7a1e2eccd75e7ef4709db3ce117a05fb6\n```\nplugins/multi-site:multi-site__plugin depends on @global-refdb//jar:neverlink in repository @global-refdb which failed to fetch. no such package \u0027@global-refdb//jar\u0027: failed [/usr/bin/python3, /home/maczech/development/workspace/gerrit-3.2/tools/download_file.py, \"-o\", /home/maczech/.cache/bazel/_bazel_maczech/2e8ce5af71c662bd209927a02de3f331/external/global-refdb/jar/global-refdb-3.4.8.3.jar, \"-u\", \"MAVEN_CENTRAL:/com/gerritforge/global-refdb/3.4.8.3/global-refdb-3.4.8.3.jar\", \"-v\", \"eb0d2cef3a311358e8a9b92a3856af79795fe17c\"]: Download https://repo1.maven.org/maven2/com/gerritforge/global-refdb/3.4.8.3/global-refdb-3.4.8.3.jar\nhttps://repo1.maven.org/maven2/com/gerritforge/global-refdb/3.4.8.3/global-refdb-3.4.8.3.jar:\nexpected eb0d2cef3a311358e8a9b92a3856af79795fe17c\nreceived fde470b7a1e2eccd75e7ef4709db3ce117a05fb6\n\n```",
       "revId": "0b1bf80d83a1345bdc83b6e35f7a7ff08738d835",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef66e3f8_d9ca8923",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-30T19:13:34Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "ef872411_72683f6d",
+      "revId": "0b1bf80d83a1345bdc83b6e35f7a7ff08738d835",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
