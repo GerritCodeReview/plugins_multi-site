@@ -23,12 +23,15 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
+import com.google.inject.ProvisionException;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
@@ -73,6 +76,7 @@ public class Configuration {
   private final Supplier<Broker> broker;
   private final Config multiSiteConfig;
   private final Supplier<Duration> replicationLagRefreshInterval;
+  private final Supplier<ReplicationFilters> replicationFilters;
 
   @Inject
   Configuration(SitePaths sitePaths) {
@@ -88,6 +92,7 @@ public class Configuration {
     event = memoize(() -> new Event(lazyMultiSiteCfg));
     index = memoize(() -> new Index(lazyMultiSiteCfg));
     projects = memoize(() -> new Projects(lazyMultiSiteCfg));
+    replicationFilters = memoize(() -> new ReplicationFilters(lazyMultiSiteCfg));
     sharedRefDb =
         memoize(
             () ->
@@ -133,6 +138,10 @@ public class Configuration {
 
   public Projects projects() {
     return projects.get();
+  }
+
+  public ReplicationFilters replicationFilters() {
+    return replicationFilters.get();
   }
 
   public Duration replicationLagRefreshInterval() {
@@ -224,6 +233,39 @@ public class Configuration {
 
     public List<String> getPatterns() {
       return patterns;
+    }
+  }
+
+  public static class ReplicationFilters {
+    public static final String SECTION = "replication";
+    public static final String FILTER_MODULE_KEY = "filterModule";
+    public final List<com.google.inject.Module> filterModules;
+
+    public ReplicationFilters(Supplier<Config> cfg) {
+      List<String> filterModulesClassNames =
+          Arrays.asList(cfg.get().getStringList(SECTION, null, FILTER_MODULE_KEY));
+      Builder<com.google.inject.Module> filterModulesBuilder = ImmutableList.builder();
+
+      for (String filterClassName : filterModulesClassNames) {
+
+        try {
+          @SuppressWarnings("unchecked")
+          Class<com.google.inject.Module> filterClass =
+              (Class<com.google.inject.Module>) Class.forName(filterClassName);
+          filterModulesBuilder.add(filterClass.getDeclaredConstructor().newInstance());
+        } catch (InstantiationException
+            | IllegalAccessException
+            | IllegalArgumentException
+            | InvocationTargetException
+            | NoSuchMethodException
+            | SecurityException
+            | ClassNotFoundException e) {
+          throw new ProvisionException(
+              "Unable to instantiate replication filter " + filterClassName, e);
+        }
+      }
+
+      filterModules = filterModulesBuilder.build();
     }
   }
 
