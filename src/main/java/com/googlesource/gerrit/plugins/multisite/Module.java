@@ -37,6 +37,7 @@ public class Module extends LifecycleModule {
 
   @Override
   protected void configure() {
+    boolean brokerRouterNeeded = true;
 
     Collection<Message> validationErrors = config.validate();
     if (!validationErrors.isEmpty()) {
@@ -52,16 +53,20 @@ public class Module extends LifecycleModule {
 
     if (config.cache().synchronize()) {
       install(new CacheModule());
+      brokerRouterNeeded = false;
     }
     if (config.event().synchronize()) {
       install(new EventModule(config));
+      brokerRouterNeeded = false;
     }
     if (config.index().synchronize()) {
       install(new IndexModule());
+      brokerRouterNeeded = false;
     }
 
-    install(new BrokerModule());
-
-    install(new RouterModule());
+    if (brokerRouterNeeded) {
+      install(new BrokerModule());
+      install(new RouterModule());
+    }
   }
 }
