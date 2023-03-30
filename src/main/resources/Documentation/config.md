@@ -9,7 +9,8 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
 ## Configuration parameters
 
 ```cache.synchronize```
-:   Whether to synchronize cache evictions.
+:   Whether to synchronize cache evictions. Set to false when relying on
+    low cache TTLs and therefore cache eviction is not strictly needed.
     Defaults to true.
 
 ```cache.threadPoolSize```
@@ -27,7 +28,8 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
     forwarded.
 
 ```event.synchronize```
-:   Whether to synchronize stream events.
+:   Whether to synchronize stream events. Set to false when not using the SSH
+    stream events.
     Defaults to true.
 
 ```index.numStripedLocks```
@@ -35,7 +37,9 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
     Defaults to 10
 
 ```index.synchronize```
-:   Whether to synchronize secondary indexes.
+:   Whether to synchronize secondary indexes. Set to false when using multi-site
+    on Gerrit replicas that do not have an index, or when using an external
+    service such as ElasticSearch.
     Defaults to true.
 
 ```index.threadPoolSize```
@@ -69,6 +73,9 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
 ```broker.projectListEventTopic```
 :   Name of the topic to use for publishing cache eviction events
     Defaults to GERRIT.EVENT.PROJECT.LIST
+
+**NOTE**: All broker settings are ignored when all of the `cache`,
+`index` or `event` synchronization is disabled.
 
 ```ref-database.enabled```
 :   Enable the use of a shared ref-database

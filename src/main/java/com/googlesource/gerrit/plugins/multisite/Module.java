@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.gerritforge.gerrit.globalrefdb.validation.LibModule;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbConfiguration;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.CreationException;
 import com.google.inject.Inject;
@@ -42,6 +43,8 @@ public class Module extends LifecycleModule {
     if (!validationErrors.isEmpty()) {
       throw new CreationException(validationErrors);
     }
+
+    bind(SharedRefDbConfiguration.class).toInstance(config.getSharedRefDbConfiguration());
 
     install(new LibModule());
 
