@@ -39,13 +39,19 @@ public class PluginModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-    bind(BrokerApiWrapper.class).in(Scopes.SINGLETON);
-    install(new SubscriberModule());
 
-    install(new BrokerForwarderModule());
-    listener().to(MultiSiteConsumerRunner.class);
+    if (config.index().synchronize()
+        || config.cache().synchronize()
+        || config.event().synchronize()) {
+      bind(BrokerApiWrapper.class).in(Scopes.SINGLETON);
+      install(new SubscriberModule());
 
-    install(new ReplicationStatusModule(workQueue));
+      install(new BrokerForwarderModule());
+      listener().to(MultiSiteConsumerRunner.class);
+
+      install(new ReplicationStatusModule(workQueue));
+    }
+
     if (config.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {
       listener().to(PluginStartup.class);
       DynamicSet.bind(binder(), ProjectDeletedListener.class)
