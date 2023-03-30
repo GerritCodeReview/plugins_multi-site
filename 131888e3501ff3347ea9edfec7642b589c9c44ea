@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86a943c1_5fa4ce91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-30T21:56:41Z",
+      "side": 1,
+      "message": "I\u0027ve tested it E2E and it works as expected.",
+      "revId": "131888e3501ff3347ea9edfec7642b589c9c44ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
