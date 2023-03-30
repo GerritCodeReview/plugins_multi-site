@@ -56,9 +56,19 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
     try (Repository repository =
         gitRepositoryManager.openRepository(Project.nameKey(projectName))) {
       RefDatabase refDb = repository.getRefDatabase();
+
       return refs.stream()
           .filter(
               ref -> {
+                if (isRefNotPresent(repository, projectName, refDb, ref)) {
+                  repLog.info(
+                      "{}:{} is not present in the shared-refdb and in the local repository"
+                          + " thus will NOT BE"
+                          + " fetched",
+                      projectName,
+                      ref);
+                  return false;
+                }
                 Optional<ObjectId> localRefOid =
                     getSha1IfUpToDateWithGlobalRefDb(repository, projectName, refDb, ref, true);
                 localRefOid.ifPresent(
@@ -78,6 +88,25 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
       repLog.error(message);
       logger.atSevere().withCause(ioe).log(message);
       return Collections.emptySet();
+    }
+  }
+
+  private boolean isRefNotPresent(
+      Repository repository, String projectName, RefDatabase refDb, String ref) {
+    try {
+      return !Optional.ofNullable(refDb.exactRef(ref)).isPresent()
+          && !sharedRefDb.exists(Project.nameKey(projectName), ref);
+    } catch (GlobalRefDbLockException gle) {
+      String message = String.format("%s is locked on shared-refdb", ref);
+      repLog.error(message);
+      logger.atSevere().withCause(gle).log(message);
+      return false;
+    } catch (IOException ioe) {
+      String message =
+          String.format("Error while extracting ref '%s' for project '%s'", ref, projectName);
+      repLog.error(message);
+      logger.atSevere().withCause(ioe).log(message);
+      return false;
     }
   }
 
