@@ -18,6 +18,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -121,6 +122,54 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
 
     assertThat(filteredRefsToFetch).hasSize(1);
     verify(sharedRefDatabaseMock, times(2)).isUpToDate(any(), any());
+  }
+
+  @Test
+  public void shouldLoadLocalVersionAndNotFilterOutWhenMissingInTheSharedRefDb() throws Exception {
+    String temporaryOutdated = "refs/heads/temporaryOutdated";
+    newRef(temporaryOutdated);
+
+    Set<String> refsToFetch = Set.of(temporaryOutdated);
+    doReturn(false).doReturn(false).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
+
+    MultisiteReplicationFetchFilter fetchFilter =
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager);
+    Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
+
+    assertThat(filteredRefsToFetch).hasSize(1);
+    verify(sharedRefDatabaseMock, never()).exists(eq(projectName), any());
+    verify(sharedRefDatabaseMock, times(2)).isUpToDate(any(), any());
+  }
+
+  @Test
+  public void shouldNotFilterOutWhenRefIsMissingOnlyInTheLocalRepository() throws Exception {
+    String nonExistingLocalRef = "refs/heads/temporaryOutdated";
+
+    Set<String> refsToFetch = Set.of(nonExistingLocalRef);
+    doReturn(true).when(sharedRefDatabaseMock).exists(eq(projectName), any());
+
+    MultisiteReplicationFetchFilter fetchFilter =
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager);
+    Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
+
+    assertThat(filteredRefsToFetch).hasSize(1);
+    verify(sharedRefDatabaseMock).exists(eq(projectName), any());
+  }
+
+  @Test
+  public void shouldFilterOutNonExistingRef() throws Exception {
+    String nonExisting = "refs/heads/non-existing-ref";
+
+    Set<String> refsToFetch = Set.of(nonExisting);
+    doReturn(false).when(sharedRefDatabaseMock).exists(eq(projectName), any());
+
+    MultisiteReplicationFetchFilter fetchFilter =
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager);
+    Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
+
+    assertThat(filteredRefsToFetch).hasSize(0);
+    verify(sharedRefDatabaseMock).exists(any(), any());
+    verify(sharedRefDatabaseMock, never()).isUpToDate(any(), any());
   }
 
   private void newRef(String refName) throws Exception {
