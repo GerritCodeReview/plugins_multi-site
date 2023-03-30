@@ -20,6 +20,7 @@ import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -37,6 +38,7 @@ import org.eclipse.jgit.lib.Repository;
 
 @Singleton
 public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
+  private static final String ZERO_ID_NAME = ObjectId.zeroId().name();
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   public static final int MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS = 1000;
   public static final int RANDOM_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS = 1000;
@@ -59,6 +61,18 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
       return refs.stream()
           .filter(
               ref -> {
+                if (isRefAbsent(projectName, refDb, ref)) {
+                  repLog.info(
+                      "{}:{} is neither in the shared-refdb nor in the local repository"
+                          + " thus will NOT BE fetched",
+                      projectName,
+                      ref);
+                  return false;
+                }
+                return true;
+              })
+          .filter(
+              ref -> {
                 Optional<ObjectId> localRefOid =
                     getSha1IfUpToDateWithGlobalRefDb(repository, projectName, refDb, ref, true);
                 localRefOid.ifPresent(
@@ -79,6 +93,30 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
       logger.atSevere().withCause(ioe).log(message);
       return Collections.emptySet();
     }
+  }
+
+  private boolean isRefAbsent(String projectName, RefDatabase refDb, String ref) {
+    try {
+      return refDb.exactRef(ref) == null && absentInSharedRefDb(Project.nameKey(projectName), ref);
+    } catch (GlobalRefDbLockException gle) {
+      String message = String.format("%s is locked on shared-refdb", ref);
+      repLog.error(message);
+      logger.atSevere().withCause(gle).log(message);
+      return false;
+    } catch (IOException ioe) {
+      String message =
+          String.format("Error while extracting ref '%s' for project '%s'", ref, projectName);
+      repLog.error(message);
+      logger.atSevere().withCause(ioe).log(message);
+      return false;
+    }
+  }
+
+  private boolean absentInSharedRefDb(NameKey projectName, String ref) {
+    return sharedRefDb
+        .get(projectName, ref, String.class)
+        .map(r -> ZERO_ID_NAME.equals(r))
+        .orElse(true);
   }
 
   private Optional<ObjectId> getSha1IfUpToDateWithGlobalRefDb(
