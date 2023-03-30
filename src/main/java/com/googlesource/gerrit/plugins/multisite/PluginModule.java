@@ -57,5 +57,7 @@ public class PluginModule extends LifecycleModule {
       DynamicSet.bind(binder(), ProjectDeletedListener.class)
           .to(ProjectDeletedSharedDbCleanup.class);
     }
+
+    config.replicationFilters().filterModules.forEach(this::install);
   }
 }
