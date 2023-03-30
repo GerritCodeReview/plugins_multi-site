@@ -138,13 +138,19 @@ the refs to be replicated and dropping some of them.
 **Replication plugin**
 
 When using the Gerrit core replication plugin, also known as push-replication, link the
-`replication.jar` to the `$GERRIT_SITE/lib` directory and add the following two libModules
+`replication.jar` to the `$GERRIT_SITE/lib` directory and add the following libModule
 to `gerrit.config`:
 
 ```
 [gerrit]
-        installModule = com.googlesource.gerrit.plugins.replication.ReplicationExtensionPointModule
-        installModule = com.googlesource.gerrit.plugins.multisite.validation.PushReplicationFilterModule
+  installModule = com.googlesource.gerrit.plugins.replication.ReplicationExtensionPointModule
+```
+
+Enable the replication filter module in `multi-site.config` with the following setting:
+
+```
+[replication]
+  filterModule = com.googlesource.gerrit.plugins.multisite.validation.MultisiteReplicationPushFilter
 ```
 
 **Pull-replication plugin**
@@ -156,5 +162,11 @@ two libModules to `gerrit.config`:
 ```
 [gerrit]
         installModule = com.googlesource.gerrit.plugins.replication.pull.ReplicationExtensionPointModule
-        installModule = com.googlesource.gerrit.plugins.multisite.validation.PullReplicationFilterModule
+```
+
+Enable the replication filter module in `multi-site.config` with the following setting:
+
+```
+[replication]
+        installModule = com.googlesource.gerrit.plugins.multisite.validation.MultisiteReplicationFetchFilter
 ```
