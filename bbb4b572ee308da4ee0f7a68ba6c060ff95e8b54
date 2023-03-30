@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cf2fa4f_39b38585",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-30T19:55:35Z",
+      "side": 1,
+      "message": "Yes, because you could use push and pull replication at the same time, which is a very common use-case.",
+      "parentUuid": "4f4d4fca_45157eee",
+      "range": {
+        "startLine": 246,
+        "startChar": 34,
+        "endLine": 246,
+        "endChar": 47
+      },
+      "revId": "bbb4b572ee308da4ee0f7a68ba6c060ff95e8b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c84f5dc_09f443fd",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-30T07:48:43Z",
       "side": 1,
       "message": "Do we need the full package name?",
+      "range": {
+        "startLine": 247,
+        "startChar": 14,
+        "endLine": 247,
+        "endChar": 32
+      },
+      "revId": "bbb4b572ee308da4ee0f7a68ba6c060ff95e8b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "debdfd1a_45afd40d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-30T19:55:35Z",
+      "side": 1,
+      "message": "Nope, but this change isn\u0027t needed anymore.",
+      "parentUuid": "4c84f5dc_09f443fd",
       "range": {
         "startLine": 247,
         "startChar": 14,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e11b5f3e_403221ca",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-30T19:55:35Z",
+      "side": 1,
+      "message": "Clarifed that is needed also as a plugin.",
+      "parentUuid": "c7cbbefc_7228fd11",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 87
+      },
+      "revId": "bbb4b572ee308da4ee0f7a68ba6c060ff95e8b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a693d61_34be2135",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-03-30T16:10:42Z",
       "side": 1,
       "message": "filterModule?",
+      "range": {
+        "startLine": 171,
+        "startChar": 8,
+        "endLine": 171,
+        "endChar": 21
+      },
+      "revId": "bbb4b572ee308da4ee0f7a68ba6c060ff95e8b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0103d155_8fea33fd",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-30T19:55:35Z",
+      "side": 1,
+      "message": "This setting isn\u0027t needed anymore: the multi-site will install it automatically.",
+      "parentUuid": "5a693d61_34be2135",
       "range": {
         "startLine": 171,
         "startChar": 8,
