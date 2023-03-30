@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be63be75_e5c478fe",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-03-30T23:46:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cbb117e_1e2bd73e",
+      "revId": "6f07316825254cee768dc831e9ff57548a83dbaa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "271f148e_6574b0b6",
@@ -49,6 +67,30 @@
       "writtenOn": "2023-03-30T22:17:44Z",
       "side": 1,
       "message": "`isRefAbsent`",
+      "range": {
+        "startLine": 63,
+        "startChar": 20,
+        "endLine": 63,
+        "endChar": 35
+      },
+      "revId": "6f07316825254cee768dc831e9ff57548a83dbaa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc14c49e_36719c42",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-03-30T23:46:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "271f148e_6574b0b6",
       "range": {
         "startLine": 63,
         "startChar": 20,
@@ -82,6 +124,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a630e46_22588621",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-03-30T23:46:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b07e4b9f_2c44374d",
+      "range": {
+        "startLine": 65,
+        "startChar": 32,
+        "endLine": 65,
+        "endChar": 91
+      },
+      "revId": "6f07316825254cee768dc831e9ff57548a83dbaa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "854077cb_806fdbb1",
@@ -95,6 +161,30 @@
       "writtenOn": "2023-03-30T22:17:44Z",
       "side": 1,
       "message": "It would be clearer to have it as a separate filter step.",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 17
+      },
+      "revId": "6f07316825254cee768dc831e9ff57548a83dbaa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61a15560_6ee6535e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-03-30T23:46:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "854077cb_806fdbb1",
       "range": {
         "startLine": 63,
         "startChar": 0,
@@ -128,6 +218,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c121f741_ffefd5d0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-03-30T23:46:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60f87080_cb15e19d",
+      "range": {
+        "startLine": 97,
+        "startChar": 13,
+        "endLine": 97,
+        "endChar": 66
+      },
+      "revId": "6f07316825254cee768dc831e9ff57548a83dbaa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e48ad527_54dc2cde",
@@ -141,6 +255,30 @@
       "writtenOn": "2023-03-30T22:17:44Z",
       "side": 1,
       "message": "If it was on the sharedRefDb and it has been removed, I believe we put zeros on the ref. So, this would exist but set to zeros.",
+      "range": {
+        "startLine": 98,
+        "startChar": 13,
+        "endLine": 98,
+        "endChar": 67
+      },
+      "revId": "6f07316825254cee768dc831e9ff57548a83dbaa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "058696f8_c780f384",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-03-30T23:46:07Z",
+      "side": 1,
+      "message": "good catch! I was sure it was handled by the SharedRefDb",
+      "parentUuid": "e48ad527_54dc2cde",
       "range": {
         "startLine": 98,
         "startChar": 13,
@@ -174,6 +312,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1517616b_1e1d8935",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-03-30T23:46:07Z",
+      "side": 1,
+      "message": "yes, but I would address that in a follow up change because we do not retry in the other check as well. See L136",
+      "parentUuid": "5bb978c1_73542c63",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 19
+      },
+      "revId": "6f07316825254cee768dc831e9ff57548a83dbaa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66c58817_86092134",
@@ -187,6 +349,24 @@
       "writtenOn": "2023-03-30T22:17:44Z",
       "side": 1,
       "message": "We should also check the use-case where it doesn\u0027t exist locally and it exists on the global-refdb with zeros ObjectId",
+      "revId": "6f07316825254cee768dc831e9ff57548a83dbaa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5947ee03_8db67fd8",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilterTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-03-30T23:46:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66c58817_86092134",
       "revId": "6f07316825254cee768dc831e9ff57548a83dbaa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
