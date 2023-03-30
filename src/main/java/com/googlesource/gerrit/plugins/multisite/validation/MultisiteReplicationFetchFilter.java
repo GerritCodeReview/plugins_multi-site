@@ -20,6 +20,7 @@ import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -37,6 +38,7 @@ import org.eclipse.jgit.lib.Repository;
 
 @Singleton
 public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
+  private static final String ZERO_ID_NAME = ObjectId.zeroId().name();
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   public static final int MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS = 1000;
   public static final int RANDOM_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS = 1000;
@@ -57,6 +59,7 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
         gitRepositoryManager.openRepository(Project.nameKey(projectName))) {
       RefDatabase refDb = repository.getRefDatabase();
       return refs.stream()
+          .filter(ref -> isRefPresentAnywhere(projectName, refDb, ref))
           .filter(
               ref -> {
                 Optional<ObjectId> localRefOid =
@@ -79,6 +82,40 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
       logger.atSevere().withCause(ioe).log(message);
       return Collections.emptySet();
     }
+  }
+
+  private boolean isRefPresentAnywhere(String projectName, RefDatabase refDb, String ref) {
+    try {
+      if (refDb.exactRef(ref) != null) {
+        return true;
+      }
+    } catch (IOException ioe) {
+      String message =
+          String.format("Error while extracting ref '%s' for project '%s'", ref, projectName);
+      repLog.error(message);
+      logger.atSevere().withCause(ioe).log(message);
+      return true;
+    }
+
+    if (foundAsZeroInSharedRefDb(Project.nameKey(projectName), ref)) {
+      repLog.info(
+          "{}:{} is NOT found locally and found as zeros (removed) in shared-refdb thus will NOT BE fetched",
+          projectName,
+          ref);
+      return false;
+    }
+
+    // Here we don't really know if the ref exists somewhere, because it is not present locally
+    // but we have no idea what's the global status, so we assume that must be present somewhere
+    // and therefore the safest thing to do is to keep it as part of the fetch.
+    return true;
+  }
+
+  private boolean foundAsZeroInSharedRefDb(NameKey projectName, String ref) {
+    return sharedRefDb
+        .get(projectName, ref, String.class)
+        .map(r -> ZERO_ID_NAME.equals(r))
+        .orElse(false);
   }
 
   private Optional<ObjectId> getSha1IfUpToDateWithGlobalRefDb(
