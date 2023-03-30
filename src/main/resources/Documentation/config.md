@@ -3,8 +3,10 @@
 =========================
 
 The @PLUGIN@ plugin must be installed as a library module in the
-`$GERRIT_SITE/lib` folder of all the instances. Configuration should
-be specified in the `$site_path/etc/@PLUGIN@.config` file.
+`$GERRIT_SITE/lib` folder of all the instances and linked to
+`$GERRIT_SITE/plugins`, which enable to use it as both libModule
+and plugin.
+Configuration should be specified in the `$site_path/etc/@PLUGIN@.config` file.
 
 ## Configuration parameters
 
@@ -134,3 +136,50 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
     the project `foo/bar`, but no other project.
 
     By default, all projects are matched.
+
+## Replication filters
+
+The @PLUGIN@ plugin is also responsible for filtering out replication events that may
+risk to create a split-brain situation.
+It integrates the push and pull replication filtering extension points for validating
+the refs to be replicated and dropping some of them.
+
+**Replication plugin**
+
+When using the Gerrit core replication plugin, also known as push-replication, link the
+`replication.jar` to the `$GERRIT_SITE/lib` directory and add the following libModule
+to `gerrit.config`:
+
+```
+[gerrit]
+  installModule = com.googlesource.gerrit.plugins.replication.ReplicationExtensionPointModule
+```
+
+The above configuration would be automatically detected by the @PLUGIN@ plugin which would then
+install the PushReplicationFilterModule for filtering outgoing replication refs based
+on their global-refdb status:
+
+- Outgoing replication of refs that are NOT up-to-date with the global-refdb will be
+  discarded, because they may cause split-brain on the remote replication endpoints.
+
+- All other refs will be pushed as normal to the remote replication ends.
+
+**Pull-replication plugin**
+
+When using the [pull-replication](https://gerrit.googlesource.com/plugins/pull-replication)
+plugin, link the `pull-replication.jar` to the `$GERRIT_SITE/lib` directory and add the following
+two libModules to `gerrit.config`:
+
+```
+[gerrit]
+        installModule = com.googlesource.gerrit.plugins.replication.pull.ReplicationExtensionPointModule
+```
+
+The above configuration would be automatically detected by the @PLUGIN@ plugin which would then
+install the PullReplicationFilterModule for filtering incoming fetch replication refs based
+on their global-refdb status.
+
+- Incoming replication of refs that locally are already up-to-date with the global-refdb will be
+  discarded, because they would not add anything more to the current status of the local refs.
+
+- All other refs will be fetched as normal from the replication sources.

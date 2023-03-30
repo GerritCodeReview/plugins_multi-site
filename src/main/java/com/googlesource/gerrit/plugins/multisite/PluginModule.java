@@ -15,11 +15,16 @@
 package com.googlesource.gerrit.plugins.multisite;
 
 import com.gerritforge.gerrit.globalrefdb.validation.ProjectDeletedSharedDbCleanup;
+import com.google.common.collect.ImmutableList;
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.git.WorkQueue;
+import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.ProvisionException;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.consumer.MultiSiteConsumerRunner;
@@ -28,13 +33,25 @@ import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarderModule;
 
 public class PluginModule extends LifecycleModule {
+  private static final FluentLogger log = FluentLogger.forEnclosingClass();
+  private static final String[] FILTER_MODULES_CLASS_NAMES =
+      new String[] {
+        /* Class names are defined as String for avoiding this class failing to load
+         * if either replication or pull-replication plugins are missing.
+         */
+        "com.googlesource.gerrit.plugins.multisite.validation.PullReplicationFilterModule",
+        "com.googlesource.gerrit.plugins.multisite.validation.PushReplicationFilterModule"
+      };
+
   private final Configuration config;
   private final WorkQueue workQueue;
+  private final Injector parentInjector;
 
   @Inject
-  public PluginModule(Configuration config, WorkQueue workQueue) {
+  public PluginModule(Configuration config, WorkQueue workQueue, Injector parentInjector) {
     this.config = config;
     this.workQueue = workQueue;
+    this.parentInjector = parentInjector;
   }
 
   @Override
@@ -57,5 +74,35 @@ public class PluginModule extends LifecycleModule {
       DynamicSet.bind(binder(), ProjectDeletedListener.class)
           .to(ProjectDeletedSharedDbCleanup.class);
     }
+
+    detectFilterModules()
+        .forEach(
+            mod -> {
+              install(mod);
+              log.atInfo().log(
+                  "Replication filter module %s installed successfully",
+                  mod.getClass().getSimpleName());
+            });
+  }
+
+  private Iterable<AbstractModule> detectFilterModules() {
+    ImmutableList.Builder<AbstractModule> filterModulesBuilder = ImmutableList.builder();
+
+    for (String filterClassName : FILTER_MODULES_CLASS_NAMES) {
+
+      try {
+        @SuppressWarnings("unchecked")
+        Class<AbstractModule> filterClass = (Class<AbstractModule>) Class.forName(filterClassName);
+        filterModulesBuilder.add(parentInjector.getInstance(filterClass));
+      } catch (NoClassDefFoundError | ClassNotFoundException e) {
+        log.atFine().withCause(e).log(
+            "Not loading %s because of missing the associated replication plugin");
+      } catch (Exception e) {
+        throw new ProvisionException(
+            "Unable to instantiate replication filter " + filterClassName, e);
+      }
+    }
+
+    return filterModulesBuilder.build();
   }
 }
