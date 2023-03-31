@@ -126,9 +126,13 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
       String ref,
       boolean retryWithRandomSleep) {
     try {
+      Project.NameKey projectNameKey = Project.nameKey(projectName);
       Optional<ObjectId> localRefObjectId =
           Optional.ofNullable(refDb.exactRef(ref))
-              .filter(r -> sharedRefDb.isUpToDate(Project.nameKey(projectName), r))
+              .filter(
+                  r ->
+                      sharedRefDb.isUpToDate(projectNameKey, r)
+                          || isDeletedInSharedRefDb(projectNameKey, r))
               .map(Ref::getObjectId);
 
       if (localRefObjectId.isEmpty() && retryWithRandomSleep) {
@@ -151,6 +155,13 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
       logger.atSevere().withCause(ioe).log(message);
       return Optional.empty();
     }
+  }
+
+  private boolean isDeletedInSharedRefDb(NameKey projectNameKey, Ref r) {
+    return sharedRefDb
+        .get(projectNameKey, r.getName(), String.class)
+        .filter(objectId -> ZERO_ID_NAME.equals(objectId))
+        .isPresent();
   }
 
   private void randomSleepForMitigatingConditionWhereLocalRefHaveJustBeenChanged(
