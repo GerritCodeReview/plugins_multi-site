@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b66bcde_f9542c94",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-31T15:23:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2cbc8a52_49836b0b",
+      "range": {
+        "startLine": 88,
+        "startChar": 10,
+        "endLine": 88,
+        "endChar": 18
+      },
+      "revId": "dbe2801b94c586c5bc693e837c98000cd4d95b1a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f933c88b_03840b65",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-03-31T15:18:38Z",
       "side": 1,
       "message": "This is behaviour and should not be mentioned",
+      "range": {
+        "startLine": 129,
+        "startChar": 20,
+        "endLine": 129,
+        "endChar": 39
+      },
+      "revId": "dbe2801b94c586c5bc693e837c98000cd4d95b1a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83fb45cb_b4c450e6",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilterTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-31T15:23:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f933c88b_03840b65",
       "range": {
         "startLine": 129,
         "startChar": 20,

@@ -71,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68e076fd_3a9ffb83",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-31T15:23:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dac21eae_f441417f",
+      "range": {
+        "startLine": 117,
+        "startChar": 8,
+        "endLine": 117,
+        "endChar": 44
+      },
+      "revId": "e910f27b4e5caceff164ba91dbe5a3b0bf3a460e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ee90879_33a85015",
@@ -84,6 +108,30 @@
       "writtenOn": "2023-03-31T14:31:37Z",
       "side": 1,
       "message": "This one means that the ref *HAS BEEN tracked* and its status is deleted.",
+      "range": {
+        "startLine": 118,
+        "startChar": 8,
+        "endLine": 118,
+        "endChar": 41
+      },
+      "revId": "e910f27b4e5caceff164ba91dbe5a3b0bf3a460e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85a736d3_0aa46fa6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-31T15:23:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ee90879_33a85015",
       "range": {
         "startLine": 118,
         "startChar": 8,
