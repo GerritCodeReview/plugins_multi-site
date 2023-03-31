@@ -16,6 +16,24 @@
       "message": "As a follow up change we should consider skipping ref fetch if the ref is deleted in global-refdb",
       "revId": "730df8af7ca3119e485a90fb9d2477be4eb8cabd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d24ab7bb_f77e5d5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-03-31T00:25:39Z",
+      "side": 1,
+      "message": "Done in the follow up change",
+      "parentUuid": "73323793_accc381b",
+      "revId": "730df8af7ca3119e485a90fb9d2477be4eb8cabd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
