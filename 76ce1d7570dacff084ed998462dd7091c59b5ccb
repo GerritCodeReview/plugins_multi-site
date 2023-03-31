@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b59b0ec_06bbdcb9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-31T15:11:36Z",
+      "side": 1,
+      "message": "I don\u0027t believe this is needed after all: this use-case is already covered by the previous change now.",
+      "revId": "76ce1d7570dacff084ed998462dd7091c59b5ccb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e93581d2_b3ac2cea",
@@ -38,6 +55,30 @@
       "side": 1,
       "message": "but removing the local ref is handled by different code. Here we handle just fetch operation. If we try to fetch ref which is missing on the remote we will get: \"Remote doesn\u0027t have ref to fetch\" exception. So if we know that ref was deleted(zeroId in global-rfdb) why we even try to fetch it if we know that it will cause exception",
       "parentUuid": "e93581d2_b3ac2cea",
+      "range": {
+        "startLine": 180,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 47
+      },
+      "revId": "76ce1d7570dacff084ed998462dd7091c59b5ccb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a52cc5a_9e23b420",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilterTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-31T15:11:36Z",
+      "side": 1,
+      "message": "Yes are right, however this change isn\u0027t needed because we now check this situation as well in the previous change in the chain.\n\nWe have just incorporated this test into the previous change.",
+      "parentUuid": "35de955b_20d270d2",
       "range": {
         "startLine": 180,
         "startChar": 4,
