@@ -139,7 +139,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).hasSize(1);
-    verify(sharedRefDatabaseMock, never()).get(eq(projectName), any(), any());
+    verify(sharedRefDatabaseMock, times(2)).get(eq(projectName), any(), any());
     verify(sharedRefDatabaseMock, times(2)).isUpToDate(any(), any());
   }
 
@@ -158,6 +158,26 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).hasSize(1);
+    verify(sharedRefDatabaseMock).get(eq(projectName), any(), any());
+  }
+
+  @Test
+  public void shouldFilterOutWhenRefIsDeletedInTheSharedRefDb() throws Exception {
+    String temporaryOutdated = "refs/heads/temporaryOutdated";
+    newRef(temporaryOutdated);
+
+    Set<String> refsToFetch = Set.of(temporaryOutdated);
+    doReturn(Optional.of(ObjectId.zeroId().getName()))
+        .when(sharedRefDatabaseMock)
+        .get(eq(projectName), any(), any());
+
+    doReturn(false).doReturn(false).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
+
+    MultisiteReplicationFetchFilter fetchFilter =
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager);
+    Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
+
+    assertThat(filteredRefsToFetch).hasSize(0);
     verify(sharedRefDatabaseMock).get(eq(projectName), any(), any());
   }
 
