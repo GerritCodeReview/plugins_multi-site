@@ -22,6 +22,30 @@
       },
       "revId": "b7da5b19fbcb98d3df4c3445923e83259e36f537",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c3b9974_b2622f9f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-03-31T10:20:55Z",
+      "side": 1,
+      "message": "I\u0027m not aware of any clean up. If ref doesn\u0027t exist in the global-rfdb we don\u0027t know what is the status. If we see zeroId this means that ref existed but was removed",
+      "parentUuid": "89f77073_2986f7f4",
+      "range": {
+        "startLine": 162,
+        "startChar": 2,
+        "endLine": 167,
+        "endChar": 3
+      },
+      "revId": "b7da5b19fbcb98d3df4c3445923e83259e36f537",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
