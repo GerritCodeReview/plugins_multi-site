@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cadbf226_4b958a07",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-31T14:31:37Z",
+      "side": 1,
+      "message": "this should be `trackedAndRemovedFromSharedRefDb`",
+      "range": {
+        "startLine": 115,
+        "startChar": 18,
+        "endLine": 115,
+        "endChar": 37
+      },
+      "revId": "e910f27b4e5caceff164ba91dbe5a3b0bf3a460e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dac21eae_f441417f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-31T14:31:37Z",
+      "side": 1,
+      "message": "If this one is empty, it means that the ref *as NOT been tracked* in the global-refdb and NOT necessarily that has been removed.",
+      "range": {
+        "startLine": 117,
+        "startChar": 8,
+        "endLine": 117,
+        "endChar": 44
+      },
+      "revId": "e910f27b4e5caceff164ba91dbe5a3b0bf3a460e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ee90879_33a85015",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-31T14:31:37Z",
+      "side": 1,
+      "message": "This one means that the ref *HAS BEEN tracked* and its status is deleted.",
+      "range": {
+        "startLine": 118,
+        "startChar": 8,
+        "endLine": 118,
+        "endChar": 41
+      },
+      "revId": "e910f27b4e5caceff164ba91dbe5a3b0bf3a460e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
