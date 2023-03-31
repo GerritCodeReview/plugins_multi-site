@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e93581d2_b3ac2cea",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilterTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-31T13:27:40Z",
+      "side": 1,
+      "message": "I disagree: why should we be filtering that out?\n\nWe have a local ref \u003d\u003e yes\nIs the ref aligned with the global-refdb \u003d\u003e no\nDo we need to do something \u003d\u003e yes (removing the local ref)\n\nFiltering that ref out would not do the right thing IMHO.",
+      "range": {
+        "startLine": 180,
+        "startChar": 4,
+        "endLine": 180,
+        "endChar": 47
+      },
+      "revId": "76ce1d7570dacff084ed998462dd7091c59b5ccb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
