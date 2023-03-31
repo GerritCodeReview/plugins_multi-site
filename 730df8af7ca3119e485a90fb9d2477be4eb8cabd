@@ -34,6 +34,52 @@
       "parentUuid": "73323793_accc381b",
       "revId": "730df8af7ca3119e485a90fb9d2477be4eb8cabd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c06563b8_5ef63b58",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-31T04:46:59Z",
+      "side": 1,
+      "message": "nit: formatting glitch, the easiest way to fix it would be to make it a single line and format again",
+      "range": {
+        "startLine": 66,
+        "startChar": 22,
+        "endLine": 68,
+        "endChar": 39
+      },
+      "revId": "730df8af7ca3119e485a90fb9d2477be4eb8cabd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc1c2146_66589be5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-31T04:46:59Z",
+      "side": 1,
+      "message": "nit: double negation could replaced with positive check\n\nThe method is called `existsInSharedRefDb` (it negates the result in the body) but what is more it also is negated again in line `#102` (hence double negation 😊)\n\nProposal:\n* call it `absentInSharedRefDb` with the following body\n```\nreturn sharedRefDb\n  .get(projectName, ref, String.class)\n  .filter(r -\u003e !ZERO_ID_NAME.equals(r))\n  .isEmpty();\n```\n* in line `#102` call it `return refDb.exactRef(ref) \u003d\u003d null \u0026\u0026 absentInSharedRefDb(Project.nameKey(projectName), ref);`\n\nWDYT?",
+      "range": {
+        "startLine": 118,
+        "startChar": 11,
+        "endLine": 121,
+        "endChar": 19
+      },
+      "revId": "730df8af7ca3119e485a90fb9d2477be4eb8cabd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
