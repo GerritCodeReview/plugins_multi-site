@@ -59,6 +59,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fd9d7c3_4d2200af",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-03-31T13:16:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c06563b8_5ef63b58",
+      "range": {
+        "startLine": 66,
+        "startChar": 22,
+        "endLine": 68,
+        "endChar": 39
+      },
+      "revId": "730df8af7ca3119e485a90fb9d2477be4eb8cabd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc1c2146_66589be5",
