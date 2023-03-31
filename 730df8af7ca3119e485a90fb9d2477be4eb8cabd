@@ -80,6 +80,53 @@
       },
       "revId": "730df8af7ca3119e485a90fb9d2477be4eb8cabd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "123c2e8d_b3ebc8dc",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-31T05:01:54Z",
+      "side": 1,
+      "message": "`isEmpty` doesn\u0027t exist in `Java8` and `stable-3.4` is still officially compatible with it... the `java8` support was dropped in `stable-3.5`\n\nRewritten version should look like\n```\nreturn sharedRefDb\n  .get(projectName, ref, String.class)\n  .map(r -\u003e !ZERO_ID_NAME.equals(r))\n  .orElse(false);\n```",
+      "range": {
+        "startLine": 121,
+        "startChar": 8,
+        "endLine": 121,
+        "endChar": 19
+      },
+      "revId": "730df8af7ca3119e485a90fb9d2477be4eb8cabd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb591ffb_c651cbbd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-03-31T05:01:54Z",
+      "side": 1,
+      "message": "and considering the lack of `isEmpty` in `Java8` the method body would look like\n```\nreturn sharedRefDb\n  .get(projectName, ref, String.class)\n  .map(r -\u003e ZERO_ID_NAME.equals(r))\n  .orElse(true);\n```",
+      "parentUuid": "fc1c2146_66589be5",
+      "range": {
+        "startLine": 118,
+        "startChar": 11,
+        "endLine": 121,
+        "endChar": 19
+      },
+      "revId": "730df8af7ca3119e485a90fb9d2477be4eb8cabd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
