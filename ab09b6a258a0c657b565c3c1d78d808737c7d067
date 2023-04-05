@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e4f96ee_bedefcb4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-04-05T10:46:01Z",
+      "side": 1,
+      "message": "looks good, some very minor renaming changes \u0026 suggestions.",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "646ded20_efbd6bca",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-04-05T10:46:01Z",
+      "side": 1,
+      "message": "```suggestion\n    private static final String RANDOM_WAIT_MAX_BOUND_BEFORE_RELOAD_LOCAL_VERSION_MS \u003d\n```",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "477f4813_676ae7b5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-04-05T10:46:01Z",
+      "side": 1,
+      "message": "```suggestion\n    public Integer fetchFilterRandomSleepTimeMs() {\n```",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e31fbfe_ca00c3eb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-04-05T10:46:01Z",
+      "side": 1,
+      "message": "```suggestion\n    public Integer pushFilterRandomSleepTimeMs() {\n```",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1d0d599_9c6aaef8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-04-05T10:46:01Z",
+      "side": 1,
+      "message": "```suggestion\n    int randomSleepTimeMs \u003d config.replicationFilter().fetchFilterRandomSleepTimeMs();\n```",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28b74eb6_07f7d202",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-04-05T10:46:01Z",
+      "side": 1,
+      "message": "should we log at debug level that because the random sleep is disabled, we won\u0027t be sleeping? Not sure what value it could add - just a thought.",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bba425e_04bd5546",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-04-05T10:46:01Z",
+      "side": 1,
+      "message": "```suggestion\n    int randomSleepTimeMs \u003d config.replicationFilter().pushFilterRandomSleepTimeMs();\n```",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
