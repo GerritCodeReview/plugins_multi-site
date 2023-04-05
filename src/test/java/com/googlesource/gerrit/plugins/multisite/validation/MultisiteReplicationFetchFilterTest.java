@@ -26,6 +26,7 @@ import com.google.gerrit.entities.Project;
 import com.google.gerrit.testing.InMemoryRepositoryManager;
 import com.google.gerrit.testing.InMemoryTestEnvironment;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import java.util.Optional;
 import java.util.Set;
@@ -47,6 +48,8 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
   @Rule public InMemoryTestEnvironment testEnvironment = new InMemoryTestEnvironment();
 
   @Mock SharedRefDatabaseWrapper sharedRefDatabaseMock;
+  @Mock Configuration config;
+  @Mock Configuration.ReplicationFilter replicationFilterConfig;
 
   @Inject private InMemoryRepositoryManager gitRepositoryManager;
 
@@ -60,6 +63,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     InMemoryRepository inMemoryRepo =
         gitRepositoryManager.createRepository(A_TEST_PROJECT_NAME_KEY);
     repo = new TestRepository<>(inMemoryRepo);
+    doReturn(replicationFilterConfig).when(config).replicationFilter();
   }
 
   @Test
@@ -70,7 +74,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
 
     MultisiteReplicationFetchFilter fetchFilter =
-        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager);
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     Set<String> filteredRefs = fetchFilter.filter(project, refs);
 
     assertThat(filteredRefs).isEmpty();
@@ -86,7 +90,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     SharedRefDatabaseWrapper sharedRefDatabase = new FakeSharedRefDatabaseWrapper(outdatedRef);
 
     MultisiteReplicationFetchFilter fetchFilter =
-        new MultisiteReplicationFetchFilter(sharedRefDatabase, gitRepositoryManager);
+        new MultisiteReplicationFetchFilter(sharedRefDatabase, gitRepositoryManager, config);
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).containsExactly(outdatedRef);
@@ -101,7 +105,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     doReturn(false).doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
 
     MultisiteReplicationFetchFilter fetchFilter =
-        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager);
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).isEmpty();
@@ -118,7 +122,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     doReturn(false).doReturn(false).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
 
     MultisiteReplicationFetchFilter fetchFilter =
-        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager);
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).hasSize(1);
@@ -133,7 +137,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     Set<String> refsToFetch = Set.of(temporaryOutdated);
 
     MultisiteReplicationFetchFilter fetchFilter =
-        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager);
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).hasSize(1);
@@ -150,7 +154,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
         .get(eq(projectName), any(), any());
 
     MultisiteReplicationFetchFilter fetchFilter =
-        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager);
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).hasSize(0);
@@ -168,7 +172,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
         .get(eq(projectName), any(), any());
 
     MultisiteReplicationFetchFilter fetchFilter =
-        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager);
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).hasSize(1);
@@ -181,7 +185,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     Set<String> refsToFetch = Set.of(nonExisting);
 
     MultisiteReplicationFetchFilter fetchFilter =
-        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager);
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).hasSize(1);
@@ -198,7 +202,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
         .get(eq(projectName), any(), any());
 
     MultisiteReplicationFetchFilter fetchFilter =
-        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager);
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).hasSize(0);
