@@ -158,6 +158,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8393641_c2fb38e9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-04-05T20:16:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4f1d7e52_01918d15",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28b74eb6_07f7d202",
@@ -224,6 +242,24 @@
       "side": 1,
       "message": "this variable already exists so I\u0027m not sure if renaming is in the scope of this change",
       "parentUuid": "1bba425e_04bd5546",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "837804b5_b6ee3185",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-04-05T20:16:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "72f14485_72ab1aeb",
       "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
