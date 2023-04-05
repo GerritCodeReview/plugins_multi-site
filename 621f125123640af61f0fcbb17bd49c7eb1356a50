@@ -70,6 +70,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f8b2536_c8a7e7fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-04-05T17:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef0c2e1f_379dc973",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 12
+      },
+      "revId": "621f125123640af61f0fcbb17bd49c7eb1356a50",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e37cba60_233fee73",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-04-05T17:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "059b8fc5_6870967f",
+      "range": {
+        "startLine": 9,
+        "startChar": 40,
+        "endLine": 9,
+        "endChar": 49
+      },
+      "revId": "621f125123640af61f0fcbb17bd49c7eb1356a50",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c191875e_8cd9ea4f",
@@ -83,6 +131,30 @@
       "writtenOn": "2023-04-05T14:54:01Z",
       "side": 1,
       "message": "nit: consider naming this with he `max` prefix to show this is the upperbound value",
+      "range": {
+        "startLine": 345,
+        "startChar": 9,
+        "endLine": 345,
+        "endChar": 45
+      },
+      "revId": "621f125123640af61f0fcbb17bd49c7eb1356a50",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a20875e_9f449589",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-04-05T17:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c191875e_8cd9ea4f",
       "range": {
         "startLine": 345,
         "startChar": 9,
@@ -116,6 +188,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "809cee94_65076e65",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-04-05T17:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "660e7fcb_c30c94f4",
+      "range": {
+        "startLine": 394,
+        "startChar": 0,
+        "endLine": 395,
+        "endChar": 60
+      },
+      "revId": "621f125123640af61f0fcbb17bd49c7eb1356a50",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c4c47d4_71d2d0c7",
@@ -129,6 +225,30 @@
       "writtenOn": "2023-04-05T14:54:01Z",
       "side": 1,
       "message": "same as before, the min could be 0 imho.\nShould we just look at the upper bound?",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 405,
+        "endChar": 59
+      },
+      "revId": "621f125123640af61f0fcbb17bd49c7eb1356a50",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42e37c70_67c24e16",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-04-05T17:58:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c4c47d4_71d2d0c7",
       "range": {
         "startLine": 403,
         "startChar": 0,
