@@ -137,6 +137,36 @@ Configuration should be specified in the `$site_path/etc/@PLUGIN@.config` file.
 
     By default, all projects are matched.
 
+```replication.push-filter.minWaitBeforeReloadLocalVersionMs```
+:   Specifies the minimum amount of time in milliseconds replication plugin filter will
+    wait before retrying check for ref which is not up to date with global-refdb.
+
+    By default: 1000 milliseconds
+
+```replication.push-filter.maxRandomWaitBeforeReloadLocalVersionMs```
+:   Specifies the additional amount of time in milliseconds replication filter will
+    wait before retrying check for ref which is not up to date with global-refdb.
+
+    If maxRandomWaitBeforeReloadLocalVersionMs is set to zero random sleep for not in sync
+    refs is disabled.
+
+    By default: 1000 milliseconds
+
+```replication.fetch-filter.minWaitBeforeReloadLocalVersionMs```
+:   Specifies the minimum amount of time in milliseconds pull-replication filter wait
+    before retrying check for ref which is not up to date with global-refdb.
+
+    By default: 1000 milliseconds
+
+```replication.fetch-filter.maxRandomWaitBeforeReloadLocalVersionMs```
+:   Specifies the additional amount of time in milliseconds pull-replication filter will
+    wait before retrying check for ref which is not up to date with global-refdb.
+
+    If maxRandomWaitBeforeReloadLocalVersionMs is set to zero random sleep for not in sync
+    refs is disabled.
+
+    By default: 1000 milliseconds
+
 ## Replication filters
 
 The @PLUGIN@ plugin is also responsible for filtering out replication events that may
