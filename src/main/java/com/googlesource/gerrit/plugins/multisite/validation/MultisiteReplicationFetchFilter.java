@@ -24,11 +24,11 @@ import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.replication.pull.ReplicationFetchFilter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.ObjectId;
@@ -40,17 +40,19 @@ import org.eclipse.jgit.lib.Repository;
 public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
   private static final String ZERO_ID_NAME = ObjectId.zeroId().name();
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  public static final int MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS = 1000;
-  public static final int RANDOM_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS = 1000;
 
   private final SharedRefDatabaseWrapper sharedRefDb;
   private final GitRepositoryManager gitRepositoryManager;
+  private Configuration config;
 
   @Inject
   public MultisiteReplicationFetchFilter(
-      SharedRefDatabaseWrapper sharedRefDb, GitRepositoryManager gitRepositoryManager) {
+      SharedRefDatabaseWrapper sharedRefDb,
+      GitRepositoryManager gitRepositoryManager,
+      Configuration config) {
     this.sharedRefDb = sharedRefDb;
     this.gitRepositoryManager = gitRepositoryManager;
+    this.config = config;
   }
 
   @Override
@@ -145,9 +147,17 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
 
   private void randomSleepForMitigatingConditionWhereLocalRefHaveJustBeenChanged(
       String projectName, Optional<ObjectId> refObjectId, String ref) {
-    int randomSleepTimeMsec =
-        MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS
-            + new Random().nextInt(RANDOM_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS);
+    if (!config.replicationFilter().isFetchFilterRandomSleepEnabled()) {
+      repLog.debug(
+          "'{}' is not up-to-date for project '{}' [local='{}']. Random sleep is disabled,"
+              + " reload local ref without delay and re-check",
+          ref,
+          projectName,
+          refObjectId);
+      return;
+    }
+
+    int randomSleepTimeMsec = config.replicationFilter().fetchFilterRandomSleepTimeMs();
     repLog.debug(
         "'{}' is not up-to-date for project '{}' [local='{}']. Reload local ref in '{} ms' and"
             + " re-check",
