@@ -137,6 +137,35 @@ Configuration should be specified in the `$site_path/etc/@PLUGIN@.config` file.
 
     By default, all projects are matched.
 
+```replication.push-filter.minWaitBeforeReloadLocalVersionMs```
+:   Specifies the minimum amount of time in milliseconds replication plugin filter will
+    wait before retrying check for ref which is not up to date with global-refdb.
+
+    By default: 1000 milliseconds
+
+```replication.push-filter.randomWaitBeforeReloadLocalVersionMs```
+:   Specifies the additional amount of time in milliseconds replication filter will
+    wait before retrying check for ref which is not up to date with global-refdb.
+
+    By default: 1000 milliseconds
+
+```replication.fetch-filter.minWaitBeforeReloadLocalVersionMs```
+:   Specifies the minimum amount of time in milliseconds pull-replication filter wait
+    before retrying check for ref which is not up to date with global-refdb.
+
+    By default: 1000 milliseconds
+
+```replication.fetch-filter.randomWaitBeforeReloadLocalVersionMs```
+:   Specifies the additional amount of time in milliseconds pull-replication filter will
+    wait before retrying check for ref which is not up to date with global-refdb.
+
+    By default: 1000 milliseconds
+
+**NOTE**: if minWaitBeforeReloadLocalVersionMs and randomWaitBeforeReloadLocalVersionMs
+    are set to zero random sleep for not in sync refs is disabled.
+
+By default: 1000 milliseconds
+
 ## Replication filters
 
 The @PLUGIN@ plugin is also responsible for filtering out replication events that may
@@ -145,6 +174,7 @@ It integrates the push and pull replication filtering extension points for valid
 the refs to be replicated and dropping some of them.
 
 **Replication plugin**
+
 
 When using the Gerrit core replication plugin, also known as push-replication, link the
 `replication.jar` to the `$GERRIT_SITE/lib` directory and add the following libModule
@@ -163,6 +193,9 @@ on their global-refdb status:
   discarded, because they may cause split-brain on the remote replication endpoints.
 
 - All other refs will be pushed as normal to the remote replication ends.
+
+##### Configuration
+
 
 **Pull-replication plugin**
 
