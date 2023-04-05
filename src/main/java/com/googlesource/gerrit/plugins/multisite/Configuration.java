@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
@@ -71,6 +72,7 @@ public class Configuration {
   private final Supplier<SharedRefDbConfiguration> sharedRefDb;
   private final Supplier<Collection<Message>> replicationConfigValidation;
   private final Supplier<Broker> broker;
+  private final Supplier<ReplicationFilter> replicationFilter;
   private final Config multiSiteConfig;
   private final Supplier<Duration> replicationLagRefreshInterval;
 
@@ -94,6 +96,7 @@ public class Configuration {
                 new SharedRefDbConfiguration(
                     enableSharedRefDbByDefault(lazyMultiSiteCfg.get()), PLUGIN_NAME));
     broker = memoize(() -> new Broker(lazyMultiSiteCfg));
+    replicationFilter = memoize(() -> new ReplicationFilter(lazyMultiSiteCfg));
     replicationLagRefreshInterval =
         memoize(
             () ->
@@ -133,6 +136,10 @@ public class Configuration {
 
   public Projects projects() {
     return projects.get();
+  }
+
+  public ReplicationFilter replicationFilter() {
+    return replicationFilter.get();
   }
 
   public Duration replicationLagRefreshInterval() {
@@ -324,6 +331,83 @@ public class Configuration {
 
     public String getTopic(String topicKey, String defValue) {
       return MoreObjects.firstNonNull(cfg.getString(BROKER_SECTION, null, topicKey), defValue);
+    }
+  }
+
+  public static class ReplicationFilter {
+    static final String REPLICATION_FILTER_SECTION = "replication";
+    static final String REPLICATION_PUSH_FILTER_SUBSECTION = "push-filter";
+    static final String REPLICATION_FETCH_FILTER_SUBSECTION = "fetch-filter";
+
+    private static final String MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS =
+        "minWaitBeforeReloadLocalVersionMs";
+    private static final String RANDOM_WAIT_MAX_BOUND_BEFORE_RELOAD_LOCAL_VERSION_MS =
+        "randomWaitBeforeReloadLocalVersionMs";
+
+    private static final int MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS_DEFAULT = 1000;
+    private static final int RANDOM_WAIT_MAX_BOUND_BEFORE_RELOAD_LOCAL_VERSION_MS_DEFAULT = 1000;
+    private final Supplier<Integer> fetchMinWaitBeforeReloadLocalVersionMs;
+    private final Supplier<Integer> fetchWaitBeforeReloadLocalVersionMs;
+    private final Supplier<Integer> pushMinWaitBeforeReloadLocalVersionMs;
+    private final Supplier<Integer> pushWaitBeforeReloadLocalVersionMs;
+
+    public ReplicationFilter(Supplier<Config> cfg) {
+      fetchMinWaitBeforeReloadLocalVersionMs =
+          memoize(
+              () ->
+                  cfg.get()
+                      .getInt(
+                          REPLICATION_FILTER_SECTION,
+                          REPLICATION_FETCH_FILTER_SUBSECTION,
+                          MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS,
+                          MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS_DEFAULT));
+      fetchWaitBeforeReloadLocalVersionMs =
+          memoize(
+              () ->
+                  cfg.get()
+                      .getInt(
+                          REPLICATION_FILTER_SECTION,
+                          REPLICATION_FETCH_FILTER_SUBSECTION,
+                          RANDOM_WAIT_MAX_BOUND_BEFORE_RELOAD_LOCAL_VERSION_MS,
+                          RANDOM_WAIT_MAX_BOUND_BEFORE_RELOAD_LOCAL_VERSION_MS_DEFAULT));
+      pushMinWaitBeforeReloadLocalVersionMs =
+          memoize(
+              () ->
+                  cfg.get()
+                      .getInt(
+                          REPLICATION_FILTER_SECTION,
+                          REPLICATION_PUSH_FILTER_SUBSECTION,
+                          MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS,
+                          MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS_DEFAULT));
+      pushWaitBeforeReloadLocalVersionMs =
+          memoize(
+              () ->
+                  cfg.get()
+                      .getInt(
+                          REPLICATION_FILTER_SECTION,
+                          REPLICATION_PUSH_FILTER_SUBSECTION,
+                          RANDOM_WAIT_MAX_BOUND_BEFORE_RELOAD_LOCAL_VERSION_MS,
+                          RANDOM_WAIT_MAX_BOUND_BEFORE_RELOAD_LOCAL_VERSION_MS_DEFAULT));
+    }
+
+    public boolean isFetchFilterRandomSleepEnabled() {
+      return fetchMinWaitBeforeReloadLocalVersionMs.get() != 0
+          || fetchWaitBeforeReloadLocalVersionMs.get() != 0;
+    }
+
+    public Integer fetchFilterRandomSleepTimeMs() {
+      return fetchMinWaitBeforeReloadLocalVersionMs.get()
+          + new Random().nextInt(fetchWaitBeforeReloadLocalVersionMs.get());
+    }
+
+    public boolean isPushFilterRandomSleepEnabled() {
+      return pushMinWaitBeforeReloadLocalVersionMs.get() != 0
+          || pushWaitBeforeReloadLocalVersionMs.get() != 0;
+    }
+
+    public Integer pushFilterRandomSleepTimeMs() {
+      return pushMinWaitBeforeReloadLocalVersionMs.get()
+          + new Random().nextInt(pushWaitBeforeReloadLocalVersionMs.get());
     }
   }
 
