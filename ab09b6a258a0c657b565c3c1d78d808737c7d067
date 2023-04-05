@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94b02050_1292e036",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-04-05T11:20:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "646ded20_efbd6bca",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "477f4813_676ae7b5",
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f09ca2f_3c34f3af",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-04-05T11:20:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "477f4813_676ae7b5",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6e31fbfe_ca00c3eb",
@@ -65,6 +101,24 @@
       "writtenOn": "2023-04-05T10:46:01Z",
       "side": 1,
       "message": "```suggestion\n    public Integer pushFilterRandomSleepTimeMs() {\n```",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47bac613_7756bcdf",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-04-05T11:20:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e31fbfe_ca00c3eb",
       "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -88,6 +142,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4f1d7e52_01918d15",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-04-05T11:20:08Z",
+      "side": 1,
+      "message": "this variable already exists so I\u0027m not sure if renaming is in the scope of this change",
+      "parentUuid": "f1d0d599_9c6aaef8",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "28b74eb6_07f7d202",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
         "patchSetId": 4
@@ -99,6 +171,24 @@
       "writtenOn": "2023-04-05T10:46:01Z",
       "side": 1,
       "message": "should we log at debug level that because the random sleep is disabled, we won\u0027t be sleeping? Not sure what value it could add - just a thought.",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5d60499_f7ab2056",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-04-05T11:20:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28b74eb6_07f7d202",
       "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -116,6 +206,24 @@
       "writtenOn": "2023-04-05T10:46:01Z",
       "side": 1,
       "message": "```suggestion\n    int randomSleepTimeMs \u003d config.replicationFilter().pushFilterRandomSleepTimeMs();\n```",
+      "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72f14485_72ab1aeb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationPushFilter.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-04-05T11:20:08Z",
+      "side": 1,
+      "message": "this variable already exists so I\u0027m not sure if renaming is in the scope of this change",
+      "parentUuid": "1bba425e_04bd5546",
       "revId": "ab09b6a258a0c657b565c3c1d78d808737c7d067",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
