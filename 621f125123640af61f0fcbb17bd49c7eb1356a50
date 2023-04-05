@@ -22,6 +22,121 @@
       },
       "revId": "621f125123640af61f0fcbb17bd49c7eb1356a50",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "059b8fc5_6870967f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-04-05T14:54:01Z",
+      "side": 1,
+      "message": "introduced",
+      "range": {
+        "startLine": 9,
+        "startChar": 40,
+        "endLine": 9,
+        "endChar": 49
+      },
+      "revId": "621f125123640af61f0fcbb17bd49c7eb1356a50",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6ab2c9b_d66f8d92",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-04-05T14:54:01Z",
+      "side": 1,
+      "message": "nit: would be useful to have the change-Id here for easy access to the relevant commit",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 60
+      },
+      "revId": "621f125123640af61f0fcbb17bd49c7eb1356a50",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c191875e_8cd9ea4f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-04-05T14:54:01Z",
+      "side": 1,
+      "message": "nit: consider naming this with he `max` prefix to show this is the upperbound value",
+      "range": {
+        "startLine": 345,
+        "startChar": 9,
+        "endLine": 345,
+        "endChar": 45
+      },
+      "revId": "621f125123640af61f0fcbb17bd49c7eb1356a50",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "660e7fcb_c30c94f4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-04-05T14:54:01Z",
+      "side": 1,
+      "message": "What if min \u003d 0 and max \u003d 1000 sec?\nI think that would be a valid range, should we not consider that enabled?\n\nPerhaps we should only look at the upper bound here to decide if random sleep is enabled.",
+      "range": {
+        "startLine": 394,
+        "startChar": 0,
+        "endLine": 395,
+        "endChar": 60
+      },
+      "revId": "621f125123640af61f0fcbb17bd49c7eb1356a50",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c4c47d4_71d2d0c7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-04-05T14:54:01Z",
+      "side": 1,
+      "message": "same as before, the min could be 0 imho.\nShould we just look at the upper bound?",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 405,
+        "endChar": 59
+      },
+      "revId": "621f125123640af61f0fcbb17bd49c7eb1356a50",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
