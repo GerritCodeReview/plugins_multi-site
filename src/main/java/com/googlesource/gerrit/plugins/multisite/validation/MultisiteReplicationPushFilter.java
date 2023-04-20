@@ -22,13 +22,13 @@ import com.google.gerrit.entities.Project;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.eclipse.jgit.lib.ObjectId;
@@ -43,20 +43,22 @@ import org.slf4j.LoggerFactory;
 public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String REF_META_SUFFIX = "/meta";
-  public static final int MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS = 1000;
-  public static final int RANDOM_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS = 1000;
 
   static final String REPLICATION_LOG_NAME = "replication_log";
   static final Logger repLog = LoggerFactory.getLogger(REPLICATION_LOG_NAME);
 
   private final SharedRefDatabaseWrapper sharedRefDb;
   private final GitRepositoryManager gitRepositoryManager;
+  private Configuration config;
 
   @Inject
   public MultisiteReplicationPushFilter(
-      SharedRefDatabaseWrapper sharedRefDb, GitRepositoryManager gitRepositoryManager) {
+      SharedRefDatabaseWrapper sharedRefDb,
+      GitRepositoryManager gitRepositoryManager,
+      Configuration config) {
     this.sharedRefDb = sharedRefDb;
     this.gitRepositoryManager = gitRepositoryManager;
+    this.config = config;
   }
 
   @Override
@@ -157,9 +159,11 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
 
   private void randomSleepForMitigatingConditionWhereLocalRefHaveJustBeenChanged(
       String projectName, RemoteRefUpdate refUpdate, String ref) {
-    int randomSleepTimeMsec =
-        MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS
-            + new Random().nextInt(RANDOM_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS);
+    if (!config.replicationFilter().isPushFilterRandomSleepEnabled()) {
+      return;
+    }
+
+    int randomSleepTimeMsec = config.replicationFilter().pushFilterRandomSleepTimeMs();
     repLog.debug(
         String.format(
             "'%s' is not up-to-date for project '%s' [local='%s']. Reload local ref in '%d ms' and"
