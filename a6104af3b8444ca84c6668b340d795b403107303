@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6d57468_633cd90e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-04-25T20:44:02Z",
+      "side": 1,
+      "message": "To complete this change, I need:\na) global-refdb on gerrit-review\nb) Gerrit CI scripts amended to support the clone of extra libs",
+      "revId": "a6104af3b8444ca84c6668b340d795b403107303",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
