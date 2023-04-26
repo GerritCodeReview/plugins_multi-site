@@ -113,6 +113,13 @@ Configuration should be specified in the `$site_path/etc/@PLUGIN@.config` file.
 
     Defaults: No rules = All projects are REQUIRED to be consistent on all refs.
 
+```ref-database.ignoredRefsPrefixes```
+:   Set of refs prefixes that are ignored during the validation with the
+    global ref-db. refs/multi-site/version, refs/multi-site/version/value and
+    all other Gerrit's immutables refs, such as the patch-sets, are ignored
+    automatically and added to the configured ignoredRefs.
+    Defaults: empty
+
 ```projects.pattern```
 :   Specifies which projects events should be send via broker. It can be provided more
     than once, and supports three formats: regular expressions, wildcard matching, and single
