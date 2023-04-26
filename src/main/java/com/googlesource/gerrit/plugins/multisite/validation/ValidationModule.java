@@ -20,6 +20,7 @@ import com.gerritforge.gerrit.globalrefdb.validation.Log4jSharedRefLogger;
 import com.gerritforge.gerrit.globalrefdb.validation.RefUpdateValidator;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbBatchRefUpdate;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbConfiguration.SharedRefDatabase;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbGitRepositoryManager;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRefDatabase;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRefUpdate;
@@ -29,6 +30,7 @@ import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.CustomSharedRefEnf
 import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.SharedRefEnforcement;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSet.Builder;
 import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.git.GitRepositoryManager;
@@ -61,17 +63,22 @@ public class ValidationModule extends FactoryModule {
     factory(RefUpdateValidator.Factory.class);
     factory(BatchRefUpdateValidator.Factory.class);
 
+    SharedRefDatabase sharedRefDb = cfg.getSharedRefDbConfiguration().getSharedRefDb();
+
+    Builder<String> ignoredRefsBuilder = ImmutableSet.builder();
+    ignoredRefsBuilder.addAll(sharedRefDb.getIgnoredRefs());
+    ignoredRefsBuilder.add(
+        ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+        ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF);
     bind(new TypeLiteral<ImmutableSet<String>>() {})
         .annotatedWith(Names.named(SharedRefDbGitRepositoryManager.IGNORED_REFS))
-        .toInstance(
-            ImmutableSet.of(
-                ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
-                ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF));
+        .toInstance(ignoredRefsBuilder.build());
+
     bind(GitRepositoryManager.class).to(SharedRefDbGitRepositoryManager.class);
     DynamicItem.bind(binder(), ReplicationPushFilter.class)
         .to(MultisiteReplicationPushFilter.class);
 
-    if (cfg.getSharedRefDbConfiguration().getSharedRefDb().getEnforcementRules().isEmpty()) {
+    if (sharedRefDb.getEnforcementRules().isEmpty()) {
       bind(SharedRefEnforcement.class).to(DefaultSharedRefEnforcement.class).in(Scopes.SINGLETON);
     } else {
       bind(SharedRefEnforcement.class)
