@@ -21,22 +21,16 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
-import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
-import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.gerrit.entities.Project;
-import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.testing.InMemoryRepositoryManager;
 import com.google.gerrit.testing.InMemoryTestEnvironment;
 import com.google.inject.Inject;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.LocalDiskRepositoryTestCase;
 import org.eclipse.jgit.junit.TestRepository;
@@ -58,6 +52,8 @@ public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestC
   @Rule public InMemoryTestEnvironment testEnvironment = new InMemoryTestEnvironment();
 
   @Mock SharedRefDatabaseWrapper sharedRefDatabaseMock;
+  @Mock Configuration config;
+  @Mock Configuration.ReplicationFilter replicationFilterConfig;
 
   @Inject private InMemoryRepositoryManager gitRepositoryManager;
 
@@ -70,6 +66,7 @@ public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestC
   public void setupTestRepo() throws Exception {
     InMemoryRepository inMemoryRepo =
         gitRepositoryManager.createRepository(A_TEST_PROJECT_NAME_KEY);
+    doReturn(replicationFilterConfig).when(config).replicationFilter();
     repo = new TestRepository<>(inMemoryRepo);
   }
 
@@ -80,7 +77,7 @@ public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestC
     doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(sharedRefDatabaseMock, gitRepositoryManager);
+        new MultisiteReplicationPushFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactlyElementsIn(refUpdates);
@@ -91,10 +88,11 @@ public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestC
     RemoteRefUpdate refUpToDate = refUpdate("refs/heads/uptodate");
     RemoteRefUpdate outdatedRef = refUpdate("refs/heads/outdated");
     List<RemoteRefUpdate> refUpdates = Arrays.asList(refUpToDate, outdatedRef);
-    SharedRefDatabaseWrapper sharedRefDatabase = newSharedRefDatabase(outdatedRef.getSrcRef());
+    SharedRefDatabaseWrapper sharedRefDatabase =
+        new FakeSharedRefDatabaseWrapper(outdatedRef.getSrcRef());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(sharedRefDatabase, gitRepositoryManager);
+        new MultisiteReplicationPushFilter(sharedRefDatabase, gitRepositoryManager, config);
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactly(refUpToDate);
@@ -110,7 +108,7 @@ public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestC
     doReturn(false).doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(sharedRefDatabaseMock, gitRepositoryManager);
+        new MultisiteReplicationPushFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).hasSize(1);
@@ -127,7 +125,7 @@ public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestC
     doReturn(false).doReturn(false).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(sharedRefDatabaseMock, gitRepositoryManager);
+        new MultisiteReplicationPushFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).isEmpty();
@@ -142,64 +140,14 @@ public class MultisiteReplicationPushFilterTest extends LocalDiskRepositoryTestC
     RemoteRefUpdate changeRef = refUpdate("refs/changes/12/4512/1");
     List<RemoteRefUpdate> refUpdates =
         Arrays.asList(refUpToDate, refChangeUpToDate, changeMetaRef, changeRef);
-    SharedRefDatabaseWrapper sharedRefDatabase = newSharedRefDatabase(changeMetaRef.getSrcRef());
+    SharedRefDatabaseWrapper sharedRefDatabase =
+        new FakeSharedRefDatabaseWrapper(changeMetaRef.getSrcRef());
 
     MultisiteReplicationPushFilter pushFilter =
-        new MultisiteReplicationPushFilter(sharedRefDatabase, gitRepositoryManager);
+        new MultisiteReplicationPushFilter(sharedRefDatabase, gitRepositoryManager, config);
     List<RemoteRefUpdate> filteredRefUpdates = pushFilter.filter(project, refUpdates);
 
     assertThat(filteredRefUpdates).containsExactly(refUpToDate, refChangeUpToDate);
-  }
-
-  private SharedRefDatabaseWrapper newSharedRefDatabase(String... rejectedRefs) {
-    Set<String> rejectedSet = new HashSet<>();
-    rejectedSet.addAll(Arrays.asList(rejectedRefs));
-
-    GlobalRefDatabase sharedRefDatabase =
-        new GlobalRefDatabase() {
-
-          @Override
-          public boolean isUpToDate(Project.NameKey project, Ref ref)
-              throws GlobalRefDbLockException {
-            return !rejectedSet.contains(ref.getName());
-          }
-
-          @Override
-          public boolean exists(Project.NameKey project, String refName) {
-            return true;
-          }
-
-          @Override
-          public boolean compareAndPut(Project.NameKey project, Ref currRef, ObjectId newRefValue)
-              throws GlobalRefDbSystemError {
-            return false;
-          }
-
-          @Override
-          public <T> boolean compareAndPut(
-              Project.NameKey project, String refName, T currValue, T newValue)
-              throws GlobalRefDbSystemError {
-            return false;
-          }
-
-          @Override
-          public AutoCloseable lockRef(Project.NameKey project, String refName)
-              throws GlobalRefDbLockException {
-            return null;
-          }
-
-          @Override
-          public void remove(Project.NameKey project) throws GlobalRefDbSystemError {}
-
-          @Override
-          public <T> Optional<T> get(Project.NameKey project, String refName, Class<T> clazz)
-              throws GlobalRefDbSystemError {
-            return Optional.empty();
-          }
-        };
-    return new SharedRefDatabaseWrapper(
-        DynamicItem.itemOf(GlobalRefDatabase.class, sharedRefDatabase),
-        new DisabledSharedRefLogger());
   }
 
   private RemoteRefUpdate refUpdate(String refName) throws Exception {

@@ -16,7 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Suppliers;
@@ -139,7 +139,7 @@ public class SubscriberMetricsTest {
 
     metrics.updateReplicationStatusMetrics(eventMessage);
 
-    verifyZeroInteractions(verLogger);
+    verifyNoInteractions(verLogger);
   }
 
   @Test
@@ -151,7 +151,7 @@ public class SubscriberMetricsTest {
 
     metrics.updateReplicationStatusMetrics(eventMessage);
 
-    verifyZeroInteractions(verLogger);
+    verifyNoInteractions(verLogger);
   }
 
   @Test
