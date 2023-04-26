@@ -80,6 +80,13 @@ be specified in the `$site_path/etc/@PLUGIN@.config` file.
     mechanism.
     Defaults: 60 min
 
+```ref-database.ignoredRefsPrefixes```
+:   Set of refs prefixes that are ignored during the validation with the
+    global ref-db. refs/multi-site/version, refs/multi-site/version/value and
+    all other Gerrit's immutables refs, such as the patch-sets, are ignored
+    automatically and added to the configured ignoredRefs.
+    Defaults: empty
+
 ```ref-database.enforcementRules.<policy>```
 :   Level of consistency enforcement across sites on a project:refs basis.
     Supports two values for enforcing the policy on multiple projects or refs.

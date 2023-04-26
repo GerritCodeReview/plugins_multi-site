@@ -24,6 +24,7 @@ import static com.googlesource.gerrit.plugins.multisite.Configuration.Forwarding
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.INDEX_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
 
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbConfiguration.SharedRefDatabase;
 import com.google.common.collect.ImmutableList;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
@@ -121,6 +122,17 @@ public class ConfigurationTest {
     assertThat(getConfiguration().cache().patterns())
         .containsExactly("^my_cache.*", "other")
         .inOrder();
+  }
+
+  @Test
+  public void testGetIgnoredRefs() throws Exception {
+    globalPluginConfig.setStringList(
+        SharedRefDatabase.SECTION,
+        null,
+        SharedRefDatabase.IGNORED_REFS,
+        ImmutableList.of("refs/heads/foo", "refs/tags/bar"));
+    assertThat(getConfiguration().getSharedRefDbConfiguration().getSharedRefDb().getIgnoredRefs())
+        .containsExactly("refs/heads/foo", "refs/tags/bar");
   }
 
   @Test
