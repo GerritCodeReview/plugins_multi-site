@@ -3,8 +3,8 @@ load("//tools/bzl:maven_jar.bzl", "maven_jar")
 def external_plugin_deps():
     maven_jar(
         name = "global-refdb",
-        artifact = "com.gerritforge:global-refdb:3.4.8.1",
-        sha1 = "0990e9ea923a9f0d496701576b85b6229aeb97f9",
+        artifact = "com.gerritforge:global-refdb:3.4.8.4",
+        sha1 = "511565772ed62d113c10b960ecb0fc779f461ae7",
     )
 
     maven_jar(
