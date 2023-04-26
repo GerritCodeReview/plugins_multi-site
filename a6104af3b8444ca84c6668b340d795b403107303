@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "aae822f1_6a616235",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-04-26T03:24:32Z",
+      "side": 1,
+      "message": "Nice! I suggested to do it 4 years ago, in change 243660 😊",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 39
+      },
+      "revId": "a6104af3b8444ca84c6668b340d795b403107303",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ed54053_08d2dfaf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-04-26T03:24:32Z",
+      "side": 1,
+      "message": "It would also avoid additional step of publishing new versions on Maven Central, before between able to consume them.\n\nIt would also be possible to have a dependent chain of changes in one topic across git repositories in review. Zuul-CI even supports additional Depends-On footer.",
+      "revId": "a6104af3b8444ca84c6668b340d795b403107303",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "e6d57468_633cd90e",
@@ -32,6 +72,69 @@
       "side": 1,
       "message": "a) is pending the community approval of the project, see [1]\n\n[1] https://groups.google.com/g/repo-discuss/c/ObtuC55VKqA",
       "parentUuid": "e6d57468_633cd90e",
+      "revId": "a6104af3b8444ca84c6668b340d795b403107303",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e829bc4_bdf797c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-04-26T03:24:32Z",
+      "side": 1,
+      "message": "Also documentation needs to be extended, to mention, that the the additional repository would need to be fetched in plugins (or modules) directory: [1]\n\n[1] https://gerrit-review.googlesource.com/c/plugins/multi-site/+/243660/3/src/main/resources/Documentation/build.md#15",
+      "revId": "a6104af3b8444ca84c6668b340d795b403107303",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2f34f4e_5e17a8f5",
+        "filename": "BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-04-26T03:24:32Z",
+      "side": 1,
+      "message": "In my attempt, in change 243660, I suggested to consume it from `//modules/global-refdb`, like JGit, but plugins would work as well.",
+      "range": {
+        "startLine": 43,
+        "startChar": 15,
+        "endLine": 43,
+        "endChar": 40
+      },
+      "revId": "a6104af3b8444ca84c6668b340d795b403107303",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0dc8095_2ec5c089",
+        "filename": "Jenkinsfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-04-26T03:24:32Z",
+      "side": 1,
+      "message": "Could be extractModules, if we decide to consume it from modules directory.",
+      "range": {
+        "startLine": 4,
+        "startChar": 15,
+        "endLine": 4,
+        "endChar": 24
+      },
       "revId": "a6104af3b8444ca84c6668b340d795b403107303",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
