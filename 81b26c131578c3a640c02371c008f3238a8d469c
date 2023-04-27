@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "159e147c_3dcf9c68",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-04-27T12:52:04Z",
+      "side": 1,
+      "message": "Nit: use abbreviated change id instead of commit SHA1, so that gerrit creat a link I3ceca085cbe. Also add the point at the of the statement.",
+      "range": {
+        "startLine": 25,
+        "startChar": 44,
+        "endLine": 25,
+        "endChar": 55
+      },
+      "revId": "81b26c131578c3a640c02371c008f3238a8d469c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
