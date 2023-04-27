@@ -16,6 +16,24 @@
       "message": "Test failures are related?\n\n   //plugins/multi-site:multi_site_tests          FAILED",
       "revId": "81d3cf99ab831d4739198b0efa13a3785fcfdff7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee73f63a_af701784",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-04-27T09:53:20Z",
+      "side": 1,
+      "message": "Looks like this commit [1] causes the failures.\n\n[1]: https://gerrit-review.googlesource.com/c/gerrit/+/357088",
+      "parentUuid": "2fc1c4cb_2e584469",
+      "revId": "81d3cf99ab831d4739198b0efa13a3785fcfdff7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
