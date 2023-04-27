@@ -14,7 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.cache;
 
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import com.google.common.cache.RemovalCause;
 import com.google.common.cache.RemovalNotification;
@@ -44,6 +44,6 @@ public class CacheEvictionHandlerTest {
     handler.onRemoval(
         "test", "accounts", RemovalNotification.create("test", "accounts", RemovalCause.EXPLICIT));
 
-    verifyZeroInteractions(executorMock);
+    verifyNoInteractions(executorMock);
   }
 }
