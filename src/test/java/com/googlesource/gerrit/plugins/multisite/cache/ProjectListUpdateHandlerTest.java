@@ -20,7 +20,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.util.concurrent.MoreExecutors;
@@ -90,7 +90,7 @@ public class ProjectListUpdateHandlerTest {
     handler.onNewProjectCreated(mock(NewProjectCreatedListener.Event.class));
     handler.onProjectDeleted(mock(ProjectDeletedListener.Event.class));
     Context.unsetForwardedEvent();
-    verifyZeroInteractions(forwarder);
+    verifyNoInteractions(forwarder);
   }
 
   @Test
