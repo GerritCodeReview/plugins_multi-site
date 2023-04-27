@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "145115b2_1b4fa9eb",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 8
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-04-27T09:41:46Z",
+      "side": 1,
+      "message": "not overly important, but i feel this could have been a separate change",
+      "revId": "8661e826510f585d61bca5f6f1b46ec6aede8676",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d70d969_9e0d5c0f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/ConfigurationTest.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-04-27T09:41:46Z",
+      "side": 1,
+      "message": "shouldn\u0027t it also contain the refs/multi-site/version \u0026 refs/multi-site/version/value ?",
+      "revId": "8661e826510f585d61bca5f6f1b46ec6aede8676",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
