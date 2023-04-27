@@ -14,14 +14,25 @@
 
 package com.googlesource.gerrit.plugins.multisite.http;
 
+import com.google.inject.Inject;
 import com.google.inject.servlet.ServletModule;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 
 public class HttpModule extends ServletModule {
 
   public static final String LAG_ENDPOINT_SEGMENT = "replication-lag";
 
+  private final Configuration config;
+
+  @Inject
+  public HttpModule(Configuration config) {
+    this.config = config;
+  }
+
   @Override
   protected void configureServlets() {
-    serve(String.format("/%s", LAG_ENDPOINT_SEGMENT)).with(ReplicationStatusServlet.class);
+    if (config.event().synchronize()) {
+      serve(String.format("/%s", LAG_ENDPOINT_SEGMENT)).with(ReplicationStatusServlet.class);
+    }
   }
 }

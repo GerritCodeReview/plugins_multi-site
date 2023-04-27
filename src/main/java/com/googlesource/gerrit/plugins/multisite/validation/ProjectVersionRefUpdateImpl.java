@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import static com.google.gerrit.server.update.context.RefUpdateContext.RefUpdateType.PLUGIN;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
 
@@ -30,6 +31,7 @@ import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.IntBlob;
+import com.google.gerrit.server.update.context.RefUpdateContext;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import java.io.IOException;
@@ -262,7 +264,8 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
     logger.atFine().log(
         "Updating local version for project %s with version %d",
         projectNameKey.get(), newVersionNumber);
-    try (Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
+    try (RefUpdateContext ctx = RefUpdateContext.open(PLUGIN);
+        Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
       RefUpdate refUpdate = getProjectVersionRefUpdate(repository, newVersionNumber);
       RefUpdate.Result result = refUpdate.update();
       if (!isSuccessful(result)) {
