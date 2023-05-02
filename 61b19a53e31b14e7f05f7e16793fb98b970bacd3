@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c5a6591_3f25a7b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-05-02T07:43:49Z",
+      "side": 1,
+      "message": "Is the build failure related?\n\n```\nplugins/multi-site/src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java:48: error: cannot find symbol\n    install(new ReplicationExtensionPointModule());\n                ^\n  symbol:   class ReplicationExtensionPointModule\n  location: class ValidationModule\n```",
+      "revId": "61b19a53e31b14e7f05f7e16793fb98b970bacd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
