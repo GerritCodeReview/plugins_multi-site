@@ -18,6 +18,7 @@ import com.gerritforge.gerrit.globalrefdb.validation.BatchRefUpdateValidator;
 import com.gerritforge.gerrit.globalrefdb.validation.LockWrapper;
 import com.gerritforge.gerrit.globalrefdb.validation.Log4jSharedRefLogger;
 import com.gerritforge.gerrit.globalrefdb.validation.RefUpdateValidator;
+import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbBatchRefUpdate;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbGitRepositoryManager;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRefDatabase;
@@ -44,6 +45,9 @@ public class ValidationModule extends FactoryModule {
 
   @Override
   protected void configure() {
+    install(new ReplicationExtensionPointModule());
+
+    bind(SharedRefDatabaseWrapper.class).in(Scopes.SINGLETON);
     bind(SharedRefLogger.class).to(Log4jSharedRefLogger.class);
     factory(LockWrapper.Factory.class);
 
