@@ -430,8 +430,11 @@ else
 fi
 if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
   echo "Downloading websession-broker plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-websession-broker-bazel-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
+  -O $DEPLOYMENT_LOCATION/websession-broker.jar || \
   wget $GERRIT_CI/plugin-websession-broker-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
-  -O $DEPLOYMENT_LOCATION/websession-broker.jar || { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
+  -O $DEPLOYMENT_LOCATION/websession-broker.jar || \
+  { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
 ing"; exit 1; }
   wget $GERRIT_CI/plugin-healthcheck-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
   -O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
@@ -442,7 +445,10 @@ fi
 
 echo "Downloading zookeeper plugin $GERRIT_BRANCH"
   wget $GERRIT_CI/plugin-zookeeper-refdb-bazel-$GERRIT_BRANCH/$LAST_BUILD/zookeeper-refdb/zookeeper-refdb.jar \
-  -O $DEPLOYMENT_LOCATION/zookeeper-refdb.jar || { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Abort\
+  -O $DEPLOYMENT_LOCATION/zookeeper-refdb.jar || \
+  wget $GERRIT_CI/plugin-zookeeper-refdb-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/zookeeper-refdb/zookeeper-refdb.jar \
+  -O $DEPLOYMENT_LOCATION/zookeeper-refdb.jar || \
+  { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
 echo "Downloading global-refdb library $GERRIT_BRANCH"
@@ -457,29 +463,41 @@ ing"; exit 1; }
 
 if [ "$BROKER_TYPE" = "kafka" ]; then
 echo "Downloading events-kafka plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-events-kafka-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-kafka/events-kafka.jar \
+  -O $DEPLOYMENT_LOCATION/events-kafka.jar || \
   wget $GERRIT_CI/plugin-events-kafka-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/events-kafka/events-kafka.jar \
-  -O $DEPLOYMENT_LOCATION/events-kafka.jar || { echo >&2 "Cannot download events-kafka plugin: Check internet connection. Abort\
+  -O $DEPLOYMENT_LOCATION/events-kafka.jar || \
+  { echo >&2 "Cannot download events-kafka plugin: Check internet connection. Abort\
 ing"; exit 1; }
 fi
 
 if [ "$BROKER_TYPE" = "kinesis" ]; then
 echo "Downloading events-aws-kinesis plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-events-aws-kinesis-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-aws-kinesis/events-aws-kinesis.jar \
+  -O $DEPLOYMENT_LOCATION/events-aws-kinesis.jar || \
   wget $GERRIT_CI/plugin-events-aws-kinesis-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/events-aws-kinesis/events-aws-kinesis.jar \
-  -O $DEPLOYMENT_LOCATION/events-aws-kinesis.jar || { echo >&2 "Cannot download events-aws-kinesis plugin: Check internet connection. Abort\
+  -O $DEPLOYMENT_LOCATION/events-aws-kinesis.jar || \
+  { echo >&2 "Cannot download events-aws-kinesis plugin: Check internet connection. Abort\
 ing"; exit 1; }
 fi
 
 
 if [ "$BROKER_TYPE" = "gcloud-pubsub" ]; then
 echo "Downloading events-gcloud-pubsub plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-events-gcloud-pubsub-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-gcloud-pubsub/events-gcloud-pubsub.jar \
+  -O $DEPLOYMENT_LOCATION/events-gcloud-pubsub.jar || \
   wget $GERRIT_CI/plugin-events-gcloud-pubsub-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/events-gcloud-pubsub/events-gcloud-pubsub.jar \
-  -O $DEPLOYMENT_LOCATION/events-gcloud-pubsub.jar || { echo >&2 "Cannot download events-gcloud-pubsub plugin: Check internet connection. Abort\
+  -O $DEPLOYMENT_LOCATION/events-gcloud-pubsub.jar || \
+  { echo >&2 "Cannot download events-gcloud-pubsub plugin: Check internet connection. Abort\
 ing"; exit 1; }
 fi
 
 echo "Downloading metrics-reporter-prometheus plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-metrics-reporter-prometheus-bazel-$GERRIT_BRANCH/$LAST_BUILD/metrics-reporter-prometheus/metrics-reporter-prometheus.jar \
+  -O $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar || \
   wget $GERRIT_CI/plugin-metrics-reporter-prometheus-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/metrics-reporter-prometheus/metrics-reporter-prometheus.jar \
-  -O $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar || { echo >&2 "Cannot download metrics-reporter-prometheus plugin: Check internet connection. Abort\
+  -O $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar || \
+  { echo >&2 "Cannot download metrics-reporter-prometheus plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
 if [ "$REPLICATION_TYPE" = "ssh" ];then
