@@ -16,6 +16,29 @@
       "message": "Is the build failure related?\n\n```\nplugins/multi-site/src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java:48: error: cannot find symbol\n    install(new ReplicationExtensionPointModule());\n                ^\n  symbol:   class ReplicationExtensionPointModule\n  location: class ValidationModule\n```",
       "revId": "61b19a53e31b14e7f05f7e16793fb98b970bacd3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e9c9a66_be0e36c3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ValidationModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-02T07:45:48Z",
+      "side": 1,
+      "message": "This is not part of the revert, it should be removed",
+      "range": {
+        "startLine": 48,
+        "startChar": 4,
+        "endLine": 48,
+        "endChar": 51
+      },
+      "revId": "61b19a53e31b14e7f05f7e16793fb98b970bacd3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
