@@ -98,9 +98,8 @@ Add the multi-site module to `$GERRIT_SITE/etc/gerrit.config` as follows:
 For more details on the configuration settings, please refer to the
 [multi-site configuration documentation](src/main/resources/Documentation/config.md).
 
-You also need to setup the Git-level replication between nodes, for more details
-please refer to the
-[replication plugin documentation](https://gerrit.googlesource.com/plugins/replication/+/refs/heads/master/src/main/resources/Documentation/config.md).
+You also need to setup the Git-level replication between nodes. for more details
+This can be done with either [pull replication plugin](https://gerrit.googlesource.com/plugins/pull-replication/) or [replication plugin](https://gerrit.googlesource.com/plugins/replication/+/refs/heads/master/src/main/resources/Documentation/config.md).
 
 # HTTP endpoints
 
