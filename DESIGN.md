@@ -200,7 +200,7 @@ asynchronous variant in the future.
 
 This plugin expands upon the excellent work on the high-availability plugin,
 introduced by Ericsson for implementing mutli-master at Stage #4. The git log history
-of this projects still shows the 'branching point' where it started.
+of this project still shows the 'branching point' where it started.
 The v2.16.x (with NoteDb) of the multi-site plugin was at Stage #7.
 
 The current version of the multi-site plugin is at Stage #9, it is now possible for
@@ -218,7 +218,7 @@ for the vertical (single site) and horizonal (multi-site) approaches.
 
 In theory, one could keep a single code-base to manage both approaches, however the
 result would be very complicated and difficult to configure and install.
-Having two more focussed plugins, one for high availability and another for
+Having two more focused plugins, one for high availability and another for
 multi-site, allows us to have a simpler, more usable experience, both for developers
 of the plugin and for the Gerrit administrators using it.
 
@@ -259,7 +259,7 @@ The current limitations of Stage #9 are:
   Having to deal with a very high number of site requires the implementation of a quorum on
   all the nodes available for replication.
 
-- **Requires Gerrit v3.0 or later**: Data conisistency requires a server completely
+- **Requires Gerrit v3.0 or later**: Data consistency requires a server completely
   based on NoteDb.
   If you are not familiar with NoteDb, please read the relevant
   [section in the Gerrit documentation](https://gerrit-documentation.storage.googleapis.com/Documentation/3.0.12/note-db.html).
@@ -278,7 +278,7 @@ originate from San Francisco, he may see a "snapshot in the past" of the data,
 both from the Gerrit UI and on the Git repository served locally.
 In contrast, a developer located in San Francisco will always see on his repository
 the "latest and greatest" of everything.
-Things are exactly in the other way around for a repository that is mainly
+Things are exactly the other way around for a repository that is mainly
 receiving pushes from developers in Bangalore.
 
 Should the central site in San Francisco become unavailable for a
@@ -344,11 +344,9 @@ which enables the detection of out-of-sync refs across gerrit sites.
 When no specific implementation is provided, then the [Global Ref-DB Noop implementation](#global-ref-db-noop-implementation)
 then libModule interfaces are mapped to internal no-ops implementations.
 
-- **replication plugin**: enables asynchronous push replication of the _Git repositories_
-  across sites.
-
-- **pull replication plugin**: enables the synchronous replication of the _Git repositories_
-  across sites.
+- **replication plugin**:This can be either the *replication plugin* which enables asynchronous push replication of the _Git repositories_,
+  or the *pull replication plugin* which enables asynchronous pull replication of the _Git repositories_.
+  As far as we're aware, most installations use *pull replication*.
 
 - **web-session broker plugin**: supports the storage of _active sessions_
   to a message broker topic, which is then broadcasted across sites.
@@ -482,12 +480,12 @@ plugin will start consuming all events that have been previously produced.
 The concept of the instance-id is very useful. Since other plugins could benefit
 from it, it will be the first candidate to move into the Gerrit core,
 generated and maintained with the rest of the configuration.  Then it can be
-included in **all** stream events, at which time the multi-site plugin's 
+included in **all** stream events, at which time the multi-site plugin's
 "enveloping of events" will become redundant.
 
 ### Manage failures
 
-The broker based solutions improve the resilience and scalability of the system.
+The broker based solution improves the resilience and scalability of the system.
 But there is still a point of failure: the availability of the broker itself. However,
 using the broker does allow having a high-level of redundancy and a multi-master
 / multi-site configuration at the transport and storage level.
