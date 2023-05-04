@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8f9a38c_c779c393",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 347,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-05-04T05:43:53Z",
+      "side": 1,
+      "message": "Nit: remove trailing blank.",
+      "range": {
+        "startLine": 347,
+        "startChar": 139,
+        "endLine": 347,
+        "endChar": 140
+      },
+      "revId": "8b223a03377d818ec90babc6d24e85b74b6f6bb4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9188ea5e_cb738ffc",
+        "filename": "DESIGN.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-05-04T05:43:53Z",
+      "side": 1,
+      "message": "Nit: remove trailing blank.",
+      "range": {
+        "startLine": 483,
+        "startChar": 72,
+        "endLine": 483,
+        "endChar": 73
+      },
+      "revId": "8b223a03377d818ec90babc6d24e85b74b6f6bb4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
