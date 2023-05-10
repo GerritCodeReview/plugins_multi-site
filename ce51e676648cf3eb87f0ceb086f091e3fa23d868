@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54338354_f168d87f",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-05-10T08:32:19Z",
+      "side": 1,
+      "message": "```suggestion\nThis can be done with either [pull](https://gerrit.googlesource.com/plugins/pull-replication/+/refs/heads/master/src/main/resources/Documentation/config.md)\nor [push](https://gerrit.googlesource.com/plugins/replication/+/refs/heads/master/src/main/resources/Documentation/config.md) replication plugin.\n```",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 140
+      },
+      "revId": "ce51e676648cf3eb87f0ceb086f091e3fa23d868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
