@@ -16,6 +16,8 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 /** Allows to tag a forwarded event to avoid infinitely looping events. */
 public class Context {
+  public static final String PULL_REPLICATION_APPLY_OBJECT_THREAD_NAME =
+      "pull-replication~apply-object";
   private static final ThreadLocal<Boolean> forwardedEvent = ThreadLocal.withInitial(() -> false);
 
   private Context() {}
@@ -30,5 +32,9 @@ public class Context {
 
   public static void unsetForwardedEvent() {
     forwardedEvent.remove();
+  }
+
+  public static boolean isPullReplicationApplyObjectIndexing() {
+    return Thread.currentThread().getName().contains(PULL_REPLICATION_APPLY_OBJECT_THREAD_NAME);
   }
 }

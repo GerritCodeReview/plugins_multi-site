@@ -110,7 +110,9 @@ class IndexEventHandler
   }
 
   private void executeIndexChangeTask(String projectName, int id) {
-    if (!Context.isForwardedEvent() && projectsFilter.matches(projectName)) {
+    if (!Context.isForwardedEvent()
+        && !Context.isPullReplicationApplyObjectIndexing()
+        && projectsFilter.matches(projectName)) {
       ChangeChecker checker = changeChecker.create(projectName + "~" + id);
 
       try {
