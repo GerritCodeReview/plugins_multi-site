@@ -14,16 +14,21 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
+import static com.googlesource.gerrit.plugins.replication.pull.api.PullReplicationEndpoints.APPLY_OBJECT_API_ENDPOINT;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.IndexEventHandler.IndexProjectTask;
@@ -78,5 +83,26 @@ public class IndexEventHandlerTest {
 
     eventHandler.onChangeIndexed("test_project", changeId);
     verifyZeroInteractions(changeChecker);
+  }
+
+  @Test
+  public void shouldNotForwardIndexChangeIfCurrentThreadIsPullReplicationApplyObject()
+      throws Exception {
+    String currentThreadName = Thread.currentThread().getName();
+    try {
+      Thread.currentThread().setName("pull-replication~" + APPLY_OBJECT_API_ENDPOINT);
+      int changeId = 1;
+      Context.setForwardedEvent(false);
+      lenient().when(projectsFilter.matches(any(String.class))).thenReturn(true);
+      lenient()
+          .when(changeChecker.create(anyString()))
+          .thenThrow(
+              new IllegalStateException("Change indexing event should have not been triggered"));
+
+      eventHandler.onChangeIndexed("test_project", changeId);
+      verifyNoInteractions(changeChecker);
+    } finally {
+      Thread.currentThread().setName(currentThreadName);
+    }
   }
 }
