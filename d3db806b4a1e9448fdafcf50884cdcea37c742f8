@@ -16,6 +16,24 @@
       "message": "Given we link 3 different jars, this could be extracted as a function.",
       "revId": "d3db806b4a1e9448fdafcf50884cdcea37c742f8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "490e486a_db542e2a",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-05-11T08:40:39Z",
+      "side": 1,
+      "message": "This is a cherry-pick change from stable-3.5 branch. The improvement should be done in its own change.",
+      "parentUuid": "e3e5c709_24fc4747",
+      "revId": "d3db806b4a1e9448fdafcf50884cdcea37c742f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
