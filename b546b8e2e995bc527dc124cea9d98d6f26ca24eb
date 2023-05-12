@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f08c81b_eb486b03",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/Context.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-05-12T07:08:44Z",
+      "side": 1,
+      "message": "This is a hidden/unknown dependency across plugins, and only controlled by `pull-replication`\u0027s endpoint name in: [1].\n\nTo follow gerrit core pattern, could we extract it in `pull-replication` plugin (or even annotate it with `UsedAt` `multi-site`):\n\n```\n  public class PullReplicationApiModule extends RestApiModule {\n  public static final String APPLY_OBJECT_ENDPOINT \u003d \"apply-object\";\n  [...]\n  @Override\n  protected void configure() {\n  [...]\n  post(PROJECT_KIND, APPLY_OBJECT_ENDPOINT).to(ApplyObjectAction.class);\n```\n\nand re-use it here to make this inter-plugin-dependency explicit and compile time dependency:\n\n\n```\nimport static com.googlesource.gerrit.plugins.replication.pull.api.PullReplicationApiModule.APPLY_OBJECT_ENDPOINT;\n[...]\n\n  public static final String PULL_REPLICATION_APPLY_OBJECT_THREAD_NAME \u003d\n      \"pull-replication~\" + APPLY_OBJECT_ENDPOINT;\n```\n\n[1]: https://gerrit.googlesource.com/plugins/pull-replication/+/refs/heads/master/src/main/java/com/googlesource/gerrit/plugins/replication/pull/api/PullReplicationApiModule.java#33",
+      "range": {
+        "startLine": 20,
+        "startChar": 7,
+        "endLine": 20,
+        "endChar": 36
+      },
+      "revId": "b546b8e2e995bc527dc124cea9d98d6f26ca24eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
