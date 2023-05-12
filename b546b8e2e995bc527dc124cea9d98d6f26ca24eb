@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9caa01c7_5c13f2af",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/Context.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-12T14:52:53Z",
+      "side": 1,
+      "message": "Done with I8ebec4eedeb",
+      "parentUuid": "3f08c81b_eb486b03",
+      "range": {
+        "startLine": 20,
+        "startChar": 7,
+        "endLine": 20,
+        "endChar": 36
+      },
+      "revId": "b546b8e2e995bc527dc124cea9d98d6f26ca24eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0f076f4_bd7c34ef",
