@@ -39,6 +39,24 @@
       "message": "relying on the thread name seems brittle, shouldn\u0027t we better add this information to the context explicitly ?",
       "revId": "b546b8e2e995bc527dc124cea9d98d6f26ca24eb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9484ed70_92f51020",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/Context.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-12T07:32:34Z",
+      "side": 1,
+      "message": "Yes, it is indeed. I would do a completely different solution if I were on master:\n- pull-replication just exposes the event of \u0027ref-replicated\u0027\n- multi-site subscribe to the event and perform the reindexing, checking the Context properly and without relying on the thread name\n\nMuch better I believe 😊",
+      "parentUuid": "e0f076f4_bd7c34ef",
+      "revId": "b546b8e2e995bc527dc124cea9d98d6f26ca24eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
