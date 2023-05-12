@@ -20,6 +20,7 @@ import com.google.gerrit.extensions.events.GroupIndexedListener;
 import com.google.gerrit.extensions.events.ProjectIndexedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.gerrit.server.events.EventListener;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
@@ -37,6 +38,7 @@ public class IndexModule extends LifecycleModule {
     DynamicSet.bind(binder(), AccountIndexedListener.class).to(IndexEventHandler.class);
     DynamicSet.bind(binder(), GroupIndexedListener.class).to(IndexEventHandler.class);
     DynamicSet.bind(binder(), ProjectIndexedListener.class).to(IndexEventHandler.class);
+    DynamicSet.bind(binder(), EventListener.class).to(FetchRefReplicatedEventHandler.class);
 
     bind(ProjectChecker.class).to(ProjectCheckerImpl.class);
     bind(GroupChecker.class).to(GroupCheckerImpl.class);
