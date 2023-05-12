@@ -22,6 +22,23 @@
       },
       "revId": "b546b8e2e995bc527dc124cea9d98d6f26ca24eb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0f076f4_bd7c34ef",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/Context.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1004034
+      },
+      "writtenOn": "2023-05-12T07:09:40Z",
+      "side": 1,
+      "message": "relying on the thread name seems brittle, shouldn\u0027t we better add this information to the context explicitly ?",
+      "revId": "b546b8e2e995bc527dc124cea9d98d6f26ca24eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
