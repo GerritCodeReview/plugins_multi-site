@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6fd430a_48e93618",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-05-13T13:35:50Z",
+      "side": 1,
+      "message": "Should this change and Icd41a6f07408 be submitted as part of the same topic or can they be merged independently?",
+      "revId": "e2d4705400d9ce79362c94031b450f580487c84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
