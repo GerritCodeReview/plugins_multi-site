@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af574cac_e21b5b95",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-13T13:03:38Z",
+      "side": 1,
+      "message": "it is linked from the issue: just search for ‘bug:16934’",
+      "parentUuid": "6455eb52_001bc3fd",
+      "range": {
+        "startLine": 9,
+        "startChar": 41,
+        "endLine": 10,
+        "endChar": 15
+      },
+      "revId": "e239f1705d781286bfb52fd81918bb8c735791a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9674cff_fedca470",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-13T12:52:54Z",
       "side": 1,
       "message": "did you mean, would *NOT* cause?",
+      "range": {
+        "startLine": 11,
+        "startChar": 45,
+        "endLine": 11,
+        "endChar": 56
+      },
+      "revId": "e239f1705d781286bfb52fd81918bb8c735791a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdb3e3cc_961d4516",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-13T13:03:38Z",
+      "side": 1,
+      "message": "oh, yes !",
+      "parentUuid": "e9674cff_fedca470",
       "range": {
         "startLine": 11,
         "startChar": 45,
