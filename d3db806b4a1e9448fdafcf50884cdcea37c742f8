@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d88eafe_22aab018",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-05-15T11:21:58Z",
+      "side": 1,
+      "message": "Post merge: we are missing bearer token setup",
+      "revId": "d3db806b4a1e9448fdafcf50884cdcea37c742f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3e5c709_24fc4747",
