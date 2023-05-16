@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4eebca5b_0bfa9db0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/Context.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-16T17:08:20Z",
+      "side": 1,
+      "message": "Yes, related to L20.",
+      "parentUuid": "1159bf7e_b25a6b34",
+      "revId": "761e2e509602db3d25e3b755d8f6d35eb5eafdd7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a549955e_f0067d44",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-05-15T07:41:57Z",
       "side": 1,
       "message": "why we implement the interface instead of using fields, for example:   PullReplicationEndpoints.APPLY_OBJECT_API_ENDPOINT\n\nIt looks confusing why Context is a implementation of PullReplicationEndpoints",
+      "range": {
+        "startLine": 20,
+        "startChar": 32,
+        "endLine": 20,
+        "endChar": 56
+      },
+      "revId": "761e2e509602db3d25e3b755d8f6d35eb5eafdd7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae0748cb_8843a3ea",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/Context.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-16T17:08:20Z",
+      "side": 1,
+      "message": "Just a matter of personal preferences :-) but I can do that.",
+      "parentUuid": "a549955e_f0067d44",
       "range": {
         "startLine": 20,
         "startChar": 32,
