@@ -20,6 +20,7 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.git.WorkQueue;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
@@ -30,6 +31,7 @@ import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.consumer.MultiSiteConsumerRunner;
 import com.googlesource.gerrit.plugins.multisite.consumer.ReplicationStatusModule;
 import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
+import com.googlesource.gerrit.plugins.multisite.event.EventHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarderModule;
 
 public class PluginModule extends LifecycleModule {
@@ -67,6 +69,7 @@ public class PluginModule extends LifecycleModule {
       listener().to(MultiSiteConsumerRunner.class);
 
       install(new ReplicationStatusModule(workQueue));
+      DynamicSet.bind(binder(), EventListener.class).to(EventHandler.class);
     }
 
     if (config.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {

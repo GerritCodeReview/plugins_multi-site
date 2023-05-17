@@ -24,7 +24,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.StreamEventForwarder;
 import java.util.concurrent.Executor;
 
-class EventHandler implements EventListener {
+public class EventHandler implements EventListener {
   private final Executor executor;
   private final DynamicSet<StreamEventForwarder> forwarders;
   private final ProjectsFilter projectsFilter;
