@@ -36,7 +36,7 @@ public class EventModule extends LifecycleModule {
   protected void configure() {
     bind(Executor.class).annotatedWith(EventExecutor.class).toProvider(EventExecutorProvider.class);
     listener().to(EventExecutorProvider.class);
-    DynamicSet.bind(binder(), EventListener.class).to(EventHandler.class);
+
     OptionalBinder<ProjectVersionRefUpdate> projectVersionRefUpdateBinder =
         OptionalBinder.newOptionalBinder(binder(), ProjectVersionRefUpdate.class);
     if (config.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {
