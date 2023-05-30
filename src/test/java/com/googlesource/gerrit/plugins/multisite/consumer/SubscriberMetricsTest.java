@@ -22,6 +22,7 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Suppliers;
 import com.google.common.cache.CacheBuilder;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.Event;
@@ -30,9 +31,11 @@ import com.google.gerrit.server.project.ProjectCache;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.events.ProjectDeletionReplicationSucceededEvent;
+
 import java.net.URISyntaxException;
 import java.util.Optional;
 import java.util.concurrent.Executors;
+
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.transport.URIish;
 import org.junit.Before;
@@ -47,10 +50,14 @@ public class SubscriberMetricsTest {
   private static final Project.NameKey A_TEST_PROJECT_NAME_KEY =
       Project.nameKey(A_TEST_PROJECT_NAME);
 
-  @Mock private MetricMaker metricMaker;
-  @Mock private ProjectVersionLogger verLogger;
-  @Mock private ProjectCache projectCache;
-  @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
+  @Mock
+  private MetricMaker metricMaker;
+  @Mock
+  private ProjectVersionLogger verLogger;
+  @Mock
+  private ProjectCache projectCache;
+  @Mock
+  private ProjectVersionRefUpdate projectVersionRefUpdate;
   private SubscriberMetrics metrics;
   private ReplicationStatus replicationStatus;
 
@@ -64,7 +71,8 @@ public class SubscriberMetricsTest {
             projectCache,
             Executors.newScheduledThreadPool(1),
             new com.googlesource.gerrit.plugins.multisite.Configuration(
-                new Config(), new Config()));
+                new Config(), new Config()),
+            new DisabledMetricMaker());
     metrics = new SubscriberMetrics(metricMaker, replicationStatus);
   }
 
@@ -101,8 +109,8 @@ public class SubscriberMetricsTest {
 
   @Test
   public void
-      shouldLogUponProjectDeletionSuccessWhenLocalVersionDoesNotExistAndSubscriberMetricsExist()
-          throws Exception {
+  shouldLogUponProjectDeletionSuccessWhenLocalVersionDoesNotExistAndSubscriberMetricsExist()
+      throws Exception {
     long nowSecs = System.currentTimeMillis() / 1000;
     long replicationLagSecs = 60;
     Optional<Long> globalRefDbVersion = Optional.of(nowSecs);
@@ -180,6 +188,34 @@ public class SubscriberMetricsTest {
 
     assertThat(replicationStatus.getReplicationStatus(A_TEST_PROJECT_NAME)).isNull();
     assertThat(replicationStatus.getLocalVersion(A_TEST_PROJECT_NAME)).isNull();
+  }
+
+  @Test
+  public void shouldDoNothingIfNameIsValid() {
+    String validProjectName = "aValidProject-Name123";
+
+    assertThat(metrics.sanitizeProjectName(validProjectName)).isEqualTo(validProjectName);
+  }
+
+  @Test
+  public void shouldSanitizeNameWithDot() {
+    String validProjectName = "nameWithA.InTheMiddle";
+
+    assertThat(metrics.sanitizeProjectName(validProjectName)).isEqualTo("nameWithA_2eInTheMiddle");
+  }
+
+  @Test
+  public void shouldSanitizeNameWithSlash() {
+    String validProjectName = "nameWithA/InTheMiddle";
+
+    assertThat(metrics.sanitizeProjectName(validProjectName)).isEqualTo("nameWithA_2fInTheMiddle");
+  }
+
+  @Test
+  public void shouldDoubleUnderscoresInName() {
+    String validProjectName = "nameWithA_InTheMiddle";
+
+    assertThat(metrics.sanitizeProjectName(validProjectName)).isEqualTo("nameWithA__InTheMiddle");
   }
 
   private ProjectDeletionReplicationSucceededEvent projectDeletionSuccess()
