@@ -14,7 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.index.project.ProjectData;
 import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.MetricMaker;
@@ -22,12 +24,15 @@ import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
 import com.googlesource.gerrit.plugins.replication.events.ProjectDeletionReplicationSucceededEvent;
 import com.googlesource.gerrit.plugins.replication.events.RefReplicatedEvent;
 import com.googlesource.gerrit.plugins.replication.events.RefReplicationDoneEvent;
 import com.googlesource.gerrit.plugins.replication.events.ReplicationScheduledEvent;
+
+import java.util.List;
 
 @Singleton
 public class SubscriberMetrics extends MultiSiteMetrics {
@@ -43,7 +48,7 @@ public class SubscriberMetrics extends MultiSiteMetrics {
   private final ReplicationStatus replicationStatus;
 
   @Inject
-  public SubscriberMetrics(MetricMaker metricMaker, ReplicationStatus replicationStatus) {
+  public SubscriberMetrics(MetricMaker metricMaker, ReplicationStatus replicationStatus, Provider<ImmutableList<ProjectData>> projectList) {
     this.replicationStatus = replicationStatus;
 
     this.subscriberSuccessCounter =
@@ -65,6 +70,18 @@ public class SubscriberMetrics extends MultiSiteMetrics {
         Long.class,
         new Description("Replication lag (sec)").setGauge().setUnit(Description.Units.SECONDS),
         replicationStatus::getMaxLag);
+
+
+    for (ProjectData projectData: projectList.get()
+         ) {
+      logger.atWarning().log("Project name is %s", projectData);
+      metricMaker.newCallbackMetric(
+          REPLICATION_LAG_SEC + "_" + projectData.getProject().getName(),
+          Long.class,
+          new Description("Replication lag for project (sec)").setGauge().setUnit(Description.Units.SECONDS),
+          () -> replicationStatus.getLagPerProject(projectData.getProject().getName())
+      );
+    }
   }
 
   public void incrementSubscriberConsumedMessage() {

@@ -100,6 +100,10 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
     return Collections.max(lags);
   }
 
+  public Long getLagPerProject(String projectName){
+    return replicationStatusPerProject.getOrDefault(projectName, 0L);
+  }
+
   public Map<String, Long> getReplicationLags(Integer limit) {
     return replicationStatusPerProject.entrySet().stream()
         .sorted((c1, c2) -> c2.getValue().compareTo(c1.getValue()))
