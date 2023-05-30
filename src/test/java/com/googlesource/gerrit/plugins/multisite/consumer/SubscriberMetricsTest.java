@@ -15,22 +15,32 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Answers.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.google.common.base.Suppliers;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.ImmutableList;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.index.project.ProjectData;
+import com.google.gerrit.index.query.Predicate;
+import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.project.ProjectCache;
+import com.google.gerrit.server.query.project.ProjectQueryBuilder;
+import com.google.gerrit.server.query.project.ProjectQueryProcessor;
+import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate;
 import com.googlesource.gerrit.plugins.replication.events.ProjectDeletionReplicationSucceededEvent;
 import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executors;
 import org.eclipse.jgit.lib.Config;
@@ -39,6 +49,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -51,6 +62,7 @@ public class SubscriberMetricsTest {
   @Mock private ProjectVersionLogger verLogger;
   @Mock private ProjectCache projectCache;
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
+
   private SubscriberMetrics metrics;
   private ReplicationStatus replicationStatus;
 
@@ -64,8 +76,10 @@ public class SubscriberMetricsTest {
             projectCache,
             Executors.newScheduledThreadPool(1),
             new com.googlesource.gerrit.plugins.multisite.Configuration(
-                new Config(), new Config()));
+                new Config(), new Config()),
+            new DisabledMetricMaker());
     metrics = new SubscriberMetrics(metricMaker, replicationStatus);
+
   }
 
   @Test
@@ -181,6 +195,11 @@ public class SubscriberMetricsTest {
     assertThat(replicationStatus.getReplicationStatus(A_TEST_PROJECT_NAME)).isNull();
     assertThat(replicationStatus.getLocalVersion(A_TEST_PROJECT_NAME)).isNull();
   }
+
+//  @Test
+//  public void shouldIncrementMetricForProject() {
+//
+//  }
 
   private ProjectDeletionReplicationSucceededEvent projectDeletionSuccess()
       throws URISyntaxException {

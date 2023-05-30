@@ -20,6 +20,8 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.metrics.Description;
+import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.CacheModule;
 import com.google.gerrit.server.cache.serialize.JavaCacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
@@ -76,6 +78,8 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
 
   private final Configuration config;
 
+  private MetricMaker metricMaker;
+
   @Inject
   public ReplicationStatus(
       @Named(REPLICATION_STATUS) Cache<String, Long> cache,
@@ -83,13 +87,15 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
       ProjectVersionLogger verLogger,
       ProjectCache projectCache,
       @Named(REPLICATION_STATUS) ScheduledExecutorService statusScheduler,
-      Configuration config) {
+      Configuration config,
+      MetricMaker metricMaker) {
     this.cache = cache;
     this.projectVersionRefUpdate = projectVersionRefUpdate;
     this.verLogger = verLogger;
     this.projectCache = projectCache;
     this.statusScheduler = statusScheduler;
     this.config = config;
+    this.metricMaker = metricMaker;
   }
 
   public Long getMaxLag() {
@@ -98,6 +104,10 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
       return 0L;
     }
     return Collections.max(lags);
+  }
+
+  public Long getLagPerProject(String projectName){
+    return replicationStatusPerProject.getOrDefault(projectName, 0L);
   }
 
   public Map<String, Long> getReplicationLags(Integer limit) {
@@ -155,6 +165,16 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
   public void doUpdateLag(Project.NameKey projectName, Long lag) {
     cache.put(projectName.get(), lag);
     replicationStatusPerProject.put(projectName.get(), lag);
+    
+    if(lag > 0) {
+    logger.atWarning().log("Creating replication lag metric for project %s", projectName);
+    metricMaker.newCallbackMetric(
+    		SubscriberMetrics.REPLICATION_LAG_SEC + "_" + projectName.get(),
+        Long.class,
+        new Description("Replication lag for project (sec)").setGauge().setUnit(Description.Units.SECONDS),
+        () -> getLagPerProject(projectName.get())
+    );
+    }
   }
 
   @VisibleForTesting

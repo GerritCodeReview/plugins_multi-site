@@ -35,7 +35,7 @@ public class SubscriberMetrics extends MultiSiteMetrics {
   private static final String SUBSCRIBER_SUCCESS_COUNTER = "subscriber_msg_consumer_counter";
   private static final String SUBSCRIBER_FAILURE_COUNTER =
       "subscriber_msg_consumer_failure_counter";
-  private static final String REPLICATION_LAG_SEC =
+  public static final String REPLICATION_LAG_SEC =
       "multi_site/subscriber/subscriber_replication_status/sec_behind";
 
   private final Counter1<String> subscriberSuccessCounter;
