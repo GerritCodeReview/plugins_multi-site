@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import static com.google.common.truth.Truth.assertThat;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Suppliers;
 import com.google.common.cache.CacheBuilder;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.Event;
@@ -51,6 +53,7 @@ public class SubscriberMetricsTest {
   @Mock private ProjectVersionLogger verLogger;
   @Mock private ProjectCache projectCache;
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
+
   private SubscriberMetrics metrics;
   private ReplicationStatus replicationStatus;
 
@@ -64,8 +67,10 @@ public class SubscriberMetricsTest {
             projectCache,
             Executors.newScheduledThreadPool(1),
             new com.googlesource.gerrit.plugins.multisite.Configuration(
-                new Config(), new Config()));
+                new Config(), new Config()),
+            new DisabledMetricMaker());
     metrics = new SubscriberMetrics(metricMaker, replicationStatus);
+
   }
 
   @Test
@@ -180,6 +185,32 @@ public class SubscriberMetricsTest {
 
     assertThat(replicationStatus.getReplicationStatus(A_TEST_PROJECT_NAME)).isNull();
     assertThat(replicationStatus.getLocalVersion(A_TEST_PROJECT_NAME)).isNull();
+  }
+
+  @Test
+  public void shouldDoNothingIfNameIsValid(){
+    String validProjectName = "aValidProjectName";
+
+    assertThat(metrics.sanitizeProjectName(validProjectName)).isEqualTo(validProjectName);
+  }
+
+  @Test
+  public void shouldSanitizeNameWithDot () {
+    String validProjectName = "nameWithA.InTheMiddle";
+
+    assertThat(metrics.sanitizeProjectName(validProjectName)).isEqualTo("nameWithA_2eInTheMiddle");
+  }
+
+  @Test public void shouldSanitizeNameWithSlash () {
+    String validProjectName = "nameWithA/InTheMiddle";
+
+    assertThat(metrics.sanitizeProjectName(validProjectName)).isEqualTo("nameWithA_2fInTheMiddle");
+  }
+
+  @Test public void shouldDoubleUnderscoresInName() {
+    String validProjectName = "nameWithA_InTheMiddle";
+
+    assertThat(metrics.sanitizeProjectName(validProjectName)).isEqualTo("nameWithA__InTheMiddle");
   }
 
   private ProjectDeletionReplicationSucceededEvent projectDeletionSuccess()
