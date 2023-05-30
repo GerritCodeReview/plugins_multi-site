@@ -87,6 +87,29 @@
       "parentUuid": "e09c15ae_cb444884",
       "revId": "ed24d63f32bc0ba2489b92bd9e73021167b8545a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b9c2bce_e721fd97",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-05-30T16:06:57Z",
+      "side": 1,
+      "message": "v2, no?",
+      "range": {
+        "startLine": 29,
+        "startChar": 100,
+        "endLine": 29,
+        "endChar": 103
+      },
+      "revId": "ed24d63f32bc0ba2489b92bd9e73021167b8545a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
