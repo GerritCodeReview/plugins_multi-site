@@ -26,7 +26,7 @@ function check_application_requirements {
   type haproxy >/dev/null 2>&1 || { echo >&2 "Require haproxy but it's not installed. Aborting."; exit 1; }
   type java >/dev/null 2>&1 || { echo >&2 "Require java but it's not installed. Aborting."; exit 1; }
   type docker >/dev/null 2>&1 || { echo >&2 "Require docker but it's not installed. Aborting."; exit 1; }
-  type docker-compose >/dev/null 2>&1 || { echo >&2 "Require docker-compose but it's not installed. Aborting."; exit 1; }
+  [ $(docker --version | awk '{print $3}' | cut -d '.' -f 1) -ge 20 ] || { echo >&2 "Require docker v20 or later. Aborting."; exit 1; }
   type wget >/dev/null 2>&1 || { echo >&2 "Require wget but it's not installed. Aborting."; exit 1; }
   type envsubst >/dev/null 2>&1 || { echo >&2 "Require envsubst but it's not installed. Aborting."; exit 1; }
   type openssl >/dev/null 2>&1 || { echo >&2 "Require openssl but it's not installed. Aborting."; exit 1; }
@@ -198,9 +198,10 @@ function cleanup_environment {
   kill $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}') 2> /dev/null
 
   echo "Stopping $BROKER_TYPE docker container"
-  docker-compose -f "${SCRIPT_DIR}/docker-compose-${BROKER_TYPE}.yaml" down 2> /dev/null
+  printenv > "${SCRIPT_DIR}/docker-compose-${BROKER_TYPE}.env"
+  docker compose -f "${SCRIPT_DIR}/docker-compose-${BROKER_TYPE}.yaml" --env-file "${SCRIPT_DIR}/docker-compose-${BROKER_TYPE}.env" down 2> /dev/null
   echo "Stopping core docker containers"
-  docker-compose -f "${SCRIPT_DIR}/docker-compose-core.yaml" down 2> /dev/null
+  docker compose -f "${SCRIPT_DIR}/docker-compose-core.yaml" --env-file "${SCRIPT_DIR}/docker-compose-${BROKER_TYPE}.env" down 2> /dev/null
 
   echo "Stopping GERRIT instances"
   $1/bin/gerrit.sh stop 2> /dev/null
@@ -222,8 +223,9 @@ function ensure_docker_compose_is_up_and_running {
 
   local is_container_running=$(check_if_container_is_running "$container_name")
   if [ "$is_container_running" -lt 1 ];then
+    printenv > "${SCRIPT_DIR}/${docker_compose_file}.env"
     echo "[$log_label] Starting docker containers"
-    docker-compose -f "${SCRIPT_DIR}/${docker_compose_file}" up -d
+    docker compose -f "${SCRIPT_DIR}/${docker_compose_file}" --env-file "${SCRIPT_DIR}/${docker_compose_file}.env" up -d
 
     echo "[$log_label] Waiting for docker containers to start..."
     while [[ $(check_if_container_is_running "$container_name") -lt 1 ]];do sleep 10s; done
