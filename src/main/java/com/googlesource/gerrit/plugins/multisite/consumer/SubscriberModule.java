@@ -14,12 +14,14 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.google.common.collect.ImmutableList;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.index.project.ProjectData;
 import com.google.gerrit.lifecycle.LifecycleModule;
+import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.MultiSiteEvent;
 
 public class SubscriberModule extends LifecycleModule {
-
   @Override
   protected void configure() {
     MultiSiteEvent.registerEventTypes();
@@ -27,6 +29,7 @@ public class SubscriberModule extends LifecycleModule {
     DynamicSet.setOf(binder(), AbstractSubcriber.class);
     DynamicSet.setOf(binder(), DroppedEventListener.class);
 
+    bind(new TypeLiteral<ImmutableList<ProjectData>>(){}).toProvider(ProjectsNameProvider.class);
     DynamicSet.bind(binder(), AbstractSubcriber.class).to(IndexEventSubscriber.class);
     DynamicSet.bind(binder(), AbstractSubcriber.class).to(BatchIndexEventSubscriber.class);
     DynamicSet.bind(binder(), AbstractSubcriber.class).to(StreamEventSubscriber.class);
