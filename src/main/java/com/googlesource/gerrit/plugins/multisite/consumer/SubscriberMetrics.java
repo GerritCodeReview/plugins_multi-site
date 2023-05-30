@@ -29,18 +29,22 @@ import com.googlesource.gerrit.plugins.replication.events.RefReplicatedEvent;
 import com.googlesource.gerrit.plugins.replication.events.RefReplicationDoneEvent;
 import com.googlesource.gerrit.plugins.replication.events.ReplicationScheduledEvent;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Singleton
 public class SubscriberMetrics extends MultiSiteMetrics {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String SUBSCRIBER_SUCCESS_COUNTER = "subscriber_msg_consumer_counter";
   private static final String SUBSCRIBER_FAILURE_COUNTER =
       "subscriber_msg_consumer_failure_counter";
-  private static final String REPLICATION_LAG_SEC =
+  public static final String REPLICATION_LAG_SEC =
       "multi_site/subscriber/subscriber_replication_status/sec_behind";
 
   private final Counter1<String> subscriberSuccessCounter;
   private final Counter1<String> subscriberFailureCounter;
   private final ReplicationStatus replicationStatus;
+  private static final Pattern isValidMetricNamePattern = Pattern.compile("[a-zA-Z0-9_-]");
 
   @Inject
   public SubscriberMetrics(MetricMaker metricMaker, ReplicationStatus replicationStatus) {
@@ -65,6 +69,24 @@ public class SubscriberMetrics extends MultiSiteMetrics {
         Long.class,
         new Description("Replication lag (sec)").setGauge().setUnit(Description.Units.SECONDS),
         replicationStatus::getMaxLag);
+  }
+
+  public static String sanitizeProjectName(String name) {
+    StringBuilder sanitizedName = new StringBuilder();
+    for (int i = 0; i < name.length(); i++) {
+      Character c = name.charAt(i);
+      Matcher matcher = isValidMetricNamePattern.matcher(String.valueOf(c));
+      if (matcher.find()) {
+        if (c == '_') {
+          sanitizedName.append("__");
+        } else {
+          sanitizedName.append(c);
+        }
+      } else {
+        sanitizedName.append("_").append(Integer.toHexString((int) c));
+      }
+    }
+    return sanitizedName.toString();
   }
 
   public void incrementSubscriberConsumedMessage() {

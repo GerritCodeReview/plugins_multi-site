@@ -24,6 +24,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.server.project.ProjectCache;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
@@ -59,7 +60,8 @@ public class ReplicationStatusTest {
             verLogger,
             projectCache,
             Executors.newScheduledThreadPool(1),
-            new Configuration(new Config(), new Config()));
+            new Configuration(new Config(), new Config()),
+            new DisabledMetricMaker());
   }
 
   @Test
