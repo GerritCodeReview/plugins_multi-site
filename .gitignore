@@ -13,3 +13,4 @@
 /bazel-testlogs
 
 /eclipse-out/
+setup_local_env/**/*.env
