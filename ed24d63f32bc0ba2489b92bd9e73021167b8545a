@@ -52,6 +52,23 @@
       "parentUuid": "e4200a9d_f633102f",
       "revId": "ed24d63f32bc0ba2489b92bd9e73021167b8545a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e09c15ae_cb444884",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-05-30T14:00:04Z",
+      "side": 1,
+      "message": "Where is this script used? If it is for local use then the change is fine, but if it used eg on build servers, they may not necessary run with Docker v20 or above, so this could break clients.",
+      "revId": "ed24d63f32bc0ba2489b92bd9e73021167b8545a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
