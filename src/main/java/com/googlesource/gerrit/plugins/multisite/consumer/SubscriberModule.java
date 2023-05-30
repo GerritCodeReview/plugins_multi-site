@@ -19,7 +19,6 @@ import com.google.gerrit.lifecycle.LifecycleModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.MultiSiteEvent;
 
 public class SubscriberModule extends LifecycleModule {
-
   @Override
   protected void configure() {
     MultiSiteEvent.registerEventTypes();
