@@ -16,6 +16,24 @@
       "message": "I am assuming docker V2 already comes with docker-compose, right?",
       "revId": "ed24d63f32bc0ba2489b92bd9e73021167b8545a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4200a9d_f633102f",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-05-30T12:58:33Z",
+      "side": 1,
+      "message": "`docker-compose` V1 is deprecated.\nDocker, from v20 onwards, supports natively the docker-compose.yaml file using the V2 format.",
+      "parentUuid": "0e23f5e2_efb63574",
+      "revId": "ed24d63f32bc0ba2489b92bd9e73021167b8545a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
