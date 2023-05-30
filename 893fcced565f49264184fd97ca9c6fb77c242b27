@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8f666e4_9eba6aef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-05-30T13:03:46Z",
+      "side": 1,
+      "message": "Might be worthy explaining what\u0027s the use case of running it with `sudo`?",
+      "revId": "893fcced565f49264184fd97ca9c6fb77c242b27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
