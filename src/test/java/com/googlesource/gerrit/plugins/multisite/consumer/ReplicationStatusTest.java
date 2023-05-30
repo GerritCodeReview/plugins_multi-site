@@ -45,6 +45,7 @@ public class ReplicationStatusTest {
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
   private ReplicationStatus objectUnderTest;
   private Cache<String, Long> replicationStatusCache;
+  private CallbackMetricMaker callbackMetricMaker = new CallbackMetricMaker();
 
   @Before
   public void setup() throws Exception {
@@ -52,6 +53,7 @@ public class ReplicationStatusTest {
         .thenReturn(
             ImmutableSortedSet.of(Project.nameKey("projectA"), Project.nameKey("projectB")));
     replicationStatusCache = CacheBuilder.newBuilder().build();
+    callbackMetricMaker.resetCallbackMetricCounter();
     objectUnderTest =
         new ReplicationStatus(
             replicationStatusCache,
@@ -59,7 +61,8 @@ public class ReplicationStatusTest {
             verLogger,
             projectCache,
             Executors.newScheduledThreadPool(1),
-            new Configuration(new Config(), new Config()));
+            new Configuration(new Config(), new Config()),
+            callbackMetricMaker);
   }
 
   @Test
@@ -166,6 +169,19 @@ public class ReplicationStatusTest {
 
     assertThat(replicationStatusCache.getIfPresent(projectName))
         .isEqualTo(projectRemoteVersion - projectLocalVersion);
+    assertThat(callbackMetricMaker.getCallbackMetricCounter()).isEqualTo(1);
+  }
+
+  @Test
+  public void shouldNotGenerateCallbackMetricIfNoReplicationLag() {
+    String projectName = "projectA";
+    long projectLatestVersion = 10L;
+    when(projectVersionRefUpdate.getProjectLocalVersion(eq(projectName)))
+        .thenReturn(Optional.of(projectLatestVersion));
+
+    objectUnderTest.updateReplicationLag(Project.nameKey(projectName));
+
+    assertThat(callbackMetricMaker.getCallbackMetricCounter()).isEqualTo(0);
   }
 
   @SuppressWarnings("unchecked")
