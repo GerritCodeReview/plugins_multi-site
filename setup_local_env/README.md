@@ -12,7 +12,7 @@ The environment is composed by:
 
 - java
 - docker and docker-compose
-- wget
+- wgetmu
 - envsubst
 - haproxy
 - aws-cli (only when broker_type is "kinesis")

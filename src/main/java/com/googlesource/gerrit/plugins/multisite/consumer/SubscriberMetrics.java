@@ -14,14 +14,24 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.entities.Project;
+import com.google.gerrit.index.project.ProjectData;
+import com.google.gerrit.index.project.ProjectIndex;
+import com.google.gerrit.index.query.QueryParseException;
 import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.google.gerrit.server.project.ProjectCache;
+import com.google.gerrit.server.query.project.ProjectQueryBuilder;
+import com.google.gerrit.server.query.project.ProjectQueryProcessor;
+import com.google.gerrit.server.restapi.project.QueryProjects;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
 import com.googlesource.gerrit.plugins.replication.events.ProjectDeletionReplicationSucceededEvent;
@@ -43,7 +53,7 @@ public class SubscriberMetrics extends MultiSiteMetrics {
   private final ReplicationStatus replicationStatus;
 
   @Inject
-  public SubscriberMetrics(MetricMaker metricMaker, ReplicationStatus replicationStatus) {
+  public SubscriberMetrics(MetricMaker metricMaker, ReplicationStatus replicationStatus, Provider<ProjectQueryProcessor> projectQueryProcessor, ProjectQueryBuilder projectQueryBuilder) throws QueryParseException {
     this.replicationStatus = replicationStatus;
 
     this.subscriberSuccessCounter =
@@ -65,6 +75,18 @@ public class SubscriberMetrics extends MultiSiteMetrics {
         Long.class,
         new Description("Replication lag (sec)").setGauge().setUnit(Description.Units.SECONDS),
         replicationStatus::getMaxLag);
+
+
+    for (ProjectData projectData: projectQueryProcessor.get().query(projectQueryBuilder.parse("state:active")).entities()
+         ) {
+      logger.atWarning().log("Project name is %s", projectData.getProject().getName());
+      metricMaker.newCallbackMetric(
+          REPLICATION_LAG_SEC + "_" + projectData.getProject().getName(),
+          Long.class,
+          new Description("Replication lag for project (sec)").setGauge().setUnit(Description.Units.SECONDS),
+          () -> replicationStatus.getLagPerProject(projectData.getProject().getName())
+      );
+    }
   }
 
   public void incrementSubscriberConsumedMessage() {
