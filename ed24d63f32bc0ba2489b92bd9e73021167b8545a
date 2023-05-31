@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f4eae828_97bdf1dc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-05-31T05:16:43Z",
+      "side": 1,
+      "message": "Mention, that V1 is discontinued after June 2023: [1]?\n\n[1]: https://docs.docker.com/compose/migrate",
+      "revId": "ed24d63f32bc0ba2489b92bd9e73021167b8545a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0e23f5e2_efb63574",
         "filename": "setup_local_env/setup.sh",
         "patchSetId": 1
@@ -102,6 +119,30 @@
       "writtenOn": "2023-05-30T16:06:57Z",
       "side": 1,
       "message": "v2, no?",
+      "range": {
+        "startLine": 29,
+        "startChar": 100,
+        "endLine": 29,
+        "endChar": 103
+      },
+      "revId": "ed24d63f32bc0ba2489b92bd9e73021167b8545a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28c524da_6ffc36d1",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-05-31T05:16:43Z",
+      "side": 1,
+      "message": "version 20 or later to void confusion between docker version 23.x and docker compose version:\n\n```\n  $ docker --version\n  Docker version 23.0.6-ce, build 9dbdbd4b6d76\n```\n\nand:\n\n```\n  $ docker compose version\n  Docker Compose version 2.18.1\n```",
+      "parentUuid": "8b9c2bce_e721fd97",
       "range": {
         "startLine": 29,
         "startChar": 100,
