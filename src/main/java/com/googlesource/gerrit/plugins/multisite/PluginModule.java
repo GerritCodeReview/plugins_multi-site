@@ -30,6 +30,7 @@ import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.consumer.MultiSiteConsumerRunner;
 import com.googlesource.gerrit.plugins.multisite.consumer.ReplicationStatusModule;
 import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
+import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarderModule;
 
 public class PluginModule extends LifecycleModule {
@@ -56,10 +57,10 @@ public class PluginModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-
     if (config.index().synchronize()
         || config.cache().synchronize()
         || config.event().synchronize()) {
+      install(new EventModule(config));
       bind(BrokerApiWrapper.class).in(Scopes.SINGLETON);
       install(new SubscriberModule());
 
