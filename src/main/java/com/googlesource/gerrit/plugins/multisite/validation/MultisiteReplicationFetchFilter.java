@@ -81,7 +81,7 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
     } catch (IOException ioe) {
       String message = String.format("Error while opening project: '%s'", projectName);
       repLog.error(message);
-      logger.atSevere().withCause(ioe).log(message);
+      logger.atSevere().withCause(ioe).log("%s", message);
       return Collections.emptySet();
     }
   }
@@ -134,13 +134,13 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
     } catch (GlobalRefDbLockException gle) {
       String message = String.format("%s is locked on shared-refdb", ref);
       repLog.error(message);
-      logger.atSevere().withCause(gle).log(message);
+      logger.atSevere().withCause(gle).log("%s", message);
       return Optional.empty();
     } catch (IOException ioe) {
       String message =
           String.format("Error while extracting ref '%s' for project '%s'", ref, projectName);
       repLog.error(message);
-      logger.atSevere().withCause(ioe).log(message);
+      logger.atSevere().withCause(ioe).log("%s", message);
       return Optional.empty();
     }
   }
@@ -171,7 +171,7 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
       String message =
           String.format("Error while waiting for next check for '%s', ref '%s'", projectName, ref);
       repLog.error(message);
-      logger.atWarning().withCause(ie).log(message);
+      logger.atWarning().withCause(ie).log("%s", message);
     }
   }
 }
