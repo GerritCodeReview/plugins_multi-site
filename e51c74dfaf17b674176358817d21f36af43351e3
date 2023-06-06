@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c6dc2bd7_d318ac03",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-06T09:51:04Z",
+      "side": 1,
+      "message": "yes, as every time I want to start with an empty string and append characters to it.",
+      "parentUuid": "ac27fbea_30932cb4",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "112b2890_1003099d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
         "patchSetId": 18
@@ -84,6 +102,24 @@
       "writtenOn": "2023-06-06T09:37:43Z",
       "side": 1,
       "message": "Do you need to iterate over all the characters? there is no a replace function in the java API where you can replace:\n- _ with __\n- . with _\n- / with _\n\n(If i am not wrong from your tests)",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6368417_ae2c6c75",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-06T09:51:04Z",
+      "side": 1,
+      "message": "In the tests I used the most common characters that aren\u0027t valid, but really it could be any character that isn\u0027t a uppercase or lowercase letter, _ or -\n\nWe also add the hex code of the character afther the _.\nI don\u0027t think there\u0027s a function in java that let\u0027s you replace the character with a function that takes the character as input?",
+      "parentUuid": "112b2890_1003099d",
       "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -119,6 +155,24 @@
       "writtenOn": "2023-06-06T09:37:43Z",
       "side": 1,
       "message": "Good. I like reading tests first and understand what you are trying to achieve.",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c59b6a1a_9b4302f3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetricsTest.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-06T09:51:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5ff61988_52062a82",
       "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
