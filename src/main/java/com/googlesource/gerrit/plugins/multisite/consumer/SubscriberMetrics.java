@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
-import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.MetricMaker;
@@ -33,7 +32,6 @@ import java.util.regex.Pattern;
 
 @Singleton
 public class SubscriberMetrics extends MultiSiteMetrics {
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String SUBSCRIBER_SUCCESS_COUNTER = "subscriber_msg_consumer_counter";
   private static final String SUBSCRIBER_FAILURE_COUNTER =
       "subscriber_msg_consumer_failure_counter";
