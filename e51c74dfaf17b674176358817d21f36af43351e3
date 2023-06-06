@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c8f4acdf_d6eb8a85",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-06-06T22:53:27Z",
+      "side": 1,
+      "message": "IMHO spending a lot of efforts with complex and expensive to main mocks is way worse that having some code-paths manually tested.\n\n@Dani can you put a manual Verified +1 to indicate that you tested it manually and it works?",
+      "parentUuid": "3ec384f6_ad351997",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8abfe9c2_6e946a24",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
         "patchSetId": 18
@@ -156,6 +174,24 @@
       "side": 1,
       "message": "Interesting point what you raised. maybe java guru\u0027s can illustrate us.",
       "parentUuid": "971101db_a5c18a7e",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cb0a0d9_67d8b3ad",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-06-06T22:53:27Z",
+      "side": 1,
+      "message": "@Dani is right, especially when you have static constants like `SubscriberMetrics.REPLICATION_LAG_SEC` that are resolved at compile time. But also @Alvaro is right with regards to readability and this method isn\u0027t called 1000x times per second isn\u0027t it?\n\nSo, I\u0027d agree with @Alvaro in this case :-)",
+      "parentUuid": "79b82923_9ac50f78",
       "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
