@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "51e0fee4_a681c47f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-06T10:40:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5789619d_fc585355",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "93c44caf_8be178ed",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
         "patchSetId": 18
@@ -55,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "04ad09ff_9dae7f6e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-06T10:40:42Z",
+      "side": 1,
+      "message": "yeah, we\u0027re not, and we couldn\u0027t figure out a way of testing it. Open to any suggestions.\n\nCurrently I don\u0027t we test creation of metrics really, only counters.",
+      "parentUuid": "78087d5d_fa8b3553",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8abfe9c2_6e946a24",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
         "patchSetId": 18
@@ -66,6 +102,24 @@
       "writtenOn": "2023-06-06T10:11:48Z",
       "side": 1,
       "message": "In Java I use should use: i.e \n```\nString.format(\"Anonymous Basic Authentication for uri: %s\", targetUri)\n```\nto build strings.",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "971101db_a5c18a7e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-06T10:40:42Z",
+      "side": 1,
+      "message": "So, I\u0027m not 100% sure this makes sense here. Reading around apparently, `String.format` has bad performances while, when using `+` the compiler will internally create a String.builder, which apparently is much faster.\n\nI don\u0027t have a strong preference, but I currently don\u0027t see the value of changing this.",
+      "parentUuid": "8abfe9c2_6e946a24",
       "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -143,6 +197,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "283557e8_86907473",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-06T10:40:42Z",
+      "side": 1,
+      "message": "Good point, I could do that but then the method wouldn\u0027t be static anymore, and it would force me to instantiate a class of SubscriberMetrics when calling it, which arguably would be worse than recreating this metric every time.\n\nWhat do you think?",
+      "parentUuid": "e276dc8a_c630f424",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "112b2890_1003099d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
         "patchSetId": 18
@@ -207,6 +279,24 @@
       "side": 1,
       "message": "maybe you could start simplifying the code with something like this:\n```\nfor (int i \u003d 0; i \u003c name.length(); i++) {  \n    Character c \u003d name.charAt(i);\n    Matcher matcher \u003d isValidMetricNamePattern.matcher(String.valueOf(c));\n    if (matcher.find())\n      if (c \u003d\u003d \u0027_\u0027)\n        sanitizedName.append(\"__\"); \n      else \n        sanitizedName.append(c);\n    else \n      sanitizedName.append(\"_\").append(Integer.toHexString((int) c));\n      \n  return sanitizedName.toString();\n}\n```",
       "parentUuid": "e534aa7a_6a0f2b2d",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38bd1f8e_0a90a202",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-06T10:40:42Z",
+      "side": 1,
+      "message": "Good point, I\u0027ve gone with this solution, but for future reference I\u0027ll explain why I did it the other way.\n\nThe idea was to not compute the regex search if you don\u0027t need too, but you are right, then it\u0027s weird when the character is in the regex.\nI, however, didn\u0027t want to change the regex as that is the \"official\" regex from prometheus for a metric name validity, and I thought that changing it would cause other confusion.\n\nAnyway, I\u0027ve gone with your suggestion as it make sense and don\u0027t think my points really matter.",
+      "parentUuid": "127175e0_f220bc68",
       "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
