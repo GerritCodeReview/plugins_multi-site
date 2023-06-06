@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e276dc8a_c630f424",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-06-06T09:52:08Z",
+      "side": 1,
+      "message": "I meant:\n```\n    Pattern isValidMetricNamePattern \u003d Pattern.compile(\"[a-zA-Z0-9_-]\");\n```",
+      "parentUuid": "c6dc2bd7_d318ac03",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "112b2890_1003099d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
         "patchSetId": 18
