@@ -53,6 +53,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8abfe9c2_6e946a24",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-06-06T10:11:48Z",
+      "side": 1,
+      "message": "In Java I use should use: i.e \n```\nString.format(\"Anonymous Basic Authentication for uri: %s\", targetUri)\n```\nto build strings.",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cfa369bb_e87d1b0e",
