@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3ec384f6_ad351997",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-06-06T11:31:22Z",
+      "side": 1,
+      "message": "well, there is a new logic checking that is `lag \u003e 1` you create a metric so that needs to be tested.\nprobably you can add a unit test where metricMaker is a mock and you verify that the mock has been called with the right values whenever applies.\n\n(up to you) you could move the logic inside the if to a private method to make the code more idiomatic.",
+      "parentUuid": "04ad09ff_9dae7f6e",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8abfe9c2_6e946a24",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
         "patchSetId": 18
