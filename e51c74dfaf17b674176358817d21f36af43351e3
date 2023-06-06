@@ -249,6 +249,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c007bb5a_673f7341",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-06-06T11:07:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88c59af6_26a93135",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "112b2890_1003099d",
