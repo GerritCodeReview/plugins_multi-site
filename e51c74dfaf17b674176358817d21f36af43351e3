@@ -145,6 +145,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7752416e_da5cd484",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-06-07T07:43:53Z",
+      "side": 1,
+      "message": "Sorry, I resolved my mistake.",
+      "parentUuid": "72d5d148_6154b273",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8abfe9c2_6e946a24",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
         "patchSetId": 18
