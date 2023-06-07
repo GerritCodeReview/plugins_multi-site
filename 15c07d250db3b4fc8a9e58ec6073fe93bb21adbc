@@ -129,6 +129,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bcdc83d9_86d148b4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-06-07T16:28:30Z",
+      "side": 1,
+      "message": "Regarding the testing, please see previous thread with Luca\u0027s explanation.\n\nI will need to double check on the second point.",
+      "parentUuid": "770465ad_f2fd32c7",
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bee0f753_b4953b3d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
         "patchSetId": 26
@@ -140,6 +158,24 @@
       "writtenOn": "2023-06-07T16:14:18Z",
       "side": 1,
       "message": "what\u0027s the `%S` (2nd format specifier) used for? If it\u0027s the same as `%s`, then let\u0027s lowercase it for consistency",
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7559838e_db1dd56a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-06-07T16:28:30Z",
+      "side": 1,
+      "message": "my bad, should be the same, good spot.",
+      "parentUuid": "bee0f753_b4953b3d",
       "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -196,6 +232,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8078610b_6a75594b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-06-07T16:28:30Z",
+      "side": 1,
+      "message": "As per previous comment, the problem here is that the replacement is not always the same string, but a function based on the character that we\u0027re replacing.\n\nCouldn\u0027t find a built in function in scala that did this, happy to stand corrected though.",
+      "parentUuid": "6e18dce9_b6c6a082",
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "2037cc83_d6d98051",
@@ -227,6 +281,24 @@
       "writtenOn": "2023-06-07T16:14:18Z",
       "side": 1,
       "message": "I think you are missing test case where the name contains `-`",
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dc3c182_232b7751",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetricsTest.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-06-07T16:28:30Z",
+      "side": 1,
+      "message": "Don\u0027t think there\u0027s any logic to test there? Or better, if we test that we would also need to test every letter of the alphabet, lowercase and uppercase.\n\nI tried looking at property based testing with java, but not sure it\u0027s worth introducing only for this?",
+      "parentUuid": "df72671f_f986126b",
       "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
