@@ -340,6 +340,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "24cc9e88_5a539227",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-07T17:58:51Z",
+      "side": 1,
+      "message": "That\u0027s a good question, there was a requirement to only have the metric present if it\u0027s not 0, so we could not create them all at initialisation.\n\nLuca maybe you could help here?",
+      "parentUuid": "657f2200_093542be",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cfa369bb_e87d1b0e",

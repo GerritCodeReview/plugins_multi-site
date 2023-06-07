@@ -53,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "509332ad_2d67bd99",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-07T17:58:51Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4f44b73a_60060b1c",
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5a079f2_07d02791",
@@ -66,6 +84,24 @@
       "writtenOn": "2023-06-07T16:14:18Z",
       "side": 1,
       "message": "I\u0027d argue that all this new logic should be extracted in a separate method (or rename this method to indicate what is actually doing)",
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ac3b366_42d8f945",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-07T17:58:51Z",
+      "side": 1,
+      "message": "Agreed on the extraction, while the method name is quite generic, don\u0027t really think it needs updating?",
+      "parentUuid": "a5a079f2_07d02791",
       "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -87,6 +123,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c60b4f55_6ac3ea15",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-07T17:58:51Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8b2b1934_5942a399",
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ac72173_e1f0f66d",
@@ -100,6 +154,54 @@
       "writtenOn": "2023-06-07T16:14:18Z",
       "side": 1,
       "message": "```suggestion\n      String sanitizedProjectName \u003d SubscriberMetrics.sanitizeProjectName(projectName.get());\n```",
+      "range": {
+        "startLine": 168,
+        "startChar": 13,
+        "endLine": 168,
+        "endChar": 33
+      },
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb5a8c67_da7ba2b2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-07T17:58:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ac72173_e1f0f66d",
+      "range": {
+        "startLine": 168,
+        "startChar": 13,
+        "endLine": 168,
+        "endChar": 33
+      },
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11fd01c7_4181a7b6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-07T17:58:51Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3ac72173_e1f0f66d",
       "range": {
         "startLine": 168,
         "startChar": 13,
@@ -229,6 +331,24 @@
       "writtenOn": "2023-06-07T16:14:18Z",
       "side": 1,
       "message": "javadoc for this method would help here",
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7da4fa81_4329cbc7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-07T17:58:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b614ce9d_2204f14b",
       "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
