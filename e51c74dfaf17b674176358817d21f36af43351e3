@@ -125,6 +125,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72d5d148_6154b273",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-06-07T07:43:13Z",
+      "side": 1,
+      "message": "You convinced me.",
+      "parentUuid": "c8f4acdf_d6eb8a85",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8abfe9c2_6e946a24",
