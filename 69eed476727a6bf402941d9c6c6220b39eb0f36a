@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cbb4f7b_c5bed391",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 23
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-07T12:11:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03953e51_6a894dfe",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 7
+      },
+      "revId": "69eed476727a6bf402941d9c6c6220b39eb0f36a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "322b4f0c_aab76372",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-06-06T22:53:27Z",
       "side": 1,
       "message": "Join with the previous line.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 9
+      },
+      "revId": "69eed476727a6bf402941d9c6c6220b39eb0f36a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14691c3f_b33d768f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 23
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-07T12:11:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "322b4f0c_aab76372",
       "range": {
         "startLine": 14,
         "startChar": 0,
@@ -85,6 +133,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4fc6ec5c_8ced5ace",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 23
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-07T12:11:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66842f0f_0c7a2533",
+      "revId": "69eed476727a6bf402941d9c6c6220b39eb0f36a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "aca0cf32_b660159d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
         "patchSetId": 23
@@ -114,6 +180,30 @@
       "writtenOn": "2023-06-06T22:53:27Z",
       "side": 1,
       "message": "We always use braces `{` `}` in Gerrit source code.",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 71
+      },
+      "revId": "69eed476727a6bf402941d9c6c6220b39eb0f36a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfbe4034_0e65db71",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 23
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-07T12:11:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d688ffc_1de3564d",
       "range": {
         "startLine": 78,
         "startChar": 0,

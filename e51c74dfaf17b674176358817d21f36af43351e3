@@ -161,6 +161,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab116661_a305e688",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-07T12:11:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7752416e_da5cd484",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8abfe9c2_6e946a24",
@@ -228,6 +246,24 @@
       "side": 1,
       "message": "@Dani is right, especially when you have static constants like `SubscriberMetrics.REPLICATION_LAG_SEC` that are resolved at compile time. But also @Alvaro is right with regards to readability and this method isn\u0027t called 1000x times per second isn\u0027t it?\n\nSo, I\u0027d agree with @Alvaro in this case :-)",
       "parentUuid": "79b82923_9ac50f78",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8cfdfe3_2687b2ab",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-07T12:11:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9cb0a0d9_67d8b3ad",
       "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
