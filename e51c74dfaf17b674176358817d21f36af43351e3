@@ -286,6 +286,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "a132971e_46a37cc9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-06-07T13:15:32Z",
+      "side": 1,
+      "message": "@danielesassoli@gmail.com please can you double check this:\n\u003e this method isn\u0027t called 1000x times per second isn\u0027t it?",
+      "parentUuid": "58e58dc5_ec07a2e5",
+      "revId": "e51c74dfaf17b674176358817d21f36af43351e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cfa369bb_e87d1b0e",
