@@ -147,6 +147,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e2d97bbb_3f4f30da",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-06-07T16:40:01Z",
+      "side": 1,
+      "message": "Oh - I didnt read any of the comments 😎 \n\nI can see the thread, I dont agree that this is a lot of effort or that it should be manually tested, happy to give it a go and provide a code sample (I may be missing something which increases testing complexity here).",
+      "parentUuid": "bcdc83d9_86d148b4",
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bee0f753_b4953b3d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
         "patchSetId": 26
@@ -252,6 +270,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e54758f7_589ff7e7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-06-07T16:40:01Z",
+      "side": 1,
+      "message": "you mean in java 😎 \n\nOh yes i see what you mean its the `Integer.toHexString((int) c` which is the problem. I will see if i can dig anything out and reopen this, resolving for now",
+      "parentUuid": "8078610b_6a75594b",
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2037cc83_d6d98051",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetricsTest.java",
         "patchSetId": 26
@@ -299,6 +335,24 @@
       "side": 1,
       "message": "Don\u0027t think there\u0027s any logic to test there? Or better, if we test that we would also need to test every letter of the alphabet, lowercase and uppercase.\n\nI tried looking at property based testing with java, but not sure it\u0027s worth introducing only for this?",
       "parentUuid": "df72671f_f986126b",
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ca4f640_3b878821",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetricsTest.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-06-07T16:40:01Z",
+      "side": 1,
+      "message": "Isn\u0027t `-` part of the regex you use in the `isValidMetricNamePattern` pattern?",
+      "parentUuid": "3dc3c182_232b7751",
       "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
