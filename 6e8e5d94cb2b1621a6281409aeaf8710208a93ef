@@ -70,6 +70,24 @@
       "message": "This is pedantic, sorry 😂 but can you a digit here for completeness? this way the entire regex is somewhat tested",
       "revId": "6e8e5d94cb2b1621a6281409aeaf8710208a93ef",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d12857a_a8a2b8a5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetricsTest.java",
+        "patchSetId": 29
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-08T14:25:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27b71bcc_6dbb69f8",
+      "revId": "6e8e5d94cb2b1621a6281409aeaf8710208a93ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

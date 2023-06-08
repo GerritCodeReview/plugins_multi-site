@@ -106,6 +106,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a345856_f25835ac",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-08T14:25:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ac3b366_42d8f945",
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b2b1934_5942a399",
@@ -261,6 +279,24 @@
       "side": 1,
       "message": "Oh - I didnt read any of the comments 😎 \n\nI can see the thread, I dont agree that this is a lot of effort or that it should be manually tested, happy to give it a go and provide a code sample (I may be missing something which increases testing complexity here).",
       "parentUuid": "bcdc83d9_86d148b4",
+      "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99f40e4f_a53067bb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 26
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-08T14:25:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2d97bbb_3f4f30da",
       "revId": "15c07d250db3b4fc8a9e58ec6073fe93bb21adbc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
