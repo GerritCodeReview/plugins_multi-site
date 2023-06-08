@@ -72,6 +72,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "373ff26c_d6bc2785",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/CallbackMetricMaker.java",
+        "patchSetId": 31
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-06-08T18:46:11Z",
+      "side": 1,
+      "message": "Missing `@Ignore` annotation, otherwise Bazel will try to run this as a test.",
+      "revId": "181599ed21d67eb069d917fa374e72f80ac2e9cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "48325895_7fe0f686",
