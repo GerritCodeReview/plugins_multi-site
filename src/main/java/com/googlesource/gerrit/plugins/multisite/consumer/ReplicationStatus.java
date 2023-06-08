@@ -93,6 +93,10 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
   }
 
   public Long getMaxLag() {
+    return getMaxLagMillis() / 1000;
+  }
+
+  public Long getMaxLagMillis() {
     Collection<Long> lags = replicationStatusPerProject.values();
     if (lags.isEmpty()) {
       return 0L;

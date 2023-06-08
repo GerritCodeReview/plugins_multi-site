@@ -70,7 +70,7 @@ public class SubscriberMetricsTest {
 
   @Test
   public void shouldLogProjectVersionWhenReceivingRefUpdatedEventWithoutLag() {
-    Optional<Long> globalRefDbVersion = Optional.of(System.currentTimeMillis() / 1000);
+    Optional<Long> globalRefDbVersion = Optional.of(System.currentTimeMillis());
     when(projectVersionRefUpdate.getProjectRemoteVersion(A_TEST_PROJECT_NAME))
         .thenReturn(globalRefDbVersion);
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
@@ -85,7 +85,7 @@ public class SubscriberMetricsTest {
 
   @Test
   public void shouldLogProjectVersionWhenReceivingRefUpdatedEventWithALag() {
-    Optional<Long> globalRefDbVersion = Optional.of(System.currentTimeMillis() / 1000);
+    Optional<Long> globalRefDbVersion = Optional.of(System.currentTimeMillis());
     long replicationLag = 60;
     when(projectVersionRefUpdate.getProjectRemoteVersion(A_TEST_PROJECT_NAME))
         .thenReturn(globalRefDbVersion.map(ts -> ts + replicationLag));
@@ -103,7 +103,7 @@ public class SubscriberMetricsTest {
   public void
       shouldLogUponProjectDeletionSuccessWhenLocalVersionDoesNotExistAndSubscriberMetricsExist()
           throws Exception {
-    long nowSecs = System.currentTimeMillis() / 1000;
+    long nowSecs = System.currentTimeMillis();
     long replicationLagSecs = 60;
     Optional<Long> globalRefDbVersion = Optional.of(nowSecs);
     when(projectVersionRefUpdate.getProjectRemoteVersion(A_TEST_PROJECT_NAME))
@@ -145,7 +145,7 @@ public class SubscriberMetricsTest {
   @Test
   public void shouldNotLogUponProjectDeletionSuccessWhenLocalVersionStillExists() throws Exception {
     Event eventMessage = projectDeletionSuccess();
-    Optional<Long> anyRefVersionValue = Optional.of(System.currentTimeMillis() / 1000);
+    Optional<Long> anyRefVersionValue = Optional.of(System.currentTimeMillis());
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(anyRefVersionValue);
 
@@ -156,7 +156,7 @@ public class SubscriberMetricsTest {
 
   @Test
   public void shouldRemoveProjectMetricsUponProjectDeletionSuccess() throws Exception {
-    long nowSecs = System.currentTimeMillis() / 1000;
+    long nowSecs = System.currentTimeMillis();
     long replicationLagSecs = 60;
     Optional<Long> globalRefDbVersion = Optional.of(nowSecs);
     when(projectVersionRefUpdate.getProjectRemoteVersion(A_TEST_PROJECT_NAME))
