@@ -71,6 +71,14 @@ public class ReplicationStatusTest {
     replicationStatusCache.put("projectB", 3L);
 
     objectUnderTest.start();
+    assertThat(objectUnderTest.getMaxLagMillis()).isEqualTo(10L);
+  }
+
+  @Test
+  public void shouldConvertMillisLagFromPersistedCacheOnStartToSecs() {
+    replicationStatusCache.put("projectA", 10000L);
+
+    objectUnderTest.start();
     assertThat(objectUnderTest.getMaxLag()).isEqualTo(10L);
   }
 
@@ -81,7 +89,7 @@ public class ReplicationStatusTest {
     objectUnderTest.start();
 
     objectUnderTest.doUpdateLag(Project.nameKey("projectA"), 20L);
-    assertThat(objectUnderTest.getMaxLag()).isEqualTo(20L);
+    assertThat(objectUnderTest.getMaxLagMillis()).isEqualTo(20L);
   }
 
   @Test
