@@ -37,6 +37,8 @@ public class SubscriberMetrics extends MultiSiteMetrics {
       "subscriber_msg_consumer_failure_counter";
   private static final String REPLICATION_LAG_SEC =
       "multi_site/subscriber/subscriber_replication_status/sec_behind";
+  private static final String REPLICATION_LAG_MSEC =
+      "multi_site/subscriber/subscriber_replication_status/msec_behind";
 
   private final Counter1<String> subscriberSuccessCounter;
   private final Counter1<String> subscriberFailureCounter;
@@ -65,6 +67,13 @@ public class SubscriberMetrics extends MultiSiteMetrics {
         Long.class,
         new Description("Replication lag (sec)").setGauge().setUnit(Description.Units.SECONDS),
         replicationStatus::getMaxLag);
+    metricMaker.newCallbackMetric(
+        REPLICATION_LAG_MSEC,
+        Long.class,
+        new Description("Replication lag (msec)")
+            .setGauge()
+            .setUnit(Description.Units.MILLISECONDS),
+        replicationStatus::getMaxLagMillis);
   }
 
   public void incrementSubscriberConsumedMessage() {
