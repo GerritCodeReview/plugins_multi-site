@@ -91,6 +91,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e513478d_7c409593",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/CallbackMetricMaker.java",
+        "patchSetId": 31
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-09T12:52:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "373ff26c_d6bc2785",
+      "revId": "181599ed21d67eb069d917fa374e72f80ac2e9cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "48325895_7fe0f686",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetricsTest.java",
         "patchSetId": 31
