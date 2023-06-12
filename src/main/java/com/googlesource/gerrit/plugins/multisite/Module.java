@@ -21,7 +21,6 @@ import com.google.inject.Inject;
 import com.google.inject.spi.Message;
 import com.googlesource.gerrit.plugins.multisite.broker.BrokerModule;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
-import com.googlesource.gerrit.plugins.multisite.event.EventModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
 import com.googlesource.gerrit.plugins.multisite.index.IndexModule;
@@ -56,7 +55,6 @@ public class Module extends LifecycleModule {
       brokerRouterNeeded = true;
     }
     if (config.event().synchronize()) {
-      install(new EventModule(config));
       brokerRouterNeeded = true;
     }
     if (config.index().synchronize()) {
