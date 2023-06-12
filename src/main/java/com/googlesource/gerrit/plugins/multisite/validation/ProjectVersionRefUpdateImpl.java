@@ -283,7 +283,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
   }
 
   private long getCurrentGlobalVersionNumber() {
-    return System.currentTimeMillis() / 1000;
+    return System.currentTimeMillis();
   }
 
   private Boolean isSuccessful(RefUpdate.Result result) {
