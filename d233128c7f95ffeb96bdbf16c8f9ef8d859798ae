@@ -51,6 +51,24 @@
       "parentUuid": "ec9178ff_57c44e8b",
       "revId": "d233128c7f95ffeb96bdbf16c8f9ef8d859798ae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fd06961_b1ba318e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/CallbackMetricMaker.java",
+        "patchSetId": 36
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-06-12T10:31:24Z",
+      "side": 1,
+      "message": "We could, but is there really any benefit in doing that?",
+      "parentUuid": "43af2742_40bec83e",
+      "revId": "d233128c7f95ffeb96bdbf16c8f9ef8d859798ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
