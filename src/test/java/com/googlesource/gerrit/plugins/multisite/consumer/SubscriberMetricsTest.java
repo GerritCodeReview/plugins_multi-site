@@ -22,6 +22,7 @@ import static org.mockito.Mockito.when;
 import com.google.common.base.Suppliers;
 import com.google.common.cache.CacheBuilder;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.Event;
@@ -63,14 +64,14 @@ public class SubscriberMetricsTest {
             verLogger,
             projectCache,
             Executors.newScheduledThreadPool(1),
-            new com.googlesource.gerrit.plugins.multisite.Configuration(
-                new Config(), new Config()));
+            new com.googlesource.gerrit.plugins.multisite.Configuration(new Config(), new Config()),
+            new DisabledMetricMaker());
     metrics = new SubscriberMetrics(metricMaker, replicationStatus);
   }
 
   @Test
   public void shouldLogProjectVersionWhenReceivingRefUpdatedEventWithoutLag() {
-    Optional<Long> globalRefDbVersion = Optional.of(System.currentTimeMillis() / 1000);
+    Optional<Long> globalRefDbVersion = Optional.of(System.currentTimeMillis());
     when(projectVersionRefUpdate.getProjectRemoteVersion(A_TEST_PROJECT_NAME))
         .thenReturn(globalRefDbVersion);
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
@@ -85,7 +86,7 @@ public class SubscriberMetricsTest {
 
   @Test
   public void shouldLogProjectVersionWhenReceivingRefUpdatedEventWithALag() {
-    Optional<Long> globalRefDbVersion = Optional.of(System.currentTimeMillis() / 1000);
+    Optional<Long> globalRefDbVersion = Optional.of(System.currentTimeMillis());
     long replicationLag = 60;
     when(projectVersionRefUpdate.getProjectRemoteVersion(A_TEST_PROJECT_NAME))
         .thenReturn(globalRefDbVersion.map(ts -> ts + replicationLag));
@@ -103,7 +104,7 @@ public class SubscriberMetricsTest {
   public void
       shouldLogUponProjectDeletionSuccessWhenLocalVersionDoesNotExistAndSubscriberMetricsExist()
           throws Exception {
-    long nowSecs = System.currentTimeMillis() / 1000;
+    long nowSecs = System.currentTimeMillis();
     long replicationLagSecs = 60;
     Optional<Long> globalRefDbVersion = Optional.of(nowSecs);
     when(projectVersionRefUpdate.getProjectRemoteVersion(A_TEST_PROJECT_NAME))
@@ -145,7 +146,7 @@ public class SubscriberMetricsTest {
   @Test
   public void shouldNotLogUponProjectDeletionSuccessWhenLocalVersionStillExists() throws Exception {
     Event eventMessage = projectDeletionSuccess();
-    Optional<Long> anyRefVersionValue = Optional.of(System.currentTimeMillis() / 1000);
+    Optional<Long> anyRefVersionValue = Optional.of(System.currentTimeMillis());
     when(projectVersionRefUpdate.getProjectLocalVersion(A_TEST_PROJECT_NAME))
         .thenReturn(anyRefVersionValue);
 
@@ -156,7 +157,7 @@ public class SubscriberMetricsTest {
 
   @Test
   public void shouldRemoveProjectMetricsUponProjectDeletionSuccess() throws Exception {
-    long nowSecs = System.currentTimeMillis() / 1000;
+    long nowSecs = System.currentTimeMillis();
     long replicationLagSecs = 60;
     Optional<Long> globalRefDbVersion = Optional.of(nowSecs);
     when(projectVersionRefUpdate.getProjectRemoteVersion(A_TEST_PROJECT_NAME))
@@ -180,6 +181,34 @@ public class SubscriberMetricsTest {
 
     assertThat(replicationStatus.getReplicationStatus(A_TEST_PROJECT_NAME)).isNull();
     assertThat(replicationStatus.getLocalVersion(A_TEST_PROJECT_NAME)).isNull();
+  }
+
+  @Test
+  public void shouldDoNothingIfNameIsValid() {
+    String validProjectName = "aValidProject-Name123";
+
+    assertThat(metrics.sanitizeProjectName(validProjectName)).isEqualTo(validProjectName);
+  }
+
+  @Test
+  public void shouldSanitizeNameWithDot() {
+    String validProjectName = "nameWithA.InTheMiddle";
+
+    assertThat(metrics.sanitizeProjectName(validProjectName)).isEqualTo("nameWithA_2eInTheMiddle");
+  }
+
+  @Test
+  public void shouldSanitizeNameWithSlash() {
+    String validProjectName = "nameWithA/InTheMiddle";
+
+    assertThat(metrics.sanitizeProjectName(validProjectName)).isEqualTo("nameWithA_2fInTheMiddle");
+  }
+
+  @Test
+  public void shouldDoubleUnderscoresInName() {
+    String validProjectName = "nameWithA_InTheMiddle";
+
+    assertThat(metrics.sanitizeProjectName(validProjectName)).isEqualTo("nameWithA__InTheMiddle");
   }
 
   private ProjectDeletionReplicationSucceededEvent projectDeletionSuccess()
