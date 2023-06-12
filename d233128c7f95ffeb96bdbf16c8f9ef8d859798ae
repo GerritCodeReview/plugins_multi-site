@@ -16,6 +16,23 @@
       "message": "re-applying +2 from previous reviews.",
       "revId": "d233128c7f95ffeb96bdbf16c8f9ef8d859798ae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec9178ff_57c44e8b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/CallbackMetricMaker.java",
+        "patchSetId": 36
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-06-12T10:09:43Z",
+      "side": 1,
+      "message": "Could you add this as a private class in the test?",
+      "revId": "d233128c7f95ffeb96bdbf16c8f9ef8d859798ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
