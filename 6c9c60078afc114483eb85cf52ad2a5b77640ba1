@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e1ebf4d_8e60c776",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-12T14:35:49Z",
+      "side": 1,
+      "message": "Seems like this doesn\u0027t include the replication lag per repo commit?\nThere is also a change about to be merged to improve resolution of multi-site/version from seconds to millis, should we wait until that\u0027s merged?",
+      "revId": "6c9c60078afc114483eb85cf52ad2a5b77640ba1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
