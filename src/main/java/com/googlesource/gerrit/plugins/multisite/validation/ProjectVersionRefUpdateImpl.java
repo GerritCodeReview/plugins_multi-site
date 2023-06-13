@@ -20,6 +20,7 @@ import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
 import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
@@ -29,17 +30,19 @@ import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
-import com.google.gerrit.server.notedb.IntBlob;
+import com.google.gerrit.server.update.context.RefUpdateContext;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.Set;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.ObjectInserter;
+import org.eclipse.jgit.lib.ObjectLoader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.lib.Repository;
@@ -220,9 +223,9 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
   public Optional<Long> getProjectLocalVersion(String projectName) {
     try (Repository repository =
         gitRepositoryManager.openRepository(Project.NameKey.parse(projectName))) {
-      Optional<IntBlob> blob = IntBlob.parse(repository, MULTI_SITE_VERSIONING_REF);
+      Optional<Long> blob = longBlobParse(repository, MULTI_SITE_VERSIONING_REF);
       if (blob.isPresent()) {
-        Long repoVersion = Integer.toUnsignedLong(blob.get().value());
+        Long repoVersion = blob.get();
         logger.atFine().log("Local project '%s' has version %d", projectName, repoVersion);
         return Optional.of(repoVersion);
       }
@@ -232,6 +235,24 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
       logger.atSevere().withCause(e).log("Cannot read local project '%s' version", projectName);
     }
     return Optional.empty();
+  }
+
+  private Optional<Long> longBlobParse(Repository repo, String ref) throws IOException {
+    return Optional.ofNullable(repo.exactRef(ref))
+        .map(
+            (r) -> {
+              ObjectLoader loader;
+              try {
+                loader = repo.open(r.getObjectId());
+                String boutString = new String(loader.getBytes(), StandardCharsets.UTF_8);
+                return Long.parseLong(boutString);
+              } catch (IOException e) {
+                logger.atSevere().withCause(e).log(
+                    "Unable to extract long BLOB from %s:%s", repo.getDirectory(), ref);
+                return null;
+              }
+            })
+        .filter(Predicates.notNull());
   }
 
   /* (non-Javadoc)
