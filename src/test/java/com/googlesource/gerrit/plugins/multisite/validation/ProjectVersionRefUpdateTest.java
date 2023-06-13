@@ -155,9 +155,16 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
 
+<<<<<<< PATCH SET (a5ee8a Parse refs/multi-site/version as a Long BLOB value)
+    ProjectVersionRefUpdateImpl projectVersion =
+        new ProjectVersionRefUpdateImpl(
+            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, DEFAULT_INSTANCE_ID);
+    projectVersion.onEvent(refUpdatedEvent);
+=======
     new ProjectVersionRefUpdateImpl(
             repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
         .onEvent(refUpdatedEvent);
+>>>>>>> BASE      (c3b8f7 Use msec-level precision for refs/multi-site/version value)
 
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
 
@@ -168,6 +175,10 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
     ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
     long storedVersion = readLongObject(loader);
+
+    Optional<Long> localStoredVersion = projectVersion.getProjectLocalVersion(A_TEST_PROJECT_NAME);
+    assertThat(localStoredVersion).isEqualTo(Optional.of(storedVersion));
+
     assertThat(storedVersion).isGreaterThan((long) masterPlusOneCommit.getCommitTime());
 
     verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
