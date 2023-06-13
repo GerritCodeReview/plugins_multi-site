@@ -1,5 +1,57 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5805a781_61f9664f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-06-13T11:03:29Z",
+      "side": 1,
+      "message": "LGTM, minor comments",
+      "revId": "90b84b25648799950dd7f73ab141fedccebcc70e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aba72477_db64cdb4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-06-13T11:03:29Z",
+      "side": 1,
+      "message": "what is r? could we give a more descriptive name?",
+      "revId": "90b84b25648799950dd7f73ab141fedccebcc70e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ff0039b_96df9e54",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-06-13T11:03:29Z",
+      "side": 1,
+      "message": "why dont you move this to the line line L245 as:\n```\nObjectLoader loader \u003d repo.open(r.getObjectId());\n```",
+      "revId": "90b84b25648799950dd7f73ab141fedccebcc70e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
