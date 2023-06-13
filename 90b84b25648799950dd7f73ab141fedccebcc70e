@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c59c4b7a_9ba77ac4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-06-13T11:06:16Z",
+      "side": 1,
+      "message": "`r` is the optional ref. The change is merged, follow-up change?",
+      "parentUuid": "aba72477_db64cdb4",
+      "revId": "90b84b25648799950dd7f73ab141fedccebcc70e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4ff0039b_96df9e54",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
         "patchSetId": 4
@@ -48,6 +66,24 @@
       "writtenOn": "2023-06-13T11:03:29Z",
       "side": 1,
       "message": "why dont you move this to the line line L245 as:\n```\nObjectLoader loader \u003d repo.open(r.getObjectId());\n```",
+      "revId": "90b84b25648799950dd7f73ab141fedccebcc70e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18e7b4c5_6cdc34c7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-06-13T11:06:16Z",
+      "side": 1,
+      "message": "Yeah, I had it as auto-closeable, but it wasn\u0027t. Let me address in a follow-up change.",
+      "parentUuid": "4ff0039b_96df9e54",
       "revId": "90b84b25648799950dd7f73ab141fedccebcc70e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
