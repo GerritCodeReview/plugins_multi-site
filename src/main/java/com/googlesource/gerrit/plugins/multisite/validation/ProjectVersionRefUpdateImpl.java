@@ -236,15 +236,12 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
     return Optional.empty();
   }
 
-  private Optional<Long> longBlobParse(Repository repo, String ref) throws IOException {
-    return Optional.ofNullable(repo.exactRef(ref))
+  private Optional<Long> longBlobParse(Repository repo, String refName) throws IOException {
+    return Optional.ofNullable(repo.exactRef(refName))
         .map(
-            (r) -> {
-              ObjectLoader loader;
+            (ref) -> {
               try {
-                loader = repo.open(r.getObjectId());
-                String boutString = new String(loader.getBytes(), StandardCharsets.UTF_8);
-                return Long.parseLong(boutString);
+                return Long.parseLong(new String(repo.open(r.getObjectId()).getBytes(), StandardCharsets.UTF_8));
               } catch (IOException e) {
                 logger.atSevere().withCause(e).log(
                     "Unable to extract long BLOB from %s:%s", repo.getDirectory(), ref);
