@@ -50,6 +50,24 @@
       "message": "this `r` needs to be `ref`",
       "revId": "b1bf02d0f2b62cb2d41ab62eed8ae1274a38d213",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6c964fc_fc0baa5d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-06-13T12:48:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd8b5649_e6053a2e",
+      "revId": "b1bf02d0f2b62cb2d41ab62eed8ae1274a38d213",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
