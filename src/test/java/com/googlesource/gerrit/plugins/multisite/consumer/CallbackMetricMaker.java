@@ -6,18 +6,30 @@ import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import org.junit.Ignore;
 
+import java.util.Objects;
+
 @Ignore
 public class CallbackMetricMaker extends DisabledMetricMaker {
-  private int callbackMetricCounter = 0;
+  private int replicationSecCallbackMetricCounter = 0;
+  private int replicationMSecCallbackMetricCounter = 0;
 
-  public int getCallbackMetricCounter() {
-    return callbackMetricCounter;
+  public int getReplicationSecCallbackMetricCounter() {
+    return replicationSecCallbackMetricCounter;
+  }
+
+  public int getReplicationMSecCallbackMetricCounter() {
+    return replicationMSecCallbackMetricCounter;
   }
 
   @Override
   public <V> RegistrationHandle newCallbackMetric(
       String name, Class<V> valueClass, Description desc, Supplier<V> trigger) {
-    callbackMetricCounter += 1;
+    if (name.startsWith(SubscriberMetrics.REPLICATION_LAG_SEC)) {
+      replicationSecCallbackMetricCounter += 1;
+    }
+    if (name.startsWith(SubscriberMetrics.REPLICATION_LAG_MSEC)) {
+      replicationMSecCallbackMetricCounter += 1;
+    }
     return new RegistrationHandle() {
 
       @Override
@@ -26,6 +38,7 @@ public class CallbackMetricMaker extends DisabledMetricMaker {
   }
 
   public void resetCallbackMetricCounter() {
-    callbackMetricCounter = 0;
+    replicationSecCallbackMetricCounter = 0;
+    replicationMSecCallbackMetricCounter = 0;
   }
 }
