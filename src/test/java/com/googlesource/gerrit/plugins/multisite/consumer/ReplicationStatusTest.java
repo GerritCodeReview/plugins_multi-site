@@ -177,7 +177,8 @@ public class ReplicationStatusTest {
 
     assertThat(replicationStatusCache.getIfPresent(projectName))
         .isEqualTo(projectRemoteVersion - projectLocalVersion);
-    assertThat(callbackMetricMaker.getCallbackMetricCounter()).isEqualTo(1);
+    assertThat(callbackMetricMaker.getReplicationSecCallbackMetricCounter()).isEqualTo(1);
+    assertThat(callbackMetricMaker.getReplicationMSecCallbackMetricCounter()).isEqualTo(1);
   }
 
   @Test
@@ -189,7 +190,8 @@ public class ReplicationStatusTest {
 
     objectUnderTest.updateReplicationLag(Project.nameKey(projectName));
 
-    assertThat(callbackMetricMaker.getCallbackMetricCounter()).isEqualTo(0);
+    assertThat(callbackMetricMaker.getReplicationSecCallbackMetricCounter()).isEqualTo(0);
+    assertThat(callbackMetricMaker.getReplicationMSecCallbackMetricCounter()).isEqualTo(0);
   }
 
   @SuppressWarnings("unchecked")
