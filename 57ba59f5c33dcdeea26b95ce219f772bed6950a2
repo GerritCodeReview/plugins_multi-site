@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f4d8cf77_e99856ad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-06-15T12:59:23Z",
+      "side": 1,
+      "message": "Please can you use `Add` instead of `Adding`",
+      "parentUuid": "5294c5b8_1e1f0df1",
+      "revId": "57ba59f5c33dcdeea26b95ce219f772bed6950a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "832c331f_48e317d9",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
         "patchSetId": 1
