@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5294c5b8_1e1f0df1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-15T12:53:54Z",
+      "side": 1,
+      "message": "I\u0027ve added some context.\n\nWe cannot remove the `sec` right now as it would potentially be a breaking change, I will remove the second one on master once this change is merged up.",
+      "parentUuid": "ca633c20_6aeb5e26",
+      "revId": "57ba59f5c33dcdeea26b95ce219f772bed6950a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "832c331f_48e317d9",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-06-15T12:44:07Z",
       "side": 1,
       "message": "maybe you can remove the public and leave for package visibility only.",
+      "revId": "57ba59f5c33dcdeea26b95ce219f772bed6950a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd2781bd_48a723e3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-15T12:53:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "832c331f_48e317d9",
       "revId": "57ba59f5c33dcdeea26b95ce219f772bed6950a2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -72,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dce1c93a_9e762edf",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/CallbackMetricMaker.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-15T12:53:54Z",
+      "side": 1,
+      "message": "How can this be final? It\u0027s a counter, it will need to change when the tests are run?",
+      "parentUuid": "360ce765_a8d05f8f",
+      "revId": "57ba59f5c33dcdeea26b95ce219f772bed6950a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a38e97dc_f2c79616",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/CallbackMetricMaker.java",
         "patchSetId": 1
@@ -83,6 +137,24 @@
       "writtenOn": "2023-06-15T12:44:07Z",
       "side": 1,
       "message": "the same as above",
+      "revId": "57ba59f5c33dcdeea26b95ce219f772bed6950a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fe10f85_5b2ece49",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/CallbackMetricMaker.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-15T12:53:54Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a38e97dc_f2c79616",
       "revId": "57ba59f5c33dcdeea26b95ce219f772bed6950a2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
