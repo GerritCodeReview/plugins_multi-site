@@ -171,6 +171,13 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
             .setGauge()
             .setUnit(Description.Units.SECONDS),
         () -> getReplicationStatus(projectName.get()));
+    metricMaker.newCallbackMetric(
+        String.format("%s_%s", SubscriberMetrics.REPLICATION_LAG_MSEC, sanitizedProjectName),
+        Long.class,
+        new Description("Replication lag for project (msec)")
+            .setGauge()
+            .setUnit(Description.Units.SECONDS),
+        () -> getReplicationStatus(projectName.get()));
   }
 
   @VisibleForTesting
