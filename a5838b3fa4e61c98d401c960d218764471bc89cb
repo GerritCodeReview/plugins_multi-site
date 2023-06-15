@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "69c8a2ae_463be313",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-06-15T13:03:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dcd0fbe4_19351b83",
+      "revId": "a5838b3fa4e61c98d401c960d218764471bc89cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "915b32e1_36d018c8",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/CallbackMetricMaker.java",
         "patchSetId": 3
