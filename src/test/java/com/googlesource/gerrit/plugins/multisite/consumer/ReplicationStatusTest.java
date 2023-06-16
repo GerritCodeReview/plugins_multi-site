@@ -15,8 +15,11 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.google.common.cache.Cache;
@@ -24,6 +27,8 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.metrics.CallbackMetric1;
+import com.google.gerrit.metrics.DisabledMetricMaker;
 import com.google.gerrit.server.project.ProjectCache;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
@@ -43,9 +48,9 @@ public class ReplicationStatusTest {
   @Mock private ProjectVersionLogger verLogger;
   @Mock private ProjectCache projectCache;
   @Mock private ProjectVersionRefUpdate projectVersionRefUpdate;
+  @Mock private CallbackMetric1<String, Long> perProjectReplicationLagMetricCallback;
   private ReplicationStatus objectUnderTest;
   private Cache<String, Long> replicationStatusCache;
-  private CallbackMetricMaker callbackMetricMaker = new CallbackMetricMaker();
 
   @Before
   public void setup() throws Exception {
@@ -53,7 +58,6 @@ public class ReplicationStatusTest {
         .thenReturn(
             ImmutableSortedSet.of(Project.nameKey("projectA"), Project.nameKey("projectB")));
     replicationStatusCache = CacheBuilder.newBuilder().build();
-    callbackMetricMaker.resetCallbackMetricCounter();
     objectUnderTest =
         new ReplicationStatus(
             replicationStatusCache,
@@ -62,7 +66,7 @@ public class ReplicationStatusTest {
             projectCache,
             Executors.newScheduledThreadPool(1),
             new Configuration(new Config(), new Config()),
-            callbackMetricMaker);
+            new DisabledMetricMaker());
   }
 
   @Test
@@ -174,10 +178,12 @@ public class ReplicationStatusTest {
         .thenReturn(Optional.of(projectRemoteVersion));
 
     objectUnderTest.updateReplicationLag(Project.nameKey(projectName));
+    objectUnderTest.replicationLagMetricPerProject(perProjectReplicationLagMetricCallback).run();
 
     assertThat(replicationStatusCache.getIfPresent(projectName))
         .isEqualTo(projectRemoteVersion - projectLocalVersion);
-    assertThat(callbackMetricMaker.getCallbackMetricCounter()).isEqualTo(1);
+    verify(perProjectReplicationLagMetricCallback)
+        .set(eq(projectName), eq(projectRemoteVersion - projectLocalVersion));
   }
 
   @Test
@@ -189,7 +195,8 @@ public class ReplicationStatusTest {
 
     objectUnderTest.updateReplicationLag(Project.nameKey(projectName));
 
-    assertThat(callbackMetricMaker.getCallbackMetricCounter()).isEqualTo(0);
+    assertThat(replicationStatusCache.getIfPresent(projectName)).isNull();
+    verify(perProjectReplicationLagMetricCallback, never()).set(any(), any());
   }
 
   @SuppressWarnings("unchecked")
