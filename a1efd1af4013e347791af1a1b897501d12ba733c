@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea35eae5_c95da1c3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-06-17T11:14:58Z",
+      "side": 1,
+      "message": "`MILLISECONDS`",
+      "revId": "a1efd1af4013e347791af1a1b897501d12ba733c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
