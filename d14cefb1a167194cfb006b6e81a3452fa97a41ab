@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac905c6d_d6c2e72f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-06-19T06:53:32Z",
+      "side": 1,
+      "message": "If I understand correctly this will update the callback metric for every KV pair of the map where the value is not zero, and that map can contain other projects too.\nShouldn\u0027t we apply the logic only for the project in question (so just for one KV pair)? And also, isnt it possible that the lag can fall to zero? Don\u0027t we want to update the metric in that case?",
+      "revId": "d14cefb1a167194cfb006b6e81a3452fa97a41ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9787865b_856c3eb4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-06-19T06:53:32Z",
+      "side": 1,
+      "message": "is this used?",
+      "revId": "d14cefb1a167194cfb006b6e81a3452fa97a41ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
