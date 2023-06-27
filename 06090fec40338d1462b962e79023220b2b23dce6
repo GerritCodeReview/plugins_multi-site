@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9098e5a8_023525a2",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-06-27T17:35:26Z",
+      "side": 1,
+      "message": "The CI failure seems to be related:\n\nThe requested URL returned error: 404 \nDownload https://repo1.maven.org/maven2/com/gerritforge/global-refdb/3.4.8.6/global-refdb-3.4.8.6.jar\n\nI can download it:\n\n```\n$ wget https://repo1.maven.org/maven2/com/gerritforge/global-refdb/3.4.8.6/global-refdb-3.4.8.6.jar\n2023-06-27 19:26:52 (4.34 MB/s) - ‘global-refdb-3.4.8.6.jar’ saved [77728/77728]\n\n$ sha1sum global-refdb-3.4.8.6.jar\n5b8e943f94c64e3164e0d78f1c27795db7f72a4f  global-refdb-3.4.8.6.jar\n```\n\nBut I\u0027m getting a different SHA1: `5b8e943f94c64e3164e0d78f1c27795db7f72a4f`.\n\nI can also reproduce the failure locally:\n\n```\n\u003e bazel build plugins/multi-site\n[...]\nERROR: Error fetching repository: Traceback (most recent call last):\n\tFile \"/home/davido/projects/gerrit2/tools/bzl/maven_jar.bzl\", line 156, column 13, in _maven_jar_impl\n\t\tfail(\"failed %s: %s\" % (args, out.stderr))\nError in fail: failed [/usr/bin/python3, /home/davido/projects/gerrit2/tools/download_file.py, \"-o\", /home/davido/.cache/bazel/_bazel_davido/5c01f4f713b675540b8b424c5c647f63/external/global-refdb/jar/global-refdb-3.4.8.6.jar, \"-u\", \"MAVEN_CENTRAL:/com/gerritforge/global-refdb/3.4.8.6/global-refdb-3.4.8.6.jar\", \"-v\", \"bb6f47aac55a630afe46d104011fa08d8539384f\"]: Download https://repo1.maven.org/maven2/com/gerritforge/global-refdb/3.4.8.6/global-refdb-3.4.8.6.jar\nhttps://repo1.maven.org/maven2/com/gerritforge/global-refdb/3.4.8.6/global-refdb-3.4.8.6.jar:\nexpected bb6f47aac55a630afe46d104011fa08d8539384f\nreceived 5b8e943f94c64e3164e0d78f1c27795db7f72a4f\n```",
+      "revId": "06090fec40338d1462b962e79023220b2b23dce6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
