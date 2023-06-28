@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80f5ed6d_282798a1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-06-28T14:16:12Z",
+      "side": 1,
+      "message": "nit: non-existing",
+      "range": {
+        "startLine": 7,
+        "startChar": 38,
+        "endLine": 7,
+        "endChar": 49
+      },
+      "revId": "560a9672eaaff821af0b830b08791e5d81010e3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdbacd53_e00988a0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-06-28T14:16:12Z",
+      "side": 1,
+      "message": "nit: line wrap",
+      "range": {
+        "startLine": 14,
+        "startChar": 64,
+        "endLine": 14,
+        "endChar": 74
+      },
+      "revId": "560a9672eaaff821af0b830b08791e5d81010e3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b10465e_c2271c4e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-06-28T14:16:12Z",
+      "side": 1,
+      "message": "nit: remoteRef? maybe more readable?",
+      "range": {
+        "startLine": 125,
+        "startChar": 18,
+        "endLine": 125,
+        "endChar": 19
+      },
+      "revId": "560a9672eaaff821af0b830b08791e5d81010e3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
