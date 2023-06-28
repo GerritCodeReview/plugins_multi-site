@@ -1,5 +1,46 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29a0ad9b_17025cc1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-06-28T11:56:16Z",
+      "side": 1,
+      "message": "Post-merge -1",
+      "revId": "e9ea26f16448a984e01f575cf5c40015c558345c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fff5d9e1_5593715c",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilterTest.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-06-28T11:56:16Z",
+      "side": 1,
+      "message": "The name does not correspond to what the test does.\nThe global-refdb is fully mocked, which means all methods would return `null` or `false`.\n\nIn this case, the `isUpToDate` would return `false`, which means there is a different ref value in the global-refdb. However, the title of the test says that the entry is missing in the global-refdb, which corresponds to a `true` because that\u0027s what the global-refdb returns if an entry is missing.",
+      "range": {
+        "startLine": 129,
+        "startChar": 14,
+        "endLine": 129,
+        "endChar": 59
+      },
+      "revId": "e9ea26f16448a984e01f575cf5c40015c558345c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
