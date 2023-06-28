@@ -33,6 +33,8 @@ public interface RefFixture {
   static final ObjectId AN_OBJECT_ID_1 = new ObjectId(1, 2, 3, 4, 5);
   static final ObjectId AN_OBJECT_ID_2 = new ObjectId(1, 2, 3, 4, 6);
   static final ObjectId AN_OBJECT_ID_3 = new ObjectId(1, 2, 3, 4, 7);
+  static final ObjectId AN_OUTDATED_OBJECT_ID =
+      ObjectId.fromString("da37cb098dd7df4c8662ae8afc1acae5f7567775");
   static final String A_TEST_REF_NAME = "refs/heads/master";
   static final String A_REF_NAME_OF_A_PATCHSET = "refs/changes/01/1/1";
 
