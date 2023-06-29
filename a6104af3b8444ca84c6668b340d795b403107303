@@ -227,6 +227,30 @@
       },
       "revId": "a6104af3b8444ca84c6668b340d795b403107303",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfd7c472_9eb3233f",
+        "filename": "Jenkinsfile",
+        "patchSetId": 1
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-06-29T05:01:12Z",
+      "side": 1,
+      "message": "This is a very good point, because the Eclipse IDE is officially supported for Gerrit development.\n\nRight now, the Python script used to generate Eclipse classpath `tools/eclipse/project.py` has hard coded support for `jgit` module only:\n\n```\n   def import_jgit_sources():\n        classpathentry(\u0027src\u0027, \u0027modules/jgit/org.eclipse.jgit/src\u0027)\n        classpathentry(\u0027src\u0027, \u0027modules/jgit/org.eclipse.jgit/resources\u0027)\n        classpathentry(\u0027src\u0027, \u0027modules/jgit/org.eclipse.jgit.archive/src\u0027,\n            excluding\u003d\u0027org/eclipse/jgit/archive/FormatActivator.java\u0027)\n        classpathentry(\u0027src\u0027, \u0027modules/jgit/org.eclipse.jgit.archive/resources\u0027)\n        classpathentry(\u0027src\u0027, \u0027modules/jgit/org.eclipse.jgit.http.server/src\u0027)\n        classpathentry(\u0027src\u0027, \u0027modules/jgit/org.eclipse.jgit.http.server/resources\u0027)\n        classpathentry(\u0027src\u0027, \u0027modules/jgit/org.eclipse.jgit.junit/src\u0027)\n        classpathentry(\u0027src\u0027, \u0027modules/jgit/org.eclipse.jgit.ssh.apache/src\u0027)\n        classpathentry(\u0027src\u0027, \u0027modules/jgit/org.eclipse.jgit.ssh.apache/resources\u0027)\n\n```\n\nWe would need extend the support to discover custom modules and include the artifacts the in the Eclipse classpath, prior to merging this CL.",
+      "parentUuid": "9a6896ee_8e3e4d8e",
+      "range": {
+        "startLine": 4,
+        "startChar": 15,
+        "endLine": 4,
+        "endChar": 24
+      },
+      "revId": "a6104af3b8444ca84c6668b340d795b403107303",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
