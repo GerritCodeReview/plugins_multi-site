@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73896555_ada41b78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-06-30T08:25:28Z",
+      "side": 1,
+      "message": "Fails to compile:\n```\nplugins/multi-site/src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandler.java:98: error: no suitable method found for index(ChangeNotes)\n      indexer.index(notes);\n```",
+      "revId": "6535423e62578f2f9a9e6b4c1fd079bb88119e18",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
