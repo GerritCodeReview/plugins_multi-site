@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b295d904_a82b1e20",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/ReplicationStatus.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-07-03T22:13:11Z",
+      "side": 1,
+      "message": "\u003e If I understand correctly this will update the callback metric for every KV pair of the map where the value is not zero, and that map can contain other projects too.\n\nWhat do you mean for `other`? This is called for getting the replication lag for *all* projects.\n\n\u003e Shouldn\u0027t we apply the logic only for the project in question (so just for one KV pair)?\n\nWhat is the project in question? The call is called for getting all the projects at once, not just a single one.\n\n\u003e And also, isnt it possible that the lag can fall to zero?\n\nYes, and for all of those the `prune` at L176 will get rid of them.\nWe don\u0027t want to generate metric values for the zeros, because of two reasons:\n1. If the replication lag is zero, we don\u0027t want to take any actions, it\u0027s all fine. We want only to raise alerts if there is a lag.\n2. Both Prometheus and Grafana can deal with an absent metric value and assume a zero. By NOT reporting the zeros we can save a massive amount of data and processing in Grafana.\n\n\u003e Don\u0027t we want to update the metric in that case?\n\nThis is a callback for fetching the value and it is stateless. There isn\u0027t any _update metric_ thing, every time that is invoked, the metricCallback is without values.",
+      "parentUuid": "ac905c6d_d6c2e72f",
+      "revId": "d14cefb1a167194cfb006b6e81a3452fa97a41ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9787865b_856c3eb4",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-06-19T06:53:32Z",
       "side": 1,
       "message": "is this used?",
+      "revId": "d14cefb1a167194cfb006b6e81a3452fa97a41ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c873190_3674e5e6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetrics.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-07-03T22:13:11Z",
+      "side": 1,
+      "message": "Good catch, it isn\u0027t used. Removed.",
+      "parentUuid": "9787865b_856c3eb4",
       "revId": "d14cefb1a167194cfb006b6e81a3452fa97a41ab",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
