@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ce3fa3f_648c30cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-07-14T10:35:27Z",
+      "side": 1,
+      "message": "Re-applying Jacek, Ponch and David\u0027s +2",
+      "revId": "2f57349f59a4749e6bc8bcc2045bccf41be97609",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
