@@ -105,7 +105,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
 
-    new ProjectVersionRefUpdate(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
+    new ProjectVersionRefUpdateImpl(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
         .onEvent(refUpdatedEvent);
 
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
@@ -150,7 +150,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
 
-    new ProjectVersionRefUpdate(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
+    new ProjectVersionRefUpdateImpl(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
         .onEvent(refUpdatedEvent);
 
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
@@ -190,7 +190,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
 
-    new ProjectVersionRefUpdate(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
+    new ProjectVersionRefUpdateImpl(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
         .onEvent(refUpdatedEvent);
 
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
@@ -227,7 +227,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     when(refUpdatedEvent.getRefName()).thenReturn(magicRefName);
     repo.branch(magicRefName).commit().create();
 
-    new ProjectVersionRefUpdate(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
+    new ProjectVersionRefUpdateImpl(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
         .onEvent(refUpdatedEvent);
 
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
@@ -243,7 +243,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
         .thenReturn(new Project.NameKey("aNonExistentProject"));
     when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
 
-    new ProjectVersionRefUpdate(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
+    new ProjectVersionRefUpdateImpl(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
         .onEvent(refUpdatedEvent);
 
     Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
@@ -258,7 +258,7 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
         .thenReturn(Optional.of("123"));
 
     Optional<Long> version =
-        new ProjectVersionRefUpdate(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
+        new ProjectVersionRefUpdateImpl(repoManager, sharedRefDb, gitReferenceUpdated, verLogger)
             .getProjectRemoteVersion(A_TEST_PROJECT_NAME);
 
     assertThat(version.isPresent()).isTrue();
