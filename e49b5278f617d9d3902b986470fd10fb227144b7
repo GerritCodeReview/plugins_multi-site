@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfc2bc47_ede46de5",
+        "filename": "setup_local_env/haproxy-config/haproxy.cfg",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-07-15T12:04:23Z",
+      "side": 1,
+      "message": "Isn\u0027t a single newline enough?",
+      "revId": "e49b5278f617d9d3902b986470fd10fb227144b7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
