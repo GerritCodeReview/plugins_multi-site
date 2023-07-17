@@ -20,7 +20,6 @@ import com.gerritforge.gerrit.globalrefdb.validation.Log4jSharedRefLogger;
 import com.gerritforge.gerrit.globalrefdb.validation.RefUpdateValidator;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbBatchRefUpdate;
-import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbGitRepositoryManager;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRefDatabase;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRefUpdate;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRepository;
@@ -28,22 +27,21 @@ import com.gerritforge.gerrit.globalrefdb.validation.SharedRefLogger;
 import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
 import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.DefaultSharedRefEnforcement;
 import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.SharedRefEnforcement;
-import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.extensions.registration.DynamicItem;
-import com.google.gerrit.server.git.GitRepositoryManager;
+import com.google.gerrit.server.config.RepositoryConfig;
 import com.google.inject.Scopes;
-import com.google.inject.TypeLiteral;
-import com.google.inject.name.Names;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.replication.ReplicationExtensionPointModule;
 import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
 
 public class ValidationModule extends FactoryModule {
   private final Configuration cfg;
+  private final RepositoryConfig repoConfig;
 
-  public ValidationModule(Configuration cfg) {
+  public ValidationModule(Configuration cfg, RepositoryConfig repoConfig) {
     this.cfg = cfg;
+    this.repoConfig = repoConfig;
   }
 
   @Override
@@ -61,13 +59,8 @@ public class ValidationModule extends FactoryModule {
     factory(RefUpdateValidator.Factory.class);
     factory(BatchRefUpdateValidator.Factory.class);
 
-    bind(new TypeLiteral<ImmutableSet<String>>() {})
-        .annotatedWith(Names.named(SharedRefDbGitRepositoryManager.IGNORED_REFS))
-        .toInstance(
-            ImmutableSet.of(
-                ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
-                ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF));
-    bind(GitRepositoryManager.class).to(SharedRefDbGitRepositoryManager.class);
+    install(new RepositoryManagerModule(repoConfig));
+
     DynamicItem.bind(binder(), ReplicationPushFilter.class)
         .to(MultisiteReplicationPushFilter.class);
 
