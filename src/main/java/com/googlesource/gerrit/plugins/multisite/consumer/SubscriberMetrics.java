@@ -14,13 +14,15 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
-import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.metrics.CallbackMetric1;
 import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
+import com.google.gerrit.metrics.Field;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.google.gerrit.server.logging.Metadata;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
@@ -33,7 +35,6 @@ import java.util.regex.Pattern;
 
 @Singleton
 public class SubscriberMetrics extends MultiSiteMetrics {
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String SUBSCRIBER_SUCCESS_COUNTER = "subscriber_msg_consumer_counter";
   private static final String SUBSCRIBER_FAILURE_COUNTER =
       "subscriber_msg_consumer_failure_counter";
@@ -41,11 +42,15 @@ public class SubscriberMetrics extends MultiSiteMetrics {
       "multi_site/subscriber/subscriber_replication_status/sec_behind";
   private static final String REPLICATION_LAG_MSEC =
       "multi_site/subscriber/subscriber_replication_status/msec_behind";
+  private static final String REPLICATION_LAG_MSEC_PROJECT =
+      "multi_site/subscriber/subscriber_replication_status/msec_behind/per_project";
 
   private final Counter1<String> subscriberSuccessCounter;
   private final Counter1<String> subscriberFailureCounter;
   private final ReplicationStatus replicationStatus;
   private static final Pattern isValidMetricNamePattern = Pattern.compile("[a-zA-Z0-9_-]");
+  private static final Field<String> PROJECT_NAME =
+      Field.ofString("project_name", Metadata.Builder::cacheName).build();
 
   @Inject
   public SubscriberMetrics(MetricMaker metricMaker, ReplicationStatus replicationStatus) {
@@ -77,6 +82,16 @@ public class SubscriberMetrics extends MultiSiteMetrics {
             .setGauge()
             .setUnit(Description.Units.MILLISECONDS),
         replicationStatus::getMaxLagMillis);
+
+    CallbackMetric1<String, Long> metrics =
+        metricMaker.newCallbackMetric(
+            SubscriberMetrics.REPLICATION_LAG_MSEC_PROJECT,
+            Long.class,
+            new Description("Per-project replication lag (msec)")
+                .setGauge()
+                .setUnit(Description.Units.MILLISECONDS),
+            PROJECT_NAME);
+    metricMaker.newTrigger(metrics, replicationStatus.replicationLagMetricPerProject(metrics));
   }
 
   /**
