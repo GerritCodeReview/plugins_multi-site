@@ -34,6 +34,7 @@ public class GitModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    bind(ProjectVersionLogger.class).to(Log4jProjectVersionLogger.class);
     if (config.getSharedRefDb().isEnabled()) {
       install(new ValidationModule(config, repoConfig));
     } else {
