@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8545260d_8fd30278",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-07-17T20:23:32Z",
+      "side": 1,
+      "message": "This should be `stable-3.3`.",
+      "revId": "1b59690db15b1d5025bac6b767d327bc6693a73d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
