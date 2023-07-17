@@ -20,7 +20,7 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
-import com.google.gerrit.metrics.Description;
+import com.google.gerrit.metrics.CallbackMetric1;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.CacheModule;
 import com.google.gerrit.server.cache.serialize.JavaCacheSerializer;
@@ -161,26 +161,27 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
     }
   }
 
-  void incrementLagMetric(Project.NameKey projectName) {
-    logger.atFine().log("Creating replication lag metric for project %s", projectName);
-    String sanitizedProjectName = SubscriberMetrics.sanitizeProjectName(projectName.get());
-    metricMaker.newCallbackMetric(
-        String.format("%s_%s", SubscriberMetrics.REPLICATION_LAG_SEC, sanitizedProjectName),
-        Long.class,
-        new Description("Replication lag for project (sec)")
-            .setGauge()
-            .setUnit(Description.Units.SECONDS),
-        () -> getReplicationStatus(projectName.get()));
+  @VisibleForTesting
+  Runnable replicationLagMetricPerProject(CallbackMetric1<String, Long> metricCallback) {
+    return () -> {
+      if (replicationStatusPerProject.isEmpty()) {
+        metricCallback.forceCreate("");
+      } else {
+        replicationStatusPerProject.entrySet().stream()
+            .filter(e -> e.getValue() > 0)
+            .forEach(
+                e ->
+                    metricCallback.set(
+                        SubscriberMetrics.sanitizeProjectName(e.getKey()), e.getValue()));
+        metricCallback.prune();
+      }
+    };
   }
 
   @VisibleForTesting
   public void doUpdateLag(Project.NameKey projectName, Long lag) {
     cache.put(projectName.get(), lag);
     replicationStatusPerProject.put(projectName.get(), lag);
-
-    if (lag > 0) {
-      incrementLagMetric(projectName);
-    }
   }
 
   @VisibleForTesting
