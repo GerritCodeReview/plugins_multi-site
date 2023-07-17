@@ -16,6 +16,24 @@
       "message": "This should be `stable-3.3`.",
       "revId": "1b59690db15b1d5025bac6b767d327bc6693a73d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c41aaaf1_ab93352e",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-07-17T21:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8545260d_8fd30278",
+      "revId": "1b59690db15b1d5025bac6b767d327bc6693a73d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
