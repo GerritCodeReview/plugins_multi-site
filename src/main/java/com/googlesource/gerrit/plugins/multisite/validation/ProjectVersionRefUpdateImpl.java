@@ -1,4 +1,4 @@
-// Copyright (C) 2020 The Android Open Source Project
+// Copyright (C) 2022 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,43 +29,41 @@ import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.IntBlob;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
-import com.googlesource.gerrit.plugins.multisite.ProjectsFilter;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.Set;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
+import org.eclipse.jgit.lib.ObjectInserter;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.RefUpdate;
+import org.eclipse.jgit.lib.Repository;
 
-public interface ProjectVersionRefUpdate {
-
-  String MULTI_SITE_VERSIONING_REF = "refs/multi-site/version";
-  String MULTI_SITE_VERSIONING_VALUE_REF = "refs/multi-site/version/value";
-  Ref NULL_PROJECT_VERSION_REF =
-      new ObjectIdRef.Unpeeled(Ref.Storage.NETWORK, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId());
+public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersionRefUpdate {
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+  private static final Set<RefUpdate.Result> SUCCESSFUL_RESULTS =
+      ImmutableSet.of(RefUpdate.Result.NEW, RefUpdate.Result.FORCED, RefUpdate.Result.NO_CHANGE);
 
   private final GitRepositoryManager gitRepositoryManager;
   private final GitReferenceUpdated gitReferenceUpdated;
   private final ProjectVersionLogger verLogger;
-  private final ProjectsFilter projectsFilter;
 
   protected final SharedRefDatabaseWrapper sharedRefDb;
 
   @Inject
-  public ProjectVersionRefUpdate(
+  public ProjectVersionRefUpdateImpl(
       GitRepositoryManager gitRepositoryManager,
       SharedRefDatabaseWrapper sharedRefDb,
       GitReferenceUpdated gitReferenceUpdated,
-      ProjectVersionLogger verLogger,
-      ProjectsFilter projectsFilter) {
+      ProjectVersionLogger verLogger) {
     this.gitRepositoryManager = gitRepositoryManager;
     this.sharedRefDb = sharedRefDb;
     this.gitReferenceUpdated = gitReferenceUpdated;
     this.verLogger = verLogger;
-    this.projectsFilter = projectsFilter;
   }
 
   @Override
@@ -73,9 +71,7 @@ public interface ProjectVersionRefUpdate {
     logger.atFine().log("Processing event type: " + event.type);
     // Producer of the Event use RefUpdatedEvent to trigger the version update
     if (!Context.isForwardedEvent() && event instanceof RefUpdatedEvent) {
-      if (projectsFilter.matches(event)) {
-        updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
-      }
+      updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
     }
   }
 
@@ -211,6 +207,10 @@ public interface ProjectVersionRefUpdate {
     }
   }
 
+  /* (non-Javadoc)
+   * @see com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate#getProjectLocalVersion(java.lang.String)
+   */
+  @Override
   public Optional<Long> getProjectLocalVersion(String projectName) {
     try (Repository repository =
         gitRepositoryManager.openRepository(Project.NameKey.parse(projectName))) {
@@ -228,6 +228,9 @@ public interface ProjectVersionRefUpdate {
     return Optional.empty();
   }
 
+  /* (non-Javadoc)
+   * @see com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate#getProjectRemoteVersion(java.lang.String)
+   */
   public Optional<Long> getProjectRemoteVersion(String projectName) {
     Optional<String> globalVersion =
         sharedRefDb.get(
