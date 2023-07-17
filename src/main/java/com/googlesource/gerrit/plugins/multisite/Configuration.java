@@ -165,6 +165,13 @@ public class Configuration {
           null,
           SharedRefDbConfiguration.SharedRefDatabase.ENABLE_KEY,
           true);
+      if (cfg instanceof FileBasedConfig) {
+        try {
+          ((FileBasedConfig) cfg).save();
+        } catch (IOException e) {
+          throw new IllegalStateException("Error while enabling global-refdb by default", e);
+        }
+      }
     }
     return cfg;
   }
