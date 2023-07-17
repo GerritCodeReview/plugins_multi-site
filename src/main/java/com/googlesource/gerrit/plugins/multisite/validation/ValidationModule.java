@@ -20,9 +20,7 @@ import com.google.gerrit.server.config.RepositoryConfig;
 import com.google.inject.Scopes;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.LockWrapper;
-import com.googlesource.gerrit.plugins.multisite.Log4jProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.Log4jSharedRefLogger;
-import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.SharedRefDatabaseWrapper;
 import com.googlesource.gerrit.plugins.multisite.SharedRefLogger;
 import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
@@ -46,7 +44,6 @@ public class ValidationModule extends FactoryModule {
 
     bind(SharedRefDatabaseWrapper.class).in(Scopes.SINGLETON);
     bind(SharedRefLogger.class).to(Log4jSharedRefLogger.class);
-    bind(ProjectVersionLogger.class).to(Log4jProjectVersionLogger.class);
     factory(LockWrapper.Factory.class);
 
     factory(MultiSiteRepository.Factory.class);
