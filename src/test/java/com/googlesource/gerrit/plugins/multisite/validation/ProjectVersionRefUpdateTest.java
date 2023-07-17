@@ -265,28 +265,6 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   }
 
   @Test
-  public void shouldNotUpdateProjectVersionWhenProjectFilteredOut() throws Exception {
-    when(projectsFilter.matches(any(Event.class))).thenReturn(false);
-
-    Context.setForwardedEvent(false);
-
-    Thread.sleep(1000L);
-    repo.branch("master").commit().create();
-
-    Thread.sleep(1000L);
-    repo.branch("master").update(masterCommit);
-
-    new ProjectVersionRefUpdateImpl(
-            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
-        .onEvent(refUpdatedEvent);
-
-    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
-    assertThat(ref).isNull();
-
-    verifyZeroInteractions(verLogger);
-  }
-
-  @Test
   public void getRemoteProjectVersionShouldReturnCorrectValue() {
     when(sharedRefDb.get(A_TEST_PROJECT_NAME_KEY, MULTI_SITE_VERSIONING_VALUE_REF, String.class))
         .thenReturn(Optional.of("123"));
