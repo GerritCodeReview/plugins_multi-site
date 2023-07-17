@@ -23,10 +23,11 @@ import org.apache.log4j.Logger;
 public abstract class LibModuleLogFile {
 
   public LibModuleLogFile(SystemLog systemLog, String logName, Layout layout) {
-    AsyncAppender asyncAppender = systemLog.createAsyncAppender(logName, layout, true, true);
     Logger logger = LogManager.getLogger(logName);
-    logger.removeAppender(logName);
-    logger.addAppender(asyncAppender);
-    logger.setAdditivity(false);
+    if (logger.getAppender(logName) == null) {
+      AsyncAppender asyncAppender = systemLog.createAsyncAppender(logName, layout, true, true);
+      logger.addAppender(asyncAppender);
+      logger.setAdditivity(false);
+    }
   }
 }
