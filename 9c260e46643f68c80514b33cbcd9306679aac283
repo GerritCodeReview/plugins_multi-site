@@ -16,6 +16,24 @@
       "message": "Shouldn\u0027t we have a newline at the end of this file?",
       "revId": "9c260e46643f68c80514b33cbcd9306679aac283",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f6188dc_a15d42c8",
+        "filename": "setup_local_env/haproxy-config/haproxy.cfg",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-07-17T20:44:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "255bdde0_e8805c3c",
+      "revId": "9c260e46643f68c80514b33cbcd9306679aac283",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
