@@ -1,9 +1,9 @@
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
-import com.google.common.base.Supplier;
-import com.google.gerrit.extensions.registration.RegistrationHandle;
+import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.DisabledMetricMaker;
+import com.google.gerrit.metrics.Field;
 import org.junit.Ignore;
 
 @Ignore
@@ -15,14 +15,9 @@ public class CallbackMetricMaker extends DisabledMetricMaker {
   }
 
   @Override
-  public <V> RegistrationHandle newCallbackMetric(
-      String name, Class<V> valueClass, Description desc, Supplier<V> trigger) {
+  public <F1> Counter1<F1> newCounter(String name, Description desc, Field<F1> field1) {
     callbackMetricCounter += 1;
-    return new RegistrationHandle() {
-
-      @Override
-      public void remove() {}
-    };
+    return super.newCounter(name, desc, field1);
   }
 
   public void resetCallbackMetricCounter() {
