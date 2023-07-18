@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd9bcc07_137b2948",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-07-18T07:56:18Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we say `into master`? Or is the convention that we drop that part out if we merge to matser?",
+      "revId": "404a92d4727ff4bc6e8f9babcabfeef70037246c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
