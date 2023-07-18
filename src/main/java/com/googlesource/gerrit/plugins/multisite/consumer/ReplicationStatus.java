@@ -20,6 +20,8 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.extensions.events.LifecycleListener;
 import com.google.gerrit.extensions.events.ProjectDeletedListener;
+import com.google.gerrit.metrics.CallbackMetric1;
+import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.cache.CacheModule;
 import com.google.gerrit.server.cache.serialize.JavaCacheSerializer;
 import com.google.gerrit.server.cache.serialize.StringCacheSerializer;
@@ -76,6 +78,8 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
 
   private final Configuration config;
 
+  private final MetricMaker metricMaker;
+
   @Inject
   public ReplicationStatus(
       @Named(REPLICATION_STATUS) Cache<String, Long> cache,
@@ -83,16 +87,22 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
       ProjectVersionLogger verLogger,
       ProjectCache projectCache,
       @Named(REPLICATION_STATUS) ScheduledExecutorService statusScheduler,
-      Configuration config) {
+      Configuration config,
+      MetricMaker metricMaker) {
     this.cache = cache;
     this.projectVersionRefUpdate = projectVersionRefUpdate;
     this.verLogger = verLogger;
     this.projectCache = projectCache;
     this.statusScheduler = statusScheduler;
     this.config = config;
+    this.metricMaker = metricMaker;
   }
 
   public Long getMaxLag() {
+    return getMaxLagMillis() / 1000;
+  }
+
+  public Long getMaxLagMillis() {
     Collection<Long> lags = replicationStatusPerProject.values();
     if (lags.isEmpty()) {
       return 0L;
@@ -149,6 +159,23 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
       verLogger.logDeleted(projectName);
       logger.atFine().log("Removed project '%s' from replication lag metrics", projectName);
     }
+  }
+
+  @VisibleForTesting
+  Runnable replicationLagMetricPerProject(CallbackMetric1<String, Long> metricCallback) {
+    return () -> {
+      if (replicationStatusPerProject.isEmpty()) {
+        metricCallback.forceCreate("");
+      } else {
+        replicationStatusPerProject.entrySet().stream()
+            .filter(e -> e.getValue() > 0)
+            .forEach(
+                e ->
+                    metricCallback.set(
+                        SubscriberMetrics.sanitizeProjectName(e.getKey()), e.getValue()));
+        metricCallback.prune();
+      }
+    };
   }
 
   @VisibleForTesting

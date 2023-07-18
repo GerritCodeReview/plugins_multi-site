@@ -14,13 +14,15 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
-import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.metrics.CallbackMetric1;
 import com.google.gerrit.metrics.Counter1;
 import com.google.gerrit.metrics.Description;
+import com.google.gerrit.metrics.Field;
 import com.google.gerrit.metrics.MetricMaker;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.ProjectEvent;
 import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.google.gerrit.server.logging.Metadata;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.MultiSiteMetrics;
@@ -28,19 +30,27 @@ import com.googlesource.gerrit.plugins.replication.events.ProjectDeletionReplica
 import com.googlesource.gerrit.plugins.replication.events.RefReplicatedEvent;
 import com.googlesource.gerrit.plugins.replication.events.RefReplicationDoneEvent;
 import com.googlesource.gerrit.plugins.replication.events.ReplicationScheduledEvent;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Singleton
 public class SubscriberMetrics extends MultiSiteMetrics {
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String SUBSCRIBER_SUCCESS_COUNTER = "subscriber_msg_consumer_counter";
   private static final String SUBSCRIBER_FAILURE_COUNTER =
       "subscriber_msg_consumer_failure_counter";
-  private static final String REPLICATION_LAG_SEC =
+  public static final String REPLICATION_LAG_SEC =
       "multi_site/subscriber/subscriber_replication_status/sec_behind";
+  private static final String REPLICATION_LAG_MSEC =
+      "multi_site/subscriber/subscriber_replication_status/msec_behind";
+  private static final String REPLICATION_LAG_MSEC_PROJECT =
+      "multi_site/subscriber/subscriber_replication_status/msec_behind/per_project";
 
   private final Counter1<String> subscriberSuccessCounter;
   private final Counter1<String> subscriberFailureCounter;
   private final ReplicationStatus replicationStatus;
+  private static final Pattern isValidMetricNamePattern = Pattern.compile("[a-zA-Z0-9_-]");
+  private static final Field<String> PROJECT_NAME =
+      Field.ofString("project_name", Metadata.Builder::cacheName).build();
 
   @Inject
   public SubscriberMetrics(MetricMaker metricMaker, ReplicationStatus replicationStatus) {
@@ -65,6 +75,51 @@ public class SubscriberMetrics extends MultiSiteMetrics {
         Long.class,
         new Description("Replication lag (sec)").setGauge().setUnit(Description.Units.SECONDS),
         replicationStatus::getMaxLag);
+    metricMaker.newCallbackMetric(
+        REPLICATION_LAG_MSEC,
+        Long.class,
+        new Description("Replication lag (msec)")
+            .setGauge()
+            .setUnit(Description.Units.MILLISECONDS),
+        replicationStatus::getMaxLagMillis);
+
+    CallbackMetric1<String, Long> metrics =
+        metricMaker.newCallbackMetric(
+            SubscriberMetrics.REPLICATION_LAG_MSEC_PROJECT,
+            Long.class,
+            new Description("Per-project replication lag (msec)")
+                .setGauge()
+                .setUnit(Description.Units.MILLISECONDS),
+            PROJECT_NAME);
+    metricMaker.newTrigger(metrics, replicationStatus.replicationLagMetricPerProject(metrics));
+  }
+
+  /**
+   * Ensures that the generated metric is compatible with prometheus metric names, as the set of
+   * values that represent a valid metric name are different from the ones that represent a valid
+   * project name. Main differences: - All _ are replaced with __ - All characters that aren't a
+   * letter(uppercase or lowercase) or a hyphen(-) are replaced with `_<hex_code>` This is to avoid
+   * all chances of name clashes when modifying a project name.
+   *
+   * @param name name of the metric to sanitize
+   * @return sanitized metric name
+   */
+  public static String sanitizeProjectName(String name) {
+    StringBuilder sanitizedName = new StringBuilder();
+    for (int i = 0; i < name.length(); i++) {
+      Character c = name.charAt(i);
+      Matcher matcher = isValidMetricNamePattern.matcher(String.valueOf(c));
+      if (matcher.find()) {
+        if (c == '_') {
+          sanitizedName.append("__");
+        } else {
+          sanitizedName.append(c);
+        }
+      } else {
+        sanitizedName.append("_").append(Integer.toHexString((int) c));
+      }
+    }
+    return sanitizedName.toString();
   }
 
   public void incrementSubscriberConsumedMessage() {
