@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "657a6d59_12786939",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/GitModule.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-07-18T07:34:44Z",
+      "side": 1,
+      "message": "This is not used, you can probably omit it.",
+      "range": {
+        "startLine": 40,
+        "startChar": 21,
+        "endLine": 40,
+        "endChar": 33
+      },
+      "revId": "0458384e2e4e3bff3dfd9e4489d09c200763796d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
