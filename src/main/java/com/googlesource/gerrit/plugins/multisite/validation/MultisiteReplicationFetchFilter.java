@@ -65,7 +65,8 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
           .filter(
               ref -> {
                 Optional<ObjectId> localRefOid =
-                    getSha1IfUpToDateWithGlobalRefDb(repository, projectName, refDb, ref, true);
+                    getLocalSha1IfEqualsToExistingGlobalRefDb(
+                        repository, projectName, refDb, ref, true);
                 localRefOid.ifPresent(
                     oid ->
                         repLog.info(
@@ -111,7 +112,7 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
         .orElse(false);
   }
 
-  private Optional<ObjectId> getSha1IfUpToDateWithGlobalRefDb(
+  private Optional<ObjectId> getLocalSha1IfEqualsToExistingGlobalRefDb(
       Repository repository,
       String projectName,
       RefDatabase refDb,
@@ -120,14 +121,19 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
     try {
       Optional<ObjectId> localRefObjectId =
           Optional.ofNullable(refDb.exactRef(ref))
-              .filter(r -> sharedRefDb.isUpToDate(Project.nameKey(projectName), r))
+              .filter(
+                  r ->
+                      sharedRefDb
+                          .get(Project.nameKey(projectName), r.getName(), String.class)
+                          .map(sharedRefObjId -> r.getObjectId().getName().equals(sharedRefObjId))
+                          .orElse(false))
               .map(Ref::getObjectId);
 
       if (localRefObjectId.isEmpty() && retryWithRandomSleep) {
         randomSleepForMitigatingConditionWhereLocalRefHaveJustBeenChanged(
             projectName, localRefObjectId, ref);
         localRefObjectId =
-            getSha1IfUpToDateWithGlobalRefDb(repository, projectName, refDb, ref, false);
+            getLocalSha1IfEqualsToExistingGlobalRefDb(repository, projectName, refDb, ref, false);
       }
 
       return localRefObjectId;
