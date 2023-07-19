@@ -22,6 +22,30 @@
       },
       "revId": "9d6c04e6933dc9758f5d877ce21576a78713cb5f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bafd5664_f566fe07",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-07-19T23:44:35Z",
+      "side": 1,
+      "message": "It is a fallback download, in `||` if the previous one fails.",
+      "parentUuid": "f5c79243_26d583db",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 116
+      },
+      "revId": "9d6c04e6933dc9758f5d877ce21576a78713cb5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
