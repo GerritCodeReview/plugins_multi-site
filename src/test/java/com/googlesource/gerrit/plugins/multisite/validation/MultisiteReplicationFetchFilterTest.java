@@ -34,6 +34,7 @@ import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.LocalDiskRepositoryTestCase;
 import org.eclipse.jgit.junit.TestRepository;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.revwalk.RevCommit;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -68,10 +69,18 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
 
   @Test
   public void shouldReturnEmptyRefsWhenAllUpToDate() throws Exception {
-    newRef("refs/heads/foo");
-    newRef("refs/heads/bar");
-    Set<String> refs = Set.of("refs/heads/foo", "refs/heads/bar");
-    doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
+    String fooRefName = "refs/heads/foo";
+    ObjectId fooObjectId = newRef(fooRefName).getId();
+    String barRefName = "refs/heads/bar";
+    ObjectId barObjectId = newRef(barRefName).getId();
+    Set<String> refs = Set.of(fooRefName, barRefName);
+
+    doReturn(Optional.of(fooObjectId.getName()))
+        .when(sharedRefDatabaseMock)
+        .get(eq(projectName), eq(fooRefName), eq(String.class));
+    doReturn(Optional.of(barObjectId.getName()))
+        .when(sharedRefDatabaseMock)
+        .get(eq(projectName), eq(barRefName), eq(String.class));
 
     MultisiteReplicationFetchFilter fetchFilter =
         new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
@@ -84,13 +93,19 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
   public void shouldFilterOutOneUpToDateRef() throws Exception {
     String refUpToDate = "refs/heads/uptodate";
     String outdatedRef = "refs/heads/outdated";
-    newRef(refUpToDate);
-    newRef(outdatedRef);
+    ObjectId upToDateObjectId = newRef(refUpToDate).getId();
+    newRef(outdatedRef).getId();
     Set<String> refsToFetch = Set.of(refUpToDate, outdatedRef);
-    SharedRefDatabaseWrapper sharedRefDatabase = new FakeSharedRefDatabaseWrapper(outdatedRef);
+
+    doReturn(Optional.of(upToDateObjectId.getName()))
+        .when(sharedRefDatabaseMock)
+        .get(eq(projectName), eq(refUpToDate), eq(String.class));
+    doReturn(Optional.of(AN_OUTDATED_OBJECT_ID.getName()))
+        .when(sharedRefDatabaseMock)
+        .get(eq(projectName), eq(outdatedRef), eq(String.class));
 
     MultisiteReplicationFetchFilter fetchFilter =
-        new MultisiteReplicationFetchFilter(sharedRefDatabase, gitRepositoryManager, config);
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).containsExactly(outdatedRef);
@@ -99,10 +114,13 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
   @Test
   public void shouldLoadLocalVersionAndFilterOut() throws Exception {
     String temporaryOutdated = "refs/heads/temporaryOutdated";
-    newRef(temporaryOutdated);
+    RevCommit localRef = newRef(temporaryOutdated);
 
     Set<String> refsToFetch = Set.of(temporaryOutdated);
-    doReturn(false).doReturn(true).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
+    doReturn(Optional.empty())
+        .doReturn(Optional.of(localRef.getId().getName()))
+        .when(sharedRefDatabaseMock)
+        .get(eq(projectName), eq(temporaryOutdated), eq(String.class));
 
     MultisiteReplicationFetchFilter fetchFilter =
         new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
@@ -110,7 +128,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
 
     assertThat(filteredRefsToFetch).isEmpty();
 
-    verify(sharedRefDatabaseMock, times(2)).isUpToDate(any(), any());
+    verify(sharedRefDatabaseMock, times(2)).get(any(), any(), any());
   }
 
   @Test
@@ -119,20 +137,28 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     newRef(temporaryOutdated);
 
     Set<String> refsToFetch = Set.of(temporaryOutdated);
-    doReturn(false).doReturn(false).when(sharedRefDatabaseMock).isUpToDate(eq(projectName), any());
+    doReturn(Optional.of(AN_OUTDATED_OBJECT_ID.getName()))
+        .doReturn(Optional.of(AN_OUTDATED_OBJECT_ID.getName()))
+        .when(sharedRefDatabaseMock)
+        .get(eq(projectName), eq(temporaryOutdated), eq(String.class));
 
     MultisiteReplicationFetchFilter fetchFilter =
         new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).hasSize(1);
-    verify(sharedRefDatabaseMock, times(2)).isUpToDate(any(), any());
+    verify(sharedRefDatabaseMock, times(3))
+        .get(eq(projectName), eq(temporaryOutdated), eq(String.class));
   }
 
   @Test
   public void shouldNotFilterOutWhenMissingInTheSharedRefDb() throws Exception {
     String temporaryOutdated = "refs/heads/temporaryOutdated";
     newRef(temporaryOutdated);
+
+    doReturn(Optional.empty())
+        .when(sharedRefDatabaseMock)
+        .get(eq(projectName), eq(temporaryOutdated), eq(String.class));
 
     Set<String> refsToFetch = Set.of(temporaryOutdated);
 
@@ -151,7 +177,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     Set<String> refsToFetch = Set.of(temporaryOutdated);
     doReturn(Optional.of(ObjectId.zeroId().getName()))
         .when(sharedRefDatabaseMock)
-        .get(eq(projectName), any(), any());
+        .get(eq(projectName), eq(temporaryOutdated), eq(String.class));
 
     MultisiteReplicationFetchFilter fetchFilter =
         new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
@@ -208,7 +234,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     assertThat(filteredRefsToFetch).hasSize(0);
   }
 
-  private void newRef(String refName) throws Exception {
-    repo.branch(refName).commit().create();
+  private RevCommit newRef(String refName) throws Exception {
+    return repo.branch(refName).commit().create();
   }
 }
