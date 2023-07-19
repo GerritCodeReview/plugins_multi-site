@@ -99,3 +99,7 @@ documentation.
 * Subscriber replication lag (sec behind the producer)
 
 `metric=site/multi_site/subscriber/subscriber_replication_status/sec_behind, type=com.google.gerrit.metrics.dropwizard.CallbackMetricImpl`
+
+* Subscriber replication lag (millisec behind the producer)
+
+`metric=site/multi_site/subscriber/subscriber_replication_status/msec_behind, type=com.google.gerrit.metrics.dropwizard.CallbackMetricImpl`

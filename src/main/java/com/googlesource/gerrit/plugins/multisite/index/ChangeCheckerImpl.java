@@ -17,7 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.index;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.HumanComment;
 import com.google.gerrit.exceptions.StorageException;
-import com.google.gerrit.server.CommentsUtil;
+import com.google.gerrit.server.DraftCommentsReader;
 import com.google.gerrit.server.change.ChangeFinder;
 import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.git.GitRepositoryManager;
@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 public class ChangeCheckerImpl implements ChangeChecker {
   private static final Logger log = LoggerFactory.getLogger(ChangeCheckerImpl.class);
   private final GitRepositoryManager gitRepoMgr;
-  private final CommentsUtil commentsUtil;
+  private final DraftCommentsReader draftCommentsReader;
   private final OneOffRequestContext oneOffReqCtx;
   private final String changeId;
   private final ChangeFinder changeFinder;
@@ -57,14 +57,14 @@ public class ChangeCheckerImpl implements ChangeChecker {
   @Inject
   public ChangeCheckerImpl(
       GitRepositoryManager gitRepoMgr,
-      CommentsUtil commentsUtil,
+      DraftCommentsReader draftCommentsReader,
       ChangeFinder changeFinder,
       OneOffRequestContext oneOffReqCtx,
       @GerritInstanceId String instanceId,
       @Assisted String changeId) {
     this.changeFinder = changeFinder;
     this.gitRepoMgr = gitRepoMgr;
-    this.commentsUtil = commentsUtil;
+    this.draftCommentsReader = draftCommentsReader;
     this.oneOffReqCtx = oneOffReqCtx;
     this.changeId = changeId;
     this.instanceId = instanceId;
@@ -184,7 +184,8 @@ public class ChangeCheckerImpl implements ChangeChecker {
     Change change = notes.getChange();
     Timestamp changeTs = Timestamp.from(change.getLastUpdatedOn());
     try {
-      for (HumanComment comment : commentsUtil.draftByChange(changeNotes.get())) {
+      for (HumanComment comment :
+          draftCommentsReader.getDraftsByChangeForAllAuthors(changeNotes.get())) {
         Timestamp commentTs = comment.writtenOn;
         changeTs = commentTs.after(changeTs) ? commentTs : changeTs;
       }
