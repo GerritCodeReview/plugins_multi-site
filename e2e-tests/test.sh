@@ -16,15 +16,16 @@
 
 LOCATION="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 LOCAL_ENV="$( cd "${LOCATION}/../setup_local_env" >/dev/null 2>&1 && pwd )"
-GERRIT_BRANCH=stable-3.6
+GERRIT_BRANCH=stable-3.7
 GERRIT_CI=https://gerrit-ci.gerritforge.com/view/Plugins-$GERRIT_BRANCH/job
 LAST_BUILD=lastSuccessfulBuild/artifact/bazel-bin/plugins
 DEF_MULTISITE_LOCATION=${LOCATION}/../../../bazel-bin/plugins/multi-site/multi-site.jar
-DEF_GERRIT_IMAGE=3.4.0-centos8
+DEF_GERRIT_IMAGE=3.7.4
 DEF_GERRIT_HEALTHCHECK_START_PERIOD=60s
 DEF_GERRIT_HEALTHCHECK_INTERVAL=5s
 DEF_GERRIT_HEALTHCHECK_TIMEOUT=5s
 DEF_GERRIT_HEALTHCHECK_RETRIES=5
+COMMON_PLUGINS_LIST="websession-broker healthcheck zookeeper-refdb"
 
 function check_application_requirements {
   type java >/dev/null 2>&1 || { echo >&2 "Require java but it's not installed. Aborting."; exit 1; }
@@ -108,6 +109,19 @@ function check_result {
     cat "${DEPLOYMENT_LOCATION}/site.log"
     return 1
   fi
+
+  return 0
+}
+
+function download_plugin {
+  local PLUGIN_NAME=$1
+
+  echo "Downloading $PLUGIN_NAME plugin $GERRIT_BRANCH onto $TARGET_DIR"
+  wget $GERRIT_CI/plugin-$PLUGIN_NAME-bazel-$GERRIT_BRANCH/$LAST_BUILD/$PLUGIN_NAME/$PLUGIN_NAME.jar \
+    -O $COMMON_PLUGINS/$PLUGIN_NAME.jar || \
+  wget $GERRIT_CI/plugin-$PLUGIN_NAME-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/$PLUGIN_NAME/$PLUGIN_NAME.jar \
+    -O $COMMON_PLUGINS/$PLUGIN_NAME.jar || \
+  { echo >&2 "Cannot download $PLUGIN_NAME plugin: Check internet connection. Aborting"; exit 1; }
 
   return 0
 }
@@ -222,27 +236,14 @@ echo "Deployment location: [${DEPLOYMENT_LOCATION}]"
 echo "Downloading common plugins"
 COMMON_PLUGINS=${DEPLOYMENT_LOCATION}/common_plugins
 mkdir -p ${COMMON_PLUGINS}
+for plugin in $COMMON_PLUGINS_LIST; do download_plugin $plugin; done
 
 echo "plugin location[${MULTISITE_LIB_LOCATION}]"
 cp -f $MULTISITE_LIB_LOCATION $COMMON_PLUGINS/multi-site.jar  >/dev/null 2>&1 || \
   { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 
-echo "Downloading websession-broker plugin $GERRIT_BRANCH"
-wget $GERRIT_CI/plugin-websession-broker-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
-  -O $COMMON_PLUGINS/websession-broker.jar || { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Aborting"; exit 1; }
-
-echo "Downloading healthcheck plugin $GERRIT_BRANCH"
-wget $GERRIT_CI/plugin-healthcheck-bazel-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
-  -O $COMMON_PLUGINS/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Aborting"; exit 1; }
-
-echo "Downloading zookeeper plugin $GERRIT_BRANCH"
-wget $GERRIT_CI/plugin-zookeeper-refdb-bazel-$GERRIT_BRANCH/$LAST_BUILD/zookeeper-refdb/zookeeper-refdb.jar \
-  -O $COMMON_PLUGINS/zookeeper-refdb.jar || { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Aborting"; exit 1; }
-
 if [ "$BROKER_TYPE" = "kafka" ]; then
-  echo "Downloading events-kafka plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-events-kafka-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-kafka/events-kafka.jar \
-    -O $COMMON_PLUGINS/events-kafka.jar || { echo >&2 "Cannot download events-kafka plugin: Check internet connection. Aborting"; exit 1; }
+  download_plugin events-kafka $COMMON_PLUGINS
   BROKER_PORT=9092
   BROKER_HOST=kafka
   BROKER_PLUGIN=events-kafka
