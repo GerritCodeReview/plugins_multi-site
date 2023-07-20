@@ -21,6 +21,7 @@ GERRIT_CI=https://gerrit-ci.gerritforge.com/view/Plugins-$GERRIT_BRANCH/job
 LAST_BUILD=lastSuccessfulBuild/artifact/bazel-bin/plugins
 EVENTS_BROKER_VER=`grep 'com.gerritforge:events-broker' $(dirname $0)/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
 GLOBAL_REFDB_VER=`grep 'com.gerritforge:global-refdb' $(dirname $0)/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
+COMMON_PLUGINS_LIST="healthcheck zookeeper-refdb metrics-reporter-prometheus pull-replication"
 
 function check_application_requirements {
   type haproxy >/dev/null 2>&1 || { echo >&2 "Require haproxy but it's not installed. Aborting."; exit 1; }
@@ -240,6 +241,19 @@ function prepare_broker_data {
   fi
 }
 
+function download_plugin {
+  local PLUGIN_NAME=$1
+
+  echo "Downloading $PLUGIN_NAME plugin $GERRIT_BRANCH onto $TARGET_DIR"
+  wget $GERRIT_CI/plugin-$PLUGIN_NAME-bazel-$GERRIT_BRANCH/$LAST_BUILD/$PLUGIN_NAME/$PLUGIN_NAME.jar \
+    -O $DEPLOYMENT_LOCATION/$PLUGIN_NAME.jar || \
+  wget $GERRIT_CI/plugin-$PLUGIN_NAME-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/$PLUGIN_NAME/$PLUGIN_NAME.jar \
+    -O $DEPLOYMENT_LOCATION/$PLUGIN_NAME.jar || \
+  { echo >&2 "Cannot download $PLUGIN_NAME plugin: Check internet connection. Aborting"; exit 1; }
+
+  return 0
+}
+
 while [ $# -ne 0 ]
 do
 case "$1" in
@@ -437,28 +451,14 @@ if [ -z $MULTISITE_LIB_LOCATION ];then
 else
   cp -f $MULTISITE_LIB_LOCATION $DEPLOYMENT_LOCATION/multi-site.jar  >/dev/null 2>&1 || { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 fi
+
+for plugin in $COMMON_PLUGINS_LIST; do download_plugin $plugin; done
+
 if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
-  echo "Downloading websession-broker plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-websession-broker-bazel-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
-  -O $DEPLOYMENT_LOCATION/websession-broker.jar || \
-  wget $GERRIT_CI/plugin-websession-broker-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
-  -O $DEPLOYMENT_LOCATION/websession-broker.jar || \
-  { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
-ing"; exit 1; }
-  wget $GERRIT_CI/plugin-healthcheck-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
-  -O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
-ing"; exit 1; }
+  download_plugin websession-broker
 else
   echo "Without the websession-broker; user login via haproxy will fail."
 fi
-
-echo "Downloading zookeeper plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-zookeeper-refdb-bazel-$GERRIT_BRANCH/$LAST_BUILD/zookeeper-refdb/zookeeper-refdb.jar \
-  -O $DEPLOYMENT_LOCATION/zookeeper-refdb.jar || \
-  wget $GERRIT_CI/plugin-zookeeper-refdb-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/zookeeper-refdb/zookeeper-refdb.jar \
-  -O $DEPLOYMENT_LOCATION/zookeeper-refdb.jar || \
-  { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Abort\
-ing"; exit 1; }
 
 echo "Downloading global-refdb library $GERRIT_BRANCH"
   wget https://repo1.maven.org/maven2/com/gerritforge/global-refdb/$GLOBAL_REFDB_VER/global-refdb-$GLOBAL_REFDB_VER.jar \
@@ -471,43 +471,16 @@ echo "Downloading events-broker library $GERRIT_BRANCH"
 ing"; exit 1; }
 
 if [ "$BROKER_TYPE" = "kafka" ]; then
-echo "Downloading events-kafka plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-events-kafka-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-kafka/events-kafka.jar \
-  -O $DEPLOYMENT_LOCATION/events-kafka.jar || \
-  wget $GERRIT_CI/plugin-events-kafka-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/events-kafka/events-kafka.jar \
-  -O $DEPLOYMENT_LOCATION/events-kafka.jar || \
-  { echo >&2 "Cannot download events-kafka plugin: Check internet connection. Abort\
-ing"; exit 1; }
+  download_plugin events-kafka
 fi
 
 if [ "$BROKER_TYPE" = "kinesis" ]; then
-echo "Downloading events-aws-kinesis plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-events-aws-kinesis-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-aws-kinesis/events-aws-kinesis.jar \
-  -O $DEPLOYMENT_LOCATION/events-aws-kinesis.jar || \
-  wget $GERRIT_CI/plugin-events-aws-kinesis-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/events-aws-kinesis/events-aws-kinesis.jar \
-  -O $DEPLOYMENT_LOCATION/events-aws-kinesis.jar || \
-  { echo >&2 "Cannot download events-aws-kinesis plugin: Check internet connection. Abort\
-ing"; exit 1; }
+  download_plugin events-aws-kinesis
 fi
-
 
 if [ "$BROKER_TYPE" = "gcloud-pubsub" ]; then
-echo "Downloading events-gcloud-pubsub plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-events-gcloud-pubsub-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-gcloud-pubsub/events-gcloud-pubsub.jar \
-  -O $DEPLOYMENT_LOCATION/events-gcloud-pubsub.jar || \
-  wget $GERRIT_CI/plugin-events-gcloud-pubsub-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/events-gcloud-pubsub/events-gcloud-pubsub.jar \
-  -O $DEPLOYMENT_LOCATION/events-gcloud-pubsub.jar || \
-  { echo >&2 "Cannot download events-gcloud-pubsub plugin: Check internet connection. Abort\
-ing"; exit 1; }
+  download_plugin events-gcloud-pubsub
 fi
-
-echo "Downloading metrics-reporter-prometheus plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-metrics-reporter-prometheus-bazel-$GERRIT_BRANCH/$LAST_BUILD/metrics-reporter-prometheus/metrics-reporter-prometheus.jar \
-  -O $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar || \
-  wget $GERRIT_CI/plugin-metrics-reporter-prometheus-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/metrics-reporter-prometheus/metrics-reporter-prometheus.jar \
-  -O $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar || \
-  { echo >&2 "Cannot download metrics-reporter-prometheus plugin: Check internet connection. Abort\
-ing"; exit 1; }
 
 if [ "$REPLICATION_TYPE" = "ssh" ];then
   echo "Using 'SSH' replication type"
