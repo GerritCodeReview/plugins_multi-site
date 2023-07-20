@@ -19,6 +19,12 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 GERRIT_BRANCH=stable-3.6
 GERRIT_CI=https://gerrit-ci.gerritforge.com/view/Plugins-$GERRIT_BRANCH/job
 LAST_BUILD=lastSuccessfulBuild/artifact/bazel-bin/plugins
+<<<<<<< PATCH SET (f51bef DRY out the download of common plugins on setup.sh)
+EVENTS_BROKER_VER=`grep 'com.gerritforge:events-broker' $(dirname $0)/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
+GLOBAL_REFDB_VER=`grep 'com.gerritforge:global-refdb' $(dirname $0)/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
+COMMON_PLUGINS_LIST="healthcheck zookeeper-refdb metrics-reporter-prometheus pull-replication"
+=======
+>>>>>>> BASE      (1302ee Merge "Merge branch 'stable-3.5' into stable-3.6" into stabl)
 
 function check_application_requirements {
   type haproxy >/dev/null 2>&1 || { echo >&2 "Require haproxy but it's not installed. Aborting."; exit 1; }
@@ -224,6 +230,19 @@ function prepare_broker_data {
   fi
 }
 
+<<<<<<< PATCH SET (f51bef DRY out the download of common plugins on setup.sh)
+function download_plugin {
+  local PLUGIN_NAME=$1
+
+  echo "Downloading $PLUGIN_NAME plugin $GERRIT_BRANCH onto $TARGET_DIR"
+  wget $GERRIT_CI/plugin-$PLUGIN_NAME-bazel-$GERRIT_BRANCH/$LAST_BUILD/$PLUGIN_NAME/$PLUGIN_NAME.jar \
+    -O $DEPLOYMENT_LOCATION/$PLUGIN_NAME.jar || \
+  wget $GERRIT_CI/plugin-$PLUGIN_NAME-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/$PLUGIN_NAME/$PLUGIN_NAME.jar \
+    -O $DEPLOYMENT_LOCATION/$PLUGIN_NAME.jar || \
+  { echo >&2 "Cannot download $PLUGIN_NAME plugin: Check internet connection. Aborting"; exit 1; }
+
+  return 0
+=======
 function download_artifact_from_ci {
   local artifact_name=$1
   local prefix=${2:-plugin}
@@ -232,6 +251,7 @@ function download_artifact_from_ci {
   wget $GERRIT_CI/$prefix-$artifact_name-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/$artifact_name/$artifact_name.jar \
   -O $DEPLOYMENT_LOCATION/$artifact_name.jar || \
   { echo >&2 "Cannot download $artifact_name $prefix: Check internet connection. Aborting"; exit 1; }
+>>>>>>> BASE      (1302ee Merge "Merge branch 'stable-3.5' into stable-3.6" into stabl)
 }
 
 while [ $# -ne 0 ]
@@ -431,42 +451,80 @@ else
   cp -f $MULTISITE_LIB_LOCATION $DEPLOYMENT_LOCATION/multi-site.jar  >/dev/null 2>&1 || { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 fi
 
+<<<<<<< PATCH SET (f51bef DRY out the download of common plugins on setup.sh)
+for plugin in $COMMON_PLUGINS_LIST; do download_plugin $plugin; done
+=======
 echo "Copying events-broker library"
   cp -f $EVENTS_BROKER_LIB_LOCATION $DEPLOYMENT_LOCATION/events-broker.jar  >/dev/null 2>&1 || { echo >&2 "$EVENTS_BROKER_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 
 echo "Copying global-refdb library"
   cp -f $GLOBAL_REFDB_LIB_LOCATION $DEPLOYMENT_LOCATION/global-refdb.jar  >/dev/null 2>&1 || { echo >&2 "$GLOBAL_REFDB_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+>>>>>>> BASE      (1302ee Merge "Merge branch 'stable-3.5' into stable-3.6" into stabl)
 
 if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
+<<<<<<< PATCH SET (f51bef DRY out the download of common plugins on setup.sh)
+  download_plugin websession-broker
+=======
   echo "Downloading websession-broker plugin $GERRIT_BRANCH"
   download_artifact_from_ci websession-broker
   download_artifact_from_ci healthcheck
 
+>>>>>>> BASE      (1302ee Merge "Merge branch 'stable-3.5' into stable-3.6" into stabl)
 else
   echo "Without the websession-broker; user login via haproxy will fail."
 fi
 
+<<<<<<< PATCH SET (f51bef DRY out the download of common plugins on setup.sh)
+echo "Downloading global-refdb library $GERRIT_BRANCH"
+  wget https://repo1.maven.org/maven2/com/gerritforge/global-refdb/$GLOBAL_REFDB_VER/global-refdb-$GLOBAL_REFDB_VER.jar \
+  -O $DEPLOYMENT_LOCATION/global-refdb.jar || { echo >&2 "Cannot download global-refdb library: Check internet connection. Abort\
+ing"; exit 1; }
+
+echo "Downloading events-broker library $GERRIT_BRANCH"
+  wget https://repo1.maven.org/maven2/com/gerritforge/events-broker/$EVENTS_BROKER_VER/events-broker-$EVENTS_BROKER_VER.jar \
+  -O $DEPLOYMENT_LOCATION/events-broker.jar || { echo >&2 "Cannot download events-broker library: Check internet connection. Abort\
+ing"; exit 1; }
+=======
 echo "Downloading zookeeper plugin $GERRIT_BRANCH"
   download_artifact_from_ci zookeeper-refdb
+>>>>>>> BASE      (1302ee Merge "Merge branch 'stable-3.5' into stable-3.6" into stabl)
 
 if [ "$BROKER_TYPE" = "kafka" ]; then
+<<<<<<< PATCH SET (f51bef DRY out the download of common plugins on setup.sh)
+  download_plugin events-kafka
+=======
 echo "Downloading events-kafka plugin $GERRIT_BRANCH"
   download_artifact_from_ci events-kafka
+>>>>>>> BASE      (1302ee Merge "Merge branch 'stable-3.5' into stable-3.6" into stabl)
 fi
 
 if [ "$BROKER_TYPE" = "kinesis" ]; then
+<<<<<<< PATCH SET (f51bef DRY out the download of common plugins on setup.sh)
+  download_plugin events-aws-kinesis
+=======
 echo "Downloading events-aws-kinesis plugin $GERRIT_BRANCH"
   download_artifact_from_ci events-aws-kinesis
+>>>>>>> BASE      (1302ee Merge "Merge branch 'stable-3.5' into stable-3.6" into stabl)
 fi
-
 
 if [ "$BROKER_TYPE" = "gcloud-pubsub" ]; then
+<<<<<<< PATCH SET (f51bef DRY out the download of common plugins on setup.sh)
+  download_plugin events-gcloud-pubsub
+=======
 echo "Downloading events-gcloud-pubsub plugin $GERRIT_BRANCH"
   download_artifact_from_ci events-gcloud-pubsub
+>>>>>>> BASE      (1302ee Merge "Merge branch 'stable-3.5' into stable-3.6" into stabl)
 fi
 
+<<<<<<< PATCH SET (f51bef DRY out the download of common plugins on setup.sh)
+if [ "$REPLICATION_TYPE" = "ssh" ];then
+  echo "Using 'SSH' replication type"
+  echo "Make sure ~/.ssh/authorized_keys and ~/.ssh/known_hosts are configured correctly"
+fi
+=======
 echo "Downloading metrics-reporter-prometheus plugin $GERRIT_BRANCH"
   download_artifact_from_ci metrics-reporter-prometheus
+>>>>>>> BASE      (1302ee Merge "Merge branch 'stable-3.5' into stable-3.6" into stabl)
 
 echo "Downloading pull-replication plugin $GERRIT_BRANCH"
   download_artifact_from_ci pull-replication
