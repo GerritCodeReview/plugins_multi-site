@@ -17,7 +17,7 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 GERRIT_BRANCH=stable-3.5
-GERRIT_CI=https://gerrit-ci.gerritforge.com/view/Plugins-$GERRIT_BRANCH/job
+GERRIT_CI=https://archive-ci.gerritforge.com/view/Plugins-$GERRIT_BRANCH/job
 LAST_BUILD=lastSuccessfulBuild/artifact/bazel-bin/plugins
 EVENTS_BROKER_VER=`grep 'com.gerritforge:events-broker' $(dirname $0)/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
 GLOBAL_REFDB_VER=`grep 'com.gerritforge:global-refdb' $(dirname $0)/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
@@ -445,7 +445,7 @@ if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
   -O $DEPLOYMENT_LOCATION/websession-broker.jar || \
   { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
 ing"; exit 1; }
-  wget $GERRIT_CI/plugin-healthcheck-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
+  wget $GERRIT_CI/plugin-healthcheck-bazel-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
   -O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
 ing"; exit 1; }
 else
@@ -614,8 +614,12 @@ prepare_broker_data
 
 echo "Re-deploying configuration files"
 deploy_config_files $GERRIT_1_HOSTNAME $GERRIT_1_HTTPD_PORT $GERRIT_1_SSHD_PORT $GERRIT_2_HOSTNAME $GERRIT_2_HTTPD_PORT $GERRIT_2_SSHD_PORT
+echo "Setting bearer token in gerrit site 1"
+git config -f $LOCATION_TEST_SITE_1/etc/secure.config auth.bearertoken some-bearer-token
 echo "Starting gerrit site 1"
 $LOCATION_TEST_SITE_1/bin/gerrit.sh restart
+echo "Setting bearer token in gerrit site 2"
+git config -f $LOCATION_TEST_SITE_2/etc/secure.config auth.bearertoken some-bearer-token
 echo "Starting gerrit site 2"
 $LOCATION_TEST_SITE_2/bin/gerrit.sh restart
 
