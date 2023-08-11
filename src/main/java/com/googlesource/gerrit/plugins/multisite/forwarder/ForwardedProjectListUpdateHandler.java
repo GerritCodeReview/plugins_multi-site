@@ -15,6 +15,9 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.extensions.api.changes.NotifyHandling;
+import com.google.gerrit.extensions.events.NewProjectCreatedListener;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -34,16 +37,27 @@ public class ForwardedProjectListUpdateHandler {
       LoggerFactory.getLogger(ForwardedProjectListUpdateHandler.class);
 
   private final ProjectCache projectCache;
+  private final DynamicSet<NewProjectCreatedListener> projectCreatedListeners;
 
   @Inject
-  ForwardedProjectListUpdateHandler(ProjectCache projectCache) {
+  ForwardedProjectListUpdateHandler(
+      ProjectCache projectCache, DynamicSet<NewProjectCreatedListener> projectCreatedListeners) {
     this.projectCache = projectCache;
+    this.projectCreatedListeners = projectCreatedListeners;
   }
 
   /**
-   * Update the project list, update will not be forwarded to the other node
+   * Update the project list.
    *
-   * @param event the content of Project liste update event to add or remove.
+   * <p>For new project creation, fire a project-created event to force the relevant listeners to
+   * handle the event. Any `NewProjectCreatedListener`s in multi-site will probably want to ignore
+   * the event, however to other listeners (eg those defined in HA plugin) this is important as it
+   * will forward the update to the other node, and therefore the newly-created project will be
+   * visible in the other master node's project list.
+   *
+   * <p>For project list remove events, the update will not be forwarded to the other node.
+   *
+   * @param event the content of Project list update event to add or remove.
    * @throws IOException
    */
   public void update(ProjectListUpdateEvent event) throws IOException {
@@ -55,6 +69,24 @@ public class ForwardedProjectListUpdateHandler {
         log.debug("Removed {} from project list", event.projectName);
       } else {
         projectCache.onCreateProject(projectKey);
+        NewProjectCreatedListener.Event newProjectCreatedEvent =
+            new NewProjectCreatedListener.Event() {
+              @Override
+              public String getHeadName() {
+                return null;
+              }
+
+              @Override
+              public String getProjectName() {
+                return event.projectName;
+              }
+
+              @Override
+              public NotifyHandling getNotify() {
+                return null;
+              }
+            };
+        projectCreatedListeners.forEach(l -> l.onNewProjectCreated(newProjectCreatedEvent));
         log.debug("Added {} to project list", event.projectName);
       }
     } finally {

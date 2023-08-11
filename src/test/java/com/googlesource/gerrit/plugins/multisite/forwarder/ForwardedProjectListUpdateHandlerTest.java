@@ -16,10 +16,13 @@ package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.extensions.events.NewProjectCreatedListener;
+import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.server.project.ProjectCache;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
 import org.junit.Before;
@@ -40,11 +43,14 @@ public class ForwardedProjectListUpdateHandlerTest {
   private static final Project.NameKey PROJECT_KEY = Project.nameKey(PROJECT_NAME);
   @Rule public ExpectedException exception = ExpectedException.none();
   @Mock private ProjectCache projectCacheMock;
+  @Mock private NewProjectCreatedListener projectCreatedListenerMock;
   private ForwardedProjectListUpdateHandler handler;
 
   @Before
   public void setUp() throws Exception {
-    handler = new ForwardedProjectListUpdateHandler(projectCacheMock);
+    DynamicSet<NewProjectCreatedListener> listeners = DynamicSet.emptySet();
+    listeners.add("multi-site", projectCreatedListenerMock);
+    handler = new ForwardedProjectListUpdateHandler(projectCacheMock, listeners);
   }
 
   @Test
@@ -141,5 +147,11 @@ public class ForwardedProjectListUpdateHandlerTest {
     assertThat(Context.isForwardedEvent()).isFalse();
 
     verify(projectCacheMock).remove(PROJECT_KEY);
+  }
+
+  @Test
+  public void shouldNotifyListenersOnProjectListAdd() throws Exception {
+    handler.update(new ProjectListUpdateEvent(PROJECT_NAME, false, INSTANCE_ID));
+    verify(projectCreatedListenerMock).onNewProjectCreated(any());
   }
 }
