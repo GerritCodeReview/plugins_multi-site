@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21694e8e_98a22285",
+        "filename": "setup_local_env/configs/replication.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-08-11T19:53:25Z",
+      "side": 0,
+      "message": "Maybe I\u0027m lacking some context, but how does removal of this section relate to the change? It\u0027s not mentioned in the commit description.",
+      "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faf67286_5db950ab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-08-11T19:53:25Z",
+      "side": 1,
+      "message": "Long line - should be wrapped.",
+      "revId": "445991926c72468ed49a60ce1e88d44123e1d6d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94293a41_a33a5d53",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-08-11T19:53:25Z",
+      "side": 1,
+      "message": "This looks incorrectly indented.",
+      "revId": "445991926c72468ed49a60ce1e88d44123e1d6d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
