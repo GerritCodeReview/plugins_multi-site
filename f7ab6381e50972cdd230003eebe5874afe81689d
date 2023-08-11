@@ -16,6 +16,23 @@
       "message": "One thing I am not too sure about, is that the `StreamEventsApiListener` will also be notified, will this be a problem?",
       "revId": "f7ab6381e50972cdd230003eebe5874afe81689d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94a445c8_27e0c4bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-08-11T14:45:15Z",
+      "side": 1,
+      "message": "I have tested this by using a multi-site setup locally, with HA, pull-replication and a kafka broker in the middle. Site 1 has 2 nodes, they share the filesystem via NFS. Site 2 has one node. Following the change, when a project is created in the site 2 node, it is visible in both nodes of site 1.",
+      "revId": "f7ab6381e50972cdd230003eebe5874afe81689d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
