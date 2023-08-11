@@ -142,6 +142,23 @@
       "message": "This looks like the wrong solution to the problem: it looks like an HA problem, not a multi-site plugin issue.",
       "revId": "f7ab6381e50972cdd230003eebe5874afe81689d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e04860f4_16ae3478",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-08-11T16:09:14Z",
+      "side": 1,
+      "message": "After discussing this with Marcin, this is definitely the wrong fix to the wrong component. I typically do not use -2, but this is one of the cases where it is better to stop this hack and make sure is not merged.\n\nFeel free to reach out to me for having more background on the issue.",
+      "revId": "f7ab6381e50972cdd230003eebe5874afe81689d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
