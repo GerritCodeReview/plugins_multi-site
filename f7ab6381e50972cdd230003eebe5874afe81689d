@@ -1,6 +1,98 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "16496d6c_9b23bbe7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-08-11T15:04:21Z",
+      "side": 1,
+      "message": "HA on one of the side? on both sites?",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 29
+      },
+      "revId": "f7ab6381e50972cdd230003eebe5874afe81689d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf3dab97_087b2555",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-08-11T15:04:21Z",
+      "side": 1,
+      "message": "That is correct, because the internal forwarding between the nodes in the clusters is not managed by multi-site but the HA.",
+      "range": {
+        "startLine": 13,
+        "startChar": 11,
+        "endLine": 13,
+        "endChar": 55
+      },
+      "revId": "f7ab6381e50972cdd230003eebe5874afe81689d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "911febf1_7abdcefc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-08-11T15:04:21Z",
+      "side": 1,
+      "message": "That is done by the cache eviction forwarding mechanism in the HA. Multi-site should not care about the internal implementation details on how HA is aligning their nodes, but only notifying across sites.",
+      "range": {
+        "startLine": 14,
+        "startChar": 9,
+        "endLine": 14,
+        "endChar": 67
+      },
+      "revId": "f7ab6381e50972cdd230003eebe5874afe81689d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a44f15d_6e1618ce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-08-11T15:04:21Z",
+      "side": 1,
+      "message": "This hack is telling me that this is the wrong solution to the problem. We should look into why the cache eviction isn\u0027t propagated by the HA and fixing the problem there IMHO.",
+      "range": {
+        "startLine": 20,
+        "startChar": 22,
+        "endLine": 22,
+        "endChar": 68
+      },
+      "revId": "f7ab6381e50972cdd230003eebe5874afe81689d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "88bf13d3_b4bf613c",
@@ -31,6 +123,23 @@
       "writtenOn": "2023-08-11T14:45:15Z",
       "side": 1,
       "message": "I have tested this by using a multi-site setup locally, with HA, pull-replication and a kafka broker in the middle. Site 1 has 2 nodes, they share the filesystem via NFS. Site 2 has one node. Following the change, when a project is created in the site 2 node, it is visible in both nodes of site 1.",
+      "revId": "f7ab6381e50972cdd230003eebe5874afe81689d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbb7d27d_d69a25f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-08-11T15:04:21Z",
+      "side": 1,
+      "message": "This looks like the wrong solution to the problem: it looks like an HA problem, not a multi-site plugin issue.",
       "revId": "f7ab6381e50972cdd230003eebe5874afe81689d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
