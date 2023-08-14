@@ -86,6 +86,24 @@
       "parentUuid": "f6943487_f7c925a6",
       "revId": "ebc9ae752030e141f4d29aa413b9be62d42bdab7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41af0888_678a4259",
+        "filename": "setup_local_env/configs/secure.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-14T09:51:24Z",
+      "side": 1,
+      "message": "If you are happy we should add in the README.md that git is a requirement.",
+      "parentUuid": "3e5a0633_9e7eea65",
+      "revId": "ebc9ae752030e141f4d29aa413b9be62d42bdab7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
