@@ -52,6 +52,24 @@
       "parentUuid": "ce28363d_0731b7f9",
       "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05dd91b5_19816f6b",
+        "filename": "setup_local_env/configs/replication.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-14T07:36:54Z",
+      "side": 0,
+      "message": "I am happy to do that but are we missing some configuration that could be relevant?",
+      "parentUuid": "92fb6a47_e53c177c",
+      "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
