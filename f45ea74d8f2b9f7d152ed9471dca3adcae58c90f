@@ -70,6 +70,24 @@
       "parentUuid": "92fb6a47_e53c177c",
       "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e63fb396_9a2e6cdf",
+        "filename": "setup_local_env/configs/replication.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-14T10:06:00Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "05dd91b5_19816f6b",
+      "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
