@@ -88,6 +88,24 @@
       "parentUuid": "05dd91b5_19816f6b",
       "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8857c612_4a9359fd",
+        "filename": "setup_local_env/configs/replication.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-08-14T15:54:58Z",
+      "side": 0,
+      "message": "Maybe obvious to some, but I still don\u0027t understand why removing the replication section fixes this issue. The description has been amended to state what was done, but not why it was done\n\nAs I understand it, we were just missing a bearer token, and this was added in a separate configuration section.",
+      "parentUuid": "e63fb396_9a2e6cdf",
+      "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
