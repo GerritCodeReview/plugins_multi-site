@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d75b531_eb57e430",
+        "filename": "setup_local_env/configs/replication.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-14T09:31:51Z",
+      "side": 1,
+      "message": "I think the standard is always to leave a new line at the end of the file.",
+      "parentUuid": "1db76eb6_2f88bd5a",
+      "revId": "ebc9ae752030e141f4d29aa413b9be62d42bdab7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6943487_f7c925a6",
