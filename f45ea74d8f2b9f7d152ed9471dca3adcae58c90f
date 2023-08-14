@@ -16,6 +16,24 @@
       "message": "Maybe I\u0027m lacking some context, but how does removal of this section relate to the change? It\u0027s not mentioned in the commit description.",
       "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce28363d_0731b7f9",
+        "filename": "setup_local_env/configs/replication.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-14T07:12:41Z",
+      "side": 0,
+      "message": "It is true that is not part of the commit description but now that you raised the comment I am not quite sure if I should leave it as it was before and tackle it in another change. After a conversation with @ponch we decided to leave just pull replication and remove replication but maybe it is not that simple and there are other implications or even other properties to be defined.",
+      "parentUuid": "21694e8e_98a22285",
+      "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
