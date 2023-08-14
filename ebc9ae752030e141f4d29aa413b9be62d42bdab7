@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6943487_f7c925a6",
+        "filename": "setup_local_env/configs/secure.config",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-08-14T07:38:25Z",
+      "side": 1,
+      "message": "I think you should also add the `registerEmailPrivateKey` for correctness. It is missing from the current config and I think it is wrong.\n\nYou can add it here and explain in the comment why you are adding it here even if it doesn\u0027t look like is related to this change or do it in a separate change.",
+      "revId": "ebc9ae752030e141f4d29aa413b9be62d42bdab7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
