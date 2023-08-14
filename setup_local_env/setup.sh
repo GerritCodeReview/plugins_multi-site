@@ -445,7 +445,7 @@ if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
   -O $DEPLOYMENT_LOCATION/websession-broker.jar || \
   { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
 ing"; exit 1; }
-  wget $GERRIT_CI/plugin-healthcheck-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
+  wget $GERRIT_CI/plugin-healthcheck-bazel-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
   -O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
 ing"; exit 1; }
 else
@@ -614,8 +614,12 @@ prepare_broker_data
 
 echo "Re-deploying configuration files"
 deploy_config_files $GERRIT_1_HOSTNAME $GERRIT_1_HTTPD_PORT $GERRIT_1_SSHD_PORT $GERRIT_2_HOSTNAME $GERRIT_2_HTTPD_PORT $GERRIT_2_SSHD_PORT
+echo "Remove replication plugin from gerrit site 1"
+rm $LOCATION_TEST_SITE_1/plugins/replication.jar
 echo "Starting gerrit site 1"
 $LOCATION_TEST_SITE_1/bin/gerrit.sh restart
+echo "Remove replication plugin from gerrit site 2"
+rm $LOCATION_TEST_SITE_2/plugins/replication.jar
 echo "Starting gerrit site 2"
 $LOCATION_TEST_SITE_2/bin/gerrit.sh restart
 
