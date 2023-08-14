@@ -16,6 +16,24 @@
       "message": "I would say \"Fix local environment setup: replication miss-configuration\"\n\nStating the problem was with replication it will make it easier to look up.",
       "revId": "a555d3afcfd479fe3252022dcb24a55bd66e5a45",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3071b9a1_98658036",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-14T13:03:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51dbc31d_fac8bc92",
+      "revId": "a555d3afcfd479fe3252022dcb24a55bd66e5a45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
