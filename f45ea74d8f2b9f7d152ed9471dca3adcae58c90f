@@ -34,6 +34,24 @@
       "parentUuid": "21694e8e_98a22285",
       "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92fb6a47_e53c177c",
+        "filename": "setup_local_env/configs/replication.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-08-14T07:35:12Z",
+      "side": 0,
+      "message": "I would just amend the commit message. I think what we are aiming for with this change is fixing the replication configuration, which translates in:\n* adjust pull-replication configuration (i.e.: adding secret for bearer token)\n* remove push-replication config",
+      "parentUuid": "ce28363d_0731b7f9",
+      "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
