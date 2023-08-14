@@ -106,6 +106,24 @@
       "parentUuid": "e63fb396_9a2e6cdf",
       "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cefc7374_9f4f9a8c",
+        "filename": "setup_local_env/configs/replication.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-14T16:16:39Z",
+      "side": 0,
+      "message": "the situation was:\n1. pull-replication plugin was not working because the lack of bearer token\n2. some CI/CD urls were not correct.\n\nFrom previous conversations, the fact of having `replication` and `pull-replication` plugins configured at the same time was no ideal because they are kind of mutual exclusive. For that reason we removed the replication configuration and the replication.jar from the plugins folder.",
+      "parentUuid": "8857c612_4a9359fd",
+      "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
