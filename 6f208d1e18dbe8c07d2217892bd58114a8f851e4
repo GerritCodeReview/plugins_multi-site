@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30005493_b46e0cc0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-15T09:35:44Z",
+      "side": 1,
+      "message": "@dariusjokilehto@gmail.com as you suggested we should fix this spelling mistake but this time I will leave it like this to avoid confusion whenever we do the merge up from stable-3.4 to stable-3.5 because in stable-3.5 we already have the title of the commit with the spelling mistake.",
+      "revId": "6f208d1e18dbe8c07d2217892bd58114a8f851e4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
