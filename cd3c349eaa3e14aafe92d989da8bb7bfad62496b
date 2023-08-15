@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "521b4e83_99c3bfba",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-08-15T11:24:57Z",
+      "side": 1,
+      "message": "Re-opening, this hasn\u0027t been done as far as I can see.",
+      "parentUuid": "39150149_8ae5e9be",
+      "range": {
+        "startLine": 7,
+        "startChar": 41,
+        "endLine": 7,
+        "endChar": 45
+      },
+      "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dba3a9c6_ff0218fb",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -132,6 +156,24 @@
       "side": 1,
       "message": "The `replication.jar` is removed from the `plugins folder` because the `replication plugin` is not used so it makes no sense to keep it.",
       "parentUuid": "8a270915_82a38867",
+      "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c67777e_0ded05e2",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-08-15T11:24:57Z",
+      "side": 1,
+      "message": "Re-opening - yes, I can see that. I\u0027m saying, can we not download them at all? What\u0027s the point of downloading them and then deleting them?",
+      "parentUuid": "a837be7c_b1a457c7",
       "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
