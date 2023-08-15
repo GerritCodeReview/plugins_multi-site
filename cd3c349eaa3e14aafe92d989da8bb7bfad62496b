@@ -59,6 +59,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccce5d3b_26fc4206",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-15T08:43:28Z",
+      "side": 1,
+      "message": "Definitively I will add more detail to that line.",
+      "parentUuid": "b88a37c6_06c7c6bd",
+      "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a270915_82a38867",
@@ -72,6 +90,24 @@
       "writtenOn": "2023-08-15T08:04:55Z",
       "side": 1,
       "message": "Does this mean our setup script starts up gerrit (incorrectly, i.e. with replication), then deletes the jar and restarts it? Isn\u0027t there a way to just start this up correctly?",
+      "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a837be7c_b1a457c7",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-15T08:43:28Z",
+      "side": 1,
+      "message": "The `replication.jar` is removed from the `plugins folder` because the `replication plugin` is not used so it makes no sense to keep it.",
+      "parentUuid": "8a270915_82a38867",
       "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
