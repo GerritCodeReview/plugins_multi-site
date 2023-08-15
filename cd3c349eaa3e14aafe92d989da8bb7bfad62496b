@@ -218,6 +218,24 @@
       "parentUuid": "2c67777e_0ded05e2",
       "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41c21584_9a3d186d",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-08-15T11:48:59Z",
+      "side": 1,
+      "message": "Ah, thanks for explaining.\n\nWe still configure the replication plugin in this script though, no? At a glance I see us setting `get_replication_url`, as well creating some softlinks, which will point at non-existent files. Shouldn\u0027t we remove these too?",
+      "parentUuid": "f265b711_1838521c",
+      "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
