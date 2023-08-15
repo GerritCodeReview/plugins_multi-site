@@ -72,6 +72,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8967767_4cc016c7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-08-15T11:26:54Z",
+      "side": 1,
+      "message": "Missed the other comment addressing this issue. Fair enough, closing.",
+      "parentUuid": "521b4e83_99c3bfba",
+      "range": {
+        "startLine": 7,
+        "startChar": 41,
+        "endLine": 7,
+        "endChar": 45
+      },
+      "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dba3a9c6_ff0218fb",
