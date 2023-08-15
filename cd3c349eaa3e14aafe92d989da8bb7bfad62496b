@@ -236,6 +236,24 @@
       "parentUuid": "f265b711_1838521c",
       "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21143739_cecaade2",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-15T11:56:01Z",
+      "side": 1,
+      "message": "That method is just initialising variables but having said that those variables are not going to be used so they should be removed. I guess that maybe I should remove this in stable-3.5 and cherry pick against stable-3.4 after this change, unless that there is a better way of doing it.",
+      "parentUuid": "41c21584_9a3d186d",
+      "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
