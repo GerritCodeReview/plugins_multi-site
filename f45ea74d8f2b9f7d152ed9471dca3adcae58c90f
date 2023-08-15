@@ -124,6 +124,24 @@
       "parentUuid": "8857c612_4a9359fd",
       "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4989f9df_4bf1f427",
+        "filename": "setup_local_env/configs/replication.config",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-08-15T08:18:02Z",
+      "side": 0,
+      "message": "Ok, thanks for explaining.",
+      "parentUuid": "cefc7374_9f4f9a8c",
+      "revId": "f45ea74d8f2b9f7d152ed9471dca3adcae58c90f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
