@@ -272,6 +272,24 @@
       "parentUuid": "21143739_cecaade2",
       "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bae9d03d_6b016ca7",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-08-15T12:26:28Z",
+      "side": 1,
+      "message": "Maybe it makes sense to have a follow-up change that removes unused code/variables. Could be an opportunity to have a quick scan for other unused code. Then we could do the change on stable-3.4 and merge up.",
+      "parentUuid": "476bec19_97f43143",
+      "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
