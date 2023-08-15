@@ -200,6 +200,24 @@
       "parentUuid": "a837be7c_b1a457c7",
       "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f265b711_1838521c",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-15T11:42:35Z",
+      "side": 1,
+      "message": "If you do `java -jar gerrit-3.4.0.war ls` you can see that replication is a core plugin (https://gerrit-review.googlesource.com/Documentation/config-plugins.html#core-plugins)\n\n```\nplugins/plugin-manager.jar\nplugins/replication.jar\nplugins/singleusergroup.jar\nplugins/delete-project.jar\nplugins/download-commands.jar\nplugins/reviewnotes.jar\nplugins/webhooks.jar\nplugins/hooks.jar\nplugins/gitiles.jar\nplugins/codemirror-editor.jar\nplugins/commit-message-length-validator.jar\n```\n\nCurrently when we execute the command init we use the property `--install-all-plugins`:\n```\n--install-all-plugins\nAutomatically install all plugins from gerrit.war without asking. T his option also works in batch mode. This option cannot be supplied alongside --install-plugin\n```\n\n\nWe could use `--install-plugin`:\n```\n--install-plugin\nAutomatically install plugin with given name without asking. This option also works in batch mode. This option may be supplied more than once to install multiple plugins. This option cannot be supplied alongside --install-all-plugins.\n```\n\nAnd we could have a init command like this:\n\n```\njava -jar /tmp/gerrit.war init --batch \\\n --install-plugin commit-message-length-validator \\\n --install-plugin download-commands \\\n --install-plugin hooks \\\n --install-plugin replication \\\n --install-plugin reviewnotes \\\n --install-plugin singleusergroup \\\n --no-auto-start -d $GERRIT_SITE\n```\n\nAnd install only the core plugins that we are interested. The problem with this approach is that from one version to another the list of core plugins might change so it would be much harder to maintain. In my opinion it is not worth it.",
+      "parentUuid": "2c67777e_0ded05e2",
+      "revId": "cd3c349eaa3e14aafe92d989da8bb7bfad62496b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
