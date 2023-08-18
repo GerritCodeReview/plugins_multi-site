@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "631cfd11_f9212a71",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-18T15:15:03Z",
+      "side": 1,
+      "message": "E2E with the local set up:\n- Reindex accounts upon pull-replication\n- pull replication plugin",
+      "revId": "06d188d5d664ccd1eacc6082b5d0259fa6bc1110",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
