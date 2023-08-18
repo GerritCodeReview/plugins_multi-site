@@ -16,6 +16,23 @@
       "message": "It is possible that I have forgotten to remove some code/variables.",
       "revId": "e8f1f8c78c448bfb20a7773ec699d225b2f50849",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88544537_671d7359",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-08-18T07:38:12Z",
+      "side": 1,
+      "message": "This and the line below should also be removed.",
+      "revId": "e8f1f8c78c448bfb20a7773ec699d225b2f50849",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

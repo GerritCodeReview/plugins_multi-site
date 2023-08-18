@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cf7cfb6_41a9d089",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-08-18T07:38:12Z",
+      "side": 0,
+      "message": "This doesn\u0027t look like cleanup but a functional change, no? Was this there incorrectly the first time around? Maybe should be part of a separate change?",
+      "range": {
+        "startLine": 154,
+        "startChar": 136,
+        "endLine": 154,
+        "endChar": 157
+      },
+      "revId": "dcf2453c5683bd7a06dc2a713776f99179564c76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f3209da_aaabaf1b",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-08-18T07:38:12Z",
+      "side": 0,
+      "message": "Same as above.",
+      "range": {
+        "startLine": 158,
+        "startChar": 136,
+        "endLine": 158,
+        "endChar": 157
+      },
+      "revId": "dcf2453c5683bd7a06dc2a713776f99179564c76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
