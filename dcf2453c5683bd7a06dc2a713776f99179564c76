@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c86aeb1c_d5abb2e6",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-18T08:43:20Z",
+      "side": 0,
+      "message": "It is cleanup. Line 81:\n```\n export REPLICATION_LOCATION_TEST_SITE\u003d$6\n```\nit has been removed because it is not needed anymore therefore the parameter in the 6th place does need to be set.",
+      "parentUuid": "1cf7cfb6_41a9d089",
+      "range": {
+        "startLine": 154,
+        "startChar": 136,
+        "endLine": 154,
+        "endChar": 157
+      },
+      "revId": "dcf2453c5683bd7a06dc2a713776f99179564c76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0f3209da_aaabaf1b",
         "filename": "setup_local_env/setup.sh",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2023-08-18T07:38:12Z",
       "side": 0,
       "message": "Same as above.",
+      "range": {
+        "startLine": 158,
+        "startChar": 136,
+        "endLine": 158,
+        "endChar": 157
+      },
+      "revId": "dcf2453c5683bd7a06dc2a713776f99179564c76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d85d3cbb_7bb8660d",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-18T08:43:20Z",
+      "side": 0,
+      "message": "same as above",
+      "parentUuid": "0f3209da_aaabaf1b",
       "range": {
         "startLine": 158,
         "startChar": 136,

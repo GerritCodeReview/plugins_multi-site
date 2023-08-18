@@ -33,6 +33,24 @@
       "message": "This and the line below should also be removed.",
       "revId": "e8f1f8c78c448bfb20a7773ec699d225b2f50849",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84f89187_c50665c1",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-08-18T08:43:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88544537_671d7359",
+      "revId": "e8f1f8c78c448bfb20a7773ec699d225b2f50849",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
