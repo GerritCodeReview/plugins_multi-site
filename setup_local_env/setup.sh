@@ -35,18 +35,6 @@ function check_application_requirements {
   fi
 }
 
-function get_replication_url {
-  REPLICATION_LOCATION_TEST_SITE=$1
-  REPLICATION_HOSTNAME=$2
-  USER=$REPLICATION_SSH_USER
-
-  if [ "$REPLICATION_TYPE" = "file" ];then
-    echo "url = file://$REPLICATION_LOCATION_TEST_SITE/git/#{name}#.git"
-  elif [ "$REPLICATION_TYPE" = "ssh" ];then
-    echo "url = ssh://$USER@$REPLICATION_HOSTNAME:$REPLICATION_LOCATION_TEST_SITE/git/#{name}#.git"
-  fi
-}
-
 function get_pull_replication_api_url {
   REPLICATION_HOSTNAME=$1
 
@@ -78,13 +66,11 @@ function copy_config_files {
     export LOCATION_TEST_SITE=$3
     export GERRIT_SSHD_PORT=$4
     export REPLICATION_HTTPD_PORT=$5
-    export REPLICATION_LOCATION_TEST_SITE=$6
-    export GERRIT_HOSTNAME=$7
-    export REPLICATION_HOSTNAME=$8
-    export REMOTE_DEBUG_PORT=$9
-    export INSTANCE_ID=${10}
-    export REPLICA_INSTANCE_ID=${11}
-    export REPLICATION_URL=$(get_replication_url $REPLICATION_LOCATION_TEST_SITE $REPLICATION_HOSTNAME)
+    export GERRIT_HOSTNAME=$6
+    export REPLICATION_HOSTNAME=$7
+    export REMOTE_DEBUG_PORT=$8
+    export INSTANCE_ID=${9}
+    export REPLICA_INSTANCE_ID=${10}
     export PULL_REPLICATION_URL=$(get_pull_replication_url $REPLICATION_HOSTNAME)
     export PULL_REPLICATION_API_URL=$(get_pull_replication_api_url $REPLICATION_HOSTNAME)
 
@@ -151,11 +137,11 @@ function deploy_config_files {
   GERRIT_SITE2_INSTANCE_ID="instance-2"
 
   # Set config SITE1
-  copy_config_files $CONFIG_TEST_SITE_1 $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_SSHD_PORT $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE1_REMOTE_DEBUG_PORT $GERRIT_SITE1_INSTANCE_ID $GERRIT_SITE2_INSTANCE_ID
+  copy_config_files $CONFIG_TEST_SITE_1 $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_SSHD_PORT $GERRIT_SITE2_HTTPD_PORT $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE1_REMOTE_DEBUG_PORT $GERRIT_SITE1_INSTANCE_ID $GERRIT_SITE2_INSTANCE_ID
 
 
   # Set config SITE2
-  copy_config_files $CONFIG_TEST_SITE_2 $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE2_SSHD_PORT $GERRIT_SITE1_HTTPD_PORT $LOCATION_TEST_SITE_1 $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE2_REMOTE_DEBUG_PORT $GERRIT_SITE2_INSTANCE_ID $GERRIT_SITE1_INSTANCE_ID
+  copy_config_files $CONFIG_TEST_SITE_2 $GERRIT_SITE2_HTTPD_PORT $LOCATION_TEST_SITE_2 $GERRIT_SITE2_SSHD_PORT $GERRIT_SITE1_HTTPD_PORT $GERRIT_SITE1_HOSTNAME $GERRIT_SITE2_HOSTNAME $GERRIT_SITE2_REMOTE_DEBUG_PORT $GERRIT_SITE2_INSTANCE_ID $GERRIT_SITE1_INSTANCE_ID
 }
 
 function is_docker_desktop {
@@ -264,8 +250,6 @@ case "$1" in
     echo "[--gerrit2-httpd-port]          Gerrit Instance 2 http port; default 18081"
     echo "[--gerrit2-sshd-port]           Gerrit Instance 2 sshd port; default 49418"
     echo
-    echo "[--replication-type]            Options [file,ssh]; default ssh"
-    echo "[--replication-ssh-user]        SSH user for the replication plugin; default $(whoami)"
     echo "[--replication-delay]           Replication delay across the two instances in seconds"
     echo
     echo "[--just-cleanup-env]            Cleans up previous deployment; default false"
@@ -338,16 +322,6 @@ case "$1" in
     shift
     shift
   ;;
-  "--replication-ssh-user" )
-    export REPLICATION_SSH_USER=$2
-    shift
-    shift
-  ;;
-  "--replication-type")
-    export REPLICATION_TYPE=$2
-    shift
-    shift
-  ;;
   "--replication-delay")
     export REPLICATION_DELAY_SEC=$2
     shift
@@ -400,8 +374,6 @@ GERRIT_1_HTTPD_PORT=${GERRIT_1_HTTPD_PORT:-"18080"}
 GERRIT_2_HTTPD_PORT=${GERRIT_2_HTTPD_PORT:-"18081"}
 GERRIT_1_SSHD_PORT=${GERRIT_1_SSHD_PORT:-"39418"}
 GERRIT_2_SSHD_PORT=${GERRIT_2_SSHD_PORT:-"49418"}
-REPLICATION_TYPE=${REPLICATION_TYPE:-"file"}
-REPLICATION_SSH_USER=${REPLICATION_SSH_USER:-$(whoami)}
 export REPLICATION_DELAY_SEC=${REPLICATION_DELAY_SEC:-"5"}
 export SSH_ADVERTISED_PORT=${SSH_ADVERTISED_PORT:-"29418"}
 HTTPS_ENABLED=${HTTPS_ENABLED:-"false"}
@@ -508,11 +480,6 @@ echo "Downloading metrics-reporter-prometheus plugin $GERRIT_BRANCH"
   -O $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar || \
   { echo >&2 "Cannot download metrics-reporter-prometheus plugin: Check internet connection. Abort\
 ing"; exit 1; }
-
-if [ "$REPLICATION_TYPE" = "ssh" ];then
-  echo "Using 'SSH' replication type"
-  echo "Make sure ~/.ssh/authorized_keys and ~/.ssh/known_hosts are configured correctly"
-fi
 
 echo "Downloading pull-replication plugin $GERRIT_BRANCH"
   wget $GERRIT_CI/plugin-pull-replication-bazel-$GERRIT_BRANCH/$LAST_BUILD/pull-replication/pull-replication.jar \
@@ -634,8 +601,6 @@ echo "Current gerrit multi-site setup"
 echo "==============================="
 echo "The admin password is 'secret'"
 echo "deployment-location=$DEPLOYMENT_LOCATION"
-echo "replication-type=$REPLICATION_TYPE"
-echo "replication-ssh-user=$REPLICATION_SSH_USER"
 echo "replication-delay=$REPLICATION_DELAY_SEC"
 echo "enable-https=$HTTPS_ENABLED"
 echo
