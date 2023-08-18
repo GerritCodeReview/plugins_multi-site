@@ -544,10 +544,6 @@ if [ $NEW_INSTALLATION = "true" ]; then
   echo "Replicating environment"
   cp -fR $LOCATION_TEST_SITE_1/* $LOCATION_TEST_SITE_2
 
-  echo "Link replication plugin"
-  ln -s $LOCATION_TEST_SITE_1/plugins/replication.jar $LOCATION_TEST_SITE_1/lib/replication.jar
-  ln -s $LOCATION_TEST_SITE_2/plugins/replication.jar $LOCATION_TEST_SITE_2/lib/replication.jar
-
   echo "Link pullreplication plugin"
   ln -s $LOCATION_TEST_SITE_1/plugins/pull-replication.jar $LOCATION_TEST_SITE_1/lib/pull-replication.jar
   ln -s $LOCATION_TEST_SITE_2/plugins/pull-replication.jar $LOCATION_TEST_SITE_2/lib/pull-replication.jar
