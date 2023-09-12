@@ -20,10 +20,16 @@ import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
 import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
+import com.github.rholder.retry.RetryException;
+import com.github.rholder.retry.Retryer;
+import com.github.rholder.retry.RetryerBuilder;
+import com.github.rholder.retry.StopStrategies;
+import com.github.rholder.retry.WaitStrategies;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
@@ -37,19 +43,27 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectIdRef;
+import org.eclipse.jgit.lib.ObjectIdRef.Unpeeled;
 import org.eclipse.jgit.lib.ObjectInserter;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.lib.Repository;
 
 public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersionRefUpdate {
+
+  public static final int DEFAULT_NUMBER_OF_RETRIES = 3;
+  public static final int DEFAULT_MAXIMUM_EXPONENTIAL_RETRY_WAIT_IN_SECONDS = 5;
+  public static final int DEFAULT_MINIMUM_RETRY_WAIT_IN_MILLISECONDS = 100;
+  public static final int DEFAULT_MAXIMUM_RETRY_WAIT_IN_MILLISECONDS = 1000;
+
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final Set<RefUpdate.Result> SUCCESSFUL_RESULTS =
       ImmutableSet.of(RefUpdate.Result.NEW, RefUpdate.Result.FORCED, RefUpdate.Result.NO_CHANGE);
-
   private final GitRepositoryManager gitRepositoryManager;
   private final GitReferenceUpdated gitReferenceUpdated;
   private final ProjectVersionLogger verLogger;
@@ -141,21 +155,8 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
   private boolean updateSharedProjectVersion(
       Project.NameKey projectNameKey, ObjectId newObjectId, Long newVersion)
       throws SharedProjectVersionUpdateException {
-
-    Ref sharedRef =
-        sharedRefDb
-            .get(projectNameKey, MULTI_SITE_VERSIONING_REF, String.class)
-            .map(
-                (String objectId) ->
-                    new ObjectIdRef.Unpeeled(
-                        Ref.Storage.NEW, MULTI_SITE_VERSIONING_REF, ObjectId.fromString(objectId)))
-            .orElse(
-                new ObjectIdRef.Unpeeled(
-                    Ref.Storage.NEW, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId()));
-    Optional<Long> sharedVersion =
-        sharedRefDb
-            .get(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, String.class)
-            .map(Long::parseLong);
+    Ref sharedRef = getSharedRef(projectNameKey);
+    Optional<Long> sharedVersion = getSharedVersion(projectNameKey);
 
     try {
       if (sharedVersion.isPresent() && sharedVersion.get() >= newVersion) {
@@ -177,12 +178,23 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
 
       boolean success = sharedRefDb.compareAndPut(projectNameKey, sharedRef, newObjectId);
       if (!success) {
-        String message =
-            String.format(
-                "Project version blob update failed for %s. Current value %s, new value: %s",
-                projectNameKey.get(), safeGetObjectId(sharedRef), newObjectId);
-        logger.atSevere().log(message);
-        throw new SharedProjectVersionUpdateException(message);
+        boolean isRetrySuccessful =
+            retry(
+                projectNameKey,
+                newObjectId,
+                newVersion,
+                () -> {
+                  Ref sharedR = getSharedRef(projectNameKey);
+                  return sharedRefDb.compareAndPut(projectNameKey, sharedR, newObjectId);
+                });
+        if (!isRetrySuccessful) {
+          String message =
+              String.format(
+                  "Project version blob update failed for %s. Current value %s, new value: %s",
+                  projectNameKey.get(), safeGetObjectId(getSharedRef(projectNameKey)), newObjectId);
+          logger.atSevere().log(message);
+          throw new SharedProjectVersionUpdateException(message);
+        }
       }
 
       success =
@@ -192,26 +204,106 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
               sharedVersion.map(Object::toString).orElse(null),
               newVersion.toString());
       if (!success) {
-        String message =
-            String.format(
-                "Project version update failed for %s. Current value %s, new value: %s",
-                projectNameKey.get(), safeGetObjectId(sharedRef), newObjectId);
-        logger.atSevere().log(message);
-        throw new SharedProjectVersionUpdateException(message);
+        boolean isRetrySuccessful =
+            retry(
+                projectNameKey,
+                newObjectId,
+                newVersion,
+                () -> {
+                  Optional<Long> sharedV = getSharedVersion(projectNameKey);
+                  return sharedRefDb.compareAndPut(
+                      projectNameKey,
+                      MULTI_SITE_VERSIONING_VALUE_REF,
+                      sharedV.map(Object::toString).orElse(null),
+                      newVersion.toString());
+                });
+        if (!isRetrySuccessful) {
+          String message =
+              String.format(
+                  "Project version update failed for %s. Current value %s, new value: %s",
+                  projectNameKey.get(), safeGetObjectId(getSharedRef(projectNameKey)), newObjectId);
+          logger.atSevere().log(message);
+          throw new SharedProjectVersionUpdateException(message);
+        }
       }
 
       return true;
-    } catch (GlobalRefDbSystemError refDbSystemError) {
+    } catch (GlobalRefDbSystemError | ExecutionException | RetryException refDbSystemError) {
       String message =
           String.format(
               "Error while updating shared project version for %s. Current value %s, new value: %s. Error: %s",
               projectNameKey.get(),
-              sharedRef.getObjectId(),
+              getSharedRef(projectNameKey).getObjectId(),
               newObjectId,
               refDbSystemError.getMessage());
       logger.atSevere().withCause(refDbSystemError).log(message);
       throw new SharedProjectVersionUpdateException(message);
     }
+  }
+
+  private boolean retry(
+      NameKey projectNameKey, ObjectId newObjectId, Long newVersion, Callable<Boolean> refDbUpdate)
+      throws ExecutionException, RetryException {
+    Retryer<Boolean> retry = createRetryer(projectNameKey, newObjectId, newVersion);
+    return retry.call(refDbUpdate);
+  }
+
+  private Retryer<Boolean> createRetryer(
+      NameKey projectNameKey, ObjectId newObjectId, Long newVersion) {
+    return RetryerBuilder.<Boolean>newBuilder()
+        .retryIfResult(
+            result -> {
+              if (result) return false;
+              Optional<Long> sharedV = getSharedVersion(projectNameKey);
+              boolean isLocalMoreRecent = !sharedV.isPresent() || sharedV.get() <= newVersion;
+              if (!isLocalMoreRecent) {
+                logger.atWarning().log(
+                    String.format(
+                        "NOT retrying project %s version %s (value=%d) updating in shared ref-db because is more recent than the local one %s (value=%d) ",
+                        projectNameKey.get(),
+                        newObjectId,
+                        newVersion,
+                        getSharedRef(projectNameKey).getObjectId().getName(),
+                        sharedV.get()));
+              } else {
+                logger.atInfo().log(
+                    String.format(
+                        "Retrying project %s version %s (value=%d) updating in shared ref-db because is more recent than the local one %s (value=%d) ",
+                        projectNameKey.get(),
+                        newObjectId,
+                        newVersion,
+                        getSharedRef(projectNameKey).getObjectId().getName(),
+                        sharedV.orElse(0L)));
+              }
+              return isLocalMoreRecent;
+            })
+        .withWaitStrategy(
+            WaitStrategies.join(
+                WaitStrategies.exponentialWait(
+                    DEFAULT_MAXIMUM_EXPONENTIAL_RETRY_WAIT_IN_SECONDS, TimeUnit.SECONDS),
+                WaitStrategies.randomWait(
+                    DEFAULT_MINIMUM_RETRY_WAIT_IN_MILLISECONDS,
+                    TimeUnit.MILLISECONDS,
+                    DEFAULT_MAXIMUM_RETRY_WAIT_IN_MILLISECONDS,
+                    TimeUnit.MILLISECONDS)))
+        .withStopStrategy(StopStrategies.stopAfterAttempt(DEFAULT_NUMBER_OF_RETRIES))
+        .build();
+  }
+
+  private Unpeeled getSharedRef(NameKey projectNameKey) {
+    return sharedRefDb
+        .get(projectNameKey, MULTI_SITE_VERSIONING_REF, String.class)
+        .map(
+            (String objectId) ->
+                new Unpeeled(
+                    Ref.Storage.NEW, MULTI_SITE_VERSIONING_REF, ObjectId.fromString(objectId)))
+        .orElse(new Unpeeled(Ref.Storage.NEW, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId()));
+  }
+
+  private Optional<Long> getSharedVersion(NameKey projectNameKey) {
+    return sharedRefDb
+        .get(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, String.class)
+        .map(Long::parseLong);
   }
 
   /* (non-Javadoc)

@@ -17,13 +17,17 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF;
 import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF;
+import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdateImpl.DEFAULT_NUMBER_OF_RETRIES;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
+import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
 import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.gerrit.entities.Project;
@@ -126,6 +130,291 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     assertThat(storedVersion).isGreaterThan((long) masterCommit.getCommitTime());
 
     verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
+  }
+
+  @Test
+  public void producerShouldRetryUpdateProjectVersionUponGlobalRefDbFailure() throws IOException {
+    Context.setForwardedEvent(false);
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+            String.class))
+        .thenReturn(Optional.of("26f7ee61bf0e470e8393c884526eec8a9b943a63"));
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)));
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
+        .thenReturn(false)
+        .thenReturn(true);
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
+        .thenReturn(true);
+    when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
+    when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
+
+    new ProjectVersionRefUpdateImpl(
+            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+        .onEvent(refUpdatedEvent);
+
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
+
+    verify(sharedRefDb, times(2))
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+    verify(sharedRefDb).compareAndPut(any(Project.NameKey.class), any(String.class), any(), any());
+
+    assertThat(ref).isNotNull();
+
+    ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
+    long storedVersion = readLongObject(loader);
+    assertThat(storedVersion).isGreaterThan((long) masterCommit.getCommitTime());
+
+    verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
+  }
+
+  @Test
+  public void producerShouldPropagateExceptionFromProjectVersionUpdateRetry() throws IOException {
+    Context.setForwardedEvent(false);
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+            String.class))
+        .thenReturn(Optional.of("26f7ee61bf0e470e8393c884526eec8a9b943a63"));
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)));
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
+        .thenReturn(false)
+        .thenThrow(new GlobalRefDbSystemError("Error from global refdb", new Exception()));
+    when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
+    when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
+
+    new ProjectVersionRefUpdateImpl(
+            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+        .onEvent(refUpdatedEvent);
+
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
+
+    verify(sharedRefDb, times(2))
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+
+    verify(sharedRefDb, never())
+        .compareAndPut(any(Project.NameKey.class), any(String.class), any(), any());
+
+    assertThat(ref).isNotNull();
+
+    ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
+    long storedVersion = readLongObject(loader);
+    assertThat(storedVersion).isGreaterThan((long) masterCommit.getCommitTime());
+
+    verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
+  }
+
+  @Test
+  public void producerShouldSkipRetryWhenGlobalRefDbErrorExceptionFromFirstAttempt()
+      throws IOException {
+    Context.setForwardedEvent(false);
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+            String.class))
+        .thenReturn(Optional.of("26f7ee61bf0e470e8393c884526eec8a9b943a63"));
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)));
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
+        .thenThrow(new GlobalRefDbSystemError("Error from global refdb", new Exception()));
+    when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
+    when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
+
+    new ProjectVersionRefUpdateImpl(
+            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+        .onEvent(refUpdatedEvent);
+
+    verify(sharedRefDb)
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+
+    verify(sharedRefDb, never())
+        .compareAndPut(any(Project.NameKey.class), any(String.class), any(), any());
+  }
+
+  @Test
+  public void producerShouldRetryUpdateProjectVersionValueUponGlobalRefDbFailure()
+      throws IOException {
+    Context.setForwardedEvent(false);
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+            String.class))
+        .thenReturn(Optional.of("26f7ee61bf0e470e8393c884526eec8a9b943a63"));
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)));
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
+        .thenReturn(true);
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
+        .thenReturn(false)
+        .thenReturn(true);
+    when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
+    when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
+
+    new ProjectVersionRefUpdateImpl(
+            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+        .onEvent(refUpdatedEvent);
+
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
+
+    verify(sharedRefDb)
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+
+    verify(sharedRefDb, times(2))
+        .compareAndPut(any(Project.NameKey.class), any(String.class), any(), any());
+
+    assertThat(ref).isNotNull();
+
+    ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
+    long storedVersion = readLongObject(loader);
+    assertThat(storedVersion).isGreaterThan((long) masterCommit.getCommitTime());
+
+    verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
+  }
+
+  @Test
+  public void producerShouldGiveUpProjectVersionUpdateUponMaxUpdateFailures() throws IOException {
+    Context.setForwardedEvent(false);
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+            String.class))
+        .thenReturn(Optional.of("26f7ee61bf0e470e8393c884526eec8a9b943a63"));
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)));
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
+        .thenReturn(false);
+    when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
+    when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
+
+    new ProjectVersionRefUpdateImpl(
+            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+        .onEvent(refUpdatedEvent);
+
+    verify(sharedRefDb, times(DEFAULT_NUMBER_OF_RETRIES + 1))
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+
+    verify(sharedRefDb, never())
+        .compareAndPut(any(Project.NameKey.class), any(String.class), any(), any());
+  }
+
+  @Test
+  public void producerShouldGiveUpProjectVersionUpdateWhenNewerValueInGlobalRefDb()
+      throws IOException {
+    Context.setForwardedEvent(false);
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+            String.class))
+        .thenReturn(Optional.of("26f7ee61bf0e470e8393c884526eec8a9b943a63"));
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)))
+        // Return newer value from sharedRefDb
+        .thenReturn(Optional.of("" + System.currentTimeMillis() * 2));
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
+        .thenReturn(false)
+        .thenReturn(false)
+        .thenReturn(true);
+    when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
+    when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
+
+    new ProjectVersionRefUpdateImpl(
+            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+        .onEvent(refUpdatedEvent);
+
+    verify(sharedRefDb, times(2))
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+
+    verify(sharedRefDb, never())
+        .compareAndPut(any(Project.NameKey.class), any(String.class), any(), any());
+  }
+
+  @Test
+  public void producerShouldGiveUpProjectVersionValueUpdateWhenNewerValueInGlobalRefDb()
+      throws IOException {
+    Context.setForwardedEvent(false);
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+            String.class))
+        .thenReturn(Optional.of("26f7ee61bf0e470e8393c884526eec8a9b943a63"));
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)))
+        // Return newer value from sharedRefDb
+        .thenReturn(Optional.of("" + System.currentTimeMillis() * 2));
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
+        .thenReturn(true);
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
+        .thenReturn(false)
+        .thenReturn(false)
+        .thenReturn(true);
+    when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
+    when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
+
+    new ProjectVersionRefUpdateImpl(
+            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+        .onEvent(refUpdatedEvent);
+
+    verify(sharedRefDb)
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+
+    verify(sharedRefDb, times(2))
+        .compareAndPut(any(Project.NameKey.class), any(String.class), any(), any());
+  }
+
+  @Test
+  public void producerShouldGiveUpProjectVersionValueUpdateUponMaxUpdateFailures()
+      throws IOException {
+    Context.setForwardedEvent(false);
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
+            String.class))
+        .thenReturn(Optional.of("26f7ee61bf0e470e8393c884526eec8a9b943a63"));
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)));
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
+        .thenReturn(true);
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
+        .thenReturn(false);
+    when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
+    when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
+
+    new ProjectVersionRefUpdateImpl(
+            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+        .onEvent(refUpdatedEvent);
+
+    verify(sharedRefDb)
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+
+    verify(sharedRefDb, times(DEFAULT_NUMBER_OF_RETRIES + 1))
+        .compareAndPut(any(Project.NameKey.class), any(String.class), any(), any());
   }
 
   @Test
