@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71602b1e_c340b38a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-09-12T19:48:00Z",
+      "side": 1,
+      "message": "I need to add configuration params for the retry",
+      "revId": "ab3ffaf2aa7a08ef8b761bd382ade66702c21fc2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
