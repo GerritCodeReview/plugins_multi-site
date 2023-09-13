@@ -16,6 +16,23 @@
       "message": "I need to add configuration params for the retry",
       "revId": "ab3ffaf2aa7a08ef8b761bd382ade66702c21fc2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af4d1940_52db4769",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-09-13T17:01:37Z",
+      "side": 1,
+      "message": "I am not sure retrying is a valid approach when the `refs/multi-site/version` and `refs/multi-site/version/value` are failing to be compared-and-swapped on the global-refdb.\n\nThe purpose of the `refs/multi-site/version` as far as I can tell is exclusively for observability. A metric will be emitted that will be able to show what\u0027s the replication status of the project when compared to its last updated value.\n\nThe value of the refs/multi-site/version, for this reason, is a timestamp (stored as a blob).\n\nNow, in case of a concurrency problem, two temporally very near values T1 and T2 will compete for the update and eventually one of them will succeed.\n\nImagine two updates compete, T1 and T2, where T2 succeeds and T1 fails.\n\nI believe that retrying T1 (sometime later), in a repository that is moving very fast, is futile because:\n- If T1 is more recent than T2, then it is going to update the global-refdb, but,  by definition, since T1 and T2 are temporally very near to each other, there will be no benefit in terms of replication status metric.\n\n- If T1 is older than T2, then retrying will be a noop, as there is already a more recent value for the refs/multi-site/version.\n\nthe same applies for `refs/multi-site/version/value`. The only usage I find for it is to use it for the `compareAndPut()` itself, no other logic is based on it.\n\nGiven the above, I am thinking: what if we don\u0027t retry at all?\nIf we fail to update refs/multi-site/version then we just catch,log and ignore that failure.\n\nrefs/multi-site/version and refs/multi-site/version/value cannot participate in any split-brain scenario as they are explicitly IGNORED.\nThey exist as a way to measure replication latency between producers and consumers and they should not get in the way of git-receive-packs.\n\nThoughts?\n\n@luca.milanesio@gmail.com, @ponch78@gmail.com, @maczech@gmail.com, thoughts?",
+      "revId": "ab3ffaf2aa7a08ef8b761bd382ade66702c21fc2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
