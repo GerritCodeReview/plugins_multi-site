@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b014e3cb_83c64062",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-09-15T16:00:00Z",
+      "side": 1,
+      "message": "@dariusjokilehto@gmail.com LGTM, but perhaps you could fix it for all supported releases too 3.6, 3.7, 3.8?\n\nIf you move this change to 3.6 we could then do the merge up",
+      "revId": "8d7feee79aa078fa1e9dfeedea23d38028f7bd4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
