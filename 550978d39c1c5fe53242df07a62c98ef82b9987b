@@ -16,6 +16,24 @@
       "message": "is not link too ambiguous? it is more like an anchor in the document?",
       "revId": "550978d39c1c5fe53242df07a62c98ef82b9987b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc2e8876_a1321794",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-09-15T14:51:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "622aa48b_873f5dc5",
+      "revId": "550978d39c1c5fe53242df07a62c98ef82b9987b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
