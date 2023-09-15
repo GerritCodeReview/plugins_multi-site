@@ -2,7 +2,7 @@
 
 This document collects and organizes thoughts about
 the design of the Gerrit multi-site plugin,  supporting the definition of the
-[implementation roadmap](#next-steps-in-the-road-map).
+[implementation roadmap](#next-steps-in-the-roadmap).
 
 It first presents background for the problems the plugin will address and
 the tools currently available in the Gerrit ecosystem that support the
