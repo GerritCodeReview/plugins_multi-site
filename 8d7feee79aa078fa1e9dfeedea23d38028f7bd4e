@@ -16,6 +16,24 @@
       "message": "@dariusjokilehto@gmail.com LGTM, but perhaps you could fix it for all supported releases too 3.6, 3.7, 3.8?\n\nIf you move this change to 3.6 we could then do the merge up",
       "revId": "8d7feee79aa078fa1e9dfeedea23d38028f7bd4e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b4f5f78_457a9176",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-09-15T21:14:12Z",
+      "side": 1,
+      "message": "It\u0027s been merged already, so I cherry-picked it: https://gerrit-review.googlesource.com/c/plugins/multi-site/+/386634",
+      "parentUuid": "b014e3cb_83c64062",
+      "revId": "8d7feee79aa078fa1e9dfeedea23d38028f7bd4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ],
   "submitRequirementResults": [
