@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d176359d_d5dd6f07",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-09-15T16:07:31Z",
+      "side": 1,
+      "message": "is this the last commit sha1? was it not the sha1 of the timestamp blob @ponch78@gmail.com?",
+      "range": {
+        "startLine": 11,
+        "startChar": 52,
+        "endLine": 12,
+        "endChar": 4
+      },
+      "revId": "9cb5be0a086cb967aaeeb4860ab5c5b3ffb1d935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
