@@ -22,6 +22,30 @@
       },
       "revId": "9cb5be0a086cb967aaeeb4860ab5c5b3ffb1d935",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e272cac_b7ea354f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-09-15T18:21:27Z",
+      "side": 1,
+      "message": "Correct, it is not a commit but just the SHA1 of the timestamp BLOB",
+      "parentUuid": "d176359d_d5dd6f07",
+      "range": {
+        "startLine": 11,
+        "startChar": 52,
+        "endLine": 12,
+        "endChar": 4
+      },
+      "revId": "9cb5be0a086cb967aaeeb4860ab5c5b3ffb1d935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

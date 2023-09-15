@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18d978d9_2f71c654",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-09-15T18:21:27Z",
+      "side": 1,
+      "message": "Good finding @maczech@gmail.com",
+      "revId": "e09984f084be46a9a4d9fa63aca8a194da74d29b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1a79b3d_c9fc7dcd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-09-15T18:21:27Z",
+      "side": 1,
+      "message": "I believe `newVersion` was a better name",
+      "range": {
+        "startLine": 138,
+        "startChar": 82,
+        "endLine": 138,
+        "endChar": 90
+      },
+      "revId": "e09984f084be46a9a4d9fa63aca8a194da74d29b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59c4ed34_cb3e131d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-09-15T18:21:27Z",
+      "side": 1,
+      "message": "This is already repeated 3 times: can we get the value once and reuse it here, and L168 and L162?",
+      "range": {
+        "startLine": 179,
+        "startChar": 14,
+        "endLine": 179,
+        "endChar": 62
+      },
+      "revId": "e09984f084be46a9a4d9fa63aca8a194da74d29b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
