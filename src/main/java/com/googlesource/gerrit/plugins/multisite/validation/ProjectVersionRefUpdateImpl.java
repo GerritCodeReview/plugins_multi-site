@@ -39,9 +39,7 @@ import java.util.Optional;
 import java.util.Set;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.ObjectInserter;
-import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.lib.Repository;
 
@@ -107,8 +105,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
       if (newProjectVersionRefUpdate.isPresent()) {
         verLogger.log(projectNameKey, newVersion, 0L);
 
-        if (updateSharedProjectVersion(
-            projectNameKey, newProjectVersionRefUpdate.get().getNewObjectId(), newVersion)) {
+        if (updateSharedProjectVersion(projectNameKey, newVersion)) {
           gitReferenceUpdated.fire(projectNameKey, newProjectVersionRefUpdate.get(), null);
         }
       } else {
@@ -138,64 +135,37 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
     return newId;
   }
 
-  private boolean updateSharedProjectVersion(
-      Project.NameKey projectNameKey, ObjectId newObjectId, Long newVersion)
+  private boolean updateSharedProjectVersion(Project.NameKey projectNameKey, Long newValue)
       throws SharedProjectVersionUpdateException {
 
-    Ref sharedRef =
-        sharedRefDb
-            .get(projectNameKey, MULTI_SITE_VERSIONING_REF, String.class)
-            .map(
-                (String objectId) ->
-                    new ObjectIdRef.Unpeeled(
-                        Ref.Storage.NEW, MULTI_SITE_VERSIONING_REF, ObjectId.fromString(objectId)))
-            .orElse(
-                new ObjectIdRef.Unpeeled(
-                    Ref.Storage.NEW, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId()));
     Optional<Long> sharedVersion =
         sharedRefDb
             .get(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, String.class)
             .map(Long::parseLong);
 
     try {
-      if (sharedVersion.isPresent() && sharedVersion.get() >= newVersion) {
+      if (sharedVersion.isPresent() && sharedVersion.get() >= newValue) {
         logger.atWarning().log(
             String.format(
-                "NOT Updating project %s version %s (value=%d) in shared ref-db because is more recent than the local one %s (value=%d) ",
-                projectNameKey.get(),
-                newObjectId,
-                newVersion,
-                sharedRef.getObjectId().getName(),
-                sharedVersion.get()));
+                "NOT Updating project %s value=%d in shared ref-db because is more recent than the local value=%d",
+                projectNameKey.get(), newValue, sharedVersion.get()));
         return false;
       }
 
       logger.atFine().log(
-          String.format(
-              "Updating shared project %s version to %s (value=%d)",
-              projectNameKey.get(), newObjectId, newVersion));
+          String.format("Updating shared project %s value to %d", projectNameKey.get(), newValue));
 
-      boolean success = sharedRefDb.compareAndPut(projectNameKey, sharedRef, newObjectId);
-      if (!success) {
-        String message =
-            String.format(
-                "Project version blob update failed for %s. Current value %s, new value: %s",
-                projectNameKey.get(), safeGetObjectId(sharedRef), newObjectId);
-        logger.atSevere().log(message);
-        throw new SharedProjectVersionUpdateException(message);
-      }
-
-      success =
+      boolean success =
           sharedRefDb.compareAndPut(
               projectNameKey,
               MULTI_SITE_VERSIONING_VALUE_REF,
               sharedVersion.map(Object::toString).orElse(null),
-              newVersion.toString());
+              newValue.toString());
       if (!success) {
         String message =
             String.format(
-                "Project version update failed for %s. Current value %s, new value: %s",
-                projectNameKey.get(), safeGetObjectId(sharedRef), newObjectId);
+                "Project value update failed for %s. Current value %s, new value: %s",
+                projectNameKey.get(), sharedVersion.map(Object::toString).orElse(null), newValue);
         logger.atSevere().log(message);
         throw new SharedProjectVersionUpdateException(message);
       }
@@ -204,10 +174,10 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
     } catch (GlobalRefDbSystemError refDbSystemError) {
       String message =
           String.format(
-              "Error while updating shared project version for %s. Current value %s, new value: %s. Error: %s",
+              "Error while updating shared project value for %s. Current value %s, new value: %s. Error: %s",
               projectNameKey.get(),
-              sharedRef.getObjectId(),
-              newObjectId,
+              sharedVersion.map(Object::toString).orElse(null),
+              newValue,
               refDbSystemError.getMessage());
       logger.atSevere().withCause(refDbSystemError).log(message);
       throw new SharedProjectVersionUpdateException(message);
@@ -260,10 +230,6 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
         sharedRefDb.get(
             Project.NameKey.parse(projectName), MULTI_SITE_VERSIONING_VALUE_REF, String.class);
     return globalVersion.flatMap(longString -> getLongValueOf(longString));
-  }
-
-  private Object safeGetObjectId(Ref currentRef) {
-    return currentRef == null ? "null" : currentRef.getObjectId();
   }
 
   private Optional<Long> getLongValueOf(String longString) {
