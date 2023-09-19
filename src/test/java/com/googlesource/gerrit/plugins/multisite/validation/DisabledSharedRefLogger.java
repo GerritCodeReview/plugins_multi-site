@@ -36,4 +36,7 @@ public class DisabledSharedRefLogger implements SharedRefLogger {
 
   @Override
   public <T> void logRefUpdate(String project, String refName, T currRef, T newRefValue) {}
+
+  @Override
+  public <T> void logRefUpdate(String project, String refName, T newRefValue) {}
 }
