@@ -3,14 +3,7 @@
 This plugin can be built with Bazel in the Gerrit tree.
 
 Clone or link this plugin to the plugins directory of Gerrit's
-source tree. Put the external dependency Bazel build file into
-the Gerrit /plugins directory, replacing the existing empty one.
-
-```
-  cd gerrit/plugins
-  rm external_plugin_deps.bzl
-  ln -s @PLUGIN@/external_plugin_deps.bzl .
-```
+source tree.
 
 Clone the [pull-replication](https://gerrit.googlesource.com/plugins/pull-replication) on
 the same branch of the @PLUGIN@ plugin and link it to the `gerrit/plugins` directory.
@@ -23,6 +16,16 @@ the same branch of the @PLUGIN@ plugin and link it to the `gerrit/plugins` direc
   ln -s @PLUGIN@/external_plugin_deps.bzl .
 ```
 
+Clone the [global-refdb](git clone "https://gerrit.googlesource.com/modules/global-refdb") on
+the same branch of the @PLUGIN@ plugin and link it to the `gerrit/plugins` directory.
+
+```
+  export BRANCH=$(git --git-dir=@PLUGIN@ branch)
+  git clone git clone "https://gerrit.googlesource.com/modules/global-refdb"
+  cd gerrit/plugins
+  rm external_plugin_deps.bzl
+  ln -s @PLUGIN@/external_plugin_deps.bzl .
+```
 
 From the Gerrit source tree issue the command:
 
