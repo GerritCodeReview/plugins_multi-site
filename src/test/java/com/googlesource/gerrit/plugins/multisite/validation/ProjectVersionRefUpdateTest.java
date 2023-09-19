@@ -20,14 +20,17 @@ import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersio
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.gerritforge.gerrit.globalrefdb.validation.ProjectsFilter;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
+import com.google.common.base.Suppliers;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
@@ -112,6 +115,35 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     verify(sharedRefDb, atMost(1))
         .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
 
+    assertThat(ref).isNotNull();
+
+    ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
+    long storedVersion = readLongObject(loader);
+    assertThat(storedVersion).isGreaterThan((long) masterCommit.getCommitTime());
+
+    verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
+  }
+
+  @Test
+  public void producerShouldUsePutInsteadOfCompareAndPutWhenExtendedGlobalRefDb()
+      throws IOException {
+    when(sharedRefDb.isSetOperationSupported()).thenReturn(true);
+    RefUpdatedEvent refUpdatedEvent = new RefUpdatedEvent();
+    RefUpdateAttribute refUpdatedAttribute = new RefUpdateAttribute();
+    refUpdatedAttribute.project = A_TEST_PROJECT_NAME_KEY.get();
+    refUpdatedAttribute.refName = A_TEST_REF_NAME;
+    refUpdatedEvent.refUpdate = Suppliers.memoize(() -> refUpdatedAttribute);
+
+    new ProjectVersionRefUpdateImpl(
+            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+        .onEvent(refUpdatedEvent);
+
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
+
+    verify(sharedRefDb, never())
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+
+    verify(sharedRefDb).put(any(Project.NameKey.class), any(String.class), any(String.class));
     assertThat(ref).isNotNull();
 
     ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
