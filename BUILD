@@ -19,9 +19,9 @@ gerrit_plugin(
     resources = glob(["src/main/resources/**/*"]),
     deps = [
         ":events-broker-neverlink",
+        ":global-refdb-neverlink",
         ":pull-replication-neverlink",
         ":replication-neverlink",
-        "@global-refdb//jar:neverlink",
     ],
 )
 
@@ -43,6 +43,12 @@ java_library(
     exports = ["//plugins/events-broker"],
 )
 
+java_library(
+    name = "global-refdb-neverlink",
+    neverlink = 1,
+    exports = ["//plugins/global-refdb"],
+)
+
 junit_tests(
     name = "multi_site_tests",
     srcs = glob(["src/test/java/**/*.java"]),
@@ -62,7 +68,7 @@ java_library(
     visibility = ["//visibility:public"],
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":multi-site__plugin",
-        "@global-refdb//jar",
+        "//plugins/global-refdb",
         "//plugins/events-broker",
         "//plugins/pull-replication",
         "//plugins/replication",
@@ -100,7 +106,6 @@ sh_test(
         "//plugins/multi-site",
         "//plugins/multi-site:e2e_multi_site_test_dir",
         "//plugins/multi-site:e2e_multi_site_setup_local_env_dir",
-        "external_plugin_deps.bzl",
     ] + glob(["setup_local_env/**/*"]) + glob(["e2e-tests/**/*"]),
     tags = [
         "e2e-multi-site",
