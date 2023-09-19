@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef7bba9c_80abd675",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-09-19T16:54:49Z",
+      "side": 1,
+      "message": "I notice the script has the `--multisite-lib-file` option - maybe we should add the respective `--events-broker-lib-file` (or `--eventsbroker-lib-file`)?",
+      "revId": "037fcd52dd44384751889e1a3bdd62196222989a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8670b17c_008cb3d0",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-09-19T16:54:49Z",
+      "side": 1,
+      "message": "Maybe this should follow the `MULTISITE_LIB_LOCATION` pattern (L406), and would be easier to find if moved right after it.",
+      "revId": "037fcd52dd44384751889e1a3bdd62196222989a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
