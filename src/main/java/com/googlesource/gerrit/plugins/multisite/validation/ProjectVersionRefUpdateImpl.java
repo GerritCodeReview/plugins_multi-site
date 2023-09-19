@@ -24,6 +24,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
@@ -143,7 +144,6 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
             .get(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, String.class)
             .map(Long::parseLong);
 
-    String sharedValue = sharedVersion.map(Object::toString).orElse(null);
     try {
       if (sharedVersion.isPresent() && sharedVersion.get() >= newVersion) {
         logger.atWarning().log(
@@ -157,26 +157,42 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
           String.format(
               "Updating shared project %s value to %d", projectNameKey.get(), newVersion));
 
-      boolean success =
-          sharedRefDb.compareAndPut(
-              projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, sharedValue, newVersion.toString());
-      if (!success) {
-        String message =
-            String.format(
-                "Project value update failed for %s. Current value %s, new value: %s",
-                projectNameKey.get(), sharedValue, newVersion);
-        logger.atSevere().log(message);
-        throw new SharedProjectVersionUpdateException(message);
-      }
-
+      updateProjectVersionValue(projectNameKey, newVersion, sharedVersion);
       return true;
     } catch (GlobalRefDbSystemError refDbSystemError) {
       String message =
           String.format(
               "Error while updating shared project value for %s. Current value %s, new value: %s. Error: %s",
-              projectNameKey.get(), sharedValue, newVersion, refDbSystemError.getMessage());
+              projectNameKey.get(),
+              sharedVersion.map(Object::toString).orElse(null),
+              newVersion,
+              refDbSystemError.getMessage());
       logger.atSevere().withCause(refDbSystemError).log(message);
       throw new SharedProjectVersionUpdateException(message);
+    }
+  }
+
+  private void updateProjectVersionValue(
+      NameKey projectNameKey, Long newVersion, Optional<Long> sharedVersion) {
+    try {
+      if (sharedRefDb.isSetOperationSupported()) {
+        sharedRefDb.put(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, newVersion.toString());
+      } else {
+        sharedRefDb.compareAndPut(
+            projectNameKey,
+            MULTI_SITE_VERSIONING_VALUE_REF,
+            sharedVersion.map(Object::toString).orElse(null),
+            newVersion.toString());
+      }
+    } catch (NoSuchMethodError e) {
+      logger.atSevere().log(
+          "Global-refdb library is outdated and is not supporting "
+              + "'put' method, update global-refdb to the newest version. Falling back to 'compareAndPut'");
+      sharedRefDb.compareAndPut(
+          projectNameKey,
+          MULTI_SITE_VERSIONING_VALUE_REF,
+          sharedVersion.map(Object::toString).orElse(null),
+          newVersion.toString());
     }
   }
 
