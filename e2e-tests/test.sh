@@ -196,7 +196,6 @@ esac
 done
 
 # Defaults
-GLOBAL_REFDB_VER=`grep 'com.gerritforge:global-refdb' ${LOCATION}/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
 DEPLOYMENT_LOCATION=$(mktemp -d || $(echo >&2 "Could not create temp dir" && exit 1))
 MULTISITE_LIB_LOCATION=${MULTISITE_LIB_LOCATION:-${DEF_MULTISITE_LOCATION}}
 BROKER_TYPE=${BROKER_TYPE:-"kafka"}
@@ -261,8 +260,7 @@ docker cp ${CONTAINER_NAME}:/var/gerrit/plugins/replication.jar $COMMON_LIBS/
 docker rm -fv ${CONTAINER_NAME}
 
 echo "Downloading global-refdb library $GERRIT_BRANCH"
-wget https://repo1.maven.org/maven2/com/gerritforge/global-refdb/$GLOBAL_REFDB_VER/global-refdb-$GLOBAL_REFDB_VER.jar \
-  -O $COMMON_LIBS/global-refdb.jar || { echo >&2 "Cannot download global-refdb library: Check internet connection. Aborting"; exit 1; }
+cp bazel-bin/plugins/global-refdb/global-refdb.jar $COMMON_LIBS/global-refdb.jar
 
 echo "Downloading events-broker library $GERRIT_BRANCH"
 cp bazel-bin/plugins/events-broker/events-broker.jar $COMMON_LIBS/events-broker.jar
