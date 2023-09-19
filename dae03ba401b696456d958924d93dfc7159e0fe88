@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba9ffe5b_1473120c",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-09-19T19:54:45Z",
+      "side": 1,
+      "message": "Nit: This should now say `Copying` instead of downloading (although I guess it\u0027s an issue for at least `events-broker` below too).",
+      "range": {
+        "startLine": 262,
+        "startChar": 6,
+        "endLine": 262,
+        "endChar": 17
+      },
+      "revId": "dae03ba401b696456d958924d93dfc7159e0fe88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73472f6b_f629f627",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-09-19T19:54:45Z",
+      "side": 1,
+      "message": "Same comments as for the previous change:\n* we should have an argument to specify the file (L234)\n* we should follow the same pattern as multisite for copying (L405)",
+      "revId": "dae03ba401b696456d958924d93dfc7159e0fe88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
