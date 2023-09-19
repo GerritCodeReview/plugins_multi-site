@@ -69,6 +69,24 @@
       "parentUuid": "d921d5dc_fe8d8cf3",
       "revId": "fce292b34ecc45be0dc2610ed4a8572f4f4fb2e4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7eb2f63_bd860029",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-09-19T16:23:08Z",
+      "side": 1,
+      "message": "For the README.md I mean in the `How to build` section [1] we have:\n```\ncd gerrit/plugins\nln -s ../../multi-site .\nrm external_plugin_deps.bzl\nln -s multi-site/external_plugin_deps.bzl .\n```\nWe shouldn\u0027t need the last two steps anymore.\nTo be honest it\u0027s out of date anyway as it doesn\u0027t mention pull-replication - maybe we should link it to build.md, so we only need to maintain the build instructions in one place?\n\n[1] https://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/stable-3.4/README.md#how-to-build",
+      "parentUuid": "b32b63ba_4099ebb3",
+      "revId": "fce292b34ecc45be0dc2610ed4a8572f4f4fb2e4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
