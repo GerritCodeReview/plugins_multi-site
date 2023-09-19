@@ -20,6 +20,7 @@ import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersio
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -112,6 +113,40 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     verify(sharedRefDb, atMost(1))
         .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
 
+    assertThat(ref).isNotNull();
+
+    ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
+    long storedVersion = readLongObject(loader);
+    assertThat(storedVersion).isGreaterThan((long) masterCommit.getCommitTime());
+
+    verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
+  }
+
+  @Test
+  public void producerShouldUseSetInsteadOfCompareAndPutWhenExtendedGlobalRefDb()
+      throws IOException {
+    Context.setForwardedEvent(false);
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)));
+
+    when(sharedRefDb.isSetOperationSupported()).thenReturn(true);
+
+    when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
+    when(refUpdatedEvent.getRefName()).thenReturn(A_TEST_REF_NAME);
+
+    new ProjectVersionRefUpdateImpl(
+            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, projectsFilter)
+        .onEvent(refUpdatedEvent);
+
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
+
+    verify(sharedRefDb, never())
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+
+    verify(sharedRefDb).set(any(Project.NameKey.class), any(String.class), any(String.class));
     assertThat(ref).isNotNull();
 
     ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
