@@ -87,6 +87,24 @@
       "parentUuid": "b32b63ba_4099ebb3",
       "revId": "fce292b34ecc45be0dc2610ed4a8572f4f4fb2e4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13bdf048_f51134b7",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-09-19T16:34:12Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "e7eb2f63_bd860029",
+      "revId": "fce292b34ecc45be0dc2610ed4a8572f4f4fb2e4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
