@@ -24,6 +24,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
@@ -156,11 +157,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
           String.format("Updating shared project %s value to %d", projectNameKey.get(), newValue));
 
       boolean success =
-          sharedRefDb.compareAndPut(
-              projectNameKey,
-              MULTI_SITE_VERSIONING_VALUE_REF,
-              sharedVersion.map(Object::toString).orElse(null),
-              newValue.toString());
+          updateProjectVerionValue(projectNameKey, newValue, sharedVersion);
       if (!success) {
         String message =
             String.format(
@@ -182,6 +179,18 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
       logger.atSevere().withCause(refDbSystemError).log(message);
       throw new SharedProjectVersionUpdateException(message);
     }
+  }
+
+  private boolean updateProjectVerionValue(NameKey projectNameKey, Long newValue, Optional<Long> sharedVersion) {
+    if(sharedRefDb.isSetOperationSupported()) {
+      sharedRefDb.set(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, newValue.toString());
+      return true;
+    }
+    return sharedRefDb.compareAndPut(
+        projectNameKey,
+        MULTI_SITE_VERSIONING_VALUE_REF,
+        sharedVersion.map(Object::toString).orElse(null),
+        newValue.toString());
   }
 
   /* (non-Javadoc)
