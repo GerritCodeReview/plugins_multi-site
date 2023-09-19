@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ddae416_7451eccb",
+        "filename": "BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-09-19T15:41:04Z",
+      "side": 1,
+      "message": "Nit: keep these in alphabetical order.",
+      "revId": "fce292b34ecc45be0dc2610ed4a8572f4f4fb2e4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d921d5dc_fe8d8cf3",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-09-19T15:41:04Z",
+      "side": 1,
+      "message": "We should also remove references to this file in:\n* setup_local_env/setup.sh\n* src/main/resources/Documentation/build.md\n* README.md",
+      "revId": "fce292b34ecc45be0dc2610ed4a8572f4f4fb2e4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
