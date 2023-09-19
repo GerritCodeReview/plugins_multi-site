@@ -24,6 +24,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
@@ -138,18 +139,18 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
   private boolean updateSharedProjectVersion(Project.NameKey projectNameKey, Long newVersion)
       throws SharedProjectVersionUpdateException {
 
-    Optional<Long> sharedVersion =
+    Optional<Long> sharedValueOpt =
         sharedRefDb
             .get(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, String.class)
             .map(Long::parseLong);
 
-    String sharedValue = sharedVersion.map(Object::toString).orElse(null);
+    String sharedValue = sharedValueOpt.map(Object::toString).orElse(null);
     try {
-      if (sharedVersion.isPresent() && sharedVersion.get() >= newVersion) {
+      if (sharedValueOpt.isPresent() && sharedValueOpt.get() >= newVersion) {
         logger.atWarning().log(
             String.format(
                 "NOT Updating project %s value=%d in shared ref-db because is more recent than the local value=%d",
-                projectNameKey.get(), newVersion, sharedVersion.get()));
+                projectNameKey.get(), newVersion, sharedValueOpt.get()));
         return false;
       }
 
@@ -157,9 +158,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
           String.format(
               "Updating shared project %s value to %d", projectNameKey.get(), newVersion));
 
-      boolean success =
-          sharedRefDb.compareAndPut(
-              projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, sharedValue, newVersion.toString());
+      boolean success = updateProjectVersionValue(projectNameKey, newVersion, sharedValueOpt);
       if (!success) {
         String message =
             String.format(
@@ -178,6 +177,19 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
       logger.atSevere().withCause(refDbSystemError).log(message);
       throw new SharedProjectVersionUpdateException(message);
     }
+  }
+
+  private boolean updateProjectVersionValue(
+      NameKey projectNameKey, Long newValue, Optional<Long> sharedVersion) {
+    if (sharedRefDb.isSetOperationSupported()) {
+      sharedRefDb.put(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, newValue.toString());
+      return true;
+    }
+    return sharedRefDb.compareAndPut(
+        projectNameKey,
+        MULTI_SITE_VERSIONING_VALUE_REF,
+        sharedVersion.map(Object::toString).orElse(null),
+        newValue.toString());
   }
 
   /* (non-Javadoc)
