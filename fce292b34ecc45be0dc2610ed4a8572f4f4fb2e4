@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c39ddd74_a4ac1922",
+        "filename": "BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-09-19T16:14:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ddae416_7451eccb",
+      "revId": "fce292b34ecc45be0dc2610ed4a8572f4f4fb2e4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d921d5dc_fe8d8cf3",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-09-19T15:41:04Z",
       "side": 1,
       "message": "We should also remove references to this file in:\n* setup_local_env/setup.sh\n* src/main/resources/Documentation/build.md\n* README.md",
+      "revId": "fce292b34ecc45be0dc2610ed4a8572f4f4fb2e4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b32b63ba_4099ebb3",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-09-19T16:14:45Z",
+      "side": 1,
+      "message": "\u003e setup_local_env/setup.sh\n\ngood catch! Fixed. We have to do the same for events-broker. I will address that in a separate change.\n\n\u003e src/main/resources/Documentation/build.md\n\nDone. Again we need same change for events-broker\n\n\u003e README.md\n\nThis one I\u0027m not sure what are you referring to. We still want to mention usage of global-refdb, we just changed the way how we build",
+      "parentUuid": "d921d5dc_fe8d8cf3",
       "revId": "fce292b34ecc45be0dc2610ed4a8572f4f4fb2e4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
