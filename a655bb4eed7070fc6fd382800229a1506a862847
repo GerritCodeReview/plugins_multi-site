@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75f46688_55a68462",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-09-21T19:46:56Z",
+      "side": 1,
+      "message": "nit: extra space in the footer.",
+      "revId": "a655bb4eed7070fc6fd382800229a1506a862847",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1dfe90e_cde88775",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-09-21T19:46:56Z",
+      "side": 1,
+      "message": "This should also go IMHO.",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 7
+      },
+      "revId": "a655bb4eed7070fc6fd382800229a1506a862847",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1223592_edb9b80f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-09-21T19:46:56Z",
+      "side": 1,
+      "message": "This should be void IMHO, because we are not interested in checking if the compareAndPut has failed its preconditions.",
+      "range": {
+        "startLine": 183,
+        "startChar": 10,
+        "endLine": 183,
+        "endChar": 17
+      },
+      "revId": "a655bb4eed7070fc6fd382800229a1506a862847",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34f61666_ed42195a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-09-21T19:46:56Z",
+      "side": 1,
+      "message": "Do we really care if the compareAndPut has failed in this case?",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 193,
+        "endChar": 29
+      },
+      "revId": "a655bb4eed7070fc6fd382800229a1506a862847",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
