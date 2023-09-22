@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5d10cac_3af6b826",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-09-22T09:11:52Z",
+      "side": 1,
+      "message": "Nit: double space",
+      "range": {
+        "startLine": 13,
+        "startChar": 24,
+        "endLine": 13,
+        "endChar": 26
+      },
+      "revId": "75194dc777960461246f93f33bcb85f9298b056c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31ea6c13_8b1a0097",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-09-22T09:11:52Z",
+      "side": 1,
+      "message": "Typo: `Version`",
+      "range": {
+        "startLine": 183,
+        "startChar": 31,
+        "endLine": 183,
+        "endChar": 37
+      },
+      "revId": "75194dc777960461246f93f33bcb85f9298b056c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
