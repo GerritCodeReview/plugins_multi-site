@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "05235cdc_d1720270",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-09-25T12:45:12Z",
+      "side": 1,
+      "message": "Mention the references to the previous attempts to do that, that weren\u0027t approved yet:\n\nDone by Luca:\n* https://gerrit-review.googlesource.com/c/plugins/multi-site/+/371114\n\nDone by me:\n\n* https://gerrit-review.googlesource.com/c/plugins/multi-site/+/241634\n\n?",
+      "revId": "dae03ba401b696456d958924d93dfc7159e0fe88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba9ffe5b_1473120c",
         "filename": "e2e-tests/test.sh",
         "patchSetId": 6
@@ -37,6 +54,75 @@
       "writtenOn": "2023-09-19T19:54:45Z",
       "side": 1,
       "message": "Same comments as for the previous change:\n* we should have an argument to specify the file (L234)\n* we should follow the same pattern as multisite for copying (L405)",
+      "revId": "dae03ba401b696456d958924d93dfc7159e0fe88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98119037_545b4a9b",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-09-25T12:45:12Z",
+      "side": 1,
+      "message": "You could pass -b \u003cbranch\u003e to clone command.",
+      "range": {
+        "startLine": 22,
+        "startChar": 3,
+        "endLine": 23,
+        "endChar": 48
+      },
+      "revId": "dae03ba401b696456d958924d93dfc7159e0fe88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5762dc35_0e276d46",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-09-25T12:45:12Z",
+      "side": 1,
+      "message": "Remove this duplication.",
+      "range": {
+        "startLine": 24,
+        "startChar": 2,
+        "endLine": 24,
+        "endChar": 12
+      },
+      "revId": "dae03ba401b696456d958924d93dfc7159e0fe88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4da5615_5d0830fc",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-09-25T12:45:12Z",
+      "side": 1,
+      "message": "What is that for? The file external_plugin_deps.bzl was removed in this change.\n\nYou could clone directly in gerrit plugins directory, or you could clone in gerrit\u0027s parent directory and link it from there, that what you always do:\n\n```suggest\ncd ..\ngit clone https://gerrit.googlesource.com/modules/global-refdb\ncd gerrit/plugins\nln -s ../../global-refdb .\n\n```\n\nIn the end we want to see this:\n\n```\ndavido@witball:~/projects/gerrit/plugins (master *%\u003d)$ ls -all global-refdb\nlrwxrwxrwx 1 davido users 18 Sep 25 14:36 global-refdb -\u003e ../../global-refdb\n```",
+      "range": {
+        "startLine": 26,
+        "startChar": 2,
+        "endLine": 27,
+        "endChar": 43
+      },
       "revId": "dae03ba401b696456d958924d93dfc7159e0fe88",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
