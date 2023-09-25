@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf4cd3c5_911c27c9",
+        "filename": "BUILD",
+        "patchSetId": 6
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-09-25T09:59:39Z",
+      "side": 0,
+      "message": "nit: remove the comma in L102",
+      "revId": "037fcd52dd44384751889e1a3bdd62196222989a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
