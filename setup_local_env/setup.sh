@@ -19,7 +19,6 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 GERRIT_BRANCH=stable-3.6
 GERRIT_CI=https://gerrit-ci.gerritforge.com/view/Plugins-$GERRIT_BRANCH/job
 LAST_BUILD=lastSuccessfulBuild/artifact/bazel-bin/plugins
-EVENTS_BROKER_VER=`grep 'com.gerritforge:events-broker' $(dirname $0)/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
 GLOBAL_REFDB_VER=`grep 'com.gerritforge:global-refdb' $(dirname $0)/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
 
 function check_application_requirements {
@@ -441,8 +440,11 @@ echo "Downloading global-refdb library $GERRIT_BRANCH"
 ing"; exit 1; }
 
 echo "Downloading events-broker library $GERRIT_BRANCH"
-  wget https://repo1.maven.org/maven2/com/gerritforge/events-broker/$EVENTS_BROKER_VER/events-broker-$EVENTS_BROKER_VER.jar \
-  -O $DEPLOYMENT_LOCATION/events-broker.jar || { echo >&2 "Cannot download events-broker library: Check internet connection. Abort\
+  wget $GERRIT_CI/plugin-events-broker-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-broker/events-broker.jar \
+  -O $DEPLOYMENT_LOCATION/events-broker.jar ||
+  wget $GERRIT_CI/plugin-events-broker-bazel-master$GERRIT_BRANCH/$LAST_BUILD/events-broker/events-broker.jar \
+  -O $DEPLOYMENT_LOCATION/events-broker.jar ||
+{ echo >&2 "Cannot download events-broker library: Check internet connection. Abort\
 ing"; exit 1; }
 
 if [ "$BROKER_TYPE" = "kafka" ]; then
