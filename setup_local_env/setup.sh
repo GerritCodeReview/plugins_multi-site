@@ -486,7 +486,10 @@ ing"; exit 1; }
 
 echo "Downloading pull-replication plugin $GERRIT_BRANCH"
   wget $GERRIT_CI/plugin-pull-replication-bazel-$GERRIT_BRANCH/$LAST_BUILD/pull-replication/pull-replication.jar \
-  -O $DEPLOYMENT_LOCATION/pull-replication.jar || { echo >&2 "Cannot download pull-replication plugin: Check internet connection. Abort\
+  -O $DEPLOYMENT_LOCATION/pull-replication.jar ||
+  wget $GERRIT_CI/plugin-pull-replication-bazel-master-GERRIT_BRANCH/$LAST_BUILD/pull-replication/pull-replication.jar \
+  -O $DEPLOYMENT_LOCATION/pull-replication.jar ||
+ { echo >&2 "Cannot download pull-replication plugin: Check internet connection. Abort\
 ing"; exit 1; }
 
 if [ "$HTTPS_ENABLED" = "true" ];then
