@@ -418,7 +418,10 @@ if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
   { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
 ing"; exit 1; }
   wget $GERRIT_CI/plugin-healthcheck-bazel-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
-  -O $DEPLOYMENT_LOCATION/healthcheck.jar || { echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
+  -O $DEPLOYMENT_LOCATION/healthcheck.jar ||
+  wget $GERRIT_CI/plugin-healthcheck-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
+   -O $DEPLOYMENT_LOCATION/healthcheck.jar ||
+{ echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
 ing"; exit 1; }
 else
   echo "Without the websession-broker; user login via haproxy will fail."
