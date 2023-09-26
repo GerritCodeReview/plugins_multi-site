@@ -68,6 +68,23 @@
       },
       "revId": "226ee59dc39d0b26c301b284e063653ec0626d6f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30bf2b56_acce55d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-09-26T23:49:25Z",
+      "side": 1,
+      "message": "I would prefer you develop a simple function that does the cascading, so that we can reuse it for all plugins :-)",
+      "revId": "226ee59dc39d0b26c301b284e063653ec0626d6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
