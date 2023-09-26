@@ -1,5 +1,29 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79580355_1ff9a8b9",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-09-26T23:48:49Z",
+      "side": 1,
+      "message": "Should this be a function we can reuse?",
+      "range": {
+        "startLine": 420,
+        "startChar": 0,
+        "endLine": 425,
+        "endChar": 15
+      },
+      "revId": "738770ac9ae0487e85e95d0b8149cbaa2ab4b321",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
