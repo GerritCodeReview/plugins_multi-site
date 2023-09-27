@@ -225,6 +225,16 @@ function prepare_broker_data {
   fi
 }
 
+function download_plugin_from_ci {
+  local plugin_name=$1
+  local prefix=${2:-plugin}
+  wget $GERRIT_CI/$prefix-$plugin_name-bazel-$GERRIT_BRANCH/$LAST_BUILD/$plugin_name/$plugin_name.jar \
+  -O $DEPLOYMENT_LOCATION/$plugin_name.jar || \
+  wget $GERRIT_CI/$prefix-$plugin_name-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/$plugin_name/$plugin_name.jar \
+  -O $DEPLOYMENT_LOCATION/$plugin_name.jar || \
+  { echo >&2 "Cannot download $plugin_name $prefix: Check internet connection. Aborting"; exit 1; }
+}
+
 while [ $# -ne 0 ]
 do
 case "$1" in
@@ -410,29 +420,15 @@ else
 fi
 if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
   echo "Downloading websession-broker plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-websession-broker-bazel-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
-  -O $DEPLOYMENT_LOCATION/websession-broker.jar || \
-  wget $GERRIT_CI/plugin-websession-broker-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/websession-broker/websession-broker.jar \
-  -O $DEPLOYMENT_LOCATION/websession-broker.jar || \
-  { echo >&2 "Cannot download websession-broker plugin: Check internet connection. Abort\
-ing"; exit 1; }
-  wget $GERRIT_CI/plugin-healthcheck-bazel-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
-  -O $DEPLOYMENT_LOCATION/healthcheck.jar ||
-  wget $GERRIT_CI/plugin-healthcheck-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/healthcheck/healthcheck.jar \
-   -O $DEPLOYMENT_LOCATION/healthcheck.jar ||
-{ echo >&2 "Cannot download healthcheck plugin: Check internet connection. Abort\
-ing"; exit 1; }
+  download_plugin_from_ci websession-broker
+  download_plugin_from_ci healthcheck
+
 else
   echo "Without the websession-broker; user login via haproxy will fail."
 fi
 
 echo "Downloading zookeeper plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-zookeeper-refdb-bazel-$GERRIT_BRANCH/$LAST_BUILD/zookeeper-refdb/zookeeper-refdb.jar \
-  -O $DEPLOYMENT_LOCATION/zookeeper-refdb.jar || \
-  wget $GERRIT_CI/plugin-zookeeper-refdb-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/zookeeper-refdb/zookeeper-refdb.jar \
-  -O $DEPLOYMENT_LOCATION/zookeeper-refdb.jar || \
-  { echo >&2 "Cannot download zookeeper plugin: Check internet connection. Abort\
-ing"; exit 1; }
+  download_plugin_from_ci zookeeper-refdb
 
 echo "Downloading global-refdb library $GERRIT_BRANCH"
   wget https://repo1.maven.org/maven2/com/gerritforge/global-refdb/$GLOBAL_REFDB_VER/global-refdb-$GLOBAL_REFDB_VER.jar \
@@ -440,59 +436,29 @@ echo "Downloading global-refdb library $GERRIT_BRANCH"
 ing"; exit 1; }
 
 echo "Downloading events-broker library $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-events-broker-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-broker/events-broker.jar \
-  -O $DEPLOYMENT_LOCATION/events-broker.jar ||
-  wget $GERRIT_CI/plugin-events-broker-bazel-master$GERRIT_BRANCH/$LAST_BUILD/events-broker/events-broker.jar \
-  -O $DEPLOYMENT_LOCATION/events-broker.jar ||
-{ echo >&2 "Cannot download events-broker library: Check internet connection. Abort\
-ing"; exit 1; }
+  download_plugin_from_ci events-broker "module"
 
 if [ "$BROKER_TYPE" = "kafka" ]; then
 echo "Downloading events-kafka plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-events-kafka-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-kafka/events-kafka.jar \
-  -O $DEPLOYMENT_LOCATION/events-kafka.jar || \
-  wget $GERRIT_CI/plugin-events-kafka-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/events-kafka/events-kafka.jar \
-  -O $DEPLOYMENT_LOCATION/events-kafka.jar || \
-  { echo >&2 "Cannot download events-kafka plugin: Check internet connection. Abort\
-ing"; exit 1; }
+  download_plugin_from_ci events-kafka
 fi
 
 if [ "$BROKER_TYPE" = "kinesis" ]; then
 echo "Downloading events-aws-kinesis plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-events-aws-kinesis-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-aws-kinesis/events-aws-kinesis.jar \
-  -O $DEPLOYMENT_LOCATION/events-aws-kinesis.jar || \
-  wget $GERRIT_CI/plugin-events-aws-kinesis-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/events-aws-kinesis/events-aws-kinesis.jar \
-  -O $DEPLOYMENT_LOCATION/events-aws-kinesis.jar || \
-  { echo >&2 "Cannot download events-aws-kinesis plugin: Check internet connection. Abort\
-ing"; exit 1; }
+  download_plugin_from_ci events-aws-kinesis
 fi
 
 
 if [ "$BROKER_TYPE" = "gcloud-pubsub" ]; then
 echo "Downloading events-gcloud-pubsub plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-events-gcloud-pubsub-bazel-$GERRIT_BRANCH/$LAST_BUILD/events-gcloud-pubsub/events-gcloud-pubsub.jar \
-  -O $DEPLOYMENT_LOCATION/events-gcloud-pubsub.jar || \
-  wget $GERRIT_CI/plugin-events-gcloud-pubsub-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/events-gcloud-pubsub/events-gcloud-pubsub.jar \
-  -O $DEPLOYMENT_LOCATION/events-gcloud-pubsub.jar || \
-  { echo >&2 "Cannot download events-gcloud-pubsub plugin: Check internet connection. Abort\
-ing"; exit 1; }
+  download_plugin_from_ci events-gcloud-pubsub
 fi
 
 echo "Downloading metrics-reporter-prometheus plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-metrics-reporter-prometheus-bazel-$GERRIT_BRANCH/$LAST_BUILD/metrics-reporter-prometheus/metrics-reporter-prometheus.jar \
-  -O $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar || \
-  wget $GERRIT_CI/plugin-metrics-reporter-prometheus-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/metrics-reporter-prometheus/metrics-reporter-prometheus.jar \
-  -O $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar || \
-  { echo >&2 "Cannot download metrics-reporter-prometheus plugin: Check internet connection. Abort\
-ing"; exit 1; }
+  download_plugin_from_ci metrics-reporter-prometheus
 
 echo "Downloading pull-replication plugin $GERRIT_BRANCH"
-  wget $GERRIT_CI/plugin-pull-replication-bazel-$GERRIT_BRANCH/$LAST_BUILD/pull-replication/pull-replication.jar \
-  -O $DEPLOYMENT_LOCATION/pull-replication.jar ||
-  wget $GERRIT_CI/plugin-pull-replication-bazel-master-GERRIT_BRANCH/$LAST_BUILD/pull-replication/pull-replication.jar \
-  -O $DEPLOYMENT_LOCATION/pull-replication.jar ||
- { echo >&2 "Cannot download pull-replication plugin: Check internet connection. Abort\
-ing"; exit 1; }
+  download_plugin_from_ci pull-replication
 
 if [ "$HTTPS_ENABLED" = "true" ];then
   export HTTP_PROTOCOL="https"
