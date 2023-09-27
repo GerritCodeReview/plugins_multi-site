@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d91e687_300d27da",
+        "filename": "setup_local_env/docker-compose-kafka.env",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-09-27T00:32:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c87ff66_1d815fd1",
+      "revId": "e3053c7012af1eb59f75f2c6e550b0cd7e55ffbf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84d1a0d4_1248bd75",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-09-26T23:49:12Z",
       "side": 1,
       "message": "Missing `-`",
+      "range": {
+        "startLine": 445,
+        "startChar": 49,
+        "endLine": 445,
+        "endChar": 51
+      },
+      "revId": "e3053c7012af1eb59f75f2c6e550b0cd7e55ffbf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fa2d1ce_d3d37fa6",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-09-27T00:32:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84d1a0d4_1248bd75",
       "range": {
         "startLine": 445,
         "startChar": 49,
