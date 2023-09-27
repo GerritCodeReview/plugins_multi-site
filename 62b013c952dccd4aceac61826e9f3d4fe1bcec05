@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "550f7dd3_adc34b8b",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-09-27T01:00:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2888d9a_cb28cddf",
+      "range": {
+        "startLine": 228,
+        "startChar": 18,
+        "endLine": 228,
+        "endChar": 24
+      },
+      "revId": "62b013c952dccd4aceac61826e9f3d4fe1bcec05",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "099a5951_80580869",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-27T00:59:06Z",
       "side": 1,
       "message": "`artifact_name`",
+      "range": {
+        "startLine": 229,
+        "startChar": 8,
+        "endLine": 229,
+        "endChar": 14
+      },
+      "revId": "62b013c952dccd4aceac61826e9f3d4fe1bcec05",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25218df6_e7357780",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 8
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-09-27T01:00:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "099a5951_80580869",
       "range": {
         "startLine": 229,
         "startChar": 8,
