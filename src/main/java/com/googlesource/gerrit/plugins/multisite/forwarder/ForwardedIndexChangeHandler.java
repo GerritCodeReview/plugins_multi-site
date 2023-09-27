@@ -95,7 +95,7 @@ public class ForwardedIndexChangeHandler
       Optional<ChangeNotes> changeNotes = checker.getChangeNotes();
       ChangeNotes notes = changeNotes.get();
       notes.reload();
-      indexer.index(notes.getChange());
+      indexer.index(notes);
     }
   }
 

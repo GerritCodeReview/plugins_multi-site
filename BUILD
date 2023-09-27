@@ -18,9 +18,9 @@ gerrit_plugin(
     ],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
+        ":events-broker-neverlink",
         ":pull-replication-neverlink",
         ":replication-neverlink",
-        "@events-broker//jar:neverlink",
         "@global-refdb//jar:neverlink",
     ],
 )
@@ -35,6 +35,12 @@ java_library(
     name = "pull-replication-neverlink",
     neverlink = 1,
     exports = ["//plugins/pull-replication"],
+)
+
+java_library(
+    name = "events-broker-neverlink",
+    neverlink = 1,
+    exports = ["//plugins/events-broker"],
 )
 
 junit_tests(
@@ -57,7 +63,7 @@ java_library(
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":multi-site__plugin",
         "@global-refdb//jar",
-        "@events-broker//jar",
+        "//plugins/events-broker",
         "//plugins/pull-replication",
         "//plugins/replication",
     ],

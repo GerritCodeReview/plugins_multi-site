@@ -210,7 +210,6 @@ esac
 done
 
 # Defaults
-EVENTS_BROKER_VER=`grep 'com.gerritforge:events-broker' ${LOCATION}/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
 GLOBAL_REFDB_VER=`grep 'com.gerritforge:global-refdb' ${LOCATION}/../external_plugin_deps.bzl | cut -d '"' -f 2 | cut -d ':' -f 3`
 DEPLOYMENT_LOCATION=$(mktemp -d || $(echo >&2 "Could not create temp dir" && exit 1))
 MULTISITE_LIB_LOCATION=${MULTISITE_LIB_LOCATION:-${DEF_MULTISITE_LOCATION}}
@@ -267,8 +266,7 @@ wget https://repo1.maven.org/maven2/com/gerritforge/global-refdb/$GLOBAL_REFDB_V
   -O $COMMON_LIBS/global-refdb.jar || { echo >&2 "Cannot download global-refdb library: Check internet connection. Aborting"; exit 1; }
 
 echo "Downloading events-broker library $GERRIT_BRANCH"
-wget https://repo1.maven.org/maven2/com/gerritforge/events-broker/$EVENTS_BROKER_VER/events-broker-$EVENTS_BROKER_VER.jar \
-  -O $COMMON_LIBS/events-broker.jar || { echo >&2 "Cannot download events-broker library: Check internet connection. Aborting"; exit 1; }
+cp bazel-bin/plugins/events-broker/events-broker.jar $COMMON_LIBS/events-broker.jar
 
 echo "Setting up directories"
 mkdir -p ${GERRIT_1_ETC} ${GERRIT_1_PLUGINS} ${GERRIT_1_LIBS} ${GERRIT_2_ETC} ${GERRIT_2_PLUGINS} ${GERRIT_2_LIBS}
