@@ -40,7 +40,7 @@ java_library(
 java_library(
     name = "events-broker-neverlink",
     neverlink = 1,
-    exports = ["//plugins/events-broker"],
+    exports = ["//modules/events-broker"],
 )
 
 junit_tests(
@@ -63,7 +63,7 @@ java_library(
     exports = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":multi-site__plugin",
         "@global-refdb//jar",
-        "//plugins/events-broker",
+        "//modules/events-broker",
         "//plugins/pull-replication",
         "//plugins/replication",
     ],
