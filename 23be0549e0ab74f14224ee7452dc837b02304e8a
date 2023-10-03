@@ -22,6 +22,30 @@
       },
       "revId": "23be0549e0ab74f14224ee7452dc837b02304e8a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "067a2353_9d51e845",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-10-03T16:10:38Z",
+      "side": 1,
+      "message": "The module will be downloaded in the correct folder by the pipeline as per this change [1]. So it will be there at the moment of the build. Hope it makes sense.\n\n[1] https://gerrit-review.googlesource.com/c/gerrit-ci-scripts/+/374435",
+      "parentUuid": "5baa5fed_31276a41",
+      "range": {
+        "startLine": 12,
+        "startChar": 14,
+        "endLine": 12,
+        "endChar": 25
+      },
+      "revId": "23be0549e0ab74f14224ee7452dc837b02304e8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
