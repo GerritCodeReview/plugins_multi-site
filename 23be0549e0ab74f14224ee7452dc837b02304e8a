@@ -70,6 +70,30 @@
       },
       "revId": "23be0549e0ab74f14224ee7452dc837b02304e8a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b40e94c_22a1a879",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-10-03T18:22:21Z",
+      "side": 1,
+      "message": "They have already been added in the multi-site `Jenkinsfile`. See Ifd46bf951",
+      "parentUuid": "bd83b532_78d671db",
+      "range": {
+        "startLine": 12,
+        "startChar": 14,
+        "endLine": 12,
+        "endChar": 25
+      },
+      "revId": "23be0549e0ab74f14224ee7452dc837b02304e8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
