@@ -46,6 +46,30 @@
       },
       "revId": "23be0549e0ab74f14224ee7452dc837b02304e8a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd83b532_78d671db",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2023-10-03T17:21:19Z",
+      "side": 1,
+      "message": "but one needs to modify the `multi-site` CI build script to actually add those `extraModules` before it could work, right?",
+      "parentUuid": "067a2353_9d51e845",
+      "range": {
+        "startLine": 12,
+        "startChar": 14,
+        "endLine": 12,
+        "endChar": 25
+      },
+      "revId": "23be0549e0ab74f14224ee7452dc837b02304e8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
