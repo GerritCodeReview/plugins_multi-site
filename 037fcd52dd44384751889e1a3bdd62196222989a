@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73d44274_9c9efb1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-09T17:15:57Z",
+      "side": 1,
+      "message": "test.sh already has that change. The only thing to improve there is to make the path configurable but that should be done as a separate change",
+      "parentUuid": "ff40d24f_03a2b3e0",
+      "revId": "037fcd52dd44384751889e1a3bdd62196222989a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef7bba9c_80abd675",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-09-19T16:54:49Z",
       "side": 1,
       "message": "I notice the script has the `--multisite-lib-file` option - maybe we should add the respective `--events-broker-lib-file` (or `--eventsbroker-lib-file`)?",
+      "revId": "037fcd52dd44384751889e1a3bdd62196222989a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be96176c_9766a45c",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-09T17:15:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef7bba9c_80abd675",
       "revId": "037fcd52dd44384751889e1a3bdd62196222989a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -70,6 +106,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c869f4d_f3b1ce11",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-09T17:15:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c079c47_209ddf01",
+      "revId": "037fcd52dd44384751889e1a3bdd62196222989a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a74381e4_6c926450",
@@ -83,6 +137,30 @@
       "writtenOn": "2023-09-25T08:37:43Z",
       "side": 1,
       "message": "Let\u0027s mention what file we are not able to copy, as that error message is quite generic and used at least in a couple of places, making it hard to figure out for which file we had the failure.",
+      "range": {
+        "startLine": 441,
+        "startChar": 136,
+        "endLine": 441,
+        "endChar": 171
+      },
+      "revId": "037fcd52dd44384751889e1a3bdd62196222989a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35546af3_018346ac",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-09T17:15:57Z",
+      "side": 1,
+      "message": "It will show full path to the file: $EVENTS_BROKER_LIB_LOCATION",
+      "parentUuid": "a74381e4_6c926450",
       "range": {
         "startLine": 441,
         "startChar": 136,
