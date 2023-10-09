@@ -16,6 +16,24 @@
       "message": "nit: remove the comma in L102",
       "revId": "037fcd52dd44384751889e1a3bdd62196222989a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eef5f008_9e4ad57b",
+        "filename": "BUILD",
+        "patchSetId": 6
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-09T16:27:51Z",
+      "side": 0,
+      "message": "Why? All the lists ends with comma, for example see L68",
+      "parentUuid": "cf4cd3c5_911c27c9",
+      "revId": "037fcd52dd44384751889e1a3bdd62196222989a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2338fb08_3bdc0d6a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-09T16:27:51Z",
+      "side": 1,
+      "message": "Good point. Maybe this time we could merge it",
+      "parentUuid": "05235cdc_d1720270",
+      "revId": "dae03ba401b696456d958924d93dfc7159e0fe88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba9ffe5b_1473120c",
         "filename": "e2e-tests/test.sh",
         "patchSetId": 6
@@ -31,6 +49,30 @@
       "writtenOn": "2023-09-19T19:54:45Z",
       "side": 1,
       "message": "Nit: This should now say `Copying` instead of downloading (although I guess it\u0027s an issue for at least `events-broker` below too).",
+      "range": {
+        "startLine": 262,
+        "startChar": 6,
+        "endLine": 262,
+        "endChar": 17
+      },
+      "revId": "dae03ba401b696456d958924d93dfc7159e0fe88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae15ef14_0a0fed9f",
+        "filename": "e2e-tests/test.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-09T16:27:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba9ffe5b_1473120c",
       "range": {
         "startLine": 262,
         "startChar": 6,
@@ -58,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31dab503_e0facd34",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-09T16:27:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73472f6b_f629f627",
+      "revId": "dae03ba401b696456d958924d93dfc7159e0fe88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98119037_545b4a9b",
@@ -71,6 +131,30 @@
       "writtenOn": "2023-09-25T12:45:12Z",
       "side": 1,
       "message": "You could pass -b \u003cbranch\u003e to clone command.",
+      "range": {
+        "startLine": 22,
+        "startChar": 3,
+        "endLine": 23,
+        "endChar": 48
+      },
+      "revId": "dae03ba401b696456d958924d93dfc7159e0fe88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb682c2d_8b7753d8",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-09T16:27:51Z",
+      "side": 1,
+      "message": "This is copied from line 12. Idea is to clone the same version as Gerrit core",
+      "parentUuid": "98119037_545b4a9b",
       "range": {
         "startLine": 22,
         "startChar": 3,
@@ -104,6 +188,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6976a1d_5c18d490",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-09T16:27:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5762dc35_0e276d46",
+      "range": {
+        "startLine": 24,
+        "startChar": 2,
+        "endLine": 24,
+        "endChar": 12
+      },
+      "revId": "dae03ba401b696456d958924d93dfc7159e0fe88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4da5615_5d0830fc",
@@ -117,6 +225,30 @@
       "writtenOn": "2023-09-25T12:45:12Z",
       "side": 1,
       "message": "What is that for? The file external_plugin_deps.bzl was removed in this change.\n\nYou could clone directly in gerrit plugins directory, or you could clone in gerrit\u0027s parent directory and link it from there, that what you always do:\n\n```suggest\ncd ..\ngit clone https://gerrit.googlesource.com/modules/global-refdb\ncd gerrit/plugins\nln -s ../../global-refdb .\n\n```\n\nIn the end we want to see this:\n\n```\ndavido@witball:~/projects/gerrit/plugins (master *%\u003d)$ ls -all global-refdb\nlrwxrwxrwx 1 davido users 18 Sep 25 14:36 global-refdb -\u003e ../../global-refdb\n```",
+      "range": {
+        "startLine": 26,
+        "startChar": 2,
+        "endLine": 27,
+        "endChar": 43
+      },
+      "revId": "dae03ba401b696456d958924d93dfc7159e0fe88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "712b4e67_986f5543",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-09T16:27:51Z",
+      "side": 1,
+      "message": "You are correct, I took the example from L12",
+      "parentUuid": "c4da5615_5d0830fc",
       "range": {
         "startLine": 26,
         "startChar": 2,
