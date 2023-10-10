@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87ea53a5_8b4346c4",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-10-10T08:58:15Z",
+      "side": 1,
+      "message": "The description isn\u0027t aligned with the other ones.",
+      "revId": "8422c916b128c3ed5dbb1052c70dc16aee29a8a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b63fcb67_f725922a",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-10-10T08:58:15Z",
+      "side": 1,
+      "message": "Nit: could we move this by the group of other dependencies that we copy instead of download (i.e. L406-418)? I think it makes sense to keep the copied dependencies together, separate from the downloaded ones. A side benefit is we fail fast if we fail to copy the file (i.e. before we\u0027ve downloaded all these dependencies).",
+      "revId": "8422c916b128c3ed5dbb1052c70dc16aee29a8a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
