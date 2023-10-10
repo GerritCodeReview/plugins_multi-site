@@ -16,6 +16,24 @@
       "message": "Nit: can we move this earlier in this file, in the section where we copy the dependencies instead of keeping it here where we download them?",
       "revId": "d4ded54be3b33ba74f1077132080f6f1fd988314",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97c1850e_a04d4073",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 11
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-10T10:38:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07385ae3_d92e205d",
+      "revId": "d4ded54be3b33ba74f1077132080f6f1fd988314",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
