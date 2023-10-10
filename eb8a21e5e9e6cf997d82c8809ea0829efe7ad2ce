@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "182c7a13_09eaeeb9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-10-10T12:52:35Z",
+      "side": 1,
+      "message": "Not-related-to-this-change, but a general question - isn\u0027t this going to lead to unnecessarily noisy logs? We log this here, then throw the same string wrapped in an exception, which we will inevitably have to log again higher up the stack. Wouldn\u0027t it be enough just to throw the exception without the log line?",
+      "revId": "eb8a21e5e9e6cf997d82c8809ea0829efe7ad2ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
