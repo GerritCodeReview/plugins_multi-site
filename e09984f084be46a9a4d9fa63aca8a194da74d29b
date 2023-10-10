@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c33ba4d6_8f0d1a6f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-10T12:01:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1a79b3d_c9fc7dcd",
+      "range": {
+        "startLine": 138,
+        "startChar": 82,
+        "endLine": 138,
+        "endChar": 90
+      },
+      "revId": "e09984f084be46a9a4d9fa63aca8a194da74d29b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59c4ed34_cb3e131d",
@@ -54,6 +78,30 @@
       "writtenOn": "2023-09-15T18:21:27Z",
       "side": 1,
       "message": "This is already repeated 3 times: can we get the value once and reuse it here, and L168 and L162?",
+      "range": {
+        "startLine": 179,
+        "startChar": 14,
+        "endLine": 179,
+        "endChar": 62
+      },
+      "revId": "e09984f084be46a9a4d9fa63aca8a194da74d29b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "632fc59a_7bca12fe",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-10T12:01:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59c4ed34_cb3e131d",
       "range": {
         "startLine": 179,
         "startChar": 14,
