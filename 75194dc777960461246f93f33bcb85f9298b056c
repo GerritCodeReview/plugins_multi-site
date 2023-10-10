@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65f77979_47f375db",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-10T12:57:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5d10cac_3af6b826",
+      "range": {
+        "startLine": 13,
+        "startChar": 24,
+        "endLine": 13,
+        "endChar": 26
+      },
+      "revId": "75194dc777960461246f93f33bcb85f9298b056c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "31ea6c13_8b1a0097",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-09-22T09:11:52Z",
       "side": 1,
       "message": "Typo: `Version`",
+      "range": {
+        "startLine": 183,
+        "startChar": 31,
+        "endLine": 183,
+        "endChar": 37
+      },
+      "revId": "75194dc777960461246f93f33bcb85f9298b056c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "183cbb49_f2d3d89a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-10T12:57:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31ea6c13_8b1a0097",
       "range": {
         "startLine": 183,
         "startChar": 31,
