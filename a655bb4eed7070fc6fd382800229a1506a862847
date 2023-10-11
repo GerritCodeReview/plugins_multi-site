@@ -132,6 +132,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "30e43274_a89e662f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-10-11T19:26:06Z",
+      "side": 1,
+      "message": "typo: Version",
+      "range": {
+        "startLine": 183,
+        "startChar": 31,
+        "endLine": 183,
+        "endChar": 37
+      },
+      "revId": "a655bb4eed7070fc6fd382800229a1506a862847",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "34f61666_ed42195a",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
         "patchSetId": 5

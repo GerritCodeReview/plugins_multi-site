@@ -24,6 +24,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bef26c9e_ba12648e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-10-11T19:26:06Z",
+      "side": 1,
+      "message": "@marcin are we still consuming the wrong version of events-broker?\n\nJenkins throws\n\n```\nplugins/multi-site/src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java:177: error: cannot find symbol\n    if (sharedRefDb.isSetOperationSupported()) {\n                   ^\n  symbol:   method isSetOperationSupported()\n  location: variable sharedRefDb of type SharedRefDatabaseWrapper\nplugins/multi-site/src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java:178: error: cannot find symbol\n      sharedRefDb.put(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, newVersion.toString());\n```",
+      "revId": "ff81bd890b8158f84ba5c3d079a17587c563e33a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96c23326_976b121c",
