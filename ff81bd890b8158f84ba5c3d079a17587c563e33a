@@ -6,12 +6,12 @@
       "updated": "2023-10-12T13:47:49Z"
     },
     "gerritforge:multi-site-format-47168e90078b0b3f11401610930e82830e76bff7": {
-      "state": "RUNNING",
+      "state": "SUCCESSFUL",
       "url": "https://gerrit-ci.gerritforge.com/job/plugin-multi-site-verifier/job/01%252F386901%252F11/2/console",
       "started": "2023-10-12T13:47:59Z",
-      "finished": "2023-10-10T13:00:02Z",
+      "finished": "2023-10-12T13:48:06Z",
       "created": "2023-10-10T12:59:55Z",
-      "updated": "2023-10-12T13:47:59Z"
+      "updated": "2023-10-12T13:48:07Z"
     }
   }
 }
