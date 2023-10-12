@@ -41,6 +41,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "359e2b8b_b0e7cfc9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-12T10:47:08Z",
+      "side": 1,
+      "message": "yes, we still need global-refdb change to be merged:\nhttps://gerrit-review.googlesource.com/c/modules/global-refdb/+/387101",
+      "parentUuid": "bef26c9e_ba12648e",
+      "revId": "ff81bd890b8158f84ba5c3d079a17587c563e33a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "96c23326_976b121c",
