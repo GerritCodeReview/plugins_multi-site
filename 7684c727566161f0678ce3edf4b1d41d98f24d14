@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27fb67f5_3ba2c4c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-10-13T16:33:54Z",
+      "side": 1,
+      "message": "Can you explain why? What\u0027s the benefit of dropping the milliseconds on timestamp?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 39
+      },
+      "revId": "7684c727566161f0678ce3edf4b1d41d98f24d14",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6bcbf37_971cf727",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-10-13T16:33:54Z",
+      "side": 1,
+      "message": "Why is this needed?",
+      "range": {
+        "startLine": 128,
+        "startChar": 4,
+        "endLine": 128,
+        "endChar": 37
+      },
+      "revId": "7684c727566161f0678ce3edf4b1d41d98f24d14",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15965a07_e5f6fc96",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-10-13T16:33:54Z",
+      "side": 1,
+      "message": "For the purpose of this test, this is just a number, why do we have it from `masterCommit`?",
+      "range": {
+        "startLine": 133,
+        "startChar": 38,
+        "endLine": 133,
+        "endChar": 66
+      },
+      "revId": "7684c727566161f0678ce3edf4b1d41d98f24d14",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b21d86d6_b24f7f60",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-10-13T16:33:54Z",
+      "side": 1,
+      "message": "Why are we mocking this event? Can\u0027t we just instantiate it?",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 67
+      },
+      "revId": "7684c727566161f0678ce3edf4b1d41d98f24d14",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

@@ -85,6 +85,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "397f1376_e99a1b59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-10-13T16:33:54Z",
+      "side": 1,
+      "message": "I am wondering if this would then break existing setups: I believe we should take a more conservative approach and discover the method using an additional interface, pretty much like we did with the events-broker.",
+      "parentUuid": "359e2b8b_b0e7cfc9",
+      "revId": "ff81bd890b8158f84ba5c3d079a17587c563e33a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96c23326_976b121c",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
         "patchSetId": 11
@@ -96,6 +114,24 @@
       "writtenOn": "2023-10-11T08:30:02Z",
       "side": 1,
       "message": "Is there a way we could test the difference in behaviour between `CompareAndPut` and `Put` instead of testing that we\u0027re calling `put` instead of `compareAndPut`?",
+      "revId": "ff81bd890b8158f84ba5c3d079a17587c563e33a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a388593e_913e7761",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-10-13T16:33:54Z",
+      "side": 1,
+      "message": "Well, the focus of this test is that we call `put` and not `compareAndPut`. The difference of behaviour should not be in this test IMHO.",
+      "parentUuid": "96c23326_976b121c",
       "revId": "ff81bd890b8158f84ba5c3d079a17587c563e33a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
