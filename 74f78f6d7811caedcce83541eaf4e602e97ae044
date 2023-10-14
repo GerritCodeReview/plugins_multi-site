@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a100b09c_2987ac52",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/IndexEventHandler.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-10-14T19:40:24Z",
+      "side": 1,
+      "message": "is this not the instanceId of the gerrit that generated the event?\nShould the string say: `_produced by_ instance %s`?",
+      "range": {
+        "startLine": 182,
+        "startChar": 42,
+        "endLine": 182,
+        "endChar": 63
+      },
+      "revId": "74f78f6d7811caedcce83541eaf4e602e97ae044",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
