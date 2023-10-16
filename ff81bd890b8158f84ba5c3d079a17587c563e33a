@@ -134,6 +134,24 @@
       "parentUuid": "96c23326_976b121c",
       "revId": "ff81bd890b8158f84ba5c3d079a17587c563e33a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25cd583b_287dc0f9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-10-16T08:16:28Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a388593e_913e7761",
+      "revId": "ff81bd890b8158f84ba5c3d079a17587c563e33a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
