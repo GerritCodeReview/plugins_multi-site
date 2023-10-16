@@ -103,6 +103,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "27510c1e_776d291c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-16T12:05:31Z",
+      "side": 1,
+      "message": "I thought about the same but `sharedRefDb.isSetOperationSupported()` is checking the additional interface and it\u0027s coming from `SharedRefDatabaseWrapper`:\n```\npublic boolean isSetOperationSupported() {\n    return sharedRefDb() instanceof ExtendedGlobalRefDatabase;\n  }\n```\nThis is the same approach as we have in events-broker. If we remove that method and  have the check directly in the code if someone deploy multi-site with old global-refdb lib he will get class not found `ExtendedGlobalRefDatabase` which is quite similar to missing method `isSetOperationSupported`. If we want to allow old events-broker or global-refdb to work with newest build of the multi-site we would have to check interface name converted to String, something like this:\n```\nArrays.stream(sharedRefDb().getClass().getInterfaces()).map(Class::getName).anyMatch(clName -\u003e clName.contains(\"ExtendedGlobalRefDatabase\"));\n```",
+      "parentUuid": "397f1376_e99a1b59",
+      "revId": "ff81bd890b8158f84ba5c3d079a17587c563e33a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96c23326_976b121c",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
         "patchSetId": 11
