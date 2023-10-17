@@ -121,6 +121,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c83d4041_e35c9c4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-10-17T12:34:47Z",
+      "side": 1,
+      "message": "You could also catch the MethodNotFoundError, have you tried?",
+      "parentUuid": "27510c1e_776d291c",
+      "revId": "ff81bd890b8158f84ba5c3d079a17587c563e33a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "96c23326_976b121c",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
         "patchSetId": 11
