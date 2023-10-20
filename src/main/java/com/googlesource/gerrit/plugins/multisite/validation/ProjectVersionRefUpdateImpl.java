@@ -24,6 +24,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
@@ -40,9 +41,7 @@ import java.util.Optional;
 import java.util.Set;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.ObjectInserter;
-import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.lib.Repository;
 
@@ -106,8 +105,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
       if (newProjectVersionRefUpdate.isPresent()) {
         verLogger.log(projectNameKey, newVersion, 0L);
 
-        if (updateSharedProjectVersion(
-            projectNameKey, newProjectVersionRefUpdate.get().getNewObjectId(), newVersion)) {
+        if (updateSharedProjectVersion(projectNameKey, newVersion)) {
           gitReferenceUpdated.fire(projectNameKey, newProjectVersionRefUpdate.get(), null);
         }
       } else {
@@ -138,20 +136,9 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
   }
 
   @SuppressWarnings("FloggerLogString")
-  private boolean updateSharedProjectVersion(
-      Project.NameKey projectNameKey, ObjectId newObjectId, Long newVersion)
+  private boolean updateSharedProjectVersion(Project.NameKey projectNameKey, Long newVersion)
       throws SharedProjectVersionUpdateException {
 
-    Ref sharedRef =
-        sharedRefDb
-            .get(projectNameKey, MULTI_SITE_VERSIONING_REF, String.class)
-            .map(
-                (String objectId) ->
-                    new ObjectIdRef.Unpeeled(
-                        Ref.Storage.NEW, MULTI_SITE_VERSIONING_REF, ObjectId.fromString(objectId)))
-            .orElse(
-                new ObjectIdRef.Unpeeled(
-                    Ref.Storage.NEW, MULTI_SITE_VERSIONING_REF, ObjectId.zeroId()));
     Optional<Long> sharedVersion =
         sharedRefDb
             .get(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, String.class)
@@ -160,56 +147,47 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
     try {
       if (sharedVersion.isPresent() && sharedVersion.get() >= newVersion) {
         logger.atWarning().log(
-            "NOT Updating project %s version %s (value=%d) in shared ref-db because is more recent than the local one %s (value=%d) ",
-            projectNameKey.get(),
-            newObjectId,
-            newVersion,
-            sharedRef.getObjectId().getName(),
-            sharedVersion.get());
+            "NOT Updating project %s value=%d in shared ref-db because is more recent than the local value=%d",
+            projectNameKey.get(), newVersion, sharedVersion.get());
         return false;
       }
 
       logger.atFine().log(
-          "Updating shared project %s version to %s (value=%d)",
-          projectNameKey.get(), newObjectId, newVersion);
+          "Updating shared project %s value to %d", projectNameKey.get(), newVersion);
 
-      boolean success = sharedRefDb.compareAndPut(projectNameKey, sharedRef, newObjectId);
-      if (!success) {
-        String message =
-            String.format(
-                "Project version blob update failed for %s. Current value %s, new value: %s",
-                projectNameKey.get(), safeGetObjectId(sharedRef), newObjectId);
-        logger.atSevere().log(message);
-        throw new SharedProjectVersionUpdateException(message);
-      }
-
-      success =
-          sharedRefDb.compareAndPut(
-              projectNameKey,
-              MULTI_SITE_VERSIONING_VALUE_REF,
-              sharedVersion.map(Object::toString).orElse(null),
-              newVersion.toString());
-      if (!success) {
-        String message =
-            String.format(
-                "Project version update failed for %s. Current value %s, new value: %s",
-                projectNameKey.get(), safeGetObjectId(sharedRef), newObjectId);
-        logger.atSevere().log(message);
-        throw new SharedProjectVersionUpdateException(message);
-      }
-
+      updateProjectVersionValue(projectNameKey, newVersion, sharedVersion);
       return true;
     } catch (GlobalRefDbSystemError refDbSystemError) {
       String message =
           String.format(
-              "Error while updating shared project version for %s. Current value %s, new value: %s. Error: %s",
+              "Error while updating shared project value for %s. Current value %s, new value: %s. Error: %s",
               projectNameKey.get(),
-              sharedRef.getObjectId(),
-              newObjectId,
+              sharedVersion.map(Object::toString).orElse(null),
+              newVersion,
               refDbSystemError.getMessage());
       logger.atSevere().withCause(refDbSystemError).log(message);
       throw new SharedProjectVersionUpdateException(message);
     }
+  }
+
+  private void updateProjectVersionValue(
+      NameKey projectNameKey, Long newVersion, Optional<Long> sharedVersion) {
+    try {
+      if (sharedRefDb.isSetOperationSupported()) {
+        sharedRefDb.put(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, newVersion.toString());
+        return;
+      }
+    } catch (NoSuchMethodError e) {
+      logger.atSevere().log(
+          "Global-refdb library is outdated and is not supporting "
+              + "'put' method, update global-refdb to the newest version. Falling back to 'compareAndPut'");
+    }
+
+    sharedRefDb.compareAndPut(
+        projectNameKey,
+        MULTI_SITE_VERSIONING_VALUE_REF,
+        sharedVersion.map(Object::toString).orElse(null),
+        newVersion.toString());
   }
 
   /* (non-Javadoc)
@@ -258,10 +236,6 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
         sharedRefDb.get(
             Project.NameKey.parse(projectName), MULTI_SITE_VERSIONING_VALUE_REF, String.class);
     return globalVersion.flatMap(longString -> getLongValueOf(longString));
-  }
-
-  private Object safeGetObjectId(Ref currentRef) {
-    return currentRef == null ? "null" : currentRef.getObjectId();
   }
 
   private Optional<Long> getLongValueOf(String longString) {
