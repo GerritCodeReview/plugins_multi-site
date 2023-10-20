@@ -18,15 +18,20 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF;
 import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
+import com.google.common.base.Suppliers;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.project.ProjectConfig;
@@ -85,16 +90,9 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   public void producerShouldUpdateProjectVersionUponRefUpdatedEvent() throws IOException {
     when(sharedRefDb.get(
             A_TEST_PROJECT_NAME_KEY,
-            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
-            String.class))
-        .thenReturn(Optional.of("26f7ee61bf0e470e8393c884526eec8a9b943a63"));
-    when(sharedRefDb.get(
-            A_TEST_PROJECT_NAME_KEY,
             ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
             String.class))
         .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)));
-    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
-        .thenReturn(true);
     when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
         .thenReturn(true);
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
@@ -119,25 +117,47 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
   }
 
   @Test
+  public void producerShouldUsePutInsteadOfCompareAndPutWhenExtendedGlobalRefDb()
+      throws IOException {
+    when(sharedRefDb.isSetOperationSupported()).thenReturn(true);
+    RefUpdatedEvent refUpdatedEvent = new RefUpdatedEvent();
+    refUpdatedEvent.instanceId = DEFAULT_INSTANCE_ID;
+    RefUpdateAttribute refUpdatedAttribute = new RefUpdateAttribute();
+    refUpdatedAttribute.project = A_TEST_PROJECT_NAME_KEY.get();
+    refUpdatedAttribute.refName = A_TEST_REF_NAME;
+    refUpdatedEvent.refUpdate = Suppliers.memoize(() -> refUpdatedAttribute);
+
+    new ProjectVersionRefUpdateImpl(
+            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, DEFAULT_INSTANCE_ID)
+        .onEvent(refUpdatedEvent);
+
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
+
+    verify(sharedRefDb, never())
+        .compareAndPut(any(Project.NameKey.class), anyString(), anyLong(), anyLong());
+
+    verify(sharedRefDb).put(any(Project.NameKey.class), any(String.class), any(String.class));
+    assertThat(ref).isNotNull();
+
+    ObjectLoader loader = repo.getRepository().open(ref.getObjectId());
+    long storedVersion = readLongObject(loader);
+    assertThat(storedVersion).isGreaterThan((long) masterCommit.getCommitTime());
+
+    verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
+  }
+
+  @Test
   public void producerShouldUpdateProjectVersionUponForcedPushRefUpdatedEvent() throws Exception {
     Thread.sleep(1000L);
     RevCommit masterPlusOneCommit = repo.branch("master").commit().create();
 
     Thread.sleep(1000L);
     repo.branch("master").update(masterCommit);
-
-    when(sharedRefDb.get(
-            A_TEST_PROJECT_NAME_KEY,
-            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
-            String.class))
-        .thenReturn(Optional.of("26f7ee61bf0e470e8393c884526eec8a9b943a63"));
     when(sharedRefDb.get(
             A_TEST_PROJECT_NAME_KEY,
             ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
             String.class))
         .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)));
-    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
-        .thenReturn(true);
     when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
         .thenReturn(true);
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
@@ -171,17 +191,10 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
       throws IOException {
     when(sharedRefDb.get(
             A_TEST_PROJECT_NAME_KEY,
-            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF,
-            String.class))
-        .thenReturn(Optional.empty());
-    when(sharedRefDb.get(
-            A_TEST_PROJECT_NAME_KEY,
             ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
             String.class))
         .thenReturn(Optional.empty());
 
-    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class)))
-        .thenReturn(true);
     when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
         .thenReturn(true);
     when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
