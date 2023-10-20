@@ -40,8 +40,6 @@ git clone -b stable-2.16 https://gerrit.googlesource.com/plugins/multi-site
 
 cd gerrit/plugins
 ln -s ../../multi-site .
-rm external_plugin_deps.bzl
-ln -s multi-site/external_plugin_deps.bzl .
 ```
 
 Example of building the multi-site plugin:
