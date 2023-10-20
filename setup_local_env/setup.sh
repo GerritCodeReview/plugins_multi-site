@@ -230,35 +230,36 @@ case "$1" in
   "--help" )
     echo "Usage: sh $0 [--option $value]"
     echo
-    echo "[--release-war-file]            Location to release.war file"
-    echo "[--multisite-lib-file]          Location to lib multi-site.jar file"
-    echo "[--eventsbroker-lib-file]       Location to lib events-broker.jar file"
-    echo "[--globalrefdb-lib-file]        Location to lib global-refdb.jar file"
+    echo "[--release-war-file]                Location to release.war file"
+    echo "[--multisite-lib-file]              Location to lib multi-site.jar file"
+    echo "[--eventsbroker-lib-file]           Location to lib events-broker.jar file"
+    echo "[--globalrefdb-lib-file]            Location to lib global-refdb.jar file"
     echo
-    echo "[--new-deployment]              Cleans up previous gerrit deployment and re-installs it. default true"
-    echo "[--get-websession-plugin]       Download websession-broker plugin from CI lastSuccessfulBuild; default true"
-    echo "[--deployment-location]         Base location for the test deployment; default /tmp"
+    echo "[--new-deployment]                  Cleans up previous gerrit deployment and re-installs it. default true"
+    echo "[--get-websession-plugin]           Download websession-broker plugin from CI lastSuccessfulBuild; default true"
+    echo "[--get-websession-flatfile-plugin]  Download websession-flatfile plugin from CI lastSuccessfulBuild; default true"
+    echo "[--deployment-location]             Base location for the test deployment; default /tmp"
     echo
-    echo "[--gerrit-canonical-host]       The default host for Gerrit to be accessed through; default localhost"
-    echo "[--gerrit-canonical-port]       The default port for Gerrit to be accessed throug; default 8080"
+    echo "[--gerrit-canonical-host]           The default host for Gerrit to be accessed through; default localhost"
+    echo "[--gerrit-canonical-port]           The default port for Gerrit to be accessed throug; default 8080"
     echo
-    echo "[--gerrit-ssh-advertised-port]  Gerrit Instance 1 sshd port; default 29418"
+    echo "[--gerrit-ssh-advertised-port]      Gerrit Instance 1 sshd port; default 29418"
     echo
-    echo "[--gerrit1-httpd-port]          Gerrit Instance 1 http port; default 18080"
-    echo "[--gerrit1-sshd-port]           Gerrit Instance 1 sshd port; default 39418"
+    echo "[--gerrit1-httpd-port]              Gerrit Instance 1 http port; default 18080"
+    echo "[--gerrit1-sshd-port]               Gerrit Instance 1 sshd port; default 39418"
     echo
-    echo "[--gerrit2-httpd-port]          Gerrit Instance 2 http port; default 18081"
-    echo "[--gerrit2-sshd-port]           Gerrit Instance 2 sshd port; default 49418"
+    echo "[--gerrit2-httpd-port]              Gerrit Instance 2 http port; default 18081"
+    echo "[--gerrit2-sshd-port]               Gerrit Instance 2 sshd port; default 49418"
     echo
-    echo "[--replication-delay]           Replication delay across the two instances in seconds"
+    echo "[--replication-delay]               Replication delay across the two instances in seconds"
     echo
-    echo "[--just-cleanup-env]            Cleans up previous deployment; default false"
+    echo "[--just-cleanup-env]                Cleans up previous deployment; default false"
     echo
-    echo "[--enabled-https]               Enabled https; default true"
+    echo "[--enabled-https]                   Enabled https; default true"
     echo
-    echo "[--broker-type]                 events broker type; 'kafka', 'kinesis' or 'gcloud-pubsub'. Default 'kafka'"
+    echo "[--broker-type]                     events broker type; 'kafka', 'kinesis' or 'gcloud-pubsub'. Default 'kafka'"
     echo
-    echo "[--sudo]                        run docker commands with sudo"
+    echo "[--sudo]                            run docker commands with sudo"
     echo
     exit 0
   ;;
@@ -269,6 +270,11 @@ case "$1" in
   ;;
   "--get-websession-plugin")
     DOWNLOAD_WEBSESSION_PLUGIN=$2
+    shift
+    shift
+  ;;
+  "--get-websession-flatfile-plugin")
+    DOWNLOAD_WEBSESSION_FLATFILE_PLUGIN=$2
     shift
     shift
   ;;
@@ -375,6 +381,7 @@ check_application_requirements
 # Defaults
 NEW_INSTALLATION=${NEW_INSTALLATION:-"true"}
 DOWNLOAD_WEBSESSION_PLUGIN=${DOWNLOAD_WEBSESSION_PLUGIN:-"true"}
+DOWNLOAD_WEBSESSION_FLATFILE_PLUGIN=${DOWNLOAD_WEBSESSION_FLATFILE_PLUGIN:-"true"}
 DEPLOYMENT_LOCATION=${DEPLOYMENT_LOCATION:-"/tmp"}
 export GERRIT_CANONICAL_HOSTNAME=${GERRIT_CANONICAL_HOSTNAME:-"localhost"}
 export GERRIT_CANONICAL_PORT=${GERRIT_CANONICAL_PORT:-"8080"}
@@ -440,6 +447,18 @@ ing"; exit 1; }
 ing"; exit 1; }
 else
   echo "Without the websession-broker; user login via haproxy will fail."
+fi
+
+if [ $DOWNLOAD_WEBSESSION_FLATFILE_PLUGIN = "true" ];then
+  echo "Downloading websession-flatfile plugin $GERRIT_BRANCH"
+  wget $GERRIT_CI/plugin-websession-flatfile-bazel-$GERRIT_BRANCH/$LAST_BUILD/websession-flatfile/websession-flatfile.jar \
+  -O $DEPLOYMENT_LOCATION/websession-flatfile.jar || \
+  wget $GERRIT_CI/plugin-websession-flatfile-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/websession-flatfile/websession-flatfile.jar \
+  -O $DEPLOYMENT_LOCATION/websession-flatfile.jar || \
+  { echo >&2 "Cannot download websession-flatfile plugin: Check internet connection. Abort\
+ing"; exit 1; }
+else
+  echo "Without the websession-flatfile; user session would not be shared across instances."
 fi
 
 echo "Downloading zookeeper plugin $GERRIT_BRANCH"
@@ -521,6 +540,9 @@ if [ $NEW_INSTALLATION = "true" ]; then
 
   echo "Copy websession-broker plugin"
   cp -f $DEPLOYMENT_LOCATION/websession-broker.jar $LOCATION_TEST_SITE_1/plugins/websession-broker.jar
+
+  echo "Copy websession-flatfile plugin"
+  cp -f $DEPLOYMENT_LOCATION/websession-flatfile.jar $LOCATION_TEST_SITE_1/plugins/websession-flatfile.jar
 
   echo "Copy healthcheck plugin"
   cp -f $DEPLOYMENT_LOCATION/healthcheck.jar $LOCATION_TEST_SITE_1/plugins/healthcheck.jar
