@@ -70,6 +70,30 @@
       },
       "revId": "7b599ce0018629cd8f6696e55257dd29df102368",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ecd1ef3_83b57e1a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-10-20T10:58:54Z",
+      "side": 1,
+      "message": "I think the return value is fine, this is not scala 😊\n\nAlternatively we could do something like:\n\n```\n  private void updateProjectVersionValue(\n          NameKey projectNameKey, Long newVersion, Optional\u003cLong\u003e sharedVersion) {\n    boolean isSetOperationSupported \u003d false;\n\n    try {\n      isSetOperationSupported \u003d sharedRefDb.isSetOperationSupported();\n      if(isSetOperationSupported) {\n        sharedRefDb.put(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, newVersion.toString());\n      }\n    } catch (NoSuchMethodError e) {\n      logger.atSevere().log(\"Global-refdb library is outdated and is not supporting \u0027put\u0027 method, update global-refdb to the newest version. Falling back to \u0027compareAndPut\u0027\");\n    }\n\n    if (!isSetOperationSupported) {\n      sharedRefDb.compareAndPut(\n              projectNameKey,\n              MULTI_SITE_VERSIONING_VALUE_REF,\n              sharedVersion.map(Object::toString).orElse(null),\n              newVersion.toString());\n    }\n  }\n```\n\nI\u0027ll let you choose, this is just a nit anyway 😊",
+      "parentUuid": "1c4647ea_7477ec2c",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 35
+      },
+      "revId": "7b599ce0018629cd8f6696e55257dd29df102368",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
