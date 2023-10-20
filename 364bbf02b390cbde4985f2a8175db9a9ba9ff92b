@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4392b66_08b3d941",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-20T11:34:42Z",
+      "side": 1,
+      "message": "This is already addressed in Ida423b cloud we abandon that change?",
+      "revId": "364bbf02b390cbde4985f2a8175db9a9ba9ff92b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
