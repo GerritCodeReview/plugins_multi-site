@@ -46,6 +46,30 @@
       },
       "revId": "7b599ce0018629cd8f6696e55257dd29df102368",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c4647ea_7477ec2c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-20T09:52:30Z",
+      "side": 1,
+      "message": "I don\u0027t mind both so if you are fine with the return I would prefer your approach",
+      "parentUuid": "5fb802b0_192feeb6",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 185,
+        "endChar": 35
+      },
+      "revId": "7b599ce0018629cd8f6696e55257dd29df102368",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
