@@ -139,6 +139,27 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
   private boolean updateSharedProjectVersion(Project.NameKey projectNameKey, Long newVersion)
       throws SharedProjectVersionUpdateException {
 
+    logger.atFine().log(
+        String.format("Updating shared project %s value to %d", projectNameKey.get(), newVersion));
+
+    try {
+      if (sharedRefDb.isSetOperationSupported()) {
+        putNewVersion(projectNameKey, newVersion);
+        return true;
+      }
+    } catch (NoSuchMethodError e) {
+      logger.atSevere().log(
+          "Global-refdb library is outdated and is not supporting "
+              + "'put' method, update global-refdb to the newest version. Falling back to 'compareAndPut'");
+    }
+
+    logger.atFine().log(
+        "Global-refdb implementation is not supporting 'put' method falling back to 'compare and put'");
+    return compareAndPut(projectNameKey, newVersion);
+  }
+
+  private boolean compareAndPut(NameKey projectNameKey, Long newVersion)
+      throws SharedProjectVersionUpdateException {
     Optional<Long> sharedVersion =
         sharedRefDb
             .get(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, String.class)
@@ -153,11 +174,9 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
         return false;
       }
 
-      logger.atFine().log(
-          String.format(
-              "Updating shared project %s value to %d", projectNameKey.get(), newVersion));
+      sharedRefDb.compareAndPut(
+          projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, sharedVersion, newVersion.toString());
 
-      updateProjectVersionValue(projectNameKey, newVersion, sharedVersion);
       return true;
     } catch (GlobalRefDbSystemError refDbSystemError) {
       String message =
@@ -172,27 +191,17 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
     }
   }
 
-  private void updateProjectVersionValue(
-      NameKey projectNameKey, Long newVersion, Optional<Long> sharedVersion) {
+  private void putNewVersion(NameKey projectNameKey, Long newVersion)
+      throws SharedProjectVersionUpdateException {
     try {
-      if (sharedRefDb.isSetOperationSupported()) {
-        sharedRefDb.put(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, newVersion.toString());
-      } else {
-        sharedRefDb.compareAndPut(
-            projectNameKey,
-            MULTI_SITE_VERSIONING_VALUE_REF,
-            sharedVersion.map(Object::toString).orElse(null),
-            newVersion.toString());
-      }
-    } catch (NoSuchMethodError e) {
-      logger.atSevere().log(
-          "Global-refdb library is outdated and is not supporting "
-              + "'put' method, update global-refdb to the newest version. Falling back to 'compareAndPut'");
-      sharedRefDb.compareAndPut(
-          projectNameKey,
-          MULTI_SITE_VERSIONING_VALUE_REF,
-          sharedVersion.map(Object::toString).orElse(null),
-          newVersion.toString());
+      sharedRefDb.put(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, newVersion.toString());
+    } catch (GlobalRefDbSystemError refDbSystemError) {
+      String message =
+          String.format(
+              "Error while updating shared project value for %s. New value: %s. Error: %s",
+              projectNameKey.get(), newVersion, refDbSystemError.getMessage());
+      logger.atSevere().withCause(refDbSystemError).log(message);
+      throw new SharedProjectVersionUpdateException(message);
     }
   }
 
