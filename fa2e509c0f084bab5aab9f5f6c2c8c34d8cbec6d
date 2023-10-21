@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90136089_469372c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-10-21T10:16:14Z",
+      "side": 1,
+      "message": "@Nguyen we moved away from websession-flatfile with this change Ied0f98fb.\nWe now use websession-broker, which should already be installed by default.\nI\u0027m sorry, I probably misled you on the Discord channel.\n\nWhat needs to be added is its configuration. In the `gerrit.config` file, we should eliminate the `websession-flatfile` section and add the websession-broker one, according to the documentation [1].\n\n[1]: https://gerrit.googlesource.com/plugins/websession-broker/+/refs/heads/stable-3.4/src/main/resources/Documentation/config.md",
+      "revId": "fa2e509c0f084bab5aab9f5f6c2c8c34d8cbec6d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
