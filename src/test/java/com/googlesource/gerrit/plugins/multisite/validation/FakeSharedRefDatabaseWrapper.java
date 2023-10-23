@@ -20,6 +20,7 @@ import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDBMetrics;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.metrics.DisabledMetricMaker;
 import java.util.Arrays;
@@ -62,6 +63,9 @@ public class FakeSharedRefDatabaseWrapper extends SharedRefDatabaseWrapper {
                   throws GlobalRefDbSystemError {
                 return false;
               }
+
+              @Override
+              public <T> void put(NameKey project, String refName, T newValue) {}
 
               @Override
               public AutoCloseable lockRef(Project.NameKey project, String refName)

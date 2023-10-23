@@ -24,7 +24,6 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
-import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
@@ -155,7 +154,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
       logger.atFine().log(
           "Updating shared project %s value to %d", projectNameKey.get(), newVersion);
 
-      updateProjectVersionValue(projectNameKey, newVersion, sharedVersion);
+      sharedRefDb.put(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, newVersion.toString());
       return true;
     } catch (GlobalRefDbSystemError refDbSystemError) {
       String message =
@@ -168,26 +167,6 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
       logger.atSevere().withCause(refDbSystemError).log(message);
       throw new SharedProjectVersionUpdateException(message);
     }
-  }
-
-  private void updateProjectVersionValue(
-      NameKey projectNameKey, Long newVersion, Optional<Long> sharedVersion) {
-    try {
-      if (sharedRefDb.isSetOperationSupported()) {
-        sharedRefDb.put(projectNameKey, MULTI_SITE_VERSIONING_VALUE_REF, newVersion.toString());
-        return;
-      }
-    } catch (NoSuchMethodError e) {
-      logger.atSevere().log(
-          "Global-refdb library is outdated and is not supporting "
-              + "'put' method, update global-refdb to the newest version. Falling back to 'compareAndPut'");
-    }
-
-    sharedRefDb.compareAndPut(
-        projectNameKey,
-        MULTI_SITE_VERSIONING_VALUE_REF,
-        sharedVersion.map(Object::toString).orElse(null),
-        newVersion.toString());
   }
 
   /* (non-Javadoc)
