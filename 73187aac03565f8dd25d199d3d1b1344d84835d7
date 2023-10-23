@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6c1ad41_c90eb81f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-10-23T12:00:08Z",
+      "side": 1,
+      "message": "WIP Until we merge the global-refdb change",
+      "revId": "73187aac03565f8dd25d199d3d1b1344d84835d7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
