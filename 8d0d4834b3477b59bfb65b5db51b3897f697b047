@@ -16,6 +16,24 @@
       "message": "nit: can you mention in the change description why you are removing it? i.e.: we are not using it anymore in this setup since Ied0f98fb.",
       "revId": "8d0d4834b3477b59bfb65b5db51b3897f697b047",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "255264ca_5ee207be",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1083195
+      },
+      "writtenOn": "2023-10-24T17:51:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "021ae66a_cbd45f33",
+      "revId": "8d0d4834b3477b59bfb65b5db51b3897f697b047",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
