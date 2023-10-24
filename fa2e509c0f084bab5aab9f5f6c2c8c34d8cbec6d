@@ -34,6 +34,24 @@
       "parentUuid": "90136089_469372c0",
       "revId": "fa2e509c0f084bab5aab9f5f6c2c8c34d8cbec6d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00c9da91_994fd2fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-10-24T15:17:55Z",
+      "side": 1,
+      "message": "Yes, makes sense. Furthermore, if you want to add a followup change with the configuration of the websession broker it would be great.",
+      "parentUuid": "9dd02fb5_9638203f",
+      "revId": "fa2e509c0f084bab5aab9f5f6c2c8c34d8cbec6d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
