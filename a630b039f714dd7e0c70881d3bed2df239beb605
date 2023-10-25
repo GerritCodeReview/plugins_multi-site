@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dbed5fa_8fbab5d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-10-25T09:05:11Z",
+      "side": 1,
+      "message": "Looks good so far, just a few nits.\n\nIs a test in the works?",
+      "revId": "a630b039f714dd7e0c70881d3bed2df239beb605",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95eec3e9_15b3d264",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-10-25T09:05:11Z",
+      "side": 1,
+      "message": "`log` doesn\u0027t need `String.format`, it does formatting out of the box.\n\nEDIT: Ah, I see this was moved, not new. Nonetheless, could still update it.",
+      "revId": "a630b039f714dd7e0c70881d3bed2df239beb605",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91926648_a0567ca9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-10-25T09:05:11Z",
+      "side": 1,
+      "message": "Nit: why not reduce scope the `try` around `putNewVersion`/`true`? `isSetOperationSupported()` can\u0027t throw, and I think it\u0027s good practice to reduce the scope of the `try` to encompass just what can throw. Not a big deal though, either way is fine.",
+      "revId": "a630b039f714dd7e0c70881d3bed2df239beb605",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f446f86_e0bc43c1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-10-25T09:05:11Z",
+      "side": 1,
+      "message": "`does not support the \u0027put\u0027 method`.",
+      "range": {
+        "startLine": 152,
+        "startChar": 48,
+        "endLine": 152,
+        "endChar": 65
+      },
+      "revId": "a630b039f714dd7e0c70881d3bed2df239beb605",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77e11964_d80818d5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-10-25T09:05:11Z",
+      "side": 1,
+      "message": "`does not support the \u0027put\u0027 method`.",
+      "range": {
+        "startLine": 157,
+        "startChar": 37,
+        "endLine": 157,
+        "endChar": 67
+      },
+      "revId": "a630b039f714dd7e0c70881d3bed2df239beb605",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bdb36f3_3eab1ff7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-10-25T09:05:11Z",
+      "side": 1,
+      "message": "`compareAndPut` (like above).",
+      "range": {
+        "startLine": 157,
+        "startChar": 85,
+        "endLine": 157,
+        "endChar": 100
+      },
+      "revId": "a630b039f714dd7e0c70881d3bed2df239beb605",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
