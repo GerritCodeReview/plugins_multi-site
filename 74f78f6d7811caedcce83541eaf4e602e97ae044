@@ -22,6 +22,30 @@
       },
       "revId": "74f78f6d7811caedcce83541eaf4e602e97ae044",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "411094c2_0e9d265a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/IndexEventHandler.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-10-26T08:01:34Z",
+      "side": 1,
+      "message": "Oh yes, that\u0027s what I meant by my meaningless sentence :P",
+      "parentUuid": "a100b09c_2987ac52",
+      "range": {
+        "startLine": 182,
+        "startChar": 42,
+        "endLine": 182,
+        "endChar": 63
+      },
+      "revId": "74f78f6d7811caedcce83541eaf4e602e97ae044",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
