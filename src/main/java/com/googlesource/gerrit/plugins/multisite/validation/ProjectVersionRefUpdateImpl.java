@@ -19,6 +19,7 @@ import static org.eclipse.jgit.lib.Constants.OBJ_BLOB;
 
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
@@ -33,25 +34,33 @@ import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectInserter;
 import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.util.FS.FileStoreAttributes;
 
 public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersionRefUpdate {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final Set<RefUpdate.Result> SUCCESSFUL_RESULTS =
       ImmutableSet.of(RefUpdate.Result.NEW, RefUpdate.Result.FORCED, RefUpdate.Result.NO_CHANGE);
 
+  public static final long DEFAULT_GIT_RACY_INTERVAL_MSEC = 1000L;
+
   private final GitRepositoryManager gitRepositoryManager;
   private final GitReferenceUpdated gitReferenceUpdated;
   private final ProjectVersionLogger verLogger;
   private final String nodeInstanceId;
+  private final ConcurrentHashMap<Project.NameKey, AtomicLong> inMemoryProjectsVersions;
 
   protected final SharedRefDatabaseWrapper sharedRefDb;
 
@@ -67,6 +76,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
     this.gitReferenceUpdated = gitReferenceUpdated;
     this.verLogger = verLogger;
     this.nodeInstanceId = nodeInstanceId;
+    this.inMemoryProjectsVersions = new ConcurrentHashMap<>();
   }
 
   @Override
@@ -74,7 +84,14 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
     logger.atFine().log("Processing event type: %s", event.type);
     // Producer of the Event use RefUpdatedEvent to trigger the version update
     if (nodeInstanceId.equals(event.instanceId) && event instanceof RefUpdatedEvent) {
-      updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
+      RefUpdatedEvent refUpdatedEvent = (RefUpdatedEvent) event;
+      try {
+        updateProducerProjectVersionUpdate(refUpdatedEvent);
+      } catch (Exception e) {
+        logger.atSevere().withCause(e).log(
+            "Issue encountered when updating version for project %s",
+            refUpdatedEvent.getProjectNameKey());
+      }
     }
   }
 
@@ -84,7 +101,8 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
         || refName.equals(MULTI_SITE_VERSIONING_REF);
   }
 
-  private void updateProducerProjectVersionUpdate(RefUpdatedEvent refUpdatedEvent) {
+  @VisibleForTesting
+  void updateProducerProjectVersionUpdate(RefUpdatedEvent refUpdatedEvent) throws Exception {
     String refName = refUpdatedEvent.getRefName();
 
     if (isSpecialRefName(refName)) {
@@ -93,29 +111,37 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
           refName, refUpdatedEvent.getProjectNameKey().get());
       return;
     }
-    try {
-      Project.NameKey projectNameKey = refUpdatedEvent.getProjectNameKey();
-      long newVersion = getCurrentGlobalVersionNumber();
 
-      Optional<RefUpdate> newProjectVersionRefUpdate =
-          updateLocalProjectVersion(projectNameKey, newVersion);
+    Project.NameKey projectNameKey = refUpdatedEvent.getProjectNameKey();
+    long newVersion = getCurrentGlobalVersionNumber();
 
-      if (newProjectVersionRefUpdate.isPresent()) {
-        verLogger.log(projectNameKey, newVersion, 0L);
+    Optional<RefUpdate> newProjectVersionRefUpdate =
+        updateLocalProjectVersion(projectNameKey, newVersion);
 
-        if (updateSharedProjectVersion(projectNameKey, newVersion)) {
-          gitReferenceUpdated.fire(projectNameKey, newProjectVersionRefUpdate.get(), null);
-        }
-      } else {
-        logger.atWarning().log(
-            "Ref %s not found on projet %s: skipping project version update",
-            refUpdatedEvent.getRefName(), projectNameKey);
+    if (newProjectVersionRefUpdate.isPresent()) {
+      verLogger.log(projectNameKey, newVersion, 0L);
+
+      if (updateSharedProjectVersion(projectNameKey, newVersion)) {
+        gitReferenceUpdated.fire(projectNameKey, newProjectVersionRefUpdate.get(), null);
       }
-    } catch (LocalProjectVersionUpdateException | SharedProjectVersionUpdateException e) {
-      logger.atSevere().withCause(e).log(
-          "Issue encountered when updating version for project %s",
-          refUpdatedEvent.getProjectNameKey());
+    } else {
+      logger.atFine().log(
+          "Ref %s not found on projet %s or update not needed: skipping project version update",
+          refUpdatedEvent.getRefName(), projectNameKey);
     }
+  }
+
+  private boolean updateInMemoryProjectVersion(
+      NameKey projectNameKey, long newVersion, Optional<Duration> gitRacyInterval) {
+    AtomicLong projectVersion =
+        inMemoryProjectsVersions.computeIfAbsent(projectNameKey, (p) -> new AtomicLong());
+    long currentVersion = projectVersion.get();
+    if (newVersion
+        <= (currentVersion
+            + gitRacyInterval.map(Duration::toMillis).orElse(DEFAULT_GIT_RACY_INTERVAL_MSEC))) {
+      return false;
+    }
+    return projectVersion.compareAndSet(currentVersion, newVersion);
   }
 
   private RefUpdate getProjectVersionRefUpdate(Repository repository, Long version)
@@ -250,10 +276,25 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
   private Optional<RefUpdate> updateLocalProjectVersion(
       Project.NameKey projectNameKey, long newVersionNumber)
       throws LocalProjectVersionUpdateException {
+
     logger.atFine().log(
         "Updating local version for project %s with version %d",
         projectNameKey.get(), newVersionNumber);
     try (Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
+
+      Optional<Duration> gitRacyInterval =
+          Optional.ofNullable(repository.getDirectory())
+              .map(File::toPath)
+              .map(FileStoreAttributes::get)
+              .map(FileStoreAttributes::getMinimalRacyInterval);
+
+      if (!updateInMemoryProjectVersion(projectNameKey, newVersionNumber, gitRacyInterval)) {
+        logger.atFine().log(
+            "Skipping version update for repository %s to version %d, already updated by another thread",
+            projectNameKey, newVersionNumber);
+        return Optional.empty();
+      }
+
       RefUpdate refUpdate = getProjectVersionRefUpdate(repository, newVersionNumber);
       RefUpdate.Result result = refUpdate.update();
       if (!isSuccessful(result)) {
