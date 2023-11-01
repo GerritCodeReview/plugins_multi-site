@@ -43,7 +43,12 @@ import com.googlesource.gerrit.plugins.multisite.validation.dfsrefdb.RefFixture;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CyclicBarrier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.eclipse.jgit.errors.LargeObjectException;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
@@ -114,6 +119,58 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     assertThat(storedVersion).isGreaterThan((long) masterCommit.getCommitTime());
 
     verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
+  }
+
+  @Test
+  public void producerShouldUpdateProjectVersionOnceUponConcurrentRefUpdatedEvent()
+      throws IOException {
+    when(sharedRefDb.get(
+            A_TEST_PROJECT_NAME_KEY,
+            ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_VALUE_REF,
+            String.class))
+        .thenReturn(Optional.of("" + (masterCommit.getCommitTime() - 1)));
+    when(sharedRefDb.compareAndPut(any(Project.NameKey.class), any(String.class), any(), any()))
+        .thenReturn(true);
+    prepareRefUpdatedEventMock(A_TEST_PROJECT_NAME_KEY, A_TEST_REF_NAME);
+
+    ProjectVersionRefUpdateImpl projectVersionRefUpdate =
+        new ProjectVersionRefUpdateImpl(
+            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, DEFAULT_INSTANCE_ID);
+
+    CyclicBarrier syncConcurrentEvents = new CyclicBarrier(2);
+    ConcurrentLinkedQueue<Exception> refUpdateExceptions = new ConcurrentLinkedQueue<>();
+
+    List<Thread> concurrentUpdates =
+        IntStream.range(0, 2)
+            .mapToObj(
+                (i) ->
+                    new Thread(
+                        () -> {
+                          try {
+                            syncConcurrentEvents.await();
+                            projectVersionRefUpdate.updateProducerProjectVersionUpdate(
+                                refUpdatedEvent);
+                          } catch (Exception e) {
+                            refUpdateExceptions.add(e);
+                          }
+                        }))
+            .collect(Collectors.toList());
+    concurrentUpdates.forEach(Thread::start);
+    concurrentUpdates.forEach(
+        (t) -> {
+          try {
+            t.join();
+          } catch (Exception e) {
+            refUpdateExceptions.add(e);
+          }
+        });
+
+    verify(sharedRefDb, atMost(1))
+        .compareAndPut(any(Project.NameKey.class), any(Ref.class), any(ObjectId.class));
+
+    assertThat(refUpdateExceptions).isEmpty();
+    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
+    assertThat(ref).isNotNull();
   }
 
   @Test
@@ -294,5 +351,10 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
 
     assertThat(version.isPresent()).isTrue();
     assertThat(version.get()).isEqualTo(123L);
+  }
+
+  private void prepareRefUpdatedEventMock(Project.NameKey projectNameKey, String refName) {
+    when(refUpdatedEvent.getProjectNameKey()).thenReturn(projectNameKey);
+    when(refUpdatedEvent.getRefName()).thenReturn(refName);
   }
 }
