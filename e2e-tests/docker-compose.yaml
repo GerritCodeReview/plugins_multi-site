@@ -1,7 +1,9 @@
 version: '3'
 services:
   zookeeper:
-    image: wurstmeister/zookeeper:latest
+    image: bitnami/zookeeper:3.7.2
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: true
 
   gerrit1:
     image: gerritcodereview/gerrit:${GERRIT_IMAGE}
