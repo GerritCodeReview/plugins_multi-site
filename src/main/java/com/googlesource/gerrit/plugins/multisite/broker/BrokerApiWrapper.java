@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.broker;
 
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.gerritforge.gerrit.eventbroker.TopicSubscriber;
+import com.gerritforge.gerrit.eventbroker.log.MessageLogger;
 import com.google.common.base.Strings;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -25,8 +26,6 @@ import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
-import com.googlesource.gerrit.plugins.multisite.MessageLogger;
-import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
@@ -92,7 +91,7 @@ public class BrokerApiWrapper implements BrokerApi {
         new FutureCallback<Boolean>() {
           @Override
           public void onSuccess(Boolean result) {
-            msgLog.log(Direction.PUBLISH, topic, message);
+            msgLog.log(MessageLogger.Direction.PUBLISH, topic, message);
             metrics.incrementBrokerPublishedMessage();
           }
 

@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.consumer;
 
+import com.gerritforge.gerrit.eventbroker.log.MessageLogger;
 import com.google.common.base.Strings;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.extensions.registration.DynamicSet;
@@ -21,8 +22,6 @@ import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.permissions.PermissionBackendException;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.MessageLogger;
-import com.googlesource.gerrit.plugins.multisite.MessageLogger.Direction;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheNotFoundException;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.ForwardedEventRouter;
@@ -77,7 +76,7 @@ public abstract class AbstractSubcriber {
       droppedEventListeners.forEach(l -> l.onEventDropped(event));
     } else {
       try {
-        msgLog.log(Direction.CONSUME, topic, event);
+        msgLog.log(MessageLogger.Direction.CONSUME, topic, event);
         eventRouter.route(event);
         subscriberMetrics.incrementSubscriberConsumedMessage();
       } catch (IOException e) {
