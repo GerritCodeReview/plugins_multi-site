@@ -13,7 +13,6 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.ProjectCreatedEvent;
-import com.googlesource.gerrit.plugins.multisite.MessageLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

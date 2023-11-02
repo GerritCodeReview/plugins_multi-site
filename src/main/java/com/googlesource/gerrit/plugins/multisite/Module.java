@@ -45,8 +45,8 @@ public class Module extends LifecycleModule {
 
     install(new LibModule());
 
-    listener().to(Log4jMessageLogger.class);
-    bind(MessageLogger.class).to(Log4jMessageLogger.class);
+    //    listener().to(Log4jMessageLogger.class);
+    //    bind(MessageLogger.class).to(Log4jMessageLogger.class);
 
     install(new ForwarderModule());
 
