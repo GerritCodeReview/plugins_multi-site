@@ -16,6 +16,46 @@
       "message": "I\u0027ve tested successfully with Gatling tests that were concurrently updating the same branch on different repositories and the lock errors on `refs/multi-site/version` disappeared.",
       "revId": "17ba671a958606c2e273d1da0f272d4b551ae599",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5473934_92d4ef55",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-11-02T22:36:20Z",
+      "side": 1,
+      "message": "Explain why we need a default (aka the non-realistic test scenario)",
+      "range": {
+        "startLine": 141,
+        "startChar": 54,
+        "endLine": 141,
+        "endChar": 92
+      },
+      "revId": "17ba671a958606c2e273d1da0f272d4b551ae599",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a9decd2_ed0cba64",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-11-02T22:36:20Z",
+      "side": 1,
+      "message": "nit: unrelated change.",
+      "revId": "17ba671a958606c2e273d1da0f272d4b551ae599",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
