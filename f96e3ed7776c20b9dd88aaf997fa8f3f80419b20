@@ -16,6 +16,24 @@
       "message": "maybe reference the change that caused it, for a bit of context.",
       "revId": "f96e3ed7776c20b9dd88aaf997fa8f3f80419b20",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35171d75_e62e6edb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-11-07T19:53:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b33990c2_d9717f9f",
+      "revId": "f96e3ed7776c20b9dd88aaf997fa8f3f80419b20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
