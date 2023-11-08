@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49906e1a_c373f8ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2023-11-08T12:14:24Z",
+      "side": 1,
+      "message": "This will produce confusing log messages, since the logged package will point to `eventsbroker` not `multisite` plugin.",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5014aaf0_f5bac518",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2023-11-08T12:14:24Z",
+      "side": 1,
+      "message": "nit: logging success with the _extenal_ `MessageLogger` will result in a log message from the `eventsbroker` plugin, not `multisite` (I mean the log source package will be reported as `eventsbroker`) which will be confusing when someone is analyzing the logs.",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c29e194_d053bf1b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2023-11-08T12:14:24Z",
+      "side": 1,
+      "message": "nit: this may be something for a follow-up change, but shouldn\u0027t we use the same logging mechanism for success and failures?",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
