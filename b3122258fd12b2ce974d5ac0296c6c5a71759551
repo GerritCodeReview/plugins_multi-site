@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d2525b2_1cc513e6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-11-08T16:30:31Z",
+      "side": 1,
+      "message": "it\u0027s not, as a wrapper is used. Example log:\n```\n[2023-11-08 16:18:37,201] [Forward-Stream-Event-1[java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask@4a1fe9bc[Not completed, task \u003d java.util.concurrent.Executors$RunnableAdapter@74c14ace[Wrapped task \u003d com.google.gerrit.server.logging.LoggingContextAwareRunnable@34c57a60]]]] INFO  : PUBLISH gerrit_stream {\"submitter\":{\"name\":\"Administrator\",\"email\":\"admin@example.com\",\"username\":\"admin\"},\"refUpdate\":{\"oldRev\":\"288320aa153eda76a92fbd77a7f2d496221b74b2\",\"newRev\":\"ea96c2082f1dd1f2ef49c1d0194c70f131afa7bd\",\"refName\":\"refs/changes/21/21/meta\",\"project\":\"test-1\"},\"type\":\"ref-updated\",\"eventCreatedOn\":1699460316,\"instanceId\":\"instance-1\"}\n```",
+      "parentUuid": "5014aaf0_f5bac518",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c29e194_d053bf1b",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-11-08T12:14:24Z",
       "side": 1,
       "message": "nit: this may be something for a follow-up change, but shouldn\u0027t we use the same logging mechanism for success and failures?",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fd13587_7a813380",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-11-08T16:30:31Z",
+      "side": 1,
+      "message": "I am lacking context, so I cannot answer 😞 perhaps other people will answer this. My guess: There was a desire to keep the `message_log` \"clean\", ie log only messages that were successfully published. At least I don\u0027t recall ever seeing errors logged in this file. Anything that\u0027s error, goes to the `error_log`.",
+      "parentUuid": "2c29e194_d053bf1b",
       "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
