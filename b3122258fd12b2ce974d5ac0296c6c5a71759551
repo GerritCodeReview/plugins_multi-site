@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "47e3e7fd_03c7f9ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1063024
+      },
+      "writtenOn": "2023-11-10T16:39:28Z",
+      "side": 1,
+      "message": "Change looks fine, but errors are genuine. Do we need to bump the library?",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5014aaf0_f5bac518",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
         "patchSetId": 4
