@@ -35,6 +35,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20d78df7_13597e09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-11-11T13:09:23Z",
+      "side": 1,
+      "message": "I do not understand the context / value of this change: haven\u0027t we discussed and agreed that the logging should be done by the wrapper? Did I miss any follow-up conversation?",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5014aaf0_f5bac518",
@@ -72,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e604b7e9_d851af89",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-11-11T13:09:23Z",
+      "side": 1,
+      "message": "I maybe lacking context, but I don\u0027t understand why do we need to log on some other component\u0027s log.\n\nThe responsibility of logging what comes in/out of the message broker pipe is given to the events-broker wrapper, which is 😎\n\nWhy does the multi-site plugin need to log explicitly? instead?",
+      "parentUuid": "8d2525b2_1cc513e6",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c29e194_d053bf1b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
         "patchSetId": 4
@@ -101,6 +136,47 @@
       "side": 1,
       "message": "I am lacking context, so I cannot answer 😞 perhaps other people will answer this. My guess: There was a desire to keep the `message_log` \"clean\", ie log only messages that were successfully published. At least I don\u0027t recall ever seeing errors logged in this file. Anything that\u0027s error, goes to the `error_log`.",
       "parentUuid": "2c29e194_d053bf1b",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26948bda_c4be4cf4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-11-11T13:09:23Z",
+      "side": 1,
+      "message": "Agreed. All plugins log errors in Gerrit\u0027s error_log AFAIK.",
+      "parentUuid": "5fd13587_7a813380",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b83ed7e8_38d10c6c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/AbstractSubcriber.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-11-11T13:09:23Z",
+      "side": 1,
+      "message": "Why are we logging here? Shouldn\u0027t be the events-broker wrapper doing it?",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 66
+      },
       "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
