@@ -107,6 +107,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "71c11e6b_bada0ee1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-11-13T08:53:21Z",
+      "side": 1,
+      "message": "+1 I\u0027ve put similar comment in event-broker change\nhttps://gerrit-review.googlesource.com/c/modules/events-broker/+/391598/comments/8540aa47_b0132e01",
+      "parentUuid": "e604b7e9_d851af89",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c29e194_d053bf1b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
         "patchSetId": 4
