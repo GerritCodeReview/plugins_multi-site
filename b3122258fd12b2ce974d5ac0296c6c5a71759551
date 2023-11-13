@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a98d1495_a8878f23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-11-13T10:36:55Z",
+      "side": 1,
+      "message": "I think we will need [1] merged first, then the code should compile.\n\n[1] https://gerrit-review.googlesource.com/c/modules/events-broker/+/391598",
+      "parentUuid": "47e3e7fd_03c7f9ce",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5014aaf0_f5bac518",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
         "patchSetId": 4
