@@ -125,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "77cb2c5a_95ad1249",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-11-13T10:34:05Z",
+      "side": 1,
+      "message": "\u003e The responsibility of logging what comes in/out of the message broker pipe is given to the events-broker wrapper\n\nThis is true, when the events-broker actually sends a message. If events-broker does not know a message was sent, it can\u0027t log anything. In the case of publishing _stream_ events, the events-broker does exactly that: it has the responsibility of sending the message through the pipe as we see in [1], as such we can then log and increment the metrics.\n\nIn the multi-site case however, the `BrokerApiWrapper` is used to publish _non-stream_ events (eg cache evictions, index updates etc) via the BrokerForwarder component as in [2]. In order to be able to log publishing of such events in events-broker, we\u0027d need to move the _publishing_ of the events to the events-broker too, as we do with stream events. This is outside the scope of what we discussed, and the issue itself, which is about _missing of publishing of stream events in the message log file_.\n\nHappy to catch-up offline to discuss this in further detail.\n\n[1] https://gerrit.googlesource.com/modules/events-broker/+/refs/heads/master/src/main/java/com/gerritforge/gerrit/eventbroker/publisher/StreamEventPublisher.java#78\n\n[2] https://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/master/src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/broker/BrokerForwarder.java#52",
+      "parentUuid": "71c11e6b_bada0ee1",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2c29e194_d053bf1b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
         "patchSetId": 4
