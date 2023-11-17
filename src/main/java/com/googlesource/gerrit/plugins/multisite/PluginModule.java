@@ -25,8 +25,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.ProvisionException;
-import com.google.inject.Scopes;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.consumer.MultiSiteConsumerRunner;
 import com.googlesource.gerrit.plugins.multisite.consumer.ReplicationStatusModule;
 import com.googlesource.gerrit.plugins.multisite.consumer.SubscriberModule;
@@ -61,7 +59,6 @@ public class PluginModule extends LifecycleModule {
         || config.cache().synchronize()
         || config.event().synchronize()) {
       install(new EventModule(config));
-      bind(BrokerApiWrapper.class).in(Scopes.SINGLETON);
       install(new SubscriberModule());
 
       install(new BrokerForwarderModule());

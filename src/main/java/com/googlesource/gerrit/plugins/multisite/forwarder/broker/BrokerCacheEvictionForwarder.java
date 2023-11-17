@@ -14,10 +14,11 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
+import com.gerritforge.gerrit.eventbroker.EventsBrokerApiWrapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerMetrics;
 import com.googlesource.gerrit.plugins.multisite.forwarder.CacheEvictionForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
@@ -28,8 +29,9 @@ public class BrokerCacheEvictionForwarder extends BrokerForwarder
     implements CacheEvictionForwarder {
 
   @Inject
-  BrokerCacheEvictionForwarder(BrokerApiWrapper broker, Configuration cfg) {
-    super(broker, cfg);
+  BrokerCacheEvictionForwarder(
+      EventsBrokerApiWrapper broker, Configuration cfg, BrokerMetrics metrics) {
+    super(broker, cfg, metrics);
   }
 
   @Override

@@ -16,10 +16,11 @@ package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
 import static com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic.PROJECT_LIST_TOPIC;
 
+import com.gerritforge.gerrit.eventbroker.EventsBrokerApiWrapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerMetrics;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
@@ -29,8 +30,9 @@ public class BrokerProjectListUpdateForwarder extends BrokerForwarder
     implements ProjectListUpdateForwarder {
 
   @Inject
-  BrokerProjectListUpdateForwarder(BrokerApiWrapper broker, Configuration cfg) {
-    super(broker, cfg);
+  BrokerProjectListUpdateForwarder(
+      EventsBrokerApiWrapper broker, Configuration cfg, BrokerMetrics metrics) {
+    super(broker, cfg, metrics);
   }
 
   @Override

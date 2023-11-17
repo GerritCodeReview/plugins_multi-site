@@ -14,9 +14,10 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
+import com.gerritforge.gerrit.eventbroker.EventsBrokerApiWrapper;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerMetrics;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
@@ -25,8 +26,9 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 public class BrokerIndexEventForwarder extends BrokerForwarder implements IndexEventForwarder {
 
   @Inject
-  BrokerIndexEventForwarder(BrokerApiWrapper broker, Configuration cfg) {
-    super(broker, cfg);
+  BrokerIndexEventForwarder(
+      EventsBrokerApiWrapper broker, Configuration cfg, BrokerMetrics metrics) {
+    super(broker, cfg, metrics);
   }
 
   @Override

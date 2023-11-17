@@ -14,8 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
+import com.gerritforge.gerrit.eventbroker.EventsBrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerMetrics;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.MultiSiteEvent;
@@ -26,12 +27,15 @@ public abstract class BrokerForwarder {
   private static final CharSequence HIGH_AVAILABILITY_BATCH_FORWARDER =
       "Forwarded-BatchIndex-Event";
 
-  private final BrokerApiWrapper broker;
+  private final EventsBrokerApiWrapper broker;
   private final Configuration cfg;
+  private final BrokerMetrics metrics;
 
-  protected BrokerForwarder(BrokerApiWrapper broker, Configuration cfg) {
+  protected BrokerForwarder(
+      EventsBrokerApiWrapper broker, Configuration cfg, BrokerMetrics metrics) {
     this.broker = broker;
     this.cfg = cfg;
+    this.metrics = metrics;
   }
 
   protected boolean currentThreadBelongsToHighAvailabilityPlugin(ForwarderTask task) {
@@ -49,6 +53,13 @@ public abstract class BrokerForwarder {
       return true;
     }
 
-    return broker.sendSync(eventTopic.topic(cfg), event);
+    boolean resultSuccessful = broker.sendSync(eventTopic.topic(cfg), event);
+    if (resultSuccessful) {
+      metrics.incrementBrokerPublishedMessage();
+    } else {
+      metrics.incrementBrokerFailedToPublishMessage();
+    }
+
+    return resultSuccessful;
   }
 }
