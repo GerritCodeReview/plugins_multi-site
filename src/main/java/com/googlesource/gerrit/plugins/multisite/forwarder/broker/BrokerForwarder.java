@@ -14,24 +14,38 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.broker;
 
+import com.gerritforge.gerrit.eventbroker.EventsBrokerApiWrapper;
+import com.google.common.base.Strings;
+import com.google.gerrit.server.config.GerritInstanceId;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerMetrics;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.MultiSiteEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BrokerForwarder {
+  private static final Logger log = LoggerFactory.getLogger(BrokerForwarder.class);
   private static final CharSequence HIGH_AVAILABILITY_PLUGIN = "/plugins/high-availability/";
   private static final CharSequence HIGH_AVAILABILITY_FORWARDER = "Forwarded-Index-Event";
   private static final CharSequence HIGH_AVAILABILITY_BATCH_FORWARDER =
       "Forwarded-BatchIndex-Event";
 
-  private final BrokerApiWrapper broker;
+  private final EventsBrokerApiWrapper broker;
   private final Configuration cfg;
+  private final BrokerMetrics metrics;
+  private final String nodeInstanceId;
 
-  protected BrokerForwarder(BrokerApiWrapper broker, Configuration cfg) {
+  protected BrokerForwarder(
+      EventsBrokerApiWrapper broker,
+      Configuration cfg,
+      BrokerMetrics metrics,
+      @GerritInstanceId String instanceId) {
     this.broker = broker;
     this.cfg = cfg;
+    this.metrics = metrics;
+    this.nodeInstanceId = instanceId;
   }
 
   protected boolean currentThreadBelongsToHighAvailabilityPlugin(ForwarderTask task) {
@@ -49,6 +63,22 @@ public abstract class BrokerForwarder {
       return true;
     }
 
-    return broker.sendSync(eventTopic.topic(cfg), event);
+    if (!nodeInstanceId.equals(event.instanceId)) {
+      return true;
+    }
+
+    if (Strings.isNullOrEmpty(event.instanceId)) {
+      log.warn("Dropping event '{}' because event instance id cannot be null or empty", event);
+      return true;
+    }
+
+    boolean resultSuccessful = broker.sendSync(eventTopic.topic(cfg), event);
+    if (resultSuccessful) {
+      metrics.incrementBrokerPublishedMessage();
+    } else {
+      metrics.incrementBrokerFailedToPublishMessage();
+    }
+
+    return resultSuccessful;
   }
 }

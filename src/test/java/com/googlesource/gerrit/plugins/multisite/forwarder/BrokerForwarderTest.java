@@ -14,12 +14,15 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
+import com.gerritforge.gerrit.eventbroker.EventsBrokerApiWrapper;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerApiWrapper;
+import com.googlesource.gerrit.plugins.multisite.broker.BrokerMetrics;
 import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.EventTopic;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.MultiSiteEvent;
@@ -43,7 +46,7 @@ public class BrokerForwarderTest {
   private static final String HIGH_AVAILABILITY_BATCH_FORWARDED = "Forwarded-BatchIndex-Event";
   private static final long TEST_TIMEOUT_SEC = 5L;
 
-  @Mock private BrokerApiWrapper brokerMock;
+  @Mock private EventsBrokerApiWrapper brokerMock;
 
   private TestBrokerForwarder brokerForwarder;
 
@@ -56,15 +59,16 @@ public class BrokerForwarderTest {
   private TestEvent testEvent;
 
   private ExecutorService executor;
+  @Mock private BrokerMetrics metrics;
 
   public class TestBrokerForwarder extends BrokerForwarder {
 
     TestBrokerForwarder() {
-      super(brokerMock, cfg);
+      super(brokerMock, cfg, metrics, testEvent.instanceId);
     }
 
-    public void send(ForwarderTask task, EventTopic eventTopic, TestEvent testEvent) {
-      super.send(task, eventTopic, testEvent);
+    public boolean send(ForwarderTask task, EventTopic eventTopic, TestEvent testEvent) {
+      return super.send(task, eventTopic, testEvent);
     }
   }
 
@@ -97,8 +101,31 @@ public class BrokerForwarderTest {
   }
 
   @Test
+  public void shouldSkipMessageSendingWhenInstanceIdIsNull() {
+    testEvent.instanceId = null;
+    assertThat(brokerForwarder.send(newForwarderTask(), testTopic, testEvent)).isTrue();
+    verifyNoInteractions(brokerMock);
+  }
+
+  @Test
+  public void shouldSkipMessageSendingWhenInstanceIdIsEmpty() {
+    testEvent.instanceId = "";
+    assertThat(brokerForwarder.send(newForwarderTask(), testTopic, testEvent)).isTrue();
+    verifyNoInteractions(brokerMock);
+  }
+
+  @Test
   public void shouldSkipEventFromHighAvailabilityPluginThread() {
-    brokerForwarder.send(newForwarderTask(HIGH_AVAILABILITY_PLUGIN), testTopic, testEvent);
+    assertThat(
+            brokerForwarder.send(newForwarderTask(HIGH_AVAILABILITY_PLUGIN), testTopic, testEvent))
+        .isTrue();
+    verifyNoInteractions(brokerMock);
+  }
+
+  @Test
+  public void shouldSkipEventFromDifferentNode() {
+    testEvent.instanceId = "some-other-instance";
+    assertThat(brokerForwarder.send(newForwarderTask(), testTopic, testEvent)).isTrue();
     verifyNoInteractions(brokerMock);
   }
 
@@ -114,6 +141,31 @@ public class BrokerForwarderTest {
     brokerForwarder.send(newForwarderTask(HIGH_AVAILABILITY_BATCH_FORWARDED), testTopic, testEvent);
 
     verifyNoInteractions(brokerMock);
+  }
+
+  @Test
+  public void shouldWaitForTheMessagePublishingResult() {
+    brokerForwarder.send(newForwarderTask(), testTopic, testEvent);
+
+    verify(brokerMock).sendSync(testTopicName, testEvent);
+  }
+
+  @Test
+  public void shouldIncrementBrokerPublishedMessageMetricOnSuccess() {
+    when(brokerMock.sendSync(testTopicName, testEvent)).thenReturn(true);
+
+    brokerForwarder.send(newForwarderTask(), testTopic, testEvent);
+
+    verify(metrics).incrementBrokerPublishedMessage();
+  }
+
+  @Test
+  public void shouldIncrementBrokerFailedToPublishMessageMetricOnFailure() {
+    when(brokerMock.sendSync(testTopicName, testEvent)).thenReturn(false);
+
+    brokerForwarder.send(newForwarderTask(), testTopic, testEvent);
+
+    verify(metrics).incrementBrokerFailedToPublishMessage();
   }
 
   private ForwarderTask newForwarderTask(String threadName) {
