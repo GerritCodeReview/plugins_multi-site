@@ -159,6 +159,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c069f4db_4056b993",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/broker/BrokerApiWrapper.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-11-20T13:48:21Z",
+      "side": 1,
+      "message": "Discussed offline and the direction is to move the `BrokerApiWrapper` class into events-broker, keeping metrics outside of the scope for now. This is done in [1] and [2], the scope for this change remains to move the logging classes away from multi-site and into events-broker\n\n[1] https://gerrit-review.googlesource.com/c/modules/events-broker/+/393274\n[2] https://gerrit-review.googlesource.com/c/plugins/multi-site/+/393279",
+      "parentUuid": "77cb2c5a_95ad1249",
+      "revId": "b3122258fd12b2ce974d5ac0296c6c5a71759551",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c29e194_d053bf1b",
