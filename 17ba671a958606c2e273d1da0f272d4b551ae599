@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc75a4b3_6d804287",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-11-21T12:24:24Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "f5473934_92d4ef55",
+      "range": {
+        "startLine": 141,
+        "startChar": 54,
+        "endLine": 141,
+        "endChar": 92
+      },
+      "revId": "17ba671a958606c2e273d1da0f272d4b551ae599",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9a9decd2_ed0cba64",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
         "patchSetId": 2
@@ -54,6 +78,23 @@
       "writtenOn": "2023-11-02T22:36:20Z",
       "side": 1,
       "message": "nit: unrelated change.",
+      "revId": "17ba671a958606c2e273d1da0f272d4b551ae599",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b49dea80_6b619f2e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-11-21T12:24:24Z",
+      "side": 1,
+      "message": "is this line needed? Looks like you can just call `getMinimalRacyInterval`? Or is the `.get` doing some sort of initialisation?",
       "revId": "17ba671a958606c2e273d1da0f272d4b551ae599",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
