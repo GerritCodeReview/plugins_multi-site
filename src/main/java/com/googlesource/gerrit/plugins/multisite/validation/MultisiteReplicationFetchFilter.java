@@ -76,7 +76,7 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
                             ref,
                             oid.getName()));
 
-                return localRefOid.isEmpty();
+                return !localRefOid.isPresent();
               })
           .collect(Collectors.toSet());
     } catch (IOException ioe) {
@@ -129,7 +129,7 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
                           .orElse(false))
               .map(Ref::getObjectId);
 
-      if (localRefObjectId.isEmpty() && retryWithRandomSleep) {
+      if (!localRefObjectId.isPresent() && retryWithRandomSleep) {
         randomSleepForMitigatingConditionWhereLocalRefHaveJustBeenChanged(
             projectName, localRefObjectId, ref);
         localRefObjectId =
