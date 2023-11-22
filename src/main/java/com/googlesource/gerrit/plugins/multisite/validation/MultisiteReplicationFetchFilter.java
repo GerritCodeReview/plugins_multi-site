@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
+import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF;
 import static com.googlesource.gerrit.plugins.replication.pull.PullReplicationLogger.repLog;
 
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
@@ -64,6 +65,9 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
           .filter(ref -> !hasBeenRemovedFromGlobalRefDb(projectName, ref))
           .filter(
               ref -> {
+                if (shouldNotBeTrackedAnymoreOnGlobalRefDb(ref)) {
+                  return true;
+                }
                 Optional<ObjectId> localRefOid =
                     getLocalSha1IfEqualsToExistingGlobalRefDb(
                         repository, projectName, refDb, ref, true);
@@ -85,6 +89,19 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
       logger.atSevere().withCause(ioe).log(message);
       return Collections.emptySet();
     }
+  }
+
+  /*
+   * Since ac43a5f94c773c9db7a73d44035961d69d13fa53 the 'refs/multi-site/version' is
+   * not updated anymore on the global-refdb; however, the values stored already
+   * on the global-refdb could get in the way and prevent replication to happen
+   * as expected.
+   *
+   * Exclude the 'refs/multi-site/version' from local vs. global refdb checking
+   * pretending that the global-refdb for that ref did not exist.
+   */
+  private boolean shouldNotBeTrackedAnymoreOnGlobalRefDb(String ref) {
+    return MULTI_SITE_VERSIONING_REF.equals(ref);
   }
 
   /* If the ref to fetch has been set to all zeros on the global-refdb, it means

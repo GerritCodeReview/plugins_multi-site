@@ -170,6 +170,24 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
   }
 
   @Test
+  public void shouldNotFilterOutWhenRefsMultisiteVersionIsPresentInSharedRefDb() throws Exception {
+    String refsMultisiteVersionRef = ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF;
+    RevCommit multiSiteVersionRef = newRef(refsMultisiteVersionRef);
+
+    doReturn(Optional.of(multiSiteVersionRef.getId().getName()))
+        .when(sharedRefDatabaseMock)
+        .get(eq(projectName), eq(refsMultisiteVersionRef), eq(String.class));
+
+    Set<String> refsToFetch = Set.of(refsMultisiteVersionRef);
+
+    MultisiteReplicationFetchFilter fetchFilter =
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
+    Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
+
+    assertThat(filteredRefsToFetch).hasSize(1);
+  }
+
+  @Test
   public void shouldFilterOutWhenRefIsDeletedInTheSharedRefDb() throws Exception {
     String temporaryOutdated = "refs/heads/temporaryOutdated";
     newRef(temporaryOutdated);
