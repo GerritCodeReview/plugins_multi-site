@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe9072f8_6adfb867",
+        "filename": "setup_local_env/docker-compose-core.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1161425
+      },
+      "writtenOn": "2023-11-22T09:47:11Z",
+      "side": 1,
+      "message": "should this be bumped up?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 12
+      },
+      "revId": "c9710cef549e3e330780eae75f13a5cb47a1ff6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
