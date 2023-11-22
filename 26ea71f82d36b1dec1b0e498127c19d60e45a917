@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "614b1304_fad15603",
+        "filename": "e2e-tests/docker-compose-kafka.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-11-22T13:28:30Z",
+      "side": 1,
+      "message": "@diego.sessona@gmail.com i wonder if we need to expose the ports. Probably not.",
+      "revId": "26ea71f82d36b1dec1b0e498127c19d60e45a917",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
