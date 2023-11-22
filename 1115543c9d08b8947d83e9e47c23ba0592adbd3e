@@ -16,6 +16,23 @@
       "message": "@diego.sessona@gmail.com and I have been done the following manual E2E tests:\n- Create repo in instance 1\n- Create branch in instance 1\n- Create chane in instance 1\n- Check that everything has been replicated in instance 2\n- Clone repo from instance 1\n- Create a commit and push creating a new change\n- Upload public SSH key in instance 2\n- Check stream events from Gerrit SSH API in instance 1 and 2\n- Check list of topics in Kafka :\n\n\t```\n$kafka-topics.sh --list --bootstrap-server localhost:9092\n__consumer_offsets\ngerrit_batch_index\ngerrit_cache_eviction\ngerrit_index\ngerrit_list_project\ngerrit_stream\ngerrit_web_session\n```\n- Consume events from topics `gerrit_batch_index`, `gerrit_list_project` and `gerrit_stream`\n```\n$kafka-console-consumer.sh --topic gerrit_stream  --from-beginning --bootstrap-server localhost:9092\n```\n- Check logs in gerrit instances, Kafka and Zookeeper\n- Checking version of Zookeeper in the logs",
       "revId": "1115543c9d08b8947d83e9e47c23ba0592adbd3e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5900cd9_44ba0bec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-11-22T16:44:52Z",
+      "side": 1,
+      "message": "Thanks for the fix @alvaro.vilaplana@gmail.com",
+      "revId": "1115543c9d08b8947d83e9e47c23ba0592adbd3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
