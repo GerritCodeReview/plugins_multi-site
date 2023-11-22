@@ -16,6 +16,23 @@
       "message": "Nice cleanup 😊",
       "revId": "ac43a5f94c773c9db7a73d44035961d69d13fa53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c693fdcc_ed9c0836",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-11-22T20:30:39Z",
+      "side": 1,
+      "message": "This change has left all the past `refs/multi-site/version` on the global refdb with stale objects. We missed the removal of the unused \u0027refs/multi-site/version\u0027 from the global-refdb.",
+      "revId": "ac43a5f94c773c9db7a73d44035961d69d13fa53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ],
   "submitRequirementResults": [
