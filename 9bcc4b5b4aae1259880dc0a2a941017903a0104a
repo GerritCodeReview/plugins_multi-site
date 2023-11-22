@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28090cc2_4db7063e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-11-22T11:09:08Z",
+      "side": 1,
+      "message": "The e2e tests are failing:\n```\nbazelisk test //plugins/multi-site:e2e_multi_site_tests\n```\nbecause of:\n```\nThe Compose file \u0027./plugins/multi-site/e2e-tests/docker-compose.yaml\u0027 is invalid because:\nservices.zookeeper.environment.ALLOW_ANONYMOUS_LOGIN contains true, which is an invalid type, it should be a string, number, or a null\n```",
+      "revId": "9bcc4b5b4aae1259880dc0a2a941017903a0104a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
