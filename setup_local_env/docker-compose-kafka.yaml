@@ -1,7 +1,11 @@
 version: '3'
 services:
   kafka:
+<<<<<<< Updated upstream
     image: wurstmeister/kafka:2.13-2.6.3
+=======
+    image: bitnami/kafka:3.6.0
+>>>>>>> Stashed changes
     ports:
       - "9092:9092"
     container_name: kafka_test_node
