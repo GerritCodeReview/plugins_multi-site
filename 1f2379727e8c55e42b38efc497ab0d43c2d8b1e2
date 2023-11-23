@@ -16,6 +16,24 @@
       "message": "I think we should upgrade `events-kafka` [1] to use 3.6 [2]\n\nReferences:\n[1] https://gerrit.googlesource.com/plugins/kafka-events/+/refs/heads/master/external_plugin_deps.bzl#6\n[2] https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients/3.6.0",
       "revId": "1f2379727e8c55e42b38efc497ab0d43c2d8b1e2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c83d9d3_c26354c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-11-23T11:36:58Z",
+      "side": 1,
+      "message": "From the E2E tests I have no found compatibilities issues. It looks that Kafka cluster 3.6.0 is backward compatible with the Kafka client 2.1.0.",
+      "parentUuid": "6a721b4c_24da873f",
+      "revId": "1f2379727e8c55e42b38efc497ab0d43c2d8b1e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
