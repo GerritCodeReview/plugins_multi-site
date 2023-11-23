@@ -1,6 +1,75 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cf89f87_86edd9f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-11-23T00:48:18Z",
+      "side": 1,
+      "message": "stopped updating the SHA1 for `refs/multi-site/version` in global-refdb",
+      "range": {
+        "startLine": 9,
+        "startChar": 18,
+        "endLine": 9,
+        "endChar": 50
+      },
+      "revId": "c50ff0ef1ef204c3a6c780d7578ab3b7d006225a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cf931f4_bc1a7e4c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-11-23T00:48:18Z",
+      "side": 1,
+      "message": "Seems like the end of the sentence is missing here?",
+      "range": {
+        "startLine": 18,
+        "startChar": 42,
+        "endLine": 18,
+        "endChar": 70
+      },
+      "revId": "c50ff0ef1ef204c3a6c780d7578ab3b7d006225a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "704f4079_f128d79a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-11-23T00:48:18Z",
+      "side": 1,
+      "message": "I think it\u0027s easier to understand if we say that:\nThis change effectively ignores weather the local refs/multi-site/version is up to date and always fetches from global-refdb.",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 38
+      },
+      "revId": "c50ff0ef1ef204c3a6c780d7578ab3b7d006225a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "72762587_c169ee34",
@@ -14,6 +83,23 @@
       "writtenOn": "2023-11-22T23:50:47Z",
       "side": 1,
       "message": "This is the fix for the replication lag false alarm happened on the 22nd of November on GerritHub.io, due to the leftover (and not updated anymore) `refs/multi-site/version` values on the global-refdb.",
+      "revId": "c50ff0ef1ef204c3a6c780d7578ab3b7d006225a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31528460_25e9dd46",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-11-23T00:48:18Z",
+      "side": 1,
+      "message": "from happening",
       "revId": "c50ff0ef1ef204c3a6c780d7578ab3b7d006225a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
