@@ -46,6 +46,30 @@
       },
       "revId": "a05c1d01b97e04427121bcc37a7b2c8e6f36c69c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc22e63a_c4d26b65",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-11-23T09:51:44Z",
+      "side": 1,
+      "message": "I would prefer to keep the clean merge and then, if that makes the code clear to read, revert it on master.",
+      "parentUuid": "e5d8f779_cc9a8695",
+      "range": {
+        "startLine": 12,
+        "startChar": 2,
+        "endLine": 12,
+        "endChar": 47
+      },
+      "revId": "a05c1d01b97e04427121bcc37a7b2c8e6f36c69c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
