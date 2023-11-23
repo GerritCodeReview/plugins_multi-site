@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ff2e13c_b849a4da",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1155610
+      },
+      "writtenOn": "2023-11-23T01:34:51Z",
+      "side": 1,
+      "message": "Perhaps this is my lack of understanding of merge-ups showing, but I don\u0027t think this commit is needed in 3.5 onwards? As 3.5 drops support for Java 8.",
+      "range": {
+        "startLine": 12,
+        "startChar": 2,
+        "endLine": 12,
+        "endChar": 47
+      },
+      "revId": "a05c1d01b97e04427121bcc37a7b2c8e6f36c69c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
