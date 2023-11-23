@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff50d8df_022cab2f",
+        "filename": "setup_local_env/docker-compose-kafka.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-11-23T13:05:11Z",
+      "side": 1,
+      "message": "We need to set that property, otherwise Gerrit throws this ERROR:\n```\n[2023-11-23T12:39:08.132Z] [kafka-subscriber-1[java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask@cc5ea21[Not completed, task \u003d java.util.concurrent.Executors$RunnableAdapter@63d8151[Wrapped task \u003d com.google.gerrit.server.logging.LoggingContextAwareRunnable@8fa6fe6]]]] ERROR com.googlesource.gerrit.plugins.kafka.subscribe.KafkaEventNativeSubscriber : Existing consumer loop of topic gerrit_index because of a non-recoverable exception\njava.lang.IllegalStateException: No entry found for connection 1001\n        at org.apache.kafka.clients.ClusterConnectionStates.nodeState(ClusterConnectionStates.java:339)\n        at org.apache.kafka.clients.ClusterConnectionStates.disconnected(ClusterConnectionStates.java:143)\n        at org.apache.kafka.clients.NetworkClient.initiateConnect(NetworkClient.java:921)\n        at org.apache.kafka.clients.NetworkClient.access$700(NetworkClient.java:67)\n        at org.apache.kafka.clients.NetworkClient$DefaultMetadataUpdater.maybeUpdate(NetworkClient.java:1086)\n        at org.apache.kafka.clients.NetworkClient$DefaultMetadataUpdater.maybeUpdate(NetworkClient.java:971)\n        at org.apache.kafka.clients.NetworkClient.poll(NetworkClient.java:533)\n        at org.apache.kafka.clients.consumer.internals.ConsumerNetworkClient.poll(ConsumerNetworkClient.java:265)\n        at org.apache.kafka.clients.consumer.internals.ConsumerNetworkClient.poll(ConsumerNetworkClient.java:236)\n        at org.apache.kafka.clients.consumer.internals.ConsumerNetworkClient.poll(ConsumerNetworkClient.java:227)\n        at org.apache.kafka.clients.consumer.internals.ConsumerNetworkClient.awaitMetadataUpdate(ConsumerNetworkClient.java:161)\n        at org.apache.kafka.clients.consumer.internals.AbstractCoordinator.ensureCoordinatorReady(AbstractCoordinator.java:241)\n        at org.apache.kafka.clients.consumer.internals.ConsumerCoordinator.poll(ConsumerCoordinator.java:316)\n        at org.apache.kafka.clients.consumer.KafkaConsumer.updateAssignmentMetadataIfNeeded(KafkaConsumer.java:1214)\n        at org.apache.kafka.clients.consumer.KafkaConsumer.poll(KafkaConsumer.java:1179)\n        at org.apache.kafka.clients.consumer.KafkaConsumer.poll(KafkaConsumer.java:1164)\n        at com.googlesource.gerrit.plugins.kafka.subscribe.KafkaEventNativeSubscriber$ReceiverJob.consume(KafkaEventNativeSubscriber.java:177)\n        at com.googlesource.gerrit.plugins.kafka.subscribe.KafkaEventNativeSubscriber$ReceiverJob.run(KafkaEventNativeSubscriber.java:158)\n        at com.google.gerrit.server.logging.LoggingContextAwareRunnable.run(LoggingContextAwareRunnable.java:113)\n        at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)\n        at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)\n        at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)\n        at com.google.gerrit.server.git.WorkQueue$Task.run(WorkQueue.java:612)\n        at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)\n        at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)\n        at java.base/java.lang.Thread.run(Thread.java:829)\n```\n\nInteresting reads:\n[1] https://stackoverflow.com/questions/54443640/kafka-consumer-no-entry-found-for-connection\n[2] https://www.confluent.io/en-gb/blog/kafka-listeners-explained/",
+      "revId": "86a50673414ee93812fe93d76cbe2ba2ac8d061a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
