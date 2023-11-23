@@ -22,6 +22,30 @@
       },
       "revId": "a05c1d01b97e04427121bcc37a7b2c8e6f36c69c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5d8f779_cc9a8695",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2023-11-23T06:04:18Z",
+      "side": 1,
+      "message": "Merge-up series supposed only skip some commits during the merge for a reason. Usually, it should be mentioned in the commit message itself that this specific commit on the stable branch should be skipped in merged-up series.\n\nIn this specific case, it wouldn\u0027t hurt to keep this commit, but this is not needed because started from 3.5 release we bumped Java language level to Java 11 and Gerrit cannot be built with Java 8 anyway.\n\nSo, that we could do both: let it in or skip the commit and mention why this commit is omitted it the commit message of this merge commit.",
+      "parentUuid": "1ff2e13c_b849a4da",
+      "range": {
+        "startLine": 12,
+        "startChar": 2,
+        "endLine": 12,
+        "endChar": 47
+      },
+      "revId": "a05c1d01b97e04427121bcc37a7b2c8e6f36c69c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
