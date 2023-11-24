@@ -19,7 +19,6 @@ import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.CreationException;
 import com.google.inject.Inject;
 import com.google.inject.spi.Message;
-import com.googlesource.gerrit.plugins.multisite.broker.BrokerModule;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.RouterModule;
@@ -60,7 +59,6 @@ public class Module extends LifecycleModule {
     }
 
     if (brokerRouterNeeded) {
-      install(new BrokerModule());
       install(new RouterModule());
     }
   }
