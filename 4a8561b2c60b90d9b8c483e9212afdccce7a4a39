@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3e082a0_f6003b94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-11-24T13:08:33Z",
+      "side": 1,
+      "message": "The CI failure is unrelated to these changes, the same test is currently failing on master https://gerrit-ci.gerritforge.com/view/Plugins-master/job/plugin-multi-site-bazel-master/79/",
+      "revId": "4a8561b2c60b90d9b8c483e9212afdccce7a4a39",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
