@@ -30,7 +30,6 @@ import java.util.UUID;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectIdRef;
 import org.eclipse.jgit.lib.Ref;
-import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.lib.Repository;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,13 +44,11 @@ public class GroupCheckerImplTest {
 
   GroupCheckerImpl objectUnderTest;
   @Mock private GitRepositoryManager repoManagerMock;
-  @Mock private RefDatabase refDatabaseMock;
   @Mock private Repository repoMock;
 
   @Before
   public void setUp() throws Exception {
     doReturn(repoMock).when(repoManagerMock).openRepository(allUsers);
-    doReturn(refDatabaseMock).when(repoMock).getRefDatabase();
     objectUnderTest = new GroupCheckerImpl(repoManagerMock, allUsers);
   }
 
@@ -118,6 +115,6 @@ public class GroupCheckerImplTest {
       throws IOException {
     String groupRefName = RefNames.refsGroups(AccountGroup.uuid(groupUUID.toString()));
     ObjectIdRef.Unpeeled aRef = new ObjectIdRef.Unpeeled(Ref.Storage.LOOSE, groupRefName, objectId);
-    doReturn(objectId == null ? null : aRef).when(refDatabaseMock).exactRef(groupRefName);
+    doReturn(objectId == null ? null : aRef).when(repoMock).exactRef(groupRefName);
   }
 }
