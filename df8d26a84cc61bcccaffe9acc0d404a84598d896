@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ef9b7f6_658ce850",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-11-29T15:12:01Z",
+      "side": 1,
+      "message": "I think this pattern might have spread around other projects. I have already seen it in the pull-replication as well.",
+      "revId": "df8d26a84cc61bcccaffe9acc0d404a84598d896",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
