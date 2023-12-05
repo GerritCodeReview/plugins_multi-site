@@ -42,6 +42,14 @@ cd gerrit/plugins
 ln -s ../../multi-site .
 ```
 
+**NOTE**: According to the Gerrit version you are building, some additional dependencies were added:
+- stable-2.16 to stable-3.3 - replication (plugin)
+- stable-3.4 onwards - replication (plugin), pull-replication (plugin), events-broker (module), global-refdb (module)
+
+Please revise the documentation on each plugin/module regarding build installation steps for this build to be successful.
+
+
+
 Example of building the multi-site plugin:
 
 ```
