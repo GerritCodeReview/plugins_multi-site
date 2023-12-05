@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67f409ce_e61f60d3",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-12-05T19:42:51Z",
+      "side": 1,
+      "message": "nit: not necessarily building Gerrit here, perhaps\n\n```\nAccording to the multi-site version you are building\n```",
+      "range": {
+        "startLine": 45,
+        "startChar": 27,
+        "endLine": 45,
+        "endChar": 58
+      },
+      "revId": "64ee97d3b260cb91767cc9f8772e6bdcaf9a7995",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "815c59b4_491306d5",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-12-05T19:42:51Z",
+      "side": 1,
+      "message": "nit: wrap long lines",
+      "range": {
+        "startLine": 45,
+        "startChar": 80,
+        "endLine": 45,
+        "endChar": 100
+      },
+      "revId": "64ee97d3b260cb91767cc9f8772e6bdcaf9a7995",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afee232c_e836493d",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-12-05T19:42:51Z",
+      "side": 1,
+      "message": "nit: unneeded extra new lines",
+      "revId": "64ee97d3b260cb91767cc9f8772e6bdcaf9a7995",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
