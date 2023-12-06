@@ -11,6 +11,7 @@ gerrit_plugin(
     srcs = glob(["src/main/java/**/*.java"]),
     manifest_entries = [
         "Gerrit-PluginName: multi-site",
+        "Gerrit-ReloadMode: restart",
         "Gerrit-Module: com.googlesource.gerrit.plugins.multisite.PluginModule",
         "Gerrit-HttpModule: com.googlesource.gerrit.plugins.multisite.http.HttpModule",
         "Implementation-Title: multi-site plugin",

@@ -70,6 +70,8 @@ public class PluginModule extends LifecycleModule {
       install(new ReplicationStatusModule(workQueue));
     }
 
+    listener().to(MultiSiteMetricsLifecycleListener.class);
+
     if (config.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {
       listener().to(PluginStartup.class);
       DynamicSet.bind(binder(), ProjectDeletedListener.class)

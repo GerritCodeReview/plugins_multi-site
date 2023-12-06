@@ -57,41 +57,48 @@ public class SubscriberMetrics extends MultiSiteMetrics {
     this.replicationStatus = replicationStatus;
 
     this.subscriberSuccessCounter =
-        metricMaker.newCounter(
-            "multi_site/subscriber/subscriber_message_consumer_counter",
-            new Description("Number of messages consumed by the subscriber")
-                .setRate()
-                .setUnit("messages"),
-            stringField(SUBSCRIBER_SUCCESS_COUNTER, "Subscriber message consumed count"));
+        registerMetric(
+            metricMaker.newCounter(
+                "multi_site/subscriber/subscriber_message_consumer_counter",
+                new Description("Number of messages consumed by the subscriber")
+                    .setRate()
+                    .setUnit("messages"),
+                stringField(SUBSCRIBER_SUCCESS_COUNTER, "Subscriber message consumed count")));
     this.subscriberFailureCounter =
-        metricMaker.newCounter(
-            "multi_site/subscriber/subscriber_message_consumer_failure_counter",
-            new Description("Number of messages failed to consume by the subscriber consumer")
-                .setRate()
-                .setUnit("errors"),
-            stringField(SUBSCRIBER_FAILURE_COUNTER, "Subscriber failed to consume messages count"));
-    metricMaker.newCallbackMetric(
-        REPLICATION_LAG_SEC,
-        Long.class,
-        new Description("Replication lag (sec)").setGauge().setUnit(Description.Units.SECONDS),
-        replicationStatus::getMaxLag);
-    metricMaker.newCallbackMetric(
-        REPLICATION_LAG_MSEC,
-        Long.class,
-        new Description("Replication lag (msec)")
-            .setGauge()
-            .setUnit(Description.Units.MILLISECONDS),
-        replicationStatus::getMaxLagMillis);
-
-    CallbackMetric1<String, Long> metrics =
+        registerMetric(
+            metricMaker.newCounter(
+                "multi_site/subscriber/subscriber_message_consumer_failure_counter",
+                new Description("Number of messages failed to consume by the subscriber consumer")
+                    .setRate()
+                    .setUnit("errors"),
+                stringField(
+                    SUBSCRIBER_FAILURE_COUNTER, "Subscriber failed to consume messages count")));
+    registerMetric(
         metricMaker.newCallbackMetric(
-            SubscriberMetrics.REPLICATION_LAG_MSEC_PROJECT,
+            REPLICATION_LAG_SEC,
             Long.class,
-            new Description("Per-project replication lag (msec)")
+            new Description("Replication lag (sec)").setGauge().setUnit(Description.Units.SECONDS),
+            replicationStatus::getMaxLag));
+    registerMetric(
+        metricMaker.newCallbackMetric(
+            REPLICATION_LAG_MSEC,
+            Long.class,
+            new Description("Replication lag (msec)")
                 .setGauge()
                 .setUnit(Description.Units.MILLISECONDS),
-            PROJECT_NAME);
-    metricMaker.newTrigger(metrics, replicationStatus.replicationLagMetricPerProject(metrics));
+            replicationStatus::getMaxLagMillis));
+
+    CallbackMetric1<String, Long> metrics =
+        registerMetric(
+            metricMaker.newCallbackMetric(
+                SubscriberMetrics.REPLICATION_LAG_MSEC_PROJECT,
+                Long.class,
+                new Description("Per-project replication lag (msec)")
+                    .setGauge()
+                    .setUnit(Description.Units.MILLISECONDS),
+                PROJECT_NAME));
+    registerMetric(
+        metricMaker.newTrigger(metrics, replicationStatus.replicationLagMetricPerProject(metrics)));
   }
 
   /**

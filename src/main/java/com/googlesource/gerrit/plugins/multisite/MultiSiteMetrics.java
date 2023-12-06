@@ -14,11 +14,16 @@
 
 package com.googlesource.gerrit.plugins.multisite;
 
+import com.google.gerrit.extensions.registration.RegistrationHandle;
 import com.google.gerrit.metrics.Description;
 import com.google.gerrit.metrics.Field;
 import com.google.gerrit.server.logging.PluginMetadata;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class MultiSiteMetrics {
+
+  private final Set<RegistrationHandle> metricsHandles = new HashSet<>();;
 
   public Field<String> stringField(String metadataKey, String description) {
     return Field.ofString(
@@ -31,5 +36,14 @@ public abstract class MultiSiteMetrics {
 
   public Description rateDescription(String unit, String description) {
     return new Description(description).setRate().setUnit(unit);
+  }
+
+  public <T extends RegistrationHandle> T registerMetric(T metricHandle) {
+    metricsHandles.add(metricHandle);
+    return metricHandle;
+  }
+
+  public void stop() {
+    metricsHandles.forEach(RegistrationHandle::remove);
   }
 }

@@ -32,17 +32,19 @@ public class BrokerMetrics extends MultiSiteMetrics {
   public BrokerMetrics(MetricMaker metricMaker) {
 
     this.brokerPublisherSuccessCounter =
-        metricMaker.newCounter(
-            "multi_site/broker/broker_message_publisher_counter",
-            rateDescription("messages", "Number of messages published by the broker publisher"),
-            stringField(PUBLISHER_SUCCESS_COUNTER, "Broker message published count"));
+        registerMetric(
+            metricMaker.newCounter(
+                "multi_site/broker/broker_message_publisher_counter",
+                rateDescription("messages", "Number of messages published by the broker publisher"),
+                stringField(PUBLISHER_SUCCESS_COUNTER, "Broker message published count")));
 
     this.brokerPublisherFailureCounter =
-        metricMaker.newCounter(
-            "multi_site/broker/broker_message_publisher_failure_counter",
-            rateDescription(
-                "errors", "Number of messages failed to publish by the broker publisher"),
-            stringField(PUBLISHER_FAILURE_COUNTER, "Broker failed to publish message count"));
+        registerMetric(
+            metricMaker.newCounter(
+                "multi_site/broker/broker_message_publisher_failure_counter",
+                rateDescription(
+                    "errors", "Number of messages failed to publish by the broker publisher"),
+                stringField(PUBLISHER_FAILURE_COUNTER, "Broker failed to publish message count")));
   }
 
   public void incrementBrokerPublishedMessage() {
