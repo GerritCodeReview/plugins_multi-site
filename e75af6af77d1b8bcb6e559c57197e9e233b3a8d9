@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6268a339_63098f91",
+        "filename": "BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1161425
+      },
+      "writtenOn": "2023-12-06T14:21:14Z",
+      "side": 1,
+      "message": "I don\u0027t fully understand this:\nby removing this line (so that the plugin should just reload instead of restart) not all the listeners are notified, in particular, I see only the `MultiSiteConsumerRunner` listener execute the `stop()` method, and not the stop() method defined in the new `MultiSiteMetricsLifecycleListener` listener.\nFor more context, by disabling the plugin or shutting down gerrit, all the listeners are executing the stop().",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 2
+      },
+      "revId": "e75af6af77d1b8bcb6e559c57197e9e233b3a8d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
