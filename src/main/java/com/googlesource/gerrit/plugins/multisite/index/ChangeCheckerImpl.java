@@ -14,10 +14,7 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
-import com.google.gerrit.entities.Change;
-import com.google.gerrit.entities.HumanComment;
 import com.google.gerrit.exceptions.StorageException;
-import com.google.gerrit.server.CommentsUtil;
 import com.google.gerrit.server.change.ChangeFinder;
 import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.git.GitRepositoryManager;
@@ -28,7 +25,6 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.Optional;
 import org.eclipse.jgit.errors.MissingObjectException;
@@ -42,7 +38,6 @@ import org.slf4j.LoggerFactory;
 public class ChangeCheckerImpl implements ChangeChecker {
   private static final Logger log = LoggerFactory.getLogger(ChangeCheckerImpl.class);
   private final GitRepositoryManager gitRepoMgr;
-  private final CommentsUtil commentsUtil;
   private final OneOffRequestContext oneOffReqCtx;
   private final String changeId;
   private final ChangeFinder changeFinder;
@@ -57,14 +52,12 @@ public class ChangeCheckerImpl implements ChangeChecker {
   @Inject
   public ChangeCheckerImpl(
       GitRepositoryManager gitRepoMgr,
-      CommentsUtil commentsUtil,
       ChangeFinder changeFinder,
       OneOffRequestContext oneOffReqCtx,
       @GerritInstanceId String instanceId,
       @Assisted String changeId) {
     this.changeFinder = changeFinder;
     this.gitRepoMgr = gitRepoMgr;
-    this.commentsUtil = commentsUtil;
     this.oneOffReqCtx = oneOffReqCtx;
     this.changeId = changeId;
     this.instanceId = instanceId;
@@ -177,20 +170,6 @@ public class ChangeCheckerImpl implements ChangeChecker {
   }
 
   private Optional<Long> computeLastChangeTs() {
-    return getChangeNotes().map(notes -> getTsFromChangeAndDraftComments(notes));
-  }
-
-  private long getTsFromChangeAndDraftComments(ChangeNotes notes) {
-    Change change = notes.getChange();
-    Timestamp changeTs = change.getLastUpdatedOn();
-    try {
-      for (HumanComment comment : commentsUtil.draftByChange(changeNotes.get())) {
-        Timestamp commentTs = comment.writtenOn;
-        changeTs = commentTs.after(changeTs) ? commentTs : changeTs;
-      }
-    } catch (StorageException e) {
-      log.warn("Unable to access draft comments for change {}", change, e);
-    }
-    return changeTs.getTime() / 1000;
+    return getChangeNotes().map(notes -> notes.getChange().getLastUpdatedOn().getTime() / 1000);
   }
 }
