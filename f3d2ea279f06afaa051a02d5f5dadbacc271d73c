@@ -22,6 +22,30 @@
       },
       "revId": "f3d2ea279f06afaa051a02d5f5dadbacc271d73c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ffd22c8_850f7d6c",
+        "filename": "/MERGE_LIST",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-11T20:41:43Z",
+      "side": 1,
+      "message": "I agree, the solution is quite complicated here.\n\n1. If we merge as-is, we won\u0027t be able to serve the `has:drafts` queries consistently in multi-site\n2. If revert 135d416f in this merge, we will be back with infinite retries when the draft comments events are not propagated\n\nWe need to make a *proper fix* on stable-3.9 first and then merge this branch. I would not recommend make the fix as part of the merge, as it would make it quite confusing.",
+      "parentUuid": "78fbaf62_60314b1a",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 78
+      },
+      "revId": "f3d2ea279f06afaa051a02d5f5dadbacc271d73c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
