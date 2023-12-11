@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "68225c0f_1f0c30b0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-11T12:50:30Z",
+      "side": 1,
+      "message": "I was trying to understand how this code landed here to see if we were explaining why, at the time, we explicitly added drafts in the computation.\n\nThe `getTsFromChangeAndDraftComments` method was introduced in the HA plugin by I46a2b839 in 2.15. It was copied over as it is when borrowing the code for multi-site.\n\nIn the commit message there was an explicit mention about draft comments as part of the detection logic for a change to be stale: `Maximum of the draft change messages timestamp`.\n\nLooking at the lucene schema definition, there was a `draftby` field in the documents until 3.7, where it was removed by I36c1e2f5.\n\nI am not 100% sure what that field is used for, but I was wonder if draft comments changes might affect it and consequently the change representation in lucene. @luca do you know if this field is updated when making changes on draft comments?",
+      "range": {
+        "startLine": 15,
+        "startChar": 48,
+        "endLine": 17,
+        "endChar": 43
+      },
+      "revId": "42faa62169956872db81f3af02dbf84a6f81a3d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5b67977e_4e2c8ca3",
