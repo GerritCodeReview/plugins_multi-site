@@ -37,8 +37,6 @@ public class EventModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-    DynamicSet.bind(binder(), EventListener.class).to(ProjectVersionRefUpdateImpl.class);
-
     bind(StreamEventPublisherConfig.class)
         .toInstance(
             new StreamEventPublisherConfig(
