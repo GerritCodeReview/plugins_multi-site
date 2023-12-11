@@ -96,6 +96,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "5944a00e_c641d854",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-12-11T14:29:01Z",
+      "side": 1,
+      "message": "Makes sense for me @luca.milanesio@gmail.com, let\u0027s make sure we address this properly during the merge up, I think that might require some thinking.\n\nGiving +1 and waiting for @ponch78@gmail.com to resolve this and give +2, since he raised this concern.",
+      "parentUuid": "f5b8a04d_712d680d",
+      "range": {
+        "startLine": 15,
+        "startChar": 48,
+        "endLine": 17,
+        "endChar": 43
+      },
+      "revId": "42faa62169956872db81f3af02dbf84a6f81a3d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5b67977e_4e2c8ca3",
