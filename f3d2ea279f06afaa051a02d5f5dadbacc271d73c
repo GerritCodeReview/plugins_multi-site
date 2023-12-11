@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78fbaf62_60314b1a",
+        "filename": "/MERGE_LIST",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-12-11T19:46:44Z",
+      "side": 1,
+      "message": "Regarding the merging of this change in 3.9, please refer to the discussion we had here [1].\n\nStarting from 3.9 onwards, it might be possible to enable the streaming of draft comments (via `event.stream-events.enableDraftCommentEvents \u003d true`).\n\nIt might be that we don\u0027t care about the propagation of `All-Users` refs, even though those refs are affecting the indexing of the related change (the one for which the comment is for).\n\n@luca.milanesio@gmail.com, do you recon this is worth a quick discussion first?\n\nI am `-1` in the meanwhile to allow us to think about this.\n\n[1] https://gerrit-review.googlesource.com/c/plugins/multi-site/+/396828/comment/68225c0f_1f0c30b0/",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 78
+      },
+      "revId": "f3d2ea279f06afaa051a02d5f5dadbacc271d73c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
