@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "15aa3e4b_132557b7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-12-11T13:41:39Z",
+      "side": 1,
+      "message": "\u003e \u003e I was trying to understand how this code landed here to see if we were explaining why, at the time, we explicitly added drafts in the computation.\n\u003e \n\u003e That made sense for the high-availability plugin, because the repos are shared. However, I am wondering why Gerrit, in the first place, it triggering a reindex when a user creates a draft comment. That\u0027s a different point though.\n\nAgreed, this is a different point.\nHowever I think the reason is exactly what @ponch78@gmail.com mentioned in his comment, the `draftby` lucene field field.\n_locally_ (despite the `refs-updated` events not being emitted until 3.9), the change needs reindexing to honour the `has:draft` predicate. \n\n\u003e \n\u003e \u003e It was copied over as it is when borrowing the code for multi-site.\n\u003e \u003e \n\u003e \u003e In the commit message there was an explicit mention about draft comments as part of the detection logic for a change to be stale: `Maximum of the draft change messages timestamp`.\n\u003e \n\u003e Yes, but as you know Gerrit doesn\u0027t store draft comments in the change or the project hosting it. Therefore, drafts are not replicated until Gerrit v3.9. In this stable-3.5 branch, there is no reason for taking drafts into account.\n\n+1, for 3.5.\n\nWhen mreging this up to 3.9 and master however, we will need to deal with this and account for the reindexing of the change (to allow the `draftby` to be updated accordingly), no?\n\n\u003e \n\u003e \u003e Looking at the lucene schema definition, there was a `draftby` field in the documents until 3.7, where it was removed by I36c1e2f5.\n\u003e \n\u003e Yes, however, if draft comments are not replicated, that predicated would never going to change, even when you are reindexing the change.\n\nYep, we just need to deal with this in 3.9, when they _might_ be replicated.\n\n\u003e \n\u003e \u003e I am not 100% sure what that field is used for, but I was wonder if draft comments changes might affect it and consequently the change representation in lucene. @luca do you know if this field is updated when making changes on draft comments?\n\u003e \n\u003e The predicate allows to understand if a change has pending draft comments and is used in the user\u0027s dashboard rendering.",
+      "parentUuid": "c4014fe4_810f519f",
+      "range": {
+        "startLine": 15,
+        "startChar": 48,
+        "endLine": 17,
+        "endChar": 43
+      },
+      "revId": "42faa62169956872db81f3af02dbf84a6f81a3d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "5b67977e_4e2c8ca3",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
