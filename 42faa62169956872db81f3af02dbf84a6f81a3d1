@@ -33,6 +33,24 @@
       "message": "this can go, no longer used.",
       "revId": "42faa62169956872db81f3af02dbf84a6f81a3d1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58909010_4cc373e5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-11T12:29:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9978a36b_7a84add5",
+      "revId": "42faa62169956872db81f3af02dbf84a6f81a3d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
