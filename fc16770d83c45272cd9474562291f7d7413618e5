@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05a1acfc_52679576",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-12T15:03:57Z",
+      "side": 1,
+      "message": "Since as you mentioned there are multiple things going on, can you split it in multiple changes so it will be easier to review?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 17
+      },
+      "revId": "fc16770d83c45272cd9474562291f7d7413618e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4540510c_b0f6d2d9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-12T15:03:57Z",
+      "side": 1,
+      "message": "Missing space. If you don\u0027t put a space between the title and the commit message, Gerrit will consider all the text as the title. You can see how the title of this change is rendered.",
+      "revId": "fc16770d83c45272cd9474562291f7d7413618e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca2fc536_9ec2d130",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-12T15:03:57Z",
+      "side": 1,
+      "message": "Is there any ticket for this? If so can you add it here?",
+      "revId": "fc16770d83c45272cd9474562291f7d7413618e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "278d62de_62f4ed86",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-12T15:03:57Z",
+      "side": 1,
+      "message": "Is this wanted?",
+      "revId": "fc16770d83c45272cd9474562291f7d7413618e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edc20c69_564bc0a0",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-12T15:03:57Z",
+      "side": 1,
+      "message": "Can you just remove *.jar and *.war?",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 214,
+        "endChar": 62
+      },
+      "revId": "fc16770d83c45272cd9474562291f7d7413618e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0f930a8_ffd10799",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-12T15:03:57Z",
+      "side": 1,
+      "message": "extra lines",
+      "range": {
+        "startLine": 560,
+        "startChar": 0,
+        "endLine": 560,
+        "endChar": 0
+      },
+      "revId": "fc16770d83c45272cd9474562291f7d7413618e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
