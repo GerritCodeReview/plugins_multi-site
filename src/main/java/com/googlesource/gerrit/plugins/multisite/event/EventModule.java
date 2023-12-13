@@ -16,9 +16,9 @@ package com.googlesource.gerrit.plugins.multisite.event;
 
 import com.gerritforge.gerrit.eventbroker.publisher.StreamEventPublisherConfig;
 import com.gerritforge.gerrit.eventbroker.publisher.StreamEventPublisherModule;
+import com.google.gerrit.extensions.events.GitBatchRefUpdateListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
-import com.google.gerrit.server.events.EventListener;
 import com.google.inject.Inject;
 import com.google.inject.multibindings.OptionalBinder;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
@@ -47,8 +47,17 @@ public class EventModule extends LifecycleModule {
     OptionalBinder<ProjectVersionRefUpdate> projectVersionRefUpdateBinder =
         OptionalBinder.newOptionalBinder(binder(), ProjectVersionRefUpdate.class);
     if (configuration.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {
+<<<<<<< PATCH SET (92d34b Update the refs/multi-site/version/value once per batch-refu)
+      DynamicSet.bind(binder(), GitBatchRefUpdateListener.class)
+          .to(ProjectVersionRefUpdateImpl.class);
+      projectVersionRefUpdateBinder
+          .setBinding()
+          .to(ProjectVersionRefUpdateImpl.class)
+          .in(Scopes.SINGLETON);
+=======
       DynamicSet.bind(binder(), EventListener.class).to(ProjectVersionRefUpdateImpl.class);
       projectVersionRefUpdateBinder.setBinding().to(ProjectVersionRefUpdateImpl.class);
+>>>>>>> BASE      (f122e9 Merge branch 'stable-3.5' into stable-3.6)
     }
   }
 }
