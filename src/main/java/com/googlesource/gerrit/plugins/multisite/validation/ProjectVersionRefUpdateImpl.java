@@ -25,10 +25,9 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.extensions.events.GitBatchRefUpdateListener;
 import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
-import com.google.gerrit.server.events.EventListener;
-import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
@@ -45,7 +44,8 @@ import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.lib.Repository;
 
 @Singleton
-public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersionRefUpdate {
+public class ProjectVersionRefUpdateImpl
+    implements GitBatchRefUpdateListener, ProjectVersionRefUpdate {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final Set<RefUpdate.Result> SUCCESSFUL_RESULTS =
       ImmutableSet.of(RefUpdate.Result.NEW, RefUpdate.Result.FORCED, RefUpdate.Result.NO_CHANGE);
@@ -72,12 +72,9 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
   }
 
   @Override
-  public void onEvent(Event event) {
-    logger.atFine().log("Processing event type: %s", event.type);
+  public void onGitBatchRefUpdate(Event event) {
     // Producer of the Event use RefUpdatedEvent to trigger the version update
-    if (nodeInstanceId.equals(event.instanceId) && event instanceof RefUpdatedEvent) {
-      updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
-    }
+    updateProducerProjectVersionUpdate(event);
   }
 
   private boolean isSpecialRefName(String refName) {
@@ -86,17 +83,17 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
         || refName.equals(MULTI_SITE_VERSIONING_REF);
   }
 
-  private void updateProducerProjectVersionUpdate(RefUpdatedEvent refUpdatedEvent) {
-    String refName = refUpdatedEvent.getRefName();
-
-    if (isSpecialRefName(refName)) {
-      logger.atFine().log(
-          "Found a special ref name %s, skipping update for %s",
-          refName, refUpdatedEvent.getProjectNameKey().get());
-      return;
+  private void updateProducerProjectVersionUpdate(Event refUpdatedEvent) {
+    for (String refName : refUpdatedEvent.getRefNames()) {
+      if (isSpecialRefName(refName)) {
+        logger.atFine().log(
+            "Found a special ref name %s, skipping update for %s",
+            refName, refUpdatedEvent.getProjectName());
+        return;
+      }
     }
     try {
-      Project.NameKey projectNameKey = refUpdatedEvent.getProjectNameKey();
+      Project.NameKey projectNameKey = Project.nameKey(refUpdatedEvent.getProjectName());
       long newVersion = getCurrentGlobalVersionNumber();
 
       Optional<RefUpdate> newProjectVersionRefUpdate =
@@ -110,13 +107,13 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
         }
       } else {
         logger.atWarning().log(
-            "Ref %s not found on projet %s: skipping project version update",
-            refUpdatedEvent.getRefName(), projectNameKey);
+            "Ref %s not found on project %s: skipping project version update",
+            refUpdatedEvent.getUpdatedRefs(), projectNameKey);
       }
     } catch (LocalProjectVersionUpdateException | SharedProjectVersionUpdateException e) {
       logger.atSevere().withCause(e).log(
           "Issue encountered when updating version for project %s",
-          refUpdatedEvent.getProjectNameKey());
+          refUpdatedEvent.getProjectName());
     }
   }
 
