@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5174402f_e17e53aa",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-12-13T23:53:34Z",
+      "side": 1,
+      "message": "```suggestion\n            \"Ref %s not found on project %s: skipping project version update\",\n```",
+      "range": {
+        "startLine": 108,
+        "startChar": 13,
+        "endLine": 108,
+        "endChar": 16
+      },
+      "revId": "92d34bc8b823633c5ef81b931e41e0d946c1a7b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13b9e17c_45e52c7a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-12-13T23:53:34Z",
+      "side": 1,
+      "message": "I assume this will always be `refs/multi-site/version`?",
+      "range": {
+        "startLine": 109,
+        "startChar": 28,
+        "endLine": 109,
+        "endChar": 44
+      },
+      "revId": "92d34bc8b823633c5ef81b931e41e0d946c1a7b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

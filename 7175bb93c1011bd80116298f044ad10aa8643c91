@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12bd8176_8f50282b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-12-13T23:53:34Z",
+      "side": 0,
+      "message": "Why is this no longer needed?",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 84
+      },
+      "revId": "7175bb93c1011bd80116298f044ad10aa8643c91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e525948_088dd708",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-12-13T23:53:34Z",
+      "side": 0,
+      "message": "Why is this test not needed anymore?",
+      "range": {
+        "startLine": 256,
+        "startChar": 1,
+        "endLine": 256,
+        "endChar": 78
+      },
+      "revId": "7175bb93c1011bd80116298f044ad10aa8643c91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
