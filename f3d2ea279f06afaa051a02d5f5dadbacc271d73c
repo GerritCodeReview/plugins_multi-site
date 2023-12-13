@@ -50,6 +50,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "a3e53f91_7042e7d0",
+        "filename": "/MERGE_LIST",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-13T16:19:07Z",
+      "side": 1,
+      "message": "Marking as resolved: we will merge it and then re-fix on stable-3.9 properly.",
+      "parentUuid": "7ffd22c8_850f7d6c",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 78
+      },
+      "revId": "f3d2ea279f06afaa051a02d5f5dadbacc271d73c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ca01b4f6_35133dfe",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
