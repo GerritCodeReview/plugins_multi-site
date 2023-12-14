@@ -1,5 +1,46 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ab98d59_20f70068",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-14T00:23:30Z",
+      "side": 1,
+      "message": "I missed a wrong conflict resolution, so self-voting -1 to me 😞",
+      "revId": "7e077c102cbcc62a64b7efe8c38a90e769c950e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cc9f449_fdbdfdce",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-14T00:23:30Z",
+      "side": 1,
+      "message": "This is wrong, the same binding was also done at L53, conditioned to the configuration of a global-refdb. Fixed with Iee3e74bd.",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 89
+      },
+      "revId": "7e077c102cbcc62a64b7efe8c38a90e769c950e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
