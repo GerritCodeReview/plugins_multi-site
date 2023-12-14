@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41f2f429_596e502d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/event/EventModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-14T10:13:17Z",
+      "side": 0,
+      "message": "this seems to be a duplicate of L53. I assume it does not need updating, but just to be removed? Also the project no longer compiles as you removed the `EventListener` class import.",
+      "revId": "7175bb93c1011bd80116298f044ad10aa8643c91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12bd8176_8f50282b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
         "patchSetId": 2
@@ -14,6 +31,30 @@
       "writtenOn": "2023-12-13T23:53:34Z",
       "side": 0,
       "message": "Why is this no longer needed?",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 84
+      },
+      "revId": "7175bb93c1011bd80116298f044ad10aa8643c91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b1f4e54_e0dcf7a5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-14T10:13:17Z",
+      "side": 0,
+      "message": "+1. And there\u0027s nothing mentioned in the change description either.",
+      "parentUuid": "12bd8176_8f50282b",
       "range": {
         "startLine": 76,
         "startChar": 4,

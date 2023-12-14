@@ -1,6 +1,40 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91794d3b_42b6ab9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-14T10:13:17Z",
+      "side": 1,
+      "message": "Besides this not compiling, a test is missing, and I have questions on the implementation.",
+      "revId": "92d34bc8b823633c5ef81b931e41e0d946c1a7b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "497bd37b_848f244b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-14T10:13:17Z",
+      "side": 1,
+      "message": "If the batch contains multiple refs, and one of those is a \"special\" ref, we discard the entire batch. Is this really what we want here? I\u0027d imagine we\u0027d want to filter out the \"special\" refs, and carry on with the update. Even more worryingly, there\u0027s not a test that asserts (and also documents) on this behaviour, as far as I can see.",
+      "revId": "92d34bc8b823633c5ef81b931e41e0d946c1a7b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5174402f_e17e53aa",
@@ -43,6 +77,23 @@
         "endLine": 109,
         "endChar": 44
       },
+      "revId": "92d34bc8b823633c5ef81b931e41e0d946c1a7b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af9a6f0d_5e6980f9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-14T10:13:17Z",
+      "side": 1,
+      "message": "I don\u0027t see any test which verifies your change, ie a `GitBatchRefUpdateListener.Event` with multiple refs and a verification that the `refs/multi-site/version/value` was updated just once.",
       "revId": "92d34bc8b823633c5ef81b931e41e0d946c1a7b9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
