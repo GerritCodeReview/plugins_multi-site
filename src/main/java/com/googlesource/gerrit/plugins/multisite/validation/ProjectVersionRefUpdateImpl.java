@@ -32,6 +32,7 @@ import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -43,6 +44,7 @@ import org.eclipse.jgit.lib.ObjectInserter;
 import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.lib.Repository;
 
+@Singleton
 public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersionRefUpdate {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final Set<RefUpdate.Result> SUCCESSFUL_RESULTS =
