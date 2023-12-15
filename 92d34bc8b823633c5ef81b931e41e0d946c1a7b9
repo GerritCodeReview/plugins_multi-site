@@ -111,6 +111,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c95cf89d_a9679f16",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-12-15T10:01:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5174402f_e17e53aa",
+      "range": {
+        "startLine": 108,
+        "startChar": 13,
+        "endLine": 108,
+        "endChar": 16
+      },
+      "revId": "92d34bc8b823633c5ef81b931e41e0d946c1a7b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13b9e17c_45e52c7a",
@@ -148,6 +172,30 @@
       "side": 1,
       "message": "Good point, but before it was taking the ref-name from the `refUpdatedEvent` which is wrong.\n\nLast but not least, the `newProjectVersionRefUpdate` is never returned as empty in the code, so this else is effectively unreachable.\n\nI will address as a separate change.",
       "parentUuid": "13b9e17c_45e52c7a",
+      "range": {
+        "startLine": 109,
+        "startChar": 28,
+        "endLine": 109,
+        "endChar": 44
+      },
+      "revId": "92d34bc8b823633c5ef81b931e41e0d946c1a7b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0faad3cd_050e87fa",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-12-15T10:01:17Z",
+      "side": 1,
+      "message": "@luca.milanesio@gmail.com can you make sure this is captured somewhere so we don\u0027t forget? I am happy to create an issue if you haven\u0027t already",
+      "parentUuid": "aa0310d6_3793ed2c",
       "range": {
         "startLine": 109,
         "startChar": 28,
