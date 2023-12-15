@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b699a68a_8d3428a0",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2023-12-15T10:03:59Z",
+      "side": 1,
+      "message": "nit: remove trailing spaces",
+      "range": {
+        "startLine": 48,
+        "startChar": 71,
+        "endLine": 48,
+        "endChar": 72
+      },
+      "revId": "3b7f0efd7fc932264e8a644c90f326efbae0b200",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
