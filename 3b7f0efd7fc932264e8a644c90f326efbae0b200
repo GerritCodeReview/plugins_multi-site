@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4acbefec_05d7fa14",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-17T07:55:18Z",
+      "side": 1,
+      "message": "nit: remove trailing space",
+      "range": {
+        "startLine": 45,
+        "startChar": 68,
+        "endLine": 45,
+        "endChar": 69
+      },
+      "revId": "3b7f0efd7fc932264e8a644c90f326efbae0b200",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b699a68a_8d3428a0",
         "filename": "README.md",
         "patchSetId": 2
@@ -19,6 +42,52 @@
         "startChar": 71,
         "endLine": 48,
         "endChar": 72
+      },
+      "revId": "3b7f0efd7fc932264e8a644c90f326efbae0b200",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "233b348d_89ef571d",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-17T07:55:18Z",
+      "side": 1,
+      "message": "This is master, so you should mention only the ones that are valid in master, which are the same for stable-3.7 onwards.\n\nAll branches from stable-2.16 to stable-3.6 are EOL and do not need to be updated.",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 72
+      },
+      "revId": "3b7f0efd7fc932264e8a644c90f326efbae0b200",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fff5e65_9473da02",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-17T07:55:18Z",
+      "side": 1,
+      "message": "nit: remove trailing space.",
+      "range": {
+        "startLine": 51,
+        "startChar": 82,
+        "endLine": 51,
+        "endChar": 83
       },
       "revId": "3b7f0efd7fc932264e8a644c90f326efbae0b200",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
