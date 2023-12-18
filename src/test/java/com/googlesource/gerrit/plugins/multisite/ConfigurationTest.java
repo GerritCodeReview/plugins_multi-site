@@ -21,7 +21,9 @@ import static com.googlesource.gerrit.plugins.multisite.Configuration.DEFAULT_TH
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Event.EVENT_SECTION;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Forwarding.DEFAULT_SYNCHRONIZE;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.Forwarding.SYNCHRONIZE_KEY;
-import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.INDEX_SECTION;
+-import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.DEFAULT_SYNCHRONIZE_FORCED;
+-import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.INDEX_SECTION;
+-import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.SYNCHRONIZE_FORCED_KEY;
 import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
 
 import com.google.common.collect.ImmutableList;
@@ -128,5 +130,14 @@ public class ConfigurationTest {
     Config replicationConfig = new Config();
     replicationConfig.setBoolean("gerrit", null, "replicateOnStartup", true);
     assertThat(new Configuration(globalPluginConfig, replicationConfig).validate()).isNotEmpty();
+  }
+
+  @Test
+  public void testGetIndexSynchronizeForced() throws Exception {
+    assertThat(getConfiguration().index().synchronizeForced())
+        .isEqualTo(DEFAULT_SYNCHRONIZE_FORCED);
+
+    globalPluginConfig.setBoolean(INDEX_SECTION, null, SYNCHRONIZE_FORCED_KEY, false);
+    assertThat(getConfiguration().index().synchronizeForced()).isFalse();
   }
 }
