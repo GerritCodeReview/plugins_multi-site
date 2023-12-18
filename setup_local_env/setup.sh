@@ -79,6 +79,7 @@ function copy_config_files {
 }
 
 function start_ha_proxy {
+  echo "Starting HAProxy"
 
   export HA_GERRIT_CANONICAL_HOSTNAME=$GERRIT_CANONICAL_HOSTNAME
   export HA_GERRIT_CANONICAL_PORT=$GERRIT_CANONICAL_PORT
@@ -95,10 +96,9 @@ function start_ha_proxy {
 
   cat $SCRIPT_DIR/haproxy-config/haproxy.cfg | envsubst > $HA_PROXY_CONFIG_DIR/haproxy.cfg
 
-  echo "Starting HA-PROXY..."
-  echo "THE SCRIPT LOCATION $SCRIPT_DIR"
-  echo "THE HA SCRIPT_LOCATION $HA_SCRIPT_DIR"
-  haproxy -f $HA_PROXY_CONFIG_DIR/haproxy.cfg &
+  echo "HAProxy Config location: $HA_PROXY_CONFIG_DIR/haproxy.cfg"
+
+  haproxy -f $HA_PROXY_CONFIG_DIR/haproxy.cfg > $COMMON_LOCATION/haproxy.log 2>&1 &
 }
 
 function export_broker_port {
@@ -256,7 +256,6 @@ function download_artifact_from_ci {
 function show_help {
   echo "Usage: bash plugins/multi-site/setup_local_env/setup.sh [--option ] "
   echo
-  echo
   echo "[--release-war-file]            Location to release.war file; default: 'bazel-bin/release.war'"
   echo "[--multisite-lib-file]          Location to lib multi-site.jar file; default: 'bazel-bin/plugins/multi-site/multi-site.jar'"
   echo "[--eventsbroker-lib-file]       Location to lib events-broker.jar file; default: 'bazel-bin/plugins/events-broker/events-broker.jar'"
@@ -292,6 +291,63 @@ function show_help {
   echo "Examples of usage: "
   echo "Cleanup last install ->  bash plugins/multi-site/setup_local_env/setup.sh --just-cleanup-env true"
   echo "Install and startup multisite based on local artifacts (Gerrit and multi-site)->  bash plugins/multi-site/setup_local_env/setup.sh"
+}
+
+function create_gerrit_environments {
+  echo "Setting up directories"
+  mkdir -p $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $HA_PROXY_CERTIFICATES_DIR $FAKE_NFS
+  java -jar $DEPLOYMENT_LOCATION/gerrit.war init --batch --no-auto-start --install-all-plugins --dev -d $LOCATION_TEST_SITE_1
+
+  # Deploying TLS certificates
+  if [ "$HTTPS_ENABLED" = "true" ];then deploy_tls_certificates;fi
+
+  echo "Copy multi-site library to lib directory"
+  cp -f $DEPLOYMENT_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/lib/multi-site.jar
+
+  echo "Copy websession-broker plugin"
+  cp -f $DEPLOYMENT_LOCATION/websession-broker.jar $LOCATION_TEST_SITE_1/plugins/websession-broker.jar
+
+  echo "Copy healthcheck plugin"
+  cp -f $DEPLOYMENT_LOCATION/healthcheck.jar $LOCATION_TEST_SITE_1/plugins/healthcheck.jar
+
+  echo "Copy zookeeper plugin"
+  cp -f $DEPLOYMENT_LOCATION/zookeeper-refdb.jar $LOCATION_TEST_SITE_1/plugins/zookeeper-refdb.jar
+
+  echo "Copy global refdb library"
+  cp -f $DEPLOYMENT_LOCATION/global-refdb.jar $LOCATION_TEST_SITE_1/lib/global-refdb.jar
+
+  echo "Copy events broker library"
+  cp -f $DEPLOYMENT_LOCATION/events-broker.jar $LOCATION_TEST_SITE_1/lib/events-broker.jar
+
+  echo "Copy $BROKER_TYPE events plugin"
+  if [ $BROKER_TYPE = "kinesis" ]; then
+     cp -f $DEPLOYMENT_LOCATION/events-aws-kinesis.jar $LOCATION_TEST_SITE_1/plugins/events-aws-kinesis.jar
+  elif [ $BROKER_TYPE = "gcloud-pubsub" ]; then
+    cp -f $DEPLOYMENT_LOCATION/events-gcloud-pubsub.jar $LOCATION_TEST_SITE_1/plugins/events-gcloud-pubsub.jar
+  else
+    cp -f $DEPLOYMENT_LOCATION/events-kafka.jar $LOCATION_TEST_SITE_1/plugins/events-kafka.jar
+  fi
+
+  echo "Copy metrics-reporter-prometheus plugin"
+  cp -f $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar $LOCATION_TEST_SITE_1/plugins/metrics-reporter-prometheus.jar
+
+  echo "Re-indexing"
+  java -jar $DEPLOYMENT_LOCATION/gerrit.war reindex -d $LOCATION_TEST_SITE_1
+
+  echo "Replicating environment"
+  cp -fR $LOCATION_TEST_SITE_1/* $LOCATION_TEST_SITE_2
+
+  echo "Link pullreplication plugin"
+  ln -s $LOCATION_TEST_SITE_1/plugins/pull-replication.jar $LOCATION_TEST_SITE_1/lib/pull-replication.jar
+  ln -s $LOCATION_TEST_SITE_2/plugins/pull-replication.jar $LOCATION_TEST_SITE_2/lib/pull-replication.jar
+
+  echo "Link multi-site library to plugin directory"
+  ln -s $LOCATION_TEST_SITE_1/lib/multi-site.jar $LOCATION_TEST_SITE_1/plugins/multi-site.jar
+  ln -s $LOCATION_TEST_SITE_2/lib/multi-site.jar $LOCATION_TEST_SITE_2/plugins/multi-site.jar
+
+  echo "Copy pull-replication plugin"
+  cp -f $DEPLOYMENT_LOCATION/pull-replication.jar $LOCATION_TEST_SITE_1/plugins/pull-replication.jar
+  cp -f $DEPLOYMENT_LOCATION/pull-replication.jar $LOCATION_TEST_SITE_2/plugins/pull-replication.jar
 }
 
 ################################################################################
@@ -505,64 +561,9 @@ fi
 
 # New installation
 if [ $NEW_INSTALLATION = "true" ]; then
-
   cleanup_environment $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $COMMON_LOCATION
 
-  echo "Setting up directories"
-  mkdir -p $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $HA_PROXY_CERTIFICATES_DIR $FAKE_NFS
-  java -jar $DEPLOYMENT_LOCATION/gerrit.war init --batch --no-auto-start --install-all-plugins --dev -d $LOCATION_TEST_SITE_1
-
-  # Deploying TLS certificates
-  if [ "$HTTPS_ENABLED" = "true" ];then deploy_tls_certificates;fi
-
-  echo "Copy multi-site library to lib directory"
-  cp -f $DEPLOYMENT_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/lib/multi-site.jar
-
-  echo "Copy websession-broker plugin"
-  cp -f $DEPLOYMENT_LOCATION/websession-broker.jar $LOCATION_TEST_SITE_1/plugins/websession-broker.jar
-
-  echo "Copy healthcheck plugin"
-  cp -f $DEPLOYMENT_LOCATION/healthcheck.jar $LOCATION_TEST_SITE_1/plugins/healthcheck.jar
-
-  echo "Copy zookeeper plugin"
-  cp -f $DEPLOYMENT_LOCATION/zookeeper-refdb.jar $LOCATION_TEST_SITE_1/plugins/zookeeper-refdb.jar
-
-  echo "Copy global refdb library"
-  cp -f $DEPLOYMENT_LOCATION/global-refdb.jar $LOCATION_TEST_SITE_1/lib/global-refdb.jar
-
-  echo "Copy events broker library"
-  cp -f $DEPLOYMENT_LOCATION/events-broker.jar $LOCATION_TEST_SITE_1/lib/events-broker.jar
-
-  echo "Copy $BROKER_TYPE events plugin"
-  if [ $BROKER_TYPE = "kinesis" ]; then
-     cp -f $DEPLOYMENT_LOCATION/events-aws-kinesis.jar $LOCATION_TEST_SITE_1/plugins/events-aws-kinesis.jar
-  elif [ $BROKER_TYPE = "gcloud-pubsub" ]; then
-    cp -f $DEPLOYMENT_LOCATION/events-gcloud-pubsub.jar $LOCATION_TEST_SITE_1/plugins/events-gcloud-pubsub.jar
-  else
-    cp -f $DEPLOYMENT_LOCATION/events-kafka.jar $LOCATION_TEST_SITE_1/plugins/events-kafka.jar
-  fi
-
-  echo "Copy metrics-reporter-prometheus plugin"
-  cp -f $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar $LOCATION_TEST_SITE_1/plugins/metrics-reporter-prometheus.jar
-
-  echo "Re-indexing"
-  java -jar $DEPLOYMENT_LOCATION/gerrit.war reindex -d $LOCATION_TEST_SITE_1
-  # Replicating environment
-  echo "Replicating environment"
-  cp -fR $LOCATION_TEST_SITE_1/* $LOCATION_TEST_SITE_2
-
-  echo "Link pullreplication plugin"
-  ln -s $LOCATION_TEST_SITE_1/plugins/pull-replication.jar $LOCATION_TEST_SITE_1/lib/pull-replication.jar
-  ln -s $LOCATION_TEST_SITE_2/plugins/pull-replication.jar $LOCATION_TEST_SITE_2/lib/pull-replication.jar
-
-  echo "Link multi-site library to plugin directory"
-  ln -s $LOCATION_TEST_SITE_1/lib/multi-site.jar $LOCATION_TEST_SITE_1/plugins/multi-site.jar
-  ln -s $LOCATION_TEST_SITE_2/lib/multi-site.jar $LOCATION_TEST_SITE_2/plugins/multi-site.jar
-
-  echo "Copy pull-replication plugin"
-  cp -f $DEPLOYMENT_LOCATION/pull-replication.jar $LOCATION_TEST_SITE_1/plugins/pull-replication.jar
-  cp -f $DEPLOYMENT_LOCATION/pull-replication.jar $LOCATION_TEST_SITE_2/plugins/pull-replication.jar
-
+  create_gerrit_environments
 fi
 
 DOCKER_HOST_ENV=$(docker_host_env)
@@ -584,18 +585,17 @@ prepare_broker_data
 
 echo "Re-deploying configuration files"
 deploy_config_files $GERRIT_1_HOSTNAME $GERRIT_1_HTTPD_PORT $GERRIT_1_SSHD_PORT $GERRIT_2_HOSTNAME $GERRIT_2_HTTPD_PORT $GERRIT_2_SSHD_PORT
-echo "Remove replication plugin from gerrit site 1"
+echo "Removing replication plugin from Gerrit site 1"
 rm $LOCATION_TEST_SITE_1/plugins/replication.jar
-echo "Starting gerrit site 1"
+echo "Starting Gerrit site 1"
 $LOCATION_TEST_SITE_1/bin/gerrit.sh restart
-echo "Remove replication plugin from gerrit site 2"
+echo "Removing replication plugin from Gerrit site 2"
 rm $LOCATION_TEST_SITE_2/plugins/replication.jar
-echo "Starting gerrit site 2"
+echo "Starting Gerrit site 2"
 $LOCATION_TEST_SITE_2/bin/gerrit.sh restart
 
 
 if [[ $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}' | wc -l) -lt 1 ]];then
-  echo "Starting haproxy"
   start_ha_proxy
 fi
 
@@ -607,9 +607,15 @@ echo "deployment-location=$DEPLOYMENT_LOCATION"
 echo "replication-delay=$REPLICATION_DELAY_SEC"
 echo "enable-https=$HTTPS_ENABLED"
 echo
-echo "GERRIT HA-PROXY: $GERRIT_CANONICAL_WEB_URL"
+echo "GERRIT HAProxy: $GERRIT_CANONICAL_WEB_URL"
+echo "GERRIT HAProxy Log: $COMMON_LOCATION/haproxy.log"
 echo "GERRIT-1: http://$GERRIT_1_HOSTNAME:$GERRIT_1_HTTPD_PORT"
 echo "GERRIT-2: http://$GERRIT_2_HOSTNAME:$GERRIT_2_HTTPD_PORT"
+echo "GERRIT-1 SSH Host Port: $GERRIT_1_HOSTNAME Port: $GERRIT_1_SSHD_PORT"
+echo "GERRIT-2 SSH Host Port: $GERRIT_2_HOSTNAME Port: $GERRIT_2_SSHD_PORT"
+echo "GERRIT-1 Debug Port: $GERRIT_SITE1_REMOTE_DEBUG_PORT"
+echo "GERRIT-2 Debug Port: $GERRIT_SITE2_REMOTE_DEBUG_PORT"
+echo
 echo "Prometheus: http://localhost:9090"
 echo
 echo "Site-1: $LOCATION_TEST_SITE_1"
