@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83877665_38590e13",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-12-18T16:56:44Z",
+      "side": 1,
+      "message": "this can be simplified with: `java -jar $RELEASE_WAR_FILE_LOCATION --version`",
+      "range": {
+        "startLine": 308,
+        "startChar": 1,
+        "endLine": 310,
+        "endChar": 158
+      },
+      "revId": "8da73b50b4fdd89515a30b98d34cb1ae259d5117",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
