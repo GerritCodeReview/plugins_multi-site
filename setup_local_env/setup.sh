@@ -178,7 +178,9 @@ function create_kinesis_stream {
 }
 
 function cleanup_environment {
-  echo "Killing existing HA-PROXY setup"
+  echo "Cleaning up environment"
+
+  echo "Killing existing HAProxy setup"
   kill $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}') 2> /dev/null
 
   echo "Stopping $BROKER_TYPE docker container"
@@ -187,12 +189,17 @@ function cleanup_environment {
   echo "Stopping core docker containers"
   $SUDO docker compose -f "${SCRIPT_DIR}/docker-compose-core.yaml" --env-file "${SCRIPT_DIR}/docker-compose-${BROKER_TYPE}.env" down 2> /dev/null
 
-  echo "Stopping GERRIT instances"
+  echo "Stopping Gerrit instances"
   $1/bin/gerrit.sh stop 2> /dev/null
   $2/bin/gerrit.sh stop 2> /dev/null
 
-  echo "REMOVING setup directory $3"
+  echo "Removing setup directory $3"
   rm -rf $3 2> /dev/null
+}
+
+function cleanup_plugins {
+  echo "Removing plugins from $COMMON_BINARIES_LOCATION"
+  rm -rf $COMMON_BINARIES_LOCATION
 }
 
 function check_if_container_is_running {
@@ -228,9 +235,9 @@ function download_artifact_from_ci {
   local artifact_name=$1
   local prefix=${2:-plugin}
   wget $GERRIT_CI/$prefix-$artifact_name-bazel-$GERRIT_BRANCH/$LAST_BUILD/$artifact_name/$artifact_name.jar \
-  -O $DEPLOYMENT_LOCATION/$artifact_name.jar || \
+  -O $COMMON_BINARIES_LOCATION/$artifact_name.jar || \
   wget $GERRIT_CI/$prefix-$artifact_name-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/$artifact_name/$artifact_name.jar \
-  -O $DEPLOYMENT_LOCATION/$artifact_name.jar || \
+  -O $COMMON_BINARIES_LOCATION/$artifact_name.jar || \
   { echo >&2 "Cannot download $artifact_name $prefix: Check internet connection. Aborting"; exit 1; }
 }
 
@@ -416,6 +423,7 @@ HTTPS_ENABLED=${HTTPS_ENABLED:-"false"}
 BROKER_TYPE=${BROKER_TYPE:-"kafka"}
 
 export COMMON_LOCATION=$DEPLOYMENT_LOCATION/gerrit_setup
+COMMON_BINARIES_LOCATION=$DEPLOYMENT_LOCATION/gerrit_binaries
 LOCATION_TEST_SITE_1=$COMMON_LOCATION/instance-1
 LOCATION_TEST_SITE_2=$COMMON_LOCATION/instance-2
 HA_PROXY_CONFIG_DIR=$COMMON_LOCATION/ha-proxy-config
@@ -431,27 +439,30 @@ export FAKE_NFS=$COMMON_LOCATION/fake_nfs
 
 if [ "$JUST_CLEANUP_ENV" = "true" ];then
   cleanup_environment $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $COMMON_LOCATION
+  cleanup_plugins
   exit 0
 fi
+
+mkdir -p $COMMON_BINARIES_LOCATION
 
 if [ -z $RELEASE_WAR_FILE_LOCATION ];then
   echo "A release.war file is required. Usage: sh $0 --release-war-file /path/to/release.war"
   exit 1
 else
-  cp -f $RELEASE_WAR_FILE_LOCATION $DEPLOYMENT_LOCATION/gerrit.war >/dev/null 2>&1 || { echo >&2 "$RELEASE_WAR_FILE_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+  cp -f $RELEASE_WAR_FILE_LOCATION $COMMON_BINARIES_LOCATION/gerrit.war >/dev/null 2>&1 || { echo >&2 "$RELEASE_WAR_FILE_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 fi
 if [ -z $MULTISITE_LIB_LOCATION ];then
   echo "The multi-site library is required. Usage: sh $0 --multisite-lib-file /path/to/multi-site.jar"
   exit 1
 else
-  cp -f $MULTISITE_LIB_LOCATION $DEPLOYMENT_LOCATION/multi-site.jar  >/dev/null 2>&1 || { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+  cp -f $MULTISITE_LIB_LOCATION $COMMON_BINARIES_LOCATION/multi-site.jar  >/dev/null 2>&1 || { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 fi
 
 echo "Copying events-broker library"
-  cp -f $EVENTS_BROKER_LIB_LOCATION $DEPLOYMENT_LOCATION/events-broker.jar  >/dev/null 2>&1 || { echo >&2 "$EVENTS_BROKER_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+  cp -f $EVENTS_BROKER_LIB_LOCATION $COMMON_BINARIES_LOCATION/events-broker.jar  >/dev/null 2>&1 || { echo >&2 "$EVENTS_BROKER_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 
 echo "Copying global-refdb library"
-  cp -f $GLOBAL_REFDB_LIB_LOCATION $DEPLOYMENT_LOCATION/global-refdb.jar  >/dev/null 2>&1 || { echo >&2 "$GLOBAL_REFDB_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+  cp -f $GLOBAL_REFDB_LIB_LOCATION $COMMON_BINARIES_LOCATION/global-refdb.jar  >/dev/null 2>&1 || { echo >&2 "$GLOBAL_REFDB_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 
 if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
   echo "Downloading websession-broker plugin $GERRIT_BRANCH"
@@ -504,43 +515,43 @@ if [ $NEW_INSTALLATION = "true" ]; then
 
   echo "Setting up directories"
   mkdir -p $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $HA_PROXY_CERTIFICATES_DIR $FAKE_NFS
-  java -jar $DEPLOYMENT_LOCATION/gerrit.war init --batch --no-auto-start --install-all-plugins --dev -d $LOCATION_TEST_SITE_1
+  java -jar $COMMON_BINARIES_LOCATION/gerrit.war init --batch --no-auto-start --install-all-plugins --dev -d $LOCATION_TEST_SITE_1
 
   # Deploying TLS certificates
   if [ "$HTTPS_ENABLED" = "true" ];then deploy_tls_certificates;fi
 
   echo "Copy multi-site library to lib directory"
-  cp -f $DEPLOYMENT_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/lib/multi-site.jar
+  cp -f $COMMON_BINARIES_LOCATION/multi-site.jar $LOCATION_TEST_SITE_1/lib/multi-site.jar
 
   echo "Copy websession-broker plugin"
-  cp -f $DEPLOYMENT_LOCATION/websession-broker.jar $LOCATION_TEST_SITE_1/plugins/websession-broker.jar
+  cp -f $COMMON_BINARIES_LOCATION/websession-broker.jar $LOCATION_TEST_SITE_1/plugins/websession-broker.jar
 
   echo "Copy healthcheck plugin"
-  cp -f $DEPLOYMENT_LOCATION/healthcheck.jar $LOCATION_TEST_SITE_1/plugins/healthcheck.jar
+  cp -f $COMMON_BINARIES_LOCATION/healthcheck.jar $LOCATION_TEST_SITE_1/plugins/healthcheck.jar
 
   echo "Copy zookeeper plugin"
-  cp -f $DEPLOYMENT_LOCATION/zookeeper-refdb.jar $LOCATION_TEST_SITE_1/plugins/zookeeper-refdb.jar
+  cp -f $COMMON_BINARIES_LOCATION/zookeeper-refdb.jar $LOCATION_TEST_SITE_1/plugins/zookeeper-refdb.jar
 
   echo "Copy global refdb library"
-  cp -f $DEPLOYMENT_LOCATION/global-refdb.jar $LOCATION_TEST_SITE_1/lib/global-refdb.jar
+  cp -f $COMMON_BINARIES_LOCATION/global-refdb.jar $LOCATION_TEST_SITE_1/lib/global-refdb.jar
 
   echo "Copy events broker library"
-  cp -f $DEPLOYMENT_LOCATION/events-broker.jar $LOCATION_TEST_SITE_1/lib/events-broker.jar
+  cp -f $COMMON_BINARIES_LOCATION/events-broker.jar $LOCATION_TEST_SITE_1/lib/events-broker.jar
 
   echo "Copy $BROKER_TYPE events plugin"
   if [ $BROKER_TYPE = "kinesis" ]; then
-     cp -f $DEPLOYMENT_LOCATION/events-aws-kinesis.jar $LOCATION_TEST_SITE_1/plugins/events-aws-kinesis.jar
+     cp -f $COMMON_BINARIES_LOCATION/events-aws-kinesis.jar $LOCATION_TEST_SITE_1/plugins/events-aws-kinesis.jar
   elif [ $BROKER_TYPE = "gcloud-pubsub" ]; then
-    cp -f $DEPLOYMENT_LOCATION/events-gcloud-pubsub.jar $LOCATION_TEST_SITE_1/plugins/events-gcloud-pubsub.jar
+    cp -f $COMMON_BINARIES_LOCATION/events-gcloud-pubsub.jar $LOCATION_TEST_SITE_1/plugins/events-gcloud-pubsub.jar
   else
-    cp -f $DEPLOYMENT_LOCATION/events-kafka.jar $LOCATION_TEST_SITE_1/plugins/events-kafka.jar
+    cp -f $COMMON_BINARIES_LOCATION/events-kafka.jar $LOCATION_TEST_SITE_1/plugins/events-kafka.jar
   fi
 
   echo "Copy metrics-reporter-prometheus plugin"
-  cp -f $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar $LOCATION_TEST_SITE_1/plugins/metrics-reporter-prometheus.jar
+  cp -f $COMMON_BINARIES_LOCATION/metrics-reporter-prometheus.jar $LOCATION_TEST_SITE_1/plugins/metrics-reporter-prometheus.jar
 
   echo "Re-indexing"
-  java -jar $DEPLOYMENT_LOCATION/gerrit.war reindex -d $LOCATION_TEST_SITE_1
+  java -jar $COMMON_BINARIES_LOCATION/gerrit.war reindex -d $LOCATION_TEST_SITE_1
   # Replicating environment
   echo "Replicating environment"
   cp -fR $LOCATION_TEST_SITE_1/* $LOCATION_TEST_SITE_2
@@ -554,8 +565,8 @@ if [ $NEW_INSTALLATION = "true" ]; then
   ln -s $LOCATION_TEST_SITE_2/lib/multi-site.jar $LOCATION_TEST_SITE_2/plugins/multi-site.jar
 
   echo "Copy pull-replication plugin"
-  cp -f $DEPLOYMENT_LOCATION/pull-replication.jar $LOCATION_TEST_SITE_1/plugins/pull-replication.jar
-  cp -f $DEPLOYMENT_LOCATION/pull-replication.jar $LOCATION_TEST_SITE_2/plugins/pull-replication.jar
+  cp -f $COMMON_BINARIES_LOCATION/pull-replication.jar $LOCATION_TEST_SITE_1/plugins/pull-replication.jar
+  cp -f $COMMON_BINARIES_LOCATION/pull-replication.jar $LOCATION_TEST_SITE_2/plugins/pull-replication.jar
 
 fi
 
