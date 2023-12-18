@@ -306,12 +306,15 @@ public class Configuration {
     static final String INDEX_SECTION = "index";
     static final String MAX_TRIES_KEY = "maxTries";
     static final String RETRY_INTERVAL_KEY = "retryInterval";
+    static final String SYNCHRONIZE_FORCED_KEY = "synchronizeForced";
+    static final boolean DEFAULT_SYNCHRONIZE_FORCED = true;
 
     private final int threadPoolSize;
     private final int retryInterval;
     private final int maxTries;
 
     private final int numStripedLocks;
+    private final boolean synchronizeForced;
 
     private Index(Supplier<Config> cfg) {
       super(cfg, INDEX_SECTION);
@@ -322,6 +325,8 @@ public class Configuration {
       maxTries = getInt(cfg, INDEX_SECTION, null, MAX_TRIES_KEY, DEFAULT_INDEX_MAX_TRIES);
       numStripedLocks =
           getInt(cfg, INDEX_SECTION, null, NUM_STRIPED_LOCKS, DEFAULT_NUM_STRIPED_LOCKS);
+      synchronizeForced =
+          getBoolean(cfg, INDEX_SECTION, null, SYNCHRONIZE_FORCED_KEY, DEFAULT_SYNCHRONIZE_FORCED);
     }
 
     public int threadPoolSize() {
@@ -338,6 +343,10 @@ public class Configuration {
 
     public int numStripedLocks() {
       return numStripedLocks;
+    }
+
+    public boolean synchronizeForced() {
+      return synchronizeForced;
     }
   }
 
