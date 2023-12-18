@@ -245,9 +245,10 @@ function prepare_broker_data {
 function download_artifact_from_ci {
   local artifact_name=$1
   local prefix=${2:-plugin}
-  wget $GERRIT_CI/$prefix-$artifact_name-bazel-$GERRIT_BRANCH/$LAST_BUILD/$artifact_name/$artifact_name.jar \
+  echo "Downloading $artifact_name $prefix in $GERRIT_BRANCH"
+  wget -q $GERRIT_CI/$prefix-$artifact_name-bazel-$GERRIT_BRANCH/$LAST_BUILD/$artifact_name/$artifact_name.jar \
   -O $DEPLOYMENT_LOCATION/$artifact_name.jar || \
-  wget $GERRIT_CI/$prefix-$artifact_name-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/$artifact_name/$artifact_name.jar \
+  wget -q $GERRIT_CI/$prefix-$artifact_name-bazel-master-$GERRIT_BRANCH/$LAST_BUILD/$artifact_name/$artifact_name.jar \
   -O $DEPLOYMENT_LOCATION/$artifact_name.jar || \
   { echo >&2 "Cannot download $artifact_name $prefix: Check internet connection. Aborting"; exit 1; }
 }
@@ -469,38 +470,29 @@ echo "Copying global-refdb library"
   cp -f $GLOBAL_REFDB_LIB_LOCATION $DEPLOYMENT_LOCATION/global-refdb.jar  >/dev/null 2>&1 || { echo >&2 "$GLOBAL_REFDB_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 
 if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
-  echo "Downloading websession-broker plugin $GERRIT_BRANCH"
-  download_artifact_from_ci websession-broker
-  download_artifact_from_ci healthcheck
-
+  download_artifact_from_ci websession-broker plugin
+  download_artifact_from_ci healthcheck plugin
 else
   echo "Without the websession-broker; user login via haproxy will fail."
 fi
 
-echo "Downloading zookeeper plugin $GERRIT_BRANCH"
-  download_artifact_from_ci zookeeper-refdb
-
 if [ "$BROKER_TYPE" = "kafka" ]; then
-echo "Downloading events-kafka plugin $GERRIT_BRANCH"
-  download_artifact_from_ci events-kafka
+  download_artifact_from_ci events-kafka plugin
 fi
 
 if [ "$BROKER_TYPE" = "kinesis" ]; then
-echo "Downloading events-aws-kinesis plugin $GERRIT_BRANCH"
-  download_artifact_from_ci events-aws-kinesis
+  download_artifact_from_ci events-aws-kinesis plugin
 fi
 
 
 if [ "$BROKER_TYPE" = "gcloud-pubsub" ]; then
-echo "Downloading events-gcloud-pubsub plugin $GERRIT_BRANCH"
-  download_artifact_from_ci events-gcloud-pubsub
+  download_artifact_from_ci events-gcloud-pubsub plugin
 fi
 
-echo "Downloading metrics-reporter-prometheus plugin $GERRIT_BRANCH"
-  download_artifact_from_ci metrics-reporter-prometheus
+download_artifact_from_ci zookeeper-refdb plugin
+download_artifact_from_ci metrics-reporter-prometheus plugin
+download_artifact_from_ci pull-replication plugin
 
-echo "Downloading pull-replication plugin $GERRIT_BRANCH"
-  download_artifact_from_ci pull-replication
 
 if [ "$HTTPS_ENABLED" = "true" ];then
   export HTTP_PROTOCOL="https"
