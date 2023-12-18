@@ -15,39 +15,56 @@
 package com.googlesource.gerrit.plugins.multisite.index;
 
 import static com.googlesource.gerrit.plugins.replication.pull.api.PullReplicationEndpoints.APPLY_OBJECT_API_ENDPOINT;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.*;
 
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gerrit.extensions.registration.DynamicSet;
+import com.google.gerrit.server.util.OneOffRequestContext;
+import com.google.gerrit.server.util.RequestContext;
+import com.google.gerrit.server.util.ThreadLocalRequestContext;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.IndexEventForwarder;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.io.IOException;
+import java.util.Optional;
+import java.util.function.Consumer;
+
 @RunWith(MockitoJUnitRunner.class)
 public class IndexEventHandlerTest {
-
   private static final String INSTANCE_ID = "instance-id";
 
   private IndexEventHandler eventHandler;
 
   @Mock private IndexEventForwarder forwarder;
   @Mock private ChangeCheckerImpl.Factory changeChecker;
+  @Mock private ChangeChecker changeCheckerMock;
+  @Mock private RequestContext mockCtx;
+
+  private CurrentRequestContext currCtx =
+      new CurrentRequestContext(null, null, null) {
+        @Override
+        public void onlyWithContext(Consumer<RequestContext> body) {
+          body.accept(mockCtx);
+        }
+      };
 
   @Before
-  public void setUp() {
+  public void setUp() throws IOException {
     eventHandler =
         new IndexEventHandler(
             MoreExecutors.directExecutor(),
             asDynamicSet(forwarder),
             changeChecker,
             new TestGroupChecker(true),
-            INSTANCE_ID);
+            INSTANCE_ID,
+            currCtx);
   }
 
   private DynamicSet<IndexEventForwarder> asDynamicSet(IndexEventForwarder forwarder) {
@@ -75,4 +92,52 @@ public class IndexEventHandlerTest {
       Thread.currentThread().setName(currentThreadName);
     }
   }
+
+  @Test
+  public void shouldNotIndexInRemoteWhenContextIsMissing() throws Exception {
+    ThreadLocalRequestContext threadLocalCtxMock = mock(ThreadLocalRequestContext.class);
+    OneOffRequestContext oneOffCtxMock = mock(OneOffRequestContext.class);
+    Configuration cfgMock = mock(Configuration.class);
+    Configuration.Index cfgIndex = mock(Configuration.Index.class);
+    when(cfgMock.index()).thenReturn(cfgIndex);
+    when(cfgIndex.synchronizeForced()).thenReturn(false);
+
+    int changeId = 1;
+    eventHandler =
+        new IndexEventHandler(
+            MoreExecutors.directExecutor(),
+            asDynamicSet(forwarder),
+            changeChecker,
+            new TestGroupChecker(true),
+            INSTANCE_ID,
+            new CurrentRequestContext(threadLocalCtxMock, cfgMock, oneOffCtxMock));
+
+    eventHandler.onChangeIndexed("test_project", changeId);
+    verify(forwarder, never()).index(any(), any());
+  }
+
+  @Test
+  public void shouldReindexInRemoteWhenContextIsMissingButForcedIndexingEnabled() throws Exception {
+    when(changeChecker.create(any())).thenReturn(changeCheckerMock);
+    when(changeCheckerMock.newIndexEvent("test_project", 1, false)).thenReturn(Optional.of(new ChangeIndexEvent("test-project", 1, false, "asda")));
+    ThreadLocalRequestContext threadLocalCtxMock = mock(ThreadLocalRequestContext.class);
+    OneOffRequestContext oneOffCtxMock = mock(OneOffRequestContext.class);
+    Configuration cfgMock = mock(Configuration.class);
+    Configuration.Index cfgIndex = mock(Configuration.Index.class);
+    when(cfgMock.index()).thenReturn(cfgIndex);
+    when(cfgIndex.synchronizeForced()).thenReturn(true);
+    int changeId = 1;
+    eventHandler =
+        new IndexEventHandler(
+            MoreExecutors.directExecutor(),
+            asDynamicSet(forwarder),
+            changeChecker,
+            new TestGroupChecker(true),
+            INSTANCE_ID,
+            new CurrentRequestContext(threadLocalCtxMock, cfgMock, oneOffCtxMock));
+
+    eventHandler.onChangeIndexed("test_project", changeId);
+    verify(forwarder).index(any(), any());
+  }
+
 }
