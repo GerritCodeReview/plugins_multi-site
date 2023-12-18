@@ -178,7 +178,9 @@ function create_kinesis_stream {
 }
 
 function cleanup_environment {
-  echo "Killing existing HA-PROXY setup"
+  echo "Cleaning up environment"
+
+  echo "Killing existing HAProxy setup"
   kill $(ps -ax | grep haproxy | grep "gerrit_setup/ha-proxy-config" | awk '{print $1}') 2> /dev/null
 
   echo "Stopping $BROKER_TYPE docker container"
@@ -187,12 +189,28 @@ function cleanup_environment {
   echo "Stopping core docker containers"
   $SUDO docker compose -f "${SCRIPT_DIR}/docker-compose-core.yaml" --env-file "${SCRIPT_DIR}/docker-compose-${BROKER_TYPE}.env" down 2> /dev/null
 
-  echo "Stopping GERRIT instances"
+  echo "Stopping Gerrit instances"
   $1/bin/gerrit.sh stop 2> /dev/null
   $2/bin/gerrit.sh stop 2> /dev/null
 
-  echo "REMOVING setup directory $3"
+  echo "Removing setup directory $3"
   rm -rf $3 2> /dev/null
+}
+
+function cleanup_plugins {
+  echo "Removing plugins from $DEPLOYMENT_LOCATION"
+  rm -f $DEPLOYMENT_LOCATION/gerrit.war 2> /dev/null
+  rm -f $DEPLOYMENT_LOCATION/multi-site.jar 2> /dev/null
+  rm -f $DEPLOYMENT_LOCATION/events-broker.jar 2> /dev/null
+  rm -f $DEPLOYMENT_LOCATION/global-refdb.jar 2> /dev/null
+  rm -f $DEPLOYMENT_LOCATION/websession-broker.jar 2> /dev/null
+  rm -f $DEPLOYMENT_LOCATION/healthcheck.jar 2> /dev/null
+  rm -f $DEPLOYMENT_LOCATION/zookeeper-refdb.jar 2> /dev/null
+  rm -f $DEPLOYMENT_LOCATION/events-kafka.jar 2> /dev/null
+  rm -f $DEPLOYMENT_LOCATION/events-aws-kinesis.jar 2> /dev/null
+  rm -f $DEPLOYMENT_LOCATION/events-gcloud-pubsub.jar 2> /dev/null
+  rm -f $DEPLOYMENT_LOCATION/metrics-reporter-prometheus.jar 2> /dev/null
+  rm -f $DEPLOYMENT_LOCATION/pull-replication.jar 2> /dev/null
 }
 
 function check_if_container_is_running {
@@ -427,6 +445,7 @@ export FAKE_NFS=$COMMON_LOCATION/fake_nfs
 
 if [ "$JUST_CLEANUP_ENV" = "true" ];then
   cleanup_environment $LOCATION_TEST_SITE_1 $LOCATION_TEST_SITE_2 $COMMON_LOCATION
+  cleanup_plugins
   exit 0
 fi
 
