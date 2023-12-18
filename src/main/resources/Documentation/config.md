@@ -44,6 +44,11 @@ Configuration should be specified in the `$site_path/etc/@PLUGIN@.config` file.
     service such as ElasticSearch.
     Defaults to true.
 
+```index.synchronizeForced```
+:   Whether to synchronize forced index events. E.g. on-line reindex
+automatically triggered upon version upgrades.
+Defaults to true.
+
 ```index.threadPoolSize```
 :   Maximum number of threads used to send index events to the target instance.
     Defaults to 4.
