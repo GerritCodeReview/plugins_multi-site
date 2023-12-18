@@ -16,8 +16,6 @@
 
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-GERRIT_BRANCH=stable-3.9
-GERRIT_CI=https://gerrit-ci.gerritforge.com/view/Plugins-$GERRIT_BRANCH/job
 LAST_BUILD=lastSuccessfulBuild/artifact/bazel-bin/plugins
 
 function check_application_requirements {
@@ -256,7 +254,6 @@ function download_artifact_from_ci {
 function show_help {
   echo "Usage: bash plugins/multi-site/setup_local_env/setup.sh [--option ] "
   echo
-  echo
   echo "[--release-war-file]            Location to release.war file; default: 'bazel-bin/release.war'"
   echo "[--multisite-lib-file]          Location to lib multi-site.jar file; default: 'bazel-bin/plugins/multi-site/multi-site.jar'"
   echo "[--eventsbroker-lib-file]       Location to lib events-broker.jar file; default: 'bazel-bin/plugins/events-broker/events-broker.jar'"
@@ -292,6 +289,56 @@ function show_help {
   echo "Examples of usage: "
   echo "Cleanup last install ->  bash plugins/multi-site/setup_local_env/setup.sh --just-cleanup-env true"
   echo "Install and startup multisite based on local artifacts (Gerrit and multi-site)->  bash plugins/multi-site/setup_local_env/setup.sh"
+}
+
+function get_installation_artifacts {
+  echo "Getting installation artifacts"
+  echo "Using gerrit war install file in $RELEASE_WAR_FILE_LOCATION"
+
+  if [ -z $RELEASE_WAR_FILE_LOCATION ];then
+    echo "A release.war file is required. Usage: sh $0 --release-war-file /path/to/release.war"
+    exit 1
+  else
+    GERRIT_LIB_VERSION=$(java -jar $RELEASE_WAR_FILE_LOCATION --version | awk '{ print $3}' | cut -d'.' -f1,2)
+
+    echo "Gerrit version detected: $GERRIT_LIB_VERSION"
+
+    GERRIT_BRANCH="stable-$GERRIT_LIB_VERSION"
+    GERRIT_CI=https://gerrit-ci.gerritforge.com/view/Plugins-$GERRIT_BRANCH/job
+    cp -f $RELEASE_WAR_FILE_LOCATION $DEPLOYMENT_LOCATION/gerrit.war >/dev/null 2>&1 || { echo >&2 "$RELEASE_WAR_FILE_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+  fi
+
+  echo "Using local multi-site plugin in $MULTISITE_LIB_LOCATION"
+  cp -f $MULTISITE_LIB_LOCATION $DEPLOYMENT_LOCATION/multi-site.jar  >/dev/null 2>&1 || { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+
+  echo "Using local events-broker library in $EVENTS_BROKER_LIB_LOCATION"
+  cp -f $EVENTS_BROKER_LIB_LOCATION $DEPLOYMENT_LOCATION/events-broker.jar  >/dev/null 2>&1 || { echo >&2 "$EVENTS_BROKER_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+
+  echo "Using local global-refdb library in $GLOBAL_REFDB_LIB_LOCATION"
+  cp -f $GLOBAL_REFDB_LIB_LOCATION $DEPLOYMENT_LOCATION/global-refdb.jar  >/dev/null 2>&1 || { echo >&2 "$GLOBAL_REFDB_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+
+  if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
+    download_artifact_from_ci websession-broker plugin
+    download_artifact_from_ci healthcheck plugin
+  else
+    echo "Without the websession-broker; user login via haproxy will fail."
+  fi
+
+  if [ "$BROKER_TYPE" = "kafka" ]; then
+    download_artifact_from_ci events-kafka plugin
+  fi
+
+  if [ "$BROKER_TYPE" = "kinesis" ]; then
+    download_artifact_from_ci events-aws-kinesis plugin
+  fi
+
+  if [ "$BROKER_TYPE" = "gcloud-pubsub" ]; then
+    download_artifact_from_ci events-gcloud-pubsub plugin
+  fi
+
+  download_artifact_from_ci zookeeper-refdb plugin
+  download_artifact_from_ci metrics-reporter-prometheus plugin
+  download_artifact_from_ci pull-replication plugin
 }
 
 ################################################################################
@@ -450,49 +497,7 @@ if [ "$JUST_CLEANUP_ENV" = "true" ];then
   exit 0
 fi
 
-if [ -z $RELEASE_WAR_FILE_LOCATION ];then
-  echo "A release.war file is required. Usage: sh $0 --release-war-file /path/to/release.war"
-  exit 1
-else
-  cp -f $RELEASE_WAR_FILE_LOCATION $DEPLOYMENT_LOCATION/gerrit.war >/dev/null 2>&1 || { echo >&2 "$RELEASE_WAR_FILE_LOCATION: Not able to copy the file. Aborting"; exit 1; }
-fi
-if [ -z $MULTISITE_LIB_LOCATION ];then
-  echo "The multi-site library is required. Usage: sh $0 --multisite-lib-file /path/to/multi-site.jar"
-  exit 1
-else
-  cp -f $MULTISITE_LIB_LOCATION $DEPLOYMENT_LOCATION/multi-site.jar  >/dev/null 2>&1 || { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
-fi
-
-echo "Copying events-broker library"
-  cp -f $EVENTS_BROKER_LIB_LOCATION $DEPLOYMENT_LOCATION/events-broker.jar  >/dev/null 2>&1 || { echo >&2 "$EVENTS_BROKER_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
-
-echo "Copying global-refdb library"
-  cp -f $GLOBAL_REFDB_LIB_LOCATION $DEPLOYMENT_LOCATION/global-refdb.jar  >/dev/null 2>&1 || { echo >&2 "$GLOBAL_REFDB_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
-
-if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
-  download_artifact_from_ci websession-broker plugin
-  download_artifact_from_ci healthcheck plugin
-else
-  echo "Without the websession-broker; user login via haproxy will fail."
-fi
-
-if [ "$BROKER_TYPE" = "kafka" ]; then
-  download_artifact_from_ci events-kafka plugin
-fi
-
-if [ "$BROKER_TYPE" = "kinesis" ]; then
-  download_artifact_from_ci events-aws-kinesis plugin
-fi
-
-
-if [ "$BROKER_TYPE" = "gcloud-pubsub" ]; then
-  download_artifact_from_ci events-gcloud-pubsub plugin
-fi
-
-download_artifact_from_ci zookeeper-refdb plugin
-download_artifact_from_ci metrics-reporter-prometheus plugin
-download_artifact_from_ci pull-replication plugin
-
+get_installation_artifacts
 
 if [ "$HTTPS_ENABLED" = "true" ];then
   export HTTP_PROTOCOL="https"
