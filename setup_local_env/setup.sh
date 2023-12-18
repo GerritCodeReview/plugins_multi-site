@@ -234,46 +234,58 @@ function download_artifact_from_ci {
   { echo >&2 "Cannot download $artifact_name $prefix: Check internet connection. Aborting"; exit 1; }
 }
 
+function show_help {
+  echo "Usage: bash plugins/multi-site/setup_local_env/setup.sh [--option ] "
+  echo
+  echo
+  echo "[--release-war-file]            Location to release.war file; default: 'bazel-bin/release.war'"
+  echo "[--multisite-lib-file]          Location to lib multi-site.jar file; default: 'bazel-bin/plugins/multi-site/multi-site.jar'"
+  echo "[--eventsbroker-lib-file]       Location to lib events-broker.jar file; default: 'bazel-bin/plugins/events-broker/events-broker.jar'"
+  echo "[--globalrefdb-lib-file]        Location to lib global-refdb.jar file; default: 'bazel-bin/plugins/global-refdb/global-refdb.jar'"
+  echo
+  echo "[--new-deployment]              Cleans up previous gerrit deployment and re-installs it. default true"
+  echo "[--get-websession-plugin]       Download websession-broker plugin from CI lastSuccessfulBuild; default true"
+  echo "[--deployment-location]         Base location for the test deployment; default /tmp"
+  echo
+  echo "[--gerrit-canonical-host]       The default host for Gerrit to be accessed through; default localhost"
+  echo "[--gerrit-canonical-port]       The default port for Gerrit to be accessed through; default 8080"
+  echo
+  echo "[--gerrit-ssh-advertised-port]  Gerrit Instance 1 sshd port; default 29418"
+  echo
+  echo "[--gerrit1-httpd-port]          Gerrit Instance 1 http port; default 18080"
+  echo "[--gerrit1-sshd-port]           Gerrit Instance 1 sshd port; default 39418"
+  echo
+  echo "[--gerrit2-httpd-port]          Gerrit Instance 2 http port; default 18081"
+  echo "[--gerrit2-sshd-port]           Gerrit Instance 2 sshd port; default 49418"
+  echo
+  echo "[--replication-delay]           Replication delay across the two instances in seconds"
+  echo
+  echo "[--just-cleanup-env]            Cleans up previous deployment; default false"
+  echo
+  echo "[--enabled-https]               Enabled https; default true"
+  echo
+  echo "[--broker-type]                 events broker type; 'kafka', 'kinesis' or 'gcloud-pubsub'; default 'kafka'"
+  echo
+  echo "[--sudo]                        run docker commands with sudo"
+  echo
+  echo "Note: should the run from the gerrit root source path to take advantage of local builds for release.war, multi-site.jar, events-broker.jar, and global-refdb.jar"
+  echo
+  echo "Examples of usage: "
+  echo "Cleanup last install ->  bash plugins/multi-site/setup_local_env/setup.sh --just-cleanup-env true"
+  echo "Install and startup multisite based on local artifacts (Gerrit and multi-site)->  bash plugins/multi-site/setup_local_env/setup.sh"
+}
+
+################################################################################
+###    Startup
 while [ $# -ne 0 ]
 do
 case "$1" in
   "--help" )
-    echo "Usage: sh $0 [--option $value]"
-    echo
-    echo "[--release-war-file]            Location to release.war file"
-    echo "[--multisite-lib-file]          Location to lib multi-site.jar file"
-    echo "[--eventsbroker-lib-file]       Location to lib events-broker.jar file"
-    echo "[--globalrefdb-lib-file]        Location to lib global-refdb.jar file"
-    echo
-    echo "[--new-deployment]              Cleans up previous gerrit deployment and re-installs it. default true"
-    echo "[--get-websession-plugin]       Download websession-broker plugin from CI lastSuccessfulBuild; default true"
-    echo "[--deployment-location]         Base location for the test deployment; default /tmp"
-    echo
-    echo "[--gerrit-canonical-host]       The default host for Gerrit to be accessed through; default localhost"
-    echo "[--gerrit-canonical-port]       The default port for Gerrit to be accessed throug; default 8080"
-    echo
-    echo "[--gerrit-ssh-advertised-port]  Gerrit Instance 1 sshd port; default 29418"
-    echo
-    echo "[--gerrit1-httpd-port]          Gerrit Instance 1 http port; default 18080"
-    echo "[--gerrit1-sshd-port]           Gerrit Instance 1 sshd port; default 39418"
-    echo
-    echo "[--gerrit2-httpd-port]          Gerrit Instance 2 http port; default 18081"
-    echo "[--gerrit2-sshd-port]           Gerrit Instance 2 sshd port; default 49418"
-    echo
-    echo "[--replication-delay]           Replication delay across the two instances in seconds"
-    echo
-    echo "[--just-cleanup-env]            Cleans up previous deployment; default false"
-    echo
-    echo "[--enabled-https]               Enabled https; default true"
-    echo
-    echo "[--broker-type]                 events broker type; 'kafka', 'kinesis' or 'gcloud-pubsub'. Default 'kafka'"
-    echo
-    echo "[--sudo]                        run docker commands with sudo"
-    echo
+    show_help
     exit 0
   ;;
   "--new-deployment")
-        NEW_INSTALLATION=$2
+    NEW_INSTALLATION=$2
     shift
     shift
   ;;
