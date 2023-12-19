@@ -106,6 +106,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c48bbcce_f4407042",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-19T11:50:12Z",
+      "side": 1,
+      "message": "\u003e Well no, it is introducing regression.\n\nThe check does not make sense and should be removed, but one change should address one concern.\n\n\u003e it should be done in this change surely?\n\nI disagree: addressing multiple concerns in the same change makes the review difficult, lengthy and subject to errors.\n\n\u003e As a separate change you can remove that check altogether.\n\nYes, as a predecessor of this change.",
+      "parentUuid": "4be2aa09_828fd125",
+      "revId": "92d34bc8b823633c5ef81b931e41e0d946c1a7b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5174402f_e17e53aa",
@@ -214,6 +232,30 @@
       "side": 1,
       "message": "@luca.milanesio@gmail.com can you make sure this is captured somewhere so we don\u0027t forget? I am happy to create an issue if you haven\u0027t already",
       "parentUuid": "aa0310d6_3793ed2c",
+      "range": {
+        "startLine": 109,
+        "startChar": 28,
+        "endLine": 109,
+        "endChar": 44
+      },
+      "revId": "92d34bc8b823633c5ef81b931e41e0d946c1a7b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29ac6010_cefcab64",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-19T11:50:12Z",
+      "side": 1,
+      "message": "It is captured in this review discussion already, do you mean creating an issue?",
+      "parentUuid": "0faad3cd_050e87fa",
       "range": {
         "startLine": 109,
         "startChar": 28,

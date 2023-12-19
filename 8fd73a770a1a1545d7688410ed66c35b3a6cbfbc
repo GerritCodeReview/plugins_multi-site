@@ -39,6 +39,24 @@
       "message": "is this true? the `BatchRefUpdateEvent` extends `ProjectEvent` which is a stream event? Or maybe that\u0027s on master? In any case it feels risky to remove that check-the-instance-id guard, for no real gain.",
       "revId": "8fd73a770a1a1545d7688410ed66c35b3a6cbfbc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ca63cd3_bdf12d7e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-19T11:50:12Z",
+      "side": 1,
+      "message": "No, we rely on the `GitBatchRefUpdateListener` which has nothing to do with the stream events. The listener is available from stable-3.6 onwards.\nBecause the listener is not a stream event, there is no instance-id propagated and it does not make sense to have one.",
+      "parentUuid": "907378ff_27872e54",
+      "revId": "8fd73a770a1a1545d7688410ed66c35b3a6cbfbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
