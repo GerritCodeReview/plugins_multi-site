@@ -16,6 +16,23 @@
       "message": "Based on the change 245113 in HA plugin, the index events involved are:\n- Accounts\n- Changes\n\nAnd for that reason in multi-site plugin only those index events have been treated. \n\nIn the current code there is only one test `shouldNotForwardIndexChangeIfCurrentThreadIsPullReplicationApplyObject` and I have added 2 tests regarding the `changes`.\n\nI have done a E2E test in multisite local setup for `changes`:\n- Online index: `ssh   -p 39418 admin@localhost gerrit index start accounts --force`\n\n- Checking events in kafka topic `gerrit_batch_index`: `kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic gerrit_batch_index  --from-beginning`\n\nRegarding `accounts` I tried as explained above but for some reason it did not work so I would like to have some guidance.",
       "revId": "80fe14d388ffd8d34774fb5ead5887bd7728bee0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6639700_9ae2d218",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-12-19T11:52:21Z",
+      "side": 1,
+      "message": "-1 waiting for guidance on how to test E2E the account indexes.",
+      "revId": "80fe14d388ffd8d34774fb5ead5887bd7728bee0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
