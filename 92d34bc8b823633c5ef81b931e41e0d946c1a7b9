@@ -90,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4be2aa09_828fd125",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-19T11:39:20Z",
+      "side": 1,
+      "message": "Well no, it is introducing regression, it should be done in this change surely? As a separate change you can remove that check altogether.",
+      "parentUuid": "3bce8204_76736920",
+      "revId": "92d34bc8b823633c5ef81b931e41e0d946c1a7b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5174402f_e17e53aa",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
         "patchSetId": 2
