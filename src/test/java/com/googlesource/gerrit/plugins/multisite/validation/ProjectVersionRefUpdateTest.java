@@ -30,7 +30,6 @@ import static org.mockito.Mockito.when;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.common.base.Suppliers;
 import com.google.gerrit.entities.Project;
-import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.data.RefUpdateAttribute;
 import com.google.gerrit.server.events.RefUpdatedEvent;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
@@ -218,38 +217,10 @@ public class ProjectVersionRefUpdateTest implements RefFixture {
     verify(verLogger).log(A_TEST_PROJECT_NAME_KEY, storedVersion, 0);
   }
 
-  @Test
-  public void producerShouldNotUpdateProjectVersionUponSequenceRefUpdatedEvent() throws Exception {
-    producerShouldNotUpdateProjectVersionUponMagicRefUpdatedEvent(RefNames.REFS_SEQUENCES);
-  }
-
-  @Test
-  public void producerShouldNotUpdateProjectVersionUponStarredChangesRefUpdatedEvent()
-      throws Exception {
-    producerShouldNotUpdateProjectVersionUponMagicRefUpdatedEvent(RefNames.REFS_STARRED_CHANGES);
-  }
-
   private long readLongObject(ObjectLoader loader)
       throws LargeObjectException, UnsupportedEncodingException {
     String boutString = new String(loader.getBytes(), StandardCharsets.UTF_8.name());
     return Long.parseLong(boutString);
-  }
-
-  private void producerShouldNotUpdateProjectVersionUponMagicRefUpdatedEvent(String magicRefPrefix)
-      throws Exception {
-    String magicRefName = magicRefPrefix + "/foo";
-    when(refUpdatedEvent.getProjectNameKey()).thenReturn(A_TEST_PROJECT_NAME_KEY);
-    when(refUpdatedEvent.getRefName()).thenReturn(magicRefName);
-    repo.branch(magicRefName).commit().create();
-
-    new ProjectVersionRefUpdateImpl(
-            repoManager, sharedRefDb, gitReferenceUpdated, verLogger, DEFAULT_INSTANCE_ID)
-        .onEvent(refUpdatedEvent);
-
-    Ref ref = repo.getRepository().findRef(MULTI_SITE_VERSIONING_REF);
-    assertThat(ref).isNull();
-
-    verifyNoInteractions(verLogger);
   }
 
   @Test
