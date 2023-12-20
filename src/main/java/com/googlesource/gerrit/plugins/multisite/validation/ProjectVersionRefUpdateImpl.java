@@ -24,7 +24,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.Project.NameKey;
-import com.google.gerrit.entities.RefNames;
 import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
@@ -80,16 +79,10 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
     }
   }
 
-  private boolean isSpecialRefName(String refName) {
-    return refName.startsWith(RefNames.REFS_SEQUENCES)
-        || refName.startsWith(RefNames.REFS_STARRED_CHANGES)
-        || refName.equals(MULTI_SITE_VERSIONING_REF);
-  }
-
   private void updateProducerProjectVersionUpdate(RefUpdatedEvent refUpdatedEvent) {
     String refName = refUpdatedEvent.getRefName();
 
-    if (isSpecialRefName(refName)) {
+    if (refName.equals(MULTI_SITE_VERSIONING_REF)) {
       logger.atFine().log(
           "Found a special ref name %s, skipping update for %s",
           refName, refUpdatedEvent.getProjectNameKey().get());
