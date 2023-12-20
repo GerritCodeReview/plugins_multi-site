@@ -14,9 +14,13 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
+import com.google.gerrit.entities.Change;
+import com.google.gerrit.entities.HumanComment;
 import com.google.gerrit.exceptions.StorageException;
+import com.google.gerrit.server.DraftCommentsReader;
 import com.google.gerrit.server.change.ChangeFinder;
 import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.util.ManualRequestContext;
@@ -29,6 +33,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.Optional;
 import org.eclipse.jgit.errors.MissingObjectException;
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
@@ -39,10 +44,12 @@ import org.slf4j.LoggerFactory;
 public class ChangeCheckerImpl implements ChangeChecker {
   private static final Logger log = LoggerFactory.getLogger(ChangeCheckerImpl.class);
   private final GitRepositoryManager gitRepoMgr;
+  private final DraftCommentsReader draftCommentsReader;
   private final OneOffRequestContext oneOffReqCtx;
   private final String changeId;
   private final ChangeFinder changeFinder;
   private final String instanceId;
+  private final boolean enableDraftCommentEvents;
   private Optional<Long> computedChangeTs = Optional.empty();
   private Optional<ChangeNotes> changeNotes = Optional.empty();
 
@@ -53,15 +60,20 @@ public class ChangeCheckerImpl implements ChangeChecker {
   @Inject
   public ChangeCheckerImpl(
       GitRepositoryManager gitRepoMgr,
+      DraftCommentsReader draftCommentsReader,
       ChangeFinder changeFinder,
       OneOffRequestContext oneOffReqCtx,
       @GerritInstanceId String instanceId,
+      @GerritServerConfig Config config,
       @Assisted String changeId) {
     this.changeFinder = changeFinder;
     this.gitRepoMgr = gitRepoMgr;
+    this.draftCommentsReader = draftCommentsReader;
     this.oneOffReqCtx = oneOffReqCtx;
     this.changeId = changeId;
     this.instanceId = instanceId;
+    this.enableDraftCommentEvents =
+        config.getBoolean("event", "stream-events", "enableDraftCommentEvents", false);
   }
 
   @Override
@@ -171,7 +183,23 @@ public class ChangeCheckerImpl implements ChangeChecker {
   }
 
   private Optional<Long> computeLastChangeTs() {
-    return getChangeNotes()
-        .map(notes -> Timestamp.from(notes.getChange().getLastUpdatedOn()).getTime() / 1000);
+    return getChangeNotes().map(this::getTsFromChangeAndDraftComments);
+  }
+
+  private long getTsFromChangeAndDraftComments(ChangeNotes notes) {
+    Change change = notes.getChange();
+    Timestamp changeTs = Timestamp.from(change.getLastUpdatedOn());
+    if (enableDraftCommentEvents) {
+      try {
+        for (HumanComment comment :
+            draftCommentsReader.getDraftsByChangeForAllAuthors(changeNotes.get())) {
+          Timestamp commentTs = comment.writtenOn;
+          changeTs = commentTs.after(changeTs) ? commentTs : changeTs;
+        }
+      } catch (StorageException e) {
+        log.warn("Unable to access draft comments for change {}", change, e);
+      }
+    }
+    return changeTs.getTime() / 1000;
   }
 }
