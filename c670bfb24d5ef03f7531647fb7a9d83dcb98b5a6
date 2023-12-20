@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60ca4583_15a30dd6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-20T19:10:01Z",
+      "side": 1,
+      "message": "`with Change 245113`",
+      "range": {
+        "startLine": 9,
+        "startChar": 29,
+        "endLine": 9,
+        "endChar": 43
+      },
+      "revId": "c670bfb24d5ef03f7531647fb7a9d83dcb98b5a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74cb9107_602851d8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-20T19:10:01Z",
+      "side": 1,
+      "message": "Just mention `Change 245113` and Gerrit will format this as a URL.",
+      "revId": "c670bfb24d5ef03f7531647fb7a9d83dcb98b5a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "629570ac_89bee8d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-20T19:10:01Z",
+      "side": 1,
+      "message": "Let me test this E2E",
+      "revId": "c670bfb24d5ef03f7531647fb7a9d83dcb98b5a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
