@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db1fd15f_b3baa3e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-20T10:12:05Z",
+      "side": 1,
+      "message": "which line was throwing an exception?",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 25
+      },
+      "revId": "4363a02f40505856f885ccbb5ed351dccc08bba5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
