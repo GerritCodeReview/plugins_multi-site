@@ -25,15 +25,12 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.Project.NameKey;
-import com.google.gerrit.entities.RefNames;
-import com.google.gerrit.server.config.GerritInstanceId;
-import com.google.gerrit.server.events.Event;
-import com.google.gerrit.server.events.EventListener;
-import com.google.gerrit.server.events.RefUpdatedEvent;
+import com.google.gerrit.extensions.events.GitBatchRefUpdateListener;
 import com.google.gerrit.server.extensions.events.GitReferenceUpdated;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.update.context.RefUpdateContext;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -45,7 +42,9 @@ import org.eclipse.jgit.lib.ObjectInserter;
 import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.lib.Repository;
 
-public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersionRefUpdate {
+@Singleton
+public class ProjectVersionRefUpdateImpl
+    implements GitBatchRefUpdateListener, ProjectVersionRefUpdate {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final Set<RefUpdate.Result> SUCCESSFUL_RESULTS =
       ImmutableSet.of(RefUpdate.Result.NEW, RefUpdate.Result.FORCED, RefUpdate.Result.NO_CHANGE);
@@ -53,7 +52,6 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
   private final GitRepositoryManager gitRepositoryManager;
   private final GitReferenceUpdated gitReferenceUpdated;
   private final ProjectVersionLogger verLogger;
-  private final String nodeInstanceId;
 
   protected final SharedRefDatabaseWrapper sharedRefDb;
 
@@ -62,61 +60,43 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
       GitRepositoryManager gitRepositoryManager,
       SharedRefDatabaseWrapper sharedRefDb,
       GitReferenceUpdated gitReferenceUpdated,
-      ProjectVersionLogger verLogger,
-      @GerritInstanceId String nodeInstanceId) {
+      ProjectVersionLogger verLogger) {
     this.gitRepositoryManager = gitRepositoryManager;
     this.sharedRefDb = sharedRefDb;
     this.gitReferenceUpdated = gitReferenceUpdated;
     this.verLogger = verLogger;
-    this.nodeInstanceId = nodeInstanceId;
   }
 
   @Override
-  public void onEvent(Event event) {
-    logger.atFine().log("Processing event type: %s", event.type);
+  public void onGitBatchRefUpdate(Event event) {
     // Producer of the Event use RefUpdatedEvent to trigger the version update
-    if (nodeInstanceId.equals(event.instanceId) && event instanceof RefUpdatedEvent) {
-      updateProducerProjectVersionUpdate((RefUpdatedEvent) event);
-    }
+    updateProducerProjectVersionUpdate(event);
   }
 
-  private boolean isSpecialRefName(String refName) {
-    return refName.startsWith(RefNames.REFS_SEQUENCES)
-        || refName.startsWith(RefNames.REFS_STARRED_CHANGES)
-        || refName.equals(MULTI_SITE_VERSIONING_REF);
-  }
-
-  private void updateProducerProjectVersionUpdate(RefUpdatedEvent refUpdatedEvent) {
-    String refName = refUpdatedEvent.getRefName();
-
-    if (isSpecialRefName(refName)) {
+  private void updateProducerProjectVersionUpdate(Event refUpdatedEvent) {
+    if (refUpdatedEvent.getRefNames().stream()
+        .allMatch(refName -> refName.equals(MULTI_SITE_VERSIONING_REF))) {
       logger.atFine().log(
           "Found a special ref name %s, skipping update for %s",
-          refName, refUpdatedEvent.getProjectNameKey().get());
+          MULTI_SITE_VERSIONING_REF, refUpdatedEvent.getProjectName());
       return;
     }
+
     try {
-      Project.NameKey projectNameKey = refUpdatedEvent.getProjectNameKey();
+      Project.NameKey projectNameKey = Project.nameKey(refUpdatedEvent.getProjectName());
       long newVersion = getCurrentGlobalVersionNumber();
 
-      Optional<RefUpdate> newProjectVersionRefUpdate =
-          updateLocalProjectVersion(projectNameKey, newVersion);
+      RefUpdate newProjectVersionRefUpdate = updateLocalProjectVersion(projectNameKey, newVersion);
 
-      if (newProjectVersionRefUpdate.isPresent()) {
-        verLogger.log(projectNameKey, newVersion, 0L);
+      verLogger.log(projectNameKey, newVersion, 0L);
 
-        if (updateSharedProjectVersion(projectNameKey, newVersion)) {
-          gitReferenceUpdated.fire(projectNameKey, newProjectVersionRefUpdate.get(), null);
-        }
-      } else {
-        logger.atWarning().log(
-            "Ref %s not found on projet %s: skipping project version update",
-            refUpdatedEvent.getRefName(), projectNameKey);
+      if (updateSharedProjectVersion(projectNameKey, newVersion)) {
+        gitReferenceUpdated.fire(projectNameKey, newProjectVersionRefUpdate, null);
       }
     } catch (LocalProjectVersionUpdateException | SharedProjectVersionUpdateException e) {
       logger.atSevere().withCause(e).log(
           "Issue encountered when updating version for project %s",
-          refUpdatedEvent.getProjectNameKey());
+          refUpdatedEvent.getProjectName());
     }
   }
 
@@ -249,8 +229,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
   }
 
   @SuppressWarnings("FloggerLogString")
-  private Optional<RefUpdate> updateLocalProjectVersion(
-      Project.NameKey projectNameKey, long newVersionNumber)
+  private RefUpdate updateLocalProjectVersion(Project.NameKey projectNameKey, long newVersionNumber)
       throws LocalProjectVersionUpdateException {
     logger.atFine().log(
         "Updating local version for project %s with version %d",
@@ -268,7 +247,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
         throw new LocalProjectVersionUpdateException(message);
       }
 
-      return Optional.of(refUpdate);
+      return refUpdate;
     } catch (IOException e) {
       String message = "Cannot create versioning command for " + projectNameKey.get();
       logger.atSevere().withCause(e).log(message);

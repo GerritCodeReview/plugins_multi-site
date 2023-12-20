@@ -178,7 +178,9 @@ class IndexEventHandler
 
     @Override
     public String toString() {
-      return String.format("Index change %s in target instance", changeIndexEvent.changeId);
+      return String.format(
+          "Index change %s for project %s produced by instance %s",
+          changeIndexEvent.changeId, changeIndexEvent.projectName, changeIndexEvent.instanceId);
     }
   }
 
@@ -209,7 +211,9 @@ class IndexEventHandler
 
     @Override
     public String toString() {
-      return String.format("Index change %s in target instance", changeIndexEvent.changeId);
+      return String.format(
+          "Index change %s for project %s produced by instance %s",
+          changeIndexEvent.changeId, changeIndexEvent.projectName, changeIndexEvent.instanceId);
     }
   }
 
