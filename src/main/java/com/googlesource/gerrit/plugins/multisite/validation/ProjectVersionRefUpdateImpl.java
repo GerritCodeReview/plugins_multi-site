@@ -99,19 +99,12 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
       Project.NameKey projectNameKey = refUpdatedEvent.getProjectNameKey();
       long newVersion = getCurrentGlobalVersionNumber();
 
-      Optional<RefUpdate> newProjectVersionRefUpdate =
-          updateLocalProjectVersion(projectNameKey, newVersion);
+      RefUpdate newProjectVersionRefUpdate = updateLocalProjectVersion(projectNameKey, newVersion);
 
-      if (newProjectVersionRefUpdate.isPresent()) {
-        verLogger.log(projectNameKey, newVersion, 0L);
+      verLogger.log(projectNameKey, newVersion, 0L);
 
-        if (updateSharedProjectVersion(projectNameKey, newVersion)) {
-          gitReferenceUpdated.fire(projectNameKey, newProjectVersionRefUpdate.get(), null);
-        }
-      } else {
-        logger.atWarning().log(
-            "Ref %s not found on projet %s: skipping project version update",
-            refUpdatedEvent.getRefName(), projectNameKey);
+      if (updateSharedProjectVersion(projectNameKey, newVersion)) {
+        gitReferenceUpdated.fire(projectNameKey, newProjectVersionRefUpdate.get(), null);
       }
     } catch (LocalProjectVersionUpdateException | SharedProjectVersionUpdateException e) {
       logger.atSevere().withCause(e).log(
@@ -249,8 +242,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
   }
 
   @SuppressWarnings("FloggerLogString")
-  private Optional<RefUpdate> updateLocalProjectVersion(
-      Project.NameKey projectNameKey, long newVersionNumber)
+  private RefUpdate updateLocalProjectVersion(Project.NameKey projectNameKey, long newVersionNumber)
       throws LocalProjectVersionUpdateException {
     logger.atFine().log(
         "Updating local version for project %s with version %d",
@@ -267,7 +259,7 @@ public class ProjectVersionRefUpdateImpl implements EventListener, ProjectVersio
         throw new LocalProjectVersionUpdateException(message);
       }
 
-      return Optional.of(refUpdate);
+      return refUpdate;
     } catch (IOException e) {
       String message = "Cannot create versioning command for " + projectNameKey.get();
       logger.atSevere().withCause(e).log(message);
