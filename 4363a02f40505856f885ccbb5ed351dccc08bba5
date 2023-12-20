@@ -22,6 +22,30 @@
       },
       "revId": "4363a02f40505856f885ccbb5ed351dccc08bba5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37570823_e1d85a76",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-20T10:51:10Z",
+      "side": 1,
+      "message": "See JGit\u0027s `RefDatabase.java`\n\n```java\n\t/**\n\t * Create a new update command to create, modify or delete a reference.\n\t *\n\t * @param name\n\t *            the name of the reference.\n\t * @param detach\n\t *            if {@code true} and {@code name} is currently a\n\t *            {@link org.eclipse.jgit.lib.SymbolicRef}, the update will\n\t *            replace it with an {@link org.eclipse.jgit.lib.ObjectIdRef}.\n\t *            Otherwise, the update will recursively traverse\n\t *            {@link org.eclipse.jgit.lib.SymbolicRef}s and operate on the\n\t *            leaf {@link org.eclipse.jgit.lib.ObjectIdRef}.\n\t * @return a new update for the requested name; never null.\n\t * @throws java.io.IOException\n\t *             the reference space cannot be accessed.\n\t */\n\t@NonNull\n\tpublic abstract RefUpdate newUpdate(String name, boolean detach)\n\t\t\tthrows IOException;\n```\n\nThe method is annotated with `@NonNull` therefore it would never return null but rather throw an IOException in case of errors.",
+      "parentUuid": "db1fd15f_b3baa3e5",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 25
+      },
+      "revId": "4363a02f40505856f885ccbb5ed351dccc08bba5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
