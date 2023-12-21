@@ -33,6 +33,24 @@
       "message": "-1 waiting for guidance on how to test E2E the account indexes.",
       "revId": "80fe14d388ffd8d34774fb5ead5887bd7728bee0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cacc6836_3aecb6e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-12-21T09:51:29Z",
+      "side": 1,
+      "message": "I have E2E tested the `changes` use case in `stable-3.6`. @luca.milanesio@gmail.com, feel free to provide +1 in Verified once you have E2E test the `accounts` use case.",
+      "parentUuid": "8bb76838_6c960b9d",
+      "revId": "80fe14d388ffd8d34774fb5ead5887bd7728bee0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
