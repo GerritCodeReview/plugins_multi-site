@@ -16,6 +16,23 @@
       "message": "We need E2E in stable-3.6",
       "revId": "5e33558cfad1d77f96c26885cd492e0edf02174a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c07f1383_b43ba125",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-21T23:25:15Z",
+      "side": 1,
+      "message": "Works E2E as expected.",
+      "revId": "5e33558cfad1d77f96c26885cd492e0edf02174a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

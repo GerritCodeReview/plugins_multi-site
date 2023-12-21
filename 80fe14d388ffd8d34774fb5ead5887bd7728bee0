@@ -51,6 +51,24 @@
       "parentUuid": "8bb76838_6c960b9d",
       "revId": "80fe14d388ffd8d34774fb5ead5887bd7728bee0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29034d0b_c375c736",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-21T23:25:15Z",
+      "side": 1,
+      "message": "Works E2E as expected, good job @alvaro.vilaplana@gmail.com",
+      "parentUuid": "cacc6836_3aecb6e3",
+      "revId": "80fe14d388ffd8d34774fb5ead5887bd7728bee0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
