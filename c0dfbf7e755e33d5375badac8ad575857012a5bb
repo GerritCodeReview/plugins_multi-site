@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbcca080_00dd8948",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-12-22T05:03:42Z",
+      "side": 1,
+      "message": "Does rm print anything anyway? Is redirecting to dev null needed/wanted?",
+      "range": {
+        "startLine": 202,
+        "startChar": 40,
+        "endLine": 202,
+        "endChar": 52
+      },
+      "revId": "c0dfbf7e755e33d5375badac8ad575857012a5bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
