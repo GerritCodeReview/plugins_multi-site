@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e4d46b2_effaa594",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2023-12-22T10:11:14Z",
+      "side": 1,
+      "message": "nit: different `BROKER_TYPE`s are exclusive, so we can use `if-elif-fi` construct here instead of `if`s. Or even use the `case`:\n```bash\ncase \"$BROKER_TYPE\" in\n  \"kafka\")\n    download_artifact_from_ci events-kafka plugin\n  ;;\n  \"kinesis\")\n    download_artifact_from_ci events-aws-kinesis plugin\n  ;;\n  \"gloud-pubsub\")\n    download_artifact_from_ci events-gcloud-pubsub plugin\n  ;;\n  *)\n    echo \"unknown broker type\"\n    exit 1\n  ;;\nesac\n```\n\nI\u0027m not a bash expert so don\u0027t know which pattern is the preferred one.",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 353,
+        "endChar": 4
+      },
+      "revId": "3ee70ab2b31f6bd68317c50c266a3d03d6a63751",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
