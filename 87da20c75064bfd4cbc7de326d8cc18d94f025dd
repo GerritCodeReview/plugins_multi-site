@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "571943ef_d817d482",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-12-22T04:59:53Z",
+      "side": 1,
+      "message": "What about adding;\"for setup.sh script\"",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 48
+      },
+      "revId": "87da20c75064bfd4cbc7de326d8cc18d94f025dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e3845cf_148e9bfc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-12-22T04:59:53Z",
+      "side": 1,
+      "message": "nit: space after comma",
+      "range": {
+        "startLine": 9,
+        "startChar": 44,
+        "endLine": 9,
+        "endChar": 50
+      },
+      "revId": "87da20c75064bfd4cbc7de326d8cc18d94f025dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6364d8aa_88dc09a5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2023-12-22T04:59:53Z",
+      "side": 1,
+      "message": "nit: line wrapping",
+      "range": {
+        "startLine": 10,
+        "startChar": 80,
+        "endLine": 10,
+        "endChar": 84
+      },
+      "revId": "87da20c75064bfd4cbc7de326d8cc18d94f025dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
