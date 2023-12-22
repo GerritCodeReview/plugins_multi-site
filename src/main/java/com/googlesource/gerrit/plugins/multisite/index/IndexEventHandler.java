@@ -48,6 +48,7 @@ class IndexEventHandler
   private final ChangeCheckerImpl.Factory changeChecker;
   private final GroupChecker groupChecker;
   private final String instanceId;
+  private final CurrentRequestContext currCtx;
 
   @Inject
   IndexEventHandler(
@@ -55,27 +56,32 @@ class IndexEventHandler
       DynamicSet<IndexEventForwarder> forwarders,
       ChangeCheckerImpl.Factory changeChecker,
       GroupChecker groupChecker,
-      @GerritInstanceId String instanceId) {
+      @GerritInstanceId String instanceId,
+      CurrentRequestContext currCtx) {
     this.forwarders = forwarders;
     this.executor = executor;
     this.changeChecker = changeChecker;
     this.groupChecker = groupChecker;
     this.instanceId = instanceId;
+    this.currCtx = currCtx;
   }
 
   @Override
   public void onAccountIndexed(int id) {
-    if (!Context.isForwardedEvent()) {
-      IndexAccountTask task = new IndexAccountTask(new AccountIndexEvent(id, instanceId));
-      if (queuedTasks.add(task)) {
-        executor.execute(task);
-      }
-    }
+    currCtx.onlyWithContext(
+        (ctx) -> {
+          if (!Context.isForwardedEvent()) {
+            IndexAccountTask task = new IndexAccountTask(new AccountIndexEvent(id, instanceId));
+            if (queuedTasks.add(task)) {
+              executor.execute(task);
+            }
+          }
+        });
   }
 
   @Override
   public void onChangeIndexed(String projectName, int id) {
-    executeIndexChangeTask(projectName, id);
+    currCtx.onlyWithContext((ctx) -> executeIndexChangeTask(projectName, id));
   }
 
   @Override
