@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e5d0ac2_9bfdfa46",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2023-12-22T08:55:12Z",
+      "side": 1,
+      "message": "nit: I\u0027d move that ternary operator into `getTsFromChangeAndDraftComments` and here just pass the private method as argument to `map`. The added benefit is that we have the timestamp computation logic in one function (not spread between `computeLastChangeTs` and `getTsFromChangeAndDraftComments`) and we save one anonymous function/interface-impl ;)",
+      "range": {
+        "startLine": 189,
+        "startChar": 16,
+        "endLine": 191,
+        "endChar": 93
+      },
+      "revId": "42388096617d25d3c80ab7881ab4ea3a7764aa84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
