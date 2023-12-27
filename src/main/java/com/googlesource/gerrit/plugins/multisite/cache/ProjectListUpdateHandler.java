@@ -29,7 +29,6 @@ import java.util.concurrent.Executor;
 
 @Singleton
 public class ProjectListUpdateHandler implements NewProjectCreatedListener, ProjectDeletedListener {
-
   private final DynamicSet<ProjectListUpdateForwarder> forwarders;
   private final Executor executor;
   private final String instanceId;
@@ -47,7 +46,10 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
   @Override
   public void onNewProjectCreated(
       com.google.gerrit.extensions.events.NewProjectCreatedListener.Event event) {
-    process(event, false);
+    if ((instanceId == null && event.getInstanceId() == null)
+        || (instanceId != null && instanceId.equals(event.getInstanceId()))) {
+      process(event, false);
+    }
   }
 
   @Override
