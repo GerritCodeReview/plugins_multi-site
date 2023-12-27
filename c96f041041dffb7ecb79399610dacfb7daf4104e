@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec191858_2e41b3a7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-27T13:38:26Z",
+      "side": 1,
+      "message": "Post merge: Is this the right implementation? If the batch contains multiple refs, _including_ the refs/multi-site/version, then the refs/multi-site/version will not be excluded (which is what the previous impl was doing).",
+      "revId": "c96f041041dffb7ecb79399610dacfb7daf4104e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
