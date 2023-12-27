@@ -16,6 +16,24 @@
       "message": "Post merge: Is this the right implementation? If the batch contains multiple refs, _including_ the refs/multi-site/version, then the refs/multi-site/version will not be excluded (which is what the previous impl was doing).",
       "revId": "c96f041041dffb7ecb79399610dacfb7daf4104e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "714e126c_47f02967",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-27T21:47:36Z",
+      "side": 1,
+      "message": "\u003e Post merge: Is this the right implementation?\n\nYes.\n\n\u003e If the batch contains multiple refs, _including_ the refs/multi-site/version, then the refs/multi-site/version will not be excluded (which is what the previous impl was doing).\n\nThat is correct: if there is at least a ref that isn\u0027t `refs/multi-site/version`, then we have to update the project version. Would you skip updating the `refs/multi-site/version` instead? If yes, why?",
+      "parentUuid": "ec191858_2e41b3a7",
+      "revId": "c96f041041dffb7ecb79399610dacfb7daf4104e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ],
   "submitRequirementResults": [
