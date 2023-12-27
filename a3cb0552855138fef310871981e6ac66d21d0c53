@@ -1,0 +1,209 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05c8ec58_00cffd9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:26:05Z",
+      "side": 1,
+      "message": "Mostly minor stuff. The removal of `$0` is not clear to me",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0fb7464_4e4bb309",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:26:05Z",
+      "side": 1,
+      "message": "nit: being the script executable, I think this can be removed. The shebang already contains the used shell type",
+      "range": {
+        "startLine": 238,
+        "startChar": 15,
+        "endLine": 238,
+        "endChar": 19
+      },
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3967cad9_32aa5d53",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:26:05Z",
+      "side": 1,
+      "message": "Any reason to remove the `$0`? `$0` will print the filename of the script you are executing. Hence, regardless of the place you execute it from, the path will always be correct.",
+      "range": {
+        "startLine": 238,
+        "startChar": 20,
+        "endLine": 238,
+        "endChar": 55
+      },
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4e01a7b_d5ea541d",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:26:05Z",
+      "side": 1,
+      "message": "nit: wrap line",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "243d1e4c_5ff5a437",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:26:05Z",
+      "side": 1,
+      "message": "nit: wrap line",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02f7bc40_a197b90c",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:26:05Z",
+      "side": 1,
+      "message": "nit: wrap line",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "948e94b8_172563f5",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:26:05Z",
+      "side": 1,
+      "message": "nit: wrap line",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d67207c2_fb13d7f4",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:26:05Z",
+      "side": 1,
+      "message": "nit: line wrapping",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "283c2570_6f327401",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:26:05Z",
+      "side": 1,
+      "message": "mmm...this is not necessarily true. For example, most of the time I run it from the same directory of the script and download the needed jar from the CI. I would omit this note, but I am not strong about it.",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32897234_d63f5e5c",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:26:05Z",
+      "side": 1,
+      "message": "nit: wrap long line",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a9fb5ec_ca5c59f5",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:26:05Z",
+      "side": 1,
+      "message": "This is true if running from the Gerrit root directory where all the artifacts have been built. Might it be worth specifying it?",
+      "range": {
+        "startLine": 275,
+        "startChar": 90,
+        "endLine": 275,
+        "endChar": 139
+      },
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
