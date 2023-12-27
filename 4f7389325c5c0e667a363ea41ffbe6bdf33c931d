@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e4c0b0e_368ea15a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-12-27T10:19:55Z",
+      "side": 1,
+      "message": "Please, follow the conventions outlined in [1] for commit and description changes, especially this point:\n\n- Use the present tense (fix instead of fixed)\n\nReferences:\n[1] https://gerrit-review.googlesource.com/Documentation/dev-crafting-changes.html",
+      "revId": "4f7389325c5c0e667a363ea41ffbe6bdf33c931d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "960d119a_dad56370",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2023-12-27T10:19:55Z",
+      "side": 1,
+      "message": "Please, follow the conventions outlined in [1] for commit and description changes, specially this points:\n\nUse the present tense (fix instead of fixed)\nReferences:\n[1] https://gerrit-review.googlesource.com/Documentation/dev-crafting-changes.html",
+      "revId": "4f7389325c5c0e667a363ea41ffbe6bdf33c931d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
