@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68cae1ec_28c0393a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-27T10:59:24Z",
+      "side": 1,
+      "message": "Build failure is expected until this chain is merged: https://gerrit-review.googlesource.com/c/gerrit/+/398917",
+      "revId": "036fed0aa38696c0f0987c1e99a71fa1a2ee8fdd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
