@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45d64005_fdc6d445",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T14:28:41Z",
+      "side": 1,
+      "message": "It looks like we are doing 2 things here:\n* detect Gerrit version from war\n* allow downloading of plugins/libs from the CI\n\nCan you split it into separate changes?",
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98590e9a_91fe026b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T14:28:41Z",
+      "side": 1,
+      "message": "Gerrit",
+      "range": {
+        "startLine": 13,
+        "startChar": 43,
+        "endLine": 13,
+        "endChar": 49
+      },
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5920c9e_1c347e09",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T14:28:41Z",
+      "side": 1,
+      "message": "Is this related to this change?",
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
