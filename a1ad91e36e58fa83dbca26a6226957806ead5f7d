@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f13a5c99_bacd80dd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/ProjectListUpdateHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T18:27:35Z",
+      "side": 1,
+      "message": "Isn\u0027t this the same as L62?",
+      "revId": "a1ad91e36e58fa83dbca26a6226957806ead5f7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
