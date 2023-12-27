@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c78b6e9_9c18efc7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:53:58Z",
+      "side": 1,
+      "message": "Use present tense for commit message [1]\n\n[1]: https://gerrit-review.googlesource.com/Documentation/dev-crafting-changes.html#commit-message",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "315c8c41_da5b2d16",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:53:58Z",
+      "side": 1,
+      "message": "I\u0027d rather say something like: Centralize debugging logs and silence wget output",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 48
+      },
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f95574c_3d2732d8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:53:58Z",
+      "side": 1,
+      "message": "I would say something like: Centralized debugging logs when downloading a plugin to avoid code repetition",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 8
+      },
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35dee0ab_3e133abc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:53:58Z",
+      "side": 1,
+      "message": "Can you explain better why you need to silence the `wget`? Is it because the output is misleading?\nIf so, can you paste an example in the commit message to show the effect before and after this change?",
+      "range": {
+        "startLine": 10,
+        "startChar": 24,
+        "endLine": 12,
+        "endChar": 11
+      },
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a66ac5e3_cbedcf83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T13:53:58Z",
+      "side": 1,
+      "message": "I think is fine to have more than one issue targeted in one change for such minor changes. However, as a general rule, we try to tackle one issue per change.",
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
