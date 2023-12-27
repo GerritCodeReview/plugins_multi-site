@@ -16,6 +16,24 @@
       "message": "Isn\u0027t this the same as L62?",
       "revId": "a1ad91e36e58fa83dbca26a6226957806ead5f7d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e09ea1f3_3339fd8f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/ProjectListUpdateHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-27T22:01:54Z",
+      "side": 1,
+      "message": "Not exactly I believe: you could be in a non-forwarded context but still the event could have been generated as a result of an operation happening remotely, but not received from a event forwarder. So I believe both make sense. \n\nPossibly both tests can be consolidated together at L62? WDYT?",
+      "parentUuid": "f13a5c99_bacd80dd",
+      "revId": "a1ad91e36e58fa83dbca26a6226957806ead5f7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
