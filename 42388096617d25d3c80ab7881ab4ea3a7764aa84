@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41329173_a1ee3622",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T14:56:00Z",
+      "side": 1,
+      "message": "I would add a test for `getComputedChangeTs` since we added some logic in the underlined methods. Other than that, it looks ok to me. Let me know what you think about the test and I will then approve it.",
+      "revId": "42388096617d25d3c80ab7881ab4ea3a7764aa84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e2ac939_abb6b8a1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T14:56:00Z",
+      "side": 1,
+      "message": "Since we added some logic in here it might be worth adding a test. We could test the caller method `getComputedChangeTs()` which is public.",
+      "revId": "42388096617d25d3c80ab7881ab4ea3a7764aa84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5e5d0ac2_9bfdfa46",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
         "patchSetId": 2
@@ -14,6 +48,30 @@
       "writtenOn": "2023-12-22T08:55:12Z",
       "side": 1,
       "message": "nit: I\u0027d move that ternary operator into `getTsFromChangeAndDraftComments` and here just pass the private method as argument to `map`. The added benefit is that we have the timestamp computation logic in one function (not spread between `computeLastChangeTs` and `getTsFromChangeAndDraftComments`) and we save one anonymous function/interface-impl ;)",
+      "range": {
+        "startLine": 189,
+        "startChar": 16,
+        "endLine": 191,
+        "endChar": 93
+      },
+      "revId": "42388096617d25d3c80ab7881ab4ea3a7764aa84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e18ea656_e723f5f0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2023-12-27T14:56:00Z",
+      "side": 1,
+      "message": "IMO, if we want to avoid spreading the timestamp computation we could add a method to calculate it and leave the ternary operator in  `computeLastChangeTs`.\nIf we move the ternary operator inside `getTsFromChangeAndDraftComments` basically what `computeLastChangeTs` will do is just unwrapping the `Optional`.",
+      "parentUuid": "5e5d0ac2_9bfdfa46",
       "range": {
         "startLine": 189,
         "startChar": 16,
