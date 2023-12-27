@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2aa828a1_cab1f2f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-27T21:43:48Z",
+      "side": 1,
+      "message": "Actually the purpose is to test the version compiled locally, so modifying this behaviour would actually introduce a bug.",
+      "range": {
+        "startLine": 11,
+        "startChar": 45,
+        "endLine": 12,
+        "endChar": 24
+      },
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "98590e9a_91fe026b",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -37,6 +60,23 @@
         "endLine": 13,
         "endChar": 49
       },
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88e9d982_d29df48a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2023-12-27T21:43:48Z",
+      "side": 1,
+      "message": "I don\u0027t understand what\u0027s the benefit of this change, can we have a discussion to shorten the communication cycle?",
       "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
