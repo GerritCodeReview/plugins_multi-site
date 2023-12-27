@@ -61,15 +61,25 @@ public class ProjectListUpdateHandlerTest {
   }
 
   @Test
-  public void shouldForwardAddedProject() throws Exception {
+  public void shouldForwardAddedProjectForLocalEvent() {
     String projectName = "projectToAdd";
     NewProjectCreatedListener.Event event = mock(NewProjectCreatedListener.Event.class);
     when(event.getProjectName()).thenReturn(projectName);
+    when(event.getInstanceId()).thenReturn(INSTANCE_ID);
     handler.onNewProjectCreated(event);
     verify(forwarder)
         .updateProjectList(
             any(ProjectListUpdateTask.class),
             eq(new ProjectListUpdateEvent(projectName, false, INSTANCE_ID)));
+  }
+
+  @Test
+  public void shouldNotForwardAddedProjectForRemoteEvent() {
+    NewProjectCreatedListener.Event event = mock(NewProjectCreatedListener.Event.class);
+    when(event.getProjectName()).thenReturn("projectToAdd");
+    when(event.getInstanceId()).thenReturn("aRandomInstanceId");
+    handler.onNewProjectCreated(event);
+    verifyNoInteractions(forwarder);
   }
 
   @Test
