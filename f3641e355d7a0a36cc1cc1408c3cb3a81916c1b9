@@ -108,6 +108,57 @@
       "message": "I think is fine to have more than one issue targeted in one change for such minor changes. However, as a general rule, we try to tackle one issue per change.",
       "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fc8346b_01c5693b",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-28T12:12:55Z",
+      "side": 1,
+      "message": "👍",
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12b2d999_d83757fc",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-28T12:12:55Z",
+      "side": 1,
+      "message": "hmmm, I don\u0027t think I agree with silencing wget output, it might log some useful information as to why it failed. How about using the `-nv` (non-verbose) argument, rather than the `-q`?",
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f01899a8_8f1c5761",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-28T12:12:55Z",
+      "side": 1,
+      "message": "no need to pass the `plugin` arg, it will be defaulted in the function",
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
