@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5e71df03_3eefc6bb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-28T12:31:40Z",
+      "side": 1,
+      "message": "Not necessarily, the purpose is to allow you to deploy a multi-site setup locally. Whether you do this with locally compiled versions or not is irrelevant. As long as that behaviour is configurable i think its a good change.",
+      "parentUuid": "2aa828a1_cab1f2f4",
+      "range": {
+        "startLine": 11,
+        "startChar": 45,
+        "endLine": 12,
+        "endChar": 24
+      },
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "98590e9a_91fe026b",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
