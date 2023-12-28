@@ -34,6 +34,24 @@
       "parentUuid": "f13a5c99_bacd80dd",
       "revId": "a1ad91e36e58fa83dbca26a6226957806ead5f7d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ac08654_512ce561",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/cache/ProjectListUpdateHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-28T10:09:54Z",
+      "side": 1,
+      "message": "The reason I didn\u0027t put it in L62 is because the `process` method is also used by the `onProjectDeleted` logic, and touching this is out of scope.",
+      "parentUuid": "e09ea1f3_3339fd8f",
+      "revId": "a1ad91e36e58fa83dbca26a6226957806ead5f7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
