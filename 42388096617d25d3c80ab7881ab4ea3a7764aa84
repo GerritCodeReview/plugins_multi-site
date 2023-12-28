@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a8d4c09_aff988cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-12-28T11:48:36Z",
+      "side": 1,
+      "message": "same as below",
+      "parentUuid": "41329173_a1ee3622",
+      "revId": "42388096617d25d3c80ab7881ab4ea3a7764aa84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e2ac939_abb6b8a1",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-12-27T14:56:00Z",
       "side": 1,
       "message": "Since we added some logic in here it might be worth adding a test. We could test the caller method `getComputedChangeTs()` which is public.",
+      "revId": "42388096617d25d3c80ab7881ab4ea3a7764aa84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5b3f528_26b01246",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-12-28T11:48:36Z",
+      "side": 1,
+      "message": "I agree but this change is bringing old functionality, plus there is no tests for this class. We can add them as a follow up",
+      "parentUuid": "2e2ac939_abb6b8a1",
       "revId": "42388096617d25d3c80ab7881ab4ea3a7764aa84",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -72,6 +108,30 @@
       "side": 1,
       "message": "IMO, if we want to avoid spreading the timestamp computation we could add a method to calculate it and leave the ternary operator in  `computeLastChangeTs`.\nIf we move the ternary operator inside `getTsFromChangeAndDraftComments` basically what `computeLastChangeTs` will do is just unwrapping the `Optional`.",
       "parentUuid": "5e5d0ac2_9bfdfa46",
+      "range": {
+        "startLine": 189,
+        "startChar": 16,
+        "endLine": 191,
+        "endChar": 93
+      },
+      "revId": "42388096617d25d3c80ab7881ab4ea3a7764aa84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04a0bd14_9f80122d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2023-12-28T11:48:36Z",
+      "side": 1,
+      "message": "This change brings the existing functionality and adding that check if draft comments are enabled. I wanted to keep original code how it was but I agree this code will be much easier to understand if I move that check to `getTsFromChangeAndDraftComments`. My only concern is that it\u0027s not matching method name anymore because draft comments are conditional but method name suggests that it\u0027s always used",
+      "parentUuid": "e18ea656_e723f5f0",
       "range": {
         "startLine": 189,
         "startChar": 16,
