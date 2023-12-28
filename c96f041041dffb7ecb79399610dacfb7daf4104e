@@ -34,6 +34,24 @@
       "parentUuid": "ec191858_2e41b3a7",
       "revId": "c96f041041dffb7ecb79399610dacfb7daf4104e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06720632_8d6531a2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-28T10:46:38Z",
+      "side": 1,
+      "message": "\u003e Would you skip updating the refs/multi-site/version instead? If yes, why?\n\nIsn\u0027t this what the old code was doing? \n```\nif (refName.equals(MULTI_SITE_VERSIONING_REF)) {\n      logger.atFine().log(\n          \"Found a special ref name %s, skipping update for %s\",\n          refName, refUpdatedEvent.getProjectNameKey().get());\n      return;\n    }\n```",
+      "parentUuid": "714e126c_47f02967",
+      "revId": "c96f041041dffb7ecb79399610dacfb7daf4104e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ],
   "submitRequirementResults": [
