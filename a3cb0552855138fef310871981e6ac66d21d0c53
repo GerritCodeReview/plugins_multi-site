@@ -168,6 +168,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2b9d1e18_b6ff0da2",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-28T11:50:00Z",
+      "side": 1,
+      "message": "@ponch78@gmail.com I actually think your approach should also be documented, preferably in the script. So rather than omitting the note, I would enhance it with different ways the script can be run. I found in the past I had to spend quite some time to figure out where the jars were located (and I resorted to also downloading the jars from CI), this script is not the easiest to run.",
+      "parentUuid": "283c2570_6f327401",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8524b57a_10b1b4bf",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-28T11:50:00Z",
+      "side": 1,
+      "message": "```suggestion\n  echo \"Note: script should be run from the gerrit root source path to take advantage of local builds for release.war, multi-site.jar, events-broker.jar, and global-refdb.jar\"\n```",
+      "range": {
+        "startLine": 271,
+        "startChar": 14,
+        "endLine": 271,
+        "endChar": 28
+      },
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32897234_d63f5e5c",
         "filename": "setup_local_env/setup.sh",
         "patchSetId": 3
@@ -196,6 +237,30 @@
       "writtenOn": "2023-12-27T13:26:05Z",
       "side": 1,
       "message": "This is true if running from the Gerrit root directory where all the artifacts have been built. Might it be worth specifying it?",
+      "range": {
+        "startLine": 275,
+        "startChar": 90,
+        "endLine": 275,
+        "endChar": 139
+      },
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e4f2cb1_a641af3e",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2023-12-28T11:50:00Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "2a9fb5ec_ca5c59f5",
       "range": {
         "startLine": 275,
         "startChar": 90,
