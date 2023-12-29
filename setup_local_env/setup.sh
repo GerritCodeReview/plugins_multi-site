@@ -241,9 +241,9 @@ case "$1" in
     echo "Usage: sh $0 [--option $value]"
     echo
     echo "[--release-war-file]            Location to release.war file"
-    echo "[--multisite-lib-file]          Location to lib multi-site.jar file"
-    echo "[--eventsbroker-lib-file]       Location to lib events-broker.jar file"
-    echo "[--globalrefdb-lib-file]        Location to lib global-refdb.jar file"
+    echo "[--multisite-lib-file]          Location to lib multi-site.jar file; use upstream to download from CI"
+    echo "[--eventsbroker-lib-file]       Location to lib events-broker.jar file; use upstream to download from CI"
+    echo "[--globalrefdb-lib-file]        Location to lib global-refdb.jar file; use upstream to download from CI"
     echo
     echo "[--new-deployment]              Cleans up previous gerrit deployment and re-installs it. default true"
     echo "[--get-websession-plugin]       Download websession-broker plugin from CI lastSuccessfulBuild; default true"
@@ -270,6 +270,12 @@ case "$1" in
     echo
     echo "[--sudo]                        run docker commands with sudo"
     echo
+    echo "Install and startup multisite based on local Gerrit and upstream artifacts ->  $0 --multisite-lib-file" \
+         "upstream --eventsbroker-lib-file upstream --globalrefdb-lib-file upstream"
+    echo "Install multi-site for a specific gerrit version (if available), starting in multi-site source path -> $0" \
+         "--release-war-file gerrit-3.8.3.war --multisite-lib-file upstream --eventsbroker-lib-file upstream" \
+         "--globalrefdb-lib-file upstream. In this case, you will need to change the GERRIT_BRANCH variable in this" \
+         "script to match the version on the war"
     exit 0
   ;;
   "--new-deployment")
@@ -424,24 +430,31 @@ if [ -z $RELEASE_WAR_FILE_LOCATION ];then
 else
   cp -f $RELEASE_WAR_FILE_LOCATION $DEPLOYMENT_LOCATION/gerrit.war >/dev/null 2>&1 || { echo >&2 "$RELEASE_WAR_FILE_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 fi
-if [ -z $MULTISITE_LIB_LOCATION ];then
-  echo "The multi-site library is required. Usage: sh $0 --multisite-lib-file /path/to/multi-site.jar"
-  exit 1
+
+if [ $MULTISITE_LIB_LOCATION = "upstream" ];then
+  download_artifact_from_ci multi-site plugin
 else
   cp -f $MULTISITE_LIB_LOCATION $DEPLOYMENT_LOCATION/multi-site.jar  >/dev/null 2>&1 || { echo >&2 "$MULTISITE_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 fi
 
-echo "Copying events-broker library"
+if [ $EVENTS_BROKER_LIB_LOCATION = "upstream" ];then
+  download_artifact_from_ci events-broker module
+else
+  echo "Copying events-broker library"
   cp -f $EVENTS_BROKER_LIB_LOCATION $DEPLOYMENT_LOCATION/events-broker.jar  >/dev/null 2>&1 || { echo >&2 "$EVENTS_BROKER_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+fi
 
-echo "Copying global-refdb library"
+if [ $GLOBAL_REFDB_LIB_LOCATION = "upstream" ];then
+  download_artifact_from_ci global-refdb module
+else
+  echo "Copying global-refdb library"
   cp -f $GLOBAL_REFDB_LIB_LOCATION $DEPLOYMENT_LOCATION/global-refdb.jar  >/dev/null 2>&1 || { echo >&2 "$GLOBAL_REFDB_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
+fi
 
 if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
   echo "Downloading websession-broker plugin $GERRIT_BRANCH"
   download_artifact_from_ci websession-broker
   download_artifact_from_ci healthcheck
-
 else
   echo "Without the websession-broker; user login via haproxy will fail."
 fi
