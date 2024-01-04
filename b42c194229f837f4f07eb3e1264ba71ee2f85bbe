@@ -16,6 +16,24 @@
       "message": "nice 👍",
       "revId": "b42c194229f837f4f07eb3e1264ba71ee2f85bbe",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a9bb681_ff0fbe44",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 1157810
+      },
+      "writtenOn": "2024-01-04T10:42:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8596a3a6_528bc3d1",
+      "revId": "b42c194229f837f4f07eb3e1264ba71ee2f85bbe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
