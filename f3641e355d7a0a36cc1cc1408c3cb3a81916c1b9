@@ -47,6 +47,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acb123da_5daa3330",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:31:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c78b6e9_9c18efc7",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "720a3ffc_ab881b02",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:31:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "315c8c41_da5b2d16",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 48
+      },
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f95574c_3d2732d8",
@@ -60,6 +108,30 @@
       "writtenOn": "2023-12-27T13:53:58Z",
       "side": 1,
       "message": "I would say something like: Centralized debugging logs when downloading a plugin to avoid code repetition",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 8
+      },
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c20ab21_551cf34f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:31:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f95574c_3d2732d8",
       "range": {
         "startLine": 8,
         "startChar": 0,
@@ -93,6 +165,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69e9a391_c015df1f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:31:51Z",
+      "side": 1,
+      "message": "I\u0027ve rescoped the change to no longer include this",
+      "parentUuid": "35dee0ab_3e133abc",
+      "range": {
+        "startLine": 10,
+        "startChar": 24,
+        "endLine": 12,
+        "endChar": 11
+      },
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a66ac5e3_cbedcf83",
@@ -106,6 +202,24 @@
       "writtenOn": "2023-12-27T13:53:58Z",
       "side": 1,
       "message": "I think is fine to have more than one issue targeted in one change for such minor changes. However, as a general rule, we try to tackle one issue per change.",
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc43487a_e4d73472",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:31:51Z",
+      "side": 1,
+      "message": "Change has been rescoped to include only the help change",
+      "parentUuid": "a66ac5e3_cbedcf83",
       "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -127,6 +241,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00cf1704_6d37a22c",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:31:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fc8346b_01c5693b",
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12b2d999_d83757fc",
@@ -144,6 +276,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfb8cae0_12c5931e",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:31:51Z",
+      "side": 1,
+      "message": "My version with -q, adding a non-working plugin to the list:\n\n\n~/workspace/gerrit/gerrit[master]$ plugins/multi-site/setup_local_env/setup.sh\n...\nDownloading metrics-reporter-prometheus plugin in stable-3.9\nDownloading pull-replication plugin in stable-3.9\nDownloading something_weird plugin in stable-3.9\nCannot download something_weird plugin: Check internet connection. Aborting\n\nUsing with -nq:\n\n~/workspace/gerrit/gerrit[master]$ plugins/multi-site/setup_local_env/setup.sh\n...\nDownloading metrics-reporter-prometheus plugin in stable-3.9\nhttps://gerrit-ci.gerritforge.com/view/Plugins-stable-3.9/job/plugin-metrics-reporter-prometheus-bazel-stable-3.9/lastSuccessfulBuild/artifact/bazel-bin/plugins/metrics-reporter-prometheus/metrics-reporter-prometheus.jar:\n2024-01-04 10:59:52 ERROR 404: Not Found.\n2024-01-04 10:59:53 URL:https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.9/job/plugin-metrics-reporter-prometheus-bazel-master-stable-3.9/lastSuccessfulBuild/artifact/bazel-bin/plugins/metrics-reporter-prometheus/metrics-reporter-prometheus.jar [86053/86053] -\u003e \"/tmp/metrics-reporter-prometheus.jar\" [1]\nDownloading pull-replication plugin in stable-3.9\n2024-01-04 10:59:54 URL:https://gerrit-ci.gerritforge.com/view/Plugins-stable-3.9/job/plugin-pull-replication-bazel-stable-3.9/lastSuccessfulBuild/artifact/bazel-bin/plugins/pull-replication/pull-replication.jar [1241648/1241648] -\u003e \"/tmp/pull-replication.jar\" [1]\nDownloading something_weird plugin in stable-3.9\nhttps://gerrit-ci.gerritforge.com/view/Plugins-stable-3.9/job/plugin-something_weird-bazel-stable-3.9/lastSuccessfulBuild/artifact/bazel-bin/plugins/something_weird/something_weird.jar:\n2024-01-04 10:59:54 ERROR 404: Not Found.\nhttps://gerrit-ci.gerritforge.com/view/Plugins-stable-3.9/job/plugin-something_weird-bazel-master-stable-3.9/lastSuccessfulBuild/artifact/bazel-bin/plugins/something_weird/something_weird.jar:\n2024-01-04 10:59:55 ERROR 404: Not Found.\nCannot download something_weird plugin: Check internet connection. Aborting\n\nThis script iterates between two wgets as the download path from CI is different, and for one plugin there is always a 404 error, which is erroneous to message. Even if the wget silenced, an error message is still being issued at the end, indicating when the download failed.\n\nNevertheless, since this is raising comments, I\u0027ll revert to the fully verbose way",
+      "parentUuid": "12b2d999_d83757fc",
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f01899a8_8f1c5761",
@@ -157,6 +307,24 @@
       "writtenOn": "2023-12-28T12:12:55Z",
       "side": 1,
       "message": "no need to pass the `plugin` arg, it will be defaulted in the function",
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08ef6fce_053e50f6",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:31:51Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "f01899a8_8f1c5761",
       "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
