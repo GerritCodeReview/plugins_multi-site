@@ -64,6 +64,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00ec4f8e_d6953791",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:02Z",
+      "side": 1,
+      "message": "Before was sh, so I corrected it to the correct shell. But it is redundant, so agree",
+      "parentUuid": "a0fb7464_4e4bb309",
+      "range": {
+        "startLine": 238,
+        "startChar": 15,
+        "endLine": 238,
+        "endChar": 19
+      },
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aaf6166_ad24f1ee",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:02Z",
+      "side": 1,
+      "message": "Reverted to the $0",
+      "parentUuid": "3967cad9_32aa5d53",
+      "range": {
+        "startLine": 238,
+        "startChar": 20,
+        "endLine": 238,
+        "endChar": 55
+      },
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4e01a7b_d5ea541d",
@@ -77,6 +125,24 @@
       "writtenOn": "2023-12-27T13:26:05Z",
       "side": 1,
       "message": "nit: wrap line",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c4259db_14822b8b",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:02Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "b4e01a7b_d5ea541d",
       "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -98,6 +164,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6394af4_ac698d40",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:02Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "243d1e4c_5ff5a437",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02f7bc40_a197b90c",
@@ -115,6 +199,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f681073_7bfb029a",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:02Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "02f7bc40_a197b90c",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "948e94b8_172563f5",
@@ -128,6 +230,24 @@
       "writtenOn": "2023-12-27T13:26:05Z",
       "side": 1,
       "message": "nit: wrap line",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c0b232d_a36820a6",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:02Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "948e94b8_172563f5",
       "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -207,6 +327,66 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22b0a40e_ce509dcf",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:02Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "d67207c2_fb13d7f4",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccdc1d0b_e079b10a",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:02Z",
+      "side": 1,
+      "message": "I will leave this note as if you note the defaults for the \"-file\" parameters, it goes by default to the bazel-bin, which we only takes advantage if run from the gerrit folder. Otherwise, you will need to construct the folders to get the needed jars.",
+      "parentUuid": "2b9d1e18_b6ff0da2",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ad3af01_045aaccd",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:02Z",
+      "side": 1,
+      "message": "Corrected",
+      "parentUuid": "8524b57a_10b1b4bf",
+      "range": {
+        "startLine": 271,
+        "startChar": 14,
+        "endLine": 271,
+        "endChar": 28
+      },
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32897234_d63f5e5c",
@@ -261,6 +441,48 @@
       "side": 1,
       "message": "+1",
       "parentUuid": "2a9fb5ec_ca5c59f5",
+      "range": {
+        "startLine": 275,
+        "startChar": 90,
+        "endLine": 275,
+        "endChar": 139
+      },
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b39c9e75_73a83024",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:02Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "32897234_d63f5e5c",
+      "revId": "a3cb0552855138fef310871981e6ac66d21d0c53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45a02042_273a6aba",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:02Z",
+      "side": 1,
+      "message": "This is the first part of the set of changes. Other changes when added will extend this help and then it makes more sense.",
+      "parentUuid": "2e4f2cb1_a641af3e",
       "range": {
         "startLine": 275,
         "startChar": 90,
