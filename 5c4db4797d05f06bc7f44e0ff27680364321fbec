@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a30bf84c_64a2cd29",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:21Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "c2704d4d_8dee0361",
+      "revId": "5c4db4797d05f06bc7f44e0ff27680364321fbec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc5c696f_dd7b72ed",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42eeaf55_27d5d807",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:21Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "bc5c696f_dd7b72ed",
+      "revId": "5c4db4797d05f06bc7f44e0ff27680364321fbec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46552720_46a99302",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-12-28T11:59:25Z",
       "side": 1,
       "message": "I actually think it is better to create a `plugins` directory in the `$DEPLOYMENT_LOCATION` and just put all the plugins there. Then you simply need to delete that entire directory during cleanup. Otherwise, if in the future more plugins are added, you will also need to remember to modify this function to clean them up. It\u0027s just a bit more tedius IMO.",
+      "revId": "5c4db4797d05f06bc7f44e0ff27680364321fbec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ef664aa_0d556956",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:21Z",
+      "side": 1,
+      "message": "Also think the same, but it was as the script was implementing it. I will implement on a later change, once all the current changes are merged as this will cause a conflict",
+      "parentUuid": "46552720_46a99302",
       "revId": "5c4db4797d05f06bc7f44e0ff27680364321fbec",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

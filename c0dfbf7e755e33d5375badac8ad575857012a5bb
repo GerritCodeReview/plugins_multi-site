@@ -22,6 +22,30 @@
       },
       "revId": "c0dfbf7e755e33d5375badac8ad575857012a5bb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e06c9e6_e2e96b7b",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:56:21Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "bbcca080_00dd8948",
+      "range": {
+        "startLine": 202,
+        "startChar": 40,
+        "endLine": 202,
+        "endChar": 52
+      },
+      "revId": "c0dfbf7e755e33d5375badac8ad575857012a5bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
