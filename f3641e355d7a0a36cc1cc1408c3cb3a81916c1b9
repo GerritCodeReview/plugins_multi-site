@@ -16,6 +16,24 @@
       "message": "I think a better change is to detect version from the branch you are on git. For master we might need some different logic, but it should work nicely for all the stable branches.",
       "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e7fe259_1c3df96f",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:34:30Z",
+      "side": 0,
+      "message": "The version associated with the working branch will match the version inscribed in  Gerrit war. Any builds that are available will be used, otherwise it will point to the associated branch",
+      "parentUuid": "0e9238e5_c518044a",
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

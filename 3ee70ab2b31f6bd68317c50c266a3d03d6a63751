@@ -22,6 +22,30 @@
       },
       "revId": "3ee70ab2b31f6bd68317c50c266a3d03d6a63751",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aec844ad_e2fb2834",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:34:30Z",
+      "side": 1,
+      "message": "I would usually prefer the switch case as indicated there, as it prevents a stairway that complicates reading. This part of the code was untouched from what was originally, just relocated",
+      "parentUuid": "5e4d46b2_effaa594",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 353,
+        "endChar": 4
+      },
+      "revId": "3ee70ab2b31f6bd68317c50c266a3d03d6a63751",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

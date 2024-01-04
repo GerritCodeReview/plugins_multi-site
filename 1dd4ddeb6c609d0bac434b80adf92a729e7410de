@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a78e7ff2_b4a4b45b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:34:30Z",
+      "side": 1,
+      "message": "Done. Made this change only with the gerrit version detect",
+      "parentUuid": "45d64005_fdc6d445",
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2aa828a1_cab1f2f4",
@@ -65,6 +83,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5e01112_4e05f61f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:34:30Z",
+      "side": 1,
+      "message": "The default behaviour currently inscribed does not change. There are nevertheless parameters that enhance what can be done from this point forward",
+      "parentUuid": "5e71df03_3eefc6bb",
+      "range": {
+        "startLine": 11,
+        "startChar": 45,
+        "endLine": 12,
+        "endChar": 24
+      },
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98590e9a_91fe026b",
@@ -78,6 +120,30 @@
       "writtenOn": "2023-12-27T14:28:41Z",
       "side": 1,
       "message": "Gerrit",
+      "range": {
+        "startLine": 13,
+        "startChar": 43,
+        "endLine": 13,
+        "endChar": 49
+      },
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "413e121a_b1a04a08",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:34:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98590e9a_91fe026b",
       "range": {
         "startLine": 13,
         "startChar": 43,
@@ -105,6 +171,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b590a9d0_c6b02a95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:34:30Z",
+      "side": 1,
+      "message": "Let\u0027s have a discussion on Tuesday regarding this",
+      "parentUuid": "88e9d982_d29df48a",
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5920c9e_1c347e09",
@@ -118,6 +202,24 @@
       "writtenOn": "2023-12-27T14:28:41Z",
       "side": 1,
       "message": "Is this related to this change?",
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e9452f7_50a7e18a",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:34:30Z",
+      "side": 1,
+      "message": "This was a leftover from the previous version of the change. Removed",
+      "parentUuid": "c5920c9e_1c347e09",
       "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
