@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff5cc90d_fea341ca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-04T12:57:29Z",
+      "side": 1,
+      "message": "Missing ending `.` on the paragraph.",
+      "range": {
+        "startLine": 12,
+        "startChar": 11,
+        "endLine": 12,
+        "endChar": 12
+      },
+      "revId": "94b9d9c88cdd27702cac8d5597b71a27f9ccf6ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fd4ac0d_3ea92a12",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-04T12:57:29Z",
+      "side": 1,
+      "message": "The form is `Bug: Issue 317963957` and should be put at L15.",
+      "revId": "94b9d9c88cdd27702cac8d5597b71a27f9ccf6ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "163c0d1a_30c21714",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-04T12:57:29Z",
+      "side": 1,
+      "message": "That looks an expensive approach to removing the components, every time we will add a new plugin we would have to add it here.\n\nWhy don\u0027t you just create an ad-hoc folder by default under the `$DEPLOY_LOCATION` and store all the files there instead? Then the clean is going to be a lot easier: just remove recursively the ad-hoc folder.",
+      "range": {
+        "startLine": 201,
+        "startChar": 0,
+        "endLine": 213,
+        "endChar": 49
+      },
+      "revId": "94b9d9c88cdd27702cac8d5597b71a27f9ccf6ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
