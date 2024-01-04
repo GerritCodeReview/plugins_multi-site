@@ -34,6 +34,24 @@
       "parentUuid": "8596a3a6_528bc3d1",
       "revId": "b42c194229f837f4f07eb3e1264ba71ee2f85bbe",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc2c2a48_d8bfb31c",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:32:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8596a3a6_528bc3d1",
+      "revId": "b42c194229f837f4f07eb3e1264ba71ee2f85bbe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

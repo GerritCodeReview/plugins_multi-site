@@ -16,6 +16,24 @@
       "message": "nit: output in L405 is descriptive enough, we don\u0027t need to duplicate the same message in the comment",
       "revId": "d1b477b95504f22291b4c59beef1eb224b86d2f2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20b32909_6d59bfec",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:32:06Z",
+      "side": 1,
+      "message": "This was not added, and is as is on the original code. Nevertheless I can remove this duplication",
+      "parentUuid": "b8d5d88a_ebaef5bd",
+      "revId": "d1b477b95504f22291b4c59beef1eb224b86d2f2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
