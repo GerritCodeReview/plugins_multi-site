@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7469da8e_a46ff39a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-04T13:08:53Z",
+      "side": 1,
+      "message": "Missing `.` at the end of the paragraph.",
+      "revId": "4a6ac2969b26870aedc442f70ee8a4a607a74a8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9a91dc7_9f881726",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-01-04T13:08:53Z",
+      "side": 1,
+      "message": "Just one small nit.",
+      "revId": "4a6ac2969b26870aedc442f70ee8a4a607a74a8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
