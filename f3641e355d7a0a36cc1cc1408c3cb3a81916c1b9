@@ -34,6 +34,24 @@
       "parentUuid": "0e9238e5_c518044a",
       "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b754ebd_79f17fd4",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:54:58Z",
+      "side": 0,
+      "message": "The setup does not require to base itself on the git version, as the release itself indicates the compatible version of the plugins needed. Additionally, the plugins that depend on the variable are not involved in the testing needs. Multi-site family plugins and by default code based (local build) and not affected by this.",
+      "parentUuid": "0e9238e5_c518044a",
+      "revId": "f3641e355d7a0a36cc1cc1408c3cb3a81916c1b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

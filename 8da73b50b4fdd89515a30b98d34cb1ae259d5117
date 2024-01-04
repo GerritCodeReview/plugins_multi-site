@@ -46,6 +46,30 @@
       },
       "revId": "8da73b50b4fdd89515a30b98d34cb1ae259d5117",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b73930a_6238e41e",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:54:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83877665_38590e13",
+      "range": {
+        "startLine": 308,
+        "startChar": 1,
+        "endLine": 310,
+        "endChar": 158
+      },
+      "revId": "8da73b50b4fdd89515a30b98d34cb1ae259d5117",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

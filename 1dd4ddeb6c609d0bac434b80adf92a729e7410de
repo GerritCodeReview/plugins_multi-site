@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea9f3448_9603963c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:54:58Z",
+      "side": 1,
+      "message": "Was split",
+      "parentUuid": "45d64005_fdc6d445",
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2aa828a1_cab1f2f4",
@@ -107,6 +125,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1943d4a3_34218531",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:54:58Z",
+      "side": 1,
+      "message": "This change was rescoped to only include the version detection",
+      "parentUuid": "5e71df03_3eefc6bb",
+      "range": {
+        "startLine": 11,
+        "startChar": 45,
+        "endLine": 12,
+        "endChar": 24
+      },
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98590e9a_91fe026b",
@@ -141,6 +183,30 @@
         "id": 1090261
       },
       "writtenOn": "2024-01-04T11:34:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98590e9a_91fe026b",
+      "range": {
+        "startLine": 13,
+        "startChar": 43,
+        "endLine": 13,
+        "endChar": 49
+      },
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5e689e7_e63f0aac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:54:58Z",
       "side": 1,
       "message": "Done",
       "parentUuid": "98590e9a_91fe026b",
@@ -219,6 +285,24 @@
       "writtenOn": "2024-01-04T11:34:30Z",
       "side": 1,
       "message": "This was a leftover from the previous version of the change. Removed",
+      "parentUuid": "c5920c9e_1c347e09",
+      "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0796acd_7190b853",
+        "filename": "setup_local_env/setup.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1090261
+      },
+      "writtenOn": "2024-01-04T11:54:58Z",
+      "side": 1,
+      "message": "It was a leftover of the previous implementation. Was removed",
       "parentUuid": "c5920c9e_1c347e09",
       "revId": "1dd4ddeb6c609d0bac434b80adf92a729e7410de",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
