@@ -19,10 +19,13 @@ import com.google.gerrit.server.util.OneOffRequestContext;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.UpToDateChecker;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * Base class to handle forwarded indexing. This class is meant to be extended by classes used on
@@ -37,6 +40,7 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
   private final int maxTries;
   private final ScheduledExecutorService indexExecutor;
   protected final OneOffRequestContext oneOffCtx;
+  protected final Map<T, IndexingRetry> indexingRetryTaskMap = new ConcurrentHashMap<>();
 
   ForwardedIndexingHandlerWithRetries(
       ScheduledExecutorService indexExecutor,
@@ -55,22 +59,34 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
 
   protected abstract String indexName();
 
-  protected abstract void attemptToIndex(T id, Optional<E> indexEvent, int retryCount);
+  protected abstract void attemptToIndex(T id);
 
-  protected boolean rescheduleIndex(T id, Optional<E> indexEvent, int retryCount) {
-    if (retryCount > maxTries) {
+  protected boolean rescheduleIndex(T id) {
+    IndexingRetry retry = indexingRetryTaskMap.get(id);
+    if (retry == null) {
+      log.warn(
+          "{} {} successfully indexed by different task, rescheduling isn't needed",
+          indexName(),
+          id);
+      return true;
+    }
+    if (retry.getRetryNumber() > maxTries) {
       log.error(
           "{} {} could not be indexed after {} retries. {} index could be stale.",
           indexName(),
           id,
-          retryCount,
+          retry.getRetryNumber(),
           indexName());
+      if (!indexingRetryTaskMap.remove(id, retry)) {
+        log.debug(
+            "{} {} not removed from retry map because of racy addition of a new retry indexing retry");
+      }
       return false;
     }
 
     log.warn(
         "Retrying for the #{} time to index {} {} after {} msecs",
-        retryCount,
+        retry.getRetryNumber(),
         indexName(),
         id,
         retryInterval);
@@ -80,7 +96,7 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
             () -> {
               try (ManualRequestContext ctx = oneOffCtx.open()) {
                 Context.setForwardedEvent(true);
-                attemptToIndex(id, indexEvent, retryCount);
+                attemptToIndex(id);
               } catch (Exception e) {
                 log.warn("{} {} could not be indexed", indexName(), id, e);
               }
@@ -90,20 +106,67 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
     return true;
   }
 
-  public final void reindexAndCheckIsUpToDate(
-      T id, Optional<E> indexEvent, UpToDateChecker<E> upToDateChecker, int retryCount) {
-    reindex(id);
-
-    if (!upToDateChecker.isUpToDate(indexEvent)) {
-      log.warn("{} {} is not up-to-date. Rescheduling", indexName(), id);
-      rescheduleIndex(id, indexEvent, retryCount + 1);
+  public void scheduleIndexing(T id, Optional<E> event, Consumer<T> indexOnce) {
+    IndexingRetry retry = new IndexingRetry(event, 0);
+    if (indexingRetryTaskMap.put(id, retry) != null) {
+      indexOnce.accept(id);
+      log.info(
+          "Skipping indexing because there is already a running task for the specified id. Index name: {}, task id: {}",
+          indexName(),
+          id);
       return;
     }
-    if (retryCount > 0) {
+    attemptToIndex(id);
+  }
+
+  public final void reindexAndCheckIsUpToDate(T id, UpToDateChecker<E> upToDateChecker) {
+    reindex(id);
+    IndexingRetry retry = indexingRetryTaskMap.get(id);
+    if (retry == null) {
+      log.warn("{} {} successfully indexed by different task", indexName(), id);
+      return;
+    }
+    if (!upToDateChecker.isUpToDate(retry.getEvent())) {
+      log.warn("{} {} is not up-to-date. Rescheduling", indexName(), id);
+      retry.incrementRetryNumber();
+      rescheduleIndex(id);
+      return;
+    }
+
+    if (retry.getRetryNumber() > 0) {
       log.warn(
-          "{} {} has been eventually indexed after {} attempt(s)", indexName(), id, retryCount);
+          "{} {} has been eventually indexed after {} attempt(s)",
+          indexName(),
+          id,
+          retry.getRetryNumber());
     } else {
       log.debug("{} {} successfully indexed", indexName(), id);
+    }
+    if (!indexingRetryTaskMap.remove(id, retry)) {
+      log.debug(
+          "{} {} not removed from retry map because of racy addition of a new retry indexing retry");
+    }
+  }
+
+  public class IndexingRetry {
+    private final Optional<E> event;
+    private int retryNumber;
+
+    public IndexingRetry(Optional<E> event, int retryNumber) {
+      this.event = event;
+      this.retryNumber = retryNumber;
+    }
+
+    public int getRetryNumber() {
+      return retryNumber;
+    }
+
+    public Optional<E> getEvent() {
+      return event;
+    }
+
+    public void incrementRetryNumber() {
+      ++retryNumber;
     }
   }
 }

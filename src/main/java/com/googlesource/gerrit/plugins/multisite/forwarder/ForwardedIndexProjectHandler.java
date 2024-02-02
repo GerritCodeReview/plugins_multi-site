@@ -52,7 +52,7 @@ public class ForwardedIndexProjectHandler
 
   @Override
   protected void doIndex(String projectName, Optional<ProjectIndexEvent> event) {
-    attemptToIndex(projectName, event, 0);
+    scheduleIndexing(projectName, event, this::reindex);
   }
 
   @Override
@@ -66,8 +66,8 @@ public class ForwardedIndexProjectHandler
   }
 
   @Override
-  protected void attemptToIndex(String id, Optional<ProjectIndexEvent> indexEvent, int retryCount) {
-    reindexAndCheckIsUpToDate(id, indexEvent, projectChecker, retryCount);
+  protected void attemptToIndex(String id) {
+    reindexAndCheckIsUpToDate(id, projectChecker);
   }
 
   @Override
