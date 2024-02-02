@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bf7f093_18c15a00",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-02T23:50:41Z",
+      "side": 1,
+      "message": "Change indexing",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 17
+      },
+      "revId": "a90d434affdbb97040395a15b41f0dbd6d1057b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "646e5705_e536ebc3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-02T23:50:41Z",
+      "side": 1,
+      "message": "the target branch of the change",
+      "range": {
+        "startLine": 14,
+        "startChar": 32,
+        "endLine": 14,
+        "endChar": 42
+      },
+      "revId": "a90d434affdbb97040395a15b41f0dbd6d1057b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fd887e0_21c6e3c3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-02T23:50:41Z",
+      "side": 1,
+      "message": "`/meta` NoteDb version",
+      "range": {
+        "startLine": 15,
+        "startChar": 56,
+        "endLine": 15,
+        "endChar": 60
+      },
+      "revId": "a90d434affdbb97040395a15b41f0dbd6d1057b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27b5557c_3031104a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-02T23:50:41Z",
+      "side": 1,
+      "message": "The above logic has a risk: if the change keeps on being update, it may end up being never reindexed.\n\nWe should also do a reindex every time that we discard duplicates, so that we are sure that at least one indexing operation has happened even if the change keeps on being updated.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 47
+      },
+      "revId": "a90d434affdbb97040395a15b41f0dbd6d1057b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58531b38_91f0195b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-02T23:50:41Z",
+      "side": 1,
+      "message": "nit: empty line",
+      "revId": "a90d434affdbb97040395a15b41f0dbd6d1057b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
