@@ -41,6 +41,7 @@ import com.googlesource.gerrit.plugins.multisite.index.ChangeChecker;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeCheckerImpl;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 import org.junit.Before;
 import org.junit.Rule;
@@ -95,6 +96,10 @@ public class ForwardedIndexChangeHandlerTest {
     handler =
         new ForwardedIndexChangeHandler(
             indexerMock, configurationMock, indexExecutorMock, ctxMock, changeCheckerFactoryMock);
+    when(indexExecutorMock.schedule(any(Runnable.class), anyLong(), any()))
+        .thenAnswer(
+            invocation ->
+                new CompletedScheduledFuture<>(CompletableFuture.completedFuture("Test value")));
   }
 
   @Test
