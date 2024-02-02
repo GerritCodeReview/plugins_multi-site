@@ -56,17 +56,32 @@ public class ForwardedIndexChangeHandler
 
   @Override
   protected void doIndex(String id, Optional<ChangeIndexEvent> indexEvent) {
-    attemptToIndex(id, indexEvent, 0);
+    scheduleIndexing(id, indexEvent, this::reindexIfConsistent);
+  }
+
+  private void reindexIfConsistent(String id) {
+    if (isChangeConsistent(id)) {
+      reindex(id);
+    }
+  }
+
+  private boolean isChangeConsistent(String id) {
+    ChangeChecker checker = changeCheckerFactory.create(id);
+    Optional<ChangeNotes> changeNotes = checker.getChangeNotes();
+    boolean changeIsPresent = changeNotes.isPresent();
+    boolean changeIsConsistent = checker.isChangeConsistent();
+
+    return changeIsPresent && changeIsConsistent;
   }
 
   @Override
-  protected void attemptToIndex(String id, Optional<ChangeIndexEvent> indexEvent, int retryCount) {
+  protected void attemptToIndex(String id, IndexingRetry retry) {
     ChangeChecker checker = changeCheckerFactory.create(id);
     Optional<ChangeNotes> changeNotes = checker.getChangeNotes();
     boolean changeIsPresent = changeNotes.isPresent();
     boolean changeIsConsistent = checker.isChangeConsistent();
     if (changeIsPresent && changeIsConsistent) {
-      reindexAndCheckIsUpToDate(id, indexEvent, checker, retryCount);
+      reindexAndCheckIsUpToDate(id, checker);
     } else {
       log.warn(
           "Change {} {} in local Git repository (event={}) after {} attempt(s)",
@@ -74,16 +89,18 @@ public class ForwardedIndexChangeHandler
           !changeIsPresent
               ? "not present yet"
               : (changeIsConsistent ? "is" : "is not") + " consistent",
-          indexEvent,
-          retryCount);
-      if (!rescheduleIndex(id, indexEvent, retryCount + 1)) {
+          retry.getEvent(),
+          retry.getRetryNumber());
+
+      retry.incrementRetryNumber();
+      if (!rescheduleIndex(id)) {
         log.error(
             "Change {} {} in the local Git repository (event={})",
             id,
             !changeIsPresent
                 ? "could not be found"
                 : (changeIsConsistent ? "was" : "was not") + " consistent",
-            indexEvent);
+            retry.getEvent());
       }
     }
   }
