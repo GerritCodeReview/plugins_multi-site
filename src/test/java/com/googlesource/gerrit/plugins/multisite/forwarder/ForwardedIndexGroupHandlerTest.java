@@ -31,7 +31,9 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEven
 import com.googlesource.gerrit.plugins.multisite.index.TestGroupChecker;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import org.junit.Before;
 import org.junit.Rule;
@@ -55,6 +57,8 @@ public class ForwardedIndexGroupHandlerTest {
   private String uuid;
   private static final int RETRY_INTERVAL = 1000;
   private static final int MAX_TRIES = 2;
+  private ScheduledFuture scheduledFuture =
+      new CompletedScheduledFuture<>(CompletableFuture.completedFuture("Test value"));
 
   @Before
   public void setUp() throws Exception {
@@ -62,6 +66,10 @@ public class ForwardedIndexGroupHandlerTest {
     when(index.numStripedLocks()).thenReturn(10);
     when(index.retryInterval()).thenReturn(RETRY_INTERVAL);
     when(index.maxTries()).thenReturn(MAX_TRIES);
+
+    when(indexExecutorMock.schedule(
+            any(Runnable.class), eq(new Long(RETRY_INTERVAL)), eq(TimeUnit.MILLISECONDS)))
+        .thenReturn(scheduledFuture);
     handler = groupHandler(true);
     uuid = "123";
   }
