@@ -31,6 +31,7 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEven
 import com.googlesource.gerrit.plugins.multisite.index.TestGroupChecker;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import org.junit.Before;
@@ -62,6 +63,12 @@ public class ForwardedIndexGroupHandlerTest {
     when(index.numStripedLocks()).thenReturn(10);
     when(index.retryInterval()).thenReturn(RETRY_INTERVAL);
     when(index.maxTries()).thenReturn(MAX_TRIES);
+
+    when(indexExecutorMock.schedule(
+            any(Runnable.class), eq(Long.valueOf(RETRY_INTERVAL)), eq(TimeUnit.MILLISECONDS)))
+        .thenAnswer(
+            invocation ->
+                new CompletedScheduledFuture<>(CompletableFuture.completedFuture("Test value")));
     handler = groupHandler(true);
     uuid = "123";
   }
