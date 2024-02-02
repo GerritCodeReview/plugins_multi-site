@@ -19,7 +19,9 @@ import com.google.gerrit.server.util.OneOffRequestContext;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.UpToDateChecker;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -37,6 +39,7 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
   private final int maxTries;
   private final ScheduledExecutorService indexExecutor;
   protected final OneOffRequestContext oneOffCtx;
+  private final Map<T, Future<?>> indexingRetryTaskMap = new ConcurrentHashMap<>();
 
   ForwardedIndexingHandlerWithRetries(
       ScheduledExecutorService indexExecutor,
@@ -65,6 +68,11 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
           id,
           retryCount,
           indexName());
+      Future<?> task = indexingRetryTaskMap.get(id);
+      if (task != null) {
+        return indexingRetryTaskMap.remove(id, task);
+      }
+
       return false;
     }
 
@@ -74,7 +82,19 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
         indexName(),
         id,
         retryInterval);
-    @SuppressWarnings("unused")
+
+    if (Thread.currentThread().isInterrupted()) {
+      log.trace("Stopping canceled task {}:{}", indexName(), id);
+      return false;
+    }
+
+    if (cancelPreviousTask(id)) {
+      log.trace(
+          "Cancelling the previous task for index '{}' with id '{}', as a newer indexing retry has been initiated.",
+          indexName(),
+          id);
+    }
+
     Future<?> possiblyIgnoredError =
         indexExecutor.schedule(
             () -> {
@@ -87,7 +107,17 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
             },
             retryInterval,
             TimeUnit.MILLISECONDS);
+    indexingRetryTaskMap.put(id, possiblyIgnoredError);
     return true;
+  }
+
+  private boolean cancelPreviousTask(T id) {
+    Future<?> task = indexingRetryTaskMap.get(id);
+    if (task != null) {
+      task.cancel(true);
+      return indexingRetryTaskMap.remove(id, task);
+    }
+    return false;
   }
 
   public final void reindexAndCheckIsUpToDate(
@@ -99,6 +129,14 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
       rescheduleIndex(id, indexEvent, retryCount + 1);
       return;
     }
+
+    if (cancelPreviousTask(id)) {
+      log.trace(
+          "Cancelling the previous task for index '{}' with id '{}', due to successful completion of the indexing operation.",
+          indexName(),
+          id);
+    }
+
     if (retryCount > 0) {
       log.warn(
           "{} {} has been eventually indexed after {} attempt(s)", indexName(), id, retryCount);
