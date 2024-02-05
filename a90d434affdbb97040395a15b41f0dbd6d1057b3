@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6438088_1ec6a12f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-05T10:55:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bf7f093_18c15a00",
+      "range": {
+        "startLine": 7,
+        "startChar": 9,
+        "endLine": 7,
+        "endChar": 17
+      },
+      "revId": "a90d434affdbb97040395a15b41f0dbd6d1057b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "646e5705_e536ebc3",
@@ -47,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2204c55_bc276c55",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-05T10:55:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "646e5705_e536ebc3",
+      "range": {
+        "startLine": 14,
+        "startChar": 32,
+        "endLine": 14,
+        "endChar": 42
+      },
+      "revId": "a90d434affdbb97040395a15b41f0dbd6d1057b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fd887e0_21c6e3c3",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-02-02T23:50:41Z",
       "side": 1,
       "message": "`/meta` NoteDb version",
+      "range": {
+        "startLine": 15,
+        "startChar": 56,
+        "endLine": 15,
+        "endChar": 60
+      },
+      "revId": "a90d434affdbb97040395a15b41f0dbd6d1057b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72bd5081_ebd92021",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-05T10:55:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fd887e0_21c6e3c3",
       "range": {
         "startLine": 15,
         "startChar": 56,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7d0bdfe5_d5b4333d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-05T10:55:28Z",
+      "side": 1,
+      "message": "Each indexing retry first is doing the indexing and then it\u0027s checking if the change is up to date[1][2][3]. This means that if we had 30 retries, change was reindexed 30 time ;)\n\n1. https://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/stable-3.7/src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java#95\n\n2. https://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/stable-3.7/src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java#97\n\n3. https://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/stable-3.7/src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandler.java#69",
+      "parentUuid": "27b5557c_3031104a",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 47
+      },
+      "revId": "a90d434affdbb97040395a15b41f0dbd6d1057b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "58531b38_91f0195b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
         "patchSetId": 1
@@ -106,6 +202,24 @@
       "writtenOn": "2024-02-02T23:50:41Z",
       "side": 1,
       "message": "nit: empty line",
+      "revId": "a90d434affdbb97040395a15b41f0dbd6d1057b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "018888d5_bf1590b9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-05T10:55:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58531b38_91f0195b",
       "revId": "a90d434affdbb97040395a15b41f0dbd6d1057b3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
