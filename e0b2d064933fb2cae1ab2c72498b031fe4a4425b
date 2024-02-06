@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5142787e_a1dd052c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2024-02-06T12:58:33Z",
+      "side": 1,
+      "message": "shouldn\u0027t we cancel that future before it\u0027s removed, just in case it just got started between the `get` and `remove`?\n\nif yes, we could then just reuse `cancelPreviousTask()` here",
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6934b1b_c975d883",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2024-02-06T12:58:33Z",
+      "side": 1,
+      "message": "just a _sanity check_: we\u0027re here _killing_ the task, even if it\u0027s running and started processing the data. Are we sure that this is _safe_ and will not lead to index corruption?",
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2140de5_2be0f63b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/CompletedScheduledFuture.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2024-02-06T12:58:33Z",
+      "side": 1,
+      "message": "nit: how about prefixing class name with `Test` to indicate that it\u0027s only for the testing purposes?",
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
