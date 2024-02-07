@@ -104,6 +104,24 @@
       "parentUuid": "a2140de5_2be0f63b",
       "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26de21d5_0238489f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/CompletedScheduledFuture.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2024-02-07T14:25:45Z",
+      "side": 1,
+      "message": "sure, for bazel it may not have any difference, the thing is that it may pop in the code completions which maybe confusing.",
+      "parentUuid": "37680b9c_11055485",
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
