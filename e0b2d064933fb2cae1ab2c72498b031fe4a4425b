@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33402d79_21d18a3a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-07T14:17:57Z",
+      "side": 1,
+      "message": "We want to make sure that we will not kill another task when this one is stopping due to max tries. This task will not be rescheduled so there is no point to cancel it",
+      "parentUuid": "5142787e_a1dd052c",
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6934b1b_c975d883",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6dde3400_1c6a5457",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-07T14:17:57Z",
+      "side": 1,
+      "message": "The Future.cancel() method does not forcibly stop a task in the middle of execution. Instead, it attempts to cancel the execution of the task by setting its cancelled status to true.\n\nIf the task has already started, then the cancel() method\u0027s effect depends on the value of the mayInterruptIfRunning parameter:\n\n- If mayInterruptIfRunning is true, then the method will attempt to stop the task by interrupting the thread in which it\u0027s running. However, it\u0027s up to the implementation of the task to respond to the interruption appropriately. If the task doesn\u0027t handle interruptions (by checking the interrupted status and exiting if interrupted), then it won\u0027t be stopped.\n\n- If mayInterruptIfRunning is false, then the method won\u0027t interrupt the thread, and if the task has already started, it won\u0027t be stopped.\n\nIn summary, Future.cancel() can\u0027t forcibly stop a task in the middle of execution. It can only attempt to stop it, and whether the task actually stops depends on how the task is implemented.",
+      "parentUuid": "a6934b1b_c975d883",
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a2140de5_2be0f63b",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/CompletedScheduledFuture.java",
         "patchSetId": 2
@@ -48,6 +84,24 @@
       "writtenOn": "2024-02-06T12:58:33Z",
       "side": 1,
       "message": "nit: how about prefixing class name with `Test` to indicate that it\u0027s only for the testing purposes?",
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37680b9c_11055485",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/CompletedScheduledFuture.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-07T14:17:57Z",
+      "side": 1,
+      "message": "It\u0027s in the `src/test/java` so it cannot be reused outside of tests",
+      "parentUuid": "a2140de5_2be0f63b",
       "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
