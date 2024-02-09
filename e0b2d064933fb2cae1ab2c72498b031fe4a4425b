@@ -61,6 +61,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4a71c46a_fbe3311f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-02-09T12:10:19Z",
+      "side": 1,
+      "message": "How can the current thread be interrupted?\nthat would be the thread running the `ForwardedIndexingHandlerWithRetries`, not the thread running the `task` right?",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 49
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bc6826f_28dd1fd1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-02-09T12:10:19Z",
+      "side": 1,
+      "message": "How do we infer that the task is `canceled` here?",
+      "range": {
+        "startLine": 87,
+        "startChar": 6,
+        "endLine": 87,
+        "endChar": 65
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a6934b1b_c975d883",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
         "patchSetId": 2
@@ -114,6 +160,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "135c45f8_6822086a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-02-09T12:10:19Z",
+      "side": 1,
+      "message": "Should we check the result of the `cancel()` here?\n`false` would mean that the task couldn\u0027t be cancelled, yet we are removing it from the map.\n\nI think it is still OK to schedule a new one and let the old one continue (even though it is destined to fail), however perhaps we could log this case to make it easier to debug reindexing failures?",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 24
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a2140de5_2be0f63b",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/CompletedScheduledFuture.java",
         "patchSetId": 2
@@ -161,6 +230,115 @@
       "side": 1,
       "message": "sure, for bazel it may not have any difference, the thing is that it may pop in the code completions which maybe confusing.",
       "parentUuid": "37680b9c_11055485",
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c70cb4ad_43531756",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandlerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-02-09T12:10:19Z",
+      "side": 1,
+      "message": "Have you considered adding a change to test the new functionality?",
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46503e5c_96499a1d",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandlerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-02-09T12:10:19Z",
+      "side": 1,
+      "message": "nit: might be final",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 43
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1206ee25_452dedbd",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandlerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-02-09T12:10:19Z",
+      "side": 1,
+      "message": "This warns with:\n\n```\nUnchecked assignment: \u0027java.util.concurrent.ScheduledFuture\u0027 to \u0027java.util.concurrent.ScheduledFuture\u003c?\u003e\u0027 \n```",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 37
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baf4c90d_7fc2d518",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexGroupHandlerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-02-09T12:10:19Z",
+      "side": 1,
+      "message": "nit: might be final",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 43
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75f1e67d_a7c490d6",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexGroupHandlerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-02-09T12:10:19Z",
+      "side": 1,
+      "message": "This is deprecated for removal:\n\n```\n    @Deprecated(since\u003d\"9\", forRemoval \u003d true)\n```\n\nConsider using `Long.valueOf()` instead",
+      "range": {
+        "startLine": 71,
+        "startChar": 40,
+        "endLine": 71,
+        "endChar": 60
+      },
       "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
