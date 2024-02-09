@@ -38,6 +38,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5552f5ee_b7b73ccb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2024-02-09T11:46:19Z",
+      "side": 1,
+      "message": "I think this `return` statement is wrong.\nIf we successfully remove the `task` from the map, we are inherently causing the `rescheduleIndex` to return `true`, thus scheduling the task one more time, erroneously.",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 53
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a6934b1b_c975d883",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
         "patchSetId": 2
