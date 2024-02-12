@@ -347,6 +347,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7146e77_c5de4825",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandlerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-12T12:12:19Z",
+      "side": 1,
+      "message": "I was thinking about that. But it would require to expose internal state and write white box tests",
+      "parentUuid": "c70cb4ad_43531756",
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46503e5c_96499a1d",
