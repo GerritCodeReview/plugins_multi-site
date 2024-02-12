@@ -59,6 +59,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b13076fc_4aa2faec",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-12T11:52:42Z",
+      "side": 1,
+      "message": "Good catch!",
+      "parentUuid": "5552f5ee_b7b73ccb",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 53
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a71c46a_fbe3311f",
@@ -84,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a8cb3b0b_ca99cb4e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-12T11:52:42Z",
+      "side": 1,
+      "message": "if you check how the task is scheduled in L100 you will notice that we are creating anonymous class which is calling methods from `ForwardedIndexingHandlerWithRetries`\nthis means that we are cancelling thread which is executing this anonymous class instance not the one which is running `ForwardedIndexingHandlerWithRetries`",
+      "parentUuid": "4a71c46a_fbe3311f",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 49
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3bc6826f_28dd1fd1",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
         "patchSetId": 2
@@ -95,6 +143,30 @@
       "writtenOn": "2024-02-09T12:10:19Z",
       "side": 1,
       "message": "How do we infer that the task is `canceled` here?",
+      "range": {
+        "startLine": 87,
+        "startChar": 6,
+        "endLine": 87,
+        "endChar": 65
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9e1e9dc_3882fe20",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-12T11:52:42Z",
+      "side": 1,
+      "message": "Setting `cancel(true)` does two things:\n\n* If the task has not started when cancel is called, this task will never start.\n\n* If the task has already started, then the `mayInterruptIfRunning` parameter determines is set to true.\n\nWe can check if `mayInterruptIfRunning` was set to true by calling:\n`Thread.currentThread().isInterrupted()`\n\nThis mean that we are checking if the task wasn\u0027t cancelled after it was started",
+      "parentUuid": "3bc6826f_28dd1fd1",
       "range": {
         "startLine": 87,
         "startChar": 6,
@@ -171,6 +243,30 @@
       "writtenOn": "2024-02-09T12:10:19Z",
       "side": 1,
       "message": "Should we check the result of the `cancel()` here?\n`false` would mean that the task couldn\u0027t be cancelled, yet we are removing it from the map.\n\nI think it is still OK to schedule a new one and let the old one continue (even though it is destined to fail), however perhaps we could log this case to make it easier to debug reindexing failures?",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 24
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27018104_adb13df1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-12T11:52:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "135c45f8_6822086a",
       "range": {
         "startLine": 117,
         "startChar": 0,
@@ -274,6 +370,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc8ee50a_197dd654",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandlerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-12T11:52:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46503e5c_96499a1d",
+      "range": {
+        "startLine": 87,
+        "startChar": 0,
+        "endLine": 87,
+        "endChar": 43
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1206ee25_452dedbd",
@@ -287,6 +407,30 @@
       "writtenOn": "2024-02-09T12:10:19Z",
       "side": 1,
       "message": "This warns with:\n\n```\nUnchecked assignment: \u0027java.util.concurrent.ScheduledFuture\u0027 to \u0027java.util.concurrent.ScheduledFuture\u003c?\u003e\u0027 \n```",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 37
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a22b0338_b4d1d172",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandlerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-12T11:52:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1206ee25_452dedbd",
       "range": {
         "startLine": 102,
         "startChar": 0,
@@ -320,6 +464,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc3d9f13_3be25338",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexGroupHandlerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-12T11:52:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "baf4c90d_7fc2d518",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 43
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75f1e67d_a7c490d6",
@@ -333,6 +501,30 @@
       "writtenOn": "2024-02-09T12:10:19Z",
       "side": 1,
       "message": "This is deprecated for removal:\n\n```\n    @Deprecated(since\u003d\"9\", forRemoval \u003d true)\n```\n\nConsider using `Long.valueOf()` instead",
+      "range": {
+        "startLine": 71,
+        "startChar": 40,
+        "endLine": 71,
+        "endChar": 60
+      },
+      "revId": "e0b2d064933fb2cae1ab2c72498b031fe4a4425b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7bb6bae_fc74484d",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexGroupHandlerTest.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-12T11:52:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75f1e67d_a7c490d6",
       "range": {
         "startLine": 71,
         "startChar": 40,
