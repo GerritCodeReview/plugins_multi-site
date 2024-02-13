@@ -191,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d357e89a_55c8a34f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-13T21:43:59Z",
+      "side": 1,
+      "message": "_retrying_ \u003d\u003e _trying_\n\nYou should never ever have two pending indexing task for the same change, the logic should be the following:\n- If you have a pending indexing task and you receiving a new indexing event \u003d\u003e consolidate them into a single indexing task\n- Consider always the SHA1 (target branch and /meta) of the latest indexing task received\n- Index _just-in-case_ whenever a consolidation happens, for preventing the continuous procrastination of indexing events\n\nIn a nutshell, you just need to keep a map of indexed by project+change-id of the indexing task.\n\nI do not understand the current implementation where you keep on scheduling and cancelling indexing tasks in the executor, looks to me an unneeded complication.",
+      "parentUuid": "7d0bdfe5_d5b4333d",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 47
+      },
+      "revId": "a90d434affdbb97040395a15b41f0dbd6d1057b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "58531b38_91f0195b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
         "patchSetId": 1

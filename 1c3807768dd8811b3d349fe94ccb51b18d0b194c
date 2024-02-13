@@ -3,6 +3,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "db58434e_0979c93c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-13T21:43:59Z",
+      "side": 1,
+      "message": "Avoid duplicate indexing tasks",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 54
+      },
+      "revId": "1c3807768dd8811b3d349fe94ccb51b18d0b194c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50374d15_acfbc03e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-13T21:43:59Z",
+      "side": 1,
+      "message": "_\"already\"_ seems redundant here",
+      "range": {
+        "startLine": 16,
+        "startChar": 39,
+        "endLine": 16,
+        "endChar": 46
+      },
+      "revId": "1c3807768dd8811b3d349fe94ccb51b18d0b194c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3aedad29_00aeec4b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-13T21:43:59Z",
+      "side": 1,
+      "message": "some of them except the last one failing",
+      "range": {
+        "startLine": 20,
+        "startChar": 25,
+        "endLine": 20,
+        "endChar": 50
+      },
+      "revId": "1c3807768dd8811b3d349fe94ccb51b18d0b194c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65c4d324_8761d21c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-13T21:43:59Z",
+      "side": 1,
+      "message": "Why would we need to cancel tasks? With the map, we can already make sure that there is only one retrying task per change and we can prevent the multiple scheduling.\n\nI find quite confusing to schedule duplicates and then cancel them at the execution time.",
+      "range": {
+        "startLine": 91,
+        "startChar": 8,
+        "endLine": 91,
+        "endChar": 26
+      },
+      "revId": "1c3807768dd8811b3d349fe94ccb51b18d0b194c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80c99377_df111134",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
         "patchSetId": 4
@@ -20,6 +112,46 @@
         "endLine": 93,
         "endChar": 21
       },
+      "revId": "1c3807768dd8811b3d349fe94ccb51b18d0b194c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c774333a_8315da68",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-13T21:43:59Z",
+      "side": 1,
+      "message": "Why is this needed?",
+      "range": {
+        "startLine": 114,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 3
+      },
+      "revId": "1c3807768dd8811b3d349fe94ccb51b18d0b194c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2ecf5b3_9d8f31a5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/forwarder/CompletedScheduledFuture.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-13T21:43:59Z",
+      "side": 1,
+      "message": "Why is this class needed?",
       "revId": "1c3807768dd8811b3d349fe94ccb51b18d0b194c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
