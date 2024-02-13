@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80c99377_df111134",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2024-02-13T17:00:18Z",
+      "side": 1,
+      "message": "nit: IMO would be better to use past tense, as the task at this point should be cancelled, so s/Cancelling/Cancelled/. Same in line 139",
+      "range": {
+        "startLine": 93,
+        "startChar": 11,
+        "endLine": 93,
+        "endChar": 21
+      },
+      "revId": "1c3807768dd8811b3d349fe94ccb51b18d0b194c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
