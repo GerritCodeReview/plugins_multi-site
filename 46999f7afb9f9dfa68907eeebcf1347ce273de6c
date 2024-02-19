@@ -1,0 +1,268 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01daf8b1_4272ceca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-19T20:19:02Z",
+      "side": 1,
+      "message": "one pending indexing task",
+      "range": {
+        "startLine": 25,
+        "startChar": 16,
+        "endLine": 25,
+        "endChar": 33
+      },
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03f381c5_6ec31c62",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-19T20:19:02Z",
+      "side": 1,
+      "message": "There should only be one, because of the previous point. So it should be written as _\"the previous indexing task pending\"_",
+      "range": {
+        "startLine": 26,
+        "startChar": 54,
+        "endLine": 27,
+        "endChar": 13
+      },
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52b9dd90_1c0ac4b0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-19T20:19:02Z",
+      "side": 1,
+      "message": "nit: this would also do the first-time indexing, so _index_ is more appropriate IMHO\n\n```suggestion\n  private void indexIfConsistent(String id) {\n```",
+      "range": {
+        "startLine": 62,
+        "startChar": 15,
+        "endLine": 62,
+        "endChar": 22
+      },
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c7f9bfc_7df2b9c9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-19T20:19:02Z",
+      "side": 1,
+      "message": "`changeNotes` can be inlined.\n\n\n```suggestion\n    boolean changeIsPresent \u003d checker.getChangeNotes().isPresent();\n```",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 54
+      },
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9caec80a_0b9e934f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexGroupHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-19T20:19:02Z",
+      "side": 1,
+      "message": "Possibly unrelated: shouldn\u0027t we doing something similar to what we do in the case of changes?\n\n```\nif(present and consistent) {\n  reindexAndCheckIsUpToDate(uuid, groupChecker);\n} else {\n  retry.incrementRetryNumber();\n  rescheduleIndex(uuid);\n}\n```",
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecc95260_719fcb55",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-19T20:19:02Z",
+      "side": 1,
+      "message": "I don\u0027t believe this is needed: you can obtain the `IndexingRetry` from `indexingRetryTaskMap` as `indexingRetryTaskMap.get(id)`",
+      "range": {
+        "startLine": 62,
+        "startChar": 45,
+        "endLine": 62,
+        "endChar": 66
+      },
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bfc0665_65273340",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-19T20:19:02Z",
+      "side": 1,
+      "message": "This is a normal condition, it should be traced as `info` IMHO, because there isn\u0027t anything wrong and the Gerrit admin does not need to perform any action to rectify the situation.",
+      "range": {
+        "startLine": 67,
+        "startChar": 10,
+        "endLine": 67,
+        "endChar": 14
+      },
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40e3b86d_6950aef9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-19T20:19:02Z",
+      "side": 1,
+      "message": "```suggestion\n          \"{} {} successfully indexed by different task, rescheduling isn\u0027t needed\",\n```",
+      "range": {
+        "startLine": 68,
+        "startChar": 57,
+        "endLine": 68,
+        "endChar": 82
+      },
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75183fee_c7dcc083",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-19T20:19:02Z",
+      "side": 1,
+      "message": "This is racy and dangerous: if between L65 and L80 there was another indexing event coming through, associated with a newer modification of the change\u0027s `/meta` we would effectively _forget_ to do it here, leaving the change as stale.\n\nUse the `ConcurrentHashMap` method for a safe removal instead, so that the racy condition won\u0027t impact the overall consistency.\n\n\n```suggestion\n   if (!indexingRetryTaskMap.remove(id, retry)) {\n      log.debug(\"{} {} not removed from retry map because of racy addition of a new retry indexing retry\");\n   }\n```",
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88237470_58c49727",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-19T20:19:02Z",
+      "side": 1,
+      "message": "Is this an error or a normal condition? Considering lowering to `info`",
+      "range": {
+        "startLine": 110,
+        "startChar": 10,
+        "endLine": 110,
+        "endChar": 15
+      },
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c2c31f6_4a6db4bb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-19T20:19:02Z",
+      "side": 1,
+      "message": "```suggestion\n  public final void reindexIfUpToDate(T id, UpToDateChecker\u003cE\u003e upToDateChecker) {\n```",
+      "range": {
+        "startLine": 119,
+        "startChar": 20,
+        "endLine": 119,
+        "endChar": 45
+      },
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02e5bd95_de9c3d17",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-19T20:19:02Z",
+      "side": 1,
+      "message": "This is racy and dangerous: if between L121 and L142 there was another indexing event coming through, associated with a newer modification of the change\u0027s /meta we would effectively forget to do it here, leaving the change as stale.\n\nUse the ConcurrentHashMap method for a safe removal instead, so that the racy condition won\u0027t impact the overall consistency.\n\n\n```suggestion\n   if (!indexingRetryTaskMap.remove(id, retry)) {\n      log.debug(\"{} {} not removed from retry map because of racy addition of a new retry indexing retry\");\n   }```",
+      "range": {
+        "startLine": 142,
+        "startChar": 4,
+        "endLine": 142,
+        "endChar": 36
+      },
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
