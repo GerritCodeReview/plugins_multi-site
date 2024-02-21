@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e4733c5_d392f1ee",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1010134
+      },
+      "writtenOn": "2024-02-21T12:24:27Z",
+      "side": 1,
+      "message": "nit: will this ever be anything else than `0`? Probably we don\u0027t want to create `IndexingRetry` when retry count is non zero. I\u0027d rather initialise the member with `0` in L157 and remove the constructor argument.",
+      "range": {
+        "startLine": 155,
+        "startChar": 44,
+        "endLine": 155,
+        "endChar": 59
+      },
+      "revId": "71eb248389240ae2033fe64aa483d662697c5602",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
