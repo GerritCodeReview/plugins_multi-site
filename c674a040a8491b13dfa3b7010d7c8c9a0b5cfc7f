@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34e410cd_814ced76",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-24T00:32:32Z",
+      "side": 1,
+      "message": "Just one small nit, then feel free to merge it. Good job 👍",
+      "revId": "c674a040a8491b13dfa3b7010d7c8c9a0b5cfc7f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

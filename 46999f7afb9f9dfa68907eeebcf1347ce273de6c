@@ -338,6 +338,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a0ddd707_9f1f968d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-02-24T00:32:32Z",
+      "side": 1,
+      "message": "True, we should amend at L134 to `info` for making it consistent.",
+      "parentUuid": "7f4c6508_2b92440b",
+      "range": {
+        "startLine": 67,
+        "startChar": 10,
+        "endLine": 67,
+        "endChar": 14
+      },
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40e3b86d_6950aef9",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
         "patchSetId": 2
