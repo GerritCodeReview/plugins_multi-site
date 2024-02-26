@@ -52,7 +52,7 @@ public class ForwardedIndexGroupHandler
 
   @Override
   protected void doIndex(String uuid, Optional<GroupIndexEvent> event) {
-    attemptToIndex(uuid, event, 0);
+    scheduleIndexing(uuid, event, this::reindex);
   }
 
   @Override
@@ -66,9 +66,8 @@ public class ForwardedIndexGroupHandler
   }
 
   @Override
-  protected void attemptToIndex(
-      String uuid, Optional<GroupIndexEvent> groupIndexEvent, int retryCount) {
-    reindexAndCheckIsUpToDate(uuid, groupIndexEvent, groupChecker, retryCount);
+  protected void attemptToIndex(String uuid) {
+    reindexAndCheckIsUpToDate(uuid, groupChecker);
   }
 
   @Override
