@@ -360,6 +360,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e911295_974531cb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexingHandlerWithRetries.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2024-02-26T08:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0ddd707_9f1f968d",
+      "range": {
+        "startLine": 67,
+        "startChar": 10,
+        "endLine": 67,
+        "endChar": 14
+      },
+      "revId": "46999f7afb9f9dfa68907eeebcf1347ce273de6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40e3b86d_6950aef9",
