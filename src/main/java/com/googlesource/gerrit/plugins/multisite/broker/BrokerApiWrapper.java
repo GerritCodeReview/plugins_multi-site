@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.broker;
 
 import com.gerritforge.gerrit.eventbroker.BrokerApi;
 import com.gerritforge.gerrit.eventbroker.TopicSubscriber;
+import com.gerritforge.gerrit.eventbroker.TopicSubscriberWithGroupId;
 import com.gerritforge.gerrit.eventbroker.log.MessageLogger;
 import com.google.common.base.Strings;
 import com.google.common.util.concurrent.FutureCallback;
@@ -116,8 +117,18 @@ public class BrokerApiWrapper implements BrokerApi {
   }
 
   @Override
+  public void receiveAsync(String topic, String groupId, Consumer<Event> consumer) {
+    apiDelegate.get().receiveAsync(topic, groupId, consumer);
+  }
+
+  @Override
   public void disconnect() {
     apiDelegate.get().disconnect();
+  }
+
+  @Override
+  public void disconnect(String topic, String groupId) {
+    apiDelegate.get().disconnect(topic, groupId);
   }
 
   @Override
@@ -128,5 +139,10 @@ public class BrokerApiWrapper implements BrokerApi {
   @Override
   public void replayAllEvents(String topic) {
     apiDelegate.get().replayAllEvents(topic);
+  }
+
+  @Override
+  public Set<TopicSubscriberWithGroupId> topicSubscribersWithGroupId() {
+    return apiDelegate.get().topicSubscribersWithGroupId();
   }
 }
