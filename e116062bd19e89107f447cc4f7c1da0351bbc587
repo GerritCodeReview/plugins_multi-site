@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7422e2f3_f2a6b4bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-03-01T00:54:30Z",
+      "side": 1,
+      "message": "Needs to be incorporated with the adaptation of the BrokerApiWrapper to master, otherwise the build would fail",
+      "revId": "e116062bd19e89107f447cc4f7c1da0351bbc587",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
