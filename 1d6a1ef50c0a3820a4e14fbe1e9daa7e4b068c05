@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9025d6ee_b485775b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-03-01T00:56:24Z",
+      "side": 1,
+      "message": "@maczech@gmail.com @syntonyze@gmail.com can you rubber-stamp?",
+      "revId": "1d6a1ef50c0a3820a4e14fbe1e9daa7e4b068c05",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
