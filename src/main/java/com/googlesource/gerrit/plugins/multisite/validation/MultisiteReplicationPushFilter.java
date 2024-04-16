@@ -23,7 +23,7 @@ import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
-import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
+import com.googlesource.gerrit.plugins.replication.api.ReplicationPushFilter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
