@@ -13,6 +13,9 @@ Configuration should be specified in the `$site_path/etc/@PLUGIN@.config` file.
 ```cache.synchronize```
 :   Whether to synchronize cache evictions. Set to false when relying on
     low cache TTLs and therefore cache eviction is not strictly needed.
+    It requires disabling the background cache evictions notifications in
+    `gerrit.config` by setting `cache.threads = 0`.
+
     Defaults to true.
 
 ```cache.threadPoolSize```
