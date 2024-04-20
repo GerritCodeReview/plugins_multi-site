@@ -64,7 +64,7 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
   protected boolean rescheduleIndex(T id) {
     IndexingRetry retry = indexingRetryTaskMap.get(id);
     if (retry == null) {
-      log.info(
+      log.debug(
           "{} {} successfully indexed by different task, rescheduling isn't needed",
           indexName(),
           id);
@@ -110,7 +110,7 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
     IndexingRetry retry = new IndexingRetry(event);
     if (indexingRetryTaskMap.put(id, retry) != null) {
       indexOnce.accept(id);
-      log.info(
+      log.debug(
           "Skipping indexing because there is already a running task for the specified id. Index name: {}, task id: {}",
           indexName(),
           id);
