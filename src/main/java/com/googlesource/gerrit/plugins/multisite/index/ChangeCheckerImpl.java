@@ -26,7 +26,6 @@ import com.google.inject.assistedinject.Assisted;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Objects;
 import java.util.Optional;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.lib.ObjectId;
@@ -102,8 +101,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
         .map(
             e ->
                 (computedChangeTs.get() > e.eventCreatedOn)
-                    || ((computedChangeTs.get() == e.eventCreatedOn)
-                        && (Objects.equals(getBranchTargetSha(), e.targetSha))))
+                    || ((computedChangeTs.get() == e.eventCreatedOn) && repositoryHas(e.targetSha)))
         .orElse(true);
   }
 
@@ -139,6 +137,15 @@ public class ChangeCheckerImpl implements ChangeChecker {
     } catch (IOException e) {
       log.warn("Unable to resolve target branch SHA for change {}", changeId, e);
       return null;
+    }
+  }
+
+  private boolean repositoryHas(String targetSha) {
+    try (Repository repo = gitRepoMgr.openRepository(changeNotes.get().getProjectName())) {
+      return repo.parseCommit(ObjectId.fromString(targetSha)) != null;
+    } catch (IOException e) {
+      log.warn("Unable to find SHA1 {} for change {}", targetSha, changeId, e);
+      return false;
     }
   }
 
