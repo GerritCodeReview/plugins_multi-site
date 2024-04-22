@@ -21,6 +21,9 @@ import com.google.gerrit.extensions.events.ProjectIndexedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.gerrit.server.events.EventListener;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.gerrit.server.events.EventListener;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -41,9 +44,6 @@ public class IndexModule extends LifecycleModule {
     bind(ProjectChecker.class).to(ProjectCheckerImpl.class);
     bind(GroupChecker.class).to(GroupCheckerImpl.class);
 
-    install(
-        new FactoryModuleBuilder()
-            .implement(ChangeChecker.class, ChangeCheckerImpl.class)
-            .build(ChangeCheckerImpl.Factory.class));
+    install(ChangeCheckerImpl.module());
   }
 }
