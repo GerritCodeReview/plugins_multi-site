@@ -20,7 +20,14 @@ import com.google.gerrit.extensions.events.GroupIndexedListener;
 import com.google.gerrit.extensions.events.ProjectIndexedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
+<<<<<<< HEAD   (9504e0 Indexing retries: lower normal condition logs to debug)
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+||||||| BASE
+import com.google.gerrit.server.events.EventListener;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
+=======
+import com.google.gerrit.server.events.EventListener;
+>>>>>>> CHANGE (78116a Add acceptance test for change up-to-date checker)
 import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -41,9 +48,6 @@ public class IndexModule extends LifecycleModule {
     bind(ProjectChecker.class).to(ProjectCheckerImpl.class);
     bind(GroupChecker.class).to(GroupCheckerImpl.class);
 
-    install(
-        new FactoryModuleBuilder()
-            .implement(ChangeChecker.class, ChangeCheckerImpl.class)
-            .build(ChangeCheckerImpl.Factory.class));
+    install(ChangeCheckerImpl.module());
   }
 }

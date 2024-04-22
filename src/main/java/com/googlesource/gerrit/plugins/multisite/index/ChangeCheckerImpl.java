@@ -22,7 +22,9 @@ import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
+import com.google.inject.Module;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -47,6 +49,12 @@ public class ChangeCheckerImpl implements ChangeChecker {
 
   public interface Factory {
     public ChangeChecker create(String changeId);
+  }
+
+  public static Module module() {
+    return new FactoryModuleBuilder()
+        .implement(ChangeChecker.class, ChangeCheckerImpl.class)
+        .build(ChangeCheckerImpl.Factory.class);
   }
 
   @Inject
