@@ -74,7 +74,7 @@ Usage: sh ./setup.sh [--option ]
 [--gerrit2-httpd-port]          Gerrit Instance 2 http port; default 18081
 [--gerrit2-sshd-port]           Gerrit Instance 2 sshd port; default 49418
 
-[--replication-delay]           Replication delay across the two instances in seconds
+[--replication-delay]           Replication delay across the two instances in seconds; default 5 seconds
 
 [--just-cleanup-env]            Cleans up previous deployment; default false
 
