@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a8081e9_c42b6490",
+        "filename": "setup_local_env/configs/replication.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-04-29T09:47:55Z",
+      "side": 1,
+      "message": "I believe we should also set `consumeStreamEvents` to `true` as you did in PS1.",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 23
+      },
+      "revId": "8ae56fefeef143086a2b0d7d7f48838853ce9dea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
