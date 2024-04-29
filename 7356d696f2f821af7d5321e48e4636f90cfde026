@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a4d4e98_0226960f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-04-29T20:10:54Z",
+      "side": 1,
+      "message": "nit: missing copyright header",
+      "revId": "7356d696f2f821af7d5321e48e4636f90cfde026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0eb42a35_5c0afd38",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-04-29T20:10:54Z",
+      "side": 1,
+      "message": "nit:\n```suggestion\n  private static final String TEST_BRANCH_REFS_HEADS \u003d RefNames.REFS_HEADS + \"master\";\n```",
+      "range": {
+        "startLine": 23,
+        "startChar": 30,
+        "endLine": 23,
+        "endChar": 52
+      },
+      "revId": "7356d696f2f821af7d5321e48e4636f90cfde026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b599a04f_38886c23",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-04-29T20:10:54Z",
+      "side": 1,
+      "message": "nit:\n```suggestion\n  private static final String TEST_BRANCH_REF_HEADS \u003d RefNames.fullName(\"master\");\n```",
+      "range": {
+        "startLine": 23,
+        "startChar": 54,
+        "endLine": 23,
+        "endChar": 84
+      },
+      "revId": "7356d696f2f821af7d5321e48e4636f90cfde026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3a86dcc_eae01d57",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-04-29T20:10:54Z",
+      "side": 1,
+      "message": "nit: hides the existing filed - see `AbstractDaemonTest.instanceId`",
+      "range": {
+        "startLine": 27,
+        "startChar": 2,
+        "endLine": 27,
+        "endChar": 46
+      },
+      "revId": "7356d696f2f821af7d5321e48e4636f90cfde026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55a0752f_966a4cfa",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-04-29T20:10:54Z",
+      "side": 1,
+      "message": "nit:\n```suggestion\n  public void shouldBeNotUpToDateIfTargetSHA1IsAbsent() throws Exception {\n```",
+      "range": {
+        "startLine": 63,
+        "startChar": 14,
+        "endLine": 63,
+        "endChar": 49
+      },
+      "revId": "7356d696f2f821af7d5321e48e4636f90cfde026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
