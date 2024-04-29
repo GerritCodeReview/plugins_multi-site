@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d00f453d_c1363903",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-04-29T20:37:28Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "1bd1065cdac244b58a3b77007770c1143f250775",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7da54acd_d5466824",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/index/ChangeCheckerIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1025452
+      },
+      "writtenOn": "2024-04-29T20:37:28Z",
+      "side": 1,
+      "message": "one, last nit - there is already `AbstractDaemonTest.pushTo` function that could be used here:\n```suggestion\n    PushOneCommit.Result result \u003d pushTo(TEST_BRANCH_REFS_HEADS);\n```",
+      "range": {
+        "startLine": 110,
+        "startChar": 4,
+        "endLine": 111,
+        "endChar": 66
+      },
+      "revId": "1bd1065cdac244b58a3b77007770c1143f250775",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
