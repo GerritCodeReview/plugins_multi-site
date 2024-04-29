@@ -46,6 +46,30 @@
       },
       "revId": "a9e202af95728d0d41618b2462d32be6b5ffb43a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70f46a76_10a1459d",
+        "filename": "setup_local_env/configs/replication.config",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2024-04-29T19:23:48Z",
+      "side": 1,
+      "message": "I believe it can apply to both. Having `consumeStreamEvents \u003d false` and allowing pull-replication to consume messages in independently ensure that we don\u0027t miss any events if, for some reason, pull-replication is disabled and multi-site is enabled. \nThis could happen at start-up if for some reason multi-site is loaded before pull-replication(as `m` comes before `p` in the alphabet).",
+      "parentUuid": "c3e2f8ea_3d0afbc7",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 30
+      },
+      "revId": "a9e202af95728d0d41618b2462d32be6b5ffb43a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
