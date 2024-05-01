@@ -578,8 +578,12 @@ prepare_broker_data
 
 echo "Re-deploying configuration files"
 deploy_config_files $GERRIT_1_HOSTNAME $GERRIT_1_HTTPD_PORT $GERRIT_1_SSHD_PORT $GERRIT_2_HOSTNAME $GERRIT_2_HTTPD_PORT $GERRIT_2_SSHD_PORT
+echo "Move replication and delete-project plugins to /lib on gerrit site 1"
+mv $LOCATION_TEST_SITE_1/plugins/{replication,delete-project}.jar $LOCATION_TEST_SITE_1/lib/.
 echo "Starting gerrit site 1"
 $LOCATION_TEST_SITE_1/bin/gerrit.sh restart
+echo "Move replication plugin to /lib on gerrit site 2"
+mv $LOCATION_TEST_SITE_2/plugins/{replication,delete-project}.jar $LOCATION_TEST_SITE_2/lib/.
 echo "Starting gerrit site 2"
 $LOCATION_TEST_SITE_2/bin/gerrit.sh restart
 
