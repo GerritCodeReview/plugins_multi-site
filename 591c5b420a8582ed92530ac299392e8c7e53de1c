@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "22c3b904_6a47b84d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2024-05-15T15:30:20Z",
+      "side": 1,
+      "message": "I\u0027ve just pushed this change 425678 to build `events-gcloud-pubsub` on stable-3.10 branch.",
+      "revId": "591c5b420a8582ed92530ac299392e8c7e53de1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
