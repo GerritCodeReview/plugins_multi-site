@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9cee71b_dd4d5f7e",
+        "filename": "setup_local_env/docker-compose-core.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2024-05-23T14:05:26Z",
+      "side": 1,
+      "message": "I think this values should be \"yes\". The documentation [1] says:\n\n```\nZOO_ENABLE_AUTH\t      Enable ZooKeeper auth. It uses SASL/Digest-MD5.\t     no```\n\nReference:\n[1] https://hub.docker.com/r/bitnami/zookeeper/",
+      "revId": "c9782872b35d17bbf9ef2145cf0234bd80c92dd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d7243f9_54b96ac7",
+        "filename": "setup_local_env/docker-compose-core.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2024-05-23T14:05:26Z",
+      "side": 1,
+      "message": "Do we want to keep this?",
+      "revId": "c9782872b35d17bbf9ef2145cf0234bd80c92dd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
