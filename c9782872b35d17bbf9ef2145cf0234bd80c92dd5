@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1d00f70f_0900512c",
+        "filename": "setup_local_env/configs/zoo.jaas",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1149185
+      },
+      "writtenOn": "2024-05-23T14:30:37Z",
+      "side": 1,
+      "message": "I am not quite sure but I think you dont need this file because in the docker image [1] you are providing the:\n- ZOO_ENABLE_AUTH\t\n- ZOO_CLIENT_USER\n- ZOO_SERVER_USERS\n- ZOO_CLIENT_PASSWORD\n- ZOO_SERVER_PASSWORDS\n\nReferences: \n[1] https://hub.docker.com/r/bitnami/zookeeper/",
+      "parentUuid": "51ff4267_eae72389",
+      "revId": "c9782872b35d17bbf9ef2145cf0234bd80c92dd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c9cee71b_dd4d5f7e",
         "filename": "setup_local_env/docker-compose-core.yaml",
         "patchSetId": 1
