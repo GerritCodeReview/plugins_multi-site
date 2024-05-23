@@ -6,7 +6,12 @@ services:
       - "2181:2181"
     container_name: zk_test_node
     environment:
-      ALLOW_ANONYMOUS_LOGIN: "true"
+        ZOO_ENABLE_AUTH: "true"
+        ZOO_SERVER_USERS: "globalrefdb"
+        ZOO_CLIENT_USER: "globalrefdb"
+        ZOO_CLIENT_PASSWORD: "globalrefdb-secret"
+        ZOO_SERVER_PASSWORDS: "globalrefdb-secret"
+        ALLOW_ANONYMOUS_LOGIN: "true"
   prometheus:
     container_name: prometheus_test_node
     image: prom/prometheus:v2.16.0

@@ -453,6 +453,9 @@ echo "Copying events-broker library"
 echo "Copying global-refdb library"
   cp -f $GLOBAL_REFDB_LIB_LOCATION $DEPLOYMENT_LOCATION/global-refdb.jar  >/dev/null 2>&1 || { echo >&2 "$GLOBAL_REFDB_LIB_LOCATION: Not able to copy the file. Aborting"; exit 1; }
 
+echo "Copying zookeeper library"
+  cp -f "/Users/dani/GerritForge/gerrit/bazel-bin/plugins/zookeeper-refdb/zookeeper-refdb.jar" $DEPLOYMENT_LOCATION/zookeeper-refdb.jar  >/dev/null 2>&1 || { echo >&2 "Zookeeper: Not able to copy the file. Aborting"; exit 1; }
+
 if [ $DOWNLOAD_WEBSESSION_PLUGIN = "true" ];then
   echo "Downloading websession-broker plugin $GERRIT_BRANCH"
   download_artifact_from_ci websession-broker
@@ -462,8 +465,8 @@ else
   echo "Without the websession-broker; user login via haproxy will fail."
 fi
 
-echo "Downloading zookeeper plugin $GERRIT_BRANCH"
-  download_artifact_from_ci zookeeper-refdb
+#echo "Downloading zookeeper plugin $GERRIT_BRANCH"
+#  download_artifact_from_ci zookeeper-refdb
 
 if [ "$BROKER_TYPE" = "kafka" ]; then
 echo "Downloading events-kafka plugin $GERRIT_BRANCH"
@@ -570,6 +573,8 @@ else
 fi
 
 cat $SCRIPT_DIR/configs/prometheus.yml | envsubst > $COMMON_LOCATION/prometheus.yml
+cat $SCRIPT_DIR/configs/zoo.jaas | envsubst > $COMMON_LOCATION/zoo.jaas
+cat $SCRIPT_DIR/configs/kafka.jaas | envsubst > $COMMON_LOCATION/kafka.jaas
 
 export_broker_port
 ensure_docker_compose_is_up_and_running "core" "prometheus_test_node" "docker-compose-core.yaml"
