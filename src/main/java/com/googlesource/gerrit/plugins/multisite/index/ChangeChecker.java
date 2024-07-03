@@ -27,7 +27,7 @@ public interface ChangeChecker extends UpToDateChecker<ChangeIndexEvent> {
    *
    * @return notes of the Change
    */
-  public Optional<ChangeNotes> getChangeNotes();
+  Optional<ChangeNotes> getChangeNotes();
 
   /**
    * Create a new index event POJO associated with the current Change.
@@ -39,7 +39,7 @@ public interface ChangeChecker extends UpToDateChecker<ChangeIndexEvent> {
    * @return new IndexEvent
    * @throws IOException if the current Change cannot read
    */
-  public Optional<ChangeIndexEvent> newIndexEvent(String projectName, int changeId, boolean deleted)
+  Optional<ChangeIndexEvent> newIndexEvent(String projectName, int changeId, boolean deleted)
       throws IOException;
 
   /**
@@ -48,7 +48,7 @@ public interface ChangeChecker extends UpToDateChecker<ChangeIndexEvent> {
    * @param indexEvent indexing event
    * @return true if the local Change is up-to-date, false otherwise.
    */
-  public boolean isUpToDate(Optional<ChangeIndexEvent> indexEvent);
+  boolean isUpToDate(Optional<ChangeIndexEvent> indexEvent);
 
   /**
    * Return the last computed up-to-date Change time-stamp.
@@ -58,12 +58,12 @@ public interface ChangeChecker extends UpToDateChecker<ChangeIndexEvent> {
    * @return the Change timestamp epoch in seconds
    * @throws IOException if an I/O error occurred while reading the local Change
    */
-  public Optional<Long> getComputedChangeTs() throws IOException;
+  Optional<Long> getComputedChangeTs() throws IOException;
 
   /**
    * Check if the local Change contains current patchset refs
    *
    * @return true if local change contains meta and current patchset refs
    */
-  public boolean isChangeConsistent();
+  boolean isChangeConsistent();
 }
