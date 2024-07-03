@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF;
 
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
@@ -42,7 +41,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
-public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
+public class MultisiteReplicationPushFilter extends AbstractMultisiteReplicationFilter
+    implements ReplicationPushFilter {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String REF_META_SUFFIX = "/meta";
 
@@ -150,19 +150,6 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
       logger.atSevere().withCause(ioe).log(message);
       return Optional.empty();
     }
-  }
-
-  /*
-   * Since ac43a5f94c773c9db7a73d44035961d69d13fa53 the 'refs/multi-site/version' is
-   * not updated anymore on the global-refdb; however, the values stored already
-   * on the global-refdb could get in the way and prevent replication from happening
-   * as expected.
-   *
-   * Exclude the 'refs/multi-site/version' from local vs. global refdb checking
-   * pretending that the global-refdb for that ref did not exist.
-   */
-  private boolean shouldNotBeTrackedAnymoreOnGlobalRefDb(String ref) {
-    return MULTI_SITE_VERSIONING_REF.equals(ref);
   }
 
   private RemoteRefUpdate newRemoteRefUpdateWithObjectId(

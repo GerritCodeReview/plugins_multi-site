@@ -14,7 +14,6 @@
 
 package com.googlesource.gerrit.plugins.multisite.validation;
 
-import static com.googlesource.gerrit.plugins.multisite.validation.ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF;
 import static com.googlesource.gerrit.plugins.replication.pull.PullReplicationLogger.repLog;
 
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
@@ -38,7 +37,8 @@ import org.eclipse.jgit.lib.RefDatabase;
 import org.eclipse.jgit.lib.Repository;
 
 @Singleton
-public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
+public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicationFilter
+    implements ReplicationFetchFilter {
   private static final String ZERO_ID_NAME = ObjectId.zeroId().name();
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
@@ -89,19 +89,6 @@ public class MultisiteReplicationFetchFilter implements ReplicationFetchFilter {
       logger.atSevere().withCause(ioe).log(message);
       return Collections.emptySet();
     }
-  }
-
-  /*
-   * Since ac43a5f94c773c9db7a73d44035961d69d13fa53 the 'refs/multi-site/version' is
-   * not updated anymore on the global-refdb; however, the values stored already
-   * on the global-refdb could get in the way and prevent replication from happening
-   * as expected.
-   *
-   * Exclude the 'refs/multi-site/version' from local vs. global refdb checking
-   * pretending that the global-refdb for that ref did not exist.
-   */
-  private boolean shouldNotBeTrackedAnymoreOnGlobalRefDb(String ref) {
-    return MULTI_SITE_VERSIONING_REF.equals(ref);
   }
 
   /* If the ref to fetch has been set to all zeros on the global-refdb, it means
