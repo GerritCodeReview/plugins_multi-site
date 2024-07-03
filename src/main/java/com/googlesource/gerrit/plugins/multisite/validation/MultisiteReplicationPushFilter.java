@@ -40,7 +40,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Singleton
-public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
+public class MultisiteReplicationPushFilter extends AbstractMultisiteReplicationFilter
+    implements ReplicationPushFilter {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String REF_META_SUFFIX = "/meta";
 
@@ -111,6 +112,10 @@ public class MultisiteReplicationPushFilter implements ReplicationPushFilter {
 
   private Optional<RemoteRefUpdate> isUpToDateWithRetry(
       String projectName, Repository repository, RemoteRefUpdate refUpdate) {
+    if (shouldNotBeTrackedAnymoreOnGlobalRefDb(refUpdate.getSrcRef())) {
+      return Optional.of(refUpdate);
+    }
+
     String ref = refUpdate.getSrcRef();
     try {
       if (sharedRefDb.isUpToDate(
