@@ -25,11 +25,11 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwarderTask;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ProjectListUpdateForwarder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectListUpdateEvent;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 
 @Singleton
 public class ProjectListUpdateHandler implements NewProjectCreatedListener, ProjectDeletedListener {
-
   private final DynamicSet<ProjectListUpdateForwarder> forwarders;
   private final Executor executor;
   private final String instanceId;
@@ -47,7 +47,9 @@ public class ProjectListUpdateHandler implements NewProjectCreatedListener, Proj
   @Override
   public void onNewProjectCreated(
       com.google.gerrit.extensions.events.NewProjectCreatedListener.Event event) {
-    process(event, false);
+    if (Objects.equals(instanceId, event.getInstanceId())) {
+      process(event, false);
+    }
   }
 
   @Override

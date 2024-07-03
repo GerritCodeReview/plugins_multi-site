@@ -20,18 +20,21 @@ import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.server.DraftCommentsReader;
 import com.google.gerrit.server.change.ChangeFinder;
 import com.google.gerrit.server.config.GerritInstanceId;
+import com.google.gerrit.server.config.GerritServerConfig;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.notedb.ChangeNotes;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
+import com.google.inject.Module;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Objects;
 import java.util.Optional;
 import org.eclipse.jgit.errors.MissingObjectException;
+import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
@@ -47,11 +50,18 @@ public class ChangeCheckerImpl implements ChangeChecker {
   private final String changeId;
   private final ChangeFinder changeFinder;
   private final String instanceId;
+  private final boolean enableDraftCommentEvents;
   private Optional<Long> computedChangeTs = Optional.empty();
   private Optional<ChangeNotes> changeNotes = Optional.empty();
 
   public interface Factory {
     public ChangeChecker create(String changeId);
+  }
+
+  public static Module module() {
+    return new FactoryModuleBuilder()
+        .implement(ChangeChecker.class, ChangeCheckerImpl.class)
+        .build(ChangeCheckerImpl.Factory.class);
   }
 
   @Inject
@@ -61,6 +71,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
       ChangeFinder changeFinder,
       OneOffRequestContext oneOffReqCtx,
       @GerritInstanceId String instanceId,
+      @GerritServerConfig Config config,
       @Assisted String changeId) {
     this.changeFinder = changeFinder;
     this.gitRepoMgr = gitRepoMgr;
@@ -68,6 +79,8 @@ public class ChangeCheckerImpl implements ChangeChecker {
     this.oneOffReqCtx = oneOffReqCtx;
     this.changeId = changeId;
     this.instanceId = instanceId;
+    this.enableDraftCommentEvents =
+        config.getBoolean("event", "stream-events", "enableDraftCommentEvents", false);
   }
 
   @Override
@@ -108,8 +121,7 @@ public class ChangeCheckerImpl implements ChangeChecker {
         .map(
             e ->
                 (computedChangeTs.get() > e.eventCreatedOn)
-                    || ((computedChangeTs.get() == e.eventCreatedOn)
-                        && (Objects.equals(getBranchTargetSha(), e.targetSha))))
+                    || ((computedChangeTs.get() == e.eventCreatedOn) && repositoryHas(e.targetSha)))
         .orElse(true);
   }
 
@@ -148,6 +160,15 @@ public class ChangeCheckerImpl implements ChangeChecker {
     }
   }
 
+  private boolean repositoryHas(String targetSha) {
+    try (Repository repo = gitRepoMgr.openRepository(changeNotes.get().getProjectName())) {
+      return repo.parseCommit(ObjectId.fromString(targetSha)) != null;
+    } catch (IOException e) {
+      log.warn("Unable to find SHA1 {} for change {}", targetSha, changeId, e);
+      return false;
+    }
+  }
+
   @Override
   public boolean isChangeConsistent() {
     Optional<ChangeNotes> notes = getChangeNotes();
@@ -177,20 +198,22 @@ public class ChangeCheckerImpl implements ChangeChecker {
   }
 
   private Optional<Long> computeLastChangeTs() {
-    return getChangeNotes().map(notes -> getTsFromChangeAndDraftComments(notes));
+    return getChangeNotes().map(this::getTsFromChangeAndDraftComments);
   }
 
   private long getTsFromChangeAndDraftComments(ChangeNotes notes) {
     Change change = notes.getChange();
     Timestamp changeTs = Timestamp.from(change.getLastUpdatedOn());
-    try {
-      for (HumanComment comment :
-          draftCommentsReader.getDraftsByChangeForAllAuthors(changeNotes.get())) {
-        Timestamp commentTs = comment.writtenOn;
-        changeTs = commentTs.after(changeTs) ? commentTs : changeTs;
+    if (enableDraftCommentEvents) {
+      try {
+        for (HumanComment comment :
+            draftCommentsReader.getDraftsByChangeForAllAuthors(changeNotes.get())) {
+          Timestamp commentTs = comment.writtenOn;
+          changeTs = commentTs.after(changeTs) ? commentTs : changeTs;
+        }
+      } catch (StorageException e) {
+        log.warn("Unable to access draft comments for change {}", change, e);
       }
-    } catch (StorageException e) {
-      log.warn("Unable to access draft comments for change {}", change, e);
     }
     return changeTs.getTime() / 1000;
   }

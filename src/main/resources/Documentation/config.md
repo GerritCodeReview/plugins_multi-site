@@ -13,6 +13,9 @@ Configuration should be specified in the `$site_path/etc/@PLUGIN@.config` file.
 ```cache.synchronize```
 :   Whether to synchronize cache evictions. Set to false when relying on
     low cache TTLs and therefore cache eviction is not strictly needed.
+    It requires disabling the background cache evictions notifications in
+    `gerrit.config` by setting `cache.threads = 0`.
+
     Defaults to true.
 
 ```cache.threadPoolSize```
@@ -43,6 +46,11 @@ Configuration should be specified in the `$site_path/etc/@PLUGIN@.config` file.
     on Gerrit replicas that do not have an index, or when using an external
     service such as ElasticSearch.
     Defaults to true.
+
+```index.synchronizeForced```
+:   Whether to synchronize forced index events. E.g. on-line reindex
+automatically triggered upon version upgrades.
+Defaults to true.
 
 ```index.threadPoolSize```
 :   Maximum number of threads used to send index events to the target instance.

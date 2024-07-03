@@ -16,7 +16,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.google.gerrit.extensions.registration.DynamicItem;
 import com.google.inject.AbstractModule;
-import com.googlesource.gerrit.plugins.replication.ReplicationPushFilter;
+import com.googlesource.gerrit.plugins.replication.api.ReplicationPushFilter;
 
 public class PushReplicationFilterModule extends AbstractModule {
 
