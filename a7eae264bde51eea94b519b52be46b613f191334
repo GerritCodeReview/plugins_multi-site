@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8d479948_5c12e8b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-07-04T21:44:10Z",
+      "side": 1,
+      "message": "That\u0027s needed in stable-3.10, but not in stable-3.7",
+      "parentUuid": "87dfbd4e_600b9f5c",
+      "revId": "a7eae264bde51eea94b519b52be46b613f191334",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "21d75a94_1d90044b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/IndexModule.java",
         "patchSetId": 2
