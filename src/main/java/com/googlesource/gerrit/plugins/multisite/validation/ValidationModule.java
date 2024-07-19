@@ -26,9 +26,9 @@ import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRefDatabase;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRefUpdate;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbRepository;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefLogger;
-import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.CustomSharedRefEnforcementByProject;
-import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.DefaultSharedRefEnforcement;
-import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.SharedRefEnforcement;
+import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.LegacyCustomSharedRefEnforcementByProject;
+import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.LegacyDefaultSharedRefEnforcement;
+import com.gerritforge.gerrit.globalrefdb.validation.dfsrefdb.LegacySharedRefEnforcement;
 import com.google.common.collect.ImmutableSet;
 import com.google.gerrit.extensions.config.FactoryModule;
 import com.google.gerrit.extensions.registration.DynamicSet;
@@ -70,10 +70,12 @@ public class ValidationModule extends FactoryModule {
     install(new RepositoryManagerModule(repoConfig));
 
     if (cfg.getSharedRefDbConfiguration().getSharedRefDb().getEnforcementRules().isEmpty()) {
-      bind(SharedRefEnforcement.class).to(DefaultSharedRefEnforcement.class).in(Scopes.SINGLETON);
+      bind(LegacySharedRefEnforcement.class)
+          .to(LegacyDefaultSharedRefEnforcement.class)
+          .in(Scopes.SINGLETON);
     } else {
-      bind(SharedRefEnforcement.class)
-          .to(CustomSharedRefEnforcementByProject.class)
+      bind(LegacySharedRefEnforcement.class)
+          .to(LegacyCustomSharedRefEnforcementByProject.class)
           .in(Scopes.SINGLETON);
     }
 
