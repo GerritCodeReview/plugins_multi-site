@@ -16,12 +16,7 @@ The masters must be:
 * connected to the same message broker
 * behind a load balancer (e.g., HAProxy)
 
-Currently, the mode supported is one primary read/write master and multiple
-read-only masters but eventually the plan is to support `n` read/write masters.
-The read/write master is handling any traffic while the
-read-only masters are serving the Gerrit GUI assets, the HTTP GET REST API and
-git-upload-pack. The read-only masters are kept updated to be always
-ready to become a read/write master.
+Currently, the plugin can support multiple read/write masters as required.
 
 The areas of alignment between the masters are:
 
