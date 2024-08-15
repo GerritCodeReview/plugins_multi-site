@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a8d07e7_93e0328e",
+        "filename": "src/main/resources/Documentation/about.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-08-15T08:29:37Z",
+      "side": 1,
+      "message": "nit: I would say \"Multiple\". We can\u0027t scale indefinitely. See the limitation section [1].\n\n[1]: https://gerrit.googlesource.com/plugins/multi-site/+/refs/heads/master/DESIGN.md#limitations",
+      "range": {
+        "startLine": 19,
+        "startChar": 34,
+        "endLine": 19,
+        "endChar": 41
+      },
+      "revId": "90f029085378afd854f944d06d71f2e8bfc179b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35aecc75_fe8b75d9",
+        "filename": "src/main/resources/Documentation/about.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-08-15T08:29:37Z",
+      "side": 1,
+      "message": "I would say something similar to the limitation section: \"However, pull-replication logic to all sites could have a serious consequence in the overall perceived latency. A quorum logic is still missing in the implementation.\" ..or something along those lines",
+      "revId": "90f029085378afd854f944d06d71f2e8bfc179b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "295534fd_c6e11208",
+        "filename": "src/main/resources/Documentation/about.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-08-15T08:29:37Z",
+      "side": 1,
+      "message": "I would remove pull-replication. It might be confusing and sound like the quorum logic should be implemented in the pull-replication.",
+      "range": {
+        "startLine": 21,
+        "startChar": 18,
+        "endLine": 21,
+        "endChar": 41
+      },
+      "revId": "90f029085378afd854f944d06d71f2e8bfc179b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
