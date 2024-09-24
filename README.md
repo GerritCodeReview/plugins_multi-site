@@ -32,21 +32,38 @@ as of the Gerrit Code Review project.
 The multi-site plugin can only be built in tree mode, by cloning
 Gerrit and the multi-site plugin code, and checking them out on the desired branch.
 
-Example of cloning Gerrit and multi-site for a stable-2.16 build:
+To build the multi-site plugin in addition to the gerrit core plugins also the
+following plugins need to be cloned into the plugins directory:
+
+- pull-replication
+- healthcheck
+- events-broker
+- global-refdb
+
+Example of cloning Gerrit, the multi-site plugin and the plugins it depends on
+for a stable-3.10 build:
 
 ```
-git clone -b stable-2.16 https://gerrit.googlesource.com/gerrit
-git clone -b stable-2.16 https://gerrit.googlesource.com/plugins/multi-site
+git clone --recurse-submodules -b stable-3.10 https://gerrit.googlesource.com/gerrit
+git clone -b stable-3.10 https://gerrit.googlesource.com/plugins/multi-site
+git clone -b stable-3.10 https://gerrit.googlesource.com/modules/events-broker
+git clone -b stable-3.10 https://gerrit.googlesource.com/modules/global-refdb
+git clone -b stable-3.10 https://gerrit.googlesource.com/plugins/healthcheck
+git clone -b stable-3.10 https://gerrit.googlesource.com/plugins/pull-replication
 
 cd gerrit/plugins
 ln -s ../../multi-site .
+ln -s ../../events-broker .
+ln -s ../../global-refdb .
+ln -s ../../healthcheck .
+ln -s ../../pull-replication .
 ```
 
 Example of building the multi-site plugin:
 
 ```
 cd gerrit
-bazel build plugins/multi-site
+bazelisk build plugins/multi-site
 ```
 
 The multi-site.jar plugin is generated to `bazel-bin/plugins/multi-site/multi-site.jar`.
@@ -55,13 +72,13 @@ Example of testing the multi-site plugin:
 
 ```
 cd gerrit
-bazel test plugins/multi-site:multi_site_tests
+bazelisk test plugins/multi-site/...
 ```
 
 **NOTE**: The multi-site tests include also the use of Docker containers for
 instantiating and using a Kafka/Zookeeper broker. Make sure you have a Docker
 daemon running (/var/run/docker.sock accessible) or a DOCKER_HOST pointing to
-a Docker server.
+a Docker server. In addition docker-compose needs to be installed.
 
 ## Pre-requisites
 
