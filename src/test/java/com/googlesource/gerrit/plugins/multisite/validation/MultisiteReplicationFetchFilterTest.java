@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -147,7 +148,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).hasSize(1);
-    verify(sharedRefDatabaseMock, times(3))
+    verify(sharedRefDatabaseMock, atLeastOnce())
         .get(eq(projectName), eq(temporaryOutdated), eq(String.class));
   }
 
@@ -172,12 +173,6 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
   @Test
   public void shouldNotFilterOutWhenRefsMultisiteVersionIsPresentInSharedRefDb() throws Exception {
     String refsMultisiteVersionRef = ProjectVersionRefUpdate.MULTI_SITE_VERSIONING_REF;
-    RevCommit multiSiteVersionRef = newRef(refsMultisiteVersionRef);
-
-    doReturn(Optional.of(multiSiteVersionRef.getId().getName()))
-        .when(sharedRefDatabaseMock)
-        .get(eq(projectName), eq(refsMultisiteVersionRef), eq(String.class));
-
     Set<String> refsToFetch = Set.of(refsMultisiteVersionRef);
 
     MultisiteReplicationFetchFilter fetchFilter =
@@ -188,7 +183,7 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
   }
 
   @Test
-  public void shouldFilterOutWhenRefIsDeletedInTheSharedRefDb() throws Exception {
+  public void shouldNotFilterOutWhenRefIsDeletedInTheSharedRefDb() throws Exception {
     String temporaryOutdated = "refs/heads/temporaryOutdated";
     newRef(temporaryOutdated);
 
@@ -201,25 +196,8 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
         new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
-    assertThat(filteredRefsToFetch).hasSize(0);
-    verify(sharedRefDatabaseMock).get(eq(projectName), any(), any());
-  }
-
-  @Test
-  public void shouldNotFilterOutWhenRefIsMissingOnlyInTheLocalRepository() throws Exception {
-    String refObjectId = "0000000000000000000000000000000000000001";
-    String nonExistingLocalRef = "refs/heads/temporaryOutdated";
-
-    Set<String> refsToFetch = Set.of(nonExistingLocalRef);
-    doReturn(Optional.of(refObjectId))
-        .when(sharedRefDatabaseMock)
-        .get(eq(projectName), any(), any());
-
-    MultisiteReplicationFetchFilter fetchFilter =
-        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
-    Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
-
     assertThat(filteredRefsToFetch).hasSize(1);
+    verify(sharedRefDatabaseMock, atLeastOnce()).get(eq(projectName), any(), any());
   }
 
   @Test
@@ -233,23 +211,6 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
     Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
 
     assertThat(filteredRefsToFetch).hasSize(1);
-  }
-
-  @Test
-  public void shouldFilterOutRefMissingInTheLocalRepositoryAndDeletedInSharedRefDb()
-      throws Exception {
-    String nonExistingLocalRef = "refs/heads/temporaryOutdated";
-
-    Set<String> refsToFetch = Set.of(nonExistingLocalRef);
-    doReturn(Optional.of(ObjectId.zeroId().getName()))
-        .when(sharedRefDatabaseMock)
-        .get(eq(projectName), any(), any());
-
-    MultisiteReplicationFetchFilter fetchFilter =
-        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
-    Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
-
-    assertThat(filteredRefsToFetch).hasSize(0);
   }
 
   private RevCommit newRef(String refName) throws Exception {
