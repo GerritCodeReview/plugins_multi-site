@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8107446d_4084ca74",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-12-30T16:35:03Z",
+      "side": 1,
+      "message": "Not needed reformatting.",
+      "revId": "4a47b507afe7b267b8eed7bdee3e5966feb87a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa824cdf_c2b167de",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-12-30T16:35:03Z",
+      "side": 1,
+      "message": "Not needed reformatting.",
+      "revId": "4a47b507afe7b267b8eed7bdee3e5966feb87a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08c50db0_4ff99914",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2024-12-30T16:35:03Z",
+      "side": 1,
+      "message": "Not needed reformatting.",
+      "revId": "4a47b507afe7b267b8eed7bdee3e5966feb87a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
