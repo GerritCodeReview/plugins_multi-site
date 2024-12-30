@@ -86,12 +86,15 @@ public class ProjectVersionRefUpdateImpl
       Project.NameKey projectNameKey = Project.nameKey(refUpdatedEvent.getProjectName());
       long newVersion = getCurrentGlobalVersionNumber();
 
-      RefUpdate newProjectVersionRefUpdate = updateLocalProjectVersion(projectNameKey, newVersion);
+      Optional<RefUpdate> newProjectVersionRefUpdate =
+          updateLocalProjectVersion(projectNameKey, newVersion);
 
-      verLogger.log(projectNameKey, newVersion, 0L);
+      if (newProjectVersionRefUpdate.isPresent()) {
+        verLogger.log(projectNameKey, newVersion, 0L);
 
-      if (updateSharedProjectVersion(projectNameKey, newVersion)) {
-        gitReferenceUpdated.fire(projectNameKey, newProjectVersionRefUpdate, null);
+        if (updateSharedProjectVersion(projectNameKey, newVersion)) {
+          gitReferenceUpdated.fire(projectNameKey, newProjectVersionRefUpdate.get(), null);
+        }
       }
     } catch (LocalProjectVersionUpdateException | SharedProjectVersionUpdateException e) {
       logger.atSevere().withCause(e).log(
@@ -231,7 +234,8 @@ public class ProjectVersionRefUpdateImpl
   }
 
   @SuppressWarnings("FloggerLogString")
-  private RefUpdate updateLocalProjectVersion(Project.NameKey projectNameKey, long newVersionNumber)
+  private Optional<RefUpdate> updateLocalProjectVersion(
+      Project.NameKey projectNameKey, long newVersionNumber)
       throws LocalProjectVersionUpdateException {
     logger.atFine().log(
         "Updating local version for project %s with version %d",
@@ -240,6 +244,13 @@ public class ProjectVersionRefUpdateImpl
         Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
       RefUpdate refUpdate = getProjectVersionRefUpdate(repository, newVersionNumber);
       RefUpdate.Result result = refUpdate.update();
+      if (RefUpdate.Result.LOCK_FAILURE.equals(result)) {
+        logger.atFine().log(
+            "RefUpdate LOCK_FAILURE for refs/multi-site/version on project=%s, version=%d",
+            projectNameKey.get(), newVersionNumber);
+        return Optional.empty();
+      }
+
       if (!isSuccessful(result)) {
         String message =
             String.format(
@@ -249,7 +260,7 @@ public class ProjectVersionRefUpdateImpl
         throw new LocalProjectVersionUpdateException(message);
       }
 
-      return refUpdate;
+      return Optional.of(refUpdate);
     } catch (IOException e) {
       String message = "Cannot create versioning command for " + projectNameKey.get();
       logger.atSevere().withCause(e).log(message);
