@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f787b05a_3a8221c5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-12-30T16:38:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8107446d_4084ca74",
+      "revId": "4a47b507afe7b267b8eed7bdee3e5966feb87a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa824cdf_c2b167de",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eea6a52c_70ab6ab6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-12-30T16:38:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa824cdf_c2b167de",
+      "revId": "4a47b507afe7b267b8eed7bdee3e5966feb87a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08c50db0_4ff99914",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-12-30T16:35:03Z",
       "side": 1,
       "message": "Not needed reformatting.",
+      "revId": "4a47b507afe7b267b8eed7bdee3e5966feb87a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9d43c75_0fbce249",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/ProjectVersionRefUpdateImpl.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2024-12-30T16:38:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08c50db0_4ff99914",
       "revId": "4a47b507afe7b267b8eed7bdee3e5966feb87a1e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
