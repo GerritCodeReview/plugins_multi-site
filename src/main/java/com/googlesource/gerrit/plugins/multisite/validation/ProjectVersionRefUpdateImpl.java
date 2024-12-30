@@ -127,7 +127,8 @@ public class ProjectVersionRefUpdateImpl
     try {
       if (sharedVersion.isPresent() && sharedVersion.get() >= newVersion) {
         logger.atWarning().log(
-            "NOT Updating project %s value=%d in shared ref-db because is more recent than the local value=%d",
+            "NOT Updating project %s value=%d in shared ref-db because is more recent than the"
+                + " local value=%d",
             projectNameKey.get(), newVersion, sharedVersion.get());
         return false;
       }
@@ -140,7 +141,8 @@ public class ProjectVersionRefUpdateImpl
     } catch (GlobalRefDbSystemError refDbSystemError) {
       String message =
           String.format(
-              "Error while updating shared project value for %s. Current value %s, new value: %s. Error: %s",
+              "Error while updating shared project value for %s. Current value %s, new value: %s."
+                  + " Error: %s",
               projectNameKey.get(),
               sharedVersion.map(Object::toString).orElse(null),
               newVersion,
@@ -159,8 +161,8 @@ public class ProjectVersionRefUpdateImpl
       }
     } catch (NoSuchMethodError e) {
       logger.atSevere().log(
-          "Global-refdb library is outdated and is not supporting "
-              + "'put' method, update global-refdb to the newest version. Falling back to 'compareAndPut'");
+          "Global-refdb library is outdated and is not supporting 'put' method, update global-refdb"
+              + " to the newest version. Falling back to 'compareAndPut'");
     }
 
     sharedRefDb.compareAndPut(
