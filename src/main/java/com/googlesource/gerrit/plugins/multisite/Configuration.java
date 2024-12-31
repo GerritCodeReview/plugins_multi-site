@@ -213,7 +213,8 @@ public class Configuration {
     if (replicationConfig.getBoolean("gerrit", "replicateOnStartup", false)) {
       return Arrays.asList(
           new Message(
-              "Invalid replication.config: gerrit.replicateOnStartup has to be set to 'false' for multi-site setups"));
+              "Invalid replication.config: gerrit.replicateOnStartup has to be set to 'false' for"
+                  + " multi-site setups"));
     }
     return Collections.emptyList();
   }
