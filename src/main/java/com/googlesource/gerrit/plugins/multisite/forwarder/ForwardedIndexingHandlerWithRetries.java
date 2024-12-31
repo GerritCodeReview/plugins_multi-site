@@ -79,7 +79,8 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
           indexName());
       if (!indexingRetryTaskMap.remove(id, retry)) {
         log.debug(
-            "{} {} not removed from retry map because of racy addition of a new retry indexing retry");
+            "{} {} not removed from retry map because of racy addition of a new retry indexing"
+                + " retry");
       }
       return false;
     }
@@ -111,7 +112,8 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
     if (indexingRetryTaskMap.put(id, retry) != null) {
       indexOnce.accept(id);
       log.debug(
-          "Skipping indexing because there is already a running task for the specified id. Index name: {}, task id: {}",
+          "Skipping indexing because there is already a running task for the specified id. Index"
+              + " name: {}, task id: {}",
           indexName(),
           id);
       return;
@@ -144,7 +146,8 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
     }
     if (!indexingRetryTaskMap.remove(id, retry)) {
       log.debug(
-          "{} {} not removed from retry map because of racy addition of a new retry indexing retry");
+          "{} {} not removed from retry map because of racy addition of a new retry indexing"
+              + " retry");
     }
   }
 

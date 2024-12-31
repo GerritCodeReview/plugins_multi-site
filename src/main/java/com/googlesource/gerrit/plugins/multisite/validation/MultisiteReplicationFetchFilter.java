@@ -72,8 +72,8 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
                 localRefOid.ifPresent(
                     oid ->
                         repLog.info(
-                            "{}:{}={} is already up-to-date with the shared-refdb and thus will NOT BE"
-                                + " fetched",
+                            "{}:{}={} is already up-to-date with the shared-refdb and thus will NOT"
+                                + " BE fetched",
                             projectName,
                             ref,
                             oid.getName()));
