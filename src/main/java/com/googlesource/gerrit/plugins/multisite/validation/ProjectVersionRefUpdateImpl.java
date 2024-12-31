@@ -86,12 +86,15 @@ public class ProjectVersionRefUpdateImpl
       Project.NameKey projectNameKey = Project.nameKey(refUpdatedEvent.getProjectName());
       long newVersion = getCurrentGlobalVersionNumber();
 
-      RefUpdate newProjectVersionRefUpdate = updateLocalProjectVersion(projectNameKey, newVersion);
+      Optional<RefUpdate> newProjectVersionRefUpdate =
+          updateLocalProjectVersion(projectNameKey, newVersion);
 
-      verLogger.log(projectNameKey, newVersion, 0L);
+      if (newProjectVersionRefUpdate.isPresent()) {
+        verLogger.log(projectNameKey, newVersion, 0L);
 
-      if (updateSharedProjectVersion(projectNameKey, newVersion)) {
-        gitReferenceUpdated.fire(projectNameKey, newProjectVersionRefUpdate, null);
+        if (updateSharedProjectVersion(projectNameKey, newVersion)) {
+          gitReferenceUpdated.fire(projectNameKey, newProjectVersionRefUpdate.get(), null);
+        }
       }
     } catch (LocalProjectVersionUpdateException | SharedProjectVersionUpdateException e) {
       logger.atSevere().withCause(e).log(
@@ -127,7 +130,8 @@ public class ProjectVersionRefUpdateImpl
     try {
       if (sharedVersion.isPresent() && sharedVersion.get() >= newVersion) {
         logger.atWarning().log(
-            "NOT Updating project %s value=%d in shared ref-db because is more recent than the local value=%d",
+            "NOT Updating project %s value=%d in shared ref-db because is more recent than the"
+                + " local value=%d",
             projectNameKey.get(), newVersion, sharedVersion.get());
         return false;
       }
@@ -140,7 +144,8 @@ public class ProjectVersionRefUpdateImpl
     } catch (GlobalRefDbSystemError refDbSystemError) {
       String message =
           String.format(
-              "Error while updating shared project value for %s. Current value %s, new value: %s. Error: %s",
+              "Error while updating shared project value for %s. Current value %s, new value: %s."
+                  + " Error: %s",
               projectNameKey.get(),
               sharedVersion.map(Object::toString).orElse(null),
               newVersion,
@@ -159,8 +164,8 @@ public class ProjectVersionRefUpdateImpl
       }
     } catch (NoSuchMethodError e) {
       logger.atSevere().log(
-          "Global-refdb library is outdated and is not supporting "
-              + "'put' method, update global-refdb to the newest version. Falling back to 'compareAndPut'");
+          "Global-refdb library is outdated and is not supporting 'put' method, update global-refdb"
+              + " to the newest version. Falling back to 'compareAndPut'");
     }
 
     sharedRefDb.compareAndPut(
@@ -229,7 +234,8 @@ public class ProjectVersionRefUpdateImpl
   }
 
   @SuppressWarnings("FloggerLogString")
-  private RefUpdate updateLocalProjectVersion(Project.NameKey projectNameKey, long newVersionNumber)
+  private Optional<RefUpdate> updateLocalProjectVersion(
+      Project.NameKey projectNameKey, long newVersionNumber)
       throws LocalProjectVersionUpdateException {
     logger.atFine().log(
         "Updating local version for project %s with version %d",
@@ -238,6 +244,13 @@ public class ProjectVersionRefUpdateImpl
         Repository repository = gitRepositoryManager.openRepository(projectNameKey)) {
       RefUpdate refUpdate = getProjectVersionRefUpdate(repository, newVersionNumber);
       RefUpdate.Result result = refUpdate.update();
+      if (RefUpdate.Result.LOCK_FAILURE.equals(result)) {
+        logger.atFine().log(
+            "RefUpdate LOCK_FAILURE for refs/multi-site/version on project=%s, version=%d",
+            projectNameKey.get(), newVersionNumber);
+        return Optional.empty();
+      }
+
       if (!isSuccessful(result)) {
         String message =
             String.format(
@@ -247,7 +260,7 @@ public class ProjectVersionRefUpdateImpl
         throw new LocalProjectVersionUpdateException(message);
       }
 
-      return refUpdate;
+      return Optional.of(refUpdate);
     } catch (IOException e) {
       String message = "Cannot create versioning command for " + projectNameKey.get();
       logger.atSevere().withCause(e).log(message);

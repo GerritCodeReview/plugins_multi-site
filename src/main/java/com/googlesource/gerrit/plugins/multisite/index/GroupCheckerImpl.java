@@ -54,7 +54,8 @@ class GroupCheckerImpl implements GroupChecker {
 
     if (event.sha1 == null) {
       logger.atWarning().log(
-          "Event for group '%s' does not contain sha1, consider group up-to-date for compatibility.",
+          "Event for group '%s' does not contain sha1, consider group up-to-date for"
+              + " compatibility.",
           groupUUID);
       return true;
     }

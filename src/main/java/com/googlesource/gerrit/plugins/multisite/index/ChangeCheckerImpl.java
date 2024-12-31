@@ -182,7 +182,8 @@ public class ChangeCheckerImpl implements ChangeChecker {
     } catch (IOException e) {
       log.warn(
           String.format(
-              "Cannot check consistency for change %s, current patchset commit %s. Assuming change is consistent",
+              "Cannot check consistency for change %s, current patchset commit %s. Assuming change"
+                  + " is consistent",
               changeId, currentPatchSetCommitId.getName()),
           e);
     }
