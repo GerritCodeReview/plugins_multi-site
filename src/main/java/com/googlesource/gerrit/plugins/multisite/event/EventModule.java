@@ -47,8 +47,10 @@ public class EventModule extends LifecycleModule {
     OptionalBinder<ProjectVersionRefUpdate> projectVersionRefUpdateBinder =
         OptionalBinder.newOptionalBinder(binder(), ProjectVersionRefUpdate.class);
     if (configuration.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {
-      DynamicSet.bind(binder(), GitBatchRefUpdateListener.class)
-          .to(ProjectVersionRefUpdateImpl.class);
+      if (configuration.replicationLagEnable()) {
+        DynamicSet.bind(binder(), GitBatchRefUpdateListener.class)
+            .to(ProjectVersionRefUpdateImpl.class);
+      }
       projectVersionRefUpdateBinder.setBinding().to(ProjectVersionRefUpdateImpl.class);
     }
   }
