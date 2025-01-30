@@ -70,28 +70,31 @@ public class SubscriberMetrics extends MultiSiteMetrics {
                 .setRate()
                 .setUnit("errors"),
             stringField(SUBSCRIBER_FAILURE_COUNTER, "Subscriber failed to consume messages count"));
-    metricMaker.newCallbackMetric(
-        REPLICATION_LAG_SEC,
-        Long.class,
-        new Description("Replication lag (sec)").setGauge().setUnit(Description.Units.SECONDS),
-        replicationStatus::getMaxLag);
-    metricMaker.newCallbackMetric(
-        REPLICATION_LAG_MSEC,
-        Long.class,
-        new Description("Replication lag (msec)")
-            .setGauge()
-            .setUnit(Description.Units.MILLISECONDS),
-        replicationStatus::getMaxLagMillis);
 
-    CallbackMetric1<String, Long> metrics =
-        metricMaker.newCallbackMetric(
-            SubscriberMetrics.REPLICATION_LAG_MSEC_PROJECT,
-            Long.class,
-            new Description("Per-project replication lag (msec)")
-                .setGauge()
-                .setUnit(Description.Units.MILLISECONDS),
-            PROJECT_NAME);
-    metricMaker.newTrigger(metrics, replicationStatus.replicationLagMetricPerProject(metrics));
+    if (replicationStatus.replicationLagEnabled()) {
+      metricMaker.newCallbackMetric(
+          REPLICATION_LAG_SEC,
+          Long.class,
+          new Description("Replication lag (sec)").setGauge().setUnit(Description.Units.SECONDS),
+          replicationStatus::getMaxLag);
+      metricMaker.newCallbackMetric(
+          REPLICATION_LAG_MSEC,
+          Long.class,
+          new Description("Replication lag (msec)")
+              .setGauge()
+              .setUnit(Description.Units.MILLISECONDS),
+          replicationStatus::getMaxLagMillis);
+
+      CallbackMetric1<String, Long> metrics =
+          metricMaker.newCallbackMetric(
+              SubscriberMetrics.REPLICATION_LAG_MSEC_PROJECT,
+              Long.class,
+              new Description("Per-project replication lag (msec)")
+                  .setGauge()
+                  .setUnit(Description.Units.MILLISECONDS),
+              PROJECT_NAME);
+      metricMaker.newTrigger(metrics, replicationStatus.replicationLagMetricPerProject(metrics));
+    }
   }
 
   /**
@@ -131,6 +134,9 @@ public class SubscriberMetrics extends MultiSiteMetrics {
   }
 
   public void updateReplicationStatusMetrics(Event event) {
+    if (!replicationStatus.replicationLagEnabled()) {
+      return;
+    }
 
     if (event instanceof RefReplicationDoneEvent
         || event instanceof RefReplicatedEvent
