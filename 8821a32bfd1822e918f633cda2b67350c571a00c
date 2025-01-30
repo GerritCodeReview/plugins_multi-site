@@ -68,6 +68,23 @@
       },
       "revId": "8821a32bfd1822e918f633cda2b67350c571a00c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec5afd4d_944060e3",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1083454
+      },
+      "writtenOn": "2025-01-30T10:58:44Z",
+      "side": 1,
+      "message": "Should we call it `replicationLagEnabled` or `enableReplicationLagTracking`",
+      "revId": "8821a32bfd1822e918f633cda2b67350c571a00c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
