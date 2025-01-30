@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73821fb2_2ab60e67",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-01-30T10:56:40Z",
+      "side": 1,
+      "message": "```suggestion\nrefs/multi-site/version/* to be continuously updated causing packed-refs\n```",
+      "range": {
+        "startLine": 14,
+        "startChar": 26,
+        "endLine": 14,
+        "endChar": 30
+      },
+      "revId": "8821a32bfd1822e918f633cda2b67350c571a00c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3999cbee_9ae00fd5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/http/HttpModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-01-30T10:56:40Z",
+      "side": 1,
+      "message": "I believe this endpoint should also be disabled when `replicationLagEnabled` is false and we should also document this behaviour in `http-endpoints.md`.",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 5
+      },
+      "revId": "8821a32bfd1822e918f633cda2b67350c571a00c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0462d8c0_b834363b",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-01-30T10:56:40Z",
+      "side": 1,
+      "message": "I think this should be set at past tense: `replicationLagEnabled` for consistency with other configuration options, such as `ref-database.enabled`.",
+      "range": {
+        "startLine": 98,
+        "startChar": 16,
+        "endLine": 98,
+        "endChar": 36
+      },
+      "revId": "8821a32bfd1822e918f633cda2b67350c571a00c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
