@@ -56,6 +56,7 @@ public class Configuration {
 
   private static final String REF_DATABASE = "ref-database";
   private static final String REPLICATION_LAG_REFRESH_INTERVAL = "replicationLagRefreshInterval";
+  private static final String REPLICATION_LAG_ENABLE = "replicationLagEnable";
   private static final Duration REPLICATION_LAG_REFRESH_INTERVAL_DEFAULT = Duration.ofSeconds(60);
 
   private static final String REPLICATION_CONFIG = "replication.config";
@@ -77,6 +78,7 @@ public class Configuration {
   private final Supplier<ReplicationFilter> replicationFilter;
   private final Config multiSiteConfig;
   private final Supplier<Duration> replicationLagRefreshInterval;
+  private final Supplier<Boolean> replicationLagEnabled;
 
   @Inject
   Configuration(SitePaths sitePaths) {
@@ -110,6 +112,12 @@ public class Configuration {
                         REPLICATION_LAG_REFRESH_INTERVAL,
                         REPLICATION_LAG_REFRESH_INTERVAL_DEFAULT.toMillis(),
                         TimeUnit.MILLISECONDS)));
+    replicationLagEnabled =
+        memoize(
+            () ->
+                lazyMultiSiteCfg
+                    .get()
+                    .getBoolean(REF_DATABASE, null, REPLICATION_LAG_ENABLE, true));
   }
 
   public Config getMultiSiteConfig() {
@@ -146,6 +154,10 @@ public class Configuration {
 
   public Duration replicationLagRefreshInterval() {
     return replicationLagRefreshInterval.get();
+  }
+
+  public boolean replicationLagEnabled() {
+    return replicationLagEnabled.get();
   }
 
   public Collection<Message> validate() {
