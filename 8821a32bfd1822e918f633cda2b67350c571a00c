@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f90dd4d_5d4e2cc2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-01-30T11:32:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73821fb2_2ab60e67",
+      "range": {
+        "startLine": 14,
+        "startChar": 26,
+        "endLine": 14,
+        "endChar": 30
+      },
+      "revId": "8821a32bfd1822e918f633cda2b67350c571a00c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3999cbee_9ae00fd5",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-30T10:56:40Z",
       "side": 1,
       "message": "I believe this endpoint should also be disabled when `replicationLagEnabled` is false and we should also document this behaviour in `http-endpoints.md`.",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 5
+      },
+      "revId": "8821a32bfd1822e918f633cda2b67350c571a00c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "486cb33a_f296d691",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/http/HttpModule.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-01-30T11:32:55Z",
+      "side": 1,
+      "message": "Good catch, addressed in the next PS.",
+      "parentUuid": "3999cbee_9ae00fd5",
       "range": {
         "startLine": 34,
         "startChar": 0,
@@ -83,6 +131,48 @@
       "writtenOn": "2025-01-30T10:58:44Z",
       "side": 1,
       "message": "Should we call it `replicationLagEnabled` or `enableReplicationLagTracking`",
+      "revId": "8821a32bfd1822e918f633cda2b67350c571a00c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28303df2_44dc2684",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-01-30T11:32:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0462d8c0_b834363b",
+      "range": {
+        "startLine": 98,
+        "startChar": 16,
+        "endLine": 98,
+        "endChar": 36
+      },
+      "revId": "8821a32bfd1822e918f633cda2b67350c571a00c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3ccb0d8_1ec3681b",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-01-30T11:32:55Z",
+      "side": 1,
+      "message": "Agreed, `replicationLagEnabled` is better.",
+      "parentUuid": "ec5afd4d_944060e3",
       "revId": "8821a32bfd1822e918f633cda2b67350c571a00c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
