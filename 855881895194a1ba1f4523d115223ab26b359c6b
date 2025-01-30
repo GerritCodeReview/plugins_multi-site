@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22096e90_f7224e78",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-01-30T12:31:38Z",
+      "side": 1,
+      "message": "```suggestion\nref-database.replicationLagEnabled for disabling the metric to trace\n```",
+      "range": {
+        "startLine": 10,
+        "startChar": 13,
+        "endLine": 10,
+        "endChar": 33
+      },
+      "revId": "855881895194a1ba1f4523d115223ab26b359c6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
