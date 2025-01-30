@@ -232,4 +232,8 @@ public class ReplicationStatus implements LifecycleListener, ProjectDeletedListe
   public void onProjectDeleted(Event event) {
     removeProjectFromReplicationLagMetrics(Project.nameKey(event.getProjectName()));
   }
+
+  public boolean replicationLagEnabled() {
+    return config.replicationLagEnabled();
+  }
 }

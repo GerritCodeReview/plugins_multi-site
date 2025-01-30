@@ -40,3 +40,5 @@ Optionally the REST endpoint can receive the following additional arguments:
 
 maximum number of projects to return
 *default:10*
+
+> **NOTE** This endpoint is disabled when `ref-database.replicationLagEnabled` is set to `false`.

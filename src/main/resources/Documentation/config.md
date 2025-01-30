@@ -95,10 +95,18 @@ Defaults to true.
 :   Enable the use of a shared ref-database
     Defaults: true
 
+```ref-database.replicationLagEnabled```
+:   Enable the metrics to trace the auto-replication lag between sites
+    updating the `refs/multi-site/version/*` to the _epoch_ timestamp in
+    milliseconds. Please note that the `replication-lag` REST-API is also
+    disabled if this setting is false.
+    Defaults: true
+
 ```ref-database.replicationLagRefreshInterval```
 :   Enable the auto-refresh of the metrics to trace the auto-replication
     lag by polling on a regular basis. Set to zero for disabling the polling
-    mechanism.
+    mechanism. Disabled automatically when `ref-database.replicationLagEnable`
+    is set to false.
     Defaults: 60 min
 
 ```ref-database.enforcementRules.<policy>```
