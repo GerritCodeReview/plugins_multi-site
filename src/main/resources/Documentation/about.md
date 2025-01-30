@@ -96,6 +96,8 @@ documentation.
 
 `metric=plugins/multi-site/multi_site/subscriber/subscriber_message_consumer_failure_counter/subscriber_msg_consumer_poll_failure_counter, type=com.codahale.metrics.Meter`
 
+### Replication lag
+
 * Subscriber replication lag (sec behind the producer)
 
 `metric=site/multi_site/subscriber/subscriber_replication_status/sec_behind, type=com.google.gerrit.metrics.dropwizard.CallbackMetricImpl`
@@ -103,3 +105,6 @@ documentation.
 * Subscriber replication lag (millisec behind the producer)
 
 `metric=site/multi_site/subscriber/subscriber_replication_status/msec_behind, type=com.google.gerrit.metrics.dropwizard.CallbackMetricImpl`
+
+> **NOTE**: The replication lag metrics are omitted when `ref-database.replicationLagEnabled` configuration
+> setting in `multi-site.config` is set to `false`.

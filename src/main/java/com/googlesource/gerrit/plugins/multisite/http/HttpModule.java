@@ -31,7 +31,7 @@ public class HttpModule extends ServletModule {
 
   @Override
   protected void configureServlets() {
-    if (config.event().synchronize()) {
+    if (config.event().synchronize() && config.replicationLagEnabled()) {
       serve(String.format("/%s", LAG_ENDPOINT_SEGMENT)).with(ReplicationStatusServlet.class);
     }
   }
