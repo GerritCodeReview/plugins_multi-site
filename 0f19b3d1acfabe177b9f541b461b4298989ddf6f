@@ -16,6 +16,23 @@
       "message": "The failure is unrelated and is fixed on the global-refdb by I0f20d070d",
       "revId": "0f19b3d1acfabe177b9f541b461b4298989ddf6f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a8f9363_9d9cf07d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-01-30T17:35:47Z",
+      "side": 1,
+      "message": "Build and works as expected with I0f20d070d.",
+      "revId": "0f19b3d1acfabe177b9f541b461b4298989ddf6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
