@@ -1,12 +1,14 @@
 version: '3'
 services:
   zookeeper:
-    image: bitnami/zookeeper:3.8.3
+    image: zookeeper:3.5.7
     ports:
       - "2181:2181"
     container_name: zk_test_node
     environment:
-      ALLOW_ANONYMOUS_LOGIN: "true"
+      ZK_CLIENT_PORT: 2181
+      ZK_SECURE_CLIENT_PORT: 2281
+      ZK_REPLICAS: 1
   prometheus:
     container_name: prometheus_test_node
     image: prom/prometheus:v2.16.0
