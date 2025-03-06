@@ -67,9 +67,7 @@ public class PluginModule extends LifecycleModule {
       install(new BrokerForwarderModule());
       listener().to(MultiSiteConsumerRunner.class);
 
-      if (config.replicationLagEnabled()) {
-        install(new ReplicationStatusModule(workQueue));
-      }
+      install(new ReplicationStatusModule(workQueue));
     }
 
     if (config.getSharedRefDbConfiguration().getSharedRefDb().isEnabled()) {
