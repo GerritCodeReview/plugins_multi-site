@@ -95,6 +95,16 @@ Defaults to true.
 :   Enable the use of a shared ref-database
     Defaults: true
 
+```ref-database.pushReplicationFilterClassEnabled```
+:   Enable the filtering of push replication events checking their
+    up-to-date status with the global-refdb.
+    Defaults: true
+
+```ref-database.pullReplicationFilterClassEnabled```
+:   Enable the filtering of pull replication events checking their
+    up-to-date status with the global-refdb.
+    Defaults: true
+
 ```ref-database.replicationLagEnabled```
 :   Enable the metrics to trace the auto-replication lag between sites
     updating the `refs/multi-site/version/*` to the _epoch_ timestamp in
