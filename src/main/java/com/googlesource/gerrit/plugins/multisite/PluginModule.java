@@ -35,14 +35,10 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.broker.BrokerForwarde
 
 public class PluginModule extends LifecycleModule {
   private static final FluentLogger log = FluentLogger.forEnclosingClass();
-  private static final String[] FILTER_MODULES_CLASS_NAMES =
-      new String[] {
-        /* Class names are defined as String for avoiding this class failing to load
-         * if either replication or pull-replication plugins are missing.
-         */
-        "com.googlesource.gerrit.plugins.multisite.validation.PullReplicationFilterModule",
-        "com.googlesource.gerrit.plugins.multisite.validation.PushReplicationFilterModule"
-      };
+  public static final String PULL_REPLICATION_FILTER_MODULE =
+      "com.googlesource.gerrit.plugins.multisite.validation.PullReplicationFilterModule";
+  public static final String PUSH_REPLICATION_FILTER_MODULE =
+      "com.googlesource.gerrit.plugins.multisite.validation.PushReplicationFilterModule";
 
   private final Configuration config;
   private final WorkQueue workQueue;
@@ -89,25 +85,33 @@ public class PluginModule extends LifecycleModule {
   private Iterable<AbstractModule> detectFilterModules() {
     ImmutableList.Builder<AbstractModule> filterModulesBuilder = ImmutableList.builder();
 
-    for (String filterClassName : FILTER_MODULES_CLASS_NAMES) {
-      try {
-        @SuppressWarnings("unchecked")
-        Class<AbstractModule> filterClass = (Class<AbstractModule>) Class.forName(filterClassName);
-
-        AbstractModule filterModule = parentInjector.getInstance(filterClass);
-        // Check if the filterModule would be valid for creating a child Guice Injector
-        parentInjector.createChildInjector(filterModule);
-
-        filterModulesBuilder.add(filterModule);
-      } catch (NoClassDefFoundError | ClassNotFoundException e) {
-        log.atFine().withCause(e).log(
-            "Not loading %s because of missing the associated replication plugin", filterClassName);
-      } catch (Exception e) {
-        throw new ProvisionException(
-            "Unable to instantiate replication filter " + filterClassName, e);
-      }
+    if (config.pushReplicationFilterEnabled()) {
+      bindReplicationFilterClass(PUSH_REPLICATION_FILTER_MODULE, filterModulesBuilder);
+    }
+    if (config.pullRepllicationFilterEnabled()) {
+      bindReplicationFilterClass(PULL_REPLICATION_FILTER_MODULE, filterModulesBuilder);
     }
 
     return filterModulesBuilder.build();
+  }
+
+  private void bindReplicationFilterClass(
+      String filterClassName, ImmutableList.Builder<AbstractModule> filterModulesBuilder) {
+    try {
+      @SuppressWarnings("unchecked")
+      Class<AbstractModule> filterClass = (Class<AbstractModule>) Class.forName(filterClassName);
+
+      AbstractModule filterModule = parentInjector.getInstance(filterClass);
+      // Check if the filterModule would be valid for creating a child Guice Injector
+      parentInjector.createChildInjector(filterModule);
+
+      filterModulesBuilder.add(filterModule);
+    } catch (NoClassDefFoundError | ClassNotFoundException e) {
+      log.atWarning().withCause(e).log(
+          "Not loading %s because of missing the associated replication plugin", filterClassName);
+    } catch (Exception e) {
+      throw new ProvisionException(
+          "Unable to instantiate replication filter " + filterClassName, e);
+    }
   }
 }
