@@ -58,6 +58,8 @@ public class Configuration {
   private static final String REPLICATION_LAG_REFRESH_INTERVAL = "replicationLagRefreshInterval";
   private static final String REPLICATION_LAG_ENABLED = "replicationLagEnabled";
   private static final Duration REPLICATION_LAG_REFRESH_INTERVAL_DEFAULT = Duration.ofSeconds(60);
+  private static final String PUSH_REPLICATION_FILTER_ENABLED = "pushReplicationFilterEnabled";
+  private static final String PULL_REPLICATION_FILTER_ENABLED = "pullReplicationFilterEnabled";
 
   private static final String REPLICATION_CONFIG = "replication.config";
   // common parameters to cache and index sections
@@ -79,6 +81,8 @@ public class Configuration {
   private final Config multiSiteConfig;
   private final Supplier<Duration> replicationLagRefreshInterval;
   private final Supplier<Boolean> replicationLagEnabled;
+  private final Supplier<Boolean> pushReplicationFilterEnabled;
+  private final Supplier<Boolean> pullReplicationFilterEnabled;
 
   @Inject
   Configuration(SitePaths sitePaths) {
@@ -118,6 +122,19 @@ public class Configuration {
                 lazyMultiSiteCfg
                     .get()
                     .getBoolean(REF_DATABASE, null, REPLICATION_LAG_ENABLED, true));
+
+    pushReplicationFilterEnabled =
+        memoize(
+            () ->
+                lazyMultiSiteCfg
+                    .get()
+                    .getBoolean(REF_DATABASE, null, PUSH_REPLICATION_FILTER_ENABLED, true));
+    pullReplicationFilterEnabled =
+        memoize(
+            () ->
+                lazyMultiSiteCfg
+                    .get()
+                    .getBoolean(REF_DATABASE, null, PULL_REPLICATION_FILTER_ENABLED, true));
   }
 
   public Config getMultiSiteConfig() {
@@ -158,6 +175,14 @@ public class Configuration {
 
   public boolean replicationLagEnabled() {
     return replicationLagEnabled.get();
+  }
+
+  public boolean pushReplicationFilterEnabled() {
+    return pushReplicationFilterEnabled.get();
+  }
+
+  public boolean pullRepllicationFilterEnabled() {
+    return pullReplicationFilterEnabled.get();
   }
 
   public Collection<Message> validate() {
