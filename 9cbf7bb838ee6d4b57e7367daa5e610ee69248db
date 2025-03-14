@@ -22,6 +22,30 @@
       },
       "revId": "9cbf7bb838ee6d4b57e7367daa5e610ee69248db",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69436fdb_96532c1f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-03-14T08:48:32Z",
+      "side": 1,
+      "message": "`pullReplicationFilterClassEnabled \u003d true` is redundant, as all filters are enabled by default.",
+      "parentUuid": "4d309390_c0734a21",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 40
+      },
+      "revId": "9cbf7bb838ee6d4b57e7367daa5e610ee69248db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
