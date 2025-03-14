@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d309390_c0734a21",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-03-14T08:47:03Z",
+      "side": 1,
+      "message": "```suggestion\n[ref-database]\n  pushReplicationFilterClassEnabled \u003d false\n  pullReplicationFilterClassEnabled \u003d true\n```",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 40
+      },
+      "revId": "9cbf7bb838ee6d4b57e7367daa5e610ee69248db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
