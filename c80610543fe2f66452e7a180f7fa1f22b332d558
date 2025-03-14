@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43e86c47_c51f2276",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-03-14T08:24:36Z",
+      "side": 1,
+      "message": "Filtering is described as a good default, but at the same time, some of these checks are referred to as \"unneeded\".\n\nCould you clarify in what scenarios checking refs during push or pull replication would not be necessary?",
+      "range": {
+        "startLine": 12,
+        "startChar": 24,
+        "endLine": 12,
+        "endChar": 47
+      },
+      "revId": "c80610543fe2f66452e7a180f7fa1f22b332d558",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7a9f501_8efcc53b",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-03-14T08:24:36Z",
+      "side": 1,
+      "message": "```suggestion\n:   Enable the filtering of pull replication events checking their\n```",
+      "range": {
+        "startLine": 104,
+        "startChar": 28,
+        "endLine": 104,
+        "endChar": 32
+      },
+      "revId": "c80610543fe2f66452e7a180f7fa1f22b332d558",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
