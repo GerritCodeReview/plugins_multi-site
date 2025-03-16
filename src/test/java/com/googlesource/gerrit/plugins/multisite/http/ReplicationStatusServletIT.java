@@ -19,6 +19,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.plugins.multisite.http.HttpModule.LAG_ENDPOINT_SEGMENT;
 
 import com.gerritforge.gerrit.globalrefdb.validation.Log4jSharedRefLogger;
+import com.gerritforge.gerrit.globalrefdb.validation.RefLocker;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbConfiguration;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefLogger;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
@@ -77,6 +78,7 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
           .setBinding()
           .to(ProjectVersionRefUpdateImpl.class)
           .in(Scopes.SINGLETON);
+      bind(RefLocker.class).toInstance(((project1, refName) -> () -> {}));
     }
   }
 
