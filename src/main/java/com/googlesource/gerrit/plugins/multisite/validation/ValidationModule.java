@@ -15,8 +15,8 @@
 package com.googlesource.gerrit.plugins.multisite.validation;
 
 import com.gerritforge.gerrit.globalrefdb.validation.BatchRefUpdateValidator;
-import com.gerritforge.gerrit.globalrefdb.validation.LockWrapper;
 import com.gerritforge.gerrit.globalrefdb.validation.Log4jSharedRefLogger;
+import com.gerritforge.gerrit.globalrefdb.validation.RefLocker;
 import com.gerritforge.gerrit.globalrefdb.validation.RefUpdateValidator;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbBatchRefUpdate;
@@ -47,6 +47,7 @@ public class ValidationModule extends FactoryModule {
 
   @Override
   protected void configure() {
+    bind(RefLocker.class).to(ReentrantRefDbLocker.class).in(Scopes.SINGLETON);
     bind(SharedRefDatabaseWrapper.class).in(Scopes.SINGLETON);
     bind(SharedRefLogger.class).to(Log4jSharedRefLogger.class);
 
