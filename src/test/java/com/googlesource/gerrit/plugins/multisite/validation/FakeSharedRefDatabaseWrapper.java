@@ -80,6 +80,7 @@ public class FakeSharedRefDatabaseWrapper extends SharedRefDatabaseWrapper {
               }
             }),
         new DisabledSharedRefLogger(),
-        new SharedRefDBMetrics(new DisabledMetricMaker()));
+        new SharedRefDBMetrics(new DisabledMetricMaker()),
+        ((project, refName) -> () -> {}));
   }
 }
