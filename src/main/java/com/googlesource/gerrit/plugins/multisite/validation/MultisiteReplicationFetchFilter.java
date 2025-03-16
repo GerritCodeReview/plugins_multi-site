@@ -27,6 +27,9 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.replication.pull.ReplicationFetchFilter;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -87,6 +90,32 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
       logger.atSevere().withCause(ioe).log("%s", message);
       return Collections.emptySet();
     }
+  }
+
+  @Override
+  public Map<String, AutoCloseable> filterAndLock(String projectName, Set<String> fetchRefs) {
+    Project.NameKey projectKey = Project.nameKey(projectName);
+    Set<String> filteredRefs = new HashSet<>();
+    Map<String, AutoCloseable> refLocks = new HashMap<>();
+    try {
+      refLocks.putAll(
+          fetchRefs.stream()
+              .collect(Collectors.toMap(ref -> ref, ref -> sharedRefDb.lockRef(projectKey, ref))));
+      filteredRefs.addAll(filter(projectName, fetchRefs));
+    } finally {
+      fetchRefs.forEach(
+          ref -> {
+            if (!filteredRefs.contains(ref)) {
+              try {
+                refLocks.remove(ref).close();
+              } catch (Exception e) {
+                logger.atWarning().withCause(e).log("Error whilst unlocking ref %s", ref);
+              }
+            }
+          });
+    }
+
+    return refLocks;
   }
 
   private Optional<ObjectId> getLocalSha1IfEqualsToExistingGlobalRefDb(
