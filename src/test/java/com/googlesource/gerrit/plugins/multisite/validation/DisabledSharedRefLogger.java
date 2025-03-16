@@ -29,10 +29,10 @@ public class DisabledSharedRefLogger implements SharedRefLogger {
   public void logProjectDelete(String project) {}
 
   @Override
-  public void logLockAcquisition(String project, String refName) {}
+  public void logLockAcquisition(String project, String refName, Scope scope) {}
 
   @Override
-  public void logLockRelease(String project, String refName) {}
+  public void logLockRelease(String project, String refName, Scope scope) {}
 
   @Override
   public <T> void logRefUpdate(String project, String refName, T currRef, T newRefValue) {}

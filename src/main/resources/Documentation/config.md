@@ -95,6 +95,11 @@ Defaults to true.
 :   Enable the use of a shared ref-database
     Defaults: true
 
+```ref-database.refLockTimeout```
+:   Timeout waiting for a local ref to become available to accept
+    updates or for starting a replication task.
+    Defaults: 30 sec
+
 ```ref-database.replicationLagEnabled```
 :   Enable the metrics to trace the auto-replication lag between sites
     updating the `refs/multi-site/version/*` to the _epoch_ timestamp in
