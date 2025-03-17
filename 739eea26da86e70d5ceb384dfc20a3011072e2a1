@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85648038_dd2a3c2f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-03-17T15:22:47Z",
+      "side": 1,
+      "message": "This looks way too much: do we really have to put a global lock? We want to prevent the local updates from happening!",
+      "range": {
+        "startLine": 103,
+        "startChar": 59,
+        "endLine": 103,
+        "endChar": 78
+      },
+      "revId": "739eea26da86e70d5ceb384dfc20a3011072e2a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
