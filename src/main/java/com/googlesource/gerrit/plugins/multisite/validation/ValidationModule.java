@@ -49,7 +49,6 @@ public class ValidationModule extends FactoryModule {
   protected void configure() {
     bind(SharedRefDatabaseWrapper.class).in(Scopes.SINGLETON);
     bind(SharedRefLogger.class).to(Log4jSharedRefLogger.class);
-    factory(LockWrapper.Factory.class);
 
     factory(SharedRefDbRepository.Factory.class);
     factory(SharedRefDbRefDatabase.Factory.class);
