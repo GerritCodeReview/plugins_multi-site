@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbaa4123_492c1f96",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-03-18T09:53:50Z",
+      "side": 1,
+      "message": "```suggestion\nLock local refs locally for allowing concurrent access to happen on\n```",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 18
+      },
+      "revId": "d9444437e807d095c546851e9a873dea2abf2d4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ce05ca4_605c921d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-03-18T09:53:50Z",
+      "side": 1,
+      "message": "The `remove` API mentions several RunTimeException might be thrown: `UnsupportedOperationException`, `ClassCastException`, `NullPointerException`.\n\nThe `ReentrantLock()` implementation can also throw a `IllegalMonitorStateException` when `unlock()`, \"if the current thread does not hold this lock\".\n\nEven though unlikely, should we catch and log that in those cases too rather than just catching checked exceptions?",
+      "range": {
+        "startLine": 111,
+        "startChar": 25,
+        "endLine": 111,
+        "endChar": 36
+      },
+      "revId": "d9444437e807d095c546851e9a873dea2abf2d4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15806f23_91a38326",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-03-18T09:53:50Z",
+      "side": 1,
+      "message": "We should also log which project the ref is for, so that it is not ambiguous when we look at the logs.",
+      "range": {
+        "startLine": 113,
+        "startChar": 16,
+        "endLine": 113,
+        "endChar": 90
+      },
+      "revId": "d9444437e807d095c546851e9a873dea2abf2d4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c42ee6d7_7a905159",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2025-03-18T09:53:50Z",
+      "side": 1,
+      "message": "The concept of locking might be confusing, since it exists for both `global` and `local` scopes. Should we make it obvious this applies to local locking by naming it more precisely? `localRefLockTimeout`, or similar?",
+      "range": {
+        "startLine": 98,
+        "startChar": 16,
+        "endLine": 98,
+        "endChar": 30
+      },
+      "revId": "d9444437e807d095c546851e9a873dea2abf2d4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
