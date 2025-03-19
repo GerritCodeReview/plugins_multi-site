@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d1e4da51_a10337fd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-03-19T19:37:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13b0d154_23dc604a",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 28
+      },
+      "revId": "7d4e8494998e06e1af8bce04fc838f286ca95d81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "dde0e945_e665599b",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/http/ReplicationStatusServletIT.java",
         "patchSetId": 12
