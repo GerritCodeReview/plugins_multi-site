@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDatabase;
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbSystemError;
+import com.gerritforge.gerrit.globalrefdb.validation.DisabledSharedRefLogger;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDBMetrics;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
 import com.google.gerrit.entities.Project;
@@ -79,6 +80,7 @@ public class FakeSharedRefDatabaseWrapper extends SharedRefDatabaseWrapper {
               }
             }),
         new DisabledSharedRefLogger(),
-        new SharedRefDBMetrics(new DisabledMetricMaker()));
+        new SharedRefDBMetrics(new DisabledMetricMaker()),
+        ((project, refName) -> () -> {}));
   }
 }
