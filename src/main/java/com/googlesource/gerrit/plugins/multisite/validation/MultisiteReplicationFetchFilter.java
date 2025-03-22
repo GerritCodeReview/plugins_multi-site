@@ -17,7 +17,9 @@ package com.googlesource.gerrit.plugins.multisite.validation;
 import static com.googlesource.gerrit.plugins.replication.pull.PullReplicationLogger.repLog;
 
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
+import com.gerritforge.gerrit.globalrefdb.RefDbLockException;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
+import com.google.common.collect.Sets;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.server.git.GitRepositoryManager;
@@ -27,6 +29,9 @@ import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.replication.pull.ReplicationFetchFilter;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -87,6 +92,37 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
       logger.atSevere().withCause(ioe).log("%s", message);
       return Collections.emptySet();
     }
+  }
+
+  @Override
+  public Map<String, AutoCloseable> filterAndLock(String projectName, Set<String> fetchRefs)
+      throws RefDbLockException {
+    Project.NameKey projectKey = Project.nameKey(projectName);
+    Set<String> filteredRefs = new HashSet<>();
+    Map<String, AutoCloseable> refLocks = new HashMap<>();
+    try {
+      for (String ref : fetchRefs) {
+        refLocks.put(ref, sharedRefDb.lockLocalRef(projectKey, ref));
+      }
+      filteredRefs.addAll(filter(projectName, fetchRefs));
+    } catch (RefDbLockException lockException) {
+      filteredRefs.clear();
+      throw lockException;
+    } finally {
+      for (String excludedRef : Sets.difference(fetchRefs, filteredRefs)) {
+        AutoCloseable excludedLock = refLocks.remove(excludedRef);
+        if (excludedLock != null) {
+          try {
+            excludedLock.close();
+          } catch (Exception e) {
+            logger.atWarning().withCause(e).log(
+                "Error whilst unlocking ref %s:%s", projectName, excludedRef);
+          }
+        }
+      }
+    }
+
+    return refLocks;
   }
 
   private Optional<ObjectId> getLocalSha1IfEqualsToExistingGlobalRefDb(
