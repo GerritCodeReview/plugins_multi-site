@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bdc89ac_11ae2e75",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/http/ReplicationStatusServletIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-04-03T22:03:31Z",
+      "side": 1,
+      "message": "```suggestion\n      SharedRefDbConfiguration sharedRefDbConfig \u003d\n          new SharedRefDbConfiguration(new Config(), \"multi-site\");\n```",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 62
+      },
+      "revId": "b729a5d784a4c6630bf868ee3368e1946a444d24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

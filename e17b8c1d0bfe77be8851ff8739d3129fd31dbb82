@@ -225,6 +225,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a9d70f3_6c363db5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetricsTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-04-03T22:03:31Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "96e3a07c_da9408a8",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 84
+      },
+      "revId": "e17b8c1d0bfe77be8851ff8739d3129fd31dbb82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2776c1d8_78f4dbe2",
@@ -286,6 +310,30 @@
       "side": 1,
       "message": "tbh, as mentioned privately, these tests still fail, unsure how to set the config correctly.",
       "parentUuid": "5f54c655_82cdd6dc",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 78
+      },
+      "revId": "e17b8c1d0bfe77be8851ff8739d3129fd31dbb82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "516d3e6e_eb23e163",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/http/ReplicationStatusServletIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-04-03T22:03:31Z",
+      "side": 1,
+      "message": "This has been fixed by Ia594884ccb",
+      "parentUuid": "060ebb26_4a5a5214",
       "range": {
         "startLine": 71,
         "startChar": 0,

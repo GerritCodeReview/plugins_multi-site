@@ -84,6 +84,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "31816896_fb1bed49",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-04-03T22:03:31Z",
+      "side": 1,
+      "message": "It is documented but there was a typo, see I675b09dd0a",
+      "parentUuid": "bb7883e3_75f75f20",
+      "range": {
+        "startLine": 118,
+        "startChar": 27,
+        "endLine": 118,
+        "endChar": 55
+      },
+      "revId": "11e91f2be8f76688c457dd59a1477faf2d32e21f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "bcc88f38_fbaa1524",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetricsTest.java",
         "patchSetId": 8
