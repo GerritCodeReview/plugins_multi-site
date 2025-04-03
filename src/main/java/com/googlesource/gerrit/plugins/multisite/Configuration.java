@@ -124,7 +124,7 @@ public class Configuration {
             () ->
                 lazyMultiSiteCfg
                     .get()
-                    .getBoolean(REF_DATABASE, null, REPLICATION_LAG_ENABLED, true));
+                    .getBoolean(REF_DATABASE, null, REPLICATION_LAG_ENABLED, false));
 
     pushReplicationFilterEnabled =
         memoize(
@@ -138,6 +138,7 @@ public class Configuration {
                 lazyMultiSiteCfg
                     .get()
                     .getBoolean(REF_DATABASE, null, PULL_REPLICATION_FILTER_ENABLED, true));
+
     localRefLockTimeoutMsec =
         memoize(
             () ->

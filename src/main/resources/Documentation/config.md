@@ -115,7 +115,10 @@ Defaults to true.
     updating the `refs/multi-site/version/*` to the _epoch_ timestamp in
     milliseconds. Please note that the `replication-lag` REST-API is also
     disabled if this setting is false.
-    Defaults: true
+    Defaults: false
+> **NOTE**: The default was switched from `true` to `false` in Gerrit 3.12.
+> If this is set to `false` you can remove `refs/multi-site/version` ref from
+> your repo, as it won't be updated anymore.
 
 ```ref-database.replicationLagRefreshInterval```
 :   Enable the auto-refresh of the metrics to trace the auto-replication
