@@ -222,6 +222,30 @@
       },
       "revId": "e17b8c1d0bfe77be8851ff8739d3129fd31dbb82",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "060ebb26_4a5a5214",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/http/ReplicationStatusServletIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-04-03T13:41:25Z",
+      "side": 1,
+      "message": "tbh, as mentioned privately, these tests still fail, unsure how to set the config correctly.",
+      "parentUuid": "5f54c655_82cdd6dc",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 78
+      },
+      "revId": "e17b8c1d0bfe77be8851ff8739d3129fd31dbb82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
