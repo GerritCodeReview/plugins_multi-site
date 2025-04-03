@@ -107,6 +107,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "96e3a07c_da9408a8",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetricsTest.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-04-03T13:09:14Z",
+      "side": 1,
+      "message": "The tests fails if you don\u0027t set this.",
+      "parentUuid": "d0a93d61_4086d1da",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 84
+      },
+      "revId": "e17b8c1d0bfe77be8851ff8739d3129fd31dbb82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2776c1d8_78f4dbe2",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/http/ReplicationStatusServletIT.java",
         "patchSetId": 3
@@ -118,6 +142,30 @@
       "writtenOn": "2025-04-03T13:05:52Z",
       "side": 1,
       "message": "Not needed",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 78
+      },
+      "revId": "e17b8c1d0bfe77be8851ff8739d3129fd31dbb82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f54c655_82cdd6dc",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/http/ReplicationStatusServletIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-04-03T13:09:14Z",
+      "side": 1,
+      "message": "Tests fail if you don\u0027t set this.",
+      "parentUuid": "2776c1d8_78f4dbe2",
       "range": {
         "startLine": 71,
         "startChar": 0,
