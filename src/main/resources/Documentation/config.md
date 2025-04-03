@@ -115,7 +115,10 @@ Defaults to true.
     updating the `refs/multi-site/version/*` to the _epoch_ timestamp in
     milliseconds. Please note that the `replication-lag` REST-API is also
     disabled if this setting is false.
-    Defaults: true
+    Defaults: true unless `pullReplicationFilterEnabled` is enabled,
+    in which case replicationLag is always disabled.
+> **NOTE**: `pullReplicationFilterEnabled` defaults to true, so, effectively,
+> this is disabled by default.
 
 ```ref-database.replicationLagRefreshInterval```
 :   Enable the auto-refresh of the metrics to trace the auto-replication
