@@ -57,6 +57,8 @@ public class SubscriberMetricsTest {
 
   @Before
   public void setup() throws Exception {
+    Config multiSiteConfig = new Config();
+    multiSiteConfig.setBoolean("ref-database", null, "pullReplicationFilterEnabled", false);
     replicationStatus =
         new ReplicationStatus(
             CacheBuilder.newBuilder().build(),
@@ -64,7 +66,8 @@ public class SubscriberMetricsTest {
             verLogger,
             projectCache,
             Executors.newScheduledThreadPool(1),
-            new com.googlesource.gerrit.plugins.multisite.Configuration(new Config(), new Config()),
+            new com.googlesource.gerrit.plugins.multisite.Configuration(
+                multiSiteConfig, new Config()),
             new DisabledMetricMaker());
     metrics = new SubscriberMetrics(metricMaker, replicationStatus);
   }

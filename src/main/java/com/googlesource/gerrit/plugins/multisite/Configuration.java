@@ -123,10 +123,10 @@ public class Configuration {
     replicationLagEnabled =
         memoize(
             () ->
-                lazyMultiSiteCfg
-                    .get()
-                    .getBoolean(REF_DATABASE, null, REPLICATION_LAG_ENABLED, true));
-
+                !pullReplicationFilterEnabled.get()
+                    && lazyMultiSiteCfg
+                        .get()
+                        .getBoolean(REF_DATABASE, null, REPLICATION_LAG_ENABLED, true));
     pushReplicationFilterEnabled =
         memoize(
             () ->
