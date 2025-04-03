@@ -22,6 +22,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 import com.google.gerrit.server.config.ConfigUtil;
 import com.google.gerrit.server.config.SitePaths;
@@ -83,8 +84,8 @@ public class Configuration {
   private final Config multiSiteConfig;
   private final Supplier<Duration> replicationLagRefreshInterval;
   private final Supplier<Boolean> replicationLagEnabled;
-  private final Supplier<Boolean> pushReplicationFilterEnabled;
-  private final Supplier<Boolean> pullReplicationFilterEnabled;
+  private Supplier<Boolean> pushReplicationFilterEnabled;
+  private Supplier<Boolean> pullReplicationFilterEnabled;
   private final Supplier<Long> localRefLockTimeoutMsec;
 
   @Inject
@@ -194,8 +195,16 @@ public class Configuration {
     return pushReplicationFilterEnabled.get();
   }
 
+  public void disablePushReplicationFilter() {
+    pushReplicationFilterEnabled = Suppliers.ofInstance(false);
+  }
+
   public boolean pullRepllicationFilterEnabled() {
     return pullReplicationFilterEnabled.get();
+  }
+
+  public void disablePullReplicationFilter() {
+    pullReplicationFilterEnabled = Suppliers.ofInstance(false);
   }
 
   public long localRefLockTimeoutMsec() {

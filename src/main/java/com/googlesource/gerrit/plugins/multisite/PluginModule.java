@@ -86,16 +86,20 @@ public class PluginModule extends LifecycleModule {
     ImmutableList.Builder<AbstractModule> filterModulesBuilder = ImmutableList.builder();
 
     if (config.pushReplicationFilterEnabled()) {
-      bindReplicationFilterClass(PUSH_REPLICATION_FILTER_MODULE, filterModulesBuilder);
+      if (!bindReplicationFilterClass(PUSH_REPLICATION_FILTER_MODULE, filterModulesBuilder)) {
+        config.disablePushReplicationFilter();
+      }
     }
     if (config.pullRepllicationFilterEnabled()) {
-      bindReplicationFilterClass(PULL_REPLICATION_FILTER_MODULE, filterModulesBuilder);
+      if (!bindReplicationFilterClass(PULL_REPLICATION_FILTER_MODULE, filterModulesBuilder)) {
+        config.disablePullReplicationFilter();
+      }
     }
 
     return filterModulesBuilder.build();
   }
 
-  private void bindReplicationFilterClass(
+  private boolean bindReplicationFilterClass(
       String filterClassName, ImmutableList.Builder<AbstractModule> filterModulesBuilder) {
     try {
       @SuppressWarnings("unchecked")
@@ -106,9 +110,11 @@ public class PluginModule extends LifecycleModule {
       parentInjector.createChildInjector(filterModule);
 
       filterModulesBuilder.add(filterModule);
+      return true;
     } catch (NoClassDefFoundError | ClassNotFoundException e) {
       log.atWarning().withCause(e).log(
           "Not loading %s because of missing the associated replication plugin", filterClassName);
+      return false;
     } catch (Exception e) {
       throw new ProvisionException(
           "Unable to instantiate replication filter " + filterClassName, e);
