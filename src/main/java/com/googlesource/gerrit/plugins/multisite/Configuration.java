@@ -28,6 +28,7 @@ import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
@@ -36,6 +37,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
@@ -119,12 +121,6 @@ public class Configuration {
                         REPLICATION_LAG_REFRESH_INTERVAL,
                         REPLICATION_LAG_REFRESH_INTERVAL_DEFAULT.toMillis(),
                         TimeUnit.MILLISECONDS)));
-    replicationLagEnabled =
-        memoize(
-            () ->
-                lazyMultiSiteCfg
-                    .get()
-                    .getBoolean(REF_DATABASE, null, REPLICATION_LAG_ENABLED, true));
 
     pushReplicationFilterEnabled =
         memoize(
@@ -138,16 +134,31 @@ public class Configuration {
                 lazyMultiSiteCfg
                     .get()
                     .getBoolean(REF_DATABASE, null, PULL_REPLICATION_FILTER_ENABLED, true));
-    localRefLockTimeoutMsec =
+
+
+    replicationLagEnabled =
         memoize(
-            () ->
-                ConfigUtil.getTimeUnit(
-                    lazyMultiSiteCfg.get(),
-                    REF_DATABASE,
-                    null,
-                    LOCAL_REF_LOCK_TIMEOUT,
-                    LOCAL_REF_LOCK_TIMEOUT_DEFAULT.toMillis(),
-                    TimeUnit.MILLISECONDS));
+            () -> {
+              if (pullReplicationFilterEnabled.get()) {
+                return false;
+              } else {
+                return lazyMultiSiteCfg
+                    .get()
+                    .getBoolean(REF_DATABASE, null, REPLICATION_LAG_ENABLED, true);
+              }
+            });
+
+
+            localRefLockTimeoutMsec =
+                memoize(
+                    () ->
+                        ConfigUtil.getTimeUnit(
+                            lazyMultiSiteCfg.get(),
+                            REF_DATABASE,
+                            null,
+                            LOCAL_REF_LOCK_TIMEOUT,
+                            LOCAL_REF_LOCK_TIMEOUT_DEFAULT.toMillis(),
+                            TimeUnit.MILLISECONDS));
   }
 
   public Config getMultiSiteConfig() {
@@ -309,7 +320,9 @@ public class Configuration {
     }
   }
 
-  /** Common parameters to cache, event, index */
+  /**
+   * Common parameters to cache, event, index
+   */
   public abstract static class Forwarding {
     static final boolean DEFAULT_SYNCHRONIZE = true;
     static final String SYNCHRONIZE_KEY = "synchronize";
