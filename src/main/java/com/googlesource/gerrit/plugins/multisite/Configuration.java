@@ -120,12 +120,6 @@ public class Configuration {
                         REPLICATION_LAG_REFRESH_INTERVAL,
                         REPLICATION_LAG_REFRESH_INTERVAL_DEFAULT.toMillis(),
                         TimeUnit.MILLISECONDS)));
-    replicationLagEnabled =
-        memoize(
-            () ->
-                lazyMultiSiteCfg
-                    .get()
-                    .getBoolean(REF_DATABASE, null, REPLICATION_LAG_ENABLED, true));
 
     pushReplicationFilterEnabled =
         memoize(
@@ -139,6 +133,20 @@ public class Configuration {
                 lazyMultiSiteCfg
                     .get()
                     .getBoolean(REF_DATABASE, null, PULL_REPLICATION_FILTER_ENABLED, true));
+
+    replicationLagEnabled =
+        memoize(
+            () -> {
+              if (pullReplicationFilterEnabled.get()) {
+                return false;
+              } else {
+                return lazyMultiSiteCfg
+                    .get()
+                    .getBoolean(REF_DATABASE, null, REPLICATION_LAG_ENABLED, true);
+              }
+            });
+
+
     localRefLockTimeoutMsec =
         memoize(
             () ->
