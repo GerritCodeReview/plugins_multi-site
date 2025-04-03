@@ -19,6 +19,29 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf1d5f7b_7fdbcee1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-04-03T22:35:25Z",
+      "side": 1,
+      "message": "```suggestion\n    replicationLagEnabled \u003d\n        memoize(\n            () -\u003e\n                !pullReplicationFilterEnabled.get()\n                    \u0026\u0026 lazyMultiSiteCfg\n                        .get()\n                        .getBoolean(REF_DATABASE, null, REPLICATION_LAG_ENABLED, true));\n```\n\nAlso, move it back to L123. I believe you\u0027ve been tricked by the fact that the lambda uses the `pullReplicationFilterEnabled`. These are lambda therefore they are not evaluated immediately but just when the `get()` is invoked. The order of where they are defined is irrelevant, therefore this should stay in his original position and it works there, as I\u0027ve tested it locally.",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 15
+      },
+      "revId": "1ed31f11a9c51d719a03ba468c6254f56208dc73",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "c9d114a4_0b7d82fe",
