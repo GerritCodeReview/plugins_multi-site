@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.multisite.http;
 import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
 import static com.google.common.truth.Truth.assertThat;
 import static com.googlesource.gerrit.plugins.multisite.http.HttpModule.LAG_ENDPOINT_SEGMENT;
+import static org.junit.Assume.assumeTrue;
 
 import com.gerritforge.gerrit.globalrefdb.validation.Log4jSharedRefLogger;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDbConfiguration;
@@ -32,6 +33,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Scopes;
 import com.google.inject.multibindings.OptionalBinder;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.Log4jProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.ProjectVersionLogger;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
@@ -57,6 +59,7 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
   private static final String LAG_ENDPOINT =
       String.format("/plugins/multi-site/%s", LAG_ENDPOINT_SEGMENT);
   private ReplicationStatus replicationStatus;
+  private Configuration multiSiteConfig;
 
   public static class TestModule extends AbstractModule {
     @Inject WorkQueue workQueue;
@@ -83,11 +86,13 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
   @Before
   public void setUp() throws IOException {
     replicationStatus = plugin.getSysInjector().getInstance(ReplicationStatus.class);
+    multiSiteConfig = plugin.getSysInjector().getInstance(Configuration.class);
   }
 
   @Test
   @GerritConfig(name = "gerrit.instanceId", value = "testInstanceId")
   public void shouldSucceedForAdminUsers() throws Exception {
+    assumeReplicationLagEnabled();
     RestResponse result = adminRestSession.get(LAG_ENDPOINT);
 
     result.assertOK();
@@ -97,6 +102,7 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
   @Test
   @GerritConfig(name = "gerrit.instanceId", value = "testInstanceId")
   public void shouldFailWhenUserHasNoAdminServerCapability() throws Exception {
+    assumeReplicationLagEnabled();
     RestResponse result = userRestSession.get(LAG_ENDPOINT);
     result.assertForbidden();
     assertThat(result.getEntityContent()).contains("not permitted");
@@ -105,6 +111,7 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
   @Test
   @GerritConfig(name = "gerrit.instanceId", value = "testInstanceId")
   public void shouldReturnCurrentProjectLag() throws Exception {
+    assumeReplicationLagEnabled();
     replicationStatus.doUpdateLag(Project.nameKey("foo"), 123L);
 
     RestResponse result = adminRestSession.get(LAG_ENDPOINT);
@@ -116,6 +123,7 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
   @Test
   @GerritConfig(name = "gerrit.instanceId", value = "testInstanceId")
   public void shouldReturnProjectsOrderedDescendinglyByLag() throws Exception {
+    assumeReplicationLagEnabled();
     replicationStatus.doUpdateLag(Project.nameKey("bar"), 123L);
     replicationStatus.doUpdateLag(Project.nameKey("foo"), 3L);
     replicationStatus.doUpdateLag(Project.nameKey("baz"), 52300L);
@@ -129,6 +137,7 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
   @Test
   @GerritConfig(name = "gerrit.instanceId", value = "testInstanceId")
   public void shouldHonourTheLimitParameter() throws Exception {
+    assumeReplicationLagEnabled();
     replicationStatus.doUpdateLag(Project.nameKey("bar"), 1L);
     replicationStatus.doUpdateLag(Project.nameKey("foo"), 2L);
     replicationStatus.doUpdateLag(Project.nameKey("baz"), 3L);
@@ -141,5 +150,11 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
 
   private String contentWithoutMagicJson(RestResponse response) throws IOException {
     return response.getEntityContent().substring(RestApiServlet.JSON_MAGIC.length);
+  }
+
+  private void assumeReplicationLagEnabled() {
+    assumeTrue(
+        "Replication status skipped as replication lag is disabled",
+        multiSiteConfig.replicationLagEnabled());
   }
 }
