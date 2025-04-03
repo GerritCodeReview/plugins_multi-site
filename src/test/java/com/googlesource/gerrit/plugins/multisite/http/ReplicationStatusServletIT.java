@@ -68,8 +68,12 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
       install(new RouterModule());
       install(new IndexModule());
       install(new ReplicationStatusModule(workQueue));
+
+      Config testCfg = new Config();
+      testCfg.setBoolean("ref-database", null, "pullReplicationFilterEnabled", false);
+
       SharedRefDbConfiguration sharedRefDbConfig =
-          new SharedRefDbConfiguration(new Config(), "multi-site");
+          new SharedRefDbConfiguration(testCfg, "multi-site");
       bind(SharedRefDbConfiguration.class).toInstance(sharedRefDbConfig);
       bind(ProjectVersionLogger.class).to(Log4jProjectVersionLogger.class);
       bind(SharedRefLogger.class).to(Log4jSharedRefLogger.class);
