@@ -90,7 +90,7 @@ public class PluginModule extends LifecycleModule {
         config.disablePushReplicationFilter();
       }
     }
-    if (config.pullRepllicationFilterEnabled()) {
+    if (config.pullReplicationFilterEnabled()) {
       if (!bindReplicationFilterClass(PULL_REPLICATION_FILTER_MODULE, filterModulesBuilder)) {
         config.disablePullReplicationFilter();
       }

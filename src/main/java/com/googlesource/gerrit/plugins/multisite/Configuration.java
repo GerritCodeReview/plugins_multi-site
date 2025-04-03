@@ -199,7 +199,7 @@ public class Configuration {
     pushReplicationFilterEnabled = Suppliers.ofInstance(false);
   }
 
-  public boolean pullRepllicationFilterEnabled() {
+  public boolean pullReplicationFilterEnabled() {
     return pullReplicationFilterEnabled.get();
   }
 
