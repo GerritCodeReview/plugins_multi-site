@@ -65,6 +65,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49e8cc62_b9580d92",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-04-03T22:01:36Z",
+      "side": 1,
+      "message": "I withdraw my suggestion: the setting would be more complicated.",
+      "parentUuid": "32009078_09c9f04a",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 85
+      },
+      "revId": "e17b8c1d0bfe77be8851ff8739d3129fd31dbb82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4ab60a4_2ecd0e74",
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "If we remove the option completely as above then I guess we can remove the previous description.\nBut then we\u0027re documented an option that doesn\u0027t really exist anymore.\n\nShall I just remove the section entirely?",
       "parentUuid": "e4ab60a4_2ecd0e74",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 44
+      },
+      "revId": "e17b8c1d0bfe77be8851ff8739d3129fd31dbb82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1397b4f_2704bc11",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-04-03T22:01:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b07da4bb_fe0955e0",
       "range": {
         "startLine": 113,
         "startChar": 0,
