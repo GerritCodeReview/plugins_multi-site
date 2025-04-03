@@ -95,12 +95,12 @@ Defaults to true.
 :   Enable the use of a shared ref-database
     Defaults: true
 
-```ref-database.pushReplicationFilterClassEnabled```
+```ref-database.pushReplicationFilterEnabled```
 :   Enable the filtering of push replication events checking their
     up-to-date status with the global-refdb.
     Defaults: true
 
-```ref-database.pullReplicationFilterClassEnabled```
+```ref-database.pullReplicationFilterEnabled```
 :   Enable the filtering of pull replication events checking their
     up-to-date status with the global-refdb.
     Defaults: true
