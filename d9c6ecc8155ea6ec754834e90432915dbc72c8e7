@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "c35f1b6b_2d7fc750",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-04-04T07:21:16Z",
+      "side": 1,
+      "message": "When would this happen? For example if push/pull replication is disabled while Gerrit is still up and running?\nMaybe update the commit message to explain that, unless I\u0027m missing something obvious?",
+      "range": {
+        "startLine": 10,
+        "startChar": 47,
+        "endLine": 13,
+        "endChar": 52
+      },
+      "revId": "d9c6ecc8155ea6ec754834e90432915dbc72c8e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d85b4219_7d572692",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-04-04T07:21:16Z",
+      "side": 1,
+      "message": "Also requires GJF",
+      "revId": "d9c6ecc8155ea6ec754834e90432915dbc72c8e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3c3a9799_da53b70f",
