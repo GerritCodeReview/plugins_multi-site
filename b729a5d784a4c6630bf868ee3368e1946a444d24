@@ -105,6 +105,72 @@
       },
       "revId": "b729a5d784a4c6630bf868ee3368e1946a444d24",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "132bb0cc_0d466aa9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/http/ReplicationStatusServletIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-04-04T08:52:40Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "5bdc89ac_11ae2e75",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 62
+      },
+      "revId": "b729a5d784a4c6630bf868ee3368e1946a444d24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d053c64f_187789ba",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/http/ReplicationStatusServletIT.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-04-04T08:52:40Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "5bdc89ac_11ae2e75",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 62
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "5eaa673f_9bbd266d",
+          "description": "User suggestion",
+          "replacements": [
+            {
+              "path": "src/test/java/com/googlesource/gerrit/plugins/multisite/http/ReplicationStatusServletIT.java",
+              "range": {
+                "startLine": 74,
+                "startChar": 0,
+                "endLine": 79,
+                "endChar": 62
+              },
+              "replacement": "      SharedRefDbConfiguration sharedRefDbConfig \u003d\n          new SharedRefDbConfiguration(new Config(), \"multi-site\");"
+            }
+          ]
+        }
+      ],
+      "revId": "b729a5d784a4c6630bf868ee3368e1946a444d24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
