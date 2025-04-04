@@ -85,6 +85,72 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d8e23ba0_b5c7e654",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-04-04T08:32:35Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "396e7b95_339252ed",
+      "range": {
+        "startLine": 118,
+        "startChar": 60,
+        "endLine": 118,
+        "endChar": 67
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "1d86f1cc_b58bf2cd",
+          "description": "User suggestion",
+          "replacements": [
+            {
+              "path": "src/main/resources/Documentation/config.md",
+              "range": {
+                "startLine": 118,
+                "startChar": 0,
+                "endLine": 118,
+                "endChar": 68
+              },
+              "replacement": "    Defaults: true unless `pullReplicationFilterEnabled` is enabled and the pull-replication plugin is available,"
+            }
+          ]
+        }
+      ],
+      "revId": "1ed31f11a9c51d719a03ba468c6254f56208dc73",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51668cb9_0dfe1bd8",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-04-04T08:32:35Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "396e7b95_339252ed",
+      "range": {
+        "startLine": 118,
+        "startChar": 60,
+        "endLine": 118,
+        "endChar": 67
+      },
+      "revId": "1ed31f11a9c51d719a03ba468c6254f56208dc73",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f035edaa_8ba0623c",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/consumer/SubscriberMetricsTest.java",
         "patchSetId": 11
