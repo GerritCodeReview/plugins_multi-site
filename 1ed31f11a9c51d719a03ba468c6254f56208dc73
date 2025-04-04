@@ -44,6 +44,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "bf395ff6_83affa47",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2025-04-04T08:34:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cf1d5f7b_7fdbcee1",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 15
+      },
+      "revId": "1ed31f11a9c51d719a03ba468c6254f56208dc73",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "c9d114a4_0b7d82fe",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/PluginModule.java",
         "patchSetId": 11
