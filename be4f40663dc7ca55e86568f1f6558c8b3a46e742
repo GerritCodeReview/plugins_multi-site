@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f023385_05f76fa9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-05-09T09:54:07Z",
+      "side": 1,
+      "message": "Only the `pull-replication` should be defaulted to zero IMHO.",
+      "range": {
+        "startLine": 453,
+        "startChar": 0,
+        "endLine": 454,
+        "endChar": 94
+      },
+      "revId": "be4f40663dc7ca55e86568f1f6558c8b3a46e742",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
