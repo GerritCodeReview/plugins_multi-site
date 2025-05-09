@@ -450,8 +450,8 @@ public class Configuration {
     private static final String RANDOM_WAIT_MAX_BOUND_BEFORE_RELOAD_LOCAL_VERSION_MS =
         "maxRandomWaitBeforeReloadLocalVersionMs";
 
-    private static final int MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS_DEFAULT = 1000;
-    private static final int RANDOM_WAIT_MAX_BOUND_BEFORE_RELOAD_LOCAL_VERSION_MS_DEFAULT = 1000;
+    private static final int MIN_WAIT_BEFORE_RELOAD_LOCAL_VERSION_MS_DEFAULT = 0;
+    private static final int RANDOM_WAIT_MAX_BOUND_BEFORE_RELOAD_LOCAL_VERSION_MS_DEFAULT = 0;
     private final Supplier<Integer> fetchMinWaitBeforeReloadLocalVersionMs;
     private final Supplier<Integer> fetchWaitBeforeReloadLocalVersionMs;
     private final Supplier<Integer> pushMinWaitBeforeReloadLocalVersionMs;
