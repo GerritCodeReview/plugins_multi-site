@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "77bd593b_406e1a27",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-05-09T07:43:14Z",
+      "side": 1,
+      "message": "In that case, it is correct to avoid replicating it because it may be redundant isn\u0027t it?",
+      "range": {
+        "startLine": 10,
+        "startChar": 27,
+        "endLine": 11,
+        "endChar": 29
+      },
+      "revId": "c726897ece3827a291741d3e3f91f436ecfe4f99",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "87f93b04_a635a258",
