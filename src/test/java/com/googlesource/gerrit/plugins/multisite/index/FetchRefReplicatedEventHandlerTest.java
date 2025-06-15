@@ -14,8 +14,11 @@
 
 package com.googlesource.gerrit.plugins.multisite.index;
 
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -23,11 +26,14 @@ import static org.mockito.Mockito.verify;
 
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.googlesource.gerrit.plugins.replication.pull.Context;
 import com.googlesource.gerrit.plugins.replication.pull.FetchRefReplicatedEvent;
 import com.googlesource.gerrit.plugins.replication.pull.ReplicationState;
 import com.googlesource.gerrit.plugins.replication.pull.ReplicationState.RefFetchResult;
+import org.eclipse.jgit.errors.MissingObjectException;
+import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.RefUpdate;
 import org.eclipse.jgit.transport.URIish;
 import org.junit.Before;
@@ -65,6 +71,57 @@ public class FetchRefReplicatedEventHandlerTest {
   }
 
   @Test
+  public void onEventShouldIgnoreMissingObjectWhenIndexExistingChangeMeta() {
+    Project.NameKey projectNameKey = Project.nameKey("testProject");
+    String ref = "refs/changes/41/41/meta";
+    Change.Id changeId = Change.Id.fromRef(ref);
+    try {
+      Context.setLocalEvent(true);
+      StorageException storageExceptionForMissingObject =
+          new StorageException(
+              "Test storage exception",
+              new MissingObjectException(ObjectId.zeroId(), "Missing unknown"));
+      doThrow(storageExceptionForMissingObject)
+          .when(changeIndexerMock)
+          .index(eq(projectNameKey), eq(changeId));
+      fetchRefReplicatedEventHandler.onEvent(
+          newFetchRefReplicatedEvent(
+              projectNameKey, ref, ReplicationState.RefFetchResult.SUCCEEDED, LOCAL_INSTANCE_ID));
+      verify(changeIndexerMock, times(1)).index(eq(projectNameKey), eq(changeId));
+    } finally {
+      Context.unsetLocalEvent();
+    }
+  }
+
+  @Test()
+  public void onEventShouldThrowStorageExceptionWhenIndexPatchSetsWithMissingRefs() {
+    Project.NameKey projectNameKey = Project.nameKey("testProject");
+    String ref = "refs/changes/41/41/1";
+    Change.Id changeId = Change.Id.fromRef(ref);
+    try {
+      Context.setLocalEvent(true);
+      StorageException storageExceptionForMissingObject =
+          new StorageException(
+              "Test storage exception",
+              new MissingObjectException(ObjectId.zeroId(), "Missing unknown"));
+      doThrow(storageExceptionForMissingObject)
+          .when(changeIndexerMock)
+          .index(eq(projectNameKey), eq(changeId));
+      StorageException indexException =
+          assertThrows(
+              StorageException.class,
+              () ->
+                  fetchRefReplicatedEventHandler.onEvent(
+                      newFetchRefReplicatedEvent(
+                          projectNameKey, ref, RefFetchResult.SUCCEEDED, LOCAL_INSTANCE_ID)));
+      assertThat(indexException).isEqualTo(storageExceptionForMissingObject);
+      verify(changeIndexerMock, times(1)).index(eq(projectNameKey), eq(changeId));
+    } finally {
+      Context.unsetLocalEvent();
+    }
+  }
+
+  @Test
   public void onEventShouldNotIndexIfNotLocalEvent() {
     Project.NameKey projectNameKey = Project.nameKey("testProject");
     String ref = "refs/changes/41/41/meta";
@@ -76,14 +133,14 @@ public class FetchRefReplicatedEventHandlerTest {
   }
 
   @Test
-  public void onEventShouldIndexOnlyMetaRef() {
+  public void onEventShouldIndexOnPatchSetsRef() {
     Project.NameKey projectNameKey = Project.nameKey("testProject");
     String ref = "refs/changes/41/41/1";
     Change.Id changeId = Change.Id.fromRef(ref);
     fetchRefReplicatedEventHandler.onEvent(
         newFetchRefReplicatedEvent(
             projectNameKey, ref, ReplicationState.RefFetchResult.SUCCEEDED, LOCAL_INSTANCE_ID));
-    verify(changeIndexerMock, never()).index(eq(projectNameKey), eq(changeId));
+    verify(changeIndexerMock).index(eq(projectNameKey), eq(changeId));
   }
 
   @Test
