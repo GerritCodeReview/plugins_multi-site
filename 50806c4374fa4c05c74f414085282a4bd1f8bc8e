@@ -2,10 +2,10 @@
   "checks": {
     "gerritforge:multi-site-47168e90078b0b3f11401610930e82830e76bff7": {
       "state": "FAILED",
-      "url": "https://gerrit-ci.gerritforge.com/job/plugin-multi-site-verifier/job/23%252F484223%252F1/29/console",
-      "finished": "2025-06-17T22:22:55Z",
+      "url": "https://gerrit-ci.gerritforge.com/job/plugin-multi-site-verifier/job/23%252F484223%252F1/30/console",
+      "finished": "2025-06-17T22:35:00Z",
       "created": "2025-06-17T16:46:58Z",
-      "updated": "2025-06-17T22:22:56Z"
+      "updated": "2025-06-17T22:35:00Z"
     }
   }
 }
