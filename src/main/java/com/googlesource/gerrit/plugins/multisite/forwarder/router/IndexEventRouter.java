@@ -24,18 +24,23 @@ import com.google.gerrit.server.config.AllUsersName;
 import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
+import com.google.gerrit.server.events.EventTypes;
 import com.google.gerrit.server.events.RefEvent;
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexProjectHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandlerWithRetries;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
+import com.googlesource.gerrit.plugins.replication.pull.FetchRefReplicationDoneEvent;
+
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
@@ -45,7 +50,7 @@ public class IndexEventRouter
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final ForwardedIndexAccountHandler indexAccountHandler;
-  private final ForwardedIndexChangeHandler indexChangeHandler;
+  private final ForwardedIndexingHandlerWithRetries<String, ChangeIndexEvent> indexChangeHandler;
   private final ForwardedIndexGroupHandler indexGroupHandler;
   private final ForwardedIndexProjectHandler indexProjectHandler;
   private final AllUsersName allUsersName;
@@ -54,7 +59,7 @@ public class IndexEventRouter
   @Inject
   public IndexEventRouter(
       ForwardedIndexAccountHandler indexAccountHandler,
-      ForwardedIndexChangeHandler indexChangeHandler,
+      ForwardedIndexingHandlerWithRetries<String, ChangeIndexEvent> indexChangeHandler,
       ForwardedIndexGroupHandler indexGroupHandler,
       ForwardedIndexProjectHandler indexProjectHandler,
       AllUsersName allUsersName,
@@ -69,6 +74,7 @@ public class IndexEventRouter
 
   @Override
   public void route(IndexEvent sourceEvent) throws IOException {
+
     if (sourceEvent instanceof ChangeIndexEvent) {
       ChangeIndexEvent changeIndexEvent = (ChangeIndexEvent) sourceEvent;
       ForwardedIndexingHandler.Operation operation = changeIndexEvent.deleted ? DELETE : INDEX;
