@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c381c39_f3db4a76",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-17T10:25:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "934d1808_dcdc9707",
+      "range": {
+        "startLine": 12,
+        "startChar": 21,
+        "endLine": 12,
+        "endChar": 25
+      },
+      "revId": "f559b6894e2413e7b41237b9b6e4a3334e1c2608",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f31aea7c_8ab0c37d",
@@ -47,6 +71,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ed702bd_7a455e2f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-17T10:25:18Z",
+      "side": 1,
+      "message": "I want to express what was the behaviour *before* this change, therefore the use of the past is accurate.",
+      "parentUuid": "f31aea7c_8ab0c37d",
+      "range": {
+        "startLine": 19,
+        "startChar": 38,
+        "endLine": 19,
+        "endChar": 43
+      },
+      "revId": "f559b6894e2413e7b41237b9b6e4a3334e1c2608",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6eaddc4f_1cc934af",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-06-17T09:06:07Z",
       "side": 1,
       "message": "a",
+      "range": {
+        "startLine": 21,
+        "startChar": 5,
+        "endLine": 21,
+        "endChar": 7
+      },
+      "revId": "f559b6894e2413e7b41237b9b6e4a3334e1c2608",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cef36d28_7fae4a6a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-17T10:25:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6eaddc4f_1cc934af",
       "range": {
         "startLine": 21,
         "startChar": 5,
