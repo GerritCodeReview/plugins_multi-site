@@ -18,6 +18,7 @@ import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
 import com.google.gerrit.server.events.EventListener;
@@ -26,6 +27,7 @@ import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.Context;
 import com.googlesource.gerrit.plugins.replication.pull.FetchRefReplicatedEvent;
 import com.googlesource.gerrit.plugins.replication.pull.ReplicationState;
+import org.eclipse.jgit.errors.MissingObjectException;
 
 public class FetchRefReplicatedEventHandler implements EventListener {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -46,7 +48,8 @@ public class FetchRefReplicatedEventHandler implements EventListener {
 
       if (event instanceof FetchRefReplicatedEvent && isLocalEvent(event)) {
         FetchRefReplicatedEvent fetchRefReplicatedEvent = (FetchRefReplicatedEvent) event;
-        if (!RefNames.isNoteDbMetaRef(fetchRefReplicatedEvent.getRefName())
+        boolean isMetaRef = RefNames.isNoteDbMetaRef(fetchRefReplicatedEvent.getRefName());
+        if (!RefNames.isRefsChanges(fetchRefReplicatedEvent.getRefName())
             || !fetchRefReplicatedEvent
                 .getStatus()
                 .equals(ReplicationState.RefFetchResult.SUCCEEDED.toString())) {
@@ -58,7 +61,15 @@ public class FetchRefReplicatedEventHandler implements EventListener {
             "Indexing ref '%s' for project %s",
             fetchRefReplicatedEvent.getRefName(), projectNameKey.get());
         Change.Id changeId = Change.Id.fromRef(fetchRefReplicatedEvent.getRefName());
-        if (changeId != null) {
+        if (changeId != null && isMetaRef) {
+          catchStorageExceptionForMissingUnknown(
+              () -> changeIndexer.index(projectNameKey, changeId),
+              "Skipping indexing of "
+                  + projectNameKey
+                  + "~"
+                  + changeId.get()
+                  + " because its patch-sets aren't replicated yet");
+        } else if (changeId != null) {
           changeIndexer.index(projectNameKey, changeId);
         } else {
           logger.atWarning().log(
@@ -68,6 +79,23 @@ public class FetchRefReplicatedEventHandler implements EventListener {
       }
     } finally {
       Context.setForwardedEvent(isForwarded);
+    }
+  }
+
+  private void catchStorageExceptionForMissingUnknown(Runnable lambda, String infoMessage)
+      throws RuntimeException {
+    try {
+      lambda.run();
+    } catch (StorageException se) {
+      Throwable cause = se.getCause();
+      while (cause != null) {
+        if (cause instanceof MissingObjectException) {
+          logger.atInfo().log("%s", infoMessage);
+          return;
+        }
+        cause = cause.getCause();
+      }
+      throw se;
     }
   }
 
