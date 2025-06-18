@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4f55b91_1a2c725d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-06-18T14:12:25Z",
+      "side": 1,
+      "message": "I was thinking that adding the pull-replication to plugins.loadPriority would have loaded it before the multi-site making the fetch-ref-replication-done event available. Apparently is not the case. I need to find a better way to check is the plugin has been loaded or not.",
+      "revId": "06497e648da16a1519757333c26510ba0fb2fb2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
