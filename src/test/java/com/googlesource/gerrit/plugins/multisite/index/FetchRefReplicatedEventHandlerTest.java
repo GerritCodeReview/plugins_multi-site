@@ -23,6 +23,7 @@ import static org.mockito.Mockito.verify;
 
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.googlesource.gerrit.plugins.replication.pull.Context;
 import com.googlesource.gerrit.plugins.replication.pull.FetchRefReplicatedEvent;
@@ -37,14 +38,17 @@ public class FetchRefReplicatedEventHandlerTest {
   private static final String LOCAL_INSTANCE_ID = "local-instance-id";
   private static final String REMOTE_INSTANCE_ID = "remote-instance-id";
   private ChangeIndexer changeIndexerMock;
+  private GitRepositoryManager gitRepositoryManager;
   private FetchRefReplicatedEventHandler fetchRefReplicatedEventHandler;
   private static URIish sourceUri;
 
   @Before
   public void setUp() throws Exception {
     changeIndexerMock = mock(ChangeIndexer.class);
+    gitRepositoryManager = mock(GitRepositoryManager.class);
     fetchRefReplicatedEventHandler =
-        new FetchRefReplicatedEventHandler(changeIndexerMock, LOCAL_INSTANCE_ID);
+        new FetchRefReplicatedEventHandler(
+            changeIndexerMock, LOCAL_INSTANCE_ID, gitRepositoryManager);
     sourceUri = new URIish("git://aSourceNode/testProject.git");
   }
 
