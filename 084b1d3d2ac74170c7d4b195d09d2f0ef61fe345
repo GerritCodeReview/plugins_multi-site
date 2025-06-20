@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "270de223_40de92e3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-20T13:22:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39c195f3_b4992b3a",
+      "range": {
+        "startLine": 11,
+        "startChar": 7,
+        "endLine": 11,
+        "endChar": 13
+      },
+      "revId": "084b1d3d2ac74170c7d4b195d09d2f0ef61fe345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3032333e_a4eebaa9",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-20T12:51:08Z",
       "side": 1,
       "message": "do we have an issue number?",
+      "range": {
+        "startLine": 58,
+        "startChar": 65,
+        "endLine": 58,
+        "endChar": 68
+      },
+      "revId": "084b1d3d2ac74170c7d4b195d09d2f0ef61fe345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1b7d39b_24e398f2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/FetchRefReplicatedEventHandler.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-20T13:22:47Z",
+      "side": 1,
+      "message": "Not yet, but I\u0027ll raise a new one.",
+      "parentUuid": "3032333e_a4eebaa9",
       "range": {
         "startLine": 58,
         "startChar": 65,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a9ad1aa_62a450ca",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/FetchRefReplicatedEventHandler.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-20T13:22:47Z",
+      "side": 1,
+      "message": "It is necessary, otherwise it would not work.",
+      "parentUuid": "cc36bf35_9a776c27",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 46
+      },
+      "revId": "084b1d3d2ac74170c7d4b195d09d2f0ef61fe345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "863ee3ab_35430086",
@@ -93,6 +165,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10d05e18_c5a2d17f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/index/FetchRefReplicatedEventHandler.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-20T13:22:47Z",
+      "side": 1,
+      "message": "Deleting is always tricky because the receiver of the event doesn\u0027t have that info. It would be a feature for the master branch, though, as it would be changing the data structure.",
+      "parentUuid": "863ee3ab_35430086",
+      "range": {
+        "startLine": 86,
+        "startChar": 17,
+        "endLine": 86,
+        "endChar": 22
+      },
+      "revId": "084b1d3d2ac74170c7d4b195d09d2f0ef61fe345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a16e7a39_ea774e67",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-06-20T12:53:35Z",
       "side": 1,
       "message": "This is failing in the CI:\n\n```\n1) onEventShouldDeleteChangeFromIndex(com.googlesource.gerrit.plugins.multisite.index.FetchRefReplicatedEventHandlerTest)\njava.lang.NullPointerException: Cannot invoke \"org.eclipse.jgit.lib.Repository.exactRef(String)\" because \"repo\" is null\n\tat com.googlesource.gerrit.plugins.multisite.index.FetchRefReplicatedEventHandler.onEvent(FetchRefReplicatedEventHandler.java:81)\n\tat com.googlesource.gerrit.plugins.multisite.index.FetchRefReplicatedEventHandlerTest.onEventShouldDeleteChangeFromIndex(FetchRefReplicatedEventHandlerTest.java:86)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:568)\n\tat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)\n\tat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)\n\tat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)\n\tat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)\n\tat org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)\n\tat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)\n\tat org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:363)\n\tat com.google.testing.junit.runner.internal.junit4.CancellableRequestFactory$CancellableRunner.run(CancellableRequestFactory.java:108)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:115)\n\tat com.google.testing.junit.runner.junit4.JUnit4Runner.run(JUnit4Runner.java:116)\n\tat com.google.testing.junit.runner.BazelTestRunner.runTestsInSuite(BazelTestRunner.java:145)\n\tat com.google.testing.junit.runner.BazelTestRunner.main(BazelTestRunner.java:76)\n```",
+      "range": {
+        "startLine": 80,
+        "startChar": 14,
+        "endLine": 80,
+        "endChar": 48
+      },
+      "revId": "084b1d3d2ac74170c7d4b195d09d2f0ef61fe345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfb39e45_3f742f9a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/index/FetchRefReplicatedEventHandlerTest.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-20T13:22:47Z",
+      "side": 1,
+      "message": "Fixed, the forwarding context was not reset properly.",
+      "parentUuid": "a16e7a39_ea774e67",
       "range": {
         "startLine": 80,
         "startChar": 14,
