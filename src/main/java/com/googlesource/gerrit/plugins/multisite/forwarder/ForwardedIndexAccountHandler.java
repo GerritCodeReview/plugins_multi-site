@@ -14,12 +14,15 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.INDEX;
+
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.server.index.account.AccountIndexer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +48,14 @@ public class ForwardedIndexAccountHandler
     super(config.index().numStripedLocks());
     this.indexer = indexer;
     this.accountsToIndex = new HashMap<>();
+  }
+
+  @Override
+  public void handle(IndexEvent sourceEvent) throws IOException {
+    if (sourceEvent instanceof AccountIndexEvent) {
+      AccountIndexEvent accountIndexEvent = (AccountIndexEvent) sourceEvent;
+      indexAsync(Account.id(accountIndexEvent.accountId), INDEX);
+    }
   }
 
   @Override
