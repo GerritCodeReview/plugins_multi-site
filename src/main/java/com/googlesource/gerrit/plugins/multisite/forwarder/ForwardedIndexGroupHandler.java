@@ -14,6 +14,8 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.INDEX;
+
 import com.google.gerrit.entities.AccountGroup;
 import com.google.gerrit.server.index.group.GroupIndexer;
 import com.google.gerrit.server.util.OneOffRequestContext;
@@ -21,8 +23,10 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.ForwardedIndexExecutor;
 import com.googlesource.gerrit.plugins.multisite.index.GroupChecker;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -48,6 +52,14 @@ public class ForwardedIndexGroupHandler
     super(indexExecutor, config, oneOffRequestContext);
     this.indexer = indexer;
     this.groupChecker = groupChecker;
+  }
+
+  @Override
+  public void handle(IndexEvent sourceEvent) throws IOException {
+    if (sourceEvent instanceof GroupIndexEvent) {
+      GroupIndexEvent groupIndexEvent = (GroupIndexEvent) sourceEvent;
+      index(groupIndexEvent.groupUUID, INDEX, Optional.of(groupIndexEvent));
+    }
   }
 
   @Override
