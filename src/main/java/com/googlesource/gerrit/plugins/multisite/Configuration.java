@@ -29,14 +29,27 @@ import com.google.gerrit.server.config.SitePaths;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.spi.Message;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexProjectHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
@@ -366,11 +379,12 @@ public class Configuration {
     }
   }
 
-  public static class Index extends Forwarding {
+  public static class Index {
     static final String INDEX_SECTION = "index";
     static final String MAX_TRIES_KEY = "maxTries";
     static final String RETRY_INTERVAL_KEY = "retryInterval";
     static final String SYNCHRONIZE_FORCED_KEY = "synchronizeForced";
+    static final String SYNCHRONIZE_KEY = "synchronize";
     static final boolean DEFAULT_SYNCHRONIZE_FORCED = true;
 
     private final int threadPoolSize;
@@ -378,10 +392,39 @@ public class Configuration {
     private final int maxTries;
 
     private final int numStripedLocks;
+    private final Map<String, Class<? extends ForwardedIndexingHandler<?, ? extends IndexEvent>>>
+        synchronize;
     private final boolean synchronizeForced;
 
+    private static final Map<
+            String, Class<? extends ForwardedIndexingHandler<?, ? extends IndexEvent>>>
+        SYNCHRONIZE_ALL_EVENTS_HANDLERS =
+            Map.of(
+                ChangeIndexEvent.TYPE, ForwardedIndexChangeHandler.class,
+                GroupIndexEvent.TYPE, ForwardedIndexGroupHandler.class,
+                AccountIndexEvent.TYPE, ForwardedIndexAccountHandler.class,
+                ProjectIndexEvent.TYPE, ForwardedIndexProjectHandler.class);
+
+    public Map<String, Class<? extends ForwardedIndexingHandler<?, ? extends IndexEvent>>>
+        getSynchronizeIndex(Supplier<Config> cfg) {
+      Set<String> syncIndexTypes =
+          Arrays.stream(cfg.get().getStringList(INDEX_SECTION, null, SYNCHRONIZE_KEY))
+              .map(String::toLowerCase)
+              .collect(Collectors.toSet());
+
+      if (syncIndexTypes.contains("false")) {
+        return Map.of();
+      }
+
+      Map<String, Class<? extends ForwardedIndexingHandler<?, ? extends IndexEvent>>> synchIndex =
+          SYNCHRONIZE_ALL_EVENTS_HANDLERS.entrySet().stream()
+              .filter(entry -> syncIndexTypes.contains(entry.getKey()))
+              .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+      return synchIndex.isEmpty() ? SYNCHRONIZE_ALL_EVENTS_HANDLERS : synchIndex;
+    }
+
     private Index(Supplier<Config> cfg) {
-      super(cfg, INDEX_SECTION);
       threadPoolSize =
           getInt(cfg, INDEX_SECTION, null, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
       retryInterval =
@@ -391,6 +434,7 @@ public class Configuration {
           getInt(cfg, INDEX_SECTION, null, NUM_STRIPED_LOCKS, DEFAULT_NUM_STRIPED_LOCKS);
       synchronizeForced =
           getBoolean(cfg, INDEX_SECTION, null, SYNCHRONIZE_FORCED_KEY, DEFAULT_SYNCHRONIZE_FORCED);
+      synchronize = getSynchronizeIndex(cfg);
     }
 
     public int threadPoolSize() {
@@ -411,6 +455,11 @@ public class Configuration {
 
     public boolean synchronizeForced() {
       return synchronizeForced;
+    }
+
+    public Map<String, Class<? extends ForwardedIndexingHandler<?, ? extends IndexEvent>>>
+        synchronize() {
+      return synchronize;
     }
   }
 
