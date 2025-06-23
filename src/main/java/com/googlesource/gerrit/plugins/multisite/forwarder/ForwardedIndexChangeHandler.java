@@ -56,7 +56,9 @@ public class ForwardedIndexChangeHandler
 
   @Override
   protected void doIndex(String id, Optional<ChangeIndexEvent> indexEvent) {
-    scheduleIndexing(id, indexEvent, this::indexIfConsistent);
+    if (indexConfig().shouldIndex(Configuration.Index.IndexType.CHANGES)) {
+      scheduleIndexing(id, indexEvent, this::indexIfConsistent);
+    }
   }
 
   private void indexIfConsistent(String id) {
@@ -121,8 +123,10 @@ public class ForwardedIndexChangeHandler
 
   @Override
   protected void doDelete(String id, Optional<ChangeIndexEvent> indexEvent) {
-    indexer.delete(parseChangeId(id));
-    log.debug("Change {} successfully deleted from index", id);
+    if (indexConfig().shouldIndex(Configuration.Index.IndexType.CHANGES)) {
+      indexer.delete(parseChangeId(id));
+      log.debug("Change {} successfully deleted from index", id);
+    }
   }
 
   private static Change.Id parseChangeId(String id) {

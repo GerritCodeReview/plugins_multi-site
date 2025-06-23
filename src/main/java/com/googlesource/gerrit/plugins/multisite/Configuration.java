@@ -371,6 +371,8 @@ public class Configuration {
     static final String MAX_TRIES_KEY = "maxTries";
     static final String RETRY_INTERVAL_KEY = "retryInterval";
     static final String SYNCHRONIZE_FORCED_KEY = "synchronizeForced";
+    static final String SYNCHRONIZE_KEY = "synchronize";
+    static final String DEFAULT_SYNCHRONIZE = "true";
     static final boolean DEFAULT_SYNCHRONIZE_FORCED = true;
 
     private final int threadPoolSize;
@@ -378,7 +380,39 @@ public class Configuration {
     private final int maxTries;
 
     private final int numStripedLocks;
+    private final List<IndexType> synchronize;
     private final boolean synchronizeForced;
+
+    public enum IndexType {
+      CHANGES,
+      ACCOUNTS,
+      GROUPS,
+      PROJECTS,
+      TRUE,
+      FALSE;
+
+      @Override
+      public String toString() {
+        return name().toLowerCase();
+      }
+    }
+
+    public List<IndexType> getSynchronizeIndex(Supplier<Config> cfg, String section, String subSection, String name) {
+            String[] values = cfg.get().getStringList(section, subSection, name);
+            System.out.println("===> Values from config " + Arrays.toString(values));
+            if (values == null || values.length == 0) {
+                return Collections.emptyList();
+              }
+            ImmutableList.Builder<IndexType> builder = ImmutableList.builder();
+            for (String value : values) {
+                try {
+                    builder.add(IndexType.valueOf(value.toUpperCase()));
+                  } catch (IllegalArgumentException e) {
+                    log.warn("Unknown index type '{}' in config; ignoring", value);
+                  }
+              }
+            return builder.build();
+    }
 
     private Index(Supplier<Config> cfg) {
       super(cfg, INDEX_SECTION);
@@ -389,6 +423,8 @@ public class Configuration {
       maxTries = getInt(cfg, INDEX_SECTION, null, MAX_TRIES_KEY, DEFAULT_INDEX_MAX_TRIES);
       numStripedLocks =
           getInt(cfg, INDEX_SECTION, null, NUM_STRIPED_LOCKS, DEFAULT_NUM_STRIPED_LOCKS);
+      synchronize =
+          getSynchronizeIndex(cfg, INDEX_SECTION, null, SYNCHRONIZE_KEY);
       synchronizeForced =
           getBoolean(cfg, INDEX_SECTION, null, SYNCHRONIZE_FORCED_KEY, DEFAULT_SYNCHRONIZE_FORCED);
     }
@@ -411,6 +447,20 @@ public class Configuration {
 
     public boolean synchronizeForced() {
       return synchronizeForced;
+    }
+
+    public List<IndexType> synchronizeType() {
+      return synchronize;
+    }
+
+    public boolean shouldIndex(IndexType indexType) {
+      if (synchronizeType().contains(IndexType.TRUE)) {
+        return true;
+      }
+      if (synchronizeType().contains(IndexType.FALSE)) {
+        return false;
+      }
+      return synchronizeType().contains(indexType);
     }
   }
 

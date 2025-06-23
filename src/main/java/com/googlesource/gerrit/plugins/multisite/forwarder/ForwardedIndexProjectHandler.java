@@ -52,7 +52,9 @@ public class ForwardedIndexProjectHandler
 
   @Override
   protected void doIndex(String projectName, Optional<ProjectIndexEvent> event) {
-    scheduleIndexing(projectName, event, this::reindex);
+    if (indexConfig().shouldIndex(Configuration.Index.IndexType.PROJECTS)) {
+      scheduleIndexing(projectName, event, this::reindex);
+    }
   }
 
   @Override

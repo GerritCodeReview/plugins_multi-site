@@ -39,18 +39,22 @@ public class ForwardedIndexAccountHandler
 
   private final AccountIndexer indexer;
   private Map<Account.Id, Operation> accountsToIndex;
+  private final Configuration.Index indexConfig;
 
   @Inject
   ForwardedIndexAccountHandler(AccountIndexer indexer, Configuration config) {
     super(config.index().numStripedLocks());
     this.indexer = indexer;
     this.accountsToIndex = new HashMap<>();
+    this.indexConfig = config.index();
   }
 
   @Override
   protected void doIndex(Account.Id id, Optional<AccountIndexEvent> event) {
-    indexer.index(id);
-    log.debug("Account {} successfully indexed", id);
+    if (indexConfig.shouldIndex(Configuration.Index.IndexType.CHANGES)) {
+      indexer.index(id);
+      log.debug("Account {} successfully indexed", id);
+    }
   }
 
   @Override

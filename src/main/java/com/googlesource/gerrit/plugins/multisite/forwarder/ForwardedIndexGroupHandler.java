@@ -52,7 +52,9 @@ public class ForwardedIndexGroupHandler
 
   @Override
   protected void doIndex(String uuid, Optional<GroupIndexEvent> event) {
-    scheduleIndexing(uuid, event, this::reindex);
+    if (indexConfig().shouldIndex(Configuration.Index.IndexType.GROUPS)) {
+      scheduleIndexing(uuid, event, this::reindex);
+    }
   }
 
   @Override
