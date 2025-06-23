@@ -14,12 +14,14 @@
 
 package com.googlesource.gerrit.plugins.multisite.event;
 
-import static com.google.gerrit.testing.GerritJUnit.assertThrows;
+import static com.google.gerrit.extensions.registration.PluginName.GERRIT;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
-import com.google.gerrit.entities.Account;
+import com.google.gerrit.extensions.registration.DynamicMap;
+import com.google.gerrit.extensions.registration.PrivateInternals_DynamicMapImpl;
 import com.google.gerrit.server.config.AllUsersName;
+import com.google.inject.util.Providers;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedEventHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
@@ -34,7 +36,6 @@ import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEv
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.IndexEventRouter;
 import com.googlesource.gerrit.plugins.multisite.forwarder.router.StreamEventRouter;
 import com.googlesource.gerrit.plugins.replication.events.RefReplicationDoneEvent;
-import java.util.Optional;
 import org.eclipse.jgit.lib.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,17 +53,16 @@ public class IndexEventRouterTest {
   @Mock private ForwardedIndexProjectHandler indexProjectHandler;
   @Mock private ForwardedEventHandler forwardedEventHandler;
   private AllUsersName allUsersName = new AllUsersName("All-Users");
+  PrivateInternals_DynamicMapImpl<ForwardedIndexingHandler<?, ? extends IndexEvent>> indexHandlers;
 
   @Before
   public void setUp() {
-    router =
-        new IndexEventRouter(
-            indexAccountHandler,
-            indexChangeHandler,
-            indexGroupHandler,
-            indexProjectHandler,
-            allUsersName,
-            INSTANCE_ID);
+    indexHandlers = (PrivateInternals_DynamicMapImpl) DynamicMap.emptyMap();
+    indexHandlers.put(GERRIT, AccountIndexEvent.TYPE, Providers.of(indexAccountHandler));
+    indexHandlers.put(GERRIT, GroupIndexEvent.TYPE, Providers.of(indexGroupHandler));
+    indexHandlers.put(GERRIT, ChangeIndexEvent.TYPE, Providers.of(indexChangeHandler));
+    indexHandlers.put(GERRIT, ProjectIndexEvent.TYPE, Providers.of(indexProjectHandler));
+    router = new IndexEventRouter(indexAccountHandler, indexHandlers, allUsersName, INSTANCE_ID);
   }
 
   @Test
@@ -70,22 +70,19 @@ public class IndexEventRouterTest {
     final AccountIndexEvent event = new AccountIndexEvent(1, INSTANCE_ID);
     router.route(event);
 
-    verify(indexAccountHandler)
-        .indexAsync(Account.id(event.accountId), ForwardedIndexingHandler.Operation.INDEX);
+    verify(indexAccountHandler).handle(event);
 
     verifyNoInteractions(indexChangeHandler, indexGroupHandler, indexProjectHandler);
   }
 
   @Test
   public void streamEventRouterShouldTriggerAccountIndexFlush() throws Exception {
-
     StreamEventRouter streamEventRouter = new StreamEventRouter(forwardedEventHandler, router);
 
     final AccountIndexEvent event = new AccountIndexEvent(1, INSTANCE_ID);
     router.route(event);
 
-    verify(indexAccountHandler)
-        .indexAsync(Account.id(event.accountId), ForwardedIndexingHandler.Operation.INDEX);
+    verify(indexAccountHandler).handle(event);
 
     verifyNoInteractions(indexChangeHandler, indexGroupHandler, indexProjectHandler);
 
@@ -100,8 +97,7 @@ public class IndexEventRouterTest {
     final GroupIndexEvent event = new GroupIndexEvent(groupId, ObjectId.zeroId(), INSTANCE_ID);
     router.route(event);
 
-    verify(indexGroupHandler)
-        .index(groupId, ForwardedIndexingHandler.Operation.INDEX, Optional.of(event));
+    verify(indexGroupHandler).handle(event);
 
     verifyNoInteractions(indexAccountHandler, indexChangeHandler, indexProjectHandler);
   }
@@ -112,8 +108,7 @@ public class IndexEventRouterTest {
     final ProjectIndexEvent event = new ProjectIndexEvent(projectName, INSTANCE_ID);
     router.route(event);
 
-    verify(indexProjectHandler)
-        .index(projectName, ForwardedIndexingHandler.Operation.INDEX, Optional.of(event));
+    verify(indexProjectHandler).handle(event);
 
     verifyNoInteractions(indexAccountHandler, indexChangeHandler, indexGroupHandler);
   }
@@ -123,11 +118,7 @@ public class IndexEventRouterTest {
     final ChangeIndexEvent event = new ChangeIndexEvent("projectName", 3, false, INSTANCE_ID);
     router.route(event);
 
-    verify(indexChangeHandler)
-        .index(
-            event.projectName + "~" + event.changeId,
-            ForwardedIndexingHandler.Operation.INDEX,
-            Optional.of(event));
+    verify(indexChangeHandler).handle(event);
 
     verifyNoInteractions(indexAccountHandler, indexGroupHandler, indexProjectHandler);
   }
@@ -137,20 +128,16 @@ public class IndexEventRouterTest {
     final ChangeIndexEvent event = new ChangeIndexEvent("projectName", 3, true, INSTANCE_ID);
     router.route(event);
 
-    verify(indexChangeHandler)
-        .index(
-            event.projectName + "~" + event.changeId,
-            ForwardedIndexingHandler.Operation.DELETE,
-            Optional.of(event));
+    verify(indexChangeHandler).handle(event);
 
     verifyNoInteractions(indexAccountHandler, indexGroupHandler, indexProjectHandler);
   }
 
   @Test
-  public void routerShouldFailForNotRecognisedEvents() throws Exception {
+  public void routerShouldIgnoreNotRecognisedEvents() throws Exception {
     final IndexEvent newEventType = new IndexEvent("new-type", INSTANCE_ID) {};
 
-    assertThrows(UnsupportedOperationException.class, () -> router.route(newEventType));
+    router.route(newEventType);
     verifyNoInteractions(
         indexAccountHandler, indexChangeHandler, indexGroupHandler, indexProjectHandler);
   }

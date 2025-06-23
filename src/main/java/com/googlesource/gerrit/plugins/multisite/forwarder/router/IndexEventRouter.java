@@ -14,12 +14,13 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.router;
 
-import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.DELETE;
+import static com.google.gerrit.extensions.registration.PluginName.GERRIT;
 import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.INDEX;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.extensions.events.LifecycleListener;
+import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.server.config.AllUsersName;
 import com.google.gerrit.server.config.GerritInstanceId;
 import com.google.gerrit.server.events.Event;
@@ -27,15 +28,8 @@ import com.google.gerrit.server.events.EventListener;
 import com.google.gerrit.server.events.RefEvent;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexProjectHandler;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
-import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
@@ -45,50 +39,30 @@ public class IndexEventRouter
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final ForwardedIndexAccountHandler indexAccountHandler;
-  private final ForwardedIndexChangeHandler indexChangeHandler;
-  private final ForwardedIndexGroupHandler indexGroupHandler;
-  private final ForwardedIndexProjectHandler indexProjectHandler;
   private final AllUsersName allUsersName;
   private final String gerritInstanceId;
+  private final DynamicMap<ForwardedIndexingHandler<?, ? extends IndexEvent>> indexHandlers;
 
   @Inject
   public IndexEventRouter(
       ForwardedIndexAccountHandler indexAccountHandler,
-      ForwardedIndexChangeHandler indexChangeHandler,
-      ForwardedIndexGroupHandler indexGroupHandler,
-      ForwardedIndexProjectHandler indexProjectHandler,
+      DynamicMap<ForwardedIndexingHandler<?, ? extends IndexEvent>> indexHandlers,
       AllUsersName allUsersName,
       @GerritInstanceId String gerritInstanceId) {
     this.indexAccountHandler = indexAccountHandler;
-    this.indexChangeHandler = indexChangeHandler;
-    this.indexGroupHandler = indexGroupHandler;
-    this.indexProjectHandler = indexProjectHandler;
+    this.indexHandlers = indexHandlers;
     this.allUsersName = allUsersName;
     this.gerritInstanceId = gerritInstanceId;
   }
 
   @Override
   public void route(IndexEvent sourceEvent) throws IOException {
-    if (sourceEvent instanceof ChangeIndexEvent) {
-      ChangeIndexEvent changeIndexEvent = (ChangeIndexEvent) sourceEvent;
-      ForwardedIndexingHandler.Operation operation = changeIndexEvent.deleted ? DELETE : INDEX;
-      indexChangeHandler.index(
-          changeIndexEvent.projectName + "~" + changeIndexEvent.changeId,
-          operation,
-          Optional.of(changeIndexEvent));
-    } else if (sourceEvent instanceof AccountIndexEvent) {
-      AccountIndexEvent accountIndexEvent = (AccountIndexEvent) sourceEvent;
-      indexAccountHandler.indexAsync(Account.id(accountIndexEvent.accountId), INDEX);
-    } else if (sourceEvent instanceof GroupIndexEvent) {
-      GroupIndexEvent groupIndexEvent = (GroupIndexEvent) sourceEvent;
-      indexGroupHandler.index(groupIndexEvent.groupUUID, INDEX, Optional.of(groupIndexEvent));
-    } else if (sourceEvent instanceof ProjectIndexEvent) {
-      ProjectIndexEvent projectIndexEvent = (ProjectIndexEvent) sourceEvent;
-      indexProjectHandler.index(
-          projectIndexEvent.projectName, INDEX, Optional.of(projectIndexEvent));
+    ForwardedIndexingHandler<?, ? extends IndexEvent> handler =
+        indexHandlers.get(GERRIT, sourceEvent.getType());
+    if (handler != null) {
+      handler.handle(sourceEvent);
     } else {
-      throw new UnsupportedOperationException(
-          String.format("Cannot route event %s", sourceEvent.getType()));
+      logger.atInfo().log("No registered handlers to route event %s", sourceEvent.getType());
     }
   }
 

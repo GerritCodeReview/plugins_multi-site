@@ -14,6 +14,9 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.DELETE;
+import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.INDEX;
+
 import com.google.common.base.Splitter;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.server.index.change.ChangeIndexer;
@@ -24,9 +27,11 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeChecker;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeCheckerImpl;
 import com.googlesource.gerrit.plugins.multisite.index.ForwardedIndexExecutor;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -52,6 +57,18 @@ public class ForwardedIndexChangeHandler
     super(indexExecutor, configuration, oneOffCtx);
     this.indexer = indexer;
     this.changeCheckerFactory = changeCheckerFactory;
+  }
+
+  @Override
+  public void handle(IndexEvent sourceEvent) throws IOException {
+    if (sourceEvent instanceof ChangeIndexEvent) {
+      ChangeIndexEvent changeIndexEvent = (ChangeIndexEvent) sourceEvent;
+      ForwardedIndexingHandler.Operation operation = changeIndexEvent.deleted ? DELETE : INDEX;
+      index(
+          changeIndexEvent.projectName + "~" + changeIndexEvent.changeId,
+          operation,
+          Optional.of(changeIndexEvent));
+    }
   }
 
   @Override
