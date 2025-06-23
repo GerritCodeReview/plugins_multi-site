@@ -27,6 +27,9 @@ import static com.googlesource.gerrit.plugins.multisite.Configuration.Index.SYNC
 import static com.googlesource.gerrit.plugins.multisite.Configuration.THREAD_POOL_SIZE_KEY;
 
 import com.google.common.collect.ImmutableList;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import java.util.Collections;
 import org.eclipse.jgit.lib.Config;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,16 +68,33 @@ public class ConfigurationTest {
 
   @Test
   public void testGetIndexSynchronize() throws Exception {
-    assertThat(getConfiguration().index().synchronize()).isEqualTo(DEFAULT_SYNCHRONIZE);
-
     globalPluginConfig.setBoolean(INDEX_SECTION, null, SYNCHRONIZE_KEY, false);
-    assertThat(getConfiguration().index().synchronize()).isFalse();
+    assertThat(getConfiguration().index().isAllIndexesDisabled()).isTrue();
 
     globalPluginConfig.setBoolean(INDEX_SECTION, null, SYNCHRONIZE_KEY, true);
-    assertThat(getConfiguration().index().synchronize()).isTrue();
+    assertThat(getConfiguration().index().isAllIndexesEnabled()).isTrue();
 
     globalPluginConfig.setString(INDEX_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
-    assertThat(getConfiguration().index().synchronize()).isTrue();
+    assertThat(getConfiguration().index().isAllIndexesEnabled()).isTrue();
+  }
+
+  @Test
+  public void testSynchronizeShouldIndex() throws Exception {
+    globalPluginConfig.setStringList(
+        INDEX_SECTION, null, SYNCHRONIZE_KEY, Collections.singletonList("false"));
+    assertThat(getConfiguration().index().shouldIndex(ChangeIndexEvent.TYPE)).isFalse();
+
+    globalPluginConfig.setStringList(
+        INDEX_SECTION, null, SYNCHRONIZE_KEY, Collections.singletonList("true"));
+    assertThat(getConfiguration().index().shouldIndex(ChangeIndexEvent.TYPE)).isTrue();
+
+    globalPluginConfig.setStringList(
+        INDEX_SECTION, null, SYNCHRONIZE_KEY, Collections.singletonList(ChangeIndexEvent.TYPE));
+    assertThat(getConfiguration().index().shouldIndex(ChangeIndexEvent.TYPE)).isTrue();
+
+    globalPluginConfig.setStringList(
+        INDEX_SECTION, null, SYNCHRONIZE_KEY, Collections.singletonList(AccountIndexEvent.TYPE));
+    assertThat(getConfiguration().index().shouldIndex(ChangeIndexEvent.TYPE)).isFalse();
   }
 
   @Test
