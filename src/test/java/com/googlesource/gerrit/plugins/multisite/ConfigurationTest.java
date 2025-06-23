@@ -65,16 +65,16 @@ public class ConfigurationTest {
 
   @Test
   public void testGetIndexSynchronize() throws Exception {
-    assertThat(getConfiguration().index().synchronize()).isEqualTo(DEFAULT_SYNCHRONIZE);
+    assertThat(getConfiguration().index().synchronize().isEmpty()).isFalse();
 
     globalPluginConfig.setBoolean(INDEX_SECTION, null, SYNCHRONIZE_KEY, false);
-    assertThat(getConfiguration().index().synchronize()).isFalse();
+    assertThat(getConfiguration().index().synchronize().isEmpty()).isTrue();
 
     globalPluginConfig.setBoolean(INDEX_SECTION, null, SYNCHRONIZE_KEY, true);
-    assertThat(getConfiguration().index().synchronize()).isTrue();
+    assertThat(getConfiguration().index().synchronize().isEmpty()).isFalse();
 
     globalPluginConfig.setString(INDEX_SECTION, null, SYNCHRONIZE_KEY, INVALID_BOOLEAN);
-    assertThat(getConfiguration().index().synchronize()).isTrue();
+    assertThat(getConfiguration().index().synchronize().isEmpty()).isFalse();
   }
 
   @Test
