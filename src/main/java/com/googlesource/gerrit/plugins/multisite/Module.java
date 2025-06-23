@@ -54,7 +54,7 @@ public class Module extends LifecycleModule {
     if (config.event().synchronize()) {
       brokerRouterNeeded = true;
     }
-    if (config.index().synchronize()) {
+    if (!config.index().synchronizeFalse()) {
       install(new IndexModule());
       brokerRouterNeeded = true;
     }
