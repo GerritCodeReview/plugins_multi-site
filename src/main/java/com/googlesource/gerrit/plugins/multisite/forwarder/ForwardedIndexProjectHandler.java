@@ -14,15 +14,19 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
+import static com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation.INDEX;
+
 import com.google.gerrit.entities.Project;
 import com.google.gerrit.index.project.ProjectIndexer;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.ForwardedIndexExecutor;
 import com.googlesource.gerrit.plugins.multisite.index.ProjectChecker;
+import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -48,6 +52,14 @@ public class ForwardedIndexProjectHandler
     super(indexExecutor, config, oneOffRequestContext);
     this.indexer = indexer;
     this.projectChecker = projectChecker;
+  }
+
+  @Override
+  public void handle(IndexEvent sourceEvent) throws IOException {
+    if (sourceEvent instanceof ProjectIndexEvent) {
+      ProjectIndexEvent projectIndexEvent = (ProjectIndexEvent) sourceEvent;
+      index(projectIndexEvent.projectName, INDEX, Optional.of(projectIndexEvent));
+    }
   }
 
   @Override

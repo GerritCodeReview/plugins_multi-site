@@ -14,17 +14,48 @@
 
 package com.googlesource.gerrit.plugins.multisite.forwarder.router;
 
+import com.google.gerrit.extensions.annotations.Exports;
+import com.google.gerrit.extensions.registration.DynamicMap;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.lifecycle.LifecycleModule;
 import com.google.gerrit.server.events.EventListener;
 import com.google.inject.Scopes;
+import com.google.inject.TypeLiteral;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexAccountHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexChangeHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexGroupHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexProjectHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.AccountIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.GroupIndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.ProjectIndexEvent;
 
 public class RouterModule extends LifecycleModule {
+
+  public static final TypeLiteral<ForwardedIndexingHandler<?, ? extends IndexEvent>> INDEX_HANDLER =
+      new TypeLiteral<>() {};
+
   @Override
   protected void configure() {
     bind(IndexEventRouter.class).in(Scopes.SINGLETON);
     listener().to(IndexEventRouter.class).in(Scopes.SINGLETON);
     DynamicSet.bind(binder(), EventListener.class).to(IndexEventRouter.class);
+    DynamicMap.mapOf(binder(), INDEX_HANDLER);
+
+    bind(INDEX_HANDLER)
+        .annotatedWith(Exports.named(ChangeIndexEvent.TYPE))
+        .to(ForwardedIndexChangeHandler.class);
+    bind(INDEX_HANDLER)
+        .annotatedWith(Exports.named(GroupIndexEvent.TYPE))
+        .to(ForwardedIndexGroupHandler.class);
+    bind(INDEX_HANDLER)
+        .annotatedWith(Exports.named(ProjectIndexEvent.TYPE))
+        .to(ForwardedIndexProjectHandler.class);
+    bind(INDEX_HANDLER)
+        .annotatedWith(Exports.named(AccountIndexEvent.TYPE))
+        .to(ForwardedIndexAccountHandler.class);
 
     bind(CacheEvictionEventRouter.class).in(Scopes.SINGLETON);
     bind(ProjectListUpdateRouter.class).in(Scopes.SINGLETON);

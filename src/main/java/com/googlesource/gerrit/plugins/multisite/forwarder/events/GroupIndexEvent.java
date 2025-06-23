@@ -19,7 +19,7 @@ import com.google.gerrit.common.Nullable;
 import org.eclipse.jgit.lib.ObjectId;
 
 public class GroupIndexEvent extends IndexEvent {
-  static final String TYPE = "group-index";
+  public static final String TYPE = "group-index";
 
   public final String groupUUID;
   public final ObjectId sha1;

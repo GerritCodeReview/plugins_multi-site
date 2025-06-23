@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.multisite.forwarder;
 
 import com.google.common.util.concurrent.Striped;
+import com.googlesource.gerrit.plugins.multisite.forwarder.events.IndexEvent;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
@@ -39,6 +40,8 @@ public abstract class ForwardedIndexingHandler<T, E> {
       return name().toLowerCase();
     }
   }
+
+  public abstract void handle(IndexEvent sourceEvent) throws IOException;
 
   private final Striped<Lock> idLocks;
 
