@@ -63,12 +63,13 @@ public class ReplicationStatusServletIT extends LightweightPluginDaemonTest {
 
   public static class TestModule extends AbstractModule {
     @Inject WorkQueue workQueue;
+    @Inject Configuration config;
 
     @Override
     protected void configure() {
       install(new ForwarderModule());
       install(new CacheModule());
-      install(new RouterModule());
+      install(new RouterModule(config.index()));
       install(new IndexModule());
       install(new ReplicationStatusModule(workQueue));
       SharedRefDbConfiguration sharedRefDbConfig =

@@ -54,14 +54,14 @@ public class Module extends LifecycleModule {
     if (config.event().synchronize()) {
       brokerRouterNeeded = true;
     }
-    if (config.index().synchronize()) {
+    if (!config.index().synchronize().isEmpty()) {
       install(new IndexModule());
       brokerRouterNeeded = true;
     }
 
     if (brokerRouterNeeded) {
       install(new BrokerModule());
-      install(new RouterModule());
+      install(new RouterModule(config.index()));
     }
   }
 }
