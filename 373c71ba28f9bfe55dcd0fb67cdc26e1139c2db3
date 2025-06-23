@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "1402d45a_2c43c088",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-23T19:34:05Z",
+      "side": 1,
+      "message": "If you base your change on top of I194e557192, you\u0027ll find the enabling/disabling of index handlers a lot easier to manage.",
+      "revId": "373c71ba28f9bfe55dcd0fb67cdc26e1139c2db3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "256eb353_117a89c1",
