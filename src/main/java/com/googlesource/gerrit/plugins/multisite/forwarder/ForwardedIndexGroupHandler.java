@@ -56,7 +56,7 @@ public class ForwardedIndexGroupHandler
 
   @Override
   public void handle(IndexEvent sourceEvent) throws IOException {
-    if (sourceEvent instanceof GroupIndexEvent) {
+    if (shouldHandle(indexConfig(), GroupIndexEvent.class, sourceEvent)) {
       GroupIndexEvent groupIndexEvent = (GroupIndexEvent) sourceEvent;
       index(groupIndexEvent.groupUUID, INDEX, Optional.of(groupIndexEvent));
     }
