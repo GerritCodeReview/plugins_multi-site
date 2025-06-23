@@ -61,14 +61,12 @@ public class ForwardedIndexChangeHandler
 
   @Override
   public void handle(IndexEvent sourceEvent) throws IOException {
-    if (sourceEvent instanceof ChangeIndexEvent) {
-      ChangeIndexEvent changeIndexEvent = (ChangeIndexEvent) sourceEvent;
-      ForwardedIndexingHandler.Operation operation = changeIndexEvent.deleted ? DELETE : INDEX;
-      index(
-          changeIndexEvent.projectName + "~" + changeIndexEvent.changeId,
-          operation,
-          Optional.of(changeIndexEvent));
-    }
+    ChangeIndexEvent changeIndexEvent = (ChangeIndexEvent) sourceEvent;
+    ForwardedIndexingHandler.Operation operation = changeIndexEvent.deleted ? DELETE : INDEX;
+    index(
+        changeIndexEvent.projectName + "~" + changeIndexEvent.changeId,
+        operation,
+        Optional.of(changeIndexEvent));
   }
 
   @Override

@@ -56,10 +56,8 @@ public class ForwardedIndexProjectHandler
 
   @Override
   public void handle(IndexEvent sourceEvent) throws IOException {
-    if (sourceEvent instanceof ProjectIndexEvent) {
-      ProjectIndexEvent projectIndexEvent = (ProjectIndexEvent) sourceEvent;
-      index(projectIndexEvent.projectName, INDEX, Optional.of(projectIndexEvent));
-    }
+    ProjectIndexEvent projectIndexEvent = (ProjectIndexEvent) sourceEvent;
+    index(projectIndexEvent.projectName, INDEX, Optional.of(projectIndexEvent));
   }
 
   @Override

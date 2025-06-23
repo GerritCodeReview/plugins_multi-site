@@ -41,6 +41,7 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
   private final ScheduledExecutorService indexExecutor;
   protected final OneOffRequestContext oneOffCtx;
   protected final Map<T, IndexingRetry> indexingRetryTaskMap = new ConcurrentHashMap<>();
+  protected final Configuration.Index indexConfig;
 
   ForwardedIndexingHandlerWithRetries(
       ScheduledExecutorService indexExecutor,
@@ -53,6 +54,11 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
     this.indexExecutor = indexExecutor;
     this.retryInterval = indexConfig != null ? indexConfig.retryInterval() : 0;
     this.maxTries = indexConfig != null ? indexConfig.maxTries() : 0;
+    this.indexConfig = indexConfig;
+  }
+
+  protected Configuration.Index indexConfig() {
+    return indexConfig;
   }
 
   protected abstract void reindex(T id);
