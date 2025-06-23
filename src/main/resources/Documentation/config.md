@@ -42,10 +42,25 @@ Configuration should be specified in the `$site_path/etc/@PLUGIN@.config` file.
     Defaults to 10
 
 ```index.synchronize```
-:   Whether to synchronize secondary indexes. Set to false when using multi-site
-    on Gerrit replicas that do not have an index, or when using an external
-    service such as ElasticSearch.
-    Defaults to true.
+:   Controls which types of index events should be synchronized across sites.
+    It supports the following values:
+
+    - `true`: shortcut for including all index types
+    - `false`: disable index synchronization
+    - A list of specific index types to synchronize:
+      - `change-index`
+      - `account-index`
+      - `group-index`
+      - `project-index`
+
+    Example to synchronize only change and project indexes:
+    ```
+    [index]
+      synchronize = change-index
+      synchronize = project-index
+    ```
+
+> NOTE: All unknown index types are ignored.
 
 ```index.synchronizeForced```
 :   Whether to synchronize forced index events. E.g. on-line reindex

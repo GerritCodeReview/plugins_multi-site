@@ -35,6 +35,7 @@ import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.ExecutorProvider;
 import com.googlesource.gerrit.plugins.multisite.cache.CacheModule;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.CacheEvictionEvent;
@@ -72,11 +73,13 @@ public class ForwardedCacheEvictionHandlerIT extends LightweightPluginDaemonTest
   private RegistrationHandle cacheEvictionRegistrationHandle;
 
   public static class TestModule extends AbstractModule {
+    @Inject Configuration config;
+
     @Override
     protected void configure() {
       install(new ForwarderModule());
       install(new CacheModule(TestForwardingExecutorProvider.class));
-      install(new RouterModule());
+      install(new RouterModule(config.index()));
       install(new IndexModule());
       SharedRefDbConfiguration sharedRefDbConfig =
           new SharedRefDbConfiguration(new Config(), "multi-site");
