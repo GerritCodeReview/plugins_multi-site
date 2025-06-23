@@ -34,7 +34,9 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import org.eclipse.jgit.errors.ConfigInvalidException;
@@ -366,11 +368,12 @@ public class Configuration {
     }
   }
 
-  public static class Index extends Forwarding {
+  public static class Index {
     static final String INDEX_SECTION = "index";
     static final String MAX_TRIES_KEY = "maxTries";
     static final String RETRY_INTERVAL_KEY = "retryInterval";
     static final String SYNCHRONIZE_FORCED_KEY = "synchronizeForced";
+    static final String SYNCHRONIZE_KEY = "synchronize";
     static final boolean DEFAULT_SYNCHRONIZE_FORCED = true;
 
     private final int threadPoolSize;
@@ -378,10 +381,65 @@ public class Configuration {
     private final int maxTries;
 
     private final int numStripedLocks;
+    private final List<IndexType> synchronize;
     private final boolean synchronizeForced;
 
+    public enum IndexType {
+      CHANGE_INDEX("change-index"),
+      ACCOUNT_INDEX("account-index"),
+      GROUP_INDEX("group-index"),
+      PROJECT_INDEX("project-index"),
+      TRUE("true"),
+      FALSE("false");
+
+      private final String displayName;
+      private static final Map<String, IndexType> BY_DISPLAY_NAME = new HashMap<>();
+
+      static {
+        for (IndexType type : values()) {
+          BY_DISPLAY_NAME.put(type.displayName.toLowerCase(), type);
+        }
+      }
+
+      IndexType(String displayName) {
+        this.displayName = displayName;
+      }
+
+      @Override
+      public String toString() {
+        return displayName;
+      }
+
+      public static IndexType fromString(String value) {
+        IndexType type = BY_DISPLAY_NAME.get(value.toLowerCase());
+        if (type == null) {
+          throw new IllegalArgumentException("Unknown index type: " + value);
+        }
+        return type;
+      }
+    }
+
+    public List<IndexType> getSynchronizeIndex(
+        Supplier<Config> cfg, String section, String subSection, String name) {
+      String[] values = cfg.get().getStringList(section, subSection, name);
+      if (values == null || values.length == 0) {
+        return Collections.singletonList(IndexType.TRUE);
+      }
+      ImmutableList.Builder<IndexType> builder = ImmutableList.builder();
+      for (String value : values) {
+        try {
+          builder.add(IndexType.fromString(value));
+        } catch (IllegalArgumentException e) {
+          log.warn("Unknown index type '{}' in config; ignoring", value);
+        }
+      }
+
+      return builder.build().isEmpty()
+          ? Collections.singletonList(IndexType.TRUE)
+          : builder.build();
+    }
+
     private Index(Supplier<Config> cfg) {
-      super(cfg, INDEX_SECTION);
       threadPoolSize =
           getInt(cfg, INDEX_SECTION, null, THREAD_POOL_SIZE_KEY, DEFAULT_THREAD_POOL_SIZE);
       retryInterval =
@@ -391,6 +449,7 @@ public class Configuration {
           getInt(cfg, INDEX_SECTION, null, NUM_STRIPED_LOCKS, DEFAULT_NUM_STRIPED_LOCKS);
       synchronizeForced =
           getBoolean(cfg, INDEX_SECTION, null, SYNCHRONIZE_FORCED_KEY, DEFAULT_SYNCHRONIZE_FORCED);
+      synchronize = getSynchronizeIndex(cfg, INDEX_SECTION, null, SYNCHRONIZE_KEY);
     }
 
     public int threadPoolSize() {
@@ -411,6 +470,28 @@ public class Configuration {
 
     public boolean synchronizeForced() {
       return synchronizeForced;
+    }
+
+    private List<IndexType> synchronize() {
+      return synchronize;
+    }
+
+    public boolean synchronizeTrue() {
+      return synchronize().contains(IndexType.TRUE);
+    }
+
+    public boolean synchronizeFalse() {
+      return synchronize().contains(IndexType.TRUE);
+    }
+
+    public boolean shouldIndex(String indexTypeString) {
+      if (synchronizeTrue()) {
+        return true;
+      }
+      if (synchronizeFalse()) {
+        return false;
+      }
+      return synchronize().contains(IndexType.fromString(indexTypeString));
     }
   }
 
