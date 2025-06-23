@@ -53,7 +53,7 @@ public class PluginModule extends LifecycleModule {
 
   @Override
   protected void configure() {
-    if (config.index().synchronize()
+    if (!config.index().synchronize().isEmpty()
         || config.cache().synchronize()
         || config.event().synchronize()) {
       install(new EventModule(config));
