@@ -42,10 +42,12 @@ public class ForwardedIndexAccountHandler
 
   private final AccountIndexer indexer;
   private Map<Account.Id, Operation> accountsToIndex;
+  private final Configuration.Index indexConfig;
 
   @Inject
   ForwardedIndexAccountHandler(AccountIndexer indexer, Configuration config) {
     super(config.index().numStripedLocks());
+    this.indexConfig = config.index();
     this.indexer = indexer;
     this.accountsToIndex = new HashMap<>();
   }
