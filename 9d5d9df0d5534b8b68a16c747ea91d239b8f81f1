@@ -1,0 +1,274 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2318d2f5_aaae4c78",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-24T12:16:04Z",
+      "side": 1,
+      "message": "There is no need to define yet again the index types: we can reuse the existing ones in a simple map.\n\n\n```suggestion\n    private static final Map\u003c\n            String, Class\u003c? extends ForwardedIndexingHandler\u003c?, ? extends IndexEvent\u003e\u003e\u003e\n        SYNCHRONIZE_ALL_EVENTS_HANDLERS \u003d\n            Map.of(\n                ChangeIndexEvent.TYPE, ForwardedIndexChangeHandler.class,\n                GroupIndexEvent.TYPE, ForwardedIndexGroupHandler.class,\n                AccountIndexEvent.TYPE, ForwardedIndexAccountHandler.class,\n                ProjectIndexEvent.TYPE, ForwardedIndexProjectHandler.class);\n```",
+      "range": {
+        "startLine": 386,
+        "startChar": 0,
+        "endLine": 420,
+        "endChar": 5
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88d0ed59_d23f44fe",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-24T12:16:04Z",
+      "side": 1,
+      "message": "We can just provide the subset of index types supported.\n\n\n\n```suggestion\n    public Map\u003cString, Class\u003c? extends ForwardedIndexingHandler\u003c?, ? extends IndexEvent\u003e\u003e\u003e getSynchronizeIndex(\n```",
+      "range": {
+        "startLine": 422,
+        "startChar": 11,
+        "endLine": 422,
+        "endChar": 26
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f66da43_e8e478df",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-24T12:16:04Z",
+      "side": 1,
+      "message": "```suggestion\n    public Map\u003cString, Class\u003c? extends ForwardedIndexingHandler\u003c?, ? extends IndexEvent\u003e\u003e\u003e getSynchronizeIndex(Supplier\u003cConfig\u003e cfg) {\n      Set\u003cString\u003e syncIndexTypes \u003d\n          Set.of(cfg.get().getStringList(INDEX_SECTION, null, SYNCHRONIZE_KEY));\n\n      if (syncIndexTypes.isEmpty()) {\n        return SYNCHRONIZE_ALL_EVENTS_HANDLERS;\n      } else if (syncIndexTypes.size() \u003d\u003d 1\n          \u0026\u0026 syncIndexTypes.iterator().next().equalsIgnoreCase(\"false\")) {\n        return Map.of();\n      } else {\n        return SYNCHRONIZE_ALL_EVENTS_HANDLERS.entrySet().stream()\n            .filter(entry -\u003e syncIndexTypes.contains(entry.getKey()))\n            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));\n      }\n    }\n```",
+      "range": {
+        "startLine": 422,
+        "startChar": 0,
+        "endLine": 440,
+        "endChar": 5
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90156d3b_91ea2b83",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-24T12:16:04Z",
+      "side": 1,
+      "message": "```suggestion\n    private Map\u003cString, Class\u003c? extends ForwardedIndexingHandler\u003c?, ? extends IndexEvent\u003e\u003e\u003e synchronize() {\n```",
+      "range": {
+        "startLine": 475,
+        "startChar": 12,
+        "endLine": 475,
+        "endChar": 27
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4212f30_f2462d05",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-24T12:16:04Z",
+      "side": 1,
+      "message": "I don\u0027t believe we need all these methods: the Guice injection should do the job and without if/then/else in the code.",
+      "range": {
+        "startLine": 479,
+        "startChar": 0,
+        "endLine": 495,
+        "endChar": 5
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76326ba7_90956d20",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-24T12:16:04Z",
+      "side": 1,
+      "message": "This isn\u0027t needed. Just check that `synchronize()` is not empty.\n\n```suggestion\n    if (!config.index().synchronize().isEmpty()) {\n```",
+      "range": {
+        "startLine": 57,
+        "startChar": 24,
+        "endLine": 57,
+        "endChar": 44
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7be5997d_e5291a17",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/PluginModule.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-24T12:16:04Z",
+      "side": 1,
+      "message": "```suggestion\n    if (!config.index().synchronize().isEmpty()\n```",
+      "range": {
+        "startLine": 56,
+        "startChar": 24,
+        "endLine": 56,
+        "endChar": 44
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ae8918c_5ccfff71",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/router/RouterModule.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-24T12:16:04Z",
+      "side": 1,
+      "message": "We can have the map of index types and handers from the index config. We can simply iterate on them.\n\n```suggestion\n\n    indexConfig\n        .synchronize()\n        .forEach(\n            (type, handler) -\u003e bind(INDEX_HANDLER).annotatedWith(Exports.named(type)).to(handler));\n```",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 5
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb5c051c_61da8373",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-24T12:16:04Z",
+      "side": 1,
+      "message": "```suggestion\n    - `true`: shortcut for including all index types\n```",
+      "range": {
+        "startLine": 48,
+        "startChar": 6,
+        "endLine": 48,
+        "endChar": 51
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91f34643_47ee5973",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-24T12:16:04Z",
+      "side": 1,
+      "message": "```suggestion\n\u003e NOTE: All unknown index types are ignored.\n```",
+      "range": {
+        "startLine": 63,
+        "startChar": 3,
+        "endLine": 63,
+        "endChar": 55
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ebea358_db3757ad",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-24T12:16:04Z",
+      "side": 1,
+      "message": "We should also mention that all index types are enabled by default.",
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1880fea4_ac91c0c8",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/ConfigurationTest.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-24T12:16:04Z",
+      "side": 1,
+      "message": "This isn\u0027t needed IMHO.",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 3
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
