@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df325de2_0b90a84f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-06-24T13:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2318d2f5_aaae4c78",
+      "range": {
+        "startLine": 386,
+        "startChar": 0,
+        "endLine": 420,
+        "endChar": 5
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88d0ed59_d23f44fe",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-24T12:16:04Z",
       "side": 1,
       "message": "We can just provide the subset of index types supported.\n\n\n\n```suggestion\n    public Map\u003cString, Class\u003c? extends ForwardedIndexingHandler\u003c?, ? extends IndexEvent\u003e\u003e\u003e getSynchronizeIndex(\n```",
+      "range": {
+        "startLine": 422,
+        "startChar": 11,
+        "endLine": 422,
+        "endChar": 26
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae4b97fd_9735a0d1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-06-24T13:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88d0ed59_d23f44fe",
       "range": {
         "startLine": 422,
         "startChar": 11,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1ca5569_9971b280",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-06-24T13:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f66da43_e8e478df",
+      "range": {
+        "startLine": 422,
+        "startChar": 0,
+        "endLine": 440,
+        "endChar": 5
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90156d3b_91ea2b83",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-06-24T12:16:04Z",
       "side": 1,
       "message": "```suggestion\n    private Map\u003cString, Class\u003c? extends ForwardedIndexingHandler\u003c?, ? extends IndexEvent\u003e\u003e\u003e synchronize() {\n```",
+      "range": {
+        "startLine": 475,
+        "startChar": 12,
+        "endLine": 475,
+        "endChar": 27
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c6c300a_483e8df3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-06-24T13:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90156d3b_91ea2b83",
       "range": {
         "startLine": 475,
         "startChar": 12,
@@ -116,6 +212,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a763142b_4fe7ed21",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Configuration.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-06-24T13:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4212f30_f2462d05",
+      "range": {
+        "startLine": 479,
+        "startChar": 0,
+        "endLine": 495,
+        "endChar": 5
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76326ba7_90956d20",
@@ -129,6 +249,30 @@
       "writtenOn": "2025-06-24T12:16:04Z",
       "side": 1,
       "message": "This isn\u0027t needed. Just check that `synchronize()` is not empty.\n\n```suggestion\n    if (!config.index().synchronize().isEmpty()) {\n```",
+      "range": {
+        "startLine": 57,
+        "startChar": 24,
+        "endLine": 57,
+        "endChar": 44
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88b6c4b6_caf6467b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/Module.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-06-24T13:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76326ba7_90956d20",
       "range": {
         "startLine": 57,
         "startChar": 24,
@@ -162,6 +306,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6efb855a_1b87996e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/PluginModule.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-06-24T13:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7be5997d_e5291a17",
+      "range": {
+        "startLine": 56,
+        "startChar": 24,
+        "endLine": 56,
+        "endChar": 44
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ae8918c_5ccfff71",
@@ -175,6 +343,30 @@
       "writtenOn": "2025-06-24T12:16:04Z",
       "side": 1,
       "message": "We can have the map of index types and handers from the index config. We can simply iterate on them.\n\n```suggestion\n\n    indexConfig\n        .synchronize()\n        .forEach(\n            (type, handler) -\u003e bind(INDEX_HANDLER).annotatedWith(Exports.named(type)).to(handler));\n```",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 5
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40676811_0bc212df",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/router/RouterModule.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-06-24T13:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ae8918c_5ccfff71",
       "range": {
         "startLine": 55,
         "startChar": 0,
@@ -208,6 +400,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "28c45184_011ef734",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-06-24T13:02:32Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "cb5c051c_61da8373",
+      "range": {
+        "startLine": 48,
+        "startChar": 6,
+        "endLine": 48,
+        "endChar": 51
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "91f34643_47ee5973",
@@ -221,6 +437,30 @@
       "writtenOn": "2025-06-24T12:16:04Z",
       "side": 1,
       "message": "```suggestion\n\u003e NOTE: All unknown index types are ignored.\n```",
+      "range": {
+        "startLine": 63,
+        "startChar": 3,
+        "endLine": 63,
+        "endChar": 55
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf9d7ef2_eb92e7ff",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-06-24T13:02:32Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "91f34643_47ee5973",
       "range": {
         "startLine": 63,
         "startChar": 3,
@@ -261,6 +501,30 @@
       "writtenOn": "2025-06-24T12:16:04Z",
       "side": 1,
       "message": "This isn\u0027t needed IMHO.",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 98,
+        "endChar": 3
+      },
+      "revId": "9d5d9df0d5534b8b68a16c747ea91d239b8f81f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "592d2b0d_435fbd27",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/ConfigurationTest.java",
+        "patchSetId": 11
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-06-24T13:02:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1880fea4_ac91c0c8",
       "range": {
         "startLine": 81,
         "startChar": 0,
