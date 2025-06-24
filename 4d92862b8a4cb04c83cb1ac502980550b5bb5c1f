@@ -22,6 +22,30 @@
       },
       "revId": "4d92862b8a4cb04c83cb1ac502980550b5bb5c1f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3399827_9ab07407",
+        "filename": "src/main/resources/Documentation/config.md",
+        "patchSetId": 17
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-06-24T17:08:14Z",
+      "side": 1,
+      "message": "Well, it depends for what you\u0027re using the multi-site for. Also, there\u0027s already the mechanism for auto-reindexing accounts upon fetch-ref-replicated, I\u0027m sure that soon we\u0027ll introduce the same for groups and projects.",
+      "parentUuid": "ef44403d_48823b77",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 23
+      },
+      "revId": "4d92862b8a4cb04c83cb1ac502980550b5bb5c1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
