@@ -1,4 +1,11 @@
-# Gerrit multi-site plugin
+# DEPRECATION NOTICE
+
+GerritForge has decided to [change the license to BSL](https://gitenterprise.me/2025/09/30/re-licensing-gerritforge-plugins-welcome-to-gerrit-enterprise/)
+therefore the Apache 2.0 version of this plugin is deprecated.
+The recommended version of the multi-site plugin is on [GitHub](https://github.com/GerritForge/multi-site)
+and the development continues on [GerritHub.io](https://review.gerrithub.io/admin/repos/GerritForge/multi-site,general).
+
+# Gerrit multi-site plugin (DEPRECATED)
 
 This plugin allows to deploy a distributed cluster of multiple Gerrit masters
 each using a separate site without sharing any storage. The alignment between
