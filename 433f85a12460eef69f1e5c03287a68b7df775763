@@ -93,6 +93,30 @@
       },
       "revId": "433f85a12460eef69f1e5c03287a68b7df775763",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ef03ac0_f2fe3dc8",
+        "filename": "README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-10-03T08:18:02Z",
+      "side": 1,
+      "message": "Discussed with @ponch78@gmail.com and @syntonyze@gmail.com and the current form is acceptable and clear enough.",
+      "parentUuid": "524d394c_1eeb4e27",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 8,
+        "endChar": 0
+      },
+      "revId": "433f85a12460eef69f1e5c03287a68b7df775763",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
