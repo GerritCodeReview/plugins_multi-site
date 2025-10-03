@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d7b10bc_3c70ab73",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-10-03T06:23:56Z",
+      "side": 1,
+      "message": "Is `README.md` the best place to put it? What about `src/main/resources/Documentation/about.md`? Not all the plugins will have the README. Maybe put it in one place and link to the other?",
+      "revId": "687273f9134e25cdea42e5f8f192ae13ba3481ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd828ad8_67c25702",
         "filename": "README.md",
         "patchSetId": 3
@@ -14,6 +31,30 @@
       "writtenOn": "2025-10-02T21:36:40Z",
       "side": 1,
       "message": "do we want to also mention that it will not be maintained anymore or leave it implicitly?",
+      "range": {
+        "startLine": 4,
+        "startChar": 51,
+        "endLine": 4,
+        "endChar": 62
+      },
+      "revId": "687273f9134e25cdea42e5f8f192ae13ba3481ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ba616db_844ff9b6",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1054778
+      },
+      "writtenOn": "2025-10-03T06:23:56Z",
+      "side": 1,
+      "message": "I would just leave `deperecated`. Peeople might continue contributing to it. It won\u0027t happen but they technically could.",
+      "parentUuid": "dd828ad8_67c25702",
       "range": {
         "startLine": 4,
         "startChar": 51,
