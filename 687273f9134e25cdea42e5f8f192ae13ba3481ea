@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "313c6c74_9e002a6e",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-10-03T07:30:24Z",
+      "side": 1,
+      "message": "\u003e That\u0027s pretty hidden as a file no? \n\n+1, the `README.md` is the first thing you see in a repository, either in Gitiles or GitHub.\n\n\u003e It might be worth creating readmes for plugins that don\u0027t have it so it\u0027s obvious.\n\n+1",
+      "parentUuid": "f0fa04e4_74159d74",
+      "revId": "687273f9134e25cdea42e5f8f192ae13ba3481ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd828ad8_67c25702",
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "I would just leave `deperecated`. Peeople might continue contributing to it. It won\u0027t happen but they technically could.",
       "parentUuid": "dd828ad8_67c25702",
+      "range": {
+        "startLine": 4,
+        "startChar": 51,
+        "endLine": 4,
+        "endChar": 62
+      },
+      "revId": "687273f9134e25cdea42e5f8f192ae13ba3481ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "651b2103_15ab09ed",
+        "filename": "README.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2025-10-03T07:30:24Z",
+      "side": 1,
+      "message": "\u003e I would just leave `deperecated`. Peeople might continue contributing to it. It won\u0027t happen but they technically could.\n\nWell, if you just see `deprecated` without pointers to the *non-deprecated* version then people may just thing that this isn\u0027t maintained anymore, which isn\u0027t true.\n\nThe plugin continues its development on GerritHub and is published on GitHub; after 5 years all the code becomes Apache 2.0 and can be re-contributed to the stable branches of this plugin.\n\nSo, technically, only the `master` branch is deprecated, the stable branches aren\u0027t.",
+      "parentUuid": "0ba616db_844ff9b6",
       "range": {
         "startLine": 4,
         "startChar": 51,
