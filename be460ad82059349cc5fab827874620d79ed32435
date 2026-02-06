@@ -53,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c75ba7c_e086c33a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-02-06T10:23:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69a6a3af_f3895ec8",
+      "revId": "be460ad82059349cc5fab827874620d79ed32435",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dae9af3e_eeeef593",
@@ -186,6 +204,30 @@
       "side": 1,
       "message": "\u003e \u003e Looking back at this change 5 years later, my objection persists.\n\u003e \u003e \n\u003e \u003e \u003e Eeven if the replication has successfully completed, the change will still be in the index: removing it from the index is precisely the intent of this subscriber\u0027s handler, so we should be sure the change is still sitting in the index .\n\u003e \u003e \n\u003e \u003e That\u0027s not true, at least for the master branch of multi-site.\n\u003e \n\u003e Yes, you\u0027re right, this is not working anymore on the current master.\n\u003e \n\u003e \u003e \n\u003e \u003e The multi-site plugin listens for pull-replication events and, for ref updates associated with a /meta ref-update, processes them and causes the removal of the change from the index.\n\u003e \n\u003e Yes, this was done long after this implementation [1].\n\u003e To my knowledge, at the time this change was written, there were no other processors that could have caused the deletion of the change from the index before this subscriber consumed it.\n\u003e \n\u003e [1] https://gerrit-review.googlesource.com/c/plugins/multi-site/+/373795\n\u003e \n\u003e \u003e \n\u003e \u003e IMHO, we should:\n\u003e \u003e \n\u003e \u003e a. Avoid making one call to the index, using also a deprecated lookup by id, which would just cause additional unneeded load.\n\u003e \n\u003e +1 fair enough, this call has been deprecated since 3.10.\n\u003e \n\u003e \u003e b. Just return `true` and leave the work of updating the index to the appropriate processor of the indexing events.\n\u003e \n\u003e If `shouldConsumeEvent` returned `true` anytime a change index deletion was consumed, it would effectively ignore the project filtering and process a change for a project that should not have been dealt with.\n\nTrue, but the change is gone anyway, so the worst-case scenario is that the delete will be a noop.",
       "parentUuid": "1fd23211_0dc333fd",
+      "range": {
+        "startLine": 64,
+        "startChar": 8,
+        "endLine": 64,
+        "endChar": 93
+      },
+      "revId": "be460ad82059349cc5fab827874620d79ed32435",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83a4e369_a621f38d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/IndexEventSubscriber.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-02-06T10:23:34Z",
+      "side": 1,
+      "message": "\u003e True, but the change is gone anyway, so the worst-case scenario is that the delete will be a noop.\n\nYes, I believe in most cases this will be so, but whether the change is there or not depends on the replication settings, really.\n\nMy concern with this approach is that we might be processing an event that belongs to a project that we should be ignoring (because we are skipping the projectFilter evaluation). In fact, shouldn\u0027t even the `FetchRefReplicatedEventHandler` [1] only process changes for projects that match the `projectsFilter`?\n\nLastly, since the `project` is not there and we only have the `Change.Id`, I am not sure about both the current and the new proposed approach doing the right thing with imported projects.\n\nWDYT?",
+      "parentUuid": "f2d32945_14d383b0",
       "range": {
         "startLine": 64,
         "startChar": 8,
