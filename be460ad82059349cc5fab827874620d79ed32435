@@ -236,6 +236,30 @@
       },
       "revId": "be460ad82059349cc5fab827874620d79ed32435",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba7d4f17_1e97da74",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/consumer/IndexEventSubscriber.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1155599
+      },
+      "writtenOn": "2026-04-27T13:48:11Z",
+      "side": 1,
+      "message": "\u003e True, but the change is gone anyway, so the worst-case scenario is that the delete will be a noop.\n\nWe don\u0027t know the project this change belongs too, therefore the changeId(which, to clarify, represents the numeric changeId, not the footer value) is not unique across projects anymore.\n\nIf there where 2 changes with the same id across 2 different projects and pull-replication was configured to filter one project but not the other, would we not risk that changeIndex deletes the change with the same id but on a different project?\n\nBit confusing, hope it makes sense.",
+      "parentUuid": "83a4e369_a621f38d",
+      "range": {
+        "startLine": 64,
+        "startChar": 8,
+        "endLine": 64,
+        "endChar": 93
+      },
+      "revId": "be460ad82059349cc5fab827874620d79ed32435",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ],
   "submitRequirementResults": [
