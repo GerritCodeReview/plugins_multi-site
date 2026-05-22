@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Sets;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -69,6 +70,7 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
         gitRepositoryManager.openRepository(Project.nameKey(projectName))) {
       RefDatabase refDb = repository.getRefDatabase();
       return refs.stream()
+          .filter(ref -> !hasBeenRemovedFromGlobalRefDb(projectName, ref))
           .filter(
               ref -> {
                 if (shouldNotBeTrackedAnymoreOnGlobalRefDb(ref)) {
@@ -97,6 +99,32 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
     }
   }
 
+<<<<<<< PATCH SET (467eb4b2f2c0f108c591e60c7228aefa74cd7f10 Revert "Do not filter out refs removals when filtering pull-)
+  /* If the ref to fetch has been set to all zeros on the global-refdb, it means
+   * that whatever is the situation locally, we do not need to fetch it:
+   * - If the remote still has it, fetching it will be useless because the global
+   *   state is that the ref should be removed.
+   * - If the remote doesn't have it anymore, trying to fetch the ref won't do
+   *   anything because you can't just remove local refs by fetching.
+   */
+  private boolean hasBeenRemovedFromGlobalRefDb(String projectName, String ref) {
+    if (foundAsZeroInSharedRefDb(Project.nameKey(projectName), ref)) {
+      repLog.info(
+          "{}:{} is found as zeros (removed) in shared-refdb thus will NOT BE fetched",
+          projectName,
+          ref);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean foundAsZeroInSharedRefDb(NameKey projectName, String ref) {
+    return sharedRefDb
+        .get(projectName, ref, String.class)
+        .map(r -> ZERO_ID_NAME.equals(r))
+        .orElse(false);
+||||||| BASE      (05960652371637b0e33ddae4005b1149bed5667a Do not filter out refs removals when filtering pull-replicat)
+=======
   @Override
   public Map<String, AutoCloseable> filterAndLock(String projectName, Set<String> fetchRefs)
       throws LockFailureException {
@@ -131,6 +159,7 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
     }
 
     return refLocks;
+>>>>>>> BASE      (014c232fa47860bedb8b1a0702d6cbb78d860bb2 Properly cleanup site3)
   }
 
   private Optional<ObjectId> getLocalSha1IfEqualsToExistingGlobalRefDb(
