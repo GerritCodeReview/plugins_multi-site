@@ -70,7 +70,6 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
         gitRepositoryManager.openRepository(Project.nameKey(projectName))) {
       RefDatabase refDb = repository.getRefDatabase();
       return refs.stream()
-          .filter(ref -> !hasBeenRemovedFromGlobalRefDb(projectName, ref))
           .filter(
               ref -> {
                 if (shouldNotBeTrackedAnymoreOnGlobalRefDb(ref)) {
@@ -87,6 +86,28 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
                             projectName,
                             ref,
                             oid.getName()));
+
+                try {
+                  Ref localRef = refDb.exactRef(ref);
+                  if (localRef == null
+                      && foundAsZeroInSharedRefDb(Project.nameKey(projectName), ref)) {
+                    repLog.info(
+                        "{}:{} was removed locally and is set to zeros in the shared-refdb and thus"
+                            + " will NOT BE fetched",
+                        projectName,
+                        ref);
+                    return false;
+                  }
+                } catch (IOException ioe) {
+                  String message =
+                      String.format(
+                          "Cannot dereference ref '%s' for project '%s' therefore will NOT BE"
+                              + " fetched",
+                          ref, projectName);
+                  repLog.error(message);
+                  logger.atSevere().withCause(ioe).log("%s", message);
+                  return false;
+                }
 
                 return !localRefOid.isPresent();
               })
