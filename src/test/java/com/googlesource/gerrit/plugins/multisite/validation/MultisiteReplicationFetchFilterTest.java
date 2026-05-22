@@ -223,6 +223,23 @@ public class MultisiteReplicationFetchFilterTest extends LocalDiskRepositoryTest
   }
 
   @Test
+  public void shouldNotFilterOutWhenRefIsMissingOnlyInTheLocalRepository() throws Exception {
+    String refObjectId = "0000000000000000000000000000000000000001";
+    String nonExistingLocalRef = "refs/heads/temporaryOutdated";
+
+    Set<String> refsToFetch = Set.of(nonExistingLocalRef);
+    doReturn(Optional.of(refObjectId))
+        .when(sharedRefDatabaseMock)
+        .get(eq(projectName), any(), any());
+
+    MultisiteReplicationFetchFilter fetchFilter =
+        new MultisiteReplicationFetchFilter(sharedRefDatabaseMock, gitRepositoryManager, config);
+    Set<String> filteredRefsToFetch = fetchFilter.filter(project, refsToFetch);
+
+    assertThat(filteredRefsToFetch).hasSize(1);
+  }
+
+  @Test
   public void shouldNotFilterOutRefThatDoesntExistLocallyOrInSharedRefDb() throws Exception {
     String nonExisting = "refs/heads/non-existing-ref";
 

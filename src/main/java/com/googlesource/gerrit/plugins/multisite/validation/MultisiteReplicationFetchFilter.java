@@ -88,6 +88,33 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
                             ref,
                             oid.getName()));
 
+                try {
+                  Ref localRef = refDb.exactRef(ref);
+                  repLog.info(
+                      "{}:{} currently set to {}",
+                      projectName,
+                      ref,
+                      localRef == null ? "<null>" : localRef.getObjectId().getName());
+                  if (localRef == null
+                      && foundAsZeroInSharedRefDb(Project.nameKey(projectName), ref)) {
+                    repLog.info(
+                        "{}:{} was removed locally and is set to zeros in the shared-refdb and thus"
+                            + " will NOT BE fetched",
+                        projectName,
+                        ref);
+                    return false;
+                  }
+                } catch (IOException ioe) {
+                  String message =
+                      String.format(
+                          "Cannot dereference ref '%s' for project '%s' therefore will NOT BE"
+                              + " fetched",
+                          ref, projectName);
+                  repLog.error(message);
+                  logger.atSevere().withCause(ioe).log("%s", message);
+                  return false;
+                }
+
                 return !localRefOid.isPresent();
               })
           .collect(Collectors.toSet());
@@ -97,6 +124,13 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
       logger.atSevere().withCause(ioe).log("%s", message);
       return Collections.emptySet();
     }
+  }
+
+  private boolean foundAsZeroInSharedRefDb(NameKey projectName, String ref) {
+    return sharedRefDb
+        .get(projectName, ref, String.class)
+        .map(r -> ZERO_ID_NAME.equals(r))
+        .orElse(false);
   }
 
   @Override
