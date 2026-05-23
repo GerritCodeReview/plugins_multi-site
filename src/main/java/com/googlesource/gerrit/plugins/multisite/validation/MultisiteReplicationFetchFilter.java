@@ -19,6 +19,7 @@ import static com.googlesource.gerrit.plugins.replication.pull.PullReplicationLo
 import com.gerritforge.gerrit.globalrefdb.GlobalRefDbLockException;
 import com.gerritforge.gerrit.globalrefdb.RefDbLockException;
 import com.gerritforge.gerrit.globalrefdb.validation.SharedRefDatabaseWrapper;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Sets;
 import com.google.common.flogger.FluentLogger;
@@ -30,6 +31,7 @@ import com.google.inject.Singleton;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.replication.pull.FetchOne.LockFailureException;
 import com.googlesource.gerrit.plugins.replication.pull.ReplicationFetchFilter;
+import com.googlesource.gerrit.plugins.replication.pull.ReplicationTaskId;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -81,8 +83,9 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
                 localRefOid.ifPresent(
                     oid ->
                         repLog.info(
-                            "{}:{}={} is already up-to-date with the shared-refdb and thus will NOT"
-                                + " BE fetched",
+                            "[{}] {}:{}={} is already up-to-date with the shared-refdb and thus"
+                                + " will NOT BE fetched",
+                            replicationTaskId(),
                             projectName,
                             ref,
                             oid.getName()));
@@ -92,8 +95,9 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
                   if (localRef == null
                       && foundAsZeroInSharedRefDb(Project.nameKey(projectName), ref)) {
                     repLog.info(
-                        "{}:{} was removed locally and is set to zeros in the shared-refdb and thus"
-                            + " will NOT BE fetched",
+                        "[{}] {}:{} was removed locally and is set to zeros in the shared-refdb and"
+                            + " thus will NOT BE fetched",
+                        replicationTaskId(),
                         projectName,
                         ref);
                     return false;
@@ -101,9 +105,9 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
                 } catch (IOException ioe) {
                   String message =
                       String.format(
-                          "Cannot dereference ref '%s' for project '%s' therefore will NOT BE"
+                          "[%s] Cannot dereference ref '%s' for project '%s' therefore will NOT BE"
                               + " fetched",
-                          ref, projectName);
+                          replicationTaskId(), ref, projectName);
                   repLog.error(message);
                   logger.atSevere().withCause(ioe).log("%s", message);
                   return false;
@@ -113,7 +117,8 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
               })
           .collect(Collectors.toSet());
     } catch (IOException ioe) {
-      String message = String.format("Error while opening project: '%s'", projectName);
+      String message =
+          String.format("[%s] Error while opening project: '%s'", replicationTaskId(), projectName);
       repLog.error(message);
       logger.atSevere().withCause(ioe).log("%s", message);
       return Collections.emptySet();
@@ -138,7 +143,14 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
     } catch (RefDbLockException lockException) {
       filteredRefs.clear();
       throw new LockFailureException(
-          "Unable to lock refs " + sortedFetchRefs + " for project " + projectName, lockException);
+          "["
+              + replicationTaskId()
+              + "] "
+              + "Unable to lock refs "
+              + sortedFetchRefs
+              + " for project "
+              + projectName,
+          lockException);
     } finally {
       for (String excludedRef : Sets.difference(sortedFetchRefs, filteredRefs)) {
         AutoCloseable excludedLock = refLocks.remove(excludedRef);
@@ -147,13 +159,18 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
             excludedLock.close();
           } catch (Exception e) {
             logger.atWarning().withCause(e).log(
-                "Error whilst unlocking ref %s:%s", projectName, excludedRef);
+                "[%s] Error whilst unlocking ref %s:%s",
+                replicationTaskId(), projectName, excludedRef);
           }
         }
       }
     }
 
     return refLocks;
+  }
+
+  private static String replicationTaskId() {
+    return MoreObjects.firstNonNull(ReplicationTaskId.get(), "no-task-id");
   }
 
   private boolean foundAsZeroInSharedRefDb(NameKey projectName, String ref) {
@@ -189,13 +206,15 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
 
       return localRefObjectId;
     } catch (GlobalRefDbLockException gle) {
-      String message = String.format("%s is locked on shared-refdb", ref);
+      String message = String.format("[%s] %s is locked on shared-refdb", replicationTaskId(), ref);
       repLog.error(message);
       logger.atSevere().withCause(gle).log("%s", message);
       return Optional.empty();
     } catch (IOException ioe) {
       String message =
-          String.format("Error while extracting ref '%s' for project '%s'", ref, projectName);
+          String.format(
+              "[%s] Error while extracting ref '%s' for project '%s'",
+              replicationTaskId(), ref, projectName);
       repLog.error(message);
       logger.atSevere().withCause(ioe).log("%s", message);
       return Optional.empty();
@@ -206,8 +225,9 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
       String projectName, Optional<ObjectId> refObjectId, String ref) {
     if (!config.replicationFilter().isFetchFilterRandomSleepEnabled()) {
       repLog.debug(
-          "'{}' is not up-to-date for project '{}' [local='{}']. Random sleep is disabled,"
+          "[{}] '{}' is not up-to-date for project '{}' [local='{}']. Random sleep is disabled,"
               + " reload local ref without delay and re-check",
+          replicationTaskId(),
           ref,
           projectName,
           refObjectId);
@@ -216,8 +236,9 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
 
     int randomSleepTimeMsec = config.replicationFilter().fetchFilterRandomSleepTimeMs();
     repLog.debug(
-        "'{}' is not up-to-date for project '{}' [local='{}']. Reload local ref in '{} ms' and"
+        "[{}] '{}' is not up-to-date for project '{}' [local='{}']. Reload local ref in '{} ms' and"
             + " re-check",
+        replicationTaskId(),
         ref,
         projectName,
         refObjectId,
@@ -226,7 +247,9 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
       Thread.sleep(randomSleepTimeMsec);
     } catch (InterruptedException ie) {
       String message =
-          String.format("Error while waiting for next check for '%s', ref '%s'", projectName, ref);
+          String.format(
+              "[%s] Error while waiting for next check for '%s', ref '%s'",
+              replicationTaskId(), projectName, ref);
       repLog.error(message);
       logger.atWarning().withCause(ie).log("%s", message);
     }
