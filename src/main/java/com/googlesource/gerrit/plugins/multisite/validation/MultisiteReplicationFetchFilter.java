@@ -156,24 +156,6 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
     return refLocks;
   }
 
-  /* If the ref to fetch has been set to all zeros on the global-refdb, it means
-   * that whatever is the situation locally, we do not need to fetch it:
-   * - If the remote still has it, fetching it will be useless because the global
-   *   state is that the ref should be removed.
-   * - If the remote doesn't have it anymore, trying to fetch the ref won't do
-   *   anything because you can't just remove local refs by fetching.
-   */
-  private boolean hasBeenRemovedFromGlobalRefDb(String projectName, String ref) {
-    if (foundAsZeroInSharedRefDb(Project.nameKey(projectName), ref)) {
-      repLog.info(
-          "{}:{} is found as zeros (removed) in shared-refdb thus will NOT BE fetched",
-          projectName,
-          ref);
-      return true;
-    }
-    return false;
-  }
-
   private boolean foundAsZeroInSharedRefDb(NameKey projectName, String ref) {
     return sharedRefDb
         .get(projectName, ref, String.class)
