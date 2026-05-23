@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "da335ca4_a44c8b7d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006192
+      },
+      "writtenOn": "2026-05-23T14:33:42Z",
+      "side": 1,
+      "message": "True, let me split this into two change:\n1. The *acual revert*\n2. The additional fix",
+      "parentUuid": "88091f94_24afc175",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 46
+      },
+      "revId": "bd0e5283853b7b073316087a1880fbffa9f0c31b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc466e84_5b1bfc7c",
         "filename": "/COMMIT_MSG",
         "patchSetId": 7
