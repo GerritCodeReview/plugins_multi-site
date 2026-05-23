@@ -23,6 +23,7 @@ import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Sets;
 import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Project;
+import com.google.gerrit.entities.Project.NameKey;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -69,6 +70,7 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
         gitRepositoryManager.openRepository(Project.nameKey(projectName))) {
       RefDatabase refDb = repository.getRefDatabase();
       return refs.stream()
+          .filter(ref -> !hasBeenRemovedFromGlobalRefDb(projectName, ref))
           .filter(
               ref -> {
                 if (shouldNotBeTrackedAnymoreOnGlobalRefDb(ref)) {
@@ -115,7 +117,7 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
     } catch (RefDbLockException lockException) {
       filteredRefs.clear();
       throw new LockFailureException(
-          "Unable to lock refs " + sortedFetchRefs + " for project " + projectName, lockException);
+              "Unable to lock refs " + sortedFetchRefs + " for project " + projectName, lockException);
     } finally {
       for (String excludedRef : Sets.difference(sortedFetchRefs, filteredRefs)) {
         AutoCloseable excludedLock = refLocks.remove(excludedRef);
@@ -124,13 +126,38 @@ public class MultisiteReplicationFetchFilter extends AbstractMultisiteReplicatio
             excludedLock.close();
           } catch (Exception e) {
             logger.atWarning().withCause(e).log(
-                "Error whilst unlocking ref %s:%s", projectName, excludedRef);
+                    "Error whilst unlocking ref %s:%s", projectName, excludedRef);
           }
         }
       }
     }
 
     return refLocks;
+  }
+
+  /* If the ref to fetch has been set to all zeros on the global-refdb, it means
+   * that whatever is the situation locally, we do not need to fetch it:
+   * - If the remote still has it, fetching it will be useless because the global
+   *   state is that the ref should be removed.
+   * - If the remote doesn't have it anymore, trying to fetch the ref won't do
+   *   anything because you can't just remove local refs by fetching.
+   */
+  private boolean hasBeenRemovedFromGlobalRefDb(String projectName, String ref) {
+    if (foundAsZeroInSharedRefDb(Project.nameKey(projectName), ref)) {
+      repLog.info(
+          "{}:{} is found as zeros (removed) in shared-refdb thus will NOT BE fetched",
+          projectName,
+          ref);
+      return true;
+    }
+    return false;
+  }
+
+  private boolean foundAsZeroInSharedRefDb(NameKey projectName, String ref) {
+    return sharedRefDb
+        .get(projectName, ref, String.class)
+        .map(r -> ZERO_ID_NAME.equals(r))
+        .orElse(false);
   }
 
   private Optional<ObjectId> getLocalSha1IfEqualsToExistingGlobalRefDb(
