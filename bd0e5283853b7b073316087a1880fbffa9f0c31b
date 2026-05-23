@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88091f94_24afc175",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-05-23T07:38:47Z",
+      "side": 1,
+      "message": "Nit: Title and body read as a strict revert, but the new logic is actually narrower than the pre-I368e64c47d2c behaviour - we only filter the ref when it\u0027s missing locally and zero in the global-refdb, whereas the original always filtered on zero regardless of local state.\n\nThat refinement is what makes Issue 515801262 work (local-has-ref + global-zero must still fetch so the deletion propagates), so the change is correct, but the commit message could be more accurate.\n\n```suggestion\nFix fetch of refs deleted both locally and in the global-refdb\n\nThe original zero-id filter (introduced for Issue 40015453)\nskipped any fetch for a ref marked as zero in the global-refdb,\nregardless of local state. I368e64c47d2c removed that filter\nunder the assumption that fetches could now propagate deletions\nthrough the Git protocol. That assumption is correct when the\nref still exists locally (the fetch is needed to delete it) but\nwrong when the ref is already missing locally (the fetch should\nbe a no-op and instead re-creates the ref).\n\nRe-introduce the zero-id filter, restricted to the case where\nthe ref is missing locally. When the ref still exists locally\nand is zero in the global-refdb, the fetch is allowed to\nproceed so the deletion is replicated.\n\nThis is a partial revert of I368e64c47d2c.\n```",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 46
+      },
+      "revId": "bd0e5283853b7b073316087a1880fbffa9f0c31b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc466e84_5b1bfc7c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-05-23T07:38:47Z",
+      "side": 1,
+      "message": "Add the issue tracker:\n\n```suggestion\nBug: Issue 515801262\nChange-Id: I15b8587d2cb93bd378b5b0d62fd516acb3210d52\n```",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 52
+      },
+      "revId": "bd0e5283853b7b073316087a1880fbffa9f0c31b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0ef8375_fdf70b24",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilterTest.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-05-23T07:38:47Z",
+      "side": 1,
+      "message": "CI failure is related.\n\nThis stub fails the suite under MockitoJUnitRunner\u0027s strict stubbing.\n\nMULTI_SITE_VERSIONING_REF is short-circuited by shouldNotBeTrackedAnymoreOnGlobalRefDb at the top of the filter lambda, so sharedRefDb.get(...) is never called for it and Mockito reports UnnecessaryStubbingException.\n\nI suggest to drop the newRef(...) + doReturn(...) altogether — the test was passing without them prior to this change.\n\n```suggestion\n    Set\u003cString\u003e refsToFetch \u003d Set.of(refsMultisiteVersionRef);\n```",
+      "range": {
+        "startLine": 176,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 0
+      },
+      "revId": "bd0e5283853b7b073316087a1880fbffa9f0c31b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
