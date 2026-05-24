@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59e3881d_2cdd1922",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/multisite/validation/MultisiteReplicationFetchFilter.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2026-05-24T11:30:08Z",
+      "side": 1,
+      "message": "ReplicationTaskId.get() can return null. Should we avoid logging [null] here? For example, compute a prefix only when a task id is present, or expose an helper method or amend the API that returns an empty string.",
+      "range": {
+        "startLine": 87,
+        "startChar": 28,
+        "endLine": 87,
+        "endChar": 51
+      },
+      "revId": "f7a67b70ebd8569e0454cdcac7386363d8b72fe1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
