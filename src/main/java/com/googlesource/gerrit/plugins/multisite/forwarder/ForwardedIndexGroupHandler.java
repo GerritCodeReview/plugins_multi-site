@@ -67,7 +67,7 @@ public class ForwardedIndexGroupHandler
 
   @Override
   protected void attemptToIndex(String uuid) {
-    reindexAndCheckIsUpToDate(uuid, groupChecker);
+    reindexIfUpToDate(uuid, groupChecker);
   }
 
   @Override

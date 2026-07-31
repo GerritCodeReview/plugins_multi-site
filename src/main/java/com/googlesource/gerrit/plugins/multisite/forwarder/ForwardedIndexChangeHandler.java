@@ -79,7 +79,7 @@ public class ForwardedIndexChangeHandler
     boolean changeIsPresent = changeNotes.isPresent();
     boolean changeIsConsistent = checker.isChangeConsistent();
     if (changeIsPresent && changeIsConsistent) {
-      reindexAndCheckIsUpToDate(id, checker);
+      reindexIfUpToDate(id, checker);
     } else {
       IndexingRetry retry = indexingRetryTaskMap.get(id);
       log.warn(

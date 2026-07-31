@@ -121,8 +121,7 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
     attemptToIndex(id);
   }
 
-  public final void reindexAndCheckIsUpToDate(T id, UpToDateChecker<E> upToDateChecker) {
-    reindex(id);
+  public final void reindexIfUpToDate(T id, UpToDateChecker<E> upToDateChecker) {
     IndexingRetry retry = indexingRetryTaskMap.get(id);
     if (retry == null) {
       log.warn("{} {} successfully indexed by different task", indexName(), id);
@@ -134,6 +133,8 @@ public abstract class ForwardedIndexingHandlerWithRetries<T, E extends IndexEven
       rescheduleIndex(id);
       return;
     }
+
+    reindex(id);
 
     if (retry.getRetryNumber() > 0) {
       log.warn(

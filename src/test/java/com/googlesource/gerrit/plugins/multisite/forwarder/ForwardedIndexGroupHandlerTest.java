@@ -19,6 +19,7 @@ import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -123,10 +124,10 @@ public class ForwardedIndexGroupHandlerTest {
   }
 
   @Test
-  public void shouldChangeIndexEventWheNotUpToDate() throws IOException {
+  public void groupIsNotReindexedWhenShaIsNeverVisible() throws IOException {
     ForwardedIndexGroupHandler groupHandlerWithOutdatedEvent = groupHandler(false);
     groupHandlerWithOutdatedEvent.index(uuid, Operation.INDEX, groupIndexEvent(uuid));
-    verify(indexerMock).index(AccountGroup.uuid(uuid));
+    verify(indexerMock, never()).index(AccountGroup.uuid(uuid));
   }
 
   @Test

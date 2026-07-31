@@ -105,13 +105,13 @@ public class ForwardedIndexChangeHandlerTest {
   }
 
   @Test
-  public void changeIsStillIndexedEvenWhenOutdated() throws Exception {
+  public void changeIsNotReindexedWhenShaIsNeverVisible() throws Exception {
     setupChangeAccessRelatedMocks(CHANGE_EXISTS, CHANGE_OUTDATED, CHANGE_CONSISTENT);
     handler.index(
         TEST_CHANGE_ID,
         Operation.INDEX,
         Optional.of(new ChangeIndexEvent("foo", 1, false, "instance-id")));
-    verify(indexerMock, times(1)).index(any(ChangeNotes.class));
+    verify(indexerMock, never()).index(any(ChangeNotes.class));
   }
 
   @Test
