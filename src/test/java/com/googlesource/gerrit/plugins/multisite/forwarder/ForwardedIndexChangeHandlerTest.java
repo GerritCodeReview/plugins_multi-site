@@ -31,15 +31,20 @@ import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.server.git.GitRepositoryManager;
 import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.google.gerrit.server.notedb.ChangeNotes;
+import com.google.gerrit.server.query.change.ChangeData;
+import com.google.gerrit.server.query.change.InternalChangeQuery;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gerrit.server.util.time.TimeUtil;
+import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.multisite.Configuration;
 import com.googlesource.gerrit.plugins.multisite.forwarder.ForwardedIndexingHandler.Operation;
 import com.googlesource.gerrit.plugins.multisite.forwarder.events.ChangeIndexEvent;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeChecker;
 import com.googlesource.gerrit.plugins.multisite.index.ChangeCheckerImpl;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
 import org.junit.Before;
@@ -79,9 +84,14 @@ public class ForwardedIndexChangeHandlerTest {
   @Mock private ChangeCheckerImpl.Factory changeCheckerFactoryMock;
   @Mock private ChangeChecker changeCheckerAbsentMock;
   @Mock private ChangeChecker changeCheckerPresentMock;
+  @Mock private Provider<InternalChangeQuery> queryProviderMock;
+  @Mock private InternalChangeQuery queryMock;
+  @Mock private ChangeData changeDataMock;
   private ForwardedIndexChangeHandler handler;
   private Change.Id id;
   private Change change;
+  private final ChangeIndexEvent deleteEvent =
+      new ChangeIndexEvent(TEST_PROJECT, TEST_CHANGE_NUMBER, true, "instance-id");
 
   @Before
   public void setUp() throws Exception {
@@ -151,6 +161,31 @@ public class ForwardedIndexChangeHandlerTest {
   }
 
   @Test
+  public void shouldStopPendingRetryWhenLocallyPresentChangeIsDeleted() throws Exception {
+    setupChangePresentInIndex();
+
+    scheduleIndexingRetryForOutdatedChange();
+    handleChangeDeletion();
+    handler.attemptToIndex(TEST_CHANGE_ID);
+
+    assertThat(handler.indexingRetryTaskMap).doesNotContainKey(TEST_CHANGE_ID);
+    verify(indexerMock).delete(id);
+    verify(indexExecutorMock).schedule(any(Runnable.class), anyLong(), any());
+  }
+
+  @Test
+  public void shouldStopPendingRetryWhenDeletedChangeIsAlreadyAbsentFromIndex() throws Exception {
+    setupChangeAbsentFromIndex();
+
+    scheduleIndexingRetryForMissingChange();
+    handleChangeDeletion();
+    handler.attemptToIndex(TEST_CHANGE_ID);
+
+    assertThat(handler.indexingRetryTaskMap).doesNotContainKey(TEST_CHANGE_ID);
+    verify(indexExecutorMock).schedule(any(Runnable.class), anyLong(), any());
+  }
+
+  @Test
   public void indexerThrowsStorageExceptionTryingToIndexChange() throws Exception {
     setupChangeAccessRelatedMocks(
         CHANGE_EXISTS, THROW_STORAGE_EXCEPTION, CHANGE_UP_TO_DATE, CHANGE_CONSISTENT);
@@ -213,6 +248,33 @@ public class ForwardedIndexChangeHandlerTest {
       boolean changeExist, boolean changeUpToDate, boolean changeConsistent) throws Exception {
     setupChangeAccessRelatedMocks(
         changeExist, DO_NOT_THROW_STORAGE_EXCEPTION, changeUpToDate, changeConsistent);
+  }
+
+  private void scheduleIndexingRetryForOutdatedChange() throws Exception {
+    setupChangeAccessRelatedMocks(CHANGE_EXISTS, CHANGE_OUTDATED);
+    handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
+    assertThat(handler.indexingRetryTaskMap).containsKey(TEST_CHANGE_ID);
+  }
+
+  private void scheduleIndexingRetryForMissingChange() throws Exception {
+    setupChangeAccessRelatedMocks(CHANGE_DOES_NOT_EXIST, CHANGE_OUTDATED);
+    handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
+    assertThat(handler.indexingRetryTaskMap).containsKey(TEST_CHANGE_ID);
+  }
+
+  private void handleChangeDeletion() throws IOException {
+    handler.index(TEST_CHANGE_ID, Operation.DELETE, Optional.of(deleteEvent));
+  }
+
+  private void setupChangePresentInIndex() {
+    when(queryProviderMock.get()).thenReturn(queryMock);
+    when(queryMock.byChangeNumber(id)).thenReturn(Arrays.asList(changeDataMock));
+    when(changeDataMock.getId()).thenReturn(id);
+  }
+
+  private void setupChangeAbsentFromIndex() {
+    when(queryProviderMock.get()).thenReturn(queryMock);
+    when(queryMock.byChangeNumber(id)).thenReturn(Collections.emptyList());
   }
 
   private void setupChangeAccessRelatedMocks(
