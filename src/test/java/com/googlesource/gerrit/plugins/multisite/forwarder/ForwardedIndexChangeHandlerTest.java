@@ -21,6 +21,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -82,6 +83,8 @@ public class ForwardedIndexChangeHandlerTest {
   private ForwardedIndexChangeHandler handler;
   private Change.Id id;
   private Change change;
+  private final ChangeIndexEvent deleteEvent =
+      new ChangeIndexEvent(TEST_PROJECT, TEST_CHANGE_NUMBER, true, "instance-id");
 
   @Before
   public void setUp() throws Exception {
@@ -151,6 +154,19 @@ public class ForwardedIndexChangeHandlerTest {
   }
 
   @Test
+  public void shouldStopPendingRetryWhenLocallyPresentChangeIsDeleted() throws Exception {
+    scheduleIndexingRetryForOutdatedChange();
+
+    reset(indexExecutorMock);
+    handleChangeDeletion();
+    verifyChangeDeletedFromIndex(id);
+    assertNoRetryingOrScheduledIndexingTasks();
+
+    handler.attemptToIndex(TEST_CHANGE_ID);
+    assertNoRetryingOrScheduledIndexingTasks();
+  }
+
+  @Test
   public void indexerThrowsStorageExceptionTryingToIndexChange() throws Exception {
     setupChangeAccessRelatedMocks(
         CHANGE_EXISTS, THROW_STORAGE_EXCEPTION, CHANGE_UP_TO_DATE, CHANGE_CONSISTENT);
@@ -213,6 +229,33 @@ public class ForwardedIndexChangeHandlerTest {
       boolean changeExist, boolean changeUpToDate, boolean changeConsistent) throws Exception {
     setupChangeAccessRelatedMocks(
         changeExist, DO_NOT_THROW_STORAGE_EXCEPTION, changeUpToDate, changeConsistent);
+  }
+
+  private void verifyChangeDeletedFromIndex(Change.Id id) {
+    verify(indexerMock).delete(id);
+  }
+
+  private void assertNoRetryingOrScheduledIndexingTasks() {
+    assertThat(handler.indexingRetryTaskMap).isEmpty();
+    verify(indexExecutorMock, never()).schedule(any(Runnable.class), anyLong(), any());
+  }
+
+  private void scheduleIndexingRetryForOutdatedChange() throws Exception {
+    setupChangeAccessRelatedMocks(CHANGE_EXISTS, CHANGE_OUTDATED);
+    handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
+    assertThat(handler.indexingRetryTaskMap).containsKey(TEST_CHANGE_ID);
+    verify(indexExecutorMock).schedule(any(Runnable.class), anyLong(), any());
+  }
+
+  private void scheduleIndexingRetryForMissingChange() throws Exception {
+    setupChangeAccessRelatedMocks(CHANGE_DOES_NOT_EXIST, CHANGE_OUTDATED);
+    handler.index(TEST_CHANGE_ID, Operation.INDEX, Optional.empty());
+    assertThat(handler.indexingRetryTaskMap).containsKey(TEST_CHANGE_ID);
+    verify(indexExecutorMock).schedule(any(Runnable.class), anyLong(), any());
+  }
+
+  private void handleChangeDeletion() throws IOException {
+    handler.index(TEST_CHANGE_ID, Operation.DELETE, Optional.of(deleteEvent));
   }
 
   private void setupChangeAccessRelatedMocks(
