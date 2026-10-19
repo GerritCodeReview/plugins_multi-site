@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbe413ac_675b860f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1072905
+      },
+      "writtenOn": "2026-10-19T08:09:15Z",
+      "side": 1,
+      "message": "Tests are failing with:\n\n```\nplugins/multi-site/src/main/java/com/googlesource/gerrit/plugins/multisite/forwarder/ForwardedIndexChangeHandler.java:78: error: cannot find symbol\n      log.atInfo().log(\"Skipping indexing of change %s: no pending retry\", id);\n         ^\n```\n\nWe are just an import (that was already there in master), I believe.",
+      "revId": "0fe23951289b2ea540db907662ccb436b46e0a4d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
